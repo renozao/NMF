@@ -1,0 +1,60 @@
+*************************************************************************
+* 						Changes in version 0.2.4						*
+*************************************************************************
+
+CHANGES
+	
+	o Class 'NMFStrategy' has a new slot 'mixed', that specify if the algorithm 
+	can handle mixed signed input matrices.
+	
+	o Method 'nmf-matrix,numeric,function' accepts a new parameter 'mixed' to 
+	specify if the custom algorithm can handle mixed signed input matrices.
+
+*************************************************************************
+* 						Changes in version 0.2.3						*
+*************************************************************************
+
+NEW FEATURES
+
+    o Package 'Biobase' is not required anymore, and only suggested.
+    The definition and export of the NMF-BioConductor layer is done at 
+    loading.
+
+    o 'nmfApply' S4 generic/method: a 'apply'-like method for objects of 
+    class 'NMF'.
+    
+    o 'predict' S4 method for objects of class 'NMF': the method replace the now
+    deprecated 'clusters' method.
+    
+    o 'featureNames' and 'sampleNames' S4 method for objects of class 'NMFSet'.
+    
+    o sub-setting S4 method '[' for objects of class 'NMF': row subsets are 
+    applied to the rows of the basis matrix, column subsets are applied to 
+    the columns of the mixture coefficient matrix.
+
+CHANGES
+	
+	o method 'featureScore' has a new argument 'method' to allow choosing between 
+	different scoring schema.
+	
+	o method 'extractFeatures' has two new arguments: 'method' allows choosing 
+	between different scoring and selection methods; 'format' allows to specify 
+	the output format.
+	NOTE: the default output format has changed. The default result is now a 
+	list whose elements are integer vectors (one per basis component) that 
+	contain the indices of the basis-specific features. It is in practice what 
+	one is usually interested in.  
+
+BUG FIXES
+
+    o Methods 'basis<-' and 'coef<-' were not exported by file NAMESPACE.
+    
+    o Method 'featureNames' was returning the column names of the mixture 
+    coefficient matrix, instead of the row names of the basis matrix.
+    
+    o 'metaHeatmap' with argument 'class' set would throw an error.
+
+NEWLY DEPRECATED CLASSES, METHODS, FUNCTIONS, DATA SETS
+
+    o Deprecated Generics/Methods
+       1) clusters - S4 generic/methods remain with .Deprecated message

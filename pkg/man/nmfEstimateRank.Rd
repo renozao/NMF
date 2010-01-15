@@ -1,0 +1,110 @@
+\name{nmfEstimateRank}
+\Rdversion{1.1}
+\alias{nmfEstimateRank}
+\alias{plot.NMF.rank}
+
+\title{Estimate optimal rank for Nonnegative Matrix Factorization (NMF) models }
+\description{
+A critical parameter in NMF algorithms is the factorization rank \eqn{r}. 
+It defines the number of basis effects used to approximate the target matrix.
+Function \code{nmfEstimateRank} helps in choosing an optimal rank by implementing 
+simple approaches proposed in the litterature.
+
+}
+\usage{
+nmfEstimateRank(x, range, method = nmf.getOption("default.algorithm"), nrun = 30, conf.interval = FALSE, ...)
+plot.NMF.rank(x, what = c("all", "cophenetic", "rss", "residuals", "dispersion"), ...)
+}
+%- maybe also 'usage' for other objects documented here.
+\arguments{
+
+	\item{conf.interval}{
+	  a single \code{logical} specifying if confidence intervals should be estimated 
+	  for all the computed consensus measures.
+	  For each rank in \code{range}, the confidence intervals are estimated by 
+	  bootstrap, resampling 5\code{nrun} times with replacement across the \code{nrun}
+	  runs.
+	}
+	
+	\item{method}{
+	  A single NMF algorithm, in one of the format accepted by interface \code{\link{nmf}}.
+	}
+	
+	\item{nrun}{
+	  a \code{numeric} giving the number of run to perform for each value in \code{range}.
+	}
+	
+	\item{range}{ a \code{numeric} vector containing the ranks of factorization to try.
+	}
+	
+	\item{what}{ a \code{character} string that partially matches one of the 
+	following item: \code{'all'}, \code{'cophenetic'}, \code{'rss'}, \code{'residuals'}
+	, \code{'dispersion'}. 
+	It specifies which measure must be plotted (\code{what='all'} plots all 
+	the measures).
+	}
+	
+	\item{x}{ 
+	For \code{nmfEstimateRank} a target object to be estimated, in one of the format accepted
+	  by interface \code{\link{nmf}}.
+	  
+	 For \code{plot.NMF.rank} an object of class \code{NMF.rank} as returned by 
+	 function \code{nmfEstimateRank}.
+	 }
+	
+	\item{\dots}{
+	  For \code{nmfEstimateRank}, these are extra parameters passed to interface
+	  \code{nmf}. Note that the same parameters are used for each value of the rank.
+	  See \code{\link{nmf}}.
+	  
+	  For \code{plot.NMF.rank}, these are extra graphical parameter passed to 
+	  the standard function \code{plot}. See \code{\link{plot}}.
+	}
+}
+\details{
+Given a NMF algorithm and the target matrix, a common way of estimating \eqn{r} 
+is to try different values, compute some quality measures of the results, 
+and choose the best value according to this quality criteria.
+See \emph{Brunet et al. (2004)} and \emph{Hutchins et al. (2008)}.
+
+The function \code{nmfEstimateRank} allow to launch this estimation procedure.
+It performs multiple NMF runs for a range of rank of factorization and, for each, 
+returns a set of quality measures together with the associated consensus matrice.
+
+}
+\value{
+A S3 object (i.e. a list) of class \code{NMF.rank} with the following slots:
+\item{measures }{a \code{data.frame} containing the quality measures for each 
+rank of factorizations in \code{range}. Each row correspond to a measure, 
+each column to a rank.
+}
+\item{consensus }{ a \code{list} of consensus matrices, indexed by the rank of 
+factorization (as a character string).}
+
+}
+\references{
+
+ 	\emph{Metagenes and molecular pattern discovery using matrix factorization}
+	Brunet, J.~P., Tamayo, P., Golub, T.~R., and Mesirov, J.~P. (2004)
+	Proc Natl Acad Sci U S A
+	101(12), 4164--4169.
+
+}
+\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+
+\seealso{ nmf }
+\examples{
+
+set.seed(123456)
+n <- 50; r <- 3; m <- 20
+V <- syntheticNMF(n, r, m, noise=TRUE)
+
+# Use a seed that will be set before each first run
+\dontrun{res.estimate <- nmfEstimateRank(V, seq(2,5), method='brunet', nrun=10, seed=123456)}
+
+# plot all the measures
+\dontrun{plot(res.estimate)}
+# or only one: e.g. the cophenetic correlation coefficient
+\dontrun{plot(res.estimate, 'cophenetic')}
+
+}

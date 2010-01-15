@@ -1,0 +1,97 @@
+#exportPattern("^[[:alpha:]]+")
+
+export(
+	nmfEstimateRank
+	, plot.NMF.rank
+	, nmfAlgorithm
+	, nmfSeed
+	, syntheticNMF
+	, nmf.options
+	, nmf.getOption
+	, nmf.options.reset
+	, nmf.options.runtime
+	, nmf.models
+)
+exportMethods(
+	"[",
+    "algorithm",
+    "algorithm<-",
+#    "annotate",
+    "basis",
+    "basis<-",
+    "clusters",
+    "coef",
+    "coef<-",
+    "coefficients",
+    "compare",
+#    "computeContrib",
+    "connectivity",
+#    "contribs",
+	"cophcor",
+    "dim",
+    "dispersion",
+    "distance",
+    "entropy",
+    "errorPlot",
+    "extra",
+    "extractFeatures",
+    "featureNames",
+    "featureNames<-",
+    "featureScore",
+    "fit",
+    "fit<-",
+    "fitted", 
+#    "hist",
+    "initialize",
+    "is.empty.nmf",
+#    "join",
+    "summary",
+    "metaHeatmap",
+#   "model",
+#    "model<-",
+#    "name",
+#    "name<-",
+    "nbasis",
+    "newNMF",
+    "nmf",
+    "nmfApply",
+#    "nmfRegister",
+#    "nmfRegisterAlgorithm",
+#    "nmfRegisterSeed",
+	"nrun",
+    "objective",
+    "objective<-",
+    "offset",
+#    "plot",
+    "predict",
+    "purity",
+    "random",
+#    "report",
+	"rss",
+    "residuals",
+    "residuals<-",
+#    "run.options",
+#    "run.options<-",
+#    "run",
+    "runtime",
+    "sampleNames",
+    "sampleNames<-",
+#    "seed",
+    "seeding",
+    "seeding<-",
+    "show",
+    "smoothing",
+    "sparseness" 
+    , "summary"
+)
+exportClasses(
+    "NMF",
+    "NMFstd",
+     "NMFns",
+     "NMFOffset",
+     "NMFSet"
+#     , "NMFStrategy",
+#     "NMFStrategyFunction",
+#     "NMFStrategyIterative",
+#     "NMFStrategyIterativeX" 
+)
