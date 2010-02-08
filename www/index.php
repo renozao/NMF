@@ -51,13 +51,17 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 <!-- get project title  -->
 <!-- own website starts here, the following may be changed as you like -->
 
-<?php if ($handle=@fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_name,'r')){
+<?php
+/*
+if ($handle=@fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_name,'r')){
 $contents = '';
 while (!feof($handle)) {
 	$contents .= fread($handle, 8192);
 }
 fclose($handle);
-echo $contents; } ?>
+echo $contents; } 
+*/ 
+?>
 
 <!-- end of project description -->
 
