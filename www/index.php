@@ -203,27 +203,29 @@ switch( $view ){
 <h3>Software &amp; Documentations</h3>
 
 <?php
-function get_local_version($os=''){
+function get_local_version($os='', $name = '', $version=''){
 
 	if( !$os ){ // return last version for all os
 		$os_array = array('nix', 'win', 'mac');
 		$res = array();
 		foreach( $os_array as $os)
-			$res[$os] = get_local_version($os);
+			$res[$os] = get_local_version($os, $name, $version);
 		return $res;
 	}
 
 	// retrieve the current DESCRIPTION file
-	$desc = file_get_contents(PKG_ROOT.'DESCRIPTION');	
-	// get version
-	$pattern = "/Version *: *([0-9.]+)/m";
-	preg_match_all($pattern, $desc, $matches);
-	$version = $matches[1][0];	
-	// get package name
-	$pattern = "/^Package *: *([^ \n]+)/";
-	preg_match_all($pattern, $desc, $matches);
-	$name = $matches[1][0];	
-	
+	if( !$name || !$version ){
+		$desc = file_get_contents(PKG_ROOT.'DESCRIPTION');	
+		// get version
+		$pattern = "/Version *: *([0-9.]+)/m";
+		preg_match_all($pattern, $desc, $matches);
+		$version = $matches[1][0];	
+		// get package name
+		$pattern = "/^Package *: *([^ \n]+)/";
+		preg_match_all($pattern, $desc, $matches);
+		$name = $matches[1][0];	
+	}
+		
 	global $domain;
 	$pkg_name = $name."_".$version;
 	$url = 'http://'.$domain;
@@ -233,7 +235,7 @@ function get_local_version($os=''){
 	return $url;	
 }
 
-$local_pkgs = get_local_version();
+$local_pkgs = get_local_version('', 'NMF', '0.3.1');
 ?>
 <ul>
 <li>Package source: <a href="<?php echo $local_pkgs['nix'];?>"><?php echo basename($local_pkgs['nix']);?></a></li>
@@ -255,12 +257,12 @@ ini_set('allow_url_fopen', 'on');
 function http_get($query)
 {
 	// in case we run on localhost (not CBIO)
-	if( $_SERVER['HTTP_HOST'] == 'localhost' ) return file_get_contents($query);
+	//if( $_SERVER['HTTP_HOST'] == 'localhost' ) return file_get_contents($query);
 	
 	require_once "HTTP/Request.php";
 	
 	$req =& new HTTP_Request($query);
-	$req->setProxy("campusnet.uct.ac.za", 8080, "gjxren001", "kngprw10#");
+	//$req->setProxy("campusnet.uct.ac.za", 8080, "gjxren001", "kngprw10#");
 	
 	// check for error
 	if ( PEAR::isError($req->sendRequest()) ) 
