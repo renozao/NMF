@@ -32,8 +32,14 @@ setClass('NMFStrategy'
 			
 		# slot 'model' must be the name of a class that extends class 'NMF'
 		obj <- model(object)
-		if( obj == 'NMF' || !extends(obj, 'NMF') )
-			return("Slot 'model' must be the name of a class that STRICTLY extends class 'NMF'.")
+		if( !is.character(obj) )
+			return("Slot 'model' must be a character vector")
+		invalid.class <- function(cl){ !extends(cl, 'NMF') }
+		if( any( inv <- sapply(obj,invalid.class) ) )
+			return(paste("Slot 'model' must contain only names of a class that extends class 'NMF' [failure on class(es) "
+					, paste( paste("'", obj[inv], "'", sep=''), collapse=', ')  
+					,"]"
+					, sep=''))
 		
 		# slot 'mixed' must be a single logical		
 		obj <- slot(object, 'mixed')
@@ -57,18 +63,18 @@ setMethod('show', 'NMFStrategy',
 )
 
 #' Main interface to run the algorithm
-if ( is.null(getGeneric('run')) ) setGeneric('run', function(object, target, start, ...) standardGeneric('run'))
-setMethod('run', signature(object='NMFStrategy', target='matrix', start='NMFfit'),
-	function(object, target, start, ...){
-		stop("NMFStrategy::run is a pure virtual method that should be overloaded in class '", class(object),"'.")
+if ( is.null(getGeneric('run')) ) setGeneric('run', function(method, x, seed, ...) standardGeneric('run'))
+setMethod('run', signature(method='NMFStrategy', x='matrix', seed='NMFfit'),
+	function(method, x, seed, ...){
+		stop("NMFStrategy::run is a pure virtual method that should be overloaded in class '", class(method),"'.")
 	}
 )
 
 #' Accessor methods to slot \code{name}
 if ( is.null(getGeneric('name')) ) setGeneric('name', function(object, ...) standardGeneric('name'))
 setMethod('name', signature(object='NMFStrategy'),
-	function(object){
-		slot(object, 'name')
+	function(object, all=FALSE){
+		if( !all ) slot(object, 'name')[1] else slot(object, 'name')
 	}
 )
 if ( is.null(getGeneric('name<-')) ) setGeneric('name<-', function(object, ..., value) standardGeneric('name<-'))
@@ -83,13 +89,18 @@ setReplaceMethod('name', signature(object='NMFStrategy', value='character'),
 #' Accessor methods to slot \code{objective}
 if ( is.null(getGeneric('objective')) ) setGeneric('objective', function(object, ...) standardGeneric('objective'))
 setMethod('objective', signature(object='NMFStrategy'),
-	function(object, x, y){
+	function(object, x, y, ...){
 	
+		obj.fun <- slot(object, 'objective')
+		
 		# when both x and y are missing then returns slot objective
-		if( missing(x) && missing(y) ) return(slot(object, 'objective'))
+		if( missing(x) && missing(y) ) return(obj.fun)
 		
 		# return the distance computed using the strategy's objective function
-		distance(x, y, method=slot(object, 'objective'))
+		if( !is.function(obj.fun) )
+			distance(x, y, method=obj.fun, ...)
+		else # directly compute the objective function
+			obj.fun(x, y, ...)
 		
 	}
 )
@@ -157,29 +168,60 @@ setMethod('nmfRegisterAlgorithm', signature(method='NMFStrategy', key='missing')
 		}
 )
 setMethod('nmfRegisterAlgorithm', signature(method='function', key='character'), 
-	function(method, key, model, objective, ...){
-			
-		# build a NMFStrategyFunction object on the fly to wrap function 'method'
-		strategy.params <- list('NMFStrategyFunction', name=key, algorithm=method)
-		if( !missing(model) ) strategy.params <- c(strategy.params, model=model)
-		if( !missing(objective) ) strategy.params <- c(strategy.params, objective=objective)
-		strategy <- do.call('new', strategy.params)
+	function(method, key, overwrite=FALSE, save=FALSE, ...){
 		
-		# valid the new strategy
-		validObject(strategy)
+		# build the NMFStrategy
+		strategy <- newNMFStrategy(method, key, ...)
 		
 		# register the method
-		nmfRegisterAlgorithm(strategy, key, ...)
+		nmfRegisterAlgorithm(strategy, key, overwrite, save, ...)
 	}
 )
 
 #' Factory method to create NMFStrategy objects.
 #'
 #' Create predefined NMFStrategy objects that implement algorithms from different papers.
-nmfAlgorithm <- function(name=NULL, ...){	
+if ( !isGeneric('newNMFStrategy') ) setGeneric('newNMFStrategy', function(method, key, ...) standardGeneric('newNMFStrategy') )
+setMethod('newNMFStrategy', signature(method='function', key='character'), 
+	function(method, key, ...){
+			
+		# build a NMFStrategyFunction object on the fly to wrap function 'method'
+		strategy.params <- list('NMFStrategyFunction', name=key, algorithm=method)
+		strategy <- do.call('new', c(strategy.params, list(...)))
+		
+		# valid the new strategy
+		validObject(strategy)
+		
+		# register the method
+		strategy
+	}
+)
+
+#' Access to registered algorithms
+nmfAlgorithm <- function(name=NULL, model, ...){	
 	
-	nmfGet(name, registry.name='algorithm', ...)
-	
+	algo <- nmfGet(name, registry.name='algorithm', ...)
+	if( missing(model) )
+		return(algo)
+	else{ # lookup for an algorithm suitable for the given NMF model
+		if( !is.character(model) || nchar(model) == 0 || !extends(model, 'NMF') )
+			stop("argument 'model' must be a the name of class that extends class 'NMF'")
+		
+		# if the algo was defined then say if it is defined for the given model
+		if( inherits(algo, 'NMFStrategy') )
+			return( is.element(model, model(algo)) )
+		
+		# start lookup
+		algo.ok <- NULL
+		for( name in algo ){
+			algo.test <- nmfAlgorithm(name)
+			if( is.element(model, model(algo.test)) )
+				algo.ok <- c(algo.ok, name)
+		}
+		
+		# return the vector of algorithm names
+		algo.ok
+	}
 }
 
 #' Returns TRUE if the algorithm is registered FALSE otherwise

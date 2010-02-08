@@ -48,7 +48,7 @@ setMethod("initialize", 'NMFOffset',
 			 
 			# force length to be consistent with the factorization's dimension
 			n <- nrow(.Object)
-			if( n > 0 ) .Object@offset <- c( offset, rep(0, max(0, n - length(offset))) )[1:n]
+			if( n > 0 ) .Object@offset <- c( offset, rep(NA, max(0, n - length(offset))) )[1:n]
 			
 			# return the initialized valid object
 			.Object
@@ -76,10 +76,10 @@ setMethod('fitted', signature(object='NMFOffset'),
 )
 
 #' Initialize a random factorization with offset.
-setMethod('random', signature(x='NMFOffset', target='numeric'), 
+setMethod('rnmf', signature(x='NMFOffset', target='numeric'), 
 function(x, target, ...){	
 	
-	# call the parent's 'random' method to build a standard random NMF factorization
+	# call the parent's 'rnmf' method to build a standard random NMF factorization
 	res <- callNextMethod(x, target, ...)
 		
 	#Vc# Initialize a random offset of length the number of genes

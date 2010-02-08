@@ -48,6 +48,8 @@
 \alias{purity,NMF,factor-method}
 \alias{purity,table,missing-method}
 
+\alias{randomize}
+
 \alias{residuals}
 \alias{residuals,NMFfit-method}
 \alias{rss}
@@ -80,7 +82,7 @@ dispersion(object, ...)
 
 \S4method{entropy}{NMF,factor}(x, class, ...)
 
-\S4method{residuals}{NMFfit}(object, track=FALSE)
+\S4method{residuals}{NMFfit}(object, track=FALSE, ...)
 
 rss(object, ...)
 \S4method{rss}{NMF}(object, target)
@@ -97,7 +99,9 @@ rss(object, ...)
 
 \S4method{purity}{NMF,factor}(x, class, ...)
 
-\S4method{sparseness}{NMF}(x, what = c('features', 'samples'), ...)
+randomize(x, ...)
+
+\S4method{sparseness}{NMF}(x)
 
 syntheticNMF(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE)
 
@@ -206,12 +210,21 @@ syntheticNMF(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE)
 	\item{what}{ Specifies on which matrix (basis components or mixture coefficients) 
 	the computation should be performed.}
 	
-	\item{x}{ An object that inherits from class \code{\linkS4class{NMF}}. }	
+	\item{x}{ 
+	
+		for \code{randomize}: the \code{matrix} or \code{ExpressionSet} object whose 
+		entries will be randomised.
+		
+		otherwise: An object that inherits from class \code{\linkS4class{NMF}}. 
+				
+		}	
 	
 	\item{...}{ Used to pass extra parameters to subsequent calls:
 		\itemize{
 			\item in \code{metaHeatmap}: Graphical parameters passed to function \code{\link[gplots]{heatmap.2}}
 			\item in \code{nmfApply}: optional arguments to function \code{FUN}.
+			\item in \code{randomize}: passed to the \code{sample} function.
+			\item in \code{residuals}: not used.
 		}
 	}
 }
@@ -374,6 +387,16 @@ syntheticNMF(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE)
 	See \emph{Kim and Park (2007)}.
 	}
 	
+	\item{randomize}{ permute the row entries within each column of \code{x}, 
+	using a different permutation for each column.  
+	
+	The extra arguments in \code{...} are passed to the \code{sample} function, 
+	and will be used for each column.
+	
+	The result is a \code{matrix} of the same dimension as \code{x} (or \code{exprs(x)} 
+	in the case \code{x} is an \code{ExpressionSet} object.).
+	}
+	
 	\item{residuals}{ returns the -- final -- residuals between the target matrix and the 
 	NMF result \code{object}. They are computed using the objective function 
 	associated to the NMF algorithm that returned \code{object}.
@@ -403,8 +426,8 @@ syntheticNMF(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE)
 	}
 	
 	\item{sparseness}{
-	Computes the sparseness of a vector, matrix  as defined in \emph{Hoyer (2004)}.
-
+	Generic mathod that computes the sparseness of an object as defined in \emph{Hoyer (2004)}.
+	
 	 This sparseness measure quantifies how much energy of a vector is packed into only few components.
 	 It is defined by:
 	 \deqn{Sparseness(x) = \frac{\sqrt{n} - \frac{\sum |x_i|}{\sqrt{\sum x_i^2}}}{\sqrt{n}-1}}
@@ -414,7 +437,10 @@ syntheticNMF(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE)
 	 a single nonzero component, and is equal to 0 if and only if all components of \code{x} are equal.
 	 It interpolates smoothly between these two extreme values. 
 	 The closer to 1 is the sparseness the sparser is the vector.
-
+	 
+	 The basic definition is for a \code{numeric} vector. The sparseness of a \code{matrix} is the mean 
+	 sparseness of its column vectors. The sparseness of an object of class \code{NMF}, is the a 2-length
+	 vector that contains the sparseness of the basis and mixture coefficient matrices.
 	}
 	
 	\item{syntheticNMF}{

@@ -55,6 +55,26 @@ syntheticNMF <- function(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE
 	return(res)
 }
 
+#' randomize each column separately
+randomize <- function(x, ...){
+	
+	if( is(x, 'ExpressionSet') ) x <- exprs(x)
+		
+	# resample the columns
+	res <- apply(x, 2, function(c, ...) sample(c, ...), ...)
+	
+}
+
+#' Returns the rank-k truncated SVD approximation of x
+tsvd <- function(x, r, ...){
+	stopifnot( r > 0 && r <= min(dim(x)))
+	s <- svd(x, nu=r, nv=r, ...)
+	s$d <- s$d[1:r]
+	
+	# return results
+	s
+}
+
 #' Define a S4 class to handle function slots given as either a function definition 
 #' or a character string that gives the function's name. 
 #' 

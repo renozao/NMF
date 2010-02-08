@@ -3,7 +3,6 @@
 \docType{class}
 \alias{NMFns-class}
 \alias{fitted,NMFns-method}
-\alias{random,NMFns,numeric-method}
 \alias{show,NMFns-method}
 \alias{smoothing}
 \alias{smoothing-methods}

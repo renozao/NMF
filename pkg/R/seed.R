@@ -116,13 +116,14 @@ existsNMFSeed <- function(name, exact=TRUE){
 # INITIALIZATION FUNCTIONS
 ###########################################################################
 
-#' Hook to initialize base seeding methods when the package is loaded  
+#' Hook to initialize base seeding methods when the package is loaded
+# TODO: trnasform this into a automatically loaded plugin  
 .load.seed.base <- function(){
 	
 	# None [do nothing]
 	nmfRegisterSeed(function(object, x, ...){object}, 'none', overwrite=TRUE)
 	
 	# Random
-	nmfRegisterSeed(random, 'random', overwrite=TRUE)
+	nmfRegisterSeed(rnmf, 'random', overwrite=TRUE)
 		
 }

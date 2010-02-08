@@ -4,10 +4,10 @@
 \alias{seed}
 \alias{NMF Algorithms}
 \alias{nmf-methods}
-\alias{nmf,ANY,ANY,list-method}
-\alias{nmf,ANY,ANY,missing-method}
 \alias{nmf,data.frame,ANY,ANY-method}
 \alias{nmf,ExpressionSet,ANY,ANY-method}
+\alias{nmf,matrix,ANY,ANY-method}
+\alias{nmf,matrix,numeric,list-method}
 \alias{nmf,matrix,numeric,character-method}
 \alias{nmf,matrix,numeric,function-method}
 \alias{nmf,matrix,numeric,NMFStrategy-method}
@@ -26,15 +26,18 @@
 \usage{
 
 \S4method{nmf}{matrix,numeric,function}(x, rank, method, name, objective='euclidean', model='NMFstd', mixed=FALSE, ...)
-\S4method{nmf}{matrix,numeric,character}(x, rank, method=nmf.getOption("default.algorithm"), ...)
-\S4method{nmf}{matrix,numeric,NMFStrategy}(x, rank, method, seed=nmf.getOption('default.seed'), nrun=1, model=list(), .options=list(), ...)
+\S4method{nmf}{matrix,numeric,character}(x, rank, method, ...)
+\S4method{nmf}{matrix,numeric,NMFStrategy}(x, rank, method, seed=nmf.getOption('default.seed'), nrun=1, model=NULL, .options=list(), ...)
 
 }
 
 \arguments{
   
   \item{method}{The algorithm to use to perform NMF on \code{x}.
-  Different formats are allowed: \code{character}, \code{function}. 
+  Different formats are allowed: \code{character}, \code{function}.
+  If missing, the method to use is retrieved from the NMF package's specific 
+  options by \code{nmf.getOption("default.algorithm")} (the default built-in 
+  option is \code{'brunet'}).  
   See section \emph{Methods} for more details on how each format is used.}
   
   \item{mixed}{Boolean that states if the algorithm requires a nonnegative input
@@ -43,31 +46,54 @@
    is not fulfilled. 
    This parameter is useful to plug-in algorithms such as semi-NMF, that 
    typically does not impose nonnegativity constraints on both the input and 
-   the basis component matrices.
+   the basis component matrices.If \code{NULL} then the NMF model is used
   }
    
-  \item{model}{  When \code{method} is a \code{function}, argument \code{model} must be a single 
-  	\code{character} string	or a \code{list} that specifies the NMF model to use. A NMF model is 
-  	defined by a S4 class that extends class \code{\linkS4class{NMF}}. 
-  	As a single \code{character} string, argument \code{model} must be the name of the class that 
-  	defines the NMF model. 
-  	As a \code{list} it contains at least the name of the class that defines the NMF model in element 
-  	\code{model$class} or in the first element (if not named). The other element in the list are used 
-  	to initialize the model's slots.
+  \item{model}{  
+  
+  	When \code{method} is a \code{function}, argument \code{model} 
+  	must be either a single \code{character} string (default to 'NMFstd') or 
+  	a \code{list} that specifies values for slots in the NMF model. The NMF 
+  	model to be instantiated can optionally be given by its class name in the 
+  	first element of the list [note: A NMF model is defined by a S4 class that 
+  	extends class \code{\linkS4class{NMF}}]. If no class name is specified then 
+  	the default	model is used, see \code{\linkS4class{NMFstd}}. 
   	
-  	When \code{method} is a single \code{character} string, argument \code{model} must be a \code{list}. 
-  	It is used to initialize the slots in the NMF model associated with the NMF strategy of name 
-  	\code{method}. Note that the model associated with NMF strategy cannot be changed via argument 
-  	\code{model}.
+  	When \code{method} is a single \code{character} string or a \code{NMFStrategy}
+  	object, argument \code{model} must be \code{NULL} (default) or a \code{list}.
+  	Note that in this case the NMF model is defined by the NMF strategy itself 
+  	and cannot be changed.
   	
-  	Note also that values to initialize the NMF model's slots can also be passed in \code{\dots}. 
-  	However, those passed via argument \code{model} have priority over the later. 
-  	This is designed to handle the situation where one wants to pass a parameter to the NMF algorithm,
-  	that has the same name as a slot in the NMF model, or vice versa.
-  	If a variable appears in both argument \code{model} and \code{\dots}, the former will be used to 
-  	initialize the NMF model, the latter will be passed to the NMF algorithm. 
-  	See code examples for an illustration of this situation. 
+  	\itemize{
   	
+  	\item If a single \code{character} string, argument \code{model} must be the name
+  	 of the class that defines the NMF model to be instantiated. 
+  	 Arguments in \code{...} are handled in the same way as when \code{model} 
+  	 is \code{NULL}, see below.
+  	 
+  	\item If a \code{list} \code{all and only} its elements are used to 
+  	initialise the NMF model's slots.
+  	  	
+  	\item if \code{NULL}, the arguments in \code{...} that have the same name 
+  	as slots in the NMF model associated with the NMF strategy of name 
+  	\code{method} are used to initialise these slots.
+  	
+  	}
+  	
+  	\strong{Important:}
+  	Values to initialise the NMF model's slots can be passed in \code{\dots}. 
+  	However, if argument \code{model} is a \code{list} -- even empty -- then 
+  	all and only its elements are used to initialise the model, those in \code{...} 
+  	are directly passed to the algorithm.
+  	
+  	So to pass a parameter to the NMF algorithm, that has the same name as a 
+  	slot in the NMF model, argument \code{model} MUST be a list -- possibly empty --
+  	and contains all the values one wants to use for the NMF model slots.
+  	
+  	If a variable appears in both argument \code{model} and \code{\dots}, 
+  	the former will be used to initialise the NMF model, the latter will be 
+  	passed to the NMF algorithm. 
+  	See code examples for an illustration of this situation.   	
   	}
     
   \item{name}{ A \code{character} string to be used as a name for the custom NMF algorithm.}
@@ -138,20 +164,20 @@
   (this requires the \code{Biobase} package to be installed). 
   See section \emph{Methods} for more details.}
   
-  \item{\dots}{Extra parameters passed to the NMF algorithm's \code{run} method.  
-  When there is no conflict with the slot names in the NMF model class, values for model 
-  slots can also be passed in \code{...}. See argument \code{model}.
+  \item{\dots}{Extra parameters passed to the NMF algorithm's \code{run} method 
+  or used to initialise the NMF model slots.  
+  If argument \code{model} is not supplied as a \code{list}, ANY of the arguments 
+  in \code{...} that have the same name as slots in the NMF model to be instantiated 
+  will be used to initialise these slots. 
+  See also the \emph{Important} paragraph in argument \code{model}.
   }
 }
 
 \section{Methods}{
 \describe{
 
-\item{x = "ANY", rank = "ANY", method = "list"}{ Performs NMF on object \code{x}
- for each algorithm defined in \code{method}.}
-
-\item{x = "ANY", rank = "ANY", method = "missing"}{ Performs default NMF 
-algorithm on object \code{x}.}
+\item{x = "matrix", rank = "numeric", method = "list"}{ Performs NMF on matrix 
+\code{x} for each algorithm defined in the list \code{method}.}
 
 \item{x = "data.frame", rank = "ANY", method = "ANY"}{ Performs NMF on a 
 \code{data.frame}: the target matrix is the converted data.frame 
@@ -234,16 +260,31 @@ from \emph{Kim and Park (2007)}. }
 	
 	The seeding method to use in combination with the algorithm can be passed 
 	to interface \code{nmf} through argument \code{seed}.
-	The following formats are supported:
+	Detailed examples of how to specify the seeding method and its parameters can 
+	be found in the \emph{Examples} section of this man page and in the package's 
+	vignette. 
+	
+	Argument \code{seed} accepts the following formats:
 	
 	\describe{
+	
 	\item{a \code{character} string:}{ giving the name of a \emph{registered} 
 	seeding method. The corresponding method will be called to compute 
 	the starting point. }
+	
 	\item{a \code{list}:}{ giving the name of a \emph{registered} 
 	seeding method and, optionally, extra parameters to pass to it.}
-	\item{an object that inherits from \code{\linkS4class{NMF}}:}{ it will be 
-	directly passed to the algorithm's method -- via its argument \code{start}.}
+	
+	\item{a single \code{numeric}:}{ that is used to seed the random number 
+	generator. The value will be used in a call to the \code{\link{set.seed}} 
+	function before computing a starting point with the 'random' seeding method.
+	}
+	
+	\item{an object that inherits from \code{\linkS4class{NMF}}:}{ it should 
+	contain the	data of an initialised NMF model, that is it must contain valid 
+	basis and mixture coefficient matrices.
+	It will be directly passed to the algorithm's method -- via its argument \code{seed}.}
+	
 	\item{a \code{function}:}{ that computes the starting point. It must have 
 	signature \code{(object=NMF, target=matrix, ...)} and return an object that 
 	inherits from class \code{NMF}. Argument \code{object} should be used as a 
@@ -286,12 +327,16 @@ Learning spatially localized, parts-based representation.
 
 \examples{
 
+## DATA
 # generate a synthetic dataset with known classes: 100 features, 23 samples (10+5+8)
-n <- 100; counts <- c(10, 5, 8);
+n <- 100; counts <- c(10, 5, 8); p <- sum(counts) 
 V <- syntheticNMF(n, counts, noise=TRUE)
+dim(V)
 
 # build the class factor
 groups <- as.factor(do.call('c', lapply(seq(3), function(x) rep(x, counts[x]))))
+
+## RUN NMF ALGORITHMS
 
 # run default algorithm
 res <- nmf(V, 3)
@@ -299,14 +344,34 @@ res
 summary(res, class=groups)
 
 # run default algorithm multiple times (only keep the best fit)
-res <- nmf(V, 3, nrun=20)
+res <- nmf(V, 3, nrun=10)
 res
 summary(res, class=groups)
+
+# run default algorithm multiple times keeping all the fits
+res <- nmf(V, 3, nrun=10, .options='k')
+res
+summary(res, class=groups)
+
+\dontrun{
+## Note: one could have equivalently done
+res <- nmf(V, 3, nrun=10, .options=list(keep.all=TRUE))
+}
 
 # run nonsmooth NMF algorithm
 res <- nmf(V, 3, 'nsNMF')
 res
 summary(res, class=groups)
+
+\dontrun{
+## Note: partial match also works
+nmf(V, 3, 'ns')
+}
+
+\dontrun{
+# Non default values for the algorithm's parameters can be specified in '...'
+res <- nmf(V, 3, 'nsNMF', theta=0.8)
+}
 
 # compare some NMF algorithms
 res <- nmf(V, 3, list('brunet', 'lee', 'nsNMF'))
@@ -319,6 +384,33 @@ data(esGolub)
 nmf(esGolub, 3)
 }
 
+## USING SEEDING METHODS
+
+# run default algorithm with the Non-negative Double SVD seeding method ('nndsvd')
+nmf(V, 3, seed='nndsvd')
+
+\dontrun{
+## Note: partial match also works
+nmf(V, 3, seed='nn')
+}
+
+# run nsNMF algorithm, fixing the seed of the random number generator 
+nmf(V, 3, 'nsNMF', seed=123456)
+
+# run default algorithm specifying the starting point following the NMF standard model
+start.std <- newNMF(W=matrix(0.5, n, 3), H=matrix(0.2, 3, p))   
+nmf(V, seed=start.std)
+
+# to run nsNMF algorithm with an explicit starting point, this one
+# needs to follow the 'NMFns' model:
+start.ns <- newNMF(model='NMFns', W=matrix(0.5, n, 3), H=matrix(0.2, 3, p))   
+nmf(V, seed=start.ns)
+# Note: the method name does not need to be specified as it is infered from the 
+# when there is only one algorithm defined for the model.
+
+# if the model is not appropriate (as defined by the algorihtm) an error is thrown 
+# [cf. the standard model doesn't include a smoothing parameter used in nsNMF] 
+\dontrun{nmf(V, method='ns', seed=start.std)}
 
 }
 

@@ -56,23 +56,23 @@
 	return(invisible())
 }
 
-.onAttach <- function(...){
+.onAttach <- function(libname, pkgname){
 	
+	if( missing(pkgname) ) pkgname <- NULL
 	.init.sequence <- function(){
 				
-		## 1. BUILT-IN NMF METHODS
+		## 1. BUILT-IN NMF SEED METHODS
 		# initialize built-in seeding methods
 		.load.seed.base() # base: none, random
 		.load.seed.nndsvd() # Non-Negative Double SVD
 		.load.seed.ica() # Positive part of ICA
 			
-		# initialize built-in algorithms
-		.load.algorithm.NMFStrategyIterative() # iterative schema
-		.load.algorithm.snmf() # SNMF methods (R/L)
-		.load.algorithm.lnmf() # LNMF
+		## 2. POPULATE THE REGISTRY WITH BUILT-IN NMF METHODS: ALGORITHMS
+		# TODO: support for plugin of seeding methods
+		.init.nmf.plugin.builtin(pkgname)
 		
 		## 2. USER-DEFINED NMF METHODS
-		.load.methods.user()
+		.init.nmf.plugin.user(pkgname)
 	}
 	
 	# run intialization sequence suppressing messages or not depending on verbosity options
@@ -82,7 +82,75 @@
 	return(invisible())
 }
 
+# Define a super class for all the NMF pluggable elements: strategies, seeding methods, etc...
+setClassUnion('NMFPlugin', c('NMFStrategy', 'NMFSeed'))
+
+#' Internal function to populate the registry with the built-in methods
+.init.nmf.plugin.builtin <- function(pkgname){
+	
+	message('NMF: Init built-in plugins')	
+	# if pkgname is not null then search is performed within the package's namespace
+	where <- if( !is.null(pkgname) ) asNamespace(as.name(pkgname)) else .GlobalEnv
+		
+	# lookup for all objects that match the correct pattern
+	prefix <- "\\.nmf\\.plugin\\."
+	pattern <- paste("^", prefix, ".*", sep='')
+	load.fun <- ls(where, all.names=TRUE, pattern=pattern)
+	load.plugin.name <- sub(paste("^", prefix, "(.*)", sep=''), "\\U\\1", load.fun, perl=TRUE)
+	
+	# execute all the loading functions
+	strat.list <- NULL
+	mapply(function(funname, plugin.name){
+			# do something only if the name corresponds to a function
+			if( !is.null( fun <- getFunction(funname, mustFind=FALSE, where=where)) ){
+				
+				message("# loading object(s) from ", plugin.name, ' ... ', appendLF=FALSE)
+				strats <- try( fun(), silent=TRUE) 
+				
+				# wrap the result into a list
+				if( inherits(strats, 'NMFPlugin') )
+					strats <- list(strats)				
+				
+				# one should have a list of NMFStrategy objects
+				if( !is.list(strats) || !all(sapply(strats, function(s) inherits(s, 'NMFPlugin'))) ){
+					warning("NMF package: unable to load built-in plugin ", plugin.name, " [error: invalid result returned by '", funname,"']", call.=FALSE)
+					message('ERROR')
+				}
+				else{
+					# add the strategies to the list to register
+					strat.list <<- c(strat.list, strats)
+					message('OK')
+				}
+				
+			}##END if
+		}
+	, load.fun, load.plugin.name)
+
+	# reset algorithm registry (to be sure)
+	nmfRegistryReset('algorithm')
+	
+	# register all the strategies defined in the list
+	message("# registering all plugin objects ... ")
+	lapply(strat.list, 
+			function(s){
+				# For the moment only NMFStrategies can be plugged
+				if( !inherits(s, 'NMFStrategy') ){
+					warning("NMF-package: seeding method plugin is not yet implemented [object '",name(s),"' SKIPPED]", call.=FALSE)
+					return()
+				}
+				err <- try( nmfRegisterAlgorithm(s, overwrite=TRUE), silent=TRUE )
+				if( is(err, 'try-error') ){
+					warning("NMF package: unable to register built-in strategy : ", name(s)," [error: ", err,"]", call.=FALSE)
+					message('ERROR')
+				}
+			}
+	)
+	message('DONE')
+	
+	invisible()
+}
+
 #' Hook to initialize user-defined methods when the package is loaded 
-.load.methods.user <- function(){
+.init.nmf.plugin.user <- function(pkgname){
 	# TODO: load some RData file stored in the user's home R directory	
 }

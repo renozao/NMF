@@ -30,6 +30,27 @@
 	return(invisible(TRUE))
 }
 
+nmfRegistryReset <- function(name, vars=NULL){
+	
+	.regenv <- nmfSubRegistry(name)
+	
+	# if no argument was passed: remove all objects from the registry 
+	if( is.null(vars) ){
+		rm(list=ls(.regenv, all.names=TRUE), envir=.regenv)
+		return(invisible())
+	}
+	
+	if( !is.list(vars) )
+		stop("invalid argument 'vars': list expected")
+	if( is.null(names(vars)) || any(names(vars) == '' ) )
+		stop("invalid argument 'vars': all elements must be named")
+	
+	# set all the variables in the sub-registry environment
+	mapply(vars, names(vars), function(val, name) assign(name, val, envir=.regenv))
+	
+	invisible()
+}
+
 #' Return the required NMF (sub-)registry.
 #'
 #' The NMF registry stores built-in and custom NMF methods (algorithms, seeding methods, distance).

@@ -9,13 +9,13 @@ setClass('NMFStrategyFunction'
 	, contains = 'NMFStrategy'
 )
 
-setMethod('run', signature(object='NMFStrategyFunction', target='matrix', start='NMFfit'),
-	function(object, target, start, ...){
-		if( !is.function(fun <- algorithm(object)) )  
-			stop("NMFFunction '", name(object), "': algorithm not defined.")
+setMethod('run', signature(method='NMFStrategyFunction', x='matrix', seed='NMFfit'),
+	function(method, x, seed, ...){
+		if( !is.function(fun <- algorithm(method)) )  
+			stop("NMFStrategyFunction '", name(method), "': algorithm not defined.")
 		
 		# run the function that defines the algorithm and return the result
-		fun(target, start, ...)
+		fun(x, seed, ...)
 	}
 )
 

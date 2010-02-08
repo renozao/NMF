@@ -9,6 +9,9 @@ setOldClass('proc_time', prototype=numeric())
 
 #' Base virutal interface to store \strong{Non-negative Matrix Factorization} models.
 setClass('NMF'
+		, representation(
+			misc = 'list' # misceleneaous data used during fitting
+		)
 		, contains = 'VIRTUAL')
 
 #' Compute the fitted target matrix based on a \code{NMF} model.
@@ -65,7 +68,7 @@ setMethod('coefficients', signature(object='NMF'),
 
 
 #' Returns a random sample of the implemented NMF model
-if ( !isGeneric('random') ) setGeneric('random', function(x, target, ...) standardGeneric('random') )
+if ( !isGeneric('rnmf') ) setGeneric('rnmf', function(x, target, ...) standardGeneric('rnmf') )
 
 #' Returns all the NMF model available
 nmf.models <- function(builtin.only=FALSE){
@@ -116,9 +119,11 @@ setMethod('newNMF', signature(rank='numeric', target='numeric'),
 		# check validity of the provided class
 		if( !isClass(model) ) stop("Invalid model name: class '", model,"' is not defined.")
 		if( !extends(model, 'NMF') ) stop("Invalid model name: class '", model,"' does not extend class 'NMF'.")
+		
+		# check the validity of the target
 		if( length(target) == 0 ) stop('Invalid dimensions: target must be at least of length 1')
 		if( length(target) > 2 ) stop('Invalid dimensions: target must be at most of length 2')
-		
+				
 		# compute the target dimension
 		target <- as.integer(target)
 		n <- target[1]
@@ -126,6 +131,10 @@ setMethod('newNMF', signature(rank='numeric', target='numeric'),
 		# force rank to be an integer
 		r <- as.integer(rank)
 		
+		# check the validity of the rank
+		if( length(r) != 1 ) stop("Invalid argument 'rank': single numeric expected")
+		if( r < 0 ) stop("Invalid argument 'rank': nonnegative value expected")
+				
 		# build dummy compatible W and H if necessary
 		W.was.missing <- FALSE
 		if( missing(W) ){
@@ -243,6 +252,11 @@ setMethod('show', signature(object='NMF'),
 			cat("features:", nrow(object), "\n")
 			cat("basis/rank:", nbasis(object), "\n")
 			cat("samples:", ncol(object), "\n")
+			# show the miscellaneous model parameters
+			if( length(object@misc) > 0 ){
+				cat("miscellaneous:\n")
+				print(object@misc)
+			}
 		}
 )
 
@@ -314,6 +328,20 @@ setMethod('[', 'NMF',
 	}
 )
 
+#' Get/Set methods for slot 'misc'
+setMethod('$', 'NMF', 
+		function(x, name){ 
+			x@misc[[name, exact=TRUE]]; 
+		} 
+)
+
+setReplaceMethod('$', 'NMF',
+		function(x, name, value) {
+			x@misc[[name]] <- value
+			x
+		}
+)
+
 #' Checks whether an \code{NMF} object describes an empty NMF.
 #'
 #' An empty \code{NMF} object has slots \code{W} and \code{H} with 0 rows and 0 columns respectively.
@@ -347,14 +375,14 @@ setMethod('is.empty.nmf', signature(object='NMF'),
 #'
 #' @seealso runif, NMF-class
 #'
-setMethod('random', signature(x='NMF', target='numeric'), 
+setMethod('rnmf', signature(x='NMF', target='numeric'), 
 	function(x, target, ...){
 					
 		# valid parameter 'target'
 		if( length(target) != 1 && length(target) != 2 )
-			stop('NMF::random : invalid target dimensions [length must be 1 or 2. Here length = ', length(target) ,']')
+			stop('NMF::rnmf : invalid target dimensions [length must be 1 or 2. Here length = ', length(target) ,']')
 		if( any(is.na(target)) ) 
-			stop('NMF::random : invalid target dimensions [NA values in element(s): ', paste(which(is.na(target)), collapse=' and '), ']')		
+			stop('NMF::rnmf : invalid target dimensions [NA values in element(s): ', paste(which(is.na(target)), collapse=' and '), ']')		
 		# shortcut for symetric case: provide only one dimension
 		if( length(target) == 1 ) target <- c(target, target)
 		
@@ -373,7 +401,7 @@ setMethod('random', signature(x='NMF', target='numeric'),
 	}
 )
 
-setMethod('random', signature(x='NMF', target='matrix'), 
+setMethod('rnmf', signature(x='NMF', target='matrix'), 
 	function(x, target, max=NULL, ...){	
 				
 		# compute the upper-bound of the random entries (if not provided)
@@ -382,14 +410,24 @@ setMethod('random', signature(x='NMF', target='matrix'),
 			max <- if( length(no.na) == 0 ) 1 else max(no.na)
 		}		
 		# build a random NMF with the dimensions of the target matrix upper-bounded by the target's maximum entry.
-		random(x, dim(target), max=max, ...)
+		rnmf(x, dim(target), max=max, ...)
 	}
 )
 
-setMethod('random', signature(x='NMF', target='missing'), 
+setMethod('rnmf', signature(x='NMF', target='missing'), 
 	function(x, target, ...){
-		random(x, c(nrow(x),ncol(x)), ...)
+		rnmf(x, c(nrow(x),ncol(x)), ...)
 	}
+)
+
+
+#' Returns the NMF model's name: i.e the class name
+if ( !isGeneric('model') ) setGeneric('model', function(object, ...) standardGeneric('model'))
+setMethod('model', signature(object='NMF'), 
+		function(object)
+		{
+			class(object)
+		}
 )
 
 #' Produces different kind of plots.
@@ -664,6 +702,9 @@ setMethod('summary', signature(object='NMF'),
 			
 			res <- numeric()
 			
+			## IMPORTANT: if adding a summary measure also add it in the sorting 
+			## schema of method NMFSet::compare to allow ordering on it
+			
 			# rank
 			res <- c(res, rank=nbasis(object))
 			# compute sparseness
@@ -679,7 +720,10 @@ setMethod('summary', signature(object='NMF'),
 			
 			# if the target is provided compute the RSS
 			if( !missing(target) ){
-				res <- c(res, rss=rss(object, target))
+				RSS <- rss(object, target)
+				res <- c(res, rss=RSS)
+				# explained variance
+				res <- c(res, evar=evar(object, target))
 			}
 			
 			# return result
@@ -711,7 +755,7 @@ setMethod('summary', signature(object='NMF'),
 #'
 if ( is.null(getGeneric('sparseness')) ) setGeneric('sparseness', function(x, ...) standardGeneric('sparseness') )
 setMethod('sparseness', signature(x='numeric'), 
-	function(x, ...){
+	function(x){
 		# get length of x
 		n <- length(x)
 		# compute and return the sparseness
@@ -719,7 +763,7 @@ setMethod('sparseness', signature(x='numeric'),
 	}
 )
 setMethod('sparseness', signature(x='matrix'), 
-	function(x, ...){
+	function(x){
 		# compute the sparseness of each column
 		s <- apply(x, 2, sparseness)
 		
@@ -728,12 +772,9 @@ setMethod('sparseness', signature(x='matrix'),
 	}
 )
 setMethod('sparseness', signature(x='NMF'), 
-	function(x, what=c('features', 'samples'), ...){
-		# retireve full argument
-		what <- match.arg(what)
-		
-		# return the required sparseness
-		sparseness(if(what=='features') basis(x) else coef(x), ...)
+	function(x){		
+		# return the sparseness of the basis and coef matrix
+		c(basis=sparseness(basis(x)), coef=sparseness(coef(x)))
 	}
 )
 
@@ -1127,6 +1168,28 @@ setMethod('rss', 'NMF',
 	}
 )
 
+if( !isGeneric('evar') ) setGeneric('evar', function(object, ...) standardGeneric('evar'))
+setMethod('evar', 'NMF', 
+		function(object, target){
+			
+			# make sure the target is provided
+			if( missing(target) ) stop("NMF::evar - Argument 'target' is missing and required to compute the explained variance.")
+			
+			# use the expression matrix if necessary
+			if( inherits(target, 'ExpressionSet') ){
+				# requires Biobase
+				if( !suppressWarnings(require(Biobase, quietly=TRUE)) ) 
+					stop("NMF::evar - The 'Biobase' package is required to extract expression data from 'ExpressionSet' objects [see ?'nmf-bioc']")
+				
+				target <- Biobase::exprs(target)
+			}
+			
+			t <- as.numeric(target)
+			1 - rss(object, target) / sum(t^2)
+		}
+)
+
+
 #' Common interface to compute matrix distances registered in the NMF registry.
 #' 
 #' This method provides a single interface to compute the error between a target matrix and its estimate. The 
@@ -1151,41 +1214,64 @@ if ( is.null(getGeneric("distance")) ) setGeneric('distance', function(target, x
 
 setMethod('distance', signature(target='matrix', x='NMF'), 
 	function(target, x, method=c('', 'KL', 'euclidean'), ...){
-		
+
+	fun <- distance(method=method)
+	
+	if( is.null(fun) ){
+		warning('Undefined distance method: distance cannot be computed [returned NA]')
+		return(as.numeric(NA))
+	}
+	
+	# apply the function and return the result
+	fun(target, x, ...)
+
+	}
+)
+
+setMethod('distance', signature(target='missing', x='missing'), 
+	function(target, x, method=c('', 'KL', 'euclidean')){
+	
 		#message('compute distance')
 		# determinate the distance measure to use
-		if( is.null(method) ){
-			warning('Undefined distance method: distance cannot be computed [returned NA]')
-			return(as.numeric(NA))
-		}
-		errMeth <- try(method <- match.arg(method), silent=TRUE)
-		# if the method is not predefined, try to find a function with the given name
-		if( inherits(errMeth, 'try-error') ){			
-			#TODO: this is not working with local functions
-			if( is.character(method) ){
-				errFun <- try(fun <- getFunction(method), silent=TRUE)
-				if( inherits(errFun, 'try-error') ) stop("Could not find distance measure '", method, "':\n\t- not a predefined measures -> ", errMeth,"\t- not a function -> ", errFun)
-			}
-			else fun <- method
-			
-			if( !is.function(fun) )
-				stop('Invalid distance measure: should be a character string or a valid function definition')
-			# apply the function and return the result
-			return(fun(target, x, ...))
-		}
+		if( is.null(method) ) return(NULL)
 		
-		# compute and return the distance measure		
-		switch(method,
-				euclidean = {
-					estim <- fitted(x)
-					sum((target - estim)^2)/2
-				},
-				KL = {
-					estim <- fitted(x)
-					# NB: treat zero entries separately
-					sum( ifelse(target==0, estim, target * log(target/estim) - target + estim) );					
+		if( is.character(method) ){
+			errMeth <- try(method <- match.arg(method), silent=TRUE)
+			# if the method is not predefined, try to find a function with the given name
+			if( inherits(errMeth, 'try-error') ){			
+				#TODO: this is not working with local functions
+				if( is.character(method) ){
+					errFun <- try(fun <- getFunction(method), silent=TRUE)
+					if( inherits(errFun, 'try-error') ) stop("Could not find distance measure '", method, "':\n\t- not a predefined measures -> ", errMeth,"\t- not a function -> ", errFun)
 				}
-		)					
+				else fun <- method
+				
+				if( !is.function(fun) )
+					stop('Invalid distance measure: should be a character string or a valid function definition')
+			}
+			else{
+				# compute and return the distance measure		
+				fun <- switch(method,
+						euclidean = function(target, x, ...){
+							estim <- fitted(x)
+							sum((target - estim)^2)/2
+						},
+						KL = function(target, x, ...){
+							estim <- fitted(x)
+							# NB: treat zero entries separately
+							sum( ifelse(target==0, estim, target * log(target/estim) - target + estim) );					
+						}
+				)
+			}
+		}
+		else if( is.function(method) )
+			fun <- method
+		else
+			stop('Invalid distance measure: should be a character string or a valid function definition')
+		
+		# return the distance function
+		fun
+		
 	}
 		
 )

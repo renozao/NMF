@@ -8,6 +8,7 @@
 \alias{dim,NMF-method}
 \alias{distance}
 \alias{distance,matrix,NMF-method}
+\alias{distance,missing,missing-method}
 
 \alias{featureNames}
 \alias{featureNames,NMF-method}
@@ -19,11 +20,11 @@
 \alias{is.empty.nmf,NMF-method}
 \alias{nbasis}
 \alias{nbasis,NMF-method}
-\alias{random}
-\alias{random-methods}
-\alias{random,NMF,numeric-method}
-\alias{random,NMF,matrix-method}
-\alias{random,NMF,missing-method}
+\alias{rnmf}
+\alias{rnmf-methods}
+\alias{rnmf,NMF,numeric-method}
+\alias{rnmf,NMF,matrix-method}
+\alias{rnmf,NMF,missing-method}
 
 \alias{sampleNames}
 \alias{sampleNames,NMF-method}
@@ -54,8 +55,15 @@ the standard NMF model and its -- built-in -- extensions.
 }
  
 \section{Slots}{
-	This class doesn't contain any slot. Its purpose is to define a common interface for 
-	NMF models as a collection of generic methods. 
+	This class contains a single slot, that is used internally during the computations.
+	
+	\describe{
+	 \item{\code{misc}:}{A list that is used internally to temporarly store 
+	 algorithm parameters during the computation.}
+    }
+	
+	The purpose of this class is to define a common interface for NMF models as 
+	a collection of generic methods. 
 	Classes that inherits from class \code{NMF} are responsible for the management of 
 	data storage and the implementation of the interface's pure virtual methods.
 	
@@ -98,7 +106,7 @@ the standard NMF model and its -- built-in -- extensions.
 		\code{(object='NMF', ...)} and \code{(object='NMF', value='matrix')} 
 		throw an error when called.
 		
-	\item Optionally, implement method \code{random}(signature(object="myNMF", target="numeric")). 
+	\item Optionally, implement method \code{rnmf}(signature(object="myNMF", target="numeric")). 
 	This method should fill model \code{object} (of class \code{myNMF}) with 
 	random values to fit a target matrix, whose dimension is given 
 	by the 2-length numeric vector \code{target}.
@@ -190,9 +198,14 @@ See \code{\link{newNMF}} for more details.
     For example \code{c(2000,30,3)} for a \code{NMF} object that fits a 2000x30 
     target matrix using 3 basis vectors.}
 
-    \item{distance}{\code{signature(target = "matrix", x = "NMF")}: 
+    \item{distance}{\code{signature(target = "matrix", x = "NMF", method, ...)}: 
     returns the distance between a target matrix and a NMF model, according to 
     a given measure. 
+    If both argument \code{target} and \code{x} are missing, this function returns
+    the \code{function} defined by argument \code{method}. The later can either be 
+    a \code{function} or a \code{character} string that correspond to a registered 
+    distance metric. For the moment only the metric 'KL' and 'euclidean' are defined.
+    
     See function \code{\link{distance}} for more details.
     }
 
@@ -262,8 +275,8 @@ See \code{\link{newNMF}} for more details.
     The purity definition can be found in \emph{Kim and Park (2007)}.
     See references for more details.}
 
-    \item{random}{\code{signature(x = "NMF", target)}: 
-    seeds NMF model \code{x} with random values drawn from a random distribution. 
+    \item{rnmf}{\code{signature(x = "NMF", target)}: 
+    seeds NMF model \code{x} with random values drawn from a uniform distribution. 
     The result is a NMF model of the same class as \code{x} with basis and 
     mixture matrices filled with random values. 
     
@@ -275,11 +288,11 @@ See \code{\link{newNMF}} for more details.
 		    a random NMF model.
 		    } 
 		    
-		    \item{\code{missing}}{ it returns \code{random(x, c(nrow(x), ncol(x)))}, 
+		    \item{\code{missing}}{ it returns \code{rnmf(x, c(nrow(x), ncol(x)))}, 
 		    that is a random NMF model with the same dimensions as defined in model \code{x}.
 		    }
 		    
-		    \item{\code{matrix}}{ it returns \code{random(x, dim(target))}, 
+		    \item{\code{matrix}}{ it returns \code{rnmf(x, dim(target))}, 
 		    that is a random NMF model that fits a matrix of the same dimension as \code{target}.
 		    The values are drawn within the interval \code{[0, max(target)]}.
 		    }		    
@@ -322,7 +335,7 @@ See \code{\link{newNMF}} for more details.
     }
 
     \item{sparseness}{\code{signature(x = "NMF")}: 
-    compute the average sparseness of the basis vectors or mixture coefficients. 
+    compute the average sparseness of the basis vectors and mixture coefficients. 
     See \emph{Hoyer (2004)} for more details. }
 
     \item{summary}{\code{signature(x = "NMF")}: 

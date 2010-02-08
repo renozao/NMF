@@ -141,7 +141,7 @@ setMethod('show', signature(object='NMFfit'),
 				print(object@parameters)
 			}
 			# show number of iterations if present
-			if( !is.null(object@extra$iteration) ) cat("Iterations:", object@extra$iteration, "\n")
+			if( !is.null(object$iteration) ) cat("Iterations:", object$iteration, "\n")
 			# show elapsed time if present
 			if( length(runtime(object)) > 0 ){ cat("Timing:\n"); show(runtime(object));}
 		}
@@ -168,7 +168,6 @@ setReplaceMethod('fit', signature(object='NMFfit', value='NMF'),
 )
 
 #' Returns the NMF model's name
-if ( !isGeneric('model') ) setGeneric('model', function(object, ...) standardGeneric('model'))
 setMethod('model', signature(object='NMFfit'), 
 	function(object)
 	{
@@ -178,7 +177,10 @@ setMethod('model', signature(object='NMFfit'),
 
 if( !isGeneric('residuals') ) setGeneric('residuals', package='stats')
 setMethod('residuals', 'NMFfit', 
-	function(object, track=FALSE){ 
+	function(object, track=FALSE, ...){ 
+		## IMPORTANT: keep this '...' and do not add a 'method' argument as this
+		## one is passed by NMFSet::fit (see bug #159) and is not supposed to be 
+		## used
 		res <- slot(object, 'residuals')
 		if( track ) res else tail(res, n=1)
 	} 
@@ -306,7 +308,25 @@ setMethod('verbose', 'NMFfit',
 #' Returns an extra slot from the NMF object.
 #' An returns an error if \code{name} is not a valid element of the slot \code{extra}.
 if (is.null(getGeneric("extra"))) setGeneric("extra", function(object, name) standardGeneric("extra"))
-setMethod('extra', 'NMFfit', function(object, name){ name <- match(name, names(object@extra)); object@extra[[name]]; } )
+setMethod('extra', 'NMFfit', 
+	function(object, name){
+		.Defunct("$' or '$<-")	
+	}
+)
+
+#' Get/Set methods for slot 'extra'
+setMethod('$', 'NMFfit', 
+	function(x, name){ 
+		x@extra[[name, exact=FALSE]]; 
+	} 
+)
+
+setReplaceMethod('$', 'NMFfit',
+	function(x, name, value) {
+		x@extra[[name]] <- value
+		x
+	}
+)
 
 #' Plot the residuals track of a NMF result.
 #'
@@ -330,7 +350,10 @@ setMethod('errorPlot', signature(x='NMFfit'),
 		
 		# set default graphical parameters (those can be overriden by the user)
 		params <- .set.list.defaults(list(...)
-				, xlab='Iterations', ylab=paste('Objective value (', x@distance, ')', sep='' )
+				, xlab='Iterations'
+				, ylab=paste('Objective value ('
+							, if( is.character(x@distance) ) x@distance else algorithm(x), ')'
+							, sep='' )
 				, main=paste("NMF Residuals plot\nrank=", nbasis(x), sep='')
 				, col='#5555ff', lwd=1.4, type='l', cex=0.5)
 		
@@ -344,6 +367,11 @@ setMethod('summary', signature(object='NMFfit'),
 		
 		res <- summary(fit(object), ...)
 		
+		## IMPORTANT: if adding a summary measure also add it in the sorting 
+		## schema of method NMFSet::compare to allow ordering on it
+		
+		# nb of iterations
+		res <- c(res, niter=as.integer(object$iteration) )
 		# runtime
 		res <- c(res, time=as.numeric(runtime(object)['user.self']))
 		# retreive final residuals

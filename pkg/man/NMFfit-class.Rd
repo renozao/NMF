@@ -13,9 +13,12 @@
 \alias{distance,matrix,NMFfit-method}
 \alias{errorPlot}
 \alias{errorPlot,NMFfit-method}
-\alias{extra}
-\alias{extra-methods}
-\alias{extra,NMFfit-method}
+
+\alias{$}
+\alias{$<-}
+\alias{$,NMFfit-method}
+\alias{$<-,NMFfit-method}
+
 \alias{fit-methods}
 \alias{fit}
 \alias{fit,NMFfit-method}
@@ -91,7 +94,9 @@ and parameters used to compute the factorization.
     
     \item{\code{options}:}{A \code{"list"} that contains the options used to compute the object.}
     
-    \item{\code{extra}:}{A \code{"list"} that contains extra miscellaneous data set by the algorithm.}
+    \item{\code{extra}:}{A \code{"list"} that contains extra miscellaneous data 
+    set by the algorithm. For example it can be used to store extra parameters, 
+    without the need to extend the standard NMF model.}
   }
 }
 
@@ -194,8 +199,6 @@ However, there is usually no need to directly create such an object, as interfac
     %See \code{\link{estimate}}.
     }
     
-    \item{extra}{\code{signature(object = "NMFfit")}: Access slot \code{extra}. }
-
 	\item{fit}{\code{signature(object = "NMFfit")}: return the \code{NMF} object 
 	stored in slot \code{fit}.
 	}
@@ -252,6 +255,17 @@ However, there is usually no need to directly create such an object, as interfac
     method for objects of class \code{NMF}. It returns a \code{numeric} vector 
     that contains the summary of the fitted NMF model (slot \code{fit}), plus 
     the computation time and the final residuals.}
+    
+    \item{$}{\code{signature(x = "NMFfit", name)}: Access element \code{name} in 
+    slot \code{extra} (which is a \code{list}) partially matching argument \code{name}.
+    It is equivalent to \code{x@extra[[name, exact=FALSE]]}. 
+    }
+    
+    \item{$<-}{\code{signature(x = "NMFfit", name, value)}: Set the value in of 
+    element \code{name} in slot \code{extra} (which is a \code{list}).
+     Note that it does not partially match argument \code{name}. 
+    }
+  
     
 	}
 	

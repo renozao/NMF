@@ -109,8 +109,8 @@ nmf.options.reset <- function(){
 	nmf.options(error.track=FALSE, runtime=TRUE)
 	# define the tracking interval
 	nmf.options(track.interval=30, runtime=TRUE)
-	# toogle multicore optimization
-	nmf.options(optimize.mc=FALSE, runtime=TRUE)
+	# define default parallel backend 
+	nmf.options(parallel.backend='mc', runtime=TRUE)
 	# toogle verbosity
 	nmf.options(verbose=FALSE, runtime=TRUE)
 	# toogle debug mode

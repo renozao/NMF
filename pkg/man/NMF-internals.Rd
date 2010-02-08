@@ -19,6 +19,9 @@
 \alias{name<-,NMFSeed,character-method}
 \alias{show,NMFSeed-method}
 
+\alias{$,NMF-method}
+\alias{$<-,NMF-method}
+
 \title{Undocumented or Internal methods and functions for package NMF}
 
 \description{

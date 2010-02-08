@@ -46,9 +46,8 @@ nmf.update.lnmf <- function(i, v, data, ...){
 }
 
 # Hook to register the algorithm when the package is loaded
-.load.algorithm.lnmf <- function(){
-	nmfRegisterAlgorithm(new('NMFStrategyIterative', name='lnmf', objective='KL'
-						, Update='nmf.update.lnmf'
+.nmf.plugin.lnmf <- function(){
+	new('NMFStrategyIterative', name='lnmf', objective='KL'
+						, Update=nmf.update.lnmf
 						, Stop='nmf.stop.consensus')
-					, overwrite=TRUE)
 }

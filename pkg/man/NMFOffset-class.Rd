@@ -5,7 +5,7 @@
 \alias{fitted,NMFOffset-method}
 \alias{initialize,NMFOffset-method}
 \alias{offset,NMFOffset-method}
-\alias{random,NMFOffset,numeric-method}
+\alias{rnmf,NMFOffset,numeric-method}
 \alias{show,NMFOffset-method}
 
 \title{Nonnegative Matrix Factorization  with Offset}
@@ -68,9 +68,9 @@ Class \code{"\linkS4class{NMF}"}, directly.
     \item{offset}{\code{signature(object = "NMFOffset")}: return the value of 
     slot \code{offset}.}
     
-    \item{random}{ returns the object with slots \code{W}, \code{H} and 
+    \item{rnmf}{ returns the object with slots \code{W}, \code{H} and 
     \code{offset} filled with random values drawn from a uniform distribution.
-    This method first calls method \code{random} for \code{NMF} object to set the 
+    This method first calls method \code{rnmf} for \code{NMF} object to set the 
     entries of slots \code{W} and \code{H}, then sets the entries in slot 
     \code{offset} within the interval \code{[0, max(max(W),max(H))]}. }
         

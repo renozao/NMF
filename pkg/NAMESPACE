@@ -11,9 +11,12 @@ export(
 	, nmf.options.reset
 	, nmf.options.runtime
 	, nmf.models
+	, randomize
 )
 exportMethods(
 	"[",
+	"$",
+	"$<-",
     "algorithm",
     "algorithm<-",
 #    "annotate",
@@ -33,6 +36,7 @@ exportMethods(
     "distance",
     "entropy",
     "errorPlot",
+    'evar',
     "extra",
     "extractFeatures",
     "featureNames",
@@ -65,7 +69,7 @@ exportMethods(
 #    "plot",
     "predict",
     "purity",
-    "random",
+    "rnmf",
 #    "report",
 	"rss",
     "residuals",

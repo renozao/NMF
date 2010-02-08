@@ -58,16 +58,20 @@
 	setMethod('nmf', signature(x='ExpressionSet', rank='ANY', method='ANY'), 
 		function(x, rank, method, ...)
 		{
-			# apply NMF to the gene expression matrix	
+			# replace missing values by NULL values for correct dispatch
+			if( missing(method) ) method <- NULL
+			if( missing(rank) ) rank <- NULL
+			
+			# apply NMF to the gene expression matrix			
 			nmf(Biobase::exprs(x), rank, method, ...)
 		}
 	)
 	
 	#' Run the algorithm on the expression matrix of an \code{ExpressionSet} object.
-	setMethod('run', signature(object='NMFStrategy', target='ExpressionSet', start='ANY'),
-		function(object, target, start, ...){
+	setMethod('run', signature(method='NMFStrategy', x='ExpressionSet', seed='ANY'),
+		function(method, x, seed, ...){
 			
-			run(object, Biobase::exprs(target), start, ...)
+			run(method, Biobase::exprs(x), seed, ...)
 			
 		}
 	)
@@ -119,7 +123,7 @@
 	# Export layer-specific methods [only if one is loading a namespace] 
 	is.loading <- try(info <- loadingNamespaceInfo(), silent=TRUE)
 	if( !is(is.loading, 'try-error') ){
-		ns <- .Internal(getRegisteredNamespace(as.name(info$pkgname)))
+		ns <- asNamespace(as.name(info$pkgname))
 		if ( is.null(ns) )
 			stop("Error in exporting NMF-BioConductor layer: cannot find the loading namespace's environment");
 		

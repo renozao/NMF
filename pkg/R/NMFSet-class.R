@@ -39,6 +39,8 @@ setMethod('show', signature(object='NMFSet'),
 
 setMethod('runtime', 'NMFSet', 
 	function(object, ...){
+		
+		if( length(object) == 0 ) return(NULL)
 		stored.time <- slot(object, 'runtime')
 		# if there is some time stored, return it
 		if( length(stored.time) > 0 ) return(stored.time)
@@ -57,8 +59,8 @@ setMethod('nrun', 'NMFSet',
 			l <- length(object)
 			# use slot nrun if the length is one 
 			# -> maybe multiple runs were performed and only one was kept
-			if( l == 1 && length(slot(object,'nrun')) > 0 )
-				l <- object@nrun
+			if( l == 1 && slot(object,'nrun') > 0 )
+				l <- slot(object,'nrun')
 			
 			return(l)
 		}
@@ -107,7 +109,11 @@ setMethod('dispersion', signature(object='NMFSet'),
 
 if ( is.null(getGeneric("join")) ) setGeneric('join', function(object, ...) standardGeneric('join') )
 setMethod('join', 'list',
-	function(object, ...){
+	function(object, ..., .merge=FALSE){
+		
+		if( length(object) == 0 )
+			return(new('NMFSet'))
+		
 		# check validity
 		lapply( seq_along(object)
 			, function(i){
@@ -116,6 +122,44 @@ setMethod('join', 'list',
 			}
 		)
 		
+		if( .merge ){
+			
+			extra <- list(...)
+			if( !is.null(extra$nrun) ){
+				warning("the value of 'nrun' is discarded as slot 'nrun' is computed internally")
+				extra$nrun <- NULL
+			}
+			if( !is.null(extra$consensus) ){
+				warning("the value of 'consensus' is discarded as slot 'consensus' is computed internally")
+				extra$consensus <- NULL
+			}
+			
+			best <- do.call('new', c(list('NMFSet'), extra))
+			best.res <- Inf
+			tot.runtime <- rep(0,5)
+			sapply(object, function(x){
+				if( !inherits(x, 'NMFSet') )
+					stop("NMF::join - elements of 'object' must be of class 'NMFSet'")
+				
+				# merge consensus matrices
+				best@consensus <<- if( sum(dim(best@consensus)) == 0 )
+									nrun(x) * consensus(x)
+								else 
+									best@consensus + nrun(x) * consensus(x)
+				tot.runtime <<- tot.runtime + runtime(x)
+				best@nrun <<- best@nrun + nrun(x)
+				if( residuals(x) < best.res ){
+					# keep best result
+					best[[1]] <<- fit(x)
+					best.res <<- residuals(best[[1]])
+				}
+			})
+			# finalize some values
+			best@consensus <- best@consensus/nrun(best)
+			if( is.null(extra$runtime) ) best@runtime <- tot.runtime
+			# return merged result
+			return(best)
+		}
 		extra <- list(...)
 		if( !is.null(extra$nrun) ){
 			if( length(object) != 1 && extra$nrun != 0 ){
@@ -281,12 +325,13 @@ setMethod('compare', signature(x='list'),
 	}
 )
 setMethod('compare', signature(x='NMFSet'),
-	function(x, sort.by='residuals', values=FALSE, ...){
+	function(x, sort.by='residuals', select=NULL, values=FALSE, ...){
 		
 		# define the sorting schema for each criteria (TRUE for decreasing, FALSE for increasing)
 		sorting.schema <- list(method=FALSE, seed=FALSE, metric=FALSE
 							, residuals=FALSE, time=FALSE, purity=TRUE, cophenetic=TRUE
-							, entropy=FALSE, sparseness=TRUE, rank=FALSE, rss=FALSE)
+							, entropy=FALSE, sparseness.basis=TRUE, sparseness.coef=TRUE, rank=FALSE, rss=FALSE
+							, niter=FALSE, evar=TRUE)
 				
 		# for each result compute the different criteriae
 		measure.matrix <- sapply(x, 
@@ -319,12 +364,31 @@ setMethod('compare', signature(x='NMFSet'),
 		res <- cbind(res, measure.matrix)
 				
 		# sort according to the user's preference
-		sorting.criteria <- colnames(res)
-		# ASSERT: all columns measure must have a defined sorting schema 
-		if( !all( no.schema <- is.element(sorting.criteria, names(sorting.schema))) ) 
-			stop("ASSERT: missing sorting schema for criteria(e): ", paste(paste("'", sorting.criteria[!no.schema], "'", sep=''), collapse=', '))
-		sort.by <- match.arg(sort.by, sorting.criteria)	
-		res <- res[order(res[[sort.by]], decreasing=sorting.schema[[sort.by]]),]
+		# ASSERT FOR DEV: all columns measure must have a defined sorting schema 
+		#if( !all( no.schema <- is.element(colnames(res), names(sorting.schema))) ) 
+		#	warning("ASSERT: missing sorting schema for criteria(e): ", paste(paste("'", sorting.criteria[!no.schema], "'", sep=''), collapse=', '))
+
+		sorting.criteria <- intersect(colnames(res), names(sorting.schema))
+		sort.by.ind <- pmatch(sort.by, sorting.criteria)
+		if( is.na(sort.by.ind) )
+			stop("NMF::compare : argument 'sort.by' should be one of "
+				, paste( paste("'", names(sorting.schema), "'", sep=''), collapse=', ')
+				, call.=FALSE)
+		sort.by <- sorting.criteria[sort.by.ind]
+		res <- res[order(res[[sort.by]], decreasing=sorting.schema[[sort.by]]) , ]
+		
+		# add an attribute to the result to show the sorting criteria that was used
+		attr(res, 'sort.by') <- sort.by
+		
+		# limit the output to the required measures
+		if( !is.null(select) || !missing(select) ){
+			select.full <- match.arg(select, colnames(res), several.ok=TRUE)
+			if( length(select.full) <  length(select) )
+				stop("NMF::compare - the entries of argument 'select' must be one of "
+					, paste(paste("'", colnames(res),"'", sep=''), collapse=', ')
+					, call.=FALSE)
+			res <- subset(res, select=select.full)
+		}
 		
 		#TODO: handle argument 'values'
 		

@@ -1,4 +1,52 @@
 *************************************************************************
+* 						Changes in version 0.3							*
+*************************************************************************
+
+NEW FEATURES
+
+	o Now requires R 2.10
+	
+	o New list slot 'misc' in class 'NMF' to be able to define new NMF models, 
+	without having to extend the S4 class. Access is done by methods '$' and '$<-'.
+	
+	o More robust and convenient interface 'nmf'
+	
+	o New built-in algorithm : PE-NMF [Zhang (2008)]
+	
+	o The vignette and documentation have been enriched with more examples and 
+	details on the functionalities.
+	
+	o When possible the computation is run in parallel on all the available cores.
+	See option 'p' or 'parallel=TRUE' in argument '.options' of function 'nmf'.
+	
+	o Algorithms have been optimized and run faster
+	
+	o Plot for rank estimation: quality measure curves can be plotted together 
+	with a set of reference measures.
+	The reference measures could for example come from the rank estimation of 
+	randomized data, to investigate overfitting.
+	
+	o New methods '$' and '$<-' to access slot 'extra' in class 'NMFfit'
+	These methods replace method 'extra' that is now defunct.
+	
+	o Function 'randomize' allows to randomise a target matrix or 
+	'ExpressionSet' by permuting the entries within each columns using a
+	different permutation for each column. It is useful when checking for
+	over-fitting. 
+		
+CHANGES
+
+	o The 'random' method of class 'NMF' is renamed 'rnmf', but is still 
+	accessible through name 'random' via the 'seed' argument in the 
+	interface method 'nmf'. 
+	
+NEWLY DEFUNCT CLASSES, METHODS, FUNCTIONS, DATA SETS
+
+    o Defunct Generics/Methods
+       1) 'extra' - S4 generic/methods remains with .Defunct message.
+       It will be completely removed from the package in the next version.
+
+*************************************************************************
 * 						Changes in version 0.2.4						*
 *************************************************************************
 

@@ -35,7 +35,7 @@
 	res <- .nndsvd.internal(x, nbasis(object), flag)
 	
 	# update 'NMF' object
-	object@W <- res$W; object@H <- res$H	
+	basis(object) <- res$W; coef(object) <- res$H	
 	
 	# return updated object
 	object

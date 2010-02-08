@@ -8,7 +8,7 @@
 \alias{clusters,NMF-method}
 \alias{clusters,matrix-method}
 
-\title{Deprecated functions in NMF package}
+\title{Deprecated Functions in NMF Package}
 
 \description{
 These functions are provided for compatibility with older versions
@@ -32,10 +32,8 @@ of NMF package only, and may be defunct as soon as the next release.
 
 \details{
 
-\describe{
-	
-	\item{clusters}{ is a deprecated synonym for \code{\link{predict}}}
+	\code{clusters} is a deprecated synonym for \code{\link{predict}}.
 	
 }
 
-}
+\keyword{misc}

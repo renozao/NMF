@@ -7,7 +7,6 @@
 \alias{basis<-,NMFstd,matrix-method}
 \alias{coef,NMFstd-method}
 \alias{coef<-,NMFstd,matrix-method}
-\alias{random,NMFstd,numeric-method}
 % Factory method
 \alias{newNMF}
 \alias{newNMF-methods}
@@ -188,7 +187,7 @@ Objects can still be created by calls of the usual form:
     defined by class \code{NMF}. See \code{\linkS4class{NMF}}.
     }
 
-    \item{random}{\code{signature(x = "NMF", target)}: seed NMF model \code{x} 
+    \item{rnmf}{\code{signature(x = "NMF", target)}: seed NMF model \code{x} 
     with random values drawn from a random distribution. 
     If a target is specified as a \code{matrix}, then the values are drawn within 
     the interval \code{[0, max(target)]}. }    

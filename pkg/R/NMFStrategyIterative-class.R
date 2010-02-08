@@ -31,44 +31,55 @@ NA
 #'
 setClass('NMFStrategyIterative'
 	, representation(
-				Preprocess = '.functionSlot', # Pre-processing before entering the update loop
 				Update = '.functionSlot', # update method	
-				Stop = '.functionSlot', # method called just after the update
-				WrapNMF = '.functionSlot' # method called just before returning the resulting NMF object
+				Stop = '.functionSlot.null', # method called just after the update
+				WrapNMF = '.functionSlot.null' # method called just before returning the resulting NMF object
 				)	
   , prototype=prototype(
-				Preprocess = '',
-				Update = '',
-  				Stop = '',
-				WrapNMF = ''
-				)
+				Update = ''
+				, Stop = NULL
+				, WrapNMF = NULL
+			)
 	, contains = 'NMFStrategy'
-#	, validity = function(object){
-#		
-#		# slots must be either character strings or functions
-#		#s.list <- getSlots('NMFStrategyIterative')
-#		#s.list <- s.list[s.list=='ANY']
-#		s.list <- c('Preprocess', 'Update', 'Stop', 'WrapNMF')
-#		names(s.list) <- s.list
-#		check <- sapply(names(s.list), function(sname){
-#					svalue <- slot(object,sname)
-#					if( !is.character(svalue) && !is.function(svalue) )
-#						return(paste("slot '"
-#									, sname
-#									, "' must be either a function or a character string (possibly empty)"
-#									, sep=''))
-#					return(NA)
-#				})
-#		
-#		err <- which(!is.na(check))
-#		if( length(err) > 0 ){
-#			check <- check[err]
-#			if( length(check) > 1 ) check <- c('', check)  
-#			return(paste(check, collapse="\n\t- "))
-#		}
-#		
-#		return(TRUE)
-#	}
+	, validity = function(object){
+		
+		if( is.character(object@Update) && object@Update == '' )
+			return("Slot 'Update' is required")
+		
+		# check the arguments of methods 'Update' and 'Stop'
+		# (except for the 3 mandatory ones)
+		n.update <- names(formals(object@Update))
+		
+		# at least 3 arguments for 'Update'
+		if( length(n.update) < 3 )
+			return("Invalid 'Update' method: must have at least 3 arguments")
+		
+		n.update <- n.update[-seq(3)]
+		# argument '...' must be present in method 'Update'
+		if( !is.element('...', n.update) )
+			return("Invalid 'Update' method: must have argument '...' (even if not used)")
+
+		# at least 3 arguments for 'Stop'
+		if( !is.null(object@Stop) ){
+			n.stop <- names(formals(object@Stop))
+			
+			if( length(n.stop) < 4 )
+				return("Invalid 'Stop' method: must have at least 4 arguments: 'strategy', 'i', 'x', 'data'")
+			
+			n.stop <- n.stop[-seq(4)]
+			# argument '...' must be present in method 'Stop'
+			if( !is.element('...', n.stop) )
+				return("Invalid 'Stop' method: must have argument '...' (even if not used)")
+		
+			# Update and Stop methods cannot have overlapping arguments 
+			overlap <- intersect(n.update, n.stop)
+			overlap <- overlap[which(overlap!='...')]
+			if( length(overlap) > 0 )
+				return("Invalid 'Update' and 'Stop' method: overlap in arguments")
+		}
+		
+		TRUE
+	}
 )
 
 
@@ -81,7 +92,7 @@ setMethod('show', 'NMFStrategyIterative',
 		# go through the slots
 		#s.list <- getSlots('NMFStrategyIterative')
 		#s.list <- s.list[s.list=='ANY']
-		s.list <- c('Preprocess', 'Update', 'Stop', 'WrapNMF')
+		s.list <- c('Update', 'Stop', 'WrapNMF')
 		names(s.list) <- s.list
 		sapply(names(s.list), function(sname){
 					svalue <- slot(object,sname)
@@ -95,19 +106,9 @@ setMethod('show', 'NMFStrategyIterative',
 )
 #' This class is an auxiliary class that defines the strategy's methods by directly callable functions. 
 setClass('NMFStrategyIterativeX'
-	, representation(
-				definition = 'NMFStrategyIterative', 
-				workspace = 'environment', # workspace to use persistent variables accross methods
-				Preprocess = 'function', # Pre-processing before entering the update loop
-				Update = 'function', # update method	
-				Stop = 'function', # method called just after the update
-				WrapNMF = 'function' # method called just before returning the resulting NMF object
-				)
-	, prototype=prototype(
-				Preprocess = function(data, target) data,
-				Update = function(...) stop('Update function is required but not defined'),
-  				Stop = function(i, data){ FALSE }, # simply return the a FALSE stop signal
-				WrapNMF = function(data){ data } # by default do not do anything special
+	, contains = 'NMFStrategyIterative'
+	, representation = representation(
+				workspace = 'environment' # workspace to use persistent variables accross methods
 				)
 )
 
@@ -121,27 +122,42 @@ xifyStrategy <- function(strategy, workspace){
 	}
 	
 	# intanciate the NMFStrategyIterativeX, creating the strategy's workspace
-	strategyX <- new('NMFStrategyIterativeX', definition=strategy, workspace=workspace)
+	strategyX <- new('NMFStrategyIterativeX', strategy, workspace=workspace)
 	
-	# build the list of 'function' slots in class NMFStrategyIterativeX
-	s.list <- getSlots('NMFStrategyIterativeX')
-	s.list <- s.list[s.list=='function']
-	s.base <- slotNames(strategy)
-	for( sname in names(s.list) ){
-		# check the the slot match a slot in class NMFStrategyIterative
-		if( !is.element(sname, s.base) ) 
-			stop("NMFStrategyIterativeX runtime check: slot '", sname, "' not defined in class NMFStrategyIterative")
+	# define auxiliary function to preload the 'function' slots in class NMFStrategyIterativeX
+	preload.slot <- function(strategy, sname, default){
 		
 		# get the content of the slot
 		svalue <- slot(strategy,sname)
+		
 		# if the slot is valid (i.e. it's a non-empty character string), then process the name into a valid function
 		if( is.character(svalue) && nchar(svalue) > 0 ){
 			# set the slot with the executable version of the function 
-			slot(strategyX,sname) <- getFunction(svalue)			 
-		}else if( is.function(svalue) ) slot(strategyX,sname) <- svalue		
+			fun <- getFunction(svalue)
+		}else if( is.function(svalue) )
+			fun <- svalue
+		else if( !missing(default) )
+			fun <- default
+		else
+			stop("NMFStrategyIterativeX - could not preload slot '", sname, "'")
+		
 		# setup a dedicated evaluation environment: use the strategy's workspace
-		environment(slot(strategyX,sname)) <- strategyX@workspace			 
+		environment(fun) <- strategy@workspace
+		
+		# return the loaded function
+		fun
 	}
+	
+	# preload the function slots
+	slot(strategyX, 'Update') <- preload.slot(strategyX, 'Update')
+	slot(strategyX, 'Stop') <- preload.slot(strategyX, 'Stop', function(strategy, i, x, data, ...){FALSE})
+	slot(strategyX, 'WrapNMF') <- preload.slot(strategyX, 'WrapNMF', function(data){data})
+	
+	# load the objective function
+	objective(strategyX) <- distance(method=objective(strategy))
+
+	# valid the preloaded object
+	validObject(strategyX)
 	
 	# return the executable strategy 
 	strategyX
@@ -158,44 +174,42 @@ xifyStrategy <- function(strategy, workspace){
 #setMethod('WrapNMF', signature(object='NMFStrategyIterative'), function(object){ object@WrapNMF(object@data) })
 
 #' Hook to initialize built-in iterative methods when the package is loaded
-.load.algorithm.NMFStrategyIterative <- function(){
-			
-	# Brunet
-	nmfRegisterAlgorithm(new('NMFStrategyIterative', name='brunet', objective='KL'
+.nmf.plugin.core <- function(){
+	
+	list(
+		# Brunet
+		new('NMFStrategyIterative', name='brunet', objective='KL'
 					, Update='nmf.update.brunet'
 					, Stop='nmf.stop.consensus'
-					, WrapNMF='')
-			, overwrite=TRUE)
-	
-	# Lee	
-	nmfRegisterAlgorithm(new('NMFStrategyIterative', name='lee', objective='euclidean'
+			)
+
+		# Lee	
+		, new('NMFStrategyIterative', name='lee', objective='euclidean'
 					, Update='nmf.update.lee'
 					, Stop='nmf.stop.consensus'
-					, WrapNMF='')
-			, overwrite=TRUE)
-
-	# NMF with offset
-	nmfRegisterAlgorithm(new('NMFStrategyIterative', name='offset', objective='euclidean'
+			)
+		
+		# NMF with offset
+		, new('NMFStrategyIterative', name='offset', objective='euclidean'
 					, model = 'NMFOffset'
 					, Update='nmf.update.offset'
 					, Stop='nmf.stop.consensus'
-					, WrapNMF='')
-			, overwrite=TRUE)
-
-	# nsNMF
-	nmfRegisterAlgorithm(new('NMFStrategyIterative', name='nsNMF', objective='KL'
+			)
+			
+		# nsNMF
+		, new('NMFStrategyIterative', name='nsNMF', objective='KL'
 					, model='NMFns'
 					, Update='nmf.update.ns'
 					, Stop='nmf.stop.consensus'
-					, WrapNMF='')
-			, overwrite=TRUE)	
+			)
+	)
 }
 
-setMethod('run', signature(object='NMFStrategyIterative', target='matrix', start='NMFfit'),
-	function(object, target, start, ...){
+setMethod('run', signature(method='NMFStrategyIterative', x='matrix', seed='NMFfit'),
+	function(method, x, seed, ...){
 	
 	# debug object in debug mode
-	if( nmf.getOption('debug') ) show(object)		
+	if( nmf.getOption('debug') ) show(method)		
 	
 	#Vc# Define local workspace for static variables
 	# this function can be called in the methods to get/set/initialize 
@@ -214,17 +228,17 @@ setMethod('run', signature(object='NMFStrategyIterative', target='matrix', start
 	}
 	
 	# runtime resolution of the strategy's functions by their names if necessary
-	strategyX = xifyStrategy(object, .Workspace)
+	strategyX = xifyStrategy(method, .Workspace)
 	# call the xified startegy's run method			
-	run(strategyX, target, start, ...)
+	run(strategyX, x, seed, ...)
 })
 
 #' Generic algorithm for NMF, based on NMFStrategyIterativeX object.
-setMethod('run', signature(object='NMFStrategyIterativeX', target='matrix', start='NMFfit'),
-	function(object, target, start, maxIter=2000, ...){
+setMethod('run', signature(method='NMFStrategyIterativeX', x='matrix', seed='NMFfit'),
+	function(method, x, seed, maxIter=2000, ...){
 				
-	strategy <- object
-	v <- target
+	strategy <- method
+	v <- x
 	#V!# NMFStrategyIterativeX::run
 	
 	#Vc# Define workspace accessor function
@@ -245,40 +259,70 @@ setMethod('run', signature(object='NMFStrategyIterativeX', target='matrix', star
 #		, envir=.Workspace)
 	
 	#Vc# initialize the strategy
-	nmfData <- strategy@Preprocess(start, v, ...)
-	if( !inherits(nmfData, 'NMFfit') ) stop('NMFStrategyIterative[', name(strategy@definition), ']::Preprocess did not return a "NMF" instance [returned: "', class(nmfData), '"]')	
-	#message('NMFStrategyIterative:: object class:', class(nmfData))
+	# check validity of arguments if possible
+	update.args <- formals(strategy@Update)
+	stop.args <- formals(strategy@Stop)
+	internal.args <- names(c(update.args[1:3], stop.args[1:4]))
+	expected.args <- c(update.args[-(1:3)], stop.args[-(1:4)])
+	passed.args <- names(list(...))
+	forbidden.args <- is.element(passed.args, c(internal.args))
+	if( any(forbidden.args) )
+		stop("NMF::run - Update/Stop method : formal argument(s) "
+			, paste( paste("'", passed.args[forbidden.args],"'", sep=''), collapse=', ')
+			, " already set internally.", call.=FALSE)
+	# !is.element('...', expected.args) && 
+	if( any(t <- !pmatch(passed.args, names(expected.args), nomatch=FALSE)) )
+		stop("NMF::run - Update/Stop method : unused argument(s) "
+			, paste( paste("'", passed.args[t],"'", sep=''), collapse=', '), call.=FALSE)
+	# check for required arguments
+	required.args <- names(expected.args[which(sapply(expected.args, function(x) x==''))])
+	required.args <- required.args[required.args!='...']
+	
+	if( any(t <- !pmatch(required.args, passed.args, nomatch=FALSE)) )
+		stop("NMF::run - Update/Stop method for algorithm '", name(strategy),"': missing required argument(s) "
+			, paste( paste("'", required.args[t],"'", sep=''), collapse=', '), call.=FALSE)
+	
+	# set default value for missing argument TODO
+	missing.args <- expected.args[!pmatch(names(expected.args), passed.args, nomatch=FALSE)]
+	
 	
 	#Vc# Start iterations
+	nmfData <- seed
 	nmfFit <- fit(nmfData)
 	for( i in 1:maxIter ){
 		
 		#Vc# update the matrices
-		nmfFit <- strategy@Update(i, v, nmfFit)
+		nmfFit <- strategy@Update(i, v, nmfFit, ...)
 		
 		#Vc# Stopping criteria
 		# give the strategy the opportunity to perform stuff after the update: modify the data and/or stop iteration
-		stop.signal <- strategy@Stop(i, v, nmfFit)
-		
+		stop.signal <- strategy@Stop(strategy, i, v, nmfFit, ...)
+	
 		# every now and then track the error if required
-		nmfData <- trackError(nmfData, objective(strategy@definition, v, nmfFit), i)
+		nmfData <- trackError(nmfData, objective(strategy, v, nmfFit, ...), i)
 		
 		# if the strategy ask for stopping, then stop the iteration
 		if( stop.signal ) break;
 				
 	}
+	if( verbose(nmfData) ) cat("\n")
+	
+	# force to compute last error if not already done
+	nmfData <- trackError(nmfData, objective(strategy, v, nmfFit, ...), i, force=TRUE)
+	
+	# store the fitted model
 	fit(nmfData) <- nmfFit
-	if( verbose(nmfData) ) cat("\n")	
 	
 	#Vc# wrap up
 	# let the strategy build the result
-	nmfData = strategy@WrapNMF(nmfData)	
-	if( !inherits(nmfData, 'NMFfit') ) stop('NMFStrategyIterative[', name(strategy@definition), ']::WrapNMF did not return a "NMF" instance [returned: "', class(nmfData), '"]')
+	nmfData <- strategy@WrapNMF(nmfData)
+	if( !inherits(nmfData, 'NMFfit') ) stop('NMFStrategyIterative[', name(strategy), ']::WrapNMF did not return a "NMF" instance [returned: "', class(nmfData), '"]')
 	
-	# force to compute last error if not already done	
-	nmfData <- trackError(nmfData, objective(strategy@definition, v, nmfData), i, force=TRUE)
+	# set the number of iterations performed
+	nmfData$iteration <- i
 	
 	#return the result
+	nmf.debug('NMFStrategyIterativeX::run', 'Done')
 	invisible(nmfData)
 })
 
@@ -309,8 +353,7 @@ std.divergence.update.h <- function(v, w, h, wh=NULL)
 	
 	# divergence-reducing NMF iterations
 	# H_au = H_au ( sum_i [ W_ia V_iu / (WH)_iu ] ) / ( sum_k W_ka ) -> each row of H is divided by a the corresponding colSum of W
-	x1 <- colSums(w); # division will recycle the elements (=> for each column c of H we'll have: c <- c/x1 )
-	h * crossprod(w, v / wh) / x1;
+	h * crossprod(w, v / wh) / colSums(w)
 }	
 
 #' Standard multiplicative update for matrix \code{W} (i.e. the second factor) in a divergence based NMF.
@@ -331,9 +374,9 @@ std.divergence.update.w <- function(v, w, h, wh=NULL)
 	if( is.null(wh) ) wh <- w %*% h
 	
 	# W_ia = W_ia ( sum_u [H_au A_iu / (WH)_iu ] ) / ( sum_v H_av ) -> each column of W is divided by a the corresponding rowSum of H
-	x2 <- matrix(rep(rowSums(h), nrow(w)), ncol=ncol(w), byrow=TRUE); 
-	w * tcrossprod(v / wh, h) / x2;
-	
+	#x2 <- matrix(rep(rowSums(h), nrow(w)), ncol=ncol(w), byrow=TRUE); 
+	#w * tcrossprod(v / wh, h) / x2;
+	sweep(w * tcrossprod(v / wh, h), 2L, rowSums(h), "/", check.margin = FALSE) # optimize version?
 }
 #' Computes the Nonegative Matrix Factorization of a matrix.
 #'
@@ -415,7 +458,7 @@ std.euclidean.update.w <- function(v, w, h, wh=NULL, eps){
 #' Multiplicative update for reducing the euclidean distance.
 #'
 #' 
-nmf.update.lee <- function(i, v, data, rescale=TRUE)
+nmf.update.lee <- function(i, v, data, rescale=TRUE, ...)
 {
 	# retrieve each factor
 	w <- basis(data); h <- coef(data);	
@@ -439,7 +482,7 @@ nmf.update.lee <- function(i, v, data, rescale=TRUE)
 	#w <- pmax(w * (v %*% t(h)), eps) / (w %*% (h %*% t(h)) + eps);
 	w <- std.euclidean.update.w(v, w, h, eps=eps)
 	#rescale columns TODO: effect of rescaling? the rescaling makes the update with offset fail
-	if( rescale ) w <- apply(w, 2, function(x) x/sum(x))
+	if( rescale ) w <- sweep(w, 2L, colSums(w), "/", check.margin=FALSE)
 	
 	#return the modified data
 	basis(data) <- w; coef(data) <- h;	
@@ -453,19 +496,23 @@ nmf.update.offset <- function(i, v, data, ...)
 {	
 	# retrieve each factor
 	w <- basis(data); h <- coef(data);
+	# retrieve offset and fill it if necessary (with mean of rows)
+	off <- offset(data)
+	if( i == 1 && length(off) == 0 )
+		off <- rowMeans(v)
 	
 	#precision threshold for numerical stability
 	eps <- 10^-9
 	
 	# compute standard lee update (it will take the offset into account) without rescaling W's columns
 	
-	h <- std.euclidean.update.h(v, w, h, wh=w%*%h + offset(data), eps=eps)
-	w <- std.euclidean.update.w(v, w, h, wh=w%*%h + offset(data), eps=eps)
+	h <- std.euclidean.update.h(v, w, h, wh=w%*%h + off, eps=eps)
+	w <- std.euclidean.update.w(v, w, h, wh=w%*%h + off, eps=eps)
 	#data <- nmf.update.lee(i, v, data, rescale=FALSE, ...)
 	
 	# update the offset	
 	# V0_i = V0_i ( sum_j V_ij ) / ( sum_j (V.off + W H)_ij )
-	data@offset <- data@offset * pmax(rowSums(v), eps) / (rowSums(w%*%h + offset(data)) + eps)
+	data@offset <- off * pmax(rowSums(v), eps) / (rowSums(w%*%h + off) + eps)
 		
 	#return the modified data
 	basis(data) <- w; coef(data) <- h;
@@ -508,8 +555,8 @@ nmf.update.ns <- function(i, v, data, ...)
 	w <- std.divergence.update.w(v, w, tmp, wh=w %*% tmp)
 	
 	# rescale columns of W
-	w <- apply(w, 2, function(x) x/sum(x))		
-		
+	w <- sweep(w, 2L, colSums(w), '/', check.margin=FALSE)
+	
 	#return the modified data
 	basis(data) <- w; #metaprofiles(data) <- h;
 	return(data)
@@ -520,22 +567,20 @@ nmf.update.ns <- function(i, v, data, ...)
 # AFTER-UPDATE METHODS
 ################################################################################################
 
-nmf.stop.stationnary <- function(i, target, data){
+nmf.stop.stationary <- function(strategy, i, target, data, stationary.th=10^-6, ...){
 		
 		# first call compute the initial error
-		if( i == 1 ) staticVar('objective.value', distance(target, data), init=TRUE)
+		if( i == 1 ) staticVar('objective.value', objective(strategy, target, data, ...), init=TRUE)
 		
 		# test convergence only every 10 iterations
-		interval <- 10		
+		interval <- 10
 		if( i %% interval != 0 ) return( FALSE );
 		
 		# initialize static variables to store the error across the calls		
 		last.value <- staticVar('objective.value')
-		current.value <- distance(target, data)
-		
+		current.value <- objective(strategy, target, data, ...)
 		# if the relative decrease in the objective value is to small then stop
-		threshold <- if( !is.null(data@parameters$threshold) ) data@parameters$threshold else 10^-6
-		if( abs( (last.value - current.value)/interval ) <= threshold ) return( TRUE )
+		if( abs( (last.value - current.value)/interval ) <= stationary.th ) return( TRUE )
 		
 		# update the objective value
 		staticVar('objective.value', current.value)
@@ -544,7 +589,7 @@ nmf.stop.stationnary <- function(i, target, data){
 		FALSE
 }
 
-nmf.stop.consensus <- function(i, target, data){
+nmf.stop.consensus <- function(strategy, i, target, data, ...){
 			
 		# test convergence only every 10 iterations
 		if( i %% 10 != 0 ) return( FALSE );

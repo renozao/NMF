@@ -1,3 +1,148 @@
+#' M. H. Van Benthem and M. R. Keenan, J. Chemometrics 2004; 18: 441-450
+#'
+#' Given A and C this algorithm solves for the optimal 
+#' K in a least squares sense, using that
+#'      A = C*K 
+#' in the problem
+#'      min ||A-C*K||, s.t. K>=0, for given A and C.
+#'
+#'
+#' @param C the matrix of coefficients
+#' @param A the target matrix of observations
+#'
+#' @return [K, Pset]
+#'
+.fcnnls <- function(C, A){
+# NNLS using normal equations and the fast combinatorial strategy
+	#
+	# I/O: [K, Pset] = fcnnls(C, A);
+	# K = fcnnls(C, A);
+	#
+	# C is the nObs x lVar coefficient matrix
+	# A is the nObs x pRHS matrix of observations
+	# K is the lVar x pRHS solution matrix
+	# Pset is the lVar x pRHS passive set logical array
+	#
+	# M. H. Van Benthem and M. R. Keenan
+	# Sandia National Laboratories
+	#
+	# Pset: set of passive sets, one for each column
+	# Fset: set of column indices for solutions that have not yet converged
+	# Hset: set of column indices for currently infeasible solutions
+	# Jset: working set of column indices for currently optimal solutions
+	#
+	# Check the input arguments for consistency and initializeerror(nargchk(2,2,nargin))
+	nObs = nrow(C); lVar = ncol(C);
+	if ( nrow(A)!= nObs ) stop('C and A have imcompatible sizes')
+	pRHS = ncol(A);
+	W = matrix(0, lVar, pRHS);
+	iter=0; maxiter=3*lVar;
+	# Precompute parts of pseudoinverse
+	#CtC = t(C)%*%C; CtA = t(C)%*%A;
+	CtC = crossprod(C); CtA = crossprod(C,A);
+	
+	# Obtain the initial feasible solution and corresponding passive set
+	K = .cssls(CtC, CtA);
+	Pset = K > 0;
+	K[!Pset] = 0;
+	D = K;
+	# which columns of Pset do not have all entries TRUE?
+	Fset = which( colSums(Pset) != lVar );
+	#V+# Active set algorithm for NNLS main loop
+	oitr=0; # HKim
+	while ( length(Fset)>0 ) {
+		
+		oitr=oitr+1; if ( oitr > 5 ) cat(sprintf("%d ",oitr));# HKim
+		
+		#Vc# Solve for the passive variables (uses subroutine below)				
+		K[,Fset] = .cssls(CtC, CtA[,Fset, drop=FALSE], Pset[,Fset, drop=FALSE]);
+		
+		# Find any infeasible solutions
+		# subset Fset on the columns that have at least one negative entry
+		Hset = Fset[ colSums(K[,Fset, drop=FALSE] < 0) > 0 ];
+		#V+# Make infeasible solutions feasible (standard NNLS inner loop)
+		if ( length(Hset)>0 ){
+			nHset = length(Hset);
+			alpha = matrix(0, lVar, nHset);
+			while ( nHset>0  && (iter < maxiter) ){
+				iter = iter + 1; 
+				alpha[,1:nHset] = Inf;
+				#Vc# Find indices of negative variables in passive set
+				ij = which( Pset[,Hset, drop=FALSE] & (K[,Hset, drop=FALSE] < 0) , arr.ind=TRUE);			
+				i = ij[,1]; j = ij[,2]
+				if ( length(i)==0 ) break;			
+				hIdx = (j - 1) * lVar + i; # convert array indices to indexes relative to a lVar x nHset matrix
+				negIdx = (Hset[j] - 1) * lVar + i; # convert array indices to index relative to the matrix K (i.e. same row index but col index is stored in Hset)
+				
+				alpha[hIdx] = D[negIdx] / (D[negIdx] - K[negIdx]);				
+				alpha.inf <- alpha[,1:nHset, drop=FALSE]
+				minIdx = max.col(-t(alpha.inf)) # get the indce of the min of each row
+				alphaMin = alpha.inf[minIdx + (0:(nHset-1) * lVar)]
+				alpha[,1:nHset] = matrix(alphaMin, lVar, nHset, byrow=TRUE);
+				D[,Hset] = D[,Hset, drop=FALSE] - alpha[,1:nHset, drop=FALSE] * (D[,Hset, drop=FALSE]-K[,Hset, drop=FALSE]);			
+				idx2zero = (Hset - 1) * lVar + minIdx; # convert array indices to index relative to the matrix D
+				D[idx2zero] = 0;
+				Pset[idx2zero] = FALSE;
+				K[, Hset] = .cssls(CtC, CtA[,Hset, drop=FALSE], Pset[,Hset, drop=FALSE]);
+				# which column of K have at least one negative entry?
+				Hset = which( colSums(K < 0) > 0 );
+				nHset = length(Hset);
+			}
+		}
+		#V-#
+		
+		#Vc# Make sure the solution has converged
+		#if iter == maxiter, error('Maximum number iterations exceeded'), end
+		# Check solutions for optimality
+		W[,Fset] = CtA[,Fset, drop=FALSE] - CtC %*% K[,Fset, drop=FALSE];
+		# which columns have all entries non-positive
+		Jset = which( colSums( (ifelse(!(Pset[,Fset, drop=FALSE]),1,0) * W[,Fset, drop=FALSE]) > 0 ) == 0 );
+		Fset = setdiff(Fset, Fset[Jset]);
+		
+		if ( length(Fset) > 0 ){				
+			#Vc# For non-optimal solutions, add the appropriate variable to Pset						
+			# get indice of the maximum in each column
+			mxidx = max.col( t(ifelse(!Pset[,Fset, drop=FALSE],1,0) * W[,Fset, drop=FALSE]) )
+			Pset[ (Fset - 1) * lVar + mxidx ] = TRUE;
+			D[,Fset] = K[,Fset, drop=FALSE];
+		}		
+	}
+	#V-#
+	
+	# return K and Pset
+	list(K=K, Pset=Pset)
+}
+# ****************************** Subroutine****************************
+#library(corpcor)
+.cssls <- function(CtC, CtA, Pset=NULL){
+	# Solve the set of equations CtA = CtC*K for the variables in set Pset
+	# using the fast combinatorial approach
+	K = matrix(0, nrow(CtA), ncol(CtA));	
+	if ( is.null(Pset) || length(Pset)==0 || all(Pset) ){		
+		K = solve(CtC) %*% CtA;
+		# K = pseudoinverse(CtC) %*% CtA;
+		#K=pinv(CtC)*CtA;
+	}else{
+		lVar = nrow(Pset); pRHS = ncol(Pset);
+		codedPset = as.numeric(2.^(seq(lVar-1,0,-1)) %*% Pset);
+		sortedPset = sort(codedPset)
+		sortedEset = order(codedPset)
+		breaks = diff(sortedPset);
+		breakIdx = c(0, which(breaks > 0 ), pRHS);
+		for( k in seq(1,length(breakIdx)-1) ){
+			cols2solve = sortedEset[ seq(breakIdx[k]+1, breakIdx[k+1])];
+			vars = Pset[,sortedEset[breakIdx[k]+1]];			
+			K[vars,cols2solve] = solve(CtC[vars,vars, drop=FALSE]) %*% CtA[vars,cols2solve, drop=FALSE];			
+			#K[vars,cols2solve] = pseudoinverse(CtC[vars,vars]) %*% CtA[vars,cols2solve];
+			#TODO: check if this is the right way or needs to be reversed
+			#K(vars,cols2solve) = pinv(CtC(vars,vars))*CtA(vars,cols2solve);
+		}
+	}
+	
+	# return K
+	K
+}
+
 #'
 #' SNMF/R  
 #'
@@ -58,11 +203,8 @@
 #' 
 #function [W,H,i] 
 #nmfsh_comb <- function(A, k, param, verbose=FALSE, bi_conv=c(0, 10), eps_conv=1e-4, version=c('R', 'L')){
-.nmfsh_comb <- function(A, k, nmf.fit, eta=-1, beta=0.01, bi_conv=c(0, 10), eps_conv=1e-4, version=c('R', 'L')){
-
-	# retrieve verbosity option
-	verbose <- verbose(nmf.fit)
-	
+.nmfsh_comb <- function(A, k, nmf.fit, eta=-1, beta=0.01, bi_conv=c(0, 10), eps_conv=1e-4, version=c('R', 'L'), verbose=FALSE){
+		
 	# depending on the version: 
 	# in version L: A is transposed while W and H are swapped and transposed
 	version <- match.arg(version)
@@ -84,11 +226,12 @@
 	idxWold=rep(0, m); idxHold=rep(0, n); inc=0;	
 	
 	# initialize random W if no starting point is given
-	track <- FALSE
 	if( missing(nmf.fit) ){
 		message('Init W internally (random)')
 		W=matrix(runif(m*k), m,k);	
+		nmf.fit <- NULL
 	} else {
+		
 		# seed the method (depends on the version to run)
 		start <- if( version == 'R' ) basis(nmf.fit) else t(coef(nmf.fit))
 		# check compatibility of the starting point with the target matrix
@@ -97,9 +240,6 @@
 		# use the supplied starting point
 		W <- start
 		
-		# use runtime options for tracking
-		track <- run.options(nmf.fit, 'error.track')
-		track.interval <- run.options(nmf.fit, 'track.interval')
 	}
 		
 	W= apply(W, 2, function(x) x / sqrt(sum(x^2)) );  # normalize columns of W	
@@ -132,18 +272,21 @@
 		W= t(Wt);		
 
 		# track the error (not computed unless tracking option is enabled in nmf.fit)
-		nmf.fit <- trackError(nmf.fit, .snmf.objective(A, W, H, eta, beta), i)
+		if( !is.null(nmf.fit) ) 
+			nmf.fit <- trackError(nmf.fit, .snmf.objective(A, W, H, eta, beta), i)
 		
 		# test convergence every 5 iterations
 		if ( (i %% 5==0)  || (i==1) ){
-			idxW = apply(W, 1, function(x) which.max(x)) 			
-			idxH = apply(H, 2, function(x) which.max(x))			
+			# indice of maximum for each row of W
+			idxW = max.col(W)
+			# indice of maximum for each column of H
+			idxH = max.col(t(H))
 			changedW=sum(idxW != idxWold); changedH=sum(idxH != idxHold);
 			if ( (changedW<=wminchange) && (changedH==0) ) inc=inc+1
 			else inc=0
 
-			resmat=pmin(H, (t(W) %*% W) %*% H - t(W) %*% A + matrix(beta, k , k) %*% H); resvec=as.numeric(resmat);
-			resmat=pmin(W, W %*% ( H %*% t(H)) - A %*% t(H) + eta2 * W); resvec=c(resvec, as.numeric(resmat));
+			resmat=pmin(H, crossprod(W) %*% H - t(W) %*% A + matrix(beta, k , k) %*% H); resvec=as.numeric(resmat);
+			resmat=pmin(W, W %*% tcrossprod(H) - A %*% t(H) + eta2 * W); resvec=c(resvec, as.numeric(resmat));
 			conv=sum(abs(resvec)); #L1-norm      
 			convnum=sum(abs(resvec)>0);
 			erravg=conv/convnum;
@@ -163,18 +306,28 @@
 	}
 	
 	# force to compute last error if not already done
-	nmf.fit <- trackError(nmf.fit, .snmf.objective(A, W, H, eta, beta), i, force=TRUE)	
+	if( !is.null(nmf.fit) ) 
+		nmf.fit <- trackError(nmf.fit, .snmf.objective(A, W, H, eta, beta), i, force=TRUE)	
 
 	# transpose and reswap the roles
-	if( version == 'L' ){
-		basis(nmf.fit) <- t(H)
-		coef(nmf.fit) <- t(W)
+	if( !is.null(nmf.fit) ){ 
+		if( version == 'L' ){
+			basis(nmf.fit) <- t(H)
+			coef(nmf.fit) <- t(W)
+		}
+		else{ basis(nmf.fit) <- W; coef(nmf.fit) <- H}
+		# set number of iterations performed
+		nmf.fit$iteration <- i
+		
+		return(nmf.fit)	
+	}else{
+		res <- list(W=W, H=H)
+		if( version == 'L' ){
+			res$W <- t(H)
+			res$H <- t(W)
+		}		
+		return(invisible(res))
 	}
-	else{ basis(nmf.fit) <- W; coef(nmf.fit) <- H}
-	# set number of iterations
-	nmf.fit@extra$iteration=i
-	
-	return(nmf.fit)	
 }
 
 
@@ -197,14 +350,15 @@
 	version <- toupper(substr(name, nchar(name), nchar(name)))
 	
 	# perform factorization using Kim and Park's algorithm 
-	sol <- .nmfsh_comb(target, nbasis(seed), nmf.fit=seed, version=version, ...)
+	sol <- .nmfsh_comb(target, nbasis(seed), nmf.fit=seed, version=version, verbose=verbose(seed), ...)
 		
 	# return solution
 	return(sol)
 }
 
 # internal function to register the methods
-.load.algorithm.snmf <- function(){
-	nmfRegisterAlgorithm(.snmf, 'snmf/r', objective='euclidean', overwrite=TRUE)
-	nmfRegisterAlgorithm(.snmf, 'snmf/l', objective='euclidean', overwrite=TRUE)
+.nmf.plugin.snmf <- function(){
+	list(newNMFStrategy(.snmf, 'snmf/r', objective='euclidean')
+		, newNMFStrategy(.snmf, 'snmf/l', objective='euclidean')
+	)
 }
