@@ -276,7 +276,7 @@ function http_get($query)
 }
 
 function get_cran_version($pkg){
-
+	
 	$url = "http://cran.r-project.org/package=$pkg";
 	$old = ini_set('default_socket_timeout', 5);
 	$cran = http_get($url);
@@ -284,7 +284,8 @@ function get_cran_version($pkg){
 	if( $cran && ereg("$pkg_([0-9.]+)\.tar.gz", $cran, $version) )
 		return $version[1];
 }
-$latest_version = get_cran_version('NMF');
+//$latest_version = get_cran_version('NMF');
+$latest_version = '0.3.1';
 ?>
 <h3>Install&nbsp;&amp;&nbsp;Updates
 <font style="font-size:10pt;color:#990000"><?php echo $latest_version ? "[CRAN version: $latest_version]" : "" ?></font>
