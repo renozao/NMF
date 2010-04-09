@@ -29,6 +29,7 @@ $group_name=ereg_replace('([^\.]*)\..*$','\1',$_SERVER['HTTP_HOST']);
 $themeroot='http://r-forge.r-project.org/themes/rforge/';
 
 define(PKG_ROOT, '../pkg/');
+define(PKG_SVN_VIEW_ROOT, 'http://r-forge.r-project.org/plugins/scmsvn/viewcvs.php/*checkout*/pkg/');
 
 echo '<?xml version="1.0" encoding="UTF-8"?>';
 ?>
@@ -246,8 +247,8 @@ $local_pkgs = get_local_version('', 'NMF', '0.3.1');
 <li>MacOS X binary: <a href="<?php echo $local_pkgs['mac'];?>"><?php echo basename($local_pkgs['mac']);?></a></li>
 <li>Windows binary: <a href="<?php echo $local_pkgs['win'];?>"><?php echo basename($local_pkgs['win']);?></a></li>
 <li>Reference manual: <a href="NMF-manual.pdf">NMF-manual.pdf</a></li>
-<li>Vignette: <a href="<?php echo PKG_ROOT?>inst/doc/NMF-vignette.pdf">NMF-vignette.pdf</a></li>
-<li>News/ChangeLog:	<a href="<?php echo PKG_ROOT?>NEWS">NEWS</a></li>
+<li>Vignette: <a href="<?php echo PKG_SVN_VIEW_ROOT?>inst/doc/NMF-vignette.pdf?root=nmf">NMF-vignette.pdf</a></li>
+<li>News/ChangeLog:	<a href="<?php echo PKG_SVN_VIEW_ROOT?>NEWS?root=nmf">NEWS</a></li>
 </ul>
 <table><tr>
 <td><a href="http://www.r-project.org" target="_new_nmf"><img src="Rlogo.jpg" alt="" /></a></td>
