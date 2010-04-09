@@ -289,7 +289,7 @@ function get_cran_version($pkg){
 		return $version[1];
 }
 //$latest_version = get_cran_version('NMF');
-$latest_version = '0.3.1';
+$latest_version = '0.3.3';
 ?>
 <h3>Install&nbsp;&amp;&nbsp;Updates
 <font style="font-size:10pt;color:#990000"><?php echo $latest_version ? "[CRAN version: $latest_version]" : "" ?></font>
