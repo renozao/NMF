@@ -34,7 +34,7 @@ sink(file = .LatexFileCon, append = TRUE, type = "message" )
 
 \begin{document}
 % \VignetteIndexEntry{Using package NMF}
-% \VignetteDepends{NMF,Biobase,doMC}
+% \VignetteDepends{NMF,Biobase,doMC,bigmemory}
 % \VignetteKeyword{math}
 
 %\lstdefinestyle{Rinstyle}{style=RinstyleO, backgroundcolor=\color{gray90}}
