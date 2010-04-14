@@ -10,6 +10,8 @@
 
 \usepackage{Sweave}
 \usepackage{framed}
+\usepackage{array}
+\usepackage{tabularx}
 \usepackage[dvipsnames]{color}
 \definecolor{shadecolor}{gray}{0.95}
 \usepackage{url}
@@ -105,6 +107,7 @@ The \nmfpack package:
 \item Plotting utility functions to visualize and help in the interpretation of 
 the results;
 \item Transparent parallel computations;
+\item Optimized and memory efficient C++ implementations of the standard algorithms;
 \item Optional layer for bioinformatics based on BioConductor \cite{Gentleman2004};
 \end{itemize}
 
@@ -140,9 +143,9 @@ where
 \begin{itemize}
 \item $D$ is a loss function that measures the quality of the approximation. 
 Common loss functions are based on either the Frobenius distance 
-$$D: A,B\mapsto Tr(AB^t) = \frac{1}{2} \sum_{ij} (a_{ij} - b_{ij})^2,$$
+$$D: A,B\mapsto \frac{Tr(AB^t)}{2} = \frac{1}{2} \sum_{ij} (a_{ij} - b_{ij})^2,$$
 or the Kullback-Leibler divergence.
-$$D: A,B\mapsto \sum_{i,j} a_{ij} \log \frac{a_{ij}}{b_{ij}} - a_{ij} + b_{ij}.$$
+$$D: A,B\mapsto KL(A||B) = \sum_{i,j} a_{ij} \log \frac{a_{ij}}{b_{ij}} - a_{ij} + b_{ij}.$$
 \item $R$ is an optional regularization function, defined to enforce desirable
 properties on matrices $W$ and $H$, such as smoothness or sparsity \cite{Cichocki04}.
 \end{itemize}
@@ -171,6 +174,62 @@ nmfAlgorithm('brunet')
 # partial match is also fine
 identical(nmfAlgorithm('br'), nmfAlgorithm('brunet')) 
 @
+
+Table \ref{tab:algo} gives a short description of each one of the built-in algorithms:
+
+\begin{table}
+\begin{tabularx}{\textwidth}{lX}
+\hline
+Key & Description\\
+\hline
+\code{brunet} & Standard NMF. Based on Kullbach-Leibler divergence, it uses simple 
+multiplicative updates from \cite{Lee2000}, enhanced 
+to avoid numerical underflow.
+
+\textbf{Reference:} \cite{Brunet04}\\
+\hline
+%
+\code{lee} & Standard NMF. Based on euclidean distance, it uses simple multiplicative 
+updates
+
+\textbf{Reference:} \cite{Lee2000}\\
+\hline
+%
+%\code{lnmf} & Local Nonnegative Matrix Factorization. Based on a 
+%regularized Kullbach-Leibler divergence, it uses a modified version of 
+%Lee and Seung's multiplicative updates.
+%
+%\textbf{Reference:} \cite{Li2001}\\
+%
+\code{nsNMF} & Nonsmooth NMF. Uses a modified version of Lee and Seung's 
+multiplicative updates for Kullbach-Leibler divergence to fit a extension 
+of the standard NMF model. It is meant to give sparser results.
+
+\textbf{Reference:} \cite{nsNMF2006}\\
+\hline
+%
+\code{offset} & Uses a modified version of Lee and Seung's multiplicative 
+updates for euclidean distance, to fit a NMF model that includes an intercept. 
+
+\textbf{Reference:} \cite{Badea2008}\\
+\hline
+%
+\code{pe-nmf} & Pattern-Expression NMF. Uses multiplicative updates to 
+minimize an objective function based on the Euclidean distance and regularized 
+for effective expression of patterns with basis vectors. 
+
+\textbf{Reference:} \cite{Zhang2008}\\
+\hline
+%
+\code{snmf/r}, \code{snmf/l} & Alternating Least Square (ALS) approach. It is meant to be very 
+fast.
+
+\textbf{Reference:} \cite{Kim2007}\\
+\hline
+\end{tabularx}
+\caption{Description of the implemented NMF algorithms. The first column gives the key to use in 
+the call to the \texttt{nmf} function.\label{tab:algo}}
+\end{table}
 
 \subsection{Initialization: seeding methods}
 NMF algorithms need to be initialized with a seed (i.e. a value for $W_0$ and/or 
@@ -213,6 +272,38 @@ nmfSeed('nndsvd')
 identical(nmfSeed('nn'), nmfSeed('nndsvd'))
 @   
 
+Table \ref{tab:seed} gives a short description of each one of the built-in seeding methods:
+
+\begin{table}
+\begin{tabularx}{\textwidth}{lX}
+\hline
+Key & Description\\
+\hline
+\code{ica} & Uses the result of an Independent Component Analysis (ICA) (from the \code{fastICA} package).
+Only the positive part of the result are used to initialize the factors.\\
+\hline
+%
+\code{nnsvd} & Nonnegative Double Singular Value Decomposition.
+The basic algorithm contains no randomization and is based on two SVD processes, one approximating 
+the data matrix, the other approximating positive sections of the resulting partial SVD factors 
+utilizing an algebraic property of unit rank matrices. It is well suited to initialize NMF algorithms 
+with sparse factors. Simple practical variants of the algorithm allows to generate dense factors.
+
+\textbf{Reference:} \cite{Boutsidis2008}\\
+\hline
+%
+\code{none} & Fix seed.
+This method allows the user to manually provide initial values for both matrix factors.\\ 
+\hline
+%
+\code{random} & The entries of each factors are drawn from a uniform distribution over $[0, max(V)]$, 
+where $V$ is the target matrix.\\
+\hline
+\end{tabularx}
+\caption{Description of the implemented seeding methods to initialize NMF algorithms.
+The first column gives the key to use in the call to the \texttt{nmf} function.\label{tab:seed}}
+\end{table}
+
 \subsection{How to run NMF algorithms}
 
 Method \code{nmf} provides a single interface to run NMF algorithms. It can directly perform 
@@ -240,21 +331,70 @@ on its implementation).
 See also \code{?nmf} for details on the interface and extra parameters.
 
 
+\subsection{Performances}
+
+Since version 0.4, some built-in algorithms are optimized in C++, which results in a significant speed-up 
+and a more efficient memory management, especially on large scale data.
+The older R versions of the concerned algorithms are still available, and accessible by adding the prefix 
+\code{'.R\#'} to the algorithms' access keys (e.g. the key \code{'.R\#offset'} corresponds to the R 
+implementation of NMF with offset \cite{Badea2008}).
+Moreover they do not show up in the listing returned by the \code{nmfAlgorithm} function, unless argument \code{all=TRUE}:
+
+<<show_Rversions>>=
+nmfAlgorithm(all=TRUE)
+
+# to get all the algorithms that have a secondary R version
+nmfAlgorithm(type='R')
+@
+
+Table \ref{tab:perf} shows the speed-up achieved by the algorithms that benefit from the optimized code.
+All algorithms were run once with a factorization rank equal to 3, on the Golub data set which contains a $5000\times 38$ gene expression matrix. 
+The same numeric random seed (\code{seed=123456}) was used for all factorizations.
+The columns \emph{C} and \emph{R} show the elapsed time (in seconds) achieved by the C++ version and R version respectively.
+The column \emph{Speed.up} contains the ratio $R/C$. 
+
+<<perftable_setup>>=
+# retrieve all the methods that have a secondary R version
+meth <- nmfAlgorithm(type='R')
+meth <- c(names(meth), meth)
+meth
+
+# load the Golub data
+data(esGolub)
+
+# compute NMF for each method
+res <- nmf(esGolub, 3, meth, seed=123456)
+
+# extract only the elapsed time
+t <- sapply(res, runtime)[3,]
+@
+
+<<perftable, echo=FALSE, results=tex>>=
+# speed-up
+m <- length(meth)/2
+su <- cbind( C=t[1:m], R=t[-(1:m)], Speed.up=t[-(1:m)]/t[1:m])
+
+library(xtable)
+xtable(su, caption='Performance speed up achieved by the optimized C++ implementation for some of the NMF algorithms.', label='tab:perf')
+@
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Use case: Golub dataset}\label{sec:usecase}
-We illustrate the functionalities and the usage of the \nmfpack package, by analysing 
-the -- now standard -- Golub dataset on leukemia.
+We illustrate the functionalities and the usage of the \nmfpack package on the 
+-- now standard -- Golub dataset on leukemia.
 It was used in several papers on NMF \cite{Brunet04, Gao2005} and is included in 
 the \nmfpack package's data, wrapped into an \code{ExpressionSet} object.
- For performance reason we use here only the first 200 genes:
+ For performance reason we use here only the first 200 genes. Therefore the results shown 
+ in the following are not meant to be biologically meaningful, but only illustrative:
 
 <<esGolub>>=
 data(esGolub)
 esGolub
-esGolub <- esGolub[1:50,]
+esGolub <- esGolub[1:200,]
 @
-% TODO: pass to 200 genes
+% TODO: pass to 50 genes for dev
 
 \paragraph{Note:} To run this example, the \code{Biobase} package from 
 BioConductor is required.
@@ -340,17 +480,20 @@ dim(h)
 
 
 If one wants to keep only part of the factorization, one can directly subset 
-on the \code{NMF} object on features and samples (separately or simultaneously):
+on the \code{NMF} object on features and samples (separately or simultaneously).
+The result is a \code{NMF} object composed of the selected rows and/or columns:
 <<subset>>=
-# keep only the first 100 features TODO: put that to 100
-res[1:10,]
+# keep only the first 10 features
+res.subset <- res[1:10,] 
+class(res.subset)
+dim(res.subset)
 # keep only the first 10 samples 
-res[,1:10]
-# subset both features and samples: TODO: put that to 100
+dim(res[,1:10])
+# subset both features and samples:
 dim(res[1:20,1:10])
 @ 
 
-\subsubsection{Selecting the features}
+\subsubsection{Extracting metagene-specific features}
 
 In general NMF matrix factors are sparse, so that the metagenes can usually be 
 characterized by a relatively small set of genes. Those are determined based on 
@@ -374,11 +517,12 @@ str(s)
 
 \subsection{Specifying the algorithm}\label{sec:algo}
 
-subsubsection{Named algorithm}
+\subsubsection{Built-in algorithms}
 The \nmfpack package provides a number of built-in algorithms, that are listed or 
 retrieved by function \code{nmfAlgorithm}. 
 Each algorithm is identified by a unique name.
-The following algorithms are currently implemented:
+The following algorithms are currently implemented (cf. Table \ref{tab:algo} 
+for more details):
 
 <<algo_list>>=
 nmfAlgorithm()
@@ -395,14 +539,15 @@ Frobenius euclidean norm, one make the following call:
 <<algo_lee>>=
 # using Lee and Seung's algorithm
 res <- nmf(esGolub, 3, 'lee')
-res
+algorithm(res)
 @
 
 To use the Nonsmooth NMF algorithm from \cite{nsNMF2006}: 
 <<algo_ns>>=
 # using the Nonsmooth NMF algorithm with parameter theta=0.7
 res <- nmf(esGolub, 3, 'ns', theta=0.7)
-res
+algorithm(res)
+fit(res)
 @
 
 Or to use the PE-NMF algorithm from \cite{Zhang2008}:
@@ -428,18 +573,18 @@ res
 %\end{tech}
 
 
-\subsubsection{Custom function}
-The \nmfpack package provides the user the possibility to define his own algorithm, 
+\subsubsection{Custom algorithms}
+The \nmfpack package provides the user the possibility to define his own algorithms, 
 and benefit from all the functionalities available in the NMF framework.
 There are only few contraints on the way the custom algorithm must be defined.
-See the details in Section~\ref{sec:algo_custom}.
+See the details in Section \ref{sec:algo_custom}.
 
 \subsection{Specifying the seeding method}\label{sec:seed}
 The seeding method used to compute the starting point for the chosen 
 algorithm can be set via argument \code{seed}. Note that if the seeding method is 
 deterministic there is no need to perform multiple run anymore.
 
-\subsubsection{Named seeding method}
+\subsubsection{Built-in seeding method}
 Similarly to the algorithms, the \code{nmfSeed} function can be used to list or 
 retrieve the built-in seeding methods.
 
@@ -469,6 +614,9 @@ res <- nmf(esGolub, 3, seed=123456)
 res
 @
 
+By default the value of the random seed is restored when the \code{nmf} function exits.
+This behaviour can be changed by specifying the option \code{restore.seed=FALSE} or \code{'-r'}.
+
 \subsubsection{Fixed factorization}
 Yet another option is to completely specify the initial factorization, by passing 
 values for matrices $W$ and $H$:
@@ -489,7 +637,7 @@ argument \code{model}, or a NMF model to argument \code{seed}:
 res <- nmf(esGolub, 3, seed=NULL
 		, model=list(W=matrix(0.5, n, 3), H=matrix(0.3, 3, p)))
 # or
-res <- nmf(esGolub, 3, seed=newNMF(W=matrix(0.5, n, 3), H=matrix(0.3, 3, p)))
+res <- nmf(esGolub, 3, seed=nmfModel(W=matrix(0.5, n, 3), H=matrix(0.3, 3, p)))
 @
 
 
@@ -497,7 +645,7 @@ res <- nmf(esGolub, 3, seed=newNMF(W=matrix(0.5, n, 3), H=matrix(0.3, 3, p)))
 The \nmfpack package provides the user the possibility to define his own seeding 
 method, and benefit from all the functionalities available in the NMF framework.
 There are only few contraints on the way the custom seeding method must be defined.
-See the details in Section~\ref{sec:seed_custom}.
+See the details in Section \ref{sec:seed_custom}.
 
 \subsection{Multiple runs}
 
@@ -507,38 +655,45 @@ This can be done by setting argument \code{nrun} to the desired value.
 For performance reason we use \code{nrun=5} here, but a typical choice 
 would lies between 100 and 200:  
 
-\subsubsection{Sequential runs}
-
 <<algo_multirun>>=
 res.multirun <- nmf(esGolub, 3, nrun=5)
 res.multirun
 @
 
-As we can see from the results above, the returned object contains only one fit, 
-from the 5 runs that were perfomed.
-Indeed the default behaviour is to only keep the factorization that achieves 
-the lowest approximation error (i.e. the lowest objective value).
-Even during the computation, only the current best factorization is kept.
-This limits the memory requirement of performing multiple runs, which in turn 
+By default, the returned object only contains the best fit over all the runs.
+That is the factorization that achieved the lowest approximation error 
+(i.e. the lowest objective value).
+Even during the computation, only the current best factorization is kept in memory.
+This limits the memory requirement for performing multiple runs, which in turn 
 allows to perform more runs.
 
-However if one is interested in keeping the results from all the runs, one can 
+The object \code{res.multirun} is of class \code{NMFfitX1} that inherit from class \code{NMFfit}, the 
+class returned by single NMF runs. 
+It can therefore be handled as the result of a single run and benefit from all the methods defined for single run results.
+
+\medskip
+If one is interested in keeping the results from all the runs, one can 
 set the option \code{keep.all=TRUE}:
 
-<<multirun_keep, eval=FALSE>>=
-# explicitly setting the option
-nmf(esGolub, 3, nrun=5, .options=list(keep.all=TRUE))
-# or using letter code 'k' in argument .options
-nmf(esGolub, 3, nrun=5, .options='k')
-
+<<multirun_keep>>=
+# explicitly setting the option keep.all to TRUE
+res <- nmf(esGolub, 3, nrun=5, .options=list(keep.all=TRUE))
+res
 @
 
-Note that keeping all the results may be memory consuming. For example, 
-a 3-rank \code{NMF} model\footnote{i.e. the result of a single NMF run with 
-rank equal 3.} for the Golub gene expression matrix ($5000 \times 38$) 
-takes a bit less that 350Kb.
+<<multirun_keep_alt, eval=FALSE>>=
+# or using letter code 'k' in argument .options
+nmf(esGolub, 3, nrun=5, .options='k')
+@
 
-\subsubsection{Parallel computing on multi-core machines}
+The result is an object of class \code{NMFfitXn} that also inherits from class \code{list}
+
+Note that keeping all the results may be memory consuming. For example, 
+a 3-rank \code{NMF} fit\footnote{i.e. the result of a single NMF run with 
+rank equal 3.} for the Golub gene expression matrix ($5000 \times 38$) 
+takes about \Sexpr{round(object.size(fit(res.multirun)))}Kb\footnote{This size might change depending on the architecture (32 or 64 bits)}.
+
+\subsubsection{Parallel computing on multi-core machines}\label{multicore}
 
 To speed-up the analysis whenever possible, the \nmfpack package implements 
 transparent parallel computations when run on multi-core machines.
@@ -552,10 +707,17 @@ When only the best run is of interest, the memory usage is optimized by using
 shared memory and mutex objects from the \code{bigmemory} package, to only keep the 
 current best factorization.
 
-
-\bigskip
+\medskip
 \paragraph{IMPORTANT NOTE:} because it uses the \code{multicore} package, 
 parallel computation over multi-cores is available only for Unix and Mac machines.
+The parallel computation is based on the \code{doMC} and \code{multicore} packages, 
+so the same care should be taken as stated in the vignette of \code{doMC}:
+\begin{quote}
+It is not safe to use doMC from R.app on MacOS X.
+Instead, you should use doMC from a terminal session, starting R from the command line.
+\end{quote}
+Therefore, the \code{nmf} function does not allow to run multicore computation from the 
+MacOS X GUI. 
 
 \bigskip
 The default parallel backend used by the \code{nmf} function is defined by the 
@@ -586,24 +748,24 @@ will run using option \code{'p'} (i.e. try-parallel mode).
 \end{itemize}
 
 \paragraph{Examples}\ \\
+The following exmaples are run with \code{.options='v'} which turn on verbosity.
+However \emph{Sweave} do not show all the messages. 
+The user is therefore encouraged to run these commands on his machine to see the internal differences of each call.
+
 <<parallel_multicore>>=
-# default call will try to run in parallel using all the cores
+# the default call will try to run in parallel using all the cores
 # => will be in parallel if all the requirements are satisfied
-nmf(esGolub, 3, nrun=10, .opt='v')
+nmf(esGolub, 3, nrun=5, .opt='v')
 @
 
 <<parallel_multicore_alt, eval=FALSE>>=
 # specifying the number of cores to use 
-nmf(esGolub, 3, nrun=10, .opt='v', .pbackend=2)
+nmf(esGolub, 3, nrun=5, .opt='v', .pbackend=2)
 
 # force parallel computation: use option 'P'
-nmf(esGolub, 3, nrun=10, .opt='vP')
-
-# force sequential computation: use option '-p'
-nmf(esGolub, 3, nrun=10, .opt='v-p')
-# or use the SEQ backend: .pbackend=NULL or 'seq'
-nmf(esGolub, 3, nrun=10, .opt='vp', .backend=NULL)
+nmf(esGolub, 3, nrun=5, .opt='vP')
 @
+
 
 \subsubsection{High Performance Computing on a cluster}
 
@@ -654,7 +816,7 @@ t <- system.time({
 	}
 })
 ## 3. reduce the result and save it in a file
-res <- NMF:::join(res, runtime=t, .merge=TRUE)
+res <- NMF:::join(res, runtime.all=t)
 save(res, file='result.RData')
 
 ## 4. Shutdown the cluster and quit MPI
@@ -679,6 +841,28 @@ echo "Got $NSLOTS slots. $TMP/machines"
 orterun -v -n $NSLOTS -hostfile $TMP/machines R --slave -f mpi.R
 \end{verbatim}
 \end{shaded}
+
+\subsubsection{Forcing sequential execution}
+When running on a single core machine, \nmfpack package has no other option than 
+performing the multiple runs sequentially, one after another. 
+This is done via the \code{sapply} function.
+
+On multi-core machine, one usually wants to perform the runs in parallel, as it 
+speeds up the computation (cf. section \ref{multicore}).
+However in some situation (e.g. while debugging), it might be useful to force the 
+sequential execution of the runs. This can be done via the option \code{'-p'} or 
+by setting the parallel backend to \code{NULL}, \code{'seq'} or \code{''}:
+
+<<force_seq, eval=FALSE>>=
+# force sequential computation by sapply: use option '-p' or .pbackend=''
+nmf(esGolub, 3, nrun=5, .opt='v-p')
+nmf(esGolub, 3, nrun=5, .opt='v', .pbackend='')
+
+# or use the SEQ backend of foreach: .pbackend=NULL or 'seq'
+nmf(esGolub, 3, nrun=5, .opt='v', .pbackend=NULL)
+nmf(esGolub, 3, nrun=5, .opt='v', .pbackend='seq')
+@
+
 
 \subsection{Estimating the factorization rank}
 A critical parameter in NMF is the factorization rank $r$. 
@@ -705,7 +889,7 @@ The result is a S3 object of class \code{NMF.rank}, that contains a
 row. It also contains a list of the consensus matrix for each value of $r$.
 
 All the measures can be plotted at once by the following call, the result is shown 
-in Figure~\ref{fig:estim_all}:
+in Figure \ref{fig:estim_all}:
 <<estimate_rank_plot, include=FALSE>>=
 plot(estim.r)
 @
@@ -725,19 +909,24 @@ choose the first value where the RSS curve presents an inflection point,
 and \cite{Frigyesi2008} considered the smallest value at which the decrease in 
 the RSS is lower than the decrease of the RSS obtained from random data.
 
-The former approach may be useful to prevent or detect overfitting as it 
-take into account the results for unstructured data.
+\subsubsection{Overfitting}
+Even on random data, increasing the factorization rank would lead to decreasing 
+residuals, as more variables are available to better fit the data.
+In other words, there is potentially an overfitting problem. 
+ 
+In this context, the approach from \cite{Frigyesi2008} may be useful to prevent 
+or detect overfitting as it takes into account the results for unstructured data.
 However it requires to compute the quality measure(s) for the random data.
 The \nmfpack package provides a function that shuffles the original data, 
 by permuting the rows of each column, using each time a different permutation.
-The estimation procedure can then be repeated on the randomized data, and the 
-the ``random'' measures can be conveniently added to the plot for comparison 
-(see Figure~\label{fig:estim_all_rd}):
+The rank estimation procedure can then be applied to the randomized data, and the 
+the ``random'' measures is easily added to the plot for comparison 
+(see Figure \ref{fig:estim_all_rd}):
 
 <<estimate_r_random, include=FALSE>>=
 # shuffle original data
 V.random <- randomize(esGolub)
-# estimate quality measures from the shuffled data 
+# estimate quality measures from the shuffled data (use default NMF algorithm)
 estim.r.random <- nmfEstimateRank(V.random, range=2:6, nrun=10, seed=123456)
 # plot measures on same graph
 plot(estim.r, ref=estim.r.random)
@@ -748,7 +937,8 @@ plot(estim.r, ref=estim.r.random)
 <<estimate_r_random>>
 @
 \caption{Estimation of the rank: Comparison of the quality measures with those 
-obtained from randomized data}
+obtained from randomized data. The curves for the actual data are in blue and green, 
+those for the randomized data are in red and pink. The estimation is based on Brunet's algorithm.}
 \end{figure}
 
 \subsection{Visualization methods}
@@ -757,13 +947,13 @@ obtained from randomized data}
 
 If the NMF computation is performed with error tracking enabled -- using argument 
 \code{.options} -- the trajectory of the objective value can be plot with 
-method \code{errorPlot} (see Figure \ref{fig:error}): 
+method \code{plot} (see Figure \ref{fig:error}): 
 
 <<errorplot_compute, include=FALSE>>=
 res <- nmf(esGolub, 3, .options='t')
 # or alternatively:
 # res <- nmf(esGolub, 3, .options=list(track=TRUE))
-errorPlot(res)
+plot(res)
 @
 
 \begin{figure}[ht]
@@ -780,12 +970,12 @@ errorPlot(res)
 Method \code{metaHeatmap} provides an easy way to vizualize the resulting 
 metagenes, metaprofiles and, in the case of multiple runs, the consensus matrix. 
 It produces pre-configured heatmaps based on function \code{heatmap.2} from 
-package \code{gplots}. Examples of those heatmaps are shown in figures~\ref{fig:heatmap_profiles}, 
+package \code{gplots}. Examples of those heatmaps are shown in figures \ref{fig:heatmap_profiles}, 
 \ref{fig:heatmap_genes}, \ref{fig:heatmap_consensus} and
 \ref{fig:heatmap_consensus_precomp}.
 
 The following -- default -- call plots the metaprofiles matrix (see result 
-Figure~\ref{fig:heatmap_profiles}):
+Figure \ref{fig:heatmap_profiles}):
 <<heatmap_profile, include=FALSE>>=
 # default is to plot metaprofiles
 metaHeatmap(res) 
@@ -801,7 +991,7 @@ metaHeatmap(res)
 \end{figure}
 
 The metagenes matrix can be plotted specifying the second argument
-\code{what} (see result Figure~\ref{fig:heatmap_genes}). 
+\code{what} (see result Figure \ref{fig:heatmap_genes}). 
 We use argument \code{filter} to select only the genes that are specific to 
 each metagene. 
 With \code{filter=TRUE}, the selection method is the one described in \cite{Kim2007}.
@@ -821,7 +1011,7 @@ metaHeatmap(res, what='features', filter=TRUE)
 
 In the case of multiple runs method \code{metaHeatmap} plots the consensus
 matrix, i.e. the average connecticity matrix accross the runs (see results
-Figures~\ref{fig:heatmap_consensus} and \ref{fig:heatmap_consensus_precomp}
+Figures \ref{fig:heatmap_consensus} and \ref{fig:heatmap_consensus_precomp}
 for a consensus matrix obtained with 100 runs of Brunet's algorithm on Golub
 dataset):
 <<heatmap_consensus, include=FALSE>>=
@@ -868,11 +1058,11 @@ compare(res.multi.method, class=esGolub$Cell)
 @
 
 When the computation is performed with error tracking enabled, an error plot is 
-produced by method \code{errorplot} (see figure~\ref{fig:multi_error}):
+produced by method \code{plot} (see figure \ref{fig:multi_error}):
 
 <<multiple_errorplot_compute, include=FALSE>>=
 res <- nmf(esGolub, 3, list('brunet', 'lee', 'ns'), seed=123456, .options='t')
-errorPlot(res)
+plot(res)
 @
 
 \begin{figure}[ht]
@@ -886,9 +1076,9 @@ errorPlot(res)
 
 
  
-\section{Advanced usage}
+\section{Extending the package}
 
-We developped the \nmfpack\ package with the objective to facilitate the integration 
+We developed the \nmfpack\ package with the objective to facilitate the integration 
 of new NMF methods, trying to impose only few requirements on their implementations. 
 All the built-in algorithms and seeding methods are implemented as strategies 
 that are called from within the main interface method \code{nmf}. 
@@ -994,13 +1184,26 @@ nmf(V, 3, my.algorithm, scale.factor=10
 %\item 
 %\end{enumerate}
 
-\subsubsection{Handling mixed sign data}
-Some NMF algorithms work with relaxed constraints, where the input data and one of the matrix factors are allowed to have negative entries (eg. semi-NMF).
-One can plug such algorithms into the framework defined by package NMF, by specifying argument \code{mixed=TRUE}.
-The default value for argument \code{mixed} is \code{FALSE}, so that method \code{nmf} throws an error if applied to a matrix with some negative entries.
-Note that the sign of the factors is not checked, so that one can always return factors with negative entries, independently of the value of argument \code{mixed}.
-Here we reuse the previously defined custom algorithm\footnote{As it is defined here, the custom algorithm still returns nonnegative factors, which would not be desirable in a real example.}:
+\subsubsection{Defining algorithms for mixed sign data}
+All the algorithms implemented in the \nmfpack package assume that the input data is nonnegative.
+However, some methods exist in the litterature that work with relaxed constraints, where 
+the input data and one of the matrix factors ($W$ or $H$) are allowed to have negative 
+entries (eg. semi-NMF \cite{Ding2008, Roux2008}).
+The \nmfpack package is designed so that such algorithms -- that handle negative data -- can be 
+integrated into its framework.  
 
+By default, the sign of the input data is checked before running any method, so that the 
+\code{nmf} function throws an error if applied to data that contain negative entries
+\footnote{Note that on the other side, the sign of the factors returned by the algorithms is never 
+checked, so that one can always return factors with negative entries.}.
+To extend the capabilities of the \nmfpack package in handling negative data, 
+and plug mixed sign NMF methods into the framework, one needs to specify the argument 
+\code{mixed=TRUE} in the call to the \code{nmf} function.
+This will skip the sign check of the input data and let the custom algorithm perform the factorization.
+ 
+As an example, we reuse the previously defined custom algorithm\footnote{As it is defined here, the custom 
+algorithm still returns nonnegative factors, which would not be desirable in a real example, as one would not 
+be able to closely fit the negative entries.}:
 
 <<custom_algo_run_mixed>>=
 # put some negative input data 
@@ -1022,10 +1225,11 @@ that introduces an extra parameter, and change the way the target matrix is
 approximated.
 
 The NMF models are defined as S4 classes that extends class \code{NMF}. All the 
-available models can be retireved using the \code{nmf.models()} function:
+available models can be retireved calling the \code{nmfModel()} function with no 
+argument:
 
 <<nmf_models>>=
-nmf.models()
+nmfModel()
 @ 
  
 One can specify the NMF model to use with a custom algorithm, using argument 
@@ -1098,13 +1302,15 @@ To use the new seeding method:
 nmf(V, 3, 'snmf/r', seed=my.seeding.method)
 @
 
+\section{Advanced usage}
+
 \subsection{Package specific options}
 The package specific options can be retieved or changed using the \code{nmf.getOption} 
 and \code{nmf.options} functions. 
 These behave similarly as the \code{getOption} and \code{nmf.options} 
 base functions:
 
-<<options_algo>>=
+<<options_algo, eval=FALSE>>=
 #show default algorithm and seeding method
 nmf.options('default.algorithm', 'default.seed')
 
@@ -1115,10 +1321,44 @@ nmf.getOption('default.seed')
 nmf.options()
 @
 
+Currently the following options are available:
+
+% latex table generated in R 2.10.1 by xtable 1.5-6 package
+% Wed Apr  7 15:27:05 2010
+\begin{table}[ht]
+\begin{center}
+\begin{tabularx}{\textwidth}{>{\ttfamily}rlX}
+  \hline
+Option & Default value & Description\\ 
+\hline
+default.algorithm & brunet & Default NMF algorithm used by the \code{nmf} function when argument \code{method} is missing.
+The value should the key of one of the available NMF algorithms. See \code{?nmfAlgorithm}.\\ 
+track.interval & 30 & Number of iterations between two points in the residual track. 
+This option is relevant only when residual tracking is enabled. See \code{?nmf}.\\ 
+error.track & FALSE & Toggle default residual tracking. When \code{TRUE}, the \code{nmf} function 
+compute and store the residual track in the result -- if not otherwise specified in argument \code{.options}.
+Note that tracking may significantly slow down the computations.\\ 
+default.seed & random & Default seeding method used by the \code{nmf} function when argument \code{seed} is missing.
+The value should the key of one of the available seeding methods. See \code{?nmfSeed}.\\
+parallel.backend & mc & Default parallel backend used used by the \code{nmf} function when argument \code{.pbackend} is missing.
+Currently the following values are supported: \code{'mc'} for multicore, \code{'seq'} for sequential, \code{''} for \code{sapply}.\\
+verbose & FALSE & Toggle verbosity.\\ 
+debug & FALSE & Toggle debug mode, which is an extended verbose mode.\\ 
+\hline
+\end{tabularx}
+\end{center}
+\end{table}
+
+ 
+\section{Session Info}
+<<sessionInfo, echo=FALSE>>=
+sessionInfo()
+@
+
 \addcontentsline{toc}{section}{References}
 \begin{thebibliography}{}
 
-\bibitem[Albright et al., 2006]{Albright2006} R. Albright, J. Cox, D. Duling, A. Langville, C. Meyer (2006).
+\bibitem[Albright {\em et al.}, 2006]{Albright2006} R. Albright, J. Cox, D. Duling, A. Langville, C. Meyer (2006).
 Algorithms, initializations, and convergence for the nonnegative matrix factorization.
 {\it NCSU Technical Report Math 81706}. \url{http://meyer.math.ncsu.edu/Meyer/Abstracts/Publications.html}.
 
@@ -1130,11 +1370,16 @@ In \emph{Pacific Symposium on Biocomputing}, \emph{Volume 290} 2008:279--290.
 Applications for Approximate Nonnegative Matrix Factorization. {\it Comput.
 Stat. Data Anal.}
 
-\bibitem[Brunet {\em et~al.}, 2004]{Brunet04} Brunet, J.~P., Tamayo, P., Golub, T.~R., and Mesirov, J.~P. (2004). Metagenes and molecular pattern discovery using matrix factorization. {\em Proc Natl Acad Sci U S A\/}, {\bf 101}(12), 4164--4169.
+\bibitem[Brunet {\em et al.}, 2004]{Brunet04} Brunet, J.~P., Tamayo, P., Golub, T.~R., and Mesirov, J.~P. (2004). Metagenes and molecular pattern discovery using matrix factorization. {\em Proc Natl Acad Sci U S A\/}, {\bf 101}(12), 4164--4169.
 
 \bibitem[A. Cichocki {\it et al}., 2004]{Cichocki04} Andrzej Cichocki , Rafal Zdunek, and Shun-ichi Amari (2004). New algorithms For Non-negative Matrix Factorization In Application To Blind Source Separation.
 
 \bibitem[Chu {\it et al.}, 2004]{Chu2004} M.T. Chu, F. Diele, R. Plemmons, S. Ragni. Optimality, computation, and interpretation of nonnegative matrix factorizations. {\it Technical Report}, Departments of Mathematics and Computer Science, Wake Forest University, USA.
+
+\bibitem[Chris Ding {\em et al.}, 2008]{Ding2008} Ding, C., Li, T., Jordan, M.~I..
+Convex and Semi-Nonnegative Matrix Factorizations
+\emph{IEEE Transactions on Pattern Analysis and Machine Intelligence}, 2008, vol. 32, no. 1, pp. 45-55
+\url{[http://doi.ieeecomputersociety.org/10.1109/TPAMI.2008.277]}
 
 \bibitem[doMC, 2009]{doMC}
 {REvolution Computing}: \emph{doMC: Foreach parallel adaptor for the multicore
@@ -1146,20 +1391,20 @@ Stat. Data Anal.}
   package} 2009, \url{[http://CRAN.R-project.org/package=doMC]}. [R
   package version 1.3.0].
 
-\bibitem{Frigyesi2008}
+\bibitem[Frigyesi and H\"{o}glund, 2008]{Frigyesi2008}
 Frigyesi A, H\"{o}glund M: \textbf{Non-negative matrix factorization for the
   analysis of complex gene expression data: identification of clinically
   relevant tumor subtypes.} \emph{Cancer informatics} 2008,
   \textbf{6}:275--292,
   \url{[http://view.ncbi.nlm.nih.gov/pubmed/19259414]}.
 
-\bibitem{Gao2005}
+\bibitem[Gao and Church, 2005]{Gao2005}
 Gao Y, Church G: \textbf{Improving molecular cancer class discovery through
   sparse non-negative matrix factorization}. \emph{Bioinformatics} 2005,
   \textbf{21}(21):3970--3975,
   \url{[http://dx.doi.org/10.1093/bioinformatics/bti653]}.
 
-\bibitem{Gentleman2004}
+\bibitem[Gentleman {\em et al.}, 2004]{Gentleman2004}
 Gentleman RC, Carey VJ, Bates DM, Bolstad B, Dettling M, Dudoit S, Ellis B,
   Gautier L, Ge Y, Gentry J, Hornik K, Hothorn T, Huber W, Iacus S, Irizarry R,
   Leisch F, Li C, Maechler M, Rossini AJ, Sawitzki G, Smith C, Smyth G, Tierney
@@ -1168,7 +1413,7 @@ Gentleman RC, Carey VJ, Bates DM, Bolstad B, Dettling M, Dudoit S, Ellis B,
   \textbf{5}:R80,
   \url{[http://www.ncbi.nlm.nih.gov/pubmed/15461798]}.
 
-\bibitem{Hutchins2008}
+\bibitem[Hutchins {\em et al.}, 2008]{Hutchins2008}
 Hutchins LNN, Murphy SMM, Singh P, Graber JHH: \textbf{Position-Dependent Motif
   Characterization Using Nonnegative Matrix Factorization.}
   \emph{Bioinformatics (Oxford, England)} 2008,
@@ -1181,15 +1426,20 @@ Kim H, Park H: \textbf{{Sparse non-negative matrix factorizations via
   \textbf{23}:1495--502,
   \url{[http://www.ncbi.nlm.nih.gov/pubmed/17483501]}.
 
+\bibitem[Le Roux {\em et al.}, 2008]{Roux2008} Le Roux, J., de Cheveigné, A., Parra, L.~C.
+Adaptive Template Matching with Shift-Invariant Semi-NMF. 
+In {\it NIPS} 2008, 921-928.
+\url{[http://dblp.uni-trier.de/db/conf/nips/nips2008.html#RouxCP08]} 
+
 \bibitem[Lee and Seung, 2000]{Lee2000} Lee, D.~D. and Seung, H.~S. (2000). Algorithms for non-negative matrix factorization. In {\it {NIPS}\/}, 556-562.
 
-\bibitem[Pascual-Montano {\em et~al.}, 2006]{nsNMF2006} Pascual-Montano, A., Carazo, J.~M., Kochi, K., Lehmann, D., and Pascual-Marqui, R.~D. (2006). Nonsmooth nonnegative matrix factorization (nsnmf). {\em IEEE transactions on pattern analysis and machine intelligence\/}, {\bf 28}(3), 403-415.
+\bibitem[Pascual-Montano {\em et al.}, 2006]{nsNMF2006} Pascual-Montano, A., Carazo, J.~M., Kochi, K., Lehmann, D., and Pascual-Marqui, R.~D. (2006). Nonsmooth nonnegative matrix factorization (nsnmf). {\em IEEE transactions on pattern analysis and machine intelligence\/}, {\bf 28}(3), 403-415.
 
 \bibitem[R Software, 2008]{R} R Development Core Team.
 R: A Language and Environment for Statistical Computing.
 Vienna, Austria. ISBN 3-900051-07-0. \url{http://www.R-project.org}.
 
-\bibitem{Zhang2008}
+\bibitem[Zhang {\em et al.}, 2008]{Zhang2008}
 Zhang J, Wei L, Feng X, Ma Z, Wang Y: \textbf{Pattern expression nonnegative
   matrix factorization: algorithm and applications to blind source separation.}
   \emph{Computational intelligence and neuroscience} 2008,

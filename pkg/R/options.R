@@ -15,9 +15,10 @@ nmf.options <- function (..., runtime=FALSE){
 		return( current )
 	}	
 		
-	if (nargs() == 1 && is.list(...) ) params <- c(...)		
-	else params <- list(...)
-	
+	# changed on request from Brian Ripley (CRAN)
+	dots <- list(...)
+	params <- if (nargs() == 1 && is.list(dots[[1]]) ) dots[[1]] else dots
+		
 	# no names passed: parameters should be the names of the options to return
 	if ( is.null(names(params)) ){
 		if( !is.character(c(...)) )

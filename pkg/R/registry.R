@@ -113,7 +113,7 @@ nmfSubRegistry <- function(name, error=TRUE, create=FALSE){
 #' @param error a boolean. When set to \code{TRUE} (default) the function will raise an error if the key is not found.
 #' Otherwise it will not raise any error and return \code{NULL}.
 #'
-nmfGet <- function(name, registry.name, exact=FALSE, error=TRUE){
+nmfGet <- function(name, registry.name, all=FALSE, exact=FALSE, error=TRUE){
 	
 	# force the user to provide the registry's name 
 	if( missing(registry.name) ) stop("Parameter 'registry.name' is required")
@@ -122,7 +122,7 @@ nmfGet <- function(name, registry.name, exact=FALSE, error=TRUE){
 	registry <- nmfRegistry(registry.name)
 	
 	# if no name is provided then return the complete registry
-	if( missing(name) || is.null(name) ) return(ls(registry))
+	if( missing(name) || is.null(name) ) return(ls(registry, all.names=all))
 	
 	# if the registry is empty: send an error/warning if not running in silent mode
 	if( length(registry) == 0 ){
@@ -132,18 +132,23 @@ nmfGet <- function(name, registry.name, exact=FALSE, error=TRUE){
 	}
 	
 	# resolve the strategy's fullname	
-	fullname <- if( exact ) name else try( match.arg(name, ls(registry)), silent=TRUE)
+	fullname <- if( exact ) name else try( match.arg(name, ls(registry, all.names=TRUE)), silent=TRUE)
 	
 	# if the strategy was not found throw an error or return NULL
 	if ( inherits(fullname, 'try-error') ){
 		msg <- paste("Could not find NMF method '", name, "' in registry '", registry.name, "'.\n  -> Registered methods: ", paste(paste("'", ls(registry), "'", sep=''), collapse=', '), '.', sep='')
-		if( error ) stop(msg)
+		if( error ) stop(msg, call.=FALSE)
 		if( getOption('verbose') ) warning(msg)
 		return(NULL)
 	}
 	
-	# add the name attribute if necessary (it is not for methods defined by an NMFStrategy object
+	# add the name attribute if necessary (it is not for methods defined by an NMFStrategy object)
 	res <- registry[[fullname]]
+	
+	# if the result is a character string => it is a 'symlink' to another method
+	if( is.character(res) ) 
+		return( nmfGet(res, registry.name, exact, error) )
+	
 	if( !is.null(res) && is.null(attr(res, 'name')) ) attr(res, 'name') <- fullname
 	
 	# return the NMF strategy

@@ -50,7 +50,7 @@ W0 <- as.matrix(read.table('W.txt'))
 H0 <- as.matrix(read.table('H.txt'))
 
 # wrap the seed into a NMF object
-start <- newNMF(W=W0, H=H0)
+start <- nmfModelW=W0, H=H0)
 
 # apply Brunet algorithm
 res <- nmf(target, method='brunet', seed=start, .opt='v')

@@ -31,7 +31,7 @@
 #' # perform a 3-rank NMF using the default algorithm
 #' res <- nmf(V, 3)
 
-.onLoad <- function(...){
+.onLoad <- function(libname, pkgname=NULL) {
 	
 	.init.sequence <- function(){
 	
@@ -45,15 +45,55 @@
 		.init.nmf.models()		
 		
 		## 3. INITIALIZE BIOC LAYER
-		if( .init.nmf.bioc() )
-			message("NMF :: BioConductor layer loaded\n")
+		b <- body(.onLoad.nmf.bioc)
+		env <- if( !is.null(pkgname) ) asNamespace(pkgname) else .GlobalEnv
+		bioc.loaded <- eval(b, envir=env)
+		if( is(bioc.loaded, 'try-error') )
+			message("NMF:load: loading BioConductor layer ... ERROR")
+		else if ( bioc.loaded )
+			message("NMF:load: loading BioConductor layer ... OK")
+		else
+			message("NMF:load: loading BioConductor layer ... SKIPPED")
 	}
 	
 	# run intialization sequence suppressing messages or not depending on verbosity options
 	if( getOption('verbose') ) .init.sequence()
 	else suppressMessages(.init.sequence())
 	
+	# load compiled library if one is loading the 
+	if( !missing(pkgname) )
+		library.dynam(pkgname, pkgname, libname)
+	else if( .Platform$OS.type == 'unix' ){ # compile and load the library
+		wd <- getwd()
+		clibname <- 'NMF-src.so'
+		libfile <- file.path(wd, '../libs', clibname)
+		if( !file.exists(dirname(libfile)) )
+			dir.create(dirname(libfile))
+		# unload library if necessary
+		if (clibname %in% names(base::getLoadedDLLs()))
+			dyn.unload(libfile)
+		if( file.exists(libfile) )
+			unlink(libfile)
+		# compile the source code
+		srcdir <- '../src'
+		setwd(srcdir)		
+		# cleanup on exit
+		srcdir <- getwd()
+		on.exit({system(paste('rm ', srcdir,'/*.o', sep=''))}, add=TRUE)		
+		cmd <- paste('R CMD SHLIB *.cpp -o ', libfile, sep='')
+		system(cmd)
+		setwd(wd)
+		# load the freshly compiled library
+		dyn.load(libfile)
+	}
+	
 	return(invisible())
+}
+
+.onUnload <- function(libpath) {
+	
+	# unload compiled library
+	library.dynam.unload("NMF", libpath);
 }
 
 .onAttach <- function(libname, pkgname){
@@ -109,10 +149,14 @@ setClassUnion('NMFPlugin', c('NMFStrategy', 'NMFSeed'))
 				
 				# wrap the result into a list
 				if( inherits(strats, 'NMFPlugin') )
-					strats <- list(strats)				
+					strats <- list(strats)
 				
-				# one should have a list of NMFStrategy objects
-				if( !is.list(strats) || !all(sapply(strats, function(s) inherits(s, 'NMFPlugin'))) ){
+				# if the plugin returns NULL then do nothing
+				if( is.null(strats) ){
+					message('DISABLED')
+				}
+				# otherwise one should have a list of NMFStrategy objects
+				else if( !is.list(strats) || !all(sapply(strats, function(s) inherits(s, 'NMFPlugin'))) ){
 					warning("NMF package: unable to load built-in plugin ", plugin.name, " [error: invalid result returned by '", funname,"']", call.=FALSE)
 					message('ERROR')
 				}

@@ -25,9 +25,15 @@
 
 \usage{
 
-\S4method{nmf}{matrix,numeric,function}(x, rank, method, name, objective='euclidean', model='NMFstd', mixed=FALSE, ...)
+\S4method{nmf}{matrix,numeric,function}(x, rank, method, name, objective='euclidean', model='NMFstd'
+										, mixed=FALSE, ...)
+
 \S4method{nmf}{matrix,numeric,character}(x, rank, method, ...)
-\S4method{nmf}{matrix,numeric,NMFStrategy}(x, rank, method, seed=nmf.getOption('default.seed'), nrun=1, model=NULL, .options=list(), ...)
+
+\S4method{nmf}{matrix,numeric,NMFStrategy}(x, rank, method, seed=nmf.getOption('default.seed')
+										, nrun=1, model=NULL, .options=list()
+										, .pbackend = nmf.getOption("parallel.backend")
+										, ...)
 
 }
 
@@ -113,31 +119,53 @@
   options need to be set, a character string that specifies which options are 
   turned on or off. The string must be composed of characters that correspond to 
   a given option. Characters '+' and '-' are used to explicitly specify on and 
-  off respectively. E.g. \code{.options='tv'} will toogle on options \code{track} 
-  and \code{verbose}, while \code{.options='t-v'} will toogle on option \code{track} 
+  off respectively. E.g. \code{.options='tv'} will toggle on options \code{track} 
+  and \code{verbose}, while \code{.options='t-v'} will toggle on option \code{track} 
   and off option \code{verbose}. Note that '+' and '-' apply to all option 
-  character found after them. Default behaviour assumes that \code{.options} 
+  character found after them. The default behaviour is to assume that \code{.options} 
   starts with a '+'.
     
   The following options are available (note the characters that correspond to 
   each option, to be used when \code{.options} is passed as a string):
   \describe{
   
-  \item{debug - d}{ Toogle debug mode. Like option \code{verbose} but with more 
+  \item{debug - d}{ Toggle debug mode. Like option \code{verbose} but with more 
   information displayed.}
   
   \item{keep.all - k}{
-  used when performing multiple runs (\code{nrun}>1): if toogled on, all 
+  used when performing multiple runs (\code{nrun}>1): if toggled on, all 
   factorizations are saved and returned, otherwise only the factorization 
   achieving the minimum residuals is returned.
   }
   
-%  \item{optimized - o}{
-%  this option is used on multicore *nix machine only, when performing multiple runs 
-%  (\code{nrun} > 1). If toggled on, the runs are performed using multiple cores 
-%  thanks to package \code{link[package:doMC]{doMC}} -- which therefore needs to be 
-%  installed.
-%  }
+  \item{parallel - p}{
+  this option is useful on multicore *nix or Mac machine only, when performing 
+  multiple runs (\code{nrun} > 1). 
+  If toggled on, the runs are performed using the parallel backend defined in 
+  argument \code{.pbackend}. If this is set to \code{'mc'} then one tried to 
+  perform the runs using multiple cores with package \code{link[package:doMC]{doMC}} 
+  -- which therefore needs to be installed.
+  
+  Unlike option 'P' (capital 'P'), if the computation cannot be performed in parallel, 
+  then it will still be carried on sequentially.
+  
+  
+  \strong{IMPORTANT NOTE FOR MAC OS X USERS:}
+  The parallel computation is based on the \code{doMC} and \code{multicore} packages, 
+  so the same care should be taken as stated in the vignette of \code{doMC}:
+  \emph{\dQuote{it is not safe to use doMC from R.app on Mac OS X. Instead, you should 
+  use doMC from a terminal session, starting R from the command line.}}
+  }
+  
+  \item{parallel.required - P}{ Same as \code{p}, but an error is thrown if the 
+  computation cannot be performed in parallel.
+  }
+  
+  \item{restore.seed - r}{
+  used when seeding the NMF computation with a numeric seed. When \code{TRUE} (default) 
+  the random seed (\code{.Random.seed}) is restored to its value as before the call to 
+  the \code{nmf} function.  
+  }
   
   \item{track - t}{
   enables (resp. disables) error tracking. When \code{TRUE}, 
@@ -145,12 +173,19 @@
   This tracking functionality is available for all built-in algorithms.
   }
   
-  \item{verbose - v}{ Toogle verbosity. If on, messages about the configuration and the 
+  \item{verbose - v}{ Toggle verbosity. If on, messages about the configuration and the 
   state of the current run(s) are displayed.}
   
   }% end describe .options
   
   }% end .options
+  
+  \item{.pbackend}{ define the parallel backend (from the 
+  \code{\link[foreach]{foreach}} package) to use when running in parallel mode.
+  See options \code{p} and \code{P} in argument \code{.options}.
+  Currently it accepts the following values: \code{'mc'} or a number that specifies 
+  the number of cores to use, \code{'seq'} or \code{NULL} to use sequential backend.
+  }
   
   \item{rank}{The factorization rank to achieve [i.e a single positive \code{numeric}]}
    
@@ -214,8 +249,10 @@ point.}
 The returned value depends on the run mode:
 
   \item{Single run:}{An object that inherits from class \code{\linkS4class{NMF}}.}
-  \item{Multiple runs:}{When \code{nrun > 1} or when \code{method} is a \code{list}, 
-  this method returns an object of class \code{\linkS4class{NMFSet}}}
+  \item{Multiple runs, single method:}{When \code{nrun > 1} and \code{method} is 
+  NOT a \code{list}, this method returns an object of class \code{\linkS4class{NMFfitX}}.}
+  \item{Multiple runs, multiple methods:}{When \code{nrun > 1} and \code{method} is a \code{list}, 
+  this method returns an object of class \code{\linkS4class{NMFList}}.}
 }
 
 \section{NMF Algorithms}{
@@ -228,7 +265,7 @@ The following algorithms are available:
 multiplicative updates. See \emph{Lee and Seung (2000)}. }
 
 \item{\code{brunet}}{ Standard NMF. Based on Kullbach-Leibler divergence, it uses simple 
-multiplicative updates from \emph{Lee and Seung (2000)}, enhanced differently 
+multiplicative updates from \emph{Lee and Seung (2000)}, enhanced 
 to avoid numerical underflow.
  See \emph{Brunet et al. (2004)}. }
 
@@ -237,14 +274,19 @@ regularized Kullbach-Leibler divergence, it uses a modified version of
 Lee and Seung's multiplicative updates. 
 See \emph{Li et al. (2001)}. }
 
-\item{\code{nsNMF}}{ Nonsmooth NMF. Use a modified version of Lee and Seung's 
+\item{\code{nsNMF}}{ Nonsmooth NMF. Uses a modified version of Lee and Seung's 
 multiplicative updates for Kullbach-Leibler divergence to fit a extension 
-of the standard NMF model. 
+of the standard NMF model. It is meant to give sparser results.
 See \emph{Pascual-Montatno et al. (2006)}. }
 
-\item{\code{offset}}{ Use a modified version of Lee and Seung's multiplicative 
+\item{\code{offset}}{ Uses a modified version of Lee and Seung's multiplicative 
 updates for euclidean distance, to fit a NMF model that includes an intercept. 
 See \emph{Badea (2008)}. }
+
+\item{\code{pe-nmf}}{ Pattern-Expression NMF. Uses multiplicative updates to 
+minimize an objective function based on the Euclidean distance and regularized 
+for effective expression of patterns with basis vectors.
+See \emph{Zhang et al. (2008)}. }
 
 \item{\code{snmf/r}, \code{snmf/l}}{ Alternating Least Square (ALS) approach 
 from \emph{Kim and Park (2007)}. }
@@ -318,10 +360,13 @@ Liviu Badea (2008).
 Extracting Gene Expression Profiles Common To Colon And Pancreatic Adenocaricinoma Using Simultaneous Nonnegative Matrix Factorization.
 In \emph{Pacific Symposium on Biocomputing}, \bold{13}, 279--290
 
-
 S. Li, X. Hou, and H. Zhang (2001).
 Learning spatially localized, parts-based representation. 
-\emph{In Proc. CVPR}, 2001. 
+\emph{In Proc. CVPR}, 2001.
+
+Zhang J, Wei L, Feng X, Ma Z, Wang Y (2008). 
+Pattern expression nonnegative matrix factorization: algorithm and applications to blind source separation.
+\emph{Computational intelligence and neuroscience}  
 
 }
 
@@ -373,10 +418,12 @@ nmf(V, 3, 'ns')
 res <- nmf(V, 3, 'nsNMF', theta=0.8)
 }
 
-# compare some NMF algorithms
-res <- nmf(V, 3, list('brunet', 'lee', 'nsNMF'))
+# compare some NMF algorithms (tracking the residual error)
+res <- nmf(V, 3, list('brunet', 'lee', 'nsNMF'), seed=123456, .opt='t')
 res
-compare(res, class=groups)
+summary(res, class=groups)
+# plot the track of the residual errors
+\dontrun{plot(res)}
 
 # run on an ExpressionSet (requires package Biobase)
 \dontrun{
@@ -398,12 +445,12 @@ nmf(V, 3, seed='nn')
 nmf(V, 3, 'nsNMF', seed=123456)
 
 # run default algorithm specifying the starting point following the NMF standard model
-start.std <- newNMF(W=matrix(0.5, n, 3), H=matrix(0.2, 3, p))   
+start.std <- nmfModel(W=matrix(0.5, n, 3), H=matrix(0.2, 3, p))   
 nmf(V, seed=start.std)
 
 # to run nsNMF algorithm with an explicit starting point, this one
 # needs to follow the 'NMFns' model:
-start.ns <- newNMF(model='NMFns', W=matrix(0.5, n, 3), H=matrix(0.2, 3, p))   
+start.ns <- nmfModel(model='NMFns', W=matrix(0.5, n, 3), H=matrix(0.2, 3, p))   
 nmf(V, seed=start.ns)
 # Note: the method name does not need to be specified as it is infered from the 
 # when there is only one algorithm defined for the model.

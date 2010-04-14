@@ -31,7 +31,7 @@ setClass('NMFStrategy'
 			return("Slot 'objective' must either be a non-empty character string or a function definition.")
 			
 		# slot 'model' must be the name of a class that extends class 'NMF'
-		obj <- model(object)
+		obj <- modelname(object)
 		if( !is.character(obj) )
 			return("Slot 'model' must be a character vector")
 		invalid.class <- function(cl){ !extends(cl, 'NMF') }
@@ -57,7 +57,7 @@ setMethod('show', 'NMFStrategy',
 			svalue <- objective(object)
 			svalue <- if( is.function(svalue) ) '<function>' else paste("'", svalue,"'", sep='')
 			cat("objective:\t", svalue, "\n")
-			cat("NMF model:\t", model(object), "\n")
+			cat("NMF model:\t", modelname(object), "\n")
 			return(invisible())
 		}
 )
@@ -122,14 +122,14 @@ setReplaceMethod('objective', signature(object='NMFStrategy', value='function'),
 )
 
 #' Accessor methods to slot \code{model}
-if ( !isGeneric('model') ) setGeneric('model', function(object, ...) standardGeneric('model'))
-setMethod('model', signature(object='NMFStrategy'),
+if ( !isGeneric('modelname') ) setGeneric('modelname', function(object, ...) standardGeneric('modelname'))
+setMethod('modelname', signature(object='NMFStrategy'),
 	function(object){
 		slot(object, 'model')
 	}
 )
-if ( is.null(getGeneric('model<-')) ) setGeneric('model<-', function(object, ..., value) standardGeneric('model<-'))
-setReplaceMethod('model', signature(object='NMFStrategy', value='character'),
+if ( is.null(getGeneric('modelname<-')) ) setGeneric('modelname<-', function(object, ..., value) standardGeneric('modelname<-'))
+setReplaceMethod('modelname', signature(object='NMFStrategy', value='character'),
 	function(object, value){
 		slot(object, 'model') <- value
 		validObject(object)
@@ -198,9 +198,17 @@ setMethod('newNMFStrategy', signature(method='function', key='character'),
 )
 
 #' Access to registered algorithms
-nmfAlgorithm <- function(name=NULL, model, ...){	
+nmfAlgorithm <- function(name=NULL, model, type=c('C', 'R'), ...){	
 	
-	algo <- nmfGet(name, registry.name='algorithm', ...)
+	# check for type filtering
+	if( missing(name) && !missing(type)  ){
+		type <- match.arg(type)
+		algo <- nmfGet(name, registry.name='algorithm', all=TRUE)
+		algo <- algo[grep(paste("^\\.", type, '#', sep=''), algo)]
+		names(algo) <- sub(paste(".", type, '#', sep=''), '', algo, fixed=TRUE)
+	}
+	else algo <- nmfGet(name, registry.name='algorithm', ...)
+	
 	if( missing(model) )
 		return(algo)
 	else{ # lookup for an algorithm suitable for the given NMF model
@@ -209,13 +217,13 @@ nmfAlgorithm <- function(name=NULL, model, ...){
 		
 		# if the algo was defined then say if it is defined for the given model
 		if( inherits(algo, 'NMFStrategy') )
-			return( is.element(model, model(algo)) )
+			return( is.element(model, modelname(algo)) )
 		
 		# start lookup
 		algo.ok <- NULL
 		for( name in algo ){
 			algo.test <- nmfAlgorithm(name)
-			if( is.element(model, model(algo.test)) )
+			if( is.element(model, modelname(algo.test)) )
 				algo.ok <- c(algo.ok, name)
 		}
 		
@@ -227,7 +235,7 @@ nmfAlgorithm <- function(name=NULL, model, ...){
 #' Returns TRUE if the algorithm is registered FALSE otherwise
 existsNMFAlgorithm <- function(name, exact=TRUE){	
 	
-	res <- !is.null( nmfGet(name, registry.name='algorithm', error=FALSE, exact=exact) )
+	res <- !is.null( nmfGet(name, registry.name='algorithm', all=TRUE, error=FALSE, exact=exact) )
 	return(res)
 	
 }

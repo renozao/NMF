@@ -89,15 +89,15 @@ operator \code{\link{new}}
 
 However, as for all the classes that extend class \code{\linkS4class{NMFstd}}, 
 objects of class \code{NMFns} should be created using factory method 
-\code{\link{newNMF}} :
+\code{\link{nmfModel}} :
 
 \code{new('NMFns', theta=0.8)}
 
-\code{newNMF(model='NMFns')}
+\code{nmfModel(model='NMFns')}
 
-\code{newNMF(model='NMFns', theta=0.8)}
+\code{nmfModel(model='NMFns', theta=0.8)}
 
-See \code{\link{newNMF}} for more details on how to use the factory method. 
+See \code{\link{nmfModel}} for more details on how to use the factory method. 
 }
 \section{Slots}{
 
@@ -154,7 +154,7 @@ new('NMFns')
 n <- 50; r <- 3; p <- 20
 w <- matrix(runif(n*r), n, r) 
 h <- matrix(runif(r*p), r, p)
-newNMF(model='NMFns', W=w, H=h)
+nmfModel(model='NMFns', W=w, H=h)
 
 # apply Nonsmooth NMF algorithm to a random target matrix
 V <- matrix(runif(n*p), n, p)

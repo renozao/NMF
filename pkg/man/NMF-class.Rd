@@ -5,7 +5,11 @@
 
 \alias{[,NMF-method}
 
+\alias{consensus,NMF-method}
+
 \alias{dim,NMF-method}
+\alias{dimnames,NMF-method}
+\alias{dimnames<-,NMF-method}
 \alias{distance}
 \alias{distance,matrix,NMF-method}
 \alias{distance,missing,missing-method}
@@ -18,6 +22,10 @@
 \alias{fitted,NMF-method}
 \alias{is.empty.nmf}
 \alias{is.empty.nmf,NMF-method}
+
+\alias{modelname}
+\alias{modelname,NMF-method}
+
 \alias{nbasis}
 \alias{nbasis,NMF-method}
 \alias{rnmf}
@@ -35,7 +43,7 @@
 \alias{show,NMF-method}
 \alias{summary,NMF-method}
 
-\title{Interface class for Nonnegative Matrix Factorisation models}
+\title{Interface Class for Nonnegative Matrix Factorisation Models}
 \description{This is a \emph{virtual class} that defines a common interface to handle 
 Nonnegative Matrix Factorisation models (NMF models) in a generic way.
 
@@ -58,7 +66,7 @@ the standard NMF model and its -- built-in -- extensions.
 	This class contains a single slot, that is used internally during the computations.
 	
 	\describe{
-	 \item{\code{misc}:}{A list that is used internally to temporarly store 
+	 \item{\code{misc}:}{A list that is used internally to temporarily store 
 	 algorithm parameters during the computation.}
     }
 	
@@ -126,9 +134,9 @@ only objects from its sub-classes. However, those objects are sometimes shortly 
 in the documentation as "\code{NMF} objects" instead of "objects that inherits from class \code{NMF}".
 
 For built-in models or for models that inherit from the standard model class \code{NMFstd}, 
-the factory method \code{newNMF} enables to easily create valid \code{NMF} 
+the factory method \code{nmfModel} enables to easily create valid \code{NMF} 
 objects in a variety of common situations. 
-See \code{\link{newNMF}} for more details.
+See \code{\link{nmfModel}} for more details.
  
 }
 
@@ -192,11 +200,33 @@ See \code{\link{newNMF}} for more details.
      shows the shared membership of the samples: entry \eqn{C_{ij}} is 1 if 
      samples \eqn{i} and \eqn{j} belong to the same cluster, 0 otherwise.
     }
+    
+    \item{consensus}{\code{signature(object = "NMF")}: 
+    returns the consensus matrix associated with multiple runs of NMF, as the  
+    the mean connectivity matrix across the runs.
+    For objects of class \code{NMF}, it reduces to the connectivity matrix, and 
+    the method is defined to create a uniform access interface to NMF results.
+    }
 
     \item{dim}{\code{signature(x = "NMF")}: returns a 3-length vector containing 
     the dimension of the target matrix together with the NMF factorization rank. 
     For example \code{c(2000,30,3)} for a \code{NMF} object that fits a 2000x30 
     target matrix using 3 basis vectors.}
+    
+    \item{dimnames}{\code{signature(x = "NMF")}: returns the dimension names of the 
+    NMF model \code{x}.
+    It returns a 3-length list containing the row names of the basis matrix, the 
+    column names of the mixture coefficient matrix, and the column names of the 
+    basis matrix (i.e. the basis vector names). 
+    }
+    
+    \item{dimnames<-}{\code{signature(x = "NMF", value)}: sets the dimension names of the 
+    NMF model \code{x}. 
+    \code{value} can be a 2 or 3-length list providing names at least for the rows of 
+    the basis vector matrix and the columns of the mixture coefficient matrix. If present, the 
+    optional third element of \code{value} is used to set both the names of the columns of 
+    the basis vector matrix and the rows of the mixture coefficient matrix.   
+    }
 
     \item{distance}{\code{signature(target = "matrix", x = "NMF", method, ...)}: 
     returns the distance between a target matrix and a NMF model, according to 
@@ -206,13 +236,18 @@ See \code{\link{newNMF}} for more details.
     a \code{function} or a \code{character} string that correspond to a registered 
     distance metric. For the moment only the metric 'KL' and 'euclidean' are defined.
     
-    See function \code{\link{distance}} for more details.
+    %See function \code{\link{distance}} for more details.
     }
 
     \item{entropy}{\code{signature(x = "NMF", class = "factor")}: 
     computes the entropy of NMF model \code{x} given a priori known groups of samples. 
     See generic function \code{\link{entropy}} for more details.}
 
+    \item{evar}{\code{signature(object = "NMF", target)}: 
+    computes the explained variance of NMF model \code{object} that approximates 
+    \code{target}. 
+    See generic function \code{\link{evar}} for more details.}
+    
     \item{featureNames}{\code{signature(object = "NMF")}: 
     returns the row names of the basis matrix.
     If BioConductor is installed this method is defined for the generic function 
@@ -249,7 +284,7 @@ See \code{\link{newNMF}} for more details.
     have respectively zero rows and zero columns. It returns \code{FALSE} otherwise.
     This means that an empty model can still have a non-zero number of basis vectors. 
     For example, this happens in the case of NMF models created using factory method 
-    \code{\link{newNMF}} with no initialisation for any factor matrices.
+    \code{\link{nmfModel}} with no initialisation for any factor matrices.
     }
     
     \item{metaHeatmap}{ Produces a heatmap of the basis or mixture 
@@ -257,6 +292,9 @@ See \code{\link{newNMF}} for more details.
     tuned for displaying NMF results. 
     See \code{\link{metaHeatmap}} for more details.
 	}
+	
+	\item{\code{modelname}:}{ returns the name of the model fitted by the object.
+	It corresponds to the name of the S4 class of the object.}    
 	
     \item{nbasis}{\code{signature(x = "NMF")}: 
     returns the number of basis vectors used in NMF model \code{x}. 
@@ -376,7 +414,7 @@ See \code{\link{newNMF}} for more details.
 \seealso{
 	Main interface to perform NMF in \code{\link{nmf-methods}}. 
 	
-	Built-in NMF models and factory method in \code{\link{newNMF}}.
+	Built-in NMF models and factory method in \code{\link{nmfModel}}.
 	
 	Method \code{\link{seed}} to set NMF objects with values suitable to start 
 	algorithms with. 
@@ -384,17 +422,17 @@ See \code{\link{newNMF}} for more details.
 \examples{
 
 # show all the NMF models available (i.e. the classes that inherit from class NMF)
-nmf.models()
+nmfModel()
 # show all the built-in NMF models available
-nmf.models(builtin.only=TRUE)
+nmfModel(builtin.only=TRUE)
 
 # class NMF is a virtual class so cannot be instantiated: 
 # the following generates an error
 \dontrun{new('NMF')}
 
-# To instantiate a NMF model, use factory method newNMF (see ?newNMF)
-newNMF(3)
-newNMF(3, model='NMFns')
+# To instantiate a NMF model, use factory method nmfModel. see ?nmfModel
+nmfModel(3)
+nmfModel(3, model='NMFns')
 
 
 }

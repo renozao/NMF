@@ -71,7 +71,7 @@ setMethod('coefficients', signature(object='NMF'),
 if ( !isGeneric('rnmf') ) setGeneric('rnmf', function(x, target, ...) standardGeneric('rnmf') )
 
 #' Returns all the NMF model available
-nmf.models <- function(builtin.only=FALSE){
+nmfModels <- function(builtin.only=FALSE){
 	
 	if( builtin.only ) return( .nmf.Models.Builtin )
 	
@@ -85,11 +85,15 @@ nmf.models <- function(builtin.only=FALSE){
 #' Initialization function for NMF models
 .nmf.Models.Builtin <- NULL
 .init.nmf.models <- function(){	
-	.nmf.Models.Builtin <<- nmf.models()
+	.nmf.Models.Builtin <<- nmfModels()
 }
 ################################
 
-
+# deprecated version of newNMF
+newNMF <- function(...){
+	.Deprecated('nmfModel')
+	nmfModel(...)
+}
 #' Factory method for objects that inherit from class \code{NMF}.
 #' 
 #' @param rank the factorization rank (i.e. the number of metagenes). It is coerced into an integer.
@@ -100,7 +104,7 @@ nmf.models <- function(builtin.only=FALSE){
 #' @seealso NMF-class 
 #' @author Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
 #' @export
-if ( is.null(getGeneric('newNMF')) ) setGeneric('newNMF', function(rank, target=0, ...) standardGeneric('newNMF'))
+if ( is.null(getGeneric('nmfModel')) ) setGeneric('nmfModel', function(rank, target=0, ...) standardGeneric('nmfModel'))
 #' Main constructor method that is eventually called by all \code{NMF} methods. 
 #' 
 #' @param rank the factorization rank (i.e. the number of metagenes). It is coerced into an integer.
@@ -109,11 +113,11 @@ if ( is.null(getGeneric('newNMF')) ) setGeneric('newNMF', function(rank, target=
 #' @param ... extra parameters passed to class \code{class} default constructor.
 #' @examples 
 #' # create a NMF object of factorization rank 3 adapted to fit a 1000 x 30 matrix 
-#' obj <- newNMF(3, c(1000,30))
+#' obj <- nmfModel3, c(1000,30))
 #' obj
 #' 
 #' @export
-setMethod('newNMF', signature(rank='numeric', target='numeric'),
+setMethod('nmfModel', signature(rank='numeric', target='numeric'),
 	function(rank, target, model='NMFstd', W, H, ...){
 		
 		# check validity of the provided class
@@ -187,8 +191,13 @@ setMethod('newNMF', signature(rank='numeric', target='numeric'),
 		}
 		
 		# build and return a dummy NMF object
-		nmf.debug('newNMF', "Instantiate NMF model:", model)
-		new(model, W=W, H=H, ...)		
+		nmf.debug('nmfModel', "Instantiate NMF model:", model)
+		res <- new(model, ...)
+		nmf.debug('nmfModel', "Set factors in model:", model)
+		basis(res) <- W; coef(res) <- H
+		
+		# return the model
+		res
 	}
 )
 #' Constructor method with \code{rank} as a single argument. 
@@ -200,21 +209,40 @@ setMethod('newNMF', signature(rank='numeric', target='numeric'),
 #' 
 #' @examples
 #' # create an empty NMF object of factorization rank 3
-#' obj <- newNMF(3)
+#' obj <- nmfModel3)
 #' obj
 #' 
 #' @seealso is.empty.nmf 
 #' @export
-setMethod('newNMF', signature(rank='numeric', target='missing'),
+setMethod('nmfModel', signature(rank='numeric', target='missing'),
 		function(rank, target, ...){
-			newNMF(rank, 0, ...)
+			nmfModel(rank, 0, ...)
 		}
 )
 
 #' Creates an empty NMF object
-setMethod('newNMF', signature(rank='missing', target='ANY'),
+setMethod('nmfModel', signature(rank='missing', target='ANY'),
 		function(rank, target, ...){
-			newNMF(0, target, ...)
+			nmfModel(0, target, ...)
+		}
+)
+
+#' Creates an empty NMF object
+setMethod('nmfModel', signature(rank='NULL', target='ANY'),
+		function(rank, target, ...){
+			nmfModel(0, target, ...)
+		}
+)
+
+#' List the currently defined NMF models
+setMethod('nmfModel', signature(rank='missing', target='missing'),
+		function(rank, target, builtin.only=FALSE, ...){
+			
+			# no extra argument was passed => list the available models
+			if( length(list(...)) == 0 )
+				nmfModels(builtin.only)
+			else # build an a priori empty model (extra args may provide the true dimension)
+				nmfModel(0, 0, ...)
 		}
 )
 
@@ -229,16 +257,16 @@ setMethod('newNMF', signature(rank='missing', target='ANY'),
 #' # create a NMF object of factorization rank 3 adapted to fit a given matrix
 #' n <- 1000; m <-30 # the target matrix dimensions 
 #' V <- matrix(runif(n*m), n, m) # create a random matrix 
-#' obj <- newNMF(3, V)
+#' obj <- nmfModel3, V)
 #' obj
 #' all(is.na(obj@@W))
 #' 
 #' @export
-setMethod('newNMF', signature(rank='numeric', target='matrix'),
+setMethod('nmfModel', signature(rank='numeric', target='matrix'),
 		function(rank, target, seed=NULL, ...){
 			#TODO: what is this seed argument???
 			# build an object compatible with the target's dimensions
-			newNMF(rank, dim(target), ...)
+			nmfModel(rank, dim(target), ...)
 			
 		}	
 )
@@ -261,7 +289,23 @@ setMethod('show', signature(object='NMF'),
 )
 
 
-#' Dims method for an NMF object. It returns the dimension of the target matrix.
+#' Dims method for an NMF object. It returns the dimension of the NMF model.
+#' 
+#' @note This method calls internally \code{\link{dims}}
+#' 
+#' @param x a object that inherits from class \code{NMF}
+#' @returnType numeric 
+#' @return a 3-length numeric vector giving the dimension of the estimated target matrix, and 
+#' the factorization rank (i.e. the number of metagenes).
+#' @author Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
+#' @seealso dims
+#' @export
+setMethod('dim', signature(x='NMF'), 
+function(x){
+	c(nrow(basis(x)), ncol(coef(x)), nbasis(x))	
+})
+
+#' Dimnames method for an NMF object. It returns the dimension names of the target matrix.
 #' 
 #' @note This method calls internally \code{\link{dims}}
 #' 
@@ -272,11 +316,25 @@ setMethod('show', signature(object='NMF'),
 #' @author Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
 #' @seealso dims
 #' @export
+setMethod('dimnames', 'NMF', 
+	function(x){
+		l <- list(rownames(basis(x)), colnames(coef(x)), rownames(coef(x)))
+		if( all(sapply(l, is.null)) ) NULL else l
+	}
+)
 
-setMethod('dim', signature(x='NMF'), 
-function(x){
-	c(nrow(basis(x)), ncol(coef(x)), nbasis(x))	
-})
+setReplaceMethod('dimnames', 'NMF', 
+	function(x, value){
+		if( is.null(value) ) return(x)
+		# if only the two first dimensions are given then keep the last one
+		if( length(value) == 2 )
+			value[3] <- list(dimnames(x)[[3]])
+		
+		dimnames(basis(x)) <- list(value[[1]], value[[3]])
+		dimnames(coef(x)) <- list(value[[3]], value[[2]])
+		x	
+	}
+)
 
 #' Returns the factorization rank of a \code{NMF} object.
 #' 
@@ -376,8 +434,11 @@ setMethod('is.empty.nmf', signature(object='NMF'),
 #' @seealso runif, NMF-class
 #'
 setMethod('rnmf', signature(x='NMF', target='numeric'), 
-	function(x, target, ...){
-					
+	function(x, target, keep.names=TRUE, ...){
+		
+		# store original dimnames
+		if( keep.names ) dn <- dimnames(x)
+		
 		# valid parameter 'target'
 		if( length(target) != 1 && length(target) != 2 )
 			stop('NMF::rnmf : invalid target dimensions [length must be 1 or 2. Here length = ', length(target) ,']')
@@ -396,6 +457,10 @@ setMethod('rnmf', signature(x='NMF', target='numeric'),
 		#Vc# Initialize random matrix: H
 		coef(x) <- matrix(runif(r*m, min=0, ...), r, m);
 		
+		# if one needs to keep the names (possibly or reducing/increasing) 
+		if( keep.names && !is.null(dn) )
+			dimnames(x) <- list(dn[[1]][1:n], dn[[2]][1:m], dn[[3]][1:r])
+		
 		# return the modified object
 		x
 	}
@@ -410,7 +475,12 @@ setMethod('rnmf', signature(x='NMF', target='matrix'),
 			max <- if( length(no.na) == 0 ) 1 else max(no.na)
 		}		
 		# build a random NMF with the dimensions of the target matrix upper-bounded by the target's maximum entry.
-		rnmf(x, dim(target), max=max, ...)
+		res <- rnmf(x, dim(target), max=max, ...)
+		# set the dimnames from the target matrix
+		dimnames(res) <- dimnames(target)	
+			
+		# return result
+		res
 	}
 )
 
@@ -422,11 +492,11 @@ setMethod('rnmf', signature(x='NMF', target='missing'),
 
 
 #' Returns the NMF model's name: i.e the class name
-if ( !isGeneric('model') ) setGeneric('model', function(object, ...) standardGeneric('model'))
-setMethod('model', signature(object='NMF'), 
+if ( !isGeneric('modelname') ) setGeneric('modelname', function(object, ...) standardGeneric('modelname'))
+setMethod('modelname', signature(object='NMF'), 
 		function(object)
 		{
-			class(object)
+			as.character(class(object))
 		}
 )
 
@@ -821,6 +891,15 @@ setMethod('purity', signature(x='NMF', class='factor'),
 		purity(predict(x, what='samples'), class)
 	}
 )
+setMethod('purity', signature(x='NMF', class='ANY'), 
+		function(x, class, ...){
+			# convert class into a factor
+			class <- as.factor(class)
+			# compute the purity
+			purity(x, class)
+		}
+)
+
 
 #' Computes the entropy of a clustering given a known factor.
 #'
@@ -866,6 +945,15 @@ setMethod('entropy', signature(x='NMF', class='factor'),
 		# compute the entropy for the samples clusters defined by the metagenes expression matrix
 		entropy(predict(x, what='samples'), class)
 	}
+)
+
+setMethod('entropy', signature(x='NMF', class='ANY'), 
+		function(x, class, ...){
+			# convert class into a factor
+			class <- as.factor(class)
+			# compute the entropy
+			entropy(x, class)
+		}
 )
 
 #' Extract the genes that characterize each factor.
@@ -1164,7 +1252,8 @@ setMethod('rss', 'NMF',
 			target <- Biobase::exprs(target)
 		}
 		
-		return( sum( (fitted(object) - target)^2 ) )
+		# return rss using the optimized C function
+		.rss(fitted(object),target)
 	}
 )
 
@@ -1253,13 +1342,12 @@ setMethod('distance', signature(target='missing', x='missing'),
 				# compute and return the distance measure		
 				fun <- switch(method,
 						euclidean = function(target, x, ...){
-							estim <- fitted(x)
-							sum((target - estim)^2)/2
+							# call optimized C function
+							.rss(target, fitted(x))/2							
 						},
-						KL = function(target, x, ...){
-							estim <- fitted(x)
-							# NB: treat zero entries separately
-							sum( ifelse(target==0, estim, target * log(target/estim) - target + estim) );					
+						KL = function(target, x, ...){							
+							# call optimized C function
+							.KL(target, fitted(x))					
 						}
 				)
 			}

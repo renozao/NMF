@@ -1,6 +1,8 @@
-\name{NMF-bioc}
+\name{NMF - integration with Bioconductor}
 \docType{methods}
 \alias{NMF-bioc}
+
+\alias{distance,ExpressionSet,NMF-method}
 
 \alias{metagenes}
 \alias{metagenes-methods}
@@ -28,6 +30,8 @@
  
  \itemize{
  
+ \item computation functions that support \code{ExpressionSet} objects as inputs.
+ 
  \item alias functions whose names are more intuitive when NMF is
  applied to bioinformatics data.
  
@@ -40,6 +44,17 @@
 }
 \section{Methods}{
 \describe{
+
+    \item{distance}{\code{signature(target = "ExpressionSet", x = "NMF", method, ...)}: 
+    returns the distance between the expression matrix and a NMF model, according to 
+    a given measure. 
+    If both argument \code{target} and \code{x} are missing, this function returns
+    the \code{function} defined by argument \code{method}. The later can either be 
+    a \code{function} or a \code{character} string that correspond to a registered 
+    distance metric. For the moment only the metrics 'KL' and 'euclidean' are defined.
+    
+    %See function \code{\link{distance}} for more details.
+    }
 
 	\item{metagenes}{\code{signature(object = "NMF")}: 
     returns the metagenes matrix according to the model defined in \code{object}. 

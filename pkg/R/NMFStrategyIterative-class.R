@@ -205,6 +205,39 @@ xifyStrategy <- function(strategy, workspace){
 	)
 }
 
+#' Hook to initialize old R version built-in iterative methods
+.nmf.plugin.core_R <- function(){
+	
+	list(
+			# Brunet
+			new('NMFStrategyIterative', name='.R#brunet', objective='KL'
+					, Update='R_nmf.update.brunet'
+					, Stop='nmf.stop.consensus'
+			)
+			
+			# Lee	
+			, new('NMFStrategyIterative', name='.R#lee', objective='euclidean'
+					, Update='R_nmf.update.lee'
+					, Stop='nmf.stop.consensus'
+			)			
+	
+			# NMF with offset
+			, new('NMFStrategyIterative', name='.R#offset', objective='euclidean'
+					, model = 'NMFOffset'
+					, Update='R_nmf.update.offset'
+					, Stop='nmf.stop.consensus'
+			)
+			
+			# nsNMF
+			, new('NMFStrategyIterative', name='.R#nsNMF', objective='KL'
+					, model='NMFns'
+					, Update='R_nmf.update.ns'
+					, Stop='nmf.stop.consensus'
+			)
+	
+	)
+}
+
 setMethod('run', signature(method='NMFStrategyIterative', x='matrix', seed='NMFfit'),
 	function(method, x, seed, ...){
 	
@@ -346,15 +379,19 @@ setMethod('run', signature(method='NMFStrategyIterativeX', x='matrix', seed='NMF
 #' , Advances in neural information processing systems,
 #' http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization#0
 #' 
-std.divergence.update.h <- function(v, w, h, wh=NULL)
+R_std.divergence.update.h <- function(v, w, h, wh=NULL)
 {	
 	# compute WH if necessary	
 	if( is.null(wh) ) wh <- w %*% h
 	
 	# divergence-reducing NMF iterations
 	# H_au = H_au ( sum_i [ W_ia V_iu / (WH)_iu ] ) / ( sum_k W_ka ) -> each row of H is divided by a the corresponding colSum of W
-	h * crossprod(w, v / wh) / colSums(w)
-}	
+	h * crossprod(w, v / wh) / colSums(w)	
+}
+std.divergence.update.h <- function(v, w, h)
+{	
+	.Call("divergence_update_H", v, w, h)
+}
 
 #' Standard multiplicative update for matrix \code{W} (i.e. the second factor) in a divergence based NMF.
 #' 
@@ -368,7 +405,7 @@ std.divergence.update.h <- function(v, w, h, wh=NULL)
 #' , Advances in neural information processing systems 13, 556-562.
 #' , http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization#0
 #' 
-std.divergence.update.w <- function(v, w, h, wh=NULL)
+R_std.divergence.update.w <- function(v, w, h, wh=NULL)
 {			
 	# compute WH if necessary	
 	if( is.null(wh) ) wh <- w %*% h
@@ -377,7 +414,13 @@ std.divergence.update.w <- function(v, w, h, wh=NULL)
 	#x2 <- matrix(rep(rowSums(h), nrow(w)), ncol=ncol(w), byrow=TRUE); 
 	#w * tcrossprod(v / wh, h) / x2;
 	sweep(w * tcrossprod(v / wh, h), 2L, rowSums(h), "/", check.margin = FALSE) # optimize version?
+	
 }
+std.divergence.update.w <- function(v, w, h)
+{
+	.Call("divergence_update_W", v, w, h)
+}
+
 #' Computes the Nonegative Matrix Factorization of a matrix.
 #'
 #' This software and its documentation are copyright 2004 by the
@@ -412,16 +455,40 @@ std.divergence.update.w <- function(v, w, h, wh=NULL)
 #' NMF divergence update equations :
 #' Lee, D..D., and Seung, H.S., (2001), 'Algorithms for Non-negative Matrix 
 #' Factorization', Adv. Neural Info. Proc. Syst. 13, 556-562.
+R_nmf.update.brunet <- function(i, v, data, ...)
+{
+	# retrieve each factor
+	w <- basis(data); h <- coef(data);
+	
+	# standard divergence-reducing NMF update for H
+	h <- R_std.divergence.update.h(v, w, h)
+	
+	# standard divergence-reducing NMF update for W
+	w <- R_std.divergence.update.w(v, w, h)
+	
+	#every 10 iterations: adjust small values to avoid underflow 
+	if( i %% 10 == 0 ){
+		#precision threshold for numerical stability
+		eps <- .Machine$double.eps
+		h[h<eps] <- eps;
+		w[w<eps] <- eps;
+	}
+	
+	#return the modified data
+	basis(data) <- w; coef(data) <- h;	
+	return(data)
+	
+}
 nmf.update.brunet <- function(i, v, data, ...)
 {
 	# retrieve each factor
 	w <- basis(data); h <- coef(data);
 	
 	# standard divergence-reducing NMF update for H
-	h <- std.divergence.update.h(v, w, h, w %*% h)
+	h <- std.divergence.update.h(v, w, h)
 	
 	# standard divergence-reducing NMF update for W
-	w <- std.divergence.update.w(v, w, h, w %*% h)
+	w <- std.divergence.update.w(v, w, h)
 	
 	#every 10 iterations: adjust small values to avoid underflow 
 	if( i %% 10 == 0 ){
@@ -437,8 +504,10 @@ nmf.update.brunet <- function(i, v, data, ...)
 	
 }
 
-
-std.euclidean.update.h <- function(v, w, h, wh=NULL, eps){
+#' Updates for Euclidean norm reduction
+#' based on Lee and Seung algorithm
+#' 
+R_std.euclidean.update.h <- function(v, w, h, wh=NULL, eps=10^-9){
 	# compute WH if necessary	
 	den <- if( is.null(wh) ) crossprod(w) %*% h
 			else{ t(w) %*% wh}
@@ -446,8 +515,15 @@ std.euclidean.update.h <- function(v, w, h, wh=NULL, eps){
 	# H_au = H_au (W^T V)_au / (W^T W H)_au
 	pmax(h * crossprod(w,v),eps) / (den + eps);
 }
+std.euclidean.update.h <- function(v, w, h, eps=10^-9){
+	.Call("euclidean_update_H", v, w, h, eps)
+}
+# with offset
+offset.std.euclidean.update.h <- function(v, w, h, offset, eps=10^-9){
+	.Call("offset_euclidean_update_H", v, w, h, offset, eps)
+}
 
-std.euclidean.update.w <- function(v, w, h, wh=NULL, eps){
+R_std.euclidean.update.w <- function(v, w, h, wh=NULL, eps=10^-9){
 	# compute WH if necessary	
 	den <- if( is.null(wh) ) w %*% tcrossprod(h)
 			else{ wh %*% t(h)}
@@ -455,10 +531,18 @@ std.euclidean.update.w <- function(v, w, h, wh=NULL, eps){
 	# W_ia = W_ia (V H^T)_ia / (W H H^T)_ia and columns are rescaled after each iteration	
 	pmax(w * tcrossprod(v, h), eps) / (den + eps);
 }
+std.euclidean.update.w <- function(v, w, h, eps=10^-9){
+	.Call("euclidean_update_W", v, w, h, eps)
+}
+# with offset
+offset.std.euclidean.update.w <- function(v, w, h, offset, eps=10^-9){
+	.Call("offset_euclidean_update_W", v, w, h, offset, eps)
+}
+
 #' Multiplicative update for reducing the euclidean distance.
 #'
 #' 
-nmf.update.lee <- function(i, v, data, rescale=TRUE, ...)
+R_nmf.update.lee <- function(i, v, data, rescale=TRUE, ...)
 {
 	# retrieve each factor
 	w <- basis(data); h <- coef(data);	
@@ -472,7 +556,7 @@ nmf.update.lee <- function(i, v, data, rescale=TRUE, ...)
 	# euclidean-reducing NMF iterations	
 	# H_au = H_au (W^T V)_au / (W^T W H)_au
 	#h <- pmax(h * (t(w) %*% v),eps) / ((t(w) %*% w) %*% h + eps);
-	h <- std.euclidean.update.h(v, w, h, eps=eps)
+	h <- R_std.euclidean.update.h(v, w, h, eps=eps)
 	
 	# update H and recompute the estimate WH
 	#metaprofiles(data) <- h
@@ -480,6 +564,31 @@ nmf.update.lee <- function(i, v, data, rescale=TRUE, ...)
 
 	# W_ia = W_ia (V H^T)_ia / (W H H^T)_ia and columns are rescaled after each iteration	
 	#w <- pmax(w * (v %*% t(h)), eps) / (w %*% (h %*% t(h)) + eps);
+	w <- R_std.euclidean.update.w(v, w, h, eps=eps)
+	#rescale columns TODO: effect of rescaling? the rescaling makes the update with offset fail
+	if( rescale ) w <- sweep(w, 2L, colSums(w), "/", check.margin=FALSE)
+	
+	#return the modified data
+	basis(data) <- w; coef(data) <- h;	
+	return(data)
+}
+
+nmf.update.lee <- function(i, v, data, rescale=TRUE, ...)
+{
+	# retrieve each factor
+	w <- basis(data); h <- coef(data);	
+	
+	#precision threshold for numerical stability
+	eps <- 10^-9
+	
+	# compute the estimate WH
+	#wh <- estimate(data)
+	
+	# euclidean-reducing NMF iterations	
+	# H_au = H_au (W^T V)_au / (W^T W H)_au
+	h <- std.euclidean.update.h(v, w, h, eps=eps)
+	
+	# W_ia = W_ia (V H^T)_ia / (W H H^T)_ia and columns are rescaled after each iteration	
 	w <- std.euclidean.update.w(v, w, h, eps=eps)
 	#rescale columns TODO: effect of rescaling? the rescaling makes the update with offset fail
 	if( rescale ) w <- sweep(w, 2L, colSums(w), "/", check.margin=FALSE)
@@ -492,7 +601,7 @@ nmf.update.lee <- function(i, v, data, rescale=TRUE, ...)
 #' Multiplicative update for reducing the euclidean distance including on offset.
 #'
 #' The method is a modified version of Lee's method that also fits an offset vector which model a common expression baseline for each gene accross all samples.
-nmf.update.offset <- function(i, v, data, ...)
+R_nmf.update.offset <- function(i, v, data, ...)
 {	
 	# retrieve each factor
 	w <- basis(data); h <- coef(data);
@@ -506,14 +615,39 @@ nmf.update.offset <- function(i, v, data, ...)
 	
 	# compute standard lee update (it will take the offset into account) without rescaling W's columns
 	
-	h <- std.euclidean.update.h(v, w, h, wh=w%*%h + off, eps=eps)
-	w <- std.euclidean.update.w(v, w, h, wh=w%*%h + off, eps=eps)
+	h <- R_std.euclidean.update.h(v, w, h, wh=w%*%h + off, eps=eps)
+	w <- R_std.euclidean.update.w(v, w, h, wh=w%*%h + off, eps=eps)
 	#data <- nmf.update.lee(i, v, data, rescale=FALSE, ...)
 	
 	# update the offset	
 	# V0_i = V0_i ( sum_j V_ij ) / ( sum_j (V.off + W H)_ij )
 	data@offset <- off * pmax(rowSums(v), eps) / (rowSums(w%*%h + off) + eps)
 		
+	#return the modified data
+	basis(data) <- w; coef(data) <- h;
+	return(data)
+}
+
+nmf.update.offset <- function(i, v, data, ...)
+{	
+	# retrieve each factor
+	w <- basis(data); h <- coef(data);
+	# retrieve offset and fill it if necessary (with mean of rows)
+	off <- offset(data)
+	if( i == 1 && length(off) == 0 )
+		off <- rowMeans(v)
+	
+	#precision threshold for numerical stability
+	eps <- 10^-9
+	
+	# compute standard offset updates
+	h <- offset.std.euclidean.update.h(v, w, h, off, eps=eps)
+	w <- offset.std.euclidean.update.w(v, w, h, off, eps=eps)
+	
+	# update the offset	
+	# V0_i = V0_i ( sum_j V_ij ) / ( sum_j (V.off + W H)_ij )
+	data@offset <- off * pmax(rowSums(v), eps) / (rowSums(w%*%h + off) + eps)	
+	
 	#return the modified data
 	basis(data) <- w; coef(data) <- h;
 	return(data)
@@ -540,8 +674,7 @@ nmf.update.ns <- function(i, v, data, ...)
 	#wh <- estimate(data, W=w.init, H=h, S=S)
 		
 	# standard divergence-reducing update for H with modified W
-	tmp <- w %*% S
-	h <- std.divergence.update.h(v, tmp, h, wh= tmp %*% h)
+	h <- std.divergence.update.h(v, w %*% S, h)
 	
 	# update H and recompute the estimate WH
 	coef(data) <- h
@@ -551,8 +684,39 @@ nmf.update.ns <- function(i, v, data, ...)
 	#h <- S %*% h; # H <- SH
 	
 	# standard divergence-reducing update for W with modified H
-	tmp <- S %*% h
-	w <- std.divergence.update.w(v, w, tmp, wh=w %*% tmp)
+	w <- std.divergence.update.w(v, w, S %*% h)
+	
+	# rescale columns of W
+	w <- sweep(w, 2L, colSums(w), '/', check.margin=FALSE)
+	
+	#return the modified data
+	basis(data) <- w; #metaprofiles(data) <- h;
+	return(data)
+}
+
+R_nmf.update.ns <- function(i, v, data, ...)
+{
+	# retrieve and alter the factors for updating H
+	S <- smoothing(data)
+	w <- basis(data)
+	#w <- metagenes(data) %*% smoothing(fit(data)); # W <- WS
+	h <- coef(data);
+	
+	# compute the estimate WH
+	#wh <- estimate(data, W=w.init, H=h, S=S)
+	
+	# standard divergence-reducing update for H with modified W
+	h <- R_std.divergence.update.h(v, w %*% S, h)
+	
+	# update H and recompute the estimate WH
+	coef(data) <- h
+	# retrieve and alter the factors for updating W
+	#w <- tmp;
+	#h <- smoothing(fit(data)) %*% metaprofiles(data); # H <- SH
+	#h <- S %*% h; # H <- SH
+	
+	# standard divergence-reducing update for W with modified H
+	w <- R_std.divergence.update.w(v, w, S %*% h)
 	
 	# rescale columns of W
 	w <- sweep(w, 2L, colSums(w), '/', check.margin=FALSE)

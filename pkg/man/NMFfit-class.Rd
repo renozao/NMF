@@ -11,8 +11,6 @@
 \alias{coef,NMFfit-method}
 \alias{coef<-,NMFfit,matrix-method}
 \alias{distance,matrix,NMFfit-method}
-\alias{errorPlot}
-\alias{errorPlot,NMFfit-method}
 
 \alias{$}
 \alias{$<-}
@@ -25,11 +23,17 @@
 \alias{fit<-}
 \alias{fit<-,NMFfit,NMF-method}
 \alias{fitted,NMFfit-method}
+
+\alias{modelname,NMFfit-method}
+
+\alias{nrun,NMFfit-method}
+
 \alias{objective}
 \alias{objective<-}
 \alias{objective,NMFfit-method}
 \alias{objective<-,NMFfit,character-method}
 \alias{objective<-,NMFfit,function-method}
+
 \alias{residuals<-}
 \alias{residuals<--methods}
 \alias{residuals<-,NMFfit-method}
@@ -37,6 +41,7 @@
 %\alias{run.options<-,NMF-method}
 \alias{runtime}
 \alias{runtime,NMFfit-method}
+\alias{runtime.all,NMFfit-method}
 %\alias{seed,matrix,NMF,function-method}
 \alias{seeding}
 \alias{seeding-methods}
@@ -76,7 +81,7 @@ and parameters used to compute the factorization.
     
     \item{\code{method}:}{A single \code{"character"} string that contains the name of the algorithm used to fit 
     the model. Default value is \code{''}.}
-    
+        
     \item{\code{seed}:}{A single \code{"character"} string that contains the name of the seeding method used to seed the 
     algorithm that computed the NMF. Default value is \code{''}. 
     See \code{\link{nmf-methods}} for more details. }
@@ -185,9 +190,9 @@ However, there is usually no need to directly create such an object, as interfac
     %See function \code{\link{distance}} for more details.
     }
     
-    \item{errorPlot}{\code{signature(x = "NMFfit")}: plot the residuals track of the run 
+    \item{plot}{\code{signature(x = "NMFfit")}: plot the residuals track of the run 
     that computed object \code{x}. 
-    See function \code{\link{nmf}} for details on how to enable residuals tracking.}
+    See function \code{\link{nmf}} for details on how to enable the tracking of residuals.}
 
     \item{fitted}{\code{signature(object = "NMFfit")}: 
     compute the estimated target matrix according to the NMF model stored in slot
@@ -206,14 +211,23 @@ However, there is usually no need to directly create such an object, as interfac
 	set the value of the \code{NMF} object stored in slot \code{fit}.
 	}
 	
-	\item{objective}{\code{signature(object = "NMF")}: return slot \code{distance} 
+	\item{\code{modelname}:}{ returns the name of the model fitted by the object.
+	It corresponds to the name of the S4 class of slot \code{fit}.}
+    
+	\item{nrun}{\code{signature(object = "NMFfit")}: return the number of NMF runs 
+	performed to compute \code{object}. In the case of a \code{NMFfit} object, this method 
+	always returns 1, as it is the result of a single NMF run and the method exists 
+	to create a uniform access interface to NMF results. 
+	}
+	
+	\item{objective}{\code{signature(object = "NMFfit")}: return slot \code{distance} 
 	or compute the objective value if a target is passed in argument \code{x}.}
-	\item{objective<-}{\code{signature(object = "NMF", value = "character")}: 
+	\item{objective<-}{\code{signature(object = "NMFfit", value = "character")}: 
 	sets slot \code{distance} to a built-in distance metric identified by a 
 	\code{character} string. 
 	}
 	
-	\item{objective<-}{\code{signature(object = "NMF", value = "function")}: 
+	\item{objective<-}{\code{signature(object = "NMFfit", value = "function")}: 
 	sets slot \code{distance} to a custom \code{function}. The function should 
 	return a single positive \code{numeric} and must take the target 
 	(a \code{matrix}) as its first parameter, and an object that inherits 
@@ -235,23 +249,30 @@ However, there is usually no need to directly create such an object, as interfac
 %    \item{run.options<-}{\code{signature(object = "NMF")}: set the runtime 
 %    options to be used to fit NMF model \code{object}. See \code{\link{nmf.options}}. }
 
-    \item{runtime}{\code{signature(object = "NMF")}: return the time spent to fit 
+    \item{runtime}{\code{signature(object = "NMFfit")}: return the time spent to fit 
     NMF model \code{object}. The time is computed using base function 
     \code{\link{system.time}} which returns object of class 
     \code{\link[=proc.time]{proc_time}}. }
+    
+    \item{runtime.all}{\code{signature(object = "NMFfit")}: return the CPU time used 
+     to perform all the runs to compute the object. 
+     In the case of a \code{NMFfit} object, this method is an alias to method 
+     \code{runtime} (see above), as the object is the result of a single NMF run.
+     The method exists to create a uniform access interface to NMF results.
+    }    
 
-    \item{seeding}{\code{signature(object = "NMF")}: returns the seeding method 
+    \item{seeding}{\code{signature(object = "NMFfit")}: returns the seeding method 
     used to seed the algorithm that fitted NMF model \code{object}. 
     See section \code{\link{nmf-methods}}. 
     }
 
-    \item{seeding<-}{\code{signature(object = "NMF")}: sets the seeding method 
+    \item{seeding<-}{\code{signature(object = "NMFfit")}: sets the seeding method 
     used to seed the algorithm that fitted NMF model \code{object}. }
 
-    \item{show}{\code{signature(object = "NMF")}: standard generic \code{show} 
+    \item{show}{\code{signature(object = "NMFfit")}: standard generic \code{show} 
     method for objects of class \code{NMF}. }
 
-    \item{summary}{\code{signature(x = "NMF")}: standard generic \code{summary} 
+    \item{summary}{\code{signature(x = "NMFfit")}: standard generic \code{summary} 
     method for objects of class \code{NMF}. It returns a \code{numeric} vector 
     that contains the summary of the fitted NMF model (slot \code{fit}), plus 
     the computation time and the final residuals.}

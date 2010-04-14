@@ -75,6 +75,42 @@ tsvd <- function(x, r, ...){
 	s
 }
 
+#' Returns TRUE if running under Mac OS X + GUI
+is.Mac <- function(check.gui=FALSE){
+	is.mac <- (length(grep("darwin", R.version$platform)) > 0)
+	# return TRUE is running on Mac (adn optionally through GUI)
+	is.mac && (!check.gui || .Platform$GUI == 'AQUA')
+}
+
+#' Test if a given namespace is loaded (without loading it!!)
+isNamespaceLoaded <- function(name){
+	!is.null(.Internal(getRegisteredNamespace(as.name(name))))
+}
+
+#' Test if there is a namespace loading
+getLoadingNamespace <- function(getenv=FALSE){
+	is.loading <- try(info <- loadingNamespaceInfo(), silent=TRUE)
+	if( !is(is.loading, 'try-error') ){
+		if( getenv ) asNamespace(as.name(info$pkgname))
+		else info$pkgname
+	}
+	else NULL
+}
+
+#compute RSS with C function
+.rss <- function(x, y)
+{	
+	.Call("Euclidean_rss", x, y)
+}
+
+#compute KL divergence with C function
+.KL <- function(x, y)
+{	
+	.Call("KL_divergence", x, y)
+}
+
+
+
 #' Define a S4 class to handle function slots given as either a function definition 
 #' or a character string that gives the function's name. 
 #' 

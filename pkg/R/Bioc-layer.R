@@ -7,52 +7,13 @@
 ###############################################################################
 
 
-#if( isClass('ExpressionSet') ){
-.init.nmf.bioc <- function(){
+.onLoad.nmf.bioc <- function(){
 	
 	bioc.loaded <- FALSE
 	if( "Biobase" %in% rownames(utils::installed.packages()) ){
 
 	# load Biobase package
 	library(Biobase)
-	
-	#' BioConductor alias to nbasis
-	if ( !isGeneric("nmeta")) setGeneric('nmeta', function(object, ...) standardGeneric('nmeta') )
-	setMethod('nmeta', signature(object='NMF'),
-		function(object){
-			nbasis(object)
-		}
-	)
-	
-	#' BioConductor alias get/set methods of basis matrix
-	if ( !isGeneric("metagenes")) setGeneric('metagenes', function(object, ...) standardGeneric('metagenes') )
-	setMethod('metagenes', signature(object='NMF'),
-		function(object, ...){
-			basis(object, ...)
-		}
-	)
-	if ( !isGeneric("metagenes<-") ) setGeneric('metagenes<-', function(object, value) standardGeneric('metagenes<-') )
-	setReplaceMethod('metagenes', signature(object='NMF', value='matrix'), 
-		function(object, value){ 
-			basis(object) <- value
-			object
-		} 
-	)
-	
-	#' BioConductor alias to get/set methods of mixture coefficients matrix
-	if ( !isGeneric("metaprofiles")) setGeneric('metaprofiles', function(object, ...) standardGeneric('metaprofiles') )
-	setMethod('metaprofiles', signature(object='NMF'),
-		function(object, ...){
-			coef(object, ...)
-		}
-	)
-	if ( !isGeneric("metaprofiles<-") ) setGeneric('metaprofiles<-', function(object, value) standardGeneric('metaprofiles<-') )
-	setReplaceMethod('metaprofiles', signature(object='NMF', value='matrix'), 
-		function(object, value){ 
-			coef(object) <- value
-			object
-		} 
-	)
 
 	#' Performs NMF on an ExpressionSet: the target matrix is the expression matrix \code{exprs(x)}.
 	setMethod('nmf', signature(x='ExpressionSet', rank='ANY', method='ANY'), 
@@ -74,6 +35,15 @@
 			run(method, Biobase::exprs(x), seed, ...)
 			
 		}
+	)
+	
+	#' Computes the distance between the target ExpressionSet and its NMF fit 
+	setMethod('distance', signature(target='ExpressionSet', x='NMF'), 
+			function(target, x, ...){
+								
+				# compute the distance between the expression matrix and the fitted NMF model
+				distance(Biobase::exprs(target), x, ...)
+			}
 	)
 	
 	#' Annotate the genes specific to each cluster.
@@ -119,22 +89,28 @@
 	setGeneric('featureNames<-', package='Biobase')
 	setGeneric('sampleNames', package='Biobase')
 	setGeneric('sampleNames<-', package='Biobase')
-	
-	# Export layer-specific methods [only if one is loading a namespace] 
-	is.loading <- try(info <- loadingNamespaceInfo(), silent=TRUE)
-	if( !is(is.loading, 'try-error') ){
-		ns <- asNamespace(as.name(info$pkgname))
-		if ( is.null(ns) )
-			stop("Error in exporting NMF-BioConductor layer: cannot find the loading namespace's environment");
 		
-		# export the methods into the loading namespace
+	## Assign BioConductor aliases
+	#' number of metagenes
+	nmeta <- nbasis
+	#' get/set methods of basis matrix
+	metagenes <- basis
+	`metagenes<-` <- `basis<-`
+	#' get/set methods of mixture coefficients matrix
+	metaprofiles <- coef
+	`metaprofiles<-` <- `coef<-`
+	
+	# Export layer-specific methods [only if one is loading a namespace]
+	ns <- getLoadingNamespace(getenv=TRUE)
+	if( !is.null(ns) ){		
 		namespaceExport(ns, c("nmeta"
-							,"metagenes"
-							,"metagenes<-"
-							,"metaprofiles"
-							,"metaprofiles<-")
-						)
+						,"metagenes"
+						,"metagenes<-"
+						,"metaprofiles"
+						,"metaprofiles<-")
+		)
 	}
+	
 	
 	# set result to TRUE
 	bioc.loaded <- TRUE
@@ -149,44 +125,44 @@
 
 #' Get/Set methods for rows/columns names of the basis and mixture matrices
 setMethod('featureNames', 'NMF',
-		function(object){
-			rownames(basis(object))
-		}
+	function(object){
+		rownames(object)
+	}
 )
 setReplaceMethod('featureNames', 'NMF',
-		function(object, value){
-			rownames(basis(object)) <- value
-			return(object)
-		}
+	function(object, value){
+		rownames(object) <- value
+		object
+	}
 )
-#' For NMFSet objects: returns the featureNames of the best fit 
-#' There is no replace method for NMFSet objects
-setMethod('featureNames', 'NMFSet',
-		function(object){
-			featureNames(fit(object))
-		}
+#' For NMFfitX objects: returns the featureNames of the best fit 
+#' There is no replace method for NMFfitX objects
+setMethod('featureNames', 'NMFfitX',
+	function(object){
+		rownames(fit(object))
+	}
 )
 
 setMethod('sampleNames', 'NMF',
 	function(object){
-		colnames(coef(object))
+		colnames(object)
 	}
 )
 setReplaceMethod('sampleNames', 'NMF',
 	function(object, value){
-		colnames(coef(object)) <- value
-		return(object)
+		colnames(object) <- value
+		object
 	}
 )
-#' For NMFSet objects: returns the sampleNames of the best fit 
-#' There is no replace method for NMFSet objects
-setMethod('sampleNames', 'NMFSet',
-		function(object){
-			sampleNames(fit(object))
-		}
+#' For NMFfitX objects: returns the sampleNames of the best fit 
+#' There is no replace method for NMFfitX objects
+setMethod('sampleNames', 'NMFfitX',
+	function(object){
+		colnames(fit(object))
+	}
 )
 
 	# return the result
-	return(bioc.loaded)
+	bioc.loaded
 }
 

@@ -12,19 +12,22 @@ simple approaches proposed in the litterature.
 
 }
 \usage{
-nmfEstimateRank(x, range, method = nmf.getOption("default.algorithm"), nrun = 30, conf.interval = FALSE, ...)
-plot.NMF.rank(x, what = c("all", "cophenetic", "rss", "residuals", "dispersion"), ...)
+nmfEstimateRank(x, range, method = nmf.getOption("default.algorithm"), nrun = 30, verbose=FALSE, ...)
+plot.NMF.rank(x, what = c('all', 'cophenetic', 'rss', 'residuals'
+						, 'dispersion', 'evar', 'sparseness'
+						, 'sparseness.basis', 'sparseness.coef')
+						, ref=NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 
-	\item{conf.interval}{
-	  a single \code{logical} specifying if confidence intervals should be estimated 
-	  for all the computed consensus measures.
-	  For each rank in \code{range}, the confidence intervals are estimated by 
-	  bootstrap, resampling 5\code{nrun} times with replacement across the \code{nrun}
-	  runs.
-	}
+%	\item{conf.interval}{
+%	  a single \code{logical} specifying if confidence intervals should be estimated 
+%	  for all the computed consensus measures.
+%	  For each rank in \code{range}, the confidence intervals are estimated by 
+%	  bootstrap, resampling 5\code{nrun} times with replacement across the \code{nrun}
+%	  runs.
+%	}
 	
 	\item{method}{
 	  A single NMF algorithm, in one of the format accepted by interface \code{\link{nmf}}.
@@ -36,6 +39,15 @@ plot.NMF.rank(x, what = c("all", "cophenetic", "rss", "residuals", "dispersion")
 	
 	\item{range}{ a \code{numeric} vector containing the ranks of factorization to try.
 	}
+	
+	\item{ref}{ reference object of class \code{NMF.rank}, as returned by 
+	 function \code{nmfEstimateRank}.
+	 The measures contained in \code{ref} are used and plotted as a reference.
+	 The associated curves are drawn in \emph{red}, while those from \code{x} are 
+	 drawn in \emph{blue}.
+	 }
+	
+	\item{verbose}{ toggle verbosity.}
 	
 	\item{what}{ a \code{character} string that partially matches one of the 
 	following item: \code{'all'}, \code{'cophenetic'}, \code{'rss'}, \code{'residuals'}

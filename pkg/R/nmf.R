@@ -55,20 +55,20 @@ setMethod('nmf', signature(x='matrix', rank='ANY', method='ANY'),
 				# try to find the algorithm suitable for the seed's NMF model
 				if( !missing(seed) && inherits(seed, 'NMF') ){
 					
-					method.potential <- nmfAlgorithm(model=model(seed))
+					method.potential <- nmfAlgorithm(model=modelname(seed))
 					if( is.null(method.potential) )
-						stop("NMF::nmf - No algorithm is defined for model '", model(seed), "'")
+						stop("NMF::nmf - No algorithm is defined for model '", modelname(seed), "'")
 					
 					if( length(method.potential) == 1 ) # only one to choose
 						method <- method.potential
 					else if( !is.element(method, method.potential) ) # several options, none is default
-						stop("NMF::nmf - Could not infer the algorithm to use with model '", model(seed), "'. Argument 'method' should be one of: "
+						stop("NMF::nmf - Could not infer the algorithm to use with model '", modelname(seed), "'. Argument 'method' should be one of: "
 							, paste(paste("'", method.potential, "'", sep=''), collapse=', ')
 							, call.=FALSE)
 				}
 					
 			}
-			else if( !existsMethod('nmf', signature=c('matrix', 'numeric', class(method)) ) )
+			else if( !hasMethod('nmf', signature=c('matrix', 'numeric', class(method)) ) )
 				stop("NMF::nmf - no 'nmf' method for signature 'matrix', 'numeric', '", class(method), "'."
 					, call.=FALSE)
 			
@@ -101,7 +101,10 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='list'),
 		names(res) <- sapply(res, algorithm)		
 		
 		# wrap the result in a NMFSet object
-		res <- join(res, runtime=t)
+		# DO NOT WRAP anymore here: NMFSet objects are used only for results of multiple runs (single method)
+		# the user can still join on the result if he wants to
+		#res <- join(res, runtime=t)
+		res <- new('NMFList', res, runtime=t)
 		
 		# return result
 		return(res)
@@ -115,6 +118,9 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='list'),
 setMethod('nmf', signature(x='matrix', rank='numeric', method='character'),
 function(x, rank, method, ...)
 {	
+	# if there is more than one methods then treat the vector as a list
+	if( length(method) > 1 ) return( nmf(x, rank, as.list(method), ...) )
+	
 	# create the NMFStrategy from its name
 	strategy <- nmfAlgorithm(method)		
 	# apply nmf using the retrieved strategy		
@@ -204,7 +210,7 @@ function(x, rank, method
 	# if options are given as a character string, translate it into a list of booleans
 	if( is.character(.options) ){
 		.options <- .translate.string(.options, 
-				c(t='track', v='verbose', d='debug', p='parallel', P='parallel.required', k='keep.all'))
+				c(t='track', v='verbose', d='debug', p='parallel', P='parallel.required', k='keep.all', r='restore.seed'))
 	}
 	
 	# setup verbosity options
@@ -233,6 +239,14 @@ function(x, rank, method
 	if( length(rank) != 1 ) stop("NMF::nmf - invalid argument 'rank': must be a single numeric value")
 	if( rank <= 1 ) stop("NMF::nmf - invalid argument 'rank': must be greater than 1")
 	
+	# restore the random seed on exit if not disabled by the user in .options (do it by default)
+	if( is.null(.options$restore.seed) ) .options$restore.seed <- TRUE
+	if( is.numeric(seed) && .options$restore.seed ){
+		if ( !exists(".Random.seed", mode="numeric") ) sample(NA);
+		oldSeed <- .Random.seed
+		on.exit( assign(".Random.seed", oldSeed, envir=globalenv()) )
+	}
+			
 	##START_MULTI_RUN
 	# if the number of run is more than 1, then call itself recursively
 	if( nrun > 1 )
@@ -250,8 +264,8 @@ function(x, rank, method
 		}
 		
 		if( opt.parallel ){
-			if( verbose ) message("# ", if( opt.parallel.required ) 'Setup required' else 'Try to setup'
-						," parallel computation environment")
+			if( verbose ) message("# ", if( opt.parallel.required ) 'Setting up required' else 'Setting up'
+						," parallel computation environment ...")
 			
 			# check for 'foreach' package: required for parallel computation
 			if( !require(foreach) ){
@@ -275,19 +289,34 @@ function(x, rank, method
 			if( is.numeric(.pbackend) && length(.pbackend) > 0 ){
 				.pbackend <- .pbackend[1]
 				if( .pbackend <= 0 )
-					stop("NMF::nmf - invalid number of core(s) specified in argument '.pbackend' [",.pbackend,"]")
+					stop("NMF::nmf - invalid number of core(s) specified in argument '.pbackend' [",.pbackend,"]", call.=FALSE)
 				ncores <- .pbackend
 				.pbackend <- 'mc'
 			}
+			
 			switch( .pbackend,
 				mc = {
 					# test the OS: multicore package does not work on Windows
 					if( .Platform$OS.type == 'windows' ){
 						# error only if the parallel computation was explicitly asked by the user
 						if( opt.parallel.required )
-							stop('NMF::nmf - multicore computation impossible [not available under MS Windows]')
+							stop('NMF::nmf - multicore computation impossible [not available under MS Windows]'
+									, call.=FALSE)
 						else if( verbose ) 
 							message("# NOTE: NMF parallel computation disabled [not availbale under MS Windows].")
+						
+						# disable parallel computation
+						opt.parallel = FALSE
+					}
+					else if( is.Mac(check.gui=TRUE) ){ # check if we're not running on MAC from GUI
+						# error only if the parallel computation was explicitly asked by the user
+						if( opt.parallel.required )
+							stop("NMF::nmf - multicore computation stopped [not safe from R.app on Mac OS X]."
+								, "\n\t-> Please use a terminal session, starting R from the command line."
+								, call.=FALSE)
+						else if( verbose ) 
+							message("# NOTE: NMF parallel computation disabled [not safe from R.app on Mac OS X]."
+									, "\n\t-> To be able to use it, please use a terminal session, starting R from the command line.")
 						
 						# disable parallel computation
 						opt.parallel = FALSE
@@ -341,10 +370,31 @@ function(x, rank, method
 		####PARALLEL_NMF
 		if( opt.parallel){
 			
-			if( !keep.all && !require(bigmemory) )
-				stop("NMF::nmf - the 'bigmemory' package is required to run in parallel mode with option 'keep.all'=FALSE"
-					, call.=FALSE)
+			# if one wants to keep only the best result one needs the 'bigmemory' package
+			# to store the best residual in shared memory
+			use.bigmemory4 <- TRUE
+			if( !keep.all ){
+				if( !require(bigmemory) )
+					stop("NMF::nmf - the 'bigmemory' package is required to run in parallel mode with option 'keep.all'=FALSE"
+						, call.=FALSE)
 			
+				# check if the installed version of 'bigmemory' provides mutexes (prior to version 4.0)
+				# otherwise one requires the 'synchronicity' package
+				if( !existsFunction('rw.mutex', where=asNamespace('bigmemory'))	){
+					if( !require(synchronicity) )
+						stop("NMF::nmf - the 'synchronicity' package is required to run in parallel mode with option 'keep.all'=FALSE"
+								, call.=FALSE)
+					
+					if( verbose ) message("# Mutex provider: 'synchronicity'")
+				}
+				else{
+					use.bigmemory4 <- FALSE
+					if( verbose ) message("# Mutex provider: 'bigmemory'")
+				}
+					
+					
+			}
+		
 			if( verbose ) message("# Using foreach backend: ",getDoParName()
 								," [version ", getDoParVersion(),"] / "
 								, getDoParWorkers(), " ", worker.type)
@@ -353,15 +403,17 @@ function(x, rank, method
 								
 				## 1. SETUP				
 				if( !keep.all ){ #Specific thing only if one wants only the best result
-					# - Define a shared memory objects
-					best.shared <- shared.big.matrix(1, 1, type='double', init=NA)			
+					# - Define the shared memory objects
+					best.shared <- if( use.bigmemory4 ) big.matrix(1, 1, type='double', init=NA) 
+									else shared.big.matrix(1, 1, type='double', init=NA)					
 					best.desc <- bigmemory::describe(best.shared)				
 					# the consensus matrix is computed only if not all the results are kept				
-					consensus.shared <- shared.big.matrix(ncol(x), ncol(x), type='double', init=0)
+					consensus.shared <- if( use.bigmemory4 ) big.matrix(ncol(x), ncol(x), type='double', init=0)
+										else shared.big.matrix(ncol(x), ncol(x), type='double', init=0)
 					consensus.desc <- bigmemory::describe(consensus.shared)
 					
-					# - Define a mutex to control the access to the shared memory objects
-					mut <- rw.mutex()
+					# - Define a mutex to control the access to the shared memory objects					
+					mut <- if( use.bigmemory4 ) boost.mutex() else rw.mutex()
 					mut.desc <- bigmemory::describe(mut)			
 					# - Define a temporary file to store the best fit				
 					best.filename <- paste(tempfile('nmf.run.'), 'RData', sep='.')
@@ -374,7 +426,9 @@ function(x, rank, method
 					
 					if( verbose ) cat('', n)
 					if( debug ) cat("\n")
-					res <- nmf(x, rank, method, nrun=1, seed=seed, .options='-v', ...)
+					pass.options <- .options
+					pass.options$verbose=FALSE
+					res <- nmf(x, rank, method, nrun=1, seed=seed, .options=pass.options, ...)
 					
 					# if only the best fit must be kept then update the shared objects
 					if( !keep.all ){
@@ -384,8 +438,13 @@ function(x, rank, method
 						
 						##LOCK_MUTEX					
 						# retrieve and lock the mutex
-						mut <- attach.rw.mutex(mut.desc)	
-						rwlock(mut)
+						if( use.bigmemory4 ){
+							mut <- attach.mutex(mut.desc)
+							lock(mut) 
+						}else{
+							mut <- attach.rw.mutex(mut.desc)	
+							rwlock(mut)
+						}
 						
 						# check if the run found a better fit
 						best <- best.shared[]
@@ -404,7 +463,7 @@ function(x, rank, method
 						consensus.shared[] <- consensus.shared[] + connectivity(res)[]
 						
 						# unlock the mutex
-						bigmemory::unlock(mut)
+						unlock(mut)
 						##END_LOCK_MUTEX
 									
 						# reset the result to NULL
@@ -413,11 +472,20 @@ function(x, rank, method
 					
 					# return the result
 					res
-				}
+				}				
 				##
 				
+				## 3. CHECK FOR ERRORS				
+				errors <- sapply(res.runs, is.character)				
+				nerrors <- sum(errors)
+				if( nerrors > 0 ){										
+					stop("NMF::nmf - error in parallel mode: ", nerrors," runs over ", nrun, " threw an error\n"
+						,"# Error(s):\n-- "
+						, paste(unique(res.runs[which(errors)]), collapse="\n-- ")
+						, call.=FALSE)
+				}
 				
-				## 3. WRAP UP
+				## 4. WRAP UP
 				res <- list(fit=res.runs)
 				
 				if( !keep.all ){
@@ -519,10 +587,10 @@ function(x, rank, method
 		if( !keep.all ){
 			# ASSERT the presence of the consensus matrix
 			stopifnot( !is.null(res$consensus) )
-			return( join(list(res$fit), consensus=res$consensus/nrun, runtime=t, nrun=nrun) )
+			return( join(res$fit, consensus=res$consensus/nrun, runtime.all=t, nrun=as.integer(nrun)) )
 		}
 		
-		return( join(res$fit, runtime=t) )
+		return( join(res$fit, runtime.all=t) )
 		
 	}##END_MULTI_RUN
 	
@@ -549,13 +617,13 @@ function(x, rank, method
 	else if( !inherits(seed, 'NMFfit') ){
 		
 		# retrieve the NMF model to use (from the provided method)
-		init <- model(method)
+		init <- modelname(method)
 		stopifnot( extends(init, 'NMF') )
 		
 		## MODEL INSTANTIATION :
 	
 		# some of the instantiation parameters are set internally
-		# TODO: change target into x (=> impact on newNMF)
+		# TODO: change target into x (=> impact on nmfModel
 		parameters.model.internal <- list(rank=rank, target=0, model=init)
 		parameters.model <- list()
 		
@@ -644,7 +712,7 @@ function(x, rank, method
 			# call the 'seed' function passing the necessary parameters
 			if( verbose )
 				message("NMF seeding method: ", 
-						if( is.character(seed.method) ) seed.method
+						if( is.character(seed.method) || is.numeric(seed.method) ) seed.method
 						else if( is.null(seed.method) ) 'NULL'
 						else if( !is.null(attr(seed.method, 'name')) ) attr(seed.method, 'name') 
 						else if( is.function(seed.method) ) '<function>'
@@ -669,9 +737,9 @@ function(x, rank, method
 	# check the consistency of the NMF model expected by the algorithm and 
 	# the one defined by the seed
 	#if( none( sapply(model(method), function(c) extends(model(seed), c)) ) )
-	if( all( !inherits(fit(seed), model(method)) ) )
-		stop("NMF::nmf - Invalid NMF model '", model(seed),"': algorithm '", name(method), "' expects model(s) "
-			, paste(paste("'", model(method),"'", sep=''), collapse=', ')
+	if( all( !inherits(fit(seed), modelname(method)) ) )
+		stop("NMF::nmf - Invalid NMF model '", modelname(seed),"': algorithm '", name(method), "' expects model(s) "
+			, paste(paste("'", modelname(method),"'", sep=''), collapse=', ')
 			, " or extension."
 			, call.=FALSE)
 	
@@ -704,12 +772,14 @@ function(x, rank, method
 	# slot 'seed'
 	if( seed.method != '' ) seeding(res) <- seed.method
 	# slot 'parameters'
-	res@parameters <- parameters.method	
+	res@parameters <- parameters.method
+	# set dimnames of the result
+	dimnames(res) <- dimnames(seed)
 	
 	## CLEAN-UP + EXTRAS:
 	# add extra information to the object	 
 	if( length(residuals(res)) == 0 ) residuals(res) <- objective(method, x, res)
-	if( is.na(residuals(res)) ) stop("NMF residuals: final objective value is NA")
+	if( is.na(residuals(res)) ) warning("NMF residuals: final objective value is NA")
 	res@runtime <- t
 	
 	# return the result
@@ -817,7 +887,7 @@ setMethod('seed', signature(x='ANY', model='list', method='NMFSeed'),
 		s.init <- capture.output(print(model))
 		nmf.debug('seed', "using model parameters:\n", s.init)			
 		# instantiate the object using the factory method		
-		model <- do.call('newNMF', model)
+		model <- do.call('nmfModel', model)
 		nmf.debug('seed', "using NMF model '", class(model), "'")
 		
 		# check that model is from the right type, i.e. inherits from class NMF
@@ -865,6 +935,8 @@ setMethod('seed', signature(x='matrix', model='NMF', method='NMFSeed'),
 		res <- new('NMFfit', fit=res)
 		# if not already set: store the seeding method's name in the resulting object
 		if( seeding(res) == '' ) seeding(res) <- name(method)
+		# set the dimnames from the target matrix
+		dimnames(res) <- dimnames(x)
 		
 		# return the seeded object
 		res

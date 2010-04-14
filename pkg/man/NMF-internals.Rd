@@ -8,6 +8,7 @@
 \alias{algorithm<-,NMFStrategyFunction,function-method}
 \alias{show,NMFStrategy-method}
 \alias{show,NMFStrategyIterative-method}
+\alias{modelname,NMFStrategy-method}
 \alias{name,NMFStrategy-method}
 \alias{name<-,NMFStrategy,character-method}
 %\alias{nmf,matrix,numeric,NMFStrategy-method}
@@ -33,3 +34,4 @@ Dummy Rd file that gathers undocumented or internal methods and functions for pa
 }
 
 \author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\keyword{internal}

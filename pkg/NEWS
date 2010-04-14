@@ -1,42 +1,111 @@
 *************************************************************************
-* 						Changes in version 0.3							*
+*                       Changes in version 0.4                          *
 *************************************************************************
 
 NEW FEATURES
 
-	o Now requires R 2.10
+    o Part of the code has been optimised in C++ for speed and memory efficiency:
+        
+        - the multiplicative updates for reducing the KL divergence and the euclidean 
+        distance have been optimised in C++. This significantly reduces the 
+        computation time of the methods that make use of them: 'lee', 'brunet', 
+        'offset', 'nsNMF' and 'lnmf'.
+        Old R version of the algorithm are still accessible with the suffix '.R#'. 
+        
+        - the computation of euclidean distance and KL divergence are implemented 
+        in C++, and do not require the duplication of the original matrices as done 
+        in R.
+
+    o Generic 'dimnames' is now defined for objects of class 'NMF' and returns
+	a list with 3 elements: the row names of the basis matrix, the column names 
+    of the mixture coefficient matrix , and the column names of the basis matrix. 
+	This implies that methods 'rownames' and 'columnames' are also available for 
+	'NMF' objects.
 	
-	o New list slot 'misc' in class 'NMF' to be able to define new NMF models, 
+    o A new class structure has been developed to handle the results of multiple 
+	NMF runs in a cleaner and more structured way:
+	
+        - Class 'NMFfitX' defines a common interface for multiple NMF runs of a 
+	      single algorithm.
+
+        - Class 'NMFfitX1' handles the sub-case where only the best fit is returned.
+	      In particular, this class allows to handle such results as if coming 
+	      from a single run.
+
+        - Class 'NMFfitXn' handles the sub-case where the list of all the fits 
+	      is returned. 
+
+        - Class 'NMFList' handles the case of heterogeneous NMF runs (different 
+	      algorithms, different factorization rank, different dimension, etc...)
+	      
+    o The vignette contains more examples and details about the use of package.
+
+    o The package is compatible with both versions 3.x and 4.x of the bigmemory
+    package. This package is used when running multicore parallel computations. 
+    With version 4.x of bigmemory, the synchronicity package is also required as 
+    it provides the mutex functionality that used to be provided by bigmemory 3.x.
+
+BUG FIX
+    
+    o Running in multicore mode from the GUI on MacOS X is not allowed anymore as 
+    it is not safe and were throwing an error ['The process has forked and ...'].
+    Thanks to Stephen Henderson from the UCL Cancer Institute (UK) for reporting this.
+    
+    o Function 'nmf' now restores the random seed to its original value as before its call 
+    with a numeric seed. This behaviour can be disabled with option 'restore.seed=FALSE' or '-r'
+
+NEWLY DEPRECATED CLASSES, METHODS, FUNCTIONS, DATA SETS
+
+    o Deprecated Generics/Methods
+       1) 'errorPlot' - S4 generic/methods remains with .Deprecated message.
+       It is replaced by a definition of the 'plot' method for signatures 
+       'NMFfit,missing' and 'NMFList,missing'
+       It will be completely removed from the package in the next version.
+       
+    o Deprecated Class
+       1) 'NMFSet' - S4 class remains for backward compatibility, but is not 
+       used anymore. It is replaced by the classes 'NMFfitX1', 'NMFfitXn', 
+       'NMFList'.
+
+*************************************************************************
+*                       Changes in version 0.3                          *
+*************************************************************************
+
+NEW FEATURES
+
+    o Now requires R 2.10
+	
+    o New list slot 'misc' in class 'NMF' to be able to define new NMF models, 
 	without having to extend the S4 class. Access is done by methods '$' and '$<-'.
 	
-	o More robust and convenient interface 'nmf'
+    o More robust and convenient interface 'nmf'
 	
-	o New built-in algorithm : PE-NMF [Zhang (2008)]
+    o New built-in algorithm : PE-NMF [Zhang (2008)]
 	
-	o The vignette and documentation have been enriched with more examples and 
+    o The vignette and documentation have been enriched with more examples and 
 	details on the functionalities.
 	
-	o When possible the computation is run in parallel on all the available cores.
+    o When possible the computation is run in parallel on all the available cores.
 	See option 'p' or 'parallel=TRUE' in argument '.options' of function 'nmf'.
 	
-	o Algorithms have been optimized and run faster
+    o Algorithms have been optimized and run faster
 	
-	o Plot for rank estimation: quality measure curves can be plotted together 
+    o Plot for rank estimation: quality measure curves can be plotted together 
 	with a set of reference measures.
 	The reference measures could for example come from the rank estimation of 
 	randomized data, to investigate overfitting.
 	
-	o New methods '$' and '$<-' to access slot 'extra' in class 'NMFfit'
+    o New methods '$' and '$<-' to access slot 'extra' in class 'NMFfit'
 	These methods replace method 'extra' that is now defunct.
 	
-	o Function 'randomize' allows to randomise a target matrix or 
+    o Function 'randomize' allows to randomise a target matrix or 
 	'ExpressionSet' by permuting the entries within each columns using a
 	different permutation for each column. It is useful when checking for
-	over-fitting. 
+    over-fitting. 
 		
 CHANGES
 
-	o The 'random' method of class 'NMF' is renamed 'rnmf', but is still 
+    o The 'random' method of class 'NMF' is renamed 'rnmf', but is still 
 	accessible through name 'random' via the 'seed' argument in the 
 	interface method 'nmf'. 
 	
@@ -47,19 +116,19 @@ NEWLY DEFUNCT CLASSES, METHODS, FUNCTIONS, DATA SETS
        It will be completely removed from the package in the next version.
 
 *************************************************************************
-* 						Changes in version 0.2.4						*
+*                       Changes in version 0.2.4                        *
 *************************************************************************
 
 CHANGES
 	
-	o Class 'NMFStrategy' has a new slot 'mixed', that specify if the algorithm 
+    o Class 'NMFStrategy' has a new slot 'mixed', that specify if the algorithm 
 	can handle mixed signed input matrices.
 	
-	o Method 'nmf-matrix,numeric,function' accepts a new parameter 'mixed' to 
+    o Method 'nmf-matrix,numeric,function' accepts a new parameter 'mixed' to 
 	specify if the custom algorithm can handle mixed signed input matrices.
 
 *************************************************************************
-* 						Changes in version 0.2.3						*
+*                       Changes in version 0.2.3                        *
 *************************************************************************
 
 NEW FEATURES
@@ -82,16 +151,16 @@ NEW FEATURES
 
 CHANGES
 	
-	o method 'featureScore' has a new argument 'method' to allow choosing between 
+    o method 'featureScore' has a new argument 'method' to allow choosing between 
 	different scoring schema.
 	
-	o method 'extractFeatures' has two new arguments: 'method' allows choosing 
+    o method 'extractFeatures' has two new arguments: 'method' allows choosing 
 	between different scoring and selection methods; 'format' allows to specify 
 	the output format.
 	NOTE: the default output format has changed. The default result is now a 
 	list whose elements are integer vectors (one per basis component) that 
 	contain the indices of the basis-specific features. It is in practice what 
-	one is usually interested in.  
+    one is usually interested in.  
 
 BUG FIXES
 

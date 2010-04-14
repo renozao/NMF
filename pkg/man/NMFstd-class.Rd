@@ -7,13 +7,6 @@
 \alias{basis<-,NMFstd,matrix-method}
 \alias{coef,NMFstd-method}
 \alias{coef<-,NMFstd,matrix-method}
-% Factory method
-\alias{newNMF}
-\alias{newNMF-methods}
-\alias{newNMF,missing,ANY-method}
-\alias{newNMF,numeric,matrix-method}
-\alias{newNMF,numeric,missing-method}
-\alias{newNMF,numeric,numeric-method}
 
 \title{Implement of the standard NMF model}
 \description{Class that implements the standard model of Nonnegative Matrix Factorisation.
@@ -86,50 +79,23 @@ that follow NMF standard model.
 \strong{Factory method}
 
 The more convenient way of creating \code{NMF} objects is to use factory method 
-\code{newNMF}: 
+\code{nmfModel}: 
 
-\code{newNMF(rank, target=0, model='NMFstd', ...)}
+\code{nmfModel(rank=0, target=0, model='NMFstd', ...)}
 
-It provides a unique interface to create \code{NMF} objects 
-that can follow different NMF models. Using this interface allows to 
-automatically resolve some inconsistencies in the matrices dimensions.
-The standard model is the default model, so the following calls will create 
-objects of class \code{NMFstd}:
+It provides a unique interface to create \code{NMF} objects that can follow 
+different NMF models, and is designed to resolve potential inconsistencies 
+in the matrices dimensions. See \code{\link{nmfModel}}.
 
-\code{newNMF()} 
+For example, to build a 5-rank NMF model compatible to fit a given matrix \var{V}, 
+one calls:
 
-This creates a completely empty \code{NMFstd} object, where both slots \code{W} 
-and \code{H} are of dimension 0x0.
- 
-\code{newNMF(3)}
+\code{nmfModel(5, V)}
 
-This creates an empty \code{NMFstd} object with factorization rank of 3. 
-Slots \code{W} and \code{H} are of dimension 0x3 and 3x0 respectively. 
+If the factors \eqn{W} and \eqn{H} are already available, they can be used to initialise 
+the model:
 
-\code{newNMF(3, c(50,10))}
-
-This creates a \code{NMFstd} object to fit a target matrix of dimension 50x10, 
-with factorization rank of 3. 
-Slots \code{W} and \code{H} are set to dimension 50x3 and 3x10 respectively, 
-and filled with NAs.
-
-\code{newNMF(W=w)}
-
-\code{newNMF(H=h)}
-
-\code{newNMF(W=w, H=h)}
- 
-This creates a \code{NMFstd} object, where slots \code{W} and/or \code{H} 
-are provided as matrices. When only one of the matrices is provided, a 
-compatible NA-filled matrix is created for the missing slot.
-
-When \code{W} and \code{H} are both provided, the \code{NMFstd} object created is 
-suitable to seed a NMF algorithm. Note that it implicitly sets the factorisation 
-rank to the number of columns in \code{W}.
-
-Note that when not created as results of algorithm methods, only slots \code{W} and 
-\code{H} are usually set. The remaining slots would be automatically set by 
-method \code{\link{nmf}} with data about the way the factorisation was computed. 
+\code{nmfModel(5, V, W=w, H=h)}
 
 \strong{Standard way}
 
@@ -251,12 +217,12 @@ new('NMFstd')
 # Note this only works when using factory method NMF 
 n <- 50; r <- 3; 
 w <- matrix(runif(n*r), n, r) 
-newNMF(W=w)
+nmfModel(W=w)
 
 # create a NMF object based on random (compatible) matrices
 p <- 20
 h <- matrix(runif(r*p), r, p)
-newNMF(W=w, H=h)
+nmfModel(W=w, H=h)
 
 # create a NMF object based on incompatible matrices: generate an error
 h <- matrix(runif((r+1)*p), r+1, p)
@@ -264,7 +230,7 @@ h <- matrix(runif((r+1)*p), r+1, p)
 
 # same thing using the factory method: dimensions are corrected and a warning 
 # is thrown saying that the dimensions used are reduced 
-newNMF(W=w, H=h)
+nmfModel(W=w, H=h)
 
 # apply default NMF algorithm to a random target matrix
 V <- matrix(runif(n*p), n, p)

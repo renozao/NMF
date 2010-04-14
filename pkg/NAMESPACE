@@ -1,16 +1,28 @@
 #exportPattern("^[[:alpha:]]+")
 
+# Declare compiled functions
+useDynLib(NMF
+			, divergence_update_H, divergence_update_W # divergence based updates
+			, euclidean_update_H, euclidean_update_W # euclidean based updates
+			, offset_euclidean_update_H, offset_euclidean_update_W # nmf with offset (euclidean based)
+			, Euclidean_rss # compute residual sum of squares (without memory duplication)
+			, KL_divergence # compute the KL divergence (with no memory duplication)
+			)
+
+importFrom(graphics, plot)
+importFrom(stats, coefficients, coef, fitted, offset, predict, residuals)
+
 export(
 	nmfEstimateRank
 	, plot.NMF.rank
 	, nmfAlgorithm
+	, newNMF
 	, nmfSeed
 	, syntheticNMF
 	, nmf.options
 	, nmf.getOption
 	, nmf.options.reset
 	, nmf.options.runtime
-	, nmf.models
 	, randomize
 )
 exportMethods(
@@ -20,6 +32,7 @@ exportMethods(
     "algorithm",
     "algorithm<-",
 #    "annotate",
+	"as.NMFList",
     "basis",
     "basis<-",
     "clusters",
@@ -32,6 +45,8 @@ exportMethods(
 #    "contribs",
 	"cophcor",
     "dim",
+    "dimnames",
+    "dimnames<-",
     "dispersion",
     "distance",
     "entropy",
@@ -49,16 +64,15 @@ exportMethods(
     "initialize",
     "is.empty.nmf",
 #    "join",
-    "summary",
     "metaHeatmap",
-#   "model",
-#    "model<-",
+   "modelname",
+#    "modelname<-",
 #    "name",
 #    "name<-",
     "nbasis",
-    "newNMF",
     "nmf",
     "nmfApply",
+    "nmfModel",
 #    "nmfRegister",
 #    "nmfRegisterAlgorithm",
 #    "nmfRegisterSeed",
@@ -66,7 +80,7 @@ exportMethods(
     "objective",
     "objective<-",
     "offset",
-#    "plot",
+    "plot",
     "predict",
     "purity",
     "rnmf",
@@ -78,11 +92,13 @@ exportMethods(
 #    "run.options<-",
 #    "run",
     "runtime",
+    "runtime.all",
     "sampleNames",
     "sampleNames<-",
 #    "seed",
     "seeding",
     "seeding<-",
+    "seqtime",
     "show",
     "smoothing",
     "sparseness" 
@@ -94,6 +110,9 @@ exportClasses(
      "NMFns",
      "NMFOffset",
      "NMFSet"
+     , "NMFfitX"
+     , "NMFfitX1"
+     , "NMFfitXn"
 #     , "NMFStrategy",
 #     "NMFStrategyFunction",
 #     "NMFStrategyIterative",

@@ -168,10 +168,10 @@ setReplaceMethod('fit', signature(object='NMFfit', value='NMF'),
 )
 
 #' Returns the NMF model's name
-setMethod('model', signature(object='NMFfit'), 
+setMethod('modelname', signature(object='NMFfit'), 
 	function(object)
 	{
-		return(class(fit(object)))
+		modelname(fit(object))
 	}
 )
 
@@ -269,6 +269,9 @@ setMethod('runtime', 'NMFfit',
 	}
 )
 
+if ( !isGeneric("runtime.all") ) setGeneric('runtime.all', function(object, ...) standardGeneric('runtime.all') )
+setMethod('runtime.all', 'NMFfit', getMethod('runtime', 'NMFfit'))
+
 #' Access methods to run options.
 if (!isGeneric("run.options")) setGeneric('run.options', function(object, ...) standardGeneric('run.options') )
 setMethod('run.options', 'NMFfit', 
@@ -338,8 +341,15 @@ setReplaceMethod('$', 'NMFfit',
 #' @return this function is used for its side effect of plotting.
 #'
 if ( !isGeneric('errorPlot') ) setGeneric('errorPlot', function(x, ...) standardGeneric('errorPlot') )
-setMethod('errorPlot', signature(x='NMFfit'), 
+setMethod('errorPlot', signature(x='ANY'), 
 	function(x, ...){
+		.Deprecated('plot', 'NMF')
+		plot(x, ...)
+	}
+)
+setGeneric('plot', package='graphics' )
+setMethod('plot', signature(x='NMFfit', y='missing'),
+	function(x, y, ...){
 		
 		# retrieve the residuals track
 		track <- residuals(x, track=TRUE)
@@ -354,7 +364,7 @@ setMethod('errorPlot', signature(x='NMFfit'),
 				, ylab=paste('Objective value ('
 							, if( is.character(x@distance) ) x@distance else algorithm(x), ')'
 							, sep='' )
-				, main=paste("NMF Residuals plot\nrank=", nbasis(x), sep='')
+				, main=paste("NMF Residuals\nrank=", nbasis(x), sep='')
 				, col='#5555ff', lwd=1.4, type='l', cex=0.5)
 		
 		do.call('plot', c(list(names(track), track), params))
@@ -370,12 +380,14 @@ setMethod('summary', signature(object='NMFfit'),
 		## IMPORTANT: if adding a summary measure also add it in the sorting 
 		## schema of method NMFSet::compare to allow ordering on it
 		
+		# retreive final residuals
+		res <- c(res, residuals=as.numeric(residuals(object)))
 		# nb of iterations
 		res <- c(res, niter=as.integer(object$iteration) )
 		# runtime
-		res <- c(res, time=as.numeric(runtime(object)['user.self']))
-		# retreive final residuals
-		res <- c(res, residuals=as.numeric(residuals(object)))		
+		t <- runtime(object)
+		utime <- as.numeric(t['user.self'] + t['user.child'])
+		res <- c(res, cpu=utime, cpu.all=utime, nrun=1)		
 		
 		# return result
 		return(res)

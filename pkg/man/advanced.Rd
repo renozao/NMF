@@ -5,7 +5,6 @@
 \alias{nmf.getOption}
 \alias{nmf.options.reset}
 \alias{nmf.options.runtime}
-\alias{nmf.models}
 
 \title{ Advanced usage of package NMF }
 \description{
@@ -20,7 +19,6 @@ nmf.getOption(name)
 nmf.options.reset()
 nmf.options.runtime()
 
-nmf.models(builtin.only=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -30,11 +28,7 @@ nmf.models(builtin.only=FALSE)
 	   used in package NMF. Further, 'nmf.options('name') == nmf.options()['name']', 
 	   see the example.
 	}
-	
-	\item{builtin.only}{ a single \code{logical}. If \code{TRUE} only built-in NMF models 
-	are returned.
-	}
-	
+		
 	\item{name}{ a character string holding an option name.
 	}
   	
@@ -42,7 +36,7 @@ nmf.models(builtin.only=FALSE)
 	  should store the option into the initial \code{\linkS4class{NMF}} object before performing
 	  the computation.
 	}
-
+		
 }
 \details{
 
@@ -50,12 +44,7 @@ nmf.models(builtin.only=FALSE)
 
 	\item{nmf.getOption}{ get the value of a single option.
 	}
-	
-	\item{nmf.models}{ returns the available NMF models. These are exactly the classes that inherits 
-	from class \code{\linkS4class{NMF}}. If argument \code{builtin.only} is \code{TRUE} then only the 
-	models that are defined within the package are returned.
-	}
-	
+		
 	\item{nmf.options}{ gets/sets/defines options in the way of base function \code{\link[base]{options}}.
 	Invoking 'nmf.options()' with no arguments returns a list with the current values of the options. 
 	To access the value of a single option, one should use \code{nmf.getOption("error.track")}, e.g., 
@@ -78,9 +67,7 @@ nmf.models(builtin.only=FALSE)
     \code{NULL} if it is unset.  For uses setting one or more options, a
     list with the previous values of the options changed (returned
     invisibly).
-    
-    For \code{nmf.models}, a \code{character} vector listing the available NMF models.
-
+        
 }
 
 \section{Options set in package NMF}{
@@ -89,9 +76,24 @@ nmf.models(builtin.only=FALSE)
 
 \item{debug}{ logical. Similar to option \code{'verbose'} (see below), but reports more information.
 }
+\item{default.algorithm}{ \code{character}. The default NMF algorithm used by the \code{\link{nmf}} 
+method when called without argument \code{method}.
+}
+\item{default.seed}{ \code{character}. The default seeding method used by the \code{\link{nmf}} 
+method when called without argument \code{seed}.
+}
 \item{error.track}{ logical. Should the estimation error be tracked during the computations?
-If set to \code{TRUE} then the error track can be plotted using method \code{\link{errorPlot}}. 
+If set to \code{TRUE} then the error track can be plotted using method \code{\link{plot}}. 
 The step size of the error track is set via option \code{track.interval} (see below).
+}
+\item{parallel.backend}{ \code{character} or \code{numeric}. 
+The default parallel backend used by the \code{\link{nmf}} 
+method when called with argument \code{nrun} greater than 1.
+
+Currently it accepts the following values: \code{'mc'} or a number that specifies 
+the number of cores to use, \code{'seq'} or \code{NULL} to use sequential backend for \code{foreach}, 
+and the empty string \code{''} to completely disable the parallel computation. 
+
 }
 \item{track.interval}{ numeric. The number of iterations performed between two consecutive error points. 
 For performance reason, this value should be too small, as the computation of the estimation error can be  

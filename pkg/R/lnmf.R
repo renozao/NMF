@@ -18,7 +18,7 @@
 #' , S.Z. Li, X.W. Hou, and H.J. Zhang.
 #' , In Proceedings of IEEE International Conference on Computer Vision and Pattern Recognition
 #' , December 2001
-nmf.update.lnmf <- function(i, v, data, ...){
+R_nmf.update.lnmf <- function(i, v, data, ...){
 	
 	# retrieve each factor
 	w <- basis(data); h <- coef(data);
@@ -27,10 +27,10 @@ nmf.update.lnmf <- function(i, v, data, ...){
 	h <- sqrt( h * crossprod(w, v / (w %*% h)) )
 	
 	# update W using the standard divergence based update
-	w <- std.divergence.update.w(v, w, h, w %*% h)
+	w <- R_std.divergence.update.w(v, w, h, w %*% h)
 	
 	# scale columns of W
-	w <- apply(w, 2, function(x) x/sum(x))
+	w <- sweep(w, 2L, colSums(w), "/", check.margin=FALSE)	
 	
 	#every 10 iterations: adjust small values to avoid underflow 
 	if( i %% 10 == 0 ){
@@ -45,9 +45,43 @@ nmf.update.lnmf <- function(i, v, data, ...){
 	return(data)
 }
 
+nmf.update.lnmf <- function(i, v, data, ...){
+	
+	# retrieve each factor
+	w <- basis(data); h <- coef(data);
+	
+	# update H 
+	h <- sqrt( h * crossprod(w, v / (w %*% h)) )
+	
+	# update W using the standard divergence based update
+	w <- std.divergence.update.w(v, w, h)
+	
+	# scale columns of W
+	w <- apply(w, 2, function(x) x/sum(x))
+	
+	#every 10 iterations: adjust small values to avoid underflow 
+	if( i %% 10 == 0 ){
+		#precision threshold for numerical stability
+		eps <- .Machine$double.eps
+		h[h<eps] <- eps;
+		w[w<eps] <- eps;
+	}
+	
+	# return updated data	
+	basis(data) <- w; coef(data) <- h
+	return(data)
+}
+
 # Hook to register the algorithm when the package is loaded
 .nmf.plugin.lnmf <- function(){
-	new('NMFStrategyIterative', name='lnmf', objective='KL'
+	return(NULL)
+	list(
+			new('NMFStrategyIterative', name='lnmf', objective='KL'
 						, Update=nmf.update.lnmf
 						, Stop='nmf.stop.consensus')
+			
+			, new('NMFStrategyIterative', name='.R#lnmf', objective='KL'
+				, Update=R_nmf.update.lnmf
+				, Stop='nmf.stop.consensus')
+	)
 }

@@ -26,7 +26,7 @@ posICA <- function(object, x, ica.method=c('C', 'R'), ...){
 	
 	# update the 'NMF' object
 	object@W <- ifelse( res$S>=0, res$S, .Machine$double.eps ) * res$S ; 
-	object@H <- res$A	
+	object@H <- ifelse( res$A>=0, res$A, .Machine$double.eps ) * res$A ;	
 	
 	# return the updated object
 	object

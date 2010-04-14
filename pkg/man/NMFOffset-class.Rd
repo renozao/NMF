@@ -28,15 +28,15 @@ operator \code{\link{new}}
 
 However, as for all the classes that extend class \code{\linkS4class{NMFstd}}, 
 objects of class \code{NMFOffset} should be created using factory method 
-\code{\link{newNMF}} :
+\code{\link{nmfModel}} :
 
 \code{new('NMFOffset')}
 
-\code{newNMF(model='NMFOffset')}
+\code{nmfModel(model='NMFOffset')}
 
-\code{newNMF(model='NMFOffset', W=w, offset=rep(1, nrow(w)))}
+\code{nmfModel(model='NMFOffset', W=w, offset=rep(1, nrow(w)))}
 
-See \code{\link{newNMF}} for more details on how to use the factory method.
+See \code{\link{nmfModel}} for more details on how to use the factory method.
 }
 
 \section{Slots}{
@@ -102,7 +102,7 @@ new('NMFOffset')
 n <- 50; r <- 3; p <- 20
 w <- matrix(runif(n*r), n, r) 
 h <- matrix(runif(r*p), r, p)
-newNMF(model='NMFOffset', W=w, H=h, offset=rep(0.5, nrow(w)))
+nmfModel(model='NMFOffset', W=w, H=h, offset=rep(0.5, nrow(w)))
 
 # apply Nonsmooth NMF algorithm to a random target matrix
 V <- matrix(runif(n*p), n, p)
