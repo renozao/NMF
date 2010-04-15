@@ -208,13 +208,13 @@ switch( $view ){
 <h3>Software &amp; Documentations</h3>
 
 <?php
-function get_local_version($os='', $name = '', $version=''){
+function get_local_version($os='', $name = '', $version='', $rforge=true){
 
 	if( !$os ){ // return last version for all os
 		$os_array = array('nix', 'win', 'mac');
 		$res = array();
 		foreach( $os_array as $os)
-			$res[$os] = get_local_version($os, $name, $version);
+			$res[$os] = get_local_version($os, $name, $version, $rforge);
 		return $res;
 	}
 
@@ -230,22 +230,43 @@ function get_local_version($os='', $name = '', $version=''){
 		preg_match_all($pattern, $desc, $matches);
 		$name = $matches[1][0];	
 	}
-		
-	global $domain;
+	
 	$pkg_name = $name."_".$version;
-	$url = 'http://'.$domain;
-	if( $os == 'nix' ) $url .= "/src/contrib/".$pkg_name.".tar.gz";
-	else if( $os == 'win' ) $url .= "/bin/windows/contrib/latest/".$pkg_name.".zip";
-	else if( $os == 'mac' ) $url .= "/bin/macosx/leopard/contrib/latest/".$pkg_name.".tgz";
-	return $url;	
+	echo $rforge;			
+	if( $rforge ){
+		global $domain;	
+		$url = 'http://'.$domain;
+		if( $os == 'nix' ) $url .= "/src/contrib/".$pkg_name.".tar.gz";
+		else if( $os == 'win' ) $url .= "/bin/windows/contrib/latest/".$pkg_name.".zip";
+		else if( $os == 'mac' ) $url .= "/bin/macosx/leopard/contrib/latest/".$pkg_name.".tgz";
+		return $url;	
+	}else{		
+		$url = "";
+		if( $os == 'nix' ) $url = "release/".$pkg_name.".tar.gz";
+		else if( $os == 'win' ) $url = "release/".$pkg_name.".zip";
+		else if( $os == 'mac' ) $url = "release/".$pkg_name.".tgz";
+		return $url;
+	}
+		
 }
 
-$local_pkgs = get_local_version('', 'NMF', '0.3.1');
+$local_pkgs = get_local_version('', 'NMF', '0.4', false);
+function link_package($file, $name=''){
+	$name = ( $name ? $name : basename($file) );
+	if( !file_exists($file) ) return "<i>$name</i> [not built yet]";
+	return "<a href=\"$file\">$name</a>";
+}
 ?>
 <ul>
+<!-- Not working links...
 <li>Package source: <a href="<?php echo $local_pkgs['nix'];?>"><?php echo basename($local_pkgs['nix']);?></a></li>
 <li>MacOS X binary: <a href="<?php echo $local_pkgs['mac'];?>"><?php echo basename($local_pkgs['mac']);?></a></li>
 <li>Windows binary: <a href="<?php echo $local_pkgs['win'];?>"><?php echo basename($local_pkgs['win']);?></a></li>
+-->
+<li>Package source: <?php echo link_package($local_pkgs['nix']);?></a></li>
+<li>MacOS X binary: <?php echo link_package($local_pkgs['mac']);?></li>
+<li>Windows binary: <?php echo link_package($local_pkgs['win']);?>
+<br />[R devel: <a href="<?php echo "devel/i386/".basename($local_pkgs['win']);?>">i386</a> - <a href="<?php echo "devel/i386/".basename($local_pkgs['win']);?>">x86_64</a>]</li>
 <li>Reference manual: <a href="NMF-manual.pdf">NMF-manual.pdf</a></li>
 <li>Vignette: <a href="<?php echo PKG_SVN_VIEW_ROOT?>inst/doc/NMF-vignette.pdf?root=nmf">NMF-vignette.pdf</a></li>
 <li>News/ChangeLog:	<a href="<?php echo PKG_SVN_VIEW_ROOT?>NEWS?root=nmf">NEWS</a></li>
