@@ -311,23 +311,24 @@ function get_cran_version($pkg){
 		return $version[1];
 }
 //$latest_version = get_cran_version('NMF');
-$latest_version = '0.3.3';
+$latest_version = '0.4';
 ?>
 <h3>Install&nbsp;&amp;&nbsp;Updates
 <font style="font-size:10pt;color:#990000"><?php echo $latest_version ? "[CRAN version: $latest_version]" : "" ?></font>
 </h3>
-<p>The NMF package is still under active development. The latest version of the package is available on CRAN, please click <a target="_new_nmf" href="http://cran.r-project.org/package=NMF">here</a> for a direct link to the dedicated web page on the central mirror.</p>
+<p>The NMF package is still under active development. The latest stable version of the package is available on CRAN.
+ <a target="_new_nmf" href="http://cran.r-project.org/package=NMF">Get <b>NMF <?php echo $latest_version;?></b> from CRAN</a>.</p>
 <p>Installation is done via the following standard call in the R console:</p>
 <code><pre style="background-color:#aaccaa;padding:10px;border:1px solid gray">
 <font class="comment"># install the NMF package from default CRAN mirror</font>
 install.packages('NMF');
 </pre></code>
 
-<h3 style="margin-bottom:0px">Project summary</h3>
+<h3 style="margin-bottom:0px">Project & Development</h3>
 <!-- R-Forge Logo -->
 <p>
-The NMF package has a dedicated <strong>project summary page</strong> on <a target="_new" href="http://r-forge.r-project.org">R-Forge</a>.
-You can find it <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/"><strong>here</strong></a>.
+The NMF package has a dedicated <strong>project on <a target="_new" href="http://r-forge.r-project.org">R-Forge</a></strong>.
+ <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/">Go to the <strong>project home</strong></a>.
 </p>
 <p>It provides access to useful tools such as the source code SVN repository, trackers to enter bugs or request features, and a mailing-list.</p>
 
