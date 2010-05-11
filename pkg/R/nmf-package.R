@@ -60,33 +60,12 @@
 	if( getOption('verbose') ) .init.sequence()
 	else suppressMessages(.init.sequence())
 	
-	# load compiled library if one is loading the 
+	# load compiled library if one is loading the package 
 	if( !missing(pkgname) )
-		library.dynam(pkgname, pkgname, libname)
-	else if( .Platform$OS.type == 'unix' ){ # compile and load the library
-		wd <- getwd()
-		clibname <- 'NMF-src.so'
-		libfile <- file.path(wd, '../libs', clibname)
-		if( !file.exists(dirname(libfile)) )
-			dir.create(dirname(libfile))
-		# unload library if necessary
-		if (clibname %in% names(base::getLoadedDLLs()))
-			dyn.unload(libfile)
-		if( file.exists(libfile) )
-			unlink(libfile)
-		# compile the source code
-		srcdir <- '../src'
-		setwd(srcdir)		
-		# cleanup on exit
-		srcdir <- getwd()
-		on.exit({system(paste('rm ', srcdir,'/*.o', sep=''))}, add=TRUE)		
-		cmd <- paste('R CMD SHLIB *.cpp -o ', libfile, sep='')
-		system(cmd)
-		setwd(wd)
-		# load the freshly compiled library
-		dyn.load(libfile)
-	}
-	
+		library.dynam('NMF', pkgname, libname)
+	else if( is.null(getLoadingNamespace()) ) # only used when developping the package and directly sourcing the files
+		do.call('rasta.compileLib', list('../src', 'NMF'))
+		
 	return(invisible())
 }
 

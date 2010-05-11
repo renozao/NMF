@@ -1,4 +1,39 @@
 *************************************************************************
+*                       Changes in version 0.4.1                        *
+*************************************************************************
+
+BUG FIX
+
+    o The 'metaHeatmap' function was not correctly handling row labels 
+    when argument filter was not FALSE. All usual row formating in heatmaps 
+    (label and ordering) are now working as expected.
+    Thanks to Andreas Schlicker, from The Netherlands Cancer Institute for 
+    reporting this. 
+    
+    o An error was thrown on some environments/platforms (e.g. Solaris) 
+    where not all the packages required for parallel computation were not 
+    available -- even when using option 'p' ('p' in lower case), which 
+    should have switched the computation to sequential. 
+    This is solved and the error is only thrown when running NMF with 
+    option 'P' (capital 'P').
+    
+    o Not all the options were passed (e.g. 't' for tracking) in sequential 
+    mode (option '-p').
+    
+    o verbose/debug global nmf.options were not restored if a numerical random 
+    seed were used.
+    
+CHANGES    
+    
+    o The 'metaHeatmap' function nows support passing the name of a filtering 
+    method in argument 'filter', which is passed to method 'extractFeatures'.
+    See ?metaHeatmap.
+
+    o Verbose and debug messages are better handled. When running a parallel 
+    computation of multiple runs, verbose messages from each run are shown only
+    in debug mode.
+    
+*************************************************************************
 *                       Changes in version 0.4                          *
 *************************************************************************
 

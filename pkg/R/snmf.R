@@ -12,7 +12,7 @@
 #'
 #' @return [K, Pset]
 #'
-.fcnnls <- function(C, A){
+.fcnnls <- function(C, A, verbose=FALSE){
 # NNLS using normal equations and the fast combinatorial strategy
 	#
 	# I/O: [K, Pset] = fcnnls(C, A);
@@ -52,7 +52,7 @@
 	oitr=0; # HKim
 	while ( length(Fset)>0 ) {
 		
-		oitr=oitr+1; if ( oitr > 5 ) cat(sprintf("%d ",oitr));# HKim
+		oitr=oitr+1; if ( verbose && oitr > 5 ) cat(sprintf("%d ",oitr));# HKim
 		
 		#Vc# Solve for the passive variables (uses subroutine below)				
 		K[,Fset] = .cssls(CtC, CtA[,Fset, drop=FALSE], Pset[,Fset, drop=FALSE]);
@@ -220,7 +220,7 @@
 	eta2=eta^2;
 	wminchange=bi_conv[1]; iconv=bi_conv[2];
 	if ( verbose )
-		cat(sprintf("SNMF/%s k=%d eta=%.4e beta (for sparse H)=%.4e wminchange=%d iconv=%d\n",
+		cat(sprintf("--\nAlgorithm: SNMF/%s\nParameters: k=%d eta=%.4e beta (for sparse H)=%.4e wminchange=%d iconv=%d\n",
 				version, k,eta,beta,wminchange,iconv));
 
 	idxWold=rep(0, m); idxHold=rep(0, n); inc=0;	
@@ -252,10 +252,10 @@
 		H = res[[1]]
 
 		if ( any(rowSums(H)==0) ){ 	  
-			cat(sprintf("iter%d: 0 row in H eta=%.4e restart!\n",i,eta));
+			if( verbose ) cat(sprintf("iter%d: 0 row in H eta=%.4e restart!\n",i,eta));
 			nrestart=nrestart+1;
 			if ( nrestart >= 10 ){
-				print('[*Warning*] too many restarts due to too big beta value...\n');
+				warning("NMF::snmf - Too many restarts due to too big 'beta' value [Computation stopped after the 9th restart]");
 				break;
 			}
 						
@@ -290,20 +290,22 @@
 			conv=sum(abs(resvec)); #L1-norm      
 			convnum=sum(abs(resvec)>0);
 			erravg=conv/convnum;
-			if ( i==1 ){
+			if ( i==1 )
 				erravg1=erravg;
-				if( verbose ) cat("\tIter\tInc\tchW\tchH\t---\terravg1\terravg\terravg/erravg1\n")
+			
+			if ( verbose && (i %% 1000==0) ){ # prints number of changing elements
+				if( i==1000 ) cat("Track:\tIter\tInc\tchW\tchH\t---\terravg1\terravg\terravg/erravg1\n")
+				cat(sprintf("\t%d\t%d\t%d\t%d\t---\terravg1: %.4e\terravg: %.4e\terravg/erravg1: %.4e\n",
+					 i,inc,changedW,changedH,erravg1,erravg,erravg/erravg1));
 			}
-
-			if ( verbose || (i %% 1000==0) ) # prints number of changing elements 
-			 cat(sprintf("\t%d\t%d\t%d\t%d\t---\terravg1: %.4e\terravg: %.4e\terravg/erravg1: %.4e\n",
-				 i,inc,changedW,changedH,erravg1,erravg,erravg/erravg1));
 			
 			if ( (inc>=iconv) && (erravg<=eps_conv*erravg1) ) break;
 			idxWold=idxW; idxHold=idxH; 
 		}
 
 	}
+	
+	if( verbose ) cat("--\n")
 	
 	# force to compute last error if not already done
 	if( !is.null(nmf.fit) ) 

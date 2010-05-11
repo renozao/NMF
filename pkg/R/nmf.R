@@ -231,7 +231,7 @@ function(x, rank, method
 	keep.all <- if( !is.null(.options$keep.all) ) .options$keep.all else FALSE
 	
 	# Set debug/verbosity option just for the time of the run
-	old.opt <- nmf.options(debug=debug, verbose=verbose); 
+	old.opt <- nmf.options(debug=debug, verbose=verbose);
 	on.exit({nmf.options(old.opt)}, add=TRUE)
 	
 	# make sure rank is an integer
@@ -244,7 +244,7 @@ function(x, rank, method
 	if( is.numeric(seed) && .options$restore.seed ){
 		if ( !exists(".Random.seed", mode="numeric") ) sample(NA);
 		oldSeed <- .Random.seed
-		on.exit( assign(".Random.seed", oldSeed, envir=globalenv()) )
+		on.exit({assign(".Random.seed", oldSeed, envir=globalenv())}, add=TRUE)
 	}
 			
 	##START_MULTI_RUN
@@ -262,6 +262,9 @@ function(x, rank, method
 			set.seed(seed)
 			seed <- 'random'
 		}
+		
+		# allow overriding some options passed to the call that performs each single run 
+		pass.options <- .options
 		
 		if( opt.parallel ){
 			if( verbose ) message("# ", if( opt.parallel.required ) 'Setting up required' else 'Setting up'
@@ -359,42 +362,60 @@ function(x, rank, method
 #				, registered = {
 #					worker.type <- 'node(s)'
 #					if( !getDoParRegistered() )
-#						stop("NMF::nmf - no registered backend to run NMF parallel computation")
+#						stop("NMF::nmf - no relse if( opt.parallel.required )egistered backend to run NMF parallel computation")
 #				}
 				, stop("NMF::nmf - invalid backend ['", .pbackend, "'] for NMF parallel computation. Argument '.pbackend' must be one of 'mc' (or number of cores), 'seq' (or NULL). See ?nmf"
 						, call.=FALSE)
 			)
-		}
-		
-		
-		####PARALLEL_NMF
-		if( opt.parallel){
-			
+
+
 			# if one wants to keep only the best result one needs the 'bigmemory' package
 			# to store the best residual in shared memory
-			use.bigmemory4 <- TRUE
-			if( !keep.all ){
-				if( !require(bigmemory) )
-					stop("NMF::nmf - the 'bigmemory' package is required to run in parallel mode with option 'keep.all'=FALSE"
+			if( opt.parallel ){
+				use.bigmemory4 <- TRUE
+				if( require(bigmemory) ){
+					# check if the installed version of 'bigmemory' provides mutexes (prior to version 4.0)
+					# otherwise one requires the 'synchronicity' package
+					if( !keep.all && !existsFunction('rw.mutex', where=asNamespace('bigmemory')) ){
+						if( require(synchronicity) ){
+							if( verbose ) message("# Mutex provider: 'synchronicity'")
+						}
+						else if( opt.parallel.required )
+							stop("NMF::nmf - the 'synchronicity' package is required to run in parallel mode with option 'keep.all'=FALSE"
+									, call.=FALSE)
+				
+						else{
+							if( verbose )
+								message("# NOTE: NMF multicore computation disabled ['synchronicity' package required when option 'keep.all'=FALSE]")
+					
+							# disable parallel computation
+							opt.parallel <- FALSE
+						}
+
+					}
+					else{
+						use.bigmemory4 <- FALSE
+						if( verbose ) message("# Mutex provider: 'bigmemory'")
+					}
+				}else if( opt.parallel.required )
+					stop("NMF::nmf - the 'bigmemory' package is required to run in parallel mode"
 						, call.=FALSE)
-			
-				# check if the installed version of 'bigmemory' provides mutexes (prior to version 4.0)
-				# otherwise one requires the 'synchronicity' package
-				if( !existsFunction('rw.mutex', where=asNamespace('bigmemory'))	){
-					if( !require(synchronicity) )
-						stop("NMF::nmf - the 'synchronicity' package is required to run in parallel mode with option 'keep.all'=FALSE"
-								, call.=FALSE)
-					
-					if( verbose ) message("# Mutex provider: 'synchronicity'")
-				}
 				else{
-					use.bigmemory4 <- FALSE
-					if( verbose ) message("# Mutex provider: 'bigmemory'")
+					if( verbose )
+						message("# NOTE: NMF multicore computation disabled ['bigmemory' package not installed]")
+					
+					# disable parallel computation
+					opt.parallel <- FALSE
 				}
-					
-					
 			}
+		}
+				
+		####PARALLEL_NMF
+		if( opt.parallel ){
 		
+			# in parallel mode: verbose message from each run are only shown in debug mode
+			pass.options$verbose=FALSE 
+			
 			if( verbose ) message("# Using foreach backend: ",getDoParName()
 								," [version ", getDoParVersion(),"] / "
 								, getDoParWorkers(), " ", worker.type)
@@ -425,9 +446,7 @@ function(x, rank, method
 				res.runs <- foreach(n=1:nrun, .verbose=debug) %dopar% {
 					
 					if( verbose ) cat('', n)
-					if( debug ) cat("\n")
-					pass.options <- .options
-					pass.options$verbose=FALSE
+					if( debug ) cat("\n")					
 					res <- nmf(x, rank, method, nrun=1, seed=seed, .options=pass.options, ...)
 					
 					# if only the best fit must be kept then update the shared objects
@@ -520,9 +539,9 @@ function(x, rank, method
 								
 				# define a function that performs a single NMF and update the static variables
 				single.run <- function(n, ...){
-					if( verbose ) cat('', n)
-					if( debug ) cat("\n")
-					res <- nmf(x, rank, method, nrun=1, seed=seed, .options='-v', ...)
+					if( debug ) cat("\n## Run: ",n, "/", nrun, "\n", sep='')
+					else if( verbose ) cat('', n)					
+					res <- nmf(x, rank, method, nrun=1, seed=seed, .options=pass.options, ...)
 					
 					if( !keep.all ){						
 						# check if the run found a better fit
@@ -530,7 +549,7 @@ function(x, rank, method
 						best <- best.static$residuals
 						if( is.na(best) || err < best ){
 							if( n>1 && verbose ){
-								if( debug ) cat(": better fit found [err=", err, "]")
+								if( debug ) cat("## Better fit found [err=", err, "]\n")
 								else cat('*')
 							}
 							
@@ -547,7 +566,7 @@ function(x, rank, method
 						res <- NULL
 					}
 					
-					if( debug ) cat("\n")
+					if( debug ) cat("## DONE\n")
 					
 					# return the result
 					res
@@ -555,8 +574,8 @@ function(x, rank, method
 				##
 				
 				## 2. RUN:
-				# run 'single.run' nrun times
-				if( verbose ) cat('Runs:')
+				# run 'single.run' nrun times				
+				if( verbose && !debug ) cat('Runs:')
 				res.runs <- lapply(seq(nrun), single.run, ...)
 				##
 				
@@ -577,7 +596,7 @@ function(x, rank, method
 		
 		# perform all the NMF runs
 		t <- system.time({res <- run.all(...)})
-		if( verbose ) cat(" ... DONE\n")
+		if( verbose && !debug ) cat(" ... DONE\n")
 		
 		# ASSERT the presence of the result
 		stopifnot( !is.null(res$fit) )

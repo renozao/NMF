@@ -669,30 +669,59 @@ setMethod('metaHeatmap', signature(object='NMF'),
 			)
 			
 		}else if( what == 'features' ){
+			
+			rowInd <- NULL
 			if( is.logical(filter) ){ # logical value for filter
 				
 				if( length(filter) == nrow(object) ) # use only the features specified in filter
-					x <- basis(object)[filter,]
-				else if( length(filter) == 1 ){ # use Kim and Park scoring scheme for filtering
-					x <- if( filter ) basis(extractFeatures(object, format='subset')) else basis(object)
+					rowInd <- filter
+					#x <- basis(object)[filter,]
+				else if( (length(filter) == 1) ){ # use Kim and Park scoring scheme for filtering
+					if( filter ) rowInd <- extractFeatures(object, format='combine')
+					#x <- if( filter ) basis(extractFeatures(object, format='subset')) else basis(object)
 				}
 				else stop("NMF::metaHeatmap - invalid logical value for argument 'filter' [must be either single or be of length the number of features in the target matrix]")
 			}
+			else if( is.character(filter) )
+				rowInd <- extractFeatures(object, method=filter, format='combine')
 			else if( is.numeric(filter) ){ # numerical value for filter
 				
 				if( length(filter) > 1 )# use only the features specified in filter
-					x <- basis(object)[filter,]
+					rowInd <- as.integer(filter)
+					#x <- basis(object)[filter,]
 				else{ # only keep the spcified number of feature for each basis vector
 					ord <- apply( basis(object), 2, 
 							function(v, limit){
 								order(v, decreasing=TRUE)[1:limit]
 							}
-					, filter)
+					, as.integer(filter))
 					ord <- unique(as.numeric(ord))
-					x <- basis(object)[ord,]
+					rowInd <- ord
+					#x <- basis(object)[ord,]
 				}
 			}
-			else stop("NMF::metaHeatmap - invalid value for argument 'filter' [logical or numeric expected]")
+			else stop("NMF::metaHeatmap - invalid value for argument 'filter' [logical, numeric or character expected]")
+			
+			# extract the basis vector matrix
+			x <- basis(object)
+			
+			# apply the filter restriction if necessary			
+			if( !is.null(rowInd) ){				
+				# first apply the filtering to some graphical parameters if present
+				if( !is.null(graphical.params$labRow) ){
+					if( length(graphical.params$labRow) !=  nrow(object) )
+						stop("NMF::metaHeatmap - Wrong length for argument 'labRow' [should be of length ", nrow(object),']')
+					graphical.params$labRow <- graphical.params$labRow[rowInd]
+				}
+				if( is.integer(graphical.params$Rowv) ){
+					if( length(graphical.params$Rowv) !=  nrow(object) )
+						stop("NMF::metaHeatmap - Wrong length for argument 'Rowv' [should be of length ", nrow(object),']')
+					graphical.params$Rowv <- graphical.params$Rowv[rowInd]
+				}
+				
+				# filter the data
+				x <- x[rowInd,, drop=FALSE]
+			}
 			
 			# set default graphical parameters for type 'basis'
 			graphical.params <- .set.list.defaults(graphical.params

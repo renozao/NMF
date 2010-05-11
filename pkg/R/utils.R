@@ -97,6 +97,94 @@ getLoadingNamespace <- function(getenv=FALSE){
 	else NULL
 }
 
+#' Test if a package is installed
+isPackageInstalled <- function(..., lib.loc=NULL){
+
+	inst <- utils::installed.packages(lib.loc=lib.loc)
+	pattern <- '^([a-z]+)(_([0-9.]+)?)?$';
+	res <- sapply(list(...), function(p){
+		vers <- gsub(pattern, '\\3', p)
+		pkg <- gsub(pattern, '\\1', p)
+		if( !(pkg %in% rownames(inst)) ) return(FALSE);
+		p.desc <- inst[pkg,]
+		if( (vers != '') && compareVersion(vers, p.desc['Version']) > 0 ) return(FALSE);
+		TRUE
+	})
+	all(res)
+}
+
+#' Test if parallel computation is possible
+parallelEnv <- function(load=TRUE){
+	
+	if( isPackageInstalled('bigmemory_4') ) isPackageInstalled('synchronicity')
+	else if( isPackageInstalled('bigmemory') ) TRUE
+	else FALSE
+}
+
+#'DEV_UTIL:  Compile source code on the fly and load the library
+if( is.null(getLoadingNamespace()) ){#BEGIN_DEV_ONLY
+
+rasta.compileLib <- function(srcdir, libname){
+	
+	# define a static variable that will old the mapping between dll names and dll filenames
+	if( !exists('.RASTA_dll_map', where=globalenv()) )
+		assign('.RASTA_dll_map', list(), env=globalenv())
+				
+	# check if the dll was already compiled and unload and remove it if needed
+	if( !is.null(dll.info <- .RASTA_dll_map[[libname]]) ){			
+		# unload the library
+		if ( dll.info$name %in% names(base::getLoadedDLLs()) ){
+			message("# Unloading: ", dll.info$path)
+			dyn.unload(dll.info$path)			
+		}
+		
+		# delete the file
+		if( file.exists(dll.info$path) )
+			unlink(dll.info$path)		
+						
+		# remove the dll from the mapping
+		.RASTA_dll_map[[libname]] <<- NULL
+	}
+	
+	# compile and load the library
+	wd <- getwd()
+	# define a unique temporary name for the compiled dll 
+	libfile <- paste(dllname <- tempfile(paste(libname,'_', sep='')), .Platform$dynlib.ext, sep='')
+	dllname <- basename(dllname)
+	# unload library if necessary
+	if( dllname %in% names(base::getLoadedDLLs()) ){
+		warning("Conflicting names: DLL '",dllname,"' is loaded")
+		return(NULL)
+	}
+	
+	# compile the source code
+	message("# Check source directory '", srcdir, "' ... ", appendLF=FALSE)
+	if( !file.exists(srcdir) ) message("SKIPPED")
+	else{
+		message('OK')
+		message("# Compiling: ", libfile)
+		setwd(srcdir)		
+		# setup the cleanup on exit
+		on.exit({system(paste('rm ', srcdir,'/*.o', sep=''))}, add=TRUE)
+		# compile the dll
+		cmd <- paste('R CMD SHLIB *.cpp -o ', libfile, sep='')
+		system(cmd)
+		setwd(wd)
+		
+		# load the freshly compiled library
+		message("# Loading: ", libfile)
+		dll.info <- dyn.load(libfile)
+		.RASTA_dll_map[[libname]] <<- list(name=dllname, path=libfile)#dll.info		
+		#dll_map[[libname]] <<- dll.info
+		
+		# return the DLLInfo object
+		dll.info
+	}
+
+}
+
+}#END_DEV_ONLY
+
 #compute RSS with C function
 .rss <- function(x, y)
 {	

@@ -117,8 +117,25 @@ syntheticNMF(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE)
 	factor if necessary.
 	}
 	
-	\item{filter}{ if \code{TRUE}, only the features that are basis-specific are used. 
-	Those features are those returned by function \code{extractFeatures}. }
+	\item{filter}{ 
+	Relevant when \code{what='features'}. It specifies how to filter the features that 
+	will appear in the heatmap.	When \code{FALSE} (default), all the features are used. 
+	
+	Other possible values are:
+	
+	\itemize{
+	\item \code{TRUE}: only the features that are basis-specific are used, 
+	using Kim and Park's method (cf. references below and method \code{extractFeatures}).
+	\item a single \code{character} string that specifies the filtering method to be used to 
+	select the basis-specific features that should appear in the heatmap (cf. argument \code{method} 
+	for function \code{extractFeatures} below).
+	\item a \code{logical} vector of length \code{nrow(object)} (i.e. the number of features)
+	that specifies which features that should appear in the heatmap.
+	\item a \code{numeric} vector of length \code{nrow(object)} (i.e. the number of features)
+	that specifies the index of the features that should appear in the heatmap.
+	}
+	
+	}
 	
 	\item{format}{ the output format of the extracted features.
 	Possible values are:
@@ -213,8 +230,8 @@ syntheticNMF(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE)
 	\item{track}{ if \code{TRUE}, the whole residuals track is returned. 
 	Otherwise only the last residuals computed is returned.}
 	
-	\item{what}{ Specifies on which matrix (basis components or mixture coefficients) 
-	the computation should be performed.}
+	\item{what}{ Specifies on which matrix, basis components (\code{what='features'}) 
+	or mixture coefficients (\code{what='samples'}) the computation should be performed.}
 	
 	\item{x}{ 
 	
