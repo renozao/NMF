@@ -29,7 +29,7 @@ $group_name=ereg_replace('([^\.]*)\..*$','\1',$_SERVER['HTTP_HOST']);
 $themeroot='http://r-forge.r-project.org/themes/rforge/';
 
 define(PKG_ROOT, '../pkg/');
-define(PKG_SVN_VIEW_ROOT, 'http://r-forge.r-project.org/plugins/scmsvn/viewcvs.php/*checkout*/pkg/');
+define(PKG_SVN_VIEW_ROOT, 'https://r-forge.r-project.org/scm/viewvc.php/*checkout*/pkg/');
 
 echo '<?xml version="1.0" encoding="UTF-8"?>';
 ?>
@@ -44,7 +44,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 	<?php // echo $group_name; ?>
 	NMF: a flexible R package for Nonnegative Matrix Factorization
 	</title>
-	<link href="<?php echo $themeroot; ?>styles/estilo1.css" rel="stylesheet" type="text/css" />
+	<link href="<?php echo $themeroot; ?>css/theme.css" rel="stylesheet" type="text/css" />
   </head>
 
 <body>
@@ -250,10 +250,11 @@ function get_local_version($os='', $name = '', $version='', $rforge=true){
 		
 }
 
-$local_pkgs = get_local_version('', 'NMF', '0.4', false);
-function link_package($file, $name=''){
+$local_pkgs = get_local_version('', 'NMF', '0.4.1', false);
+function link_package($file, $name='', $alt='[not built yet]'){
 	$name = ( $name ? $name : basename($file) );
-	if( !file_exists($file) ) return "<i>$name</i> [not built yet]";
+	$alt = ' '.$alt;
+	if( !file_exists($file) ) return "<i>$name</i>$alt";
 	return "<a href=\"$file\">$name</a>";
 }
 ?>
@@ -265,8 +266,8 @@ function link_package($file, $name=''){
 -->
 <li>Package source: <?php echo link_package($local_pkgs['nix']);?></a></li>
 <li>MacOS X binary: <?php echo link_package($local_pkgs['mac']);?></li>
-<li>Windows binary: <?php echo link_package($local_pkgs['win']);?>
-<br />[R devel: <a href="<?php echo "devel/i386/".basename($local_pkgs['win']);?>">i386</a> - <a href="<?php echo "devel/i386/".basename($local_pkgs['win']);?>">x86_64</a>]</li>
+<li>Windows binary: <?php echo link_package("release/i386/".basename($local_pkgs['win']), "i386",'[N/A]');?> - <?php echo link_package("release/x86_64/".basename($local_pkgs['win']), "x86_64", '[N/A]');?>
+<br />[R devel: <?php echo link_package("devel/i386/".basename($local_pkgs['win']), "i386",'[N/A]');?> - <?php echo link_package("devel/x86_64/".basename($local_pkgs['win']), "x86_64", '[N/A]');?></li>
 <li>Reference manual: <a href="NMF-manual.pdf">NMF-manual.pdf</a></li>
 <li>Vignette: <a href="<?php echo PKG_SVN_VIEW_ROOT?>inst/doc/NMF-vignette.pdf?root=nmf">NMF-vignette.pdf</a></li>
 <li>News/ChangeLog:	<a href="<?php echo PKG_SVN_VIEW_ROOT?>NEWS?root=nmf">NEWS</a></li>
