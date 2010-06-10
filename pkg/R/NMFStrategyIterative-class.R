@@ -52,7 +52,7 @@ setClass('NMFStrategyIterative'
 		
 		# at least 3 arguments for 'Update'
 		if( length(n.update) < 3 )
-			return("Invalid 'Update' method: must have at least 3 arguments")
+			return("Invalid 'Update' method - must have at least 3 arguments: 'i' [iteration number], 'target' [target matrix], 'data' [current NMF model]")
 		
 		n.update <- n.update[-seq(3)]
 		# argument '...' must be present in method 'Update'
@@ -64,7 +64,7 @@ setClass('NMFStrategyIterative'
 			n.stop <- names(formals(object@Stop))
 			
 			if( length(n.stop) < 4 )
-				return("Invalid 'Stop' method: must have at least 4 arguments: 'strategy', 'i', 'x', 'data'")
+				return("Invalid 'Stop' method - must have at least 4 arguments: 'strategy', 'i', 'target' [target matrix], 'data' [current NMF model]")
 			
 			n.stop <- n.stop[-seq(4)]
 			# argument '...' must be present in method 'Stop'
@@ -75,7 +75,7 @@ setClass('NMFStrategyIterative'
 			overlap <- intersect(n.update, n.stop)
 			overlap <- overlap[which(overlap!='...')]
 			if( length(overlap) > 0 )
-				return("Invalid 'Update' and 'Stop' method: overlap in arguments")
+				return("Invalid 'Update' and 'Stop' methods - conflicting arguments")
 		}
 		
 		TRUE
@@ -305,7 +305,7 @@ setMethod('run', signature(method='NMFStrategyIterativeX', x='matrix', seed='NMF
 			, " already set internally.", call.=FALSE)
 	# !is.element('...', expected.args) && 
 	if( any(t <- !pmatch(passed.args, names(expected.args), nomatch=FALSE)) )
-		stop("NMF::run - Update/Stop method : unused argument(s) "
+		stop("NMF::run - Update/Stop method for algorithm '", name(strategy),"': unused argument(s) "
 			, paste( paste("'", passed.args[t],"'", sep=''), collapse=', '), call.=FALSE)
 	# check for required arguments
 	required.args <- names(expected.args[which(sapply(expected.args, function(x) x==''))])

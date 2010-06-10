@@ -1,6 +1,11 @@
 #' @include NMFSet-class.R
 #' @include NMFStrategy-class.R
 
+
+isNMFResult <- function(x){
+	is(x, 'NMFfit') || is(x, 'NMFfitX')
+}
+
 #' Generic interface to Nonnegative Matrix Factorization algorithms.
 #'
 #' Function \code{nmf} is the main entry point to perform NMF algorithms defined within framework
@@ -271,7 +276,7 @@ function(x, rank, method
 						," parallel computation environment ...")
 			
 			# check for 'foreach' package: required for parallel computation
-			if( !require(foreach) ){
+			if( !require.quiet(foreach) ){
 				if( opt.parallel.required )
 					stop("NMF::nmf - the 'foreach' package is required to run NMF parallel computation"
 							, call.=FALSE)
@@ -324,7 +329,7 @@ function(x, rank, method
 						# disable parallel computation
 						opt.parallel = FALSE
 					}
-					else if( require(doMC) ){
+					else if( require.quiet(doMC) ){
 						
 						ncores.machine <- multicore:::detectCores()
 						if( ncores.machine == 1 ){
@@ -373,11 +378,11 @@ function(x, rank, method
 			# to store the best residual in shared memory
 			if( opt.parallel ){
 				use.bigmemory4 <- TRUE
-				if( require(bigmemory) ){
+				if( require.quiet(bigmemory) ){
 					# check if the installed version of 'bigmemory' provides mutexes (prior to version 4.0)
 					# otherwise one requires the 'synchronicity' package
 					if( !keep.all && !existsFunction('rw.mutex', where=asNamespace('bigmemory')) ){
-						if( require(synchronicity) ){
+						if( require.quiet(synchronicity) ){
 							if( verbose ) message("# Mutex provider: 'synchronicity'")
 						}
 						else if( opt.parallel.required )
@@ -772,7 +777,7 @@ function(x, rank, method
 	seed@parameters <- parameters.method # extra parameters
 	run.options(seed) <- nmf.options.runtime() # set default run options
 	if( !is.null(.options$track) ) run.options(seed, 'error.track') <- .options$track
-	if( !missing(verbose) ) run.options(seed, 'verbose') <- verbose
+	run.options(seed, 'verbose') <- verbose
 
 	## RUN NMF METHOD:
 	# call the strategy's run method [and time it] using the element of 'parameters.method' as parameters	
@@ -1004,49 +1009,107 @@ setMethod('seed', signature(x='matrix', model='NMF', method='NMFSeed'),
 
 #' Estimate the factorization rank
 nmfEstimateRank <- function(x, range, method=nmf.getOption('default.algorithm')
-					, nrun=30, verbose=FALSE, ...){
+					, nrun=30, verbose=FALSE, stop=FALSE, ...){
 	
-	concat.to <- function(base, r, value){
-		base <- c(base, value)
-		names(base)[length(base)] <- r
-		return(base)
+	# check if there is no duplicates in the range
+	if( any(duplicated(range)) )
+		stop("duplicated values in argument 'range' are not allowed")	
+	
+	# initiate the list of consensus matrices: start with single NA values
+	c.matrices <- lapply(range, function(x) NA)
+	names(c.matrices) <- as.character(range)
+	bootstrap.measures <- list()
+
+	# combine function: take all the results at once and merge them into a big matrix
+	comb <- function(...){
+		measures <- list(...)
+		
+		err <- which( sapply(measures, is.character) )		
+		if( length(err) == length(measures) ){ # all runs produced an error
+		
+			# build an warning using the error messages
+			msg <- paste(paste('Run ', seq_along(range), ' [r=', range, '] -> ', measures, sep=''), collapse="\n\t-")
+			stop("All the runs produced an error:\n\t-", msg)
+		
+		}else if( length(err) > 0 ){ # some of the runs returned an error
+			
+			# simplify the results with no errors into a matrix
+			measures.ok <- sapply(measures[-err], function(x) x)
+			
+			# build a NA matrix for all the results
+			n <- nrow(measures.ok)
+			tmp.res <- matrix(NA, n, length(range))
+			rownames(tmp.res) <- rownames(measures.ok)
+			
+			# set the results that are ok
+			tmp.res[,-err] <- measures.ok
+			# set only the rank for the error results 
+			tmp.res['rank', err] <- range[err]
+			# build an warning using the error messages
+			msg <- paste(paste('Run ', err, ' [r=', range[err], '] -> ', measures[err], sep=''), collapse="\n\t-")
+			warning("NAs were produced due to errors in some of the runs:\n\t-", msg)
+			
+			# return full matrix
+			tmp.res
+		}
+		else # all the runs are ok 
+			sapply(measures, function(x) x)
 	}
 	
-	
-	# initiate the list of consensus matrices
-	c.matrices <- list()
-	bootstrap.measures <- list()
+#	measures <- foreach(r = range, .combine=comb, .multicombine=TRUE, .errorhandling='stop') %do% {
 	measures <- sapply(range, function(r, ...){
 			if( verbose ) message("Compute NMF rank=", r, " ... ", appendLF=FALSE)
-			res <- nmf(x, r, method, nrun=nrun
-				, .options=list(keep.all=FALSE, verbose=verbose), ...)
 			
-			# sotre the consensus matrix
-			c.matrices[[as.character(r)]] <<- consensus(res)
-			
-			# if confidence intervals must be computed then do it
-#			if( conf.interval ){
-#				# resample the tries
-#				samp <- sapply(seq(5*nrun), function(i){ sample(nrun, nrun, replace=TRUE) })
-#				
-#				bootstrap.measures[[as.character(r)]] <<- apply(samp, 2, function(s){
-#					res.sample <- join(res[s])
-#					summary(res.sample, target=x)
-#				})
-#			}
-			
-			# compute quality measures
-			if( verbose ) message('+ measures... ', appendLF=FALSE)
-			measures <- summary(res, target=x)
-
-			if( verbose ) message('done')
-			return(measures)
-		}
-	, ...)
+			res <- tryCatch({ #START_TRY
+				
+				res <- nmf(x, r, method, nrun=nrun, ...)					
+				# directly return the result if a valid NMF result
+				if( !isNMFResult(res) )
+					return(res)
+				
+				# sotre the consensus matrix
+				c.matrices[[as.character(r)]] <<- consensus(res)
+				
+				# if confidence intervals must be computed then do it
+	#			if( conf.interval ){
+	#				# resample the tries
+	#				samp <- sapply(seq(5*nrun), function(i){ sample(nrun, nrun, replace=TRUE) })
+	#				
+	#				bootstrap.measures[[as.character(r)]] <<- apply(samp, 2, function(s){
+	#					res.sample <- join(res[s])
+	#					summary(res.sample, target=x)
+	#				})
+	#			}
+				
+				# compute quality measures
+				if( verbose ) message('+ measures... ', appendLF=FALSE)
+				measures <- summary(res, target=x)
+				
+				if( verbose ) message("OK")
+				
+				# return the measures
+				measures
+			} #END_TRY
 	
-	# set column names for measures
-	colnames(measures) <- as.character(range)
-	measures <- as.data.frame(t(measures))
+			, error = function(e) {					
+					if( stop ){ # throw the error
+						if( verbose ) cat("\n")
+						stop(e$message, call.=FALSE)
+					} # pass the error message
+					if( verbose ) message("ERROR")					
+					return(e$message)
+				}
+			)
+			
+			# return the result
+			res
+		}
+	, ..., simplify=FALSE)
+	
+	measures <- do.call(comb, measures)
+	
+	# reformat the result into a data.frame
+	measures <- as.data.frame(t(measures))	
 	
 	# wrap-up result into a 'NMF.rank' S3 object
 	res <- list(measures=measures, consensus=c.matrices)
@@ -1059,16 +1122,16 @@ nmfEstimateRank <- function(x, range, method=nmf.getOption('default.algorithm')
 plot.NMF.rank <- function(x, what=c('all', 'cophenetic', 'rss', 'residuals'
 									, 'dispersion', 'evar', 'sparseness'
 									, 'sparseness.basis', 'sparseness.coef')
-						, ref=NULL, ... ){
+						, ref=NULL, na.rm=FALSE, ... ){
 
-	measures <- x$measures
-	what <- match.arg(what)
 	
+	# little trick not to display a title when it is not needed
 	if( !exists('.NMF.rank.plot.notitle', parent.frame()) ){
 		.NMF.rank.plot.notitle <- FALSE
 	}
 	else .NMF.rank.plot.notitle <- TRUE
 	
+	what <- match.arg(what)	
 	if( what == 'all' ){
 		opar <- par(mfrow=c(2,3), oma=c(0,0,3,0))
 		on.exit( par(opar), add=TRUE)
@@ -1076,29 +1139,41 @@ plot.NMF.rank <- function(x, what=c('all', 'cophenetic', 'rss', 'residuals'
 				, 'dispersion', 'evar', 'sparseness'),
 				function(w, ...){
 					.NMF.rank.plot.notitle <- TRUE
-					plot(x, w, ref, ...) 
+					plot(x, w, ref, na.rm, ...) 
 				}
 		)
 		title("NMF rank estimation", outer=TRUE)
 		return(invisible())
 	}
 	
+	measures <- x$measures
 	iwhat <- grep(paste('^',what,sep=''), colnames(measures))
+	
+	# remove NA values if required
+	if( na.rm )
+		measures <- measures[ apply(measures, 1, function(row) !any(is.na(row[iwhat]))), ]
+	
 	vals <- measures[,iwhat, drop=FALSE]
-	x <- as.numeric(rownames(measures))
+	x <- as.numeric(measures$rank)
 	xlim <- range(x)
 	
 	vals.ref <- NULL
+	xref <- NULL
 	if( !missing(ref) && is(ref, 'NMF.rank') ){
-		xref <- as.numeric(rownames(ref$measures))
+		
+		# remove NA values if required
+		if( na.rm )
+			ref$measures <- ref$measures[ apply(ref$measures, 1, function(row) !any(is.na(row[iwhat]))), ]
+			
+		xref <- as.numeric(ref$measures$rank)
 		xlim <- range(xlim, xref)
 		vals.ref <- ref$measures[,iwhat, drop=FALSE]
 	}
 	
 	# compute the ylim from main and ref values
-	ylim <- range(vals)
+	ylim <- range(vals, na.rm=TRUE)
 	if( !is.null(vals.ref) )
-		ylim <- range(ylim, vals.ref)
+		ylim <- range(ylim, vals.ref, na.rm=TRUE)
 	
 	# detect if the values should be between 0 and 1
 	#if( all(ylim >=0 & ylim <= 1) )
@@ -1124,7 +1199,7 @@ plot.NMF.rank <- function(x, what=c('all', 'cophenetic', 'rss', 'residuals'
 		if( ncol(vals.ref) > 1 )
 			lines(xref, vals.ref[,2], type = 'b', col='pink', pch=24)
 	}
-	axis(1, at=x, ...)
+	axis(1, at=unique(c(x,xref)), ...)
 	axis(2, ...)
 
 }

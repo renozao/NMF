@@ -1,4 +1,73 @@
 *************************************************************************
+*                       Changes in version 0.4.4                        *
+*************************************************************************
+
+CHANGES
+
+    o The major change is the explicit addition of the synchronicity package into 
+    the suggested package dependencies. Since the publication of versions 4.x 
+    of the bigmemory package, it is used by the NMF package to provide the mutex 
+    functionality required by multicore computations.
+    Note This is relevant only for Linux/Mac-like platforms as the multicore 
+    package is not yet supported on MS Windows.
+    Users using a recent version of the bigmemory package (i.e. >=4.x) 
+    DO NEED to install the synchronicity package to be able to run multicore NMF 
+    computations.
+    Versions of bigmemory prior to 4.x include the mutex functionality.
+    
+    o Minor enhancement in error messages
+    
+    o Method 'nmfModel' can now be called with arguments 'rank' and 'target' 
+    swapped. This is for convenience and ease of use.
+    
+BUG FIX
+
+    o Argument 'RowSideColors' of the 'metaHeatmap' function is now correctly 
+    subset according to the value of argument 'filter'. However the argument 
+    must be named with its complete name 'RowSideColors', not assuming 
+    partial match. See KNOWN ISSUES. 
+    
+KNOWN ISSUES
+
+    o In the 'metaHeatmap' function, when argument 'filter' is not 'FALSE': 
+    arguments 'RowSideColors', 'labRow', 'Rowv' that are intended to the 
+    'heatmap.plus'-like function (and are used to label the rows) should be 
+    named using their complete name (i.e. not assuming partial match), 
+    otherwise the filtering is not applied to these argument and an error 
+    is generated. 
+    This issue will be fixed in a future release.
+
+*************************************************************************
+*                       Changes in version 0.4.3                        *
+*************************************************************************
+
+CHANGES
+
+    o function 'nmfEstimateRank' has been enhanced: 
+       -run options can be passed to each internal call to the 'nmf' function. 
+       See ?nmfEstiamteRank and ?nmf for details on the supported options.
+       
+       - a new argument 'stop' allows to run the estimation with fault tolerance,
+       skipping runs that throw an error. Summary measures for these runs are set 
+       to NAs and a warning is thrown with details about the errors.
+       
+    o in function  'plot.NMF.rank': a new argument 'na.rm' allows to remove from 
+    the plots the ranks for which the measures are NAs (due to errors during the 
+    estimation process with 'nmfEstimateRank').
+    
+BUG FIX
+    
+    o Method 'consensus' is now exported in the NAMESPACE file.
+    Thanks to Gang Su for reporting this.
+    
+    o Warnings and messages about loading packages are now suppressed.
+    This was particularly confusing for users that do not have the packages 
+    and/or platform required for parallel computation: warnings were printed 
+    whereas the computation was -- sequentially -- performed without 
+    problem.
+    Thanks to Joe Maisog for reporting this.
+
+*************************************************************************
 *                       Changes in version 0.4.1                        *
 *************************************************************************
 

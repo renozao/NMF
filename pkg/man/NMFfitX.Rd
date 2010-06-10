@@ -3,6 +3,8 @@
 \docType{class}
 \alias{NMFfitX-class}
 
+\alias{consensus,NMFfitX-method}
+
 \alias{featureNames,NMFfitX-method}
 \alias{sampleNames,NMFfitX-method}
 

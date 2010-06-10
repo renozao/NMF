@@ -42,6 +42,7 @@ exportMethods(
     "compare",
 #    "computeContrib",
     "connectivity",
+    "consensus",
 #    "contribs",
 	"cophcor",
     "dim",

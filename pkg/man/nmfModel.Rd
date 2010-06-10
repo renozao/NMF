@@ -9,6 +9,7 @@
 \alias{nmfModel,numeric,matrix-method}
 \alias{nmfModel,numeric,missing-method}
 \alias{nmfModel,numeric,numeric-method}
+\alias{nmfModel,matrix,ANY-method}
 
 \title{Factory Method for NMF Models}
 
@@ -95,7 +96,7 @@ of basis vectors.
 \item{\code{signature(rank = "numeric", target = "matrix")}}{ 
 
 This call is equivalent to \code{nmfModel(rank, dim(target), ...)}.
-That is that the returned NMF object is fits a target matrix of the same 
+That is that the returned NMF object fits a target matrix of the same 
 dimension as \code{target}.}
 
 \item{\code{signature(rank = "missing", target = "ANY", ...)}}{ 
@@ -110,6 +111,19 @@ This call is equivalent to \code{nmfModel(0, target, ...)}.}
 \item{\code{signature(rank = "numeric", target = "missing")}}{ 
 
 This call is equivalent to \code{nmfModel(rank, 0, ...)}. 
+}
+
+\item{\code{signature(rank = "matrix", target = "ANY")}}{ 
+
+This call is equivalent to \code{nmfModel(0, target=rank, ...)}.
+This allows to call the \code{nmfModel} function with arguments \code{rank} 
+and \code{target} swapped. It exists for convenience: 
+ 
+* allows typing \code{nmfModel(V)} instead of \code{nmfModel(target=V)} to create 
+a model compatible with a given matrix \code{V} (i.e. of dimension \code{nrow(V), 0, ncol(V)})
+
+* one can pass the arguments in any order (the one that comes to the user's mind first) 
+and it still works as expected...
 }
 
 }}
@@ -129,7 +143,13 @@ nmfModel(W=w)
 # create a NMF object based on random (compatible) matrices
 p <- 20
 h <- matrix(runif(r*p), r, p)
-nmfModel(W=w, H=h)
+mod <- nmfModel(W=w, H=h)
+# use the model as a seed (initialization) for the default NMF algorithm to fit a target matrix
+V <- matrix(runif(n*p), n, p)
+nmf(V, seed=mod)
+
+# create an empty NMF model compatible with a given target matrix
+nmfModel(V)
 
 # create a NMF object based on incompatible matrices: generate an error
 h <- matrix(runif((r+1)*p), r+1, p)
@@ -138,11 +158,6 @@ h <- matrix(runif((r+1)*p), r+1, p)
 # same thing using the factory method: dimensions are corrected and a warning 
 # is thrown saying that the dimensions used are reduced 
 nmfModel(W=w, H=h)
-
-# apply default NMF algorithm to a random target matrix
-V <- matrix(runif(n*p), n, p)
-\dontrun{nmf(V, r)}
-
 
 }
 \keyword{methods}

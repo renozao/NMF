@@ -1,4 +1,14 @@
+<?php
 
+session_start();
+
+// force check on CRAN
+if( $_GET['check_cran'] ){
+	$_SESSION['cran_cache'] = 0;
+	header('location: ?view=soft');
+}
+
+?>
 <!-- This is the project specific website template -->
 <!-- It can be changed as liked or replaced by other content -->
 
@@ -250,7 +260,7 @@ function get_local_version($os='', $name = '', $version='', $rforge=true){
 		
 }
 
-$local_pkgs = get_local_version('', 'NMF', '0.4.1', false);
+$local_pkgs = get_local_version('', 'NMF', '0.4.4', false);
 function link_package($file, $name='', $alt='[not built yet]'){
 	$name = ( $name ? $name : basename($file) );
 	$alt = ' '.$alt;
@@ -285,6 +295,7 @@ function http_get($query)
 {
 	// in case we run on localhost (not CBIO)
 	//if( $_SERVER['HTTP_HOST'] == 'localhost' ) return file_get_contents($query);
+	return file_get_contents($query);
 	
 	require_once "HTTP/Request.php";
 	
@@ -302,7 +313,7 @@ function http_get($query)
 	return $res;
 }
 
-function get_cran_version($pkg){
+function get_cran_version($pkg, $default){
 	
 	$url = "http://cran.r-project.org/package=$pkg";
 	$old = ini_set('default_socket_timeout', 5);
@@ -310,12 +321,22 @@ function get_cran_version($pkg){
 	ini_set('default_socket_timeout', $old);
 	if( $cran && ereg("$pkg_([0-9.]+)\.tar.gz", $cran, $version) )
 		return $version[1];
+	else
+		return $default;	
 }
-//$latest_version = get_cran_version('NMF');
-$latest_version = '0.4';
+	
+if( !($latest_version=$_SESSION['cran_version']) || ($_SESSION['cran_cache'] + (60*5) < time()) ){
+	$latest_version = get_cran_version('NMF', '0.4.4');
+	$_SESSION['cran_version'] = $latest_version;
+	$_SESSION['cran_cache'] = time();
+}
+
 ?>
 <h3>Install&nbsp;&amp;&nbsp;Updates
-<font style="font-size:10pt;color:#990000"><?php echo $latest_version ? "[CRAN version: $latest_version]" : "" ?></font>
+<font style="font-size:10pt;color:#990000">
+<?php echo $latest_version ? "[CRAN version: <span id=\"version\">$latest_version</span>]" : "" ?>
+&nbsp;<a style="font-size:8pt" href="?check_cran=1" onclick="document.getElementById('version').innerHTML='.....';">Reload</a>
+</font>
 </h3>
 <p>The NMF package is still under active development. The latest stable version of the package is available on CRAN.
  <a target="_new_nmf" href="http://cran.r-project.org/package=NMF">Get <b>NMF <?php echo $latest_version;?></b> from CRAN</a>.</p>

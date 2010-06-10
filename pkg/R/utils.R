@@ -75,6 +75,11 @@ tsvd <- function(x, r, ...){
 	s
 }
 
+#' Silently load a package (with require) 
+require.quiet <- function(package, ...){
+	suppressWarnings(do.call('require', list(package=substitute(package), ..., quietly=TRUE)))
+}
+
 #' Returns TRUE if running under Mac OS X + GUI
 is.Mac <- function(check.gui=FALSE){
 	is.mac <- (length(grep("darwin", R.version$platform)) > 0)

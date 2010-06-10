@@ -218,7 +218,26 @@
 	#eta=param[1]; beta=param[2]; 
 	maxA=max(A); if ( eta<0 ) eta=maxA;
 	eta2=eta^2;
+	
+	# bi_conv
+	if( length(bi_conv) != 2 )
+		stop("SNMF/", version, "::Invalid argument 'bi_conv' - value should be a 2-length numeric vector")
 	wminchange=bi_conv[1]; iconv=bi_conv[2];
+	
+	## VALIDITY of parameters
+	# eps_conv
+	if( eps_conv <= 0 )
+		stop("SNMF/", version, "::Invalid argument 'eps_conv' - value should be positive")
+	# wminchange
+	if( wminchange < 0 )
+		stop("SNMF/", version, "::Invalid argument 'bi_conv' - bi_conv[1] (i.e 'wminchange') should be non-negative")
+	# iconv
+	if( iconv < 0 )
+		stop("SNMF/", version, "::Invalid argument 'bi_conv' - bi_conv[2] (i.e 'iconv') should be non-negative")
+	# beta
+	if( beta <=0 )
+		stop("SNMF/", version, "::Invalid argument 'beta' - value should be positive")
+	
 	if ( verbose )
 		cat(sprintf("--\nAlgorithm: SNMF/%s\nParameters: k=%d eta=%.4e beta (for sparse H)=%.4e wminchange=%d iconv=%d\n",
 				version, k,eta,beta,wminchange,iconv));
@@ -236,12 +255,16 @@
 		start <- if( version == 'R' ) basis(nmf.fit) else t(coef(nmf.fit))
 		# check compatibility of the starting point with the target matrix
 		if( any(dim(start) != c(m,k)) ) 
-			stop("Invalid initialization: incompatible dimensions [expected: ", paste(c(m,k), collapse=' x '),", got: ", paste(dim(start), collapse=' x '), " ]")	
+			stop("SNMF/", version, "::Invalid initialization - incompatible dimensions [expected: ", paste(c(m,k), collapse=' x '),", got: ", paste(dim(start), collapse=' x '), " ]")	
 		# use the supplied starting point
 		W <- start
 		
 	}
 		
+	# check validity of seed
+	if( any(NAs <- is.na(W)) )
+		stop("SNMF/", version, "::Invalid initialization - NAs found in the ", if(version=='R') 'basis (W)' else 'coefficient (H)' , " matrix [", sum(NAs), " NAs / ", length(NAs), " entries]")
+	
 	W= apply(W, 2, function(x) x / sqrt(sum(x^2)) );  # normalize columns of W	
 
 	I_k=diag(eta, k); betavec=rep(sqrt(beta), k); nrestart=0;	

@@ -12,11 +12,11 @@ simple approaches proposed in the litterature.
 
 }
 \usage{
-nmfEstimateRank(x, range, method = nmf.getOption("default.algorithm"), nrun = 30, verbose=FALSE, ...)
+nmfEstimateRank(x, range, method = nmf.getOption("default.algorithm"), nrun = 30, verbose=FALSE, stop=FALSE, ...)
 plot.NMF.rank(x, what = c('all', 'cophenetic', 'rss', 'residuals'
 						, 'dispersion', 'evar', 'sparseness'
 						, 'sparseness.basis', 'sparseness.coef')
-						, ref=NULL, ...)
+						, ref=NULL, na.rm=FALSE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -33,6 +33,13 @@ plot.NMF.rank(x, what = c('all', 'cophenetic', 'rss', 'residuals'
 	  A single NMF algorithm, in one of the format accepted by interface \code{\link{nmf}}.
 	}
 	
+	\item{na.rm}{
+	  single logical that specifies if the rank for which the measures are NA values should 
+	  be removed from the graph or not (default to \code{FALSE}).
+	  This is useful when plotting results which include NAs due to error during the estimation 
+	  process. See argument \code{stop} for \code{nmfEstimateRank} below.
+	}
+	
 	\item{nrun}{
 	  a \code{numeric} giving the number of run to perform for each value in \code{range}.
 	}
@@ -47,7 +54,19 @@ plot.NMF.rank(x, what = c('all', 'cophenetic', 'rss', 'residuals'
 	 drawn in \emph{blue}.
 	 }
 	
-	\item{verbose}{ toggle verbosity.}
+	\item{verbose}{ toggle verbosity.
+	This parameter only affects the verbosity of the outer loop over the values in 
+	\code{rank}. To print verbose (resp. debug) messages from each NMF run, one can use 
+	\code{.options='v'} (resp. \code{.options='d'}) that will be passed to the 
+	\code{\link{nmf}} method. 
+	}
+	
+	\item{stop}{ logical flag for running the estimation process with fault tolerance.
+	When \code{TRUE}, the whole execution will stop if any error is raised.
+	When \code{FALSE} (default), the runs that raise an error will be skipped,  
+	and the execution will carry on. The summary measures for the runs with errors are  
+	set to NA values, and a warning is thrown.
+	}
 	
 	\item{what}{ a \code{character} string that partially matches one of the 
 	following item: \code{'all'}, \code{'cophenetic'}, \code{'rss'}, \code{'residuals'}
