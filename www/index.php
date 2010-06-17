@@ -8,6 +8,9 @@ if( $_GET['check_cran'] ){
 	header('location: ?view=soft');
 }
 
+define('LAST_VERSION', '0.4.5');
+define('LAST_CRAN_VERSION', '0.5');
+
 ?>
 <!-- This is the project specific website template -->
 <!-- It can be changed as liked or replaced by other content -->
@@ -260,7 +263,7 @@ function get_local_version($os='', $name = '', $version='', $rforge=true){
 		
 }
 
-$local_pkgs = get_local_version('', 'NMF', '0.4.4', false);
+$local_pkgs = get_local_version('', 'NMF', LAST_VERSION, false);
 function link_package($file, $name='', $alt='[not built yet]'){
 	$name = ( $name ? $name : basename($file) );
 	$alt = ' '.$alt;
@@ -326,7 +329,7 @@ function get_cran_version($pkg, $default){
 }
 	
 if( !($latest_version=$_SESSION['cran_version']) || ($_SESSION['cran_cache'] + (60*5) < time()) ){
-	$latest_version = get_cran_version('NMF', '0.4.4');
+	$latest_version = get_cran_version('NMF', LAST_CRAN_VERSION);
 	$_SESSION['cran_version'] = $latest_version;
 	$_SESSION['cran_cache'] = time();
 }

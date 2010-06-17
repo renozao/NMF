@@ -1189,15 +1189,18 @@ All the algorithms implemented in the \nmfpack package assume that the input dat
 However, some methods exist in the litterature that work with relaxed constraints, where 
 the input data and one of the matrix factors ($W$ or $H$) are allowed to have negative 
 entries (eg. semi-NMF \cite{Ding2008, Roux2008}).
-The \nmfpack package is designed so that such algorithms -- that handle negative data -- can be 
-integrated into its framework.  
+Strictly speaking these methods do not fall into the NMF category, but still solve constrained matrix factorization 
+problems, and could be considered as NMF methods when applied to non-negative data.
+Moreover, we received user requests to enable the development of semi-NMF type methods within the package's framework.
+Therefore, we designed the \nmfpack package so that such algorithms -- that handle negative data -- can be 
+integrated. This section documents how to do it.
 
-By default, the sign of the input data is checked before running any method, so that the 
+By default, as a safe-guard, the sign of the input data is checked before running any method, so that the 
 \code{nmf} function throws an error if applied to data that contain negative entries
 \footnote{Note that on the other side, the sign of the factors returned by the algorithms is never 
 checked, so that one can always return factors with negative entries.}.
 To extend the capabilities of the \nmfpack package in handling negative data, 
-and plug mixed sign NMF methods into the framework, one needs to specify the argument 
+and plug mixed sign NMF methods into the framework, the user needs to specify the argument 
 \code{mixed=TRUE} in the call to the \code{nmf} function.
 This will skip the sign check of the input data and let the custom algorithm perform the factorization.
  
