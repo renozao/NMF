@@ -8,8 +8,8 @@ if( $_GET['check_cran'] ){
 	header('location: ?view=soft');
 }
 
-define('LAST_VERSION', '0.4.5');
-define('LAST_CRAN_VERSION', '0.5');
+define('LAST_VERSION', '0.4.6');
+define('LAST_CRAN_VERSION', '0.4.6');
 
 ?>
 <!-- This is the project specific website template -->
@@ -221,7 +221,7 @@ switch( $view ){
 <h3>Software &amp; Documentations</h3>
 
 <?php
-function get_local_version($os='', $name = '', $version='', $rforge=true){
+function get_local_version($os='', $name = '', $default_version='', $rforge=true){
 
 	if( !$os ){ // return last version for all os
 		$os_array = array('nix', 'win', 'mac');
@@ -231,9 +231,22 @@ function get_local_version($os='', $name = '', $version='', $rforge=true){
 		return $res;
 	}
 
+	// find the last local version
+	$tars = scandir('release');
+	$maxv = '';
+	foreach( $tars as $t ){
+		if( !eregi("^[a-z.]+_([0-9.\-]+)\.tar\.gz$", $t, $v) ) continue;
+		if( version_compare($v[1], $maxv) > 0 ) 
+			$maxv = $v[1];
+	}
+	if( $maxv ) 
+		$version = $maxv;
+	else 
+		$version = $default_version;
+		
 	// retrieve the current DESCRIPTION file
 	if( !$name || !$version ){
-		$desc = file_get_contents(PKG_ROOT.'DESCRIPTION');	
+		//$desc = file_get_contents(PKG_ROOT.'DESCRIPTION');
 		// get version
 		$pattern = "/Version *: *([0-9.]+)/m";
 		preg_match_all($pattern, $desc, $matches);
