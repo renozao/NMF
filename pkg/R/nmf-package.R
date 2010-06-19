@@ -127,7 +127,7 @@ setClassUnion('NMFPlugin', c('NMFStrategy', 'NMFSeed'))
 				strats <- try( fun(), silent=TRUE) 
 				
 				# wrap the result into a list
-				if( inherits(strats, 'NMFPlugin') )
+				if( is(strats, 'NMFPlugin') )
 					strats <- list(strats)
 				
 				# if the plugin returns NULL then do nothing
@@ -135,7 +135,7 @@ setClassUnion('NMFPlugin', c('NMFStrategy', 'NMFSeed'))
 					message('DISABLED')
 				}
 				# otherwise one should have a list of NMFStrategy objects
-				else if( !is.list(strats) || !all(sapply(strats, function(s) inherits(s, 'NMFPlugin'))) ){
+				else if( !is.list(strats) || !all(sapply(strats, function(s) is(s, 'NMFPlugin'))) ){
 					warning("NMF package: unable to load built-in plugin ", plugin.name, " [error: invalid result returned by '", funname,"']", call.=FALSE)
 					message('ERROR')
 				}
@@ -157,7 +157,7 @@ setClassUnion('NMFPlugin', c('NMFStrategy', 'NMFSeed'))
 	lapply(strat.list, 
 			function(s){
 				# For the moment only NMFStrategies can be plugged
-				if( !inherits(s, 'NMFStrategy') ){
+				if( !is(s, 'NMFStrategy') ){
 					warning("NMF-package: seeding method plugin is not yet implemented [object '",name(s),"' SKIPPED]", call.=FALSE)
 					return()
 				}
