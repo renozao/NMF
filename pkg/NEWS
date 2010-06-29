@@ -1,4 +1,25 @@
 *************************************************************************
+*                       Changes in version 0.4.8                        *
+*************************************************************************
+BUG FIX
+
+    o When computing NMF with the SNMF/R(L) algorithms, an error could 
+    occur if a restart (recomputation of the initial value) for the H 
+    matrix (resp. W matrix) occured at the first iteration.
+    Thanks to Joe Maisog for reporting this.     
+
+*************************************************************************
+*                       Changes in version 0.4.7                        *
+*************************************************************************
+BUG FIX
+
+    o When computing the cophenetic correlation coefficient of a diagonal 
+    matrix, the 'cophcor' method was returning 'NA' with a warning from 
+    the 'cor' function. It now correctly returns 1.
+    Thanks to Joe Maisog for reporting this.
+
+
+*************************************************************************
 *                       Changes in version 0.4.4                        *
 *************************************************************************
 

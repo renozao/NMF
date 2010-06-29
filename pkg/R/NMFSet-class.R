@@ -817,6 +817,17 @@ if ( !isGeneric('cophcor') ) setGeneric('cophcor', function(object, ...) standar
 setMethod('cophcor', signature(object='matrix'),
 	function(object, linkage='average'){
 		
+		# check for empty matrix
+		if( nrow(object)==0  || ncol(object)==0 )
+		{
+			warning("NMF::cophcor - NA produced [input matrix is of dimension ", nrow(object), "x", ncol(object), "]"
+					, call.=FALSE)
+			return(NA)
+		}
+		
+		# safe-guard for diagonal matrix: to prevent error in 'cor'
+		if( all(object[upper.tri(object)]==0) && all(diag(object)==object[1,1]) )
+			return(1)
 		# convert consensus matrix into dissimilarities
 		d.consensus <- as.dist(1 - object)
 		# compute cophenetic distance based on these dissimilarities

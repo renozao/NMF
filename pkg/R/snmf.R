@@ -283,7 +283,8 @@
 			}
 						
 			# re-initialize random W
-			idxWold=rep(0, m); idxHold=rep(0, n); inc=0;
+			idxWold=rep(0, m); idxHold=rep(0, n); inc=0; 
+			erravg1 <- numeric();# re-initialize base average error
 			W=matrix(runif(m*k), m,k);
 			W= apply(W, 2, function(x) x / sqrt(sum(x^2)) );  # normalize columns of W	
 			next;
@@ -298,8 +299,8 @@
 		if( !is.null(nmf.fit) ) 
 			nmf.fit <- trackError(nmf.fit, .snmf.objective(A, W, H, eta, beta), i)
 		
-		# test convergence every 5 iterations
-		if ( (i %% 5==0)  || (i==1) ){
+		# test convergence every 5 iterations OR if the base average error has not been computed yet
+		if ( (i %% 5==0)  || (length(erravg1)==0) ){
 			# indice of maximum for each row of W
 			idxW = max.col(W)
 			# indice of maximum for each column of H
@@ -313,7 +314,8 @@
 			conv=sum(abs(resvec)); #L1-norm      
 			convnum=sum(abs(resvec)>0);
 			erravg=conv/convnum;
-			if ( i==1 )
+			# compute base average error if necessary
+			if ( length(erravg1)==0 )
 				erravg1=erravg;
 			
 			if ( verbose && (i %% 1000==0) ){ # prints number of changing elements
@@ -322,6 +324,7 @@
 					 i,inc,changedW,changedH,erravg1,erravg,erravg/erravg1));
 			}
 			
+			#print(list(inc=inc, iconv=iconv, erravg=erravg, eps_conv=eps_conv, erravg1=erravg1))
 			if ( (inc>=iconv) && (erravg<=eps_conv*erravg1) ) break;
 			idxWold=idxW; idxHold=idxH; 
 		}
