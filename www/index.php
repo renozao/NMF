@@ -3,13 +3,16 @@
 session_start();
 
 // force check on CRAN
-if( $_GET['check_cran'] ){
+//$_SESSION['cran_cache'] = 0;
+if( isset($_GET['check_cran']) ){
 	$_SESSION['cran_cache'] = 0;
 	header('location: ?view=soft');
 }
 
 define('LAST_VERSION', '0.4.6');
 define('LAST_CRAN_VERSION', '0.4.6');
+define('CRAN_MIRROR', "http://cran.r-project.org");
+define('PKGNAME', "NMF");
 
 ?>
 <!-- This is the project specific website template -->
@@ -41,8 +44,8 @@ $domain=ereg_replace('[^\.]*\.(.*)$','\1',$_SERVER['HTTP_HOST']);
 $group_name=ereg_replace('([^\.]*)\..*$','\1',$_SERVER['HTTP_HOST']);
 $themeroot='http://r-forge.r-project.org/themes/rforge/';
 
-define(PKG_ROOT, '../pkg/');
-define(PKG_SVN_VIEW_ROOT, 'https://r-forge.r-project.org/scm/viewvc.php/*checkout*/pkg/');
+define('PKG_ROOT', '../pkg/');
+define('PKG_SVN_VIEW_ROOT', 'https://r-forge.r-project.org/scm/viewvc.php/*checkout*/pkg/');
 
 echo '<?xml version="1.0" encoding="UTF-8"?>';
 ?>
@@ -58,6 +61,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 	NMF: a flexible R package for Nonnegative Matrix Factorization
 	</title>
 	<link href="<?php echo $themeroot; ?>css/theme.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="jquery.js"></script>  
   </head>
 
 <body>
@@ -215,19 +219,87 @@ if( !in_array($view,array('soft', 'references')) )
 switch( $view ){
 		
 	case 'soft':
-	?>
-	<table width="100%"><tr>
+
+ini_set('allow_url_fopen', 'on');
+function http_get($query)
+{
+	// in case we run on localhost (not CBIO)
+	//if( $_SERVER['HTTP_HOST'] == 'localhost' ) return file_get_contents($query);
+	return file_get_contents($query);
+	
+	require_once "HTTP/Request.php";
+	
+	$req =& new HTTP_Request($query);
+	//$req->setProxy("campusnet.uct.ac.za", 8080, "gjxren001", "kngprw10#");
+	
+	// check for error
+	if ( PEAR::isError($req->sendRequest()) ) 
+	{    	
+		echo "Could not retrieve query: $query";	
+		return;
+	}
+	
+	$res = $req->getResponseBody();
+	return $res;
+}
+
+function get_cran_version($pkg, $default){
+	
+	$url = CRAN_MIRROR."/package=$pkg";
+	$old = ini_set('default_socket_timeout', 5);
+	$cran = http_get($url);
+	//$cran_xml = simplexml_load_string($cran);
+	//echo $cran_xml->body;		
+	preg_match_all("/<p>(.*)<\/p>/siU", $cran, $desc);
+	preg_match_all("/<table .*<\/table>/siU", $cran, $downloads);
+	$pkg_info = array('desc' => $desc[0][0],'detail' => $downloads[0][0], 'links' => $downloads[0][1]);	
+	ini_set('default_socket_timeout', $old);
+	$pkg_version = ( $cran && ereg($pkg."_([0-9.]+)\.tar\.gz", $cran, $version) ? $version[1] : $default);
+	return array($pkg_version, $pkg_info);
+}
+	
+if( !(!isset($_SESSION['CRAN']) || $cran_info=$_SESSION['CRAN']) || ($_SESSION['cran_cache'] + (60*5) < time()) ){
+	$cran_info = get_cran_version('NMF', LAST_CRAN_VERSION);	
+	$_SESSION['CRAN'] = $cran_info;
+	$_SESSION['cran_cache'] = time();
+}
+$latest_version = $cran_info[0];
+
+//print_r($cran_info);
+//print the package description
+echo $cran_info[1]['desc'];
+?>
+
+<table width="100%"><tr>
 <td valign="top" width="38%">
+
 <h3>Software &amp; Documentations</h3>
 
 <?php
+
+// change table into ul
+$download_links = preg_replace("`<tr[^>]*> *<td[^>]*>(.*)</td> *<td[^>]*>(.*)</td> *</tr>`siU", '<li>\1 \2</li>', $cran_info[1]['links']);
+// fix links
+$download_links = preg_replace('`href=[\'"](\.[^\'"]+)[\'"]`siU','href="'.CRAN_MIRROR.'/web/packages/'.PKGNAME.'/\1"',$download_links);
+echo "<ul>$download_links</ul>";
+?>
+
+<a href="#" onclick="$('#pkg_details').slideToggle();">+ Details</a><br /><br />
+<div id="pkg_details" style="display:none"><?php 
+$details_links = preg_replace('`href=[\'"](\.[^\'"]+)[\'"]`siU','href="'.CRAN_MIRROR.'/web/packages/'.PKGNAME.'/\1"',$cran_info[1]['detail']);
+echo $details_links;?></div>
+<br />
+
+<?php
+/* OLD CODE FOR LINKS
+
 function get_local_version($os='', $name = '', $default_version='', $rforge=true){
 
 	if( !$os ){ // return last version for all os
 		$os_array = array('nix', 'win', 'mac');
 		$res = array();
 		foreach( $os_array as $os)
-			$res[$os] = get_local_version($os, $name, $version, $rforge);
+			$res[$os] = get_local_version($os, $name, $default_version, $rforge);
 		return $res;
 	}
 
@@ -283,7 +355,8 @@ function link_package($file, $name='', $alt='[not built yet]'){
 	if( !file_exists($file) ) return "<i>$name</i>$alt";
 	return "<a href=\"$file\">$name</a>";
 }
-?>
+
+ * ?>
 <ul>
 <!-- Not working links...
 <li>Package source: <a href="<?php echo $local_pkgs['nix'];?>"><?php echo basename($local_pkgs['nix']);?></a></li>
@@ -298,64 +371,24 @@ function link_package($file, $name='', $alt='[not built yet]'){
 <li>Vignette: <a href="<?php echo PKG_SVN_VIEW_ROOT?>inst/doc/NMF-vignette.pdf?root=nmf">NMF-vignette.pdf</a></li>
 <li>News/ChangeLog:	<a href="<?php echo PKG_SVN_VIEW_ROOT?>NEWS?root=nmf">NEWS</a></li>
 </ul>
+*/
+?>
 <table><tr>
 <td><a href="http://www.r-project.org" target="_new_nmf"><img src="Rlogo.jpg" alt="" /></a></td>
 <td><a href="http://www.bioconductor.org" target="_new_nmf"><img src="bioconductor.png" alt="" /></a></td>
 </tr>
 </table>
 </td>
+
 <td valign="top" width="62%">
-<?php
-ini_set('allow_url_fopen', 'on');
-function http_get($query)
-{
-	// in case we run on localhost (not CBIO)
-	//if( $_SERVER['HTTP_HOST'] == 'localhost' ) return file_get_contents($query);
-	return file_get_contents($query);
-	
-	require_once "HTTP/Request.php";
-	
-	$req =& new HTTP_Request($query);
-	//$req->setProxy("campusnet.uct.ac.za", 8080, "gjxren001", "kngprw10#");
-	
-	// check for error
-	if ( PEAR::isError($req->sendRequest()) ) 
-	{    	
-		echo "Could not retrieve query: $query";	
-		return;
-	}
-	
-	$res = $req->getResponseBody();
-	return $res;
-}
-
-function get_cran_version($pkg, $default){
-	
-	$url = "http://cran.r-project.org/package=$pkg";
-	$old = ini_set('default_socket_timeout', 5);
-	$cran = http_get($url);
-	ini_set('default_socket_timeout', $old);
-	if( $cran && ereg("$pkg_([0-9.]+)\.tar.gz", $cran, $version) )
-		return $version[1];
-	else
-		return $default;	
-}
-	
-if( !($latest_version=$_SESSION['cran_version']) || ($_SESSION['cran_cache'] + (60*5) < time()) ){
-	$latest_version = get_cran_version('NMF', LAST_CRAN_VERSION);
-	$_SESSION['cran_version'] = $latest_version;
-	$_SESSION['cran_cache'] = time();
-}
-
-?>
 <h3>Install&nbsp;&amp;&nbsp;Updates
 <font style="font-size:10pt;color:#990000">
 <?php echo $latest_version ? "[CRAN version: <span id=\"version\">$latest_version</span>]" : "" ?>
-&nbsp;<a style="font-size:8pt" href="?check_cran=1" onclick="document.getElementById('version').innerHTML='.....';">Reload</a>
+&nbsp;<a style="font-size:8pt" href="?check_cran=1" onclick="document.getElementById('version').innerHTML='.....';">Recheck</a>
 </font>
 </h3>
 <p>The NMF package is still under active development. The latest stable version of the package is available on CRAN.
- <a target="_new_nmf" href="http://cran.r-project.org/package=NMF">Get <b>NMF <?php echo $latest_version;?></b> from CRAN</a>.</p>
+ <a target="_new_nmf" href="http://cran.r-project.org/package=NMF">Go to the <b>CRAN</b> page</a>.</p>
 <p>Installation is done via the following standard call in the R console:</p>
 <code><pre style="background-color:#aaccaa;padding:10px;border:1px solid gray">
 <font class="comment"># install the NMF package from default CRAN mirror</font>
