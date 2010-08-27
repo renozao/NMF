@@ -89,7 +89,7 @@ rss(object, ...)
 \S4method{featureScore}{NMF}(object, method=c('kim', 'max'))
 
 \S4method{extractFeatures}{NMF}(object, method=c('kim', 'max')
-								, format=c('list', 'combine', 'subset'))
+, format=c('list', 'combine', 'subset'))
 
 \S4method{metaHeatmap}{NMF}(object, what=c('samples', 'features'), filter=FALSE, ...)
 

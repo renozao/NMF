@@ -13,17 +13,19 @@ importFrom(graphics, plot)
 importFrom(stats, coefficients, coef, fitted, offset, predict, residuals)
 
 export(
-	nmfEstimateRank
-	, plot.NMF.rank
-	, nmfAlgorithm
+	isNMFfit
 	, newNMF
-	, nmfSeed
-	, syntheticNMF
-	, nmf.options
 	, nmf.getOption
+	, nmfAlgorithm
+	, nmfEstimateRank
+	, nmfSeed
+	, nmf.options	
 	, nmf.options.reset
 	, nmf.options.runtime
+	, plot.NMF.rank
 	, randomize
+	, rmatrix	
+	, syntheticNMF
 )
 exportMethods(
 	"[",
@@ -35,6 +37,8 @@ exportMethods(
 	"as.NMFList",
     "basis",
     "basis<-",
+    "basisnames",
+    "basisnames<-",
     "clusters",
     "coef",
     "coef<-",
@@ -53,8 +57,8 @@ exportMethods(
     "entropy",
     "errorPlot",
     'evar',
-    "extra",
     "extractFeatures",
+    "fcnnls",
     "featureNames",
     "featureNames<-",
     "featureScore",
@@ -71,6 +75,7 @@ exportMethods(
 #    "name",
 #    "name<-",
     "nbasis",
+    "niter",
     "nmf",
     "nmfApply",
     "nmfModel",

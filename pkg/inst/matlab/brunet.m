@@ -1,3 +1,17 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Original MATLAB/Octave code for NMF from Brunet et al.
+%
+% The original function 'nmf' was adapted to accept arguments to set the initial
+% values for the matrix factors W and H.
+%
+% Original MATLAB codes can be found at:
+% http://www.broadinstitute.org/mpr/publications/projects/NMF/nmf.m
+% http://www.broadinstitute.org/publications/broad872
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 function [w,h]=nmf(v,r,verbose, w, h)
 %
 % Jean-Philippe Brunet

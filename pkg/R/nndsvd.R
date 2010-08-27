@@ -21,6 +21,7 @@
 #'        - flag=2 --> NNDSVDar
 #'
 #' @note This code is a port from the MATLAB code from C. Boutsidis and E. Gallopoulos kindly provided by the authors for research purposes.
+#' Original MATLAB code: http://www.cs.rpi.edu/~boutsc/papers/paper1/nndsvd.m
 #' 
 #' @references 	C. Boutsidis and E. Gallopoulos, 
 #' SVD-based initialization: A head start for nonnegative matrix factorization, 

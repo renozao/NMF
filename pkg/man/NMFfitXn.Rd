@@ -46,7 +46,7 @@ included and supported in the next release of the package.
 Class \code{"\linkS4class{NMFfitX}"}, directly.
 Class \code{"\linkS4class{list}"}, from data part.
 Class \code{"\linkS4class{vector}"}, by class "list", distance 2.
-Class \code{"\linkS4class{AssayData}"}, by class "list", distance 2.
+Class \code{"\link[Biobase]{AssayData-class}"}, by class "list", distance 2.
 }
 
 \section{Validity}{

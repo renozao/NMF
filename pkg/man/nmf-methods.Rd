@@ -25,15 +25,16 @@
 
 \usage{
 
-\S4method{nmf}{matrix,numeric,function}(x, rank, method, name, objective='euclidean', model='NMFstd'
-										, mixed=FALSE, ...)
+\S4method{nmf}{matrix,numeric,function}(x, rank, method, name, objective='euclidean', model='NMFstd' 
+, mixed=FALSE, ...)
 
 \S4method{nmf}{matrix,numeric,character}(x, rank, method, ...)
 
 \S4method{nmf}{matrix,numeric,NMFStrategy}(x, rank, method, seed=nmf.getOption('default.seed')
-										, nrun=1, model=NULL, .options=list()
-										, .pbackend = nmf.getOption("parallel.backend")
-										, ...)
+, nrun=1, model=NULL, .options=list()
+, .pbackend = nmf.getOption("parallel.backend")
+, .callback = NULL
+, ...)
 
 }
 
@@ -112,6 +113,25 @@
   It must be A \code{character} string giving the name of a built-in 
   distance method or a \code{function} to be used as the objective function. 
   It is used to compute the residuals between the target matrix and its NMF estimate.}
+  
+  \item{.callback}{ Used when option \code{keep.all=FALSE} (default).
+  It allows to pass a callback function that is called after each run when performing 
+  multiple runs (i.e. with \code{nrun>1}).
+  This is useful for example if one is also interested in saving summary measures or 
+  process the result of each NMF fit before it gets discarded.
+  After each run, the callback function is called with only one argument, the \code{\linkS4class{NMFfit}} object that as just been fitted:
+  \code{.callback(res)} 
+  Therefore all other arguments should have default values.
+  
+  The results of the different calls to the callback function are stored in a miscellaneous 
+  slot accessible by \code{result$.callback} (assuming one ran \code{result <- nmf(...)}).
+  If no error occurs \code{result$.callback} contains the list "simplified" by applying the \code{\link{sapply}} function, which 
+  will try to convert a list with similar components into a \code{vector}, a \code{matrix} or a \code{data.frame}.
+  If any error occurs in one of the callback calls, then global computation is NOT stopped, but the error
+  is still stored in \code{result$.callback}, which is then a \code{list}.  
+  
+  See the examples for a sample code.
+  }
   
   \item{.options}{ 
   this argument is used to set some runtime options. It can be \code{list} 
@@ -230,7 +250,8 @@
 \item{x = "matrix", rank = "numeric", method = "character"}{ Performs NMF on a 
 \code{matrix} using an algorithm whose name is given by parameter \code{method}.
  The name provided must partially match the name of a registered algorithm.
- See section \emph{Algorithms} below or the package's vignette.} 
+ See section \emph{Algorithms} below or the package's vignette for a list of the 
+ implemented algorithms and their respective names.} 
 
 \item{x = "matrix", rank = "numeric", method = "function"}{ Performs NMF using 
 a custom algorithm defined by a \code{function}. It must have signature 
@@ -257,27 +278,29 @@ The returned value depends on the run mode:
 
 \section{NMF Algorithms}{
 
+All algorithms are accessible by their respective names listed below.
 The following algorithms are available:
 
 \describe{
 
-\item{\code{lee}}{ Standard NMF. Based on euclidean distance, it uses simple 
-multiplicative updates. See \emph{Lee and Seung (2000)}. }
-
 \item{\code{brunet}}{ Standard NMF. Based on Kullbach-Leibler divergence, it uses simple 
-multiplicative updates from \emph{Lee and Seung (2000)}, enhanced 
-to avoid numerical underflow.
- See \emph{Brunet et al. (2004)}. }
+multiplicative updates from \emph{Lee and Seung (2000)}, enhanced to avoid numerical underflow.
+See \emph{Brunet et al. (2004)}.
+}
 
-\item{\code{lnmf}}{ Local Nonnegative Matrix Factorization. Based on a 
-regularized Kullbach-Leibler divergence, it uses a modified version of 
-Lee and Seung's multiplicative updates. 
-See \emph{Li et al. (2001)}. }
+\item{\code{lee}}{ Standard NMF. Based on euclidean distance, it uses simple 
+multiplicative updates. See \emph{Lee and Seung (2000)}.
+}
+
+%\item{\code{lnmf}}{ Local Nonnegative Matrix Factorization. Based on a 
+%regularized Kullbach-Leibler divergence, it uses a modified version of 
+%Lee and Seung's multiplicative updates.
+%See \emph{Li et al. (2001)}.}
 
 \item{\code{nsNMF}}{ Nonsmooth NMF. Uses a modified version of Lee and Seung's 
 multiplicative updates for Kullbach-Leibler divergence to fit a extension 
 of the standard NMF model. It is meant to give sparser results.
-See \emph{Pascual-Montatno et al. (2006)}. }
+See \emph{Pascual-Montatno et al. (2006)}.}
 
 \item{\code{offset}}{ Uses a modified version of Lee and Seung's multiplicative 
 updates for euclidean distance, to fit a NMF model that includes an intercept. 
@@ -293,6 +316,18 @@ from \emph{Kim and Park (2007)}. }
 
 }
 
+}
+
+\section{Optimized C++ vs. plain R}{
+Lee and Seung's multiplicative updates are used by several NMF algorithms. To improve 
+speed and memory usage, a C++ implementation of the specific matrix products is used 
+whenever possible. It directly computes the updates for each entry in the updated matrix, 
+instead of using multiple standard matrix multiplication.
+
+The algorithms that benefit from this optimization are: 'brunet', 'lee', 'nsNMF' and 'offset'. % and 'lnmf'
+However there still exists plain R versions for these methods, which implement the updates 
+as standard matrix products. These are accessible by adding the prefix '.R#' to their name: 
+'.R#brunet', '.R#lee', '.R#nsNMF' and '.R#offset'.
 }
 
 \section{Seeding methods}{
@@ -347,6 +382,7 @@ In \emph{NIPS}, 556--562.
 Brunet, J.~P., Tamayo, P., Golub, T.~R., and Mesirov, J.~P. (2004).
 Metagenes and molecular pattern discovery using matrix factorization. 
 \emph{Proc Natl Acad Sci U S A}, \bold{101}(12), 4164--4169.
+Original MATLAB code available from: http://www.broadinstitute.org/cancer/pub/nmf
 
 Pascual-Montano, A., Carazo, J.~M., Kochi, K., Lehmann, D., and Pascual-Marqui, R.~D. (2006).
 Nonsmooth nonnegative matrix factorization (nsnmf).
@@ -354,19 +390,28 @@ Nonsmooth nonnegative matrix factorization (nsnmf).
 
 Kim, H. and Park, H. (2007).
 Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis.
-\emph{Bioinformatics}.
+\emph{Bioinformatics}. 2007; 23(12):1495-502.
+Original MATLAB code available from: 
+http://www.cc.gatech.edu/~hpark/software/nmfsh_comb.m
+http://www.cc.gatech.edu/~hpark/software/fcnnls.m
 
 Liviu Badea (2008).
 Extracting Gene Expression Profiles Common To Colon And Pancreatic Adenocaricinoma Using Simultaneous Nonnegative Matrix Factorization.
 In \emph{Pacific Symposium on Biocomputing}, \bold{13}, 279--290
 
-S. Li, X. Hou, and H. Zhang (2001).
-Learning spatially localized, parts-based representation. 
-\emph{In Proc. CVPR}, 2001.
+%S. Li, X. Hou, and H. Zhang (2001).
+%Learning spatially localized, parts-based representation. 
+%\emph{In Proc. CVPR}, 2001.
 
 Zhang J, Wei L, Feng X, Ma Z, Wang Y (2008). 
 Pattern expression nonnegative matrix factorization: algorithm and applications to blind source separation.
 \emph{Computational intelligence and neuroscience}  
+
+C. Boutsidis and E. Gallopoulos (2007) 
+SVD-based initialization: A head start for nonnegative matrix factorization. 
+\emph{Pattern Recognition}.
+doi:10.1016/j.patcog.2007.09.010
+Original MATLAB code available from: http://www.cs.rpi.edu/~boutsc/papers/paper1/nndsvd.m
 
 }
 
@@ -458,6 +503,21 @@ nmf(V, seed=start.ns)
 # if the model is not appropriate (as defined by the algorihtm) an error is thrown 
 # [cf. the standard model doesn't include a smoothing parameter used in nsNMF] 
 \dontrun{nmf(V, method='ns', seed=start.std)}
+
+## Callback functions
+# Pass a callback function to only save summary measure of each run
+res <- nmf(V, 3, nrun=3, .callback=summary)
+# the callback results are simplified into a matrix
+res$.callback
+
+# Pass a custom callback function
+cb <- function(obj){ sparseness(obj) >= 0.5 }
+res <- nmf(V, 3, nrun=3, .callback=cb)
+res$.callback
+
+# Passs a callback function which throws an error
+cb <- function(){ i<-0; function(object){ i <<- i+1; if( i == 1 ) stop('SOME BIG ERROR'); summary(object) }}
+res <- nmf(V, 3, nrun=3, .callback=cb())
 
 }
 

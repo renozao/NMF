@@ -118,6 +118,23 @@ setReplaceMethod('coef', signature(object='NMFfit', value='matrix'),
 	} 
 )
 
+#' Get/Set the number of iterations
+if ( !isGeneric('niter') ) setGeneric('niter', function(object, ...) standardGeneric('niter'))
+setMethod('niter', signature(object='NMFfit'),
+	function(object, ...){
+		object@extra$iteration
+	}
+)
+if ( !isGeneric('niter<-') ) setGeneric('niter<-', function(object, ..., value) standardGeneric('niter<-'))
+setReplaceMethod('niter', signature(object='NMFfit', value='numeric'), 
+	function(object, value){
+		if( (length(value) != 1) || value < 0  ) 
+			stop("NMF::niter - invalid value for 'niter': single non-negative value is required.", call.=FALSE) 
+		object@extra$iteration <- value
+		object
+	} 
+)
+
 setMethod('show', signature(object='NMFfit'), 
 	function(object)
 	{
@@ -141,7 +158,7 @@ setMethod('show', signature(object='NMFfit'),
 				print(object@parameters)
 			}
 			# show number of iterations if present
-			if( !is.null(object$iteration) ) cat("Iterations:", object$iteration, "\n")
+			if( !is.null(i <- niter(object)) ) cat("Iterations:", i, "\n")
 			# show elapsed time if present
 			if( length(runtime(object)) > 0 ){ cat("Timing:\n"); show(runtime(object));}
 		}
@@ -307,30 +324,7 @@ setMethod('verbose', 'NMFfit',
 		return(run.options(object, 'verbose') || nmf.getOption('debug'))
 	}
 )
-
-#' Returns an extra slot from the NMF object.
-#' An returns an error if \code{name} is not a valid element of the slot \code{extra}.
-if (is.null(getGeneric("extra"))) setGeneric("extra", function(object, name) standardGeneric("extra"))
-setMethod('extra', 'NMFfit', 
-	function(object, name){
-		.Defunct("$' or '$<-")	
-	}
-)
-
-#' Get/Set methods for slot 'extra'
-setMethod('$', 'NMFfit', 
-	function(x, name){ 
-		x@extra[[name, exact=FALSE]]; 
-	} 
-)
-
-setReplaceMethod('$', 'NMFfit',
-	function(x, name, value) {
-		x@extra[[name]] <- value
-		x
-	}
-)
-
+ 
 #' Plot the residuals track of a NMF result.
 #'
 #' When slot \code{residuals} of a NMF object contains is not a single value, this function plots
@@ -383,7 +377,7 @@ setMethod('summary', signature(object='NMFfit'),
 		# retreive final residuals
 		res <- c(res, residuals=as.numeric(residuals(object)))
 		# nb of iterations
-		res <- c(res, niter=as.integer(object$iteration) )
+		res <- c(res, niter=as.integer(niter(object)) )
 		# runtime
 		t <- runtime(object)
 		utime <- as.numeric(t['user.self'] + t['user.child'])

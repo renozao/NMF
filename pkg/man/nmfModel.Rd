@@ -1,4 +1,4 @@
-\name{nmfModel - NMF Model Factory}
+\name{nmfModel - NMF Model: Factory method}
 
 \docType{methods}
 \alias{nmfModel}
@@ -59,7 +59,7 @@ basis vector matrix.
 }
 
 \item{\code{signature(rank = "numeric", target = "numeric"
-			, model='NMFstd', W, H, ...)}}{
+			, ncol=NULL, model='NMFstd', W, H, ...)}}{
 
 This call creates an object of class \code{model}, using the extra parameters \code{...} 
 to initialise slots that are specific to the given model.
@@ -72,10 +72,12 @@ If only argument \code{rank} is provided, the method creates a NMF model of dime
 That is that the basis and mixture coefficient matrices, \var{W} and \var{H}, have dimension 0x\code{rank} 
 and \code{rank}x0 respectively.
 
-If target dimensions are also provided in argument \code{target}, then the method creates a 
-\code{NMF} object compatible to fit a target matrix of dimension \code{target[1]}x\code{target[2]}
+If target dimensions are also provided in argument \code{target} as a 2-length vector, then the method 
+creates a \code{NMF} object compatible to fit a target matrix of dimension \code{target[1]}x\code{target[2]}.
 That is that the basis and mixture coefficient matrices, \var{W} and \var{H}, have dimension 
 \code{target[1]}x\code{rank} and \code{rank}x\code{target[2]} respectively.
+The target dimensions can also be specified using both arguments \code{target} and \code{ncol} to define the 
+number of rows and the number of columns of the target matrix respectively.  
 If no other argument is provided, these matrices are filled with NAs.
 
 If arguments \code{W} and/or \code{H} are provided, the method creates a NMF model where 
@@ -137,19 +139,29 @@ nmfModel(builtin.only=TRUE)
 # create a NMF object based on one random matrix: the missing matrix is deduced
 # Note this only works when using factory method NMF 
 n <- 50; r <- 3; 
-w <- matrix(runif(n*r), n, r) 
+w <- rmatrix(n, r) 
 nmfModel(W=w)
 
 # create a NMF object based on random (compatible) matrices
 p <- 20
-h <- matrix(runif(r*p), r, p)
+h <- rmatrix(r, p)
 mod <- nmfModel(W=w, H=h)
-# use the model as a seed (initialization) for the default NMF algorithm to fit a target matrix
-V <- matrix(runif(n*p), n, p)
+
+# For example use the model as a seed (initialization) for the default NMF algorithm to fit a target matrix
+V <- rmatrix(n, p)
 nmf(V, seed=mod)
 
 # create an empty NMF model compatible with a given target matrix
 nmfModel(V)
+
+# create a r-ranked NMF model with a given target matrix
+nmfModel(r, V)
+
+# create a r-ranked NMF model with a given target dimensions n x p as a 2-length vector
+nmfModel(r, c(n,p)) # directly
+nmfModel(r, dim(V)) # or from an existing matrix <=> nmfModel(r, V)
+# or alternatively passing each dimension separately
+nmfModel(r, n, p)
 
 # create a NMF object based on incompatible matrices: generate an error
 h <- matrix(runif((r+1)*p), r+1, p)

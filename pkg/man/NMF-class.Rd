@@ -3,13 +3,9 @@
 \docType{class}
 \alias{NMF-class}
 
-\alias{[,NMF-method}
-
 \alias{consensus,NMF-method}
 
 \alias{dim,NMF-method}
-\alias{dimnames,NMF-method}
-\alias{dimnames<-,NMF-method}
 \alias{distance}
 \alias{distance,matrix,NMF-method}
 \alias{distance,missing,missing-method}
@@ -143,12 +139,13 @@ See \code{\link{nmfModel}} for more details.
 \section{Methods}{
   \describe{
 
-   \item{[}{\code{signature(object = "NMF")}: 
+   \item{[}{\code{signature(x = "NMF", i, j, ..., drop=FALSE)}: 
     sub-setting method for object of class \code{NMF}.
     Row subsets are applied to the basis matrix rows, while column subsets are 
-    applied to the mixture coefficient matrix.
-    It returns an object of class \code{NMF} whose basis matrix and/or mixture 
-    coefficient matrix have been subset accordingly.
+    applied to the mixture coefficient matrix. A third index can be provided 
+    to subset on the basis components (e.g \code{x[,,1:3]}).
+    
+    See \code{NMF?subset} or \code{method?'[,NMF'}.
     }
 
    \item{basis}{\code{signature(object = "NMF")}: 
@@ -165,6 +162,18 @@ See \code{\link{nmfModel}} for more details.
     This is a \emph{pure virtual} method that needs to be defined 
     for the sub-classes of class \code{NMF} that implements concrete models.
     See also \code{\link{basis}}.
+    }
+    
+    \item{basisnames}{\code{signature(object = "NMF")}: 
+    returns the names of the columns of the matrix of basis vectors, that are also 
+    always the names of the rows of the mixture coefficient matrix.
+    See \code{\link{basisnames}}.
+    }
+    
+    \item{basisnames<-}{\code{signature(object = "NMF", value='ANY')}: 
+    simultaneously sets the names of the columns of the matrix of basis vectors AND 
+    the rows of the mixture coefficient matrix.
+    See \code{\link{basisnames<-}}.
     }
 
     \item{coef}{\code{signature(object = "NMF")}:
@@ -215,17 +224,12 @@ See \code{\link{nmfModel}} for more details.
     
     \item{dimnames}{\code{signature(x = "NMF")}: returns the dimension names of the 
     NMF model \code{x}.
-    It returns a 3-length list containing the row names of the basis matrix, the 
-    column names of the mixture coefficient matrix, and the column names of the 
-    basis matrix (i.e. the basis vector names). 
+    See \code{\link{dimnames-NMF}}. 
     }
     
     \item{dimnames<-}{\code{signature(x = "NMF", value)}: sets the dimension names of the 
-    NMF model \code{x}. 
-    \code{value} can be a 2 or 3-length list providing names at least for the rows of 
-    the basis vector matrix and the columns of the mixture coefficient matrix. If present, the 
-    optional third element of \code{value} is used to set both the names of the columns of 
-    the basis vector matrix and the rows of the mixture coefficient matrix.   
+    NMF model \code{x}.
+    See \code{\link{dimnames-NMF}}.   
     }
 
     \item{distance}{\code{signature(target = "matrix", x = "NMF", method, ...)}: 

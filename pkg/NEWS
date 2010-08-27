@@ -1,4 +1,74 @@
 *************************************************************************
+*                       Changes in version 0.5.1                        *
+*************************************************************************
+
+BUG FIX
+
+    o fix a small bug in method 'rss' to allow argument 'target' to be a 
+    'data.frame'. This was generating errors when computing the summary 
+    measures and especially when the function 'nmfEstimateRank' was called 
+    on a 'data.frame'. Thanks to Pavel Goldstein for reporting this.
+
+
+*************************************************************************
+*                       Changes in version 0.5                          *
+*************************************************************************
+NEW FEATURES
+
+    o Method 'fcnnls' provides a user-friendly interface for the internal 
+    function '.fcnnls' to solve non-nengative linear least square problems, 
+    using the fast combinatorial approach from Benthem and Keenan (2004).
+    See '?fcnnls' for more details.
+    
+    o New argument 'callback' in method 'nmf' allows to provide a callback 
+    function when running multiple runs in default mode, that only keeps the 
+    best result. The callback function is applied to the result of each run 
+    before it possibly gets discarding. The results are stored in the 
+    miscellaneous slot '.callback' accessible via the '$' operator (e.g. res$.callback).
+    See '?nmf' for more details.
+    
+    o New method 'niter' to retrieve the number of iterations performed to fit 
+    a NMF model. It is defined on objects of class 'NMFfit'.
+    
+    o New function 'isNMFfit' to check if an object is a result from NMF fitting.
+    
+    o New function 'rmatrix' to easily generate random matrices, and allow to specify the 
+    distribution from which the entries are drawn. For example:
+    
+        * 'rmatrix(100, 10)' generates a 100x10 matrix whose entries are drawn 
+        from the uniform distribution
+         
+        * 'rmatrix(100, 10, rnorm)' generates a 100x10 matrix whose entries are drawn 
+        from the standard Normal distribution.
+                
+    o New methods 'basisnames' and 'basisnames<-' to retrieve and set the basis vector 
+    names. See '?basisnames'. 
+     
+
+CHANGES
+
+    o Add a CITATION file that provides the bibtex entries for citing the 
+    BMC Bioinformatics paper for the package 
+    (http://www.biomedcentral.com/1471-2105/11/367), the vignette and manual.
+    See 'citation('NMF')' for complete references.
+    
+    o New argument 'ncol' in method 'nmfModel' to specify the target dimensions more 
+    easily by calls like 'nmfModel(r, n, p)' to create a r-rank NMF model that fits a 
+    n x p target matrix.
+    
+    o The subset method '[]' of objects of class 'NMF' has been changed to be more convenient.
+    See  
+
+BUG FIX
+
+    o Method 'dimnames' for objects of class 'NMF' now correctly sets the 
+    names of each dimension.
+        
+REMOVED CLASSES, METHODS, FUNCTIONS, DATA SETS
+
+    o Method 'extra' has completely been removed.  
+
+*************************************************************************
 *                       Changes in version 0.4.8                        *
 *************************************************************************
 BUG FIX

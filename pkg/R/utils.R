@@ -55,6 +55,16 @@ syntheticNMF <- function(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE
 	return(res)
 }
 
+#' generate a random matrix using a given random distribution function
+rmatrix <- function(nrow, ncol, dist=runif, byrow = FALSE, dimnames = NULL, ...){
+	# check that 'dist' is a function.
+	if( !is.function(dist) )
+		stop("NMF::rmatrix - invalid value for argument 'dist': must be a function [class(dist)='", class(dist), "'].")
+	
+	# build the random matrix using the distribution function
+	matrix(dist(nrow*ncol, ...), nrow, ncol, byrow=byrow, dimnames=dimnames)	
+}
+
 #' randomize each column separately
 randomize <- function(x, ...){
 	
@@ -177,8 +187,9 @@ rasta.compileLib <- function(srcdir, libname){
 		setwd(wd)
 		
 		# load the freshly compiled library
-		message("# Loading: ", libfile)
+		message("# Loading: ", libfile, ' ... ', appendLF=FALSE)
 		dll.info <- dyn.load(libfile)
+		message('OK')
 		.RASTA_dll_map[[libname]] <<- list(name=dllname, path=libfile)#dll.info		
 		#dll_map[[libname]] <<- dll.info
 		

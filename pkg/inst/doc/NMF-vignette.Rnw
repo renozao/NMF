@@ -5,6 +5,7 @@
 \usepackage[colorlinks=true]{hyperref}
 
 \newcommand{\nmfpack}{\code{NMF}\ }
+\newcommand{\MATLAB}{MATLAB\textsuperscript{\textregistered}\ }
 \newcommand{\refeqn}[1]{(\ref{#1})}
 
 
@@ -35,7 +36,7 @@ sink(file = .LatexFileCon, append = TRUE, type = "message" )
 
 
 \begin{document}
-% \VignetteIndexEntry{Using package NMF}
+% \VignetteIndexEntry{Using the package NMF}
 % \VignetteDepends{NMF,Biobase,doMC,bigmemory}
 % \VignetteKeyword{math}
 
@@ -61,7 +62,7 @@ sink(file = .LatexFileCon, append = TRUE, type = "message" )
 {\vspace{\topsep}\hrule\end{shaded}}
 
 
-\title{Using Package NMF}
+\title{Using the Package NMF}
 \author{Renaud Gaujoux, \email{renaud@cbio.uct.ac.za}}
 % \\Address Computational Biology - University of Cape Town, South Africa,
 
@@ -69,20 +70,41 @@ sink(file = .LatexFileCon, append = TRUE, type = "message" )
 
 
 This vignette presents the \nmfpack package, which implements a framework for 
-Nonegative Matrix Factorization (NMF) algorithms in R \cite{R}. The objective is 
+Nonnegative Matrix Factorization (NMF) algorithms in R \cite{R}. The objective is 
 to provide an implementation of some standard algorithms, while allowing the user 
 to easily implement new methods that integrate into the package's framework.
 
-\tableofcontents
+\bigskip
+To cite the \nmfpack package in publications please use:
 
-The last stable version of the NMF package can be installed from any
-\href{http://cran.r-project.org}{CRAN} repository mirror, , and loaded with the 
+\medskip
+\noindent Renaud Gaujoux, Cathal Seoighe (2010).\\
+\textbf{A flexible R package for nonnegative matrix factorization.}\\
+\emph{BMC Bioinformatics} 2010, \textbf{11}:367,\\
+\url{http://www.biomedcentral.com/1471-2105/11/367}.
+
+\medskip
+To view all the package's citations, including all vignette(s) and manual(s):
+
+<<citations, eval=false>>=
+citation('NMF')
+# To get the citations in Bibtex:
+toBibtex(citation('NMF'))
+@
+
+The latest stable version of the \nmfpack package can be installed from any
+\href{http://cran.r-project.org}{CRAN} repository mirror, and loaded with the 
 standard calls:
 <<load_library>>=
-## Not run
+## Install (not run)
 # install.packages('NMF')
+# Load
 library(NMF)
 @
+
+\pagebreak
+\tableofcontents
+\pagebreak
 
 \section{Overview}
 
@@ -101,7 +123,7 @@ The \nmfpack package:
 \begin{itemize}
 \item \Sexpr{nalgo} built-in algorithms;
 \item \Sexpr{nseed} built-in seeding methods;
-\item Single interface to perform all aglorithms, and combine them with the seeding methods;
+\item Single interface to perform all algorithms, and combine them with the seeding methods;
 \item Provides a common framework to test, compare and develop NMF methods;
 \item Accept custom algorithms and seeding methods;
 \item Plotting utility functions to visualize and help in the interpretation of 
@@ -126,10 +148,10 @@ where $W, H$ are $n
 \times r$ and $r \times p$ non-negative matrices, respectively. In practice,
 the factorization rank $r$ is often chosen such that $r \ll \min(n, p)$. The
 objective behind this choice is to summarize and split the information
-containned in $X$ into $r$ factors: the columns of $W$. 
+contained in $X$ into $r$ factors: the columns of $W$. 
 
 Depending on the application field, these factors are given different names: basis images,
-metagenes, source signals. In this vignette we equivalenty and alternatively use the terms 
+metagenes, source signals. In this vignette we equivalently and alternatively use the terms 
 \emph{basis matrix} or \emph{metagenes} to refer to matrix $W$, and 
 \emph{mixture coefficient matrix} and \emph{metagene expression profiles} to 
 refer to matrix $H$.
@@ -183,8 +205,7 @@ Table \ref{tab:algo} gives a short description of each one of the built-in algor
 Key & Description\\
 \hline
 \code{brunet} & Standard NMF. Based on Kullbach-Leibler divergence, it uses simple 
-multiplicative updates from \cite{Lee2000}, enhanced 
-to avoid numerical underflow.
+multiplicative updates from \cite{Lee2000}, enhanced to avoid numerical underflow.
 
 \textbf{Reference:} \cite{Brunet04}\\
 \hline
@@ -201,7 +222,7 @@ updates
 %
 %\textbf{Reference:} \cite{Li2001}\\
 %
-\code{nsNMF} & Nonsmooth NMF. Uses a modified version of Lee and Seung's 
+\code{nsNMF} & Non-smooth NMF. Uses a modified version of Lee and Seung's 
 multiplicative updates for Kullbach-Leibler divergence to fit a extension 
 of the standard NMF model. It is meant to give sparser results.
 
@@ -222,7 +243,7 @@ for effective expression of patterns with basis vectors.
 \hline
 %
 \code{snmf/r}, \code{snmf/l} & Alternating Least Square (ALS) approach. It is meant to be very 
-fast.
+fast compared to other approaches.
 
 \textbf{Reference:} \cite{Kim2007}\\
 \hline
@@ -249,7 +270,7 @@ to perform multiple runs, each with a different starting point.
 This significantly increases the computation time needed to obtain the desired 
 factorization.
 
-To tackle this problem, some methods have been proposed so as to compute a reasonnable
+To tackle this problem, some methods have been proposed so as to compute a reasonable
 starting point from the target matrix itself. The objective is to produce deterministic 
 algorithms that need to run only once, still giving meaningful results.
 
@@ -335,6 +356,7 @@ See also \code{?nmf} for details on the interface and extra parameters.
 
 Since version 0.4, some built-in algorithms are optimized in C++, which results in a significant speed-up 
 and a more efficient memory management, especially on large scale data.
+
 The older R versions of the concerned algorithms are still available, and accessible by adding the prefix 
 \code{'.R\#'} to the algorithms' access keys (e.g. the key \code{'.R\#offset'} corresponds to the R 
 implementation of NMF with offset \cite{Badea2008}).
@@ -873,7 +895,7 @@ the best value according to this quality criteria.
 
 The \nmfpack package provides functions to run this procedure and plot the 
 quality measures.
-Note that this can be lenghty.
+Note that this can be lengthy.
 Whereas the standard NMF procedure usually involves several hundreds of random 
 initialization, performing 30-50 runs is considered sufficient to get a robust 
 estimate of the factorization rank \cite{Brunet04, Hutchins2008}.
@@ -967,7 +989,7 @@ plot(res)
 
 \subsubsection*{Heatmaps}
 
-Method \code{metaHeatmap} provides an easy way to vizualize the resulting 
+Method \code{metaHeatmap} provides an easy way to visualize the resulting 
 metagenes, metaprofiles and, in the case of multiple runs, the consensus matrix. 
 It produces pre-configured heatmaps based on function \code{heatmap.2} from 
 package \code{gplots}. Examples of those heatmaps are shown in figures \ref{fig:heatmap_profiles}, 
@@ -1010,7 +1032,7 @@ metaHeatmap(res, what='features', filter=TRUE)
 
 
 In the case of multiple runs method \code{metaHeatmap} plots the consensus
-matrix, i.e. the average connecticity matrix accross the runs (see results
+matrix, i.e. the average connectivity matrix across the runs (see results
 Figures \ref{fig:heatmap_consensus} and \ref{fig:heatmap_consensus_precomp}
 for a consensus matrix obtained with 100 runs of Brunet's algorithm on Golub
 dataset):
@@ -1228,7 +1250,7 @@ that introduces an extra parameter, and change the way the target matrix is
 approximated.
 
 The NMF models are defined as S4 classes that extends class \code{NMF}. All the 
-available models can be retireved calling the \code{nmfModel()} function with no 
+available models can be retreived calling the \code{nmfModel()} function with no 
 argument:
 
 <<nmf_models>>=
@@ -1362,37 +1384,50 @@ sessionInfo()
 \begin{thebibliography}{}
 
 \bibitem[Albright {\em et al.}, 2006]{Albright2006} R. Albright, J. Cox, D. Duling, A. Langville, C. Meyer (2006).
-Algorithms, initializations, and convergence for the nonnegative matrix factorization.
+\textbf{Algorithms, initializations, and convergence for the nonnegative matrix factorization}.
 {\it NCSU Technical Report Math 81706}. \url{http://meyer.math.ncsu.edu/Meyer/Abstracts/Publications.html}.
 
 \bibitem[Badea L., 2008]{Badea2008} Badea L. (2008). 
-Profiles Common to Colon and Pancreatic Adenocarcinoma Using Simultaneous nonNegative.
+\textbf{Extracting Gene Expression Profiles Common to Colon and Pancreatic Adenocarcinoma Using Simultaneous Nonnegative Matrix Factorization}.
 In \emph{Pacific Symposium on Biocomputing}, \emph{Volume 290} 2008:279--290.
 
-\bibitem[Berry {\it et al}., 2006]{Berry06} Berry et al. (2006). Algorithms and
-Applications for Approximate Nonnegative Matrix Factorization. {\it Comput.
-Stat. Data Anal.}
+\bibitem[Berry {\it et al}., 2006]{Berry06} Berry et al. (2006).
+\textbf{Algorithms and Applications for Approximate Nonnegative Matrix Factorization}.
+{\it Comput. Stat. Data Anal.}
 
-\bibitem[Brunet {\em et al.}, 2004]{Brunet04} Brunet, J.~P., Tamayo, P., Golub, T.~R., and Mesirov, J.~P. (2004). Metagenes and molecular pattern discovery using matrix factorization. {\em Proc Natl Acad Sci U S A\/}, {\bf 101}(12), 4164--4169.
+\bibitem[Boutsidis and Gallopoulos, 2008]{Boutsidis2008}
+Boutsidis C, Gallopoulos E.
+\textbf{SVD based initialization: A head start for nonnegative matrix factorization}.
+\emph{Pattern Recognition} 2008, 41:1350--1362,
+\url{[http://linkinghub.elsevier.com/retrieve/pii/S0031320307004359]}.
+Original \MATLAB code available from: \url{http://www.cs.rpi.edu/~boutsc/papers/paper1/nndsvd.m}
 
-\bibitem[A. Cichocki {\it et al}., 2004]{Cichocki04} Andrzej Cichocki , Rafal Zdunek, and Shun-ichi Amari (2004). New algorithms For Non-negative Matrix Factorization In Application To Blind Source Separation.
+\bibitem[Brunet {\em et al.}, 2004]{Brunet04} Brunet, J.~P., Tamayo, P., Golub, T.~R., and Mesirov, J.~P. (2004).
+\textbf{Metagenes and molecular pattern discovery using matrix factorization}.
+{\em Proc Natl Acad Sci U S A\/}, {\bf 101}(12), 4164--4169.
+Original \MATLAB code available from: \url{http://www.broadinstitute.org/cancer/pub/nmf}
 
-\bibitem[Chu {\it et al.}, 2004]{Chu2004} M.T. Chu, F. Diele, R. Plemmons, S. Ragni. Optimality, computation, and interpretation of nonnegative matrix factorizations. {\it Technical Report}, Departments of Mathematics and Computer Science, Wake Forest University, USA.
+\bibitem[A. Cichocki {\it et al}., 2004]{Cichocki04} Andrzej Cichocki , Rafal Zdunek, and Shun-ichi Amari (2004).
+\textbf{New algorithms For Non-negative Matrix Factorization In Application To Blind Source Separation}.
+
+\bibitem[Chu {\it et al.}, 2004]{Chu2004} M.T. Chu, F. Diele, R. Plemmons, S. Ragni.
+\textbf{Optimality, computation, and interpretation of nonnegative matrix factorizations}.
+{\it Technical Report}, Departments of Mathematics and Computer Science, Wake Forest University, USA.
 
 \bibitem[Chris Ding {\em et al.}, 2008]{Ding2008} Ding, C., Li, T., Jordan, M.~I..
-Convex and Semi-Nonnegative Matrix Factorizations
+\textbf{Convex and Semi-Nonnegative Matrix Factorizations}.
 \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence}, 2008, vol. 32, no. 1, pp. 45-55
 \url{[http://doi.ieeecomputersociety.org/10.1109/TPAMI.2008.277]}
 
 \bibitem[doMC, 2009]{doMC}
-{REvolution Computing}: \emph{doMC: Foreach parallel adaptor for the multicore
-  package} 2009, \url{[http://CRAN.R-project.org/package=doMC]}. [R
-  package version 1.2.0].
+{REvolution Computing}.
+\textbf{doMC: Foreach parallel adaptor for the multicore package} 2009.
+\url{[http://CRAN.R-project.org/package=doMC]}. [R package version 1.2.0].
   
   \bibitem[foreach, 2009]{foreach}
-{REvolution Computing}: \emph{doMC: Foreach parallel adaptor for the multicore
-  package} 2009, \url{[http://CRAN.R-project.org/package=doMC]}. [R
-  package version 1.3.0].
+{REvolution Computing}. 
+\textbf{doMC: Foreach parallel adaptor for the multicore package} 2009.
+\url{[http://CRAN.R-project.org/package=doMC]}. [R package version 1.3.0].
 
 \bibitem[Frigyesi and H\"{o}glund, 2008]{Frigyesi2008}
 Frigyesi A, H\"{o}glund M: \textbf{Non-negative matrix factorization for the
@@ -1417,36 +1452,43 @@ Gentleman RC, Carey VJ, Bates DM, Bolstad B, Dettling M, Dudoit S, Ellis B,
   \url{[http://www.ncbi.nlm.nih.gov/pubmed/15461798]}.
 
 \bibitem[Hutchins {\em et al.}, 2008]{Hutchins2008}
-Hutchins LNN, Murphy SMM, Singh P, Graber JHH: \textbf{Position-Dependent Motif
-  Characterization Using Nonnegative Matrix Factorization.}
+Hutchins LNN, Murphy SMM, Singh P, Graber JHH:
+\textbf{Position-Dependent Motif Characterization Using Nonnegative Matrix Factorization.}
   \emph{Bioinformatics (Oxford, England)} 2008,
   \url{[http://view.ncbi.nlm.nih.gov/pubmed/18852176]}.
 
 \bibitem[Kim and Park, 2007]{Kim2007}
-Kim H, Park H: \textbf{{Sparse non-negative matrix factorizations via
-  alternating non-negativity-constrained least squares for microarray data
-  analysis.}} \emph{Bioinformatics (Oxford, England)} 2007,
-  \textbf{23}:1495--502,
-  \url{[http://www.ncbi.nlm.nih.gov/pubmed/17483501]}.
+Kim H, Park H.
+\textbf{{Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis.}}
+\emph{Bioinformatics (Oxford, England)} 2007,
+\textbf{23}:1495--502,
+\url{[http://www.ncbi.nlm.nih.gov/pubmed/17483501]}.
+Original \MATLAB code available from: \url{http://www.cc.gatech.edu/~hpark/software/nmfsh_comb.m} 
+and \url{http://www.cc.gatech.edu/~hpark/software/fcnnls.m}
 
 \bibitem[Le Roux {\em et al.}, 2008]{Roux2008} Le Roux, J., de Cheveigné, A., Parra, L.~C.
-Adaptive Template Matching with Shift-Invariant Semi-NMF. 
+\textbf{Adaptive Template Matching with Shift-Invariant Semi-NMF}. 
 In {\it NIPS} 2008, 921-928.
 \url{[http://dblp.uni-trier.de/db/conf/nips/nips2008.html#RouxCP08]} 
 
-\bibitem[Lee and Seung, 2000]{Lee2000} Lee, D.~D. and Seung, H.~S. (2000). Algorithms for non-negative matrix factorization. In {\it {NIPS}\/}, 556-562.
+\bibitem[Lee and Seung, 2000]{Lee2000} Lee, D.~D. and Seung, H.~S. (2000).
+\textbf{Algorithms for non-negative matrix factorization}.
+In {\it {NIPS}\/}, 556-562.
 
-\bibitem[Pascual-Montano {\em et al.}, 2006]{nsNMF2006} Pascual-Montano, A., Carazo, J.~M., Kochi, K., Lehmann, D., and Pascual-Marqui, R.~D. (2006). Nonsmooth nonnegative matrix factorization (nsnmf). {\em IEEE transactions on pattern analysis and machine intelligence\/}, {\bf 28}(3), 403-415.
+\bibitem[Pascual-Montano {\em et al.}, 2006]{nsNMF2006} Pascual-Montano, A., Carazo, J.~M., Kochi, K., Lehmann, D., and Pascual-Marqui, R.~D. (2006).
+\textbf{Nonsmooth nonnegative matrix factorization (nsnmf)}.
+{\em IEEE transactions on pattern analysis and machine intelligence\/}, {\bf 28}(3), 403-415.
 
 \bibitem[R Software, 2008]{R} R Development Core Team.
-R: A Language and Environment for Statistical Computing.
-Vienna, Austria. ISBN 3-900051-07-0. \url{http://www.R-project.org}.
+\textbf{R: A Language and Environment for Statistical Computing}.
+Vienna, Austria. ISBN 3-900051-07-0.
+\url{http://www.R-project.org}.
 
 \bibitem[Zhang {\em et al.}, 2008]{Zhang2008}
-Zhang J, Wei L, Feng X, Ma Z, Wang Y: \textbf{Pattern expression nonnegative
-  matrix factorization: algorithm and applications to blind source separation.}
-  \emph{Computational intelligence and neuroscience} 2008,
-  \url{[http://view.ncbi.nlm.nih.gov/pubmed/18566689]}.
+Zhang J, Wei L, Feng X, Ma Z, Wang Y: 
+\textbf{Pattern expression nonnegative matrix factorization: algorithm and applications to blind source separation}.
+\emph{Computational intelligence and neuroscience} 2008,
+\url{[http://view.ncbi.nlm.nih.gov/pubmed/18566689]}.
 
 
 \end{thebibliography}

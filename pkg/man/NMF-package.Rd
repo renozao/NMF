@@ -18,6 +18,16 @@ algorithms' performances or in the interpretation of the results.
 
 \references{
 
+	If you use the 'NMF' package in publications cite:
+
+	Renaud Gaujoux, Cathal Seoighe (2010).
+	A flexible R package for nonnegative matrix factorization.
+	\emph{BMC Bioinformatics} 2010, \bold{11}:367
+	http://www.biomedcentral.com/1471-2105/11/367
+
+	For pointers on further readings, please see references therein.
+
+
 	Definition of Nonnegative Matrix Factorization in its modern formulation:
 	
 	Lee D.D. and Seung H.S. (1999).
@@ -66,3 +76,4 @@ summary(res)
 
 
 }
+\keyword{package}

@@ -239,7 +239,11 @@ xifyStrategy <- function(strategy, workspace){
 }
 
 setMethod('run', signature(method='NMFStrategyIterative', x='matrix', seed='NMFfit'),
-	function(method, x, seed, ...){
+	function(method, x, seed, .stop=NULL, ...){
+	
+	# override the stop method on runtime
+	if( !is.null(.stop) )
+		method@Stop = .stop
 	
 	# debug object in debug mode
 	if( nmf.getOption('debug') ) show(method)		
@@ -352,7 +356,7 @@ setMethod('run', signature(method='NMFStrategyIterativeX', x='matrix', seed='NMF
 	if( !inherits(nmfData, 'NMFfit') ) stop('NMFStrategyIterative[', name(strategy), ']::WrapNMF did not return a "NMF" instance [returned: "', class(nmfData), '"]')
 	
 	# set the number of iterations performed
-	nmfData$iteration <- i
+	niter(nmfData) <- i
 	
 	#return the result
 	nmf.debug('NMFStrategyIterativeX::run', 'Done')

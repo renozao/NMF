@@ -91,20 +91,36 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='list'),
 	function(x, rank, method, ...)
 	{
 		# apply each NMF algorithm
-		k <- 1
+		k <- 0
 		t <- system.time({
 			res <- lapply(method, 
 				function(meth, ...){
-					message("Compute NMF method ", k, " ... ", appendLF=FALSE)
 					k <<- k+1
-					res <- nmf(x, rank, meth, ...)
-					message("done")
+					message("Compute NMF method ", k, " ... ", appendLF=FALSE)					
+					#o <- capture.output( 
+							res <- try( nmf(x, rank, meth, ...) , silent=TRUE) 
+					#)
+					if( is(res, 'try-error') )
+						message("ERROR")
+					else 
+						message("OK")
 					return(res)
 				}
 				, ...)
-		})		
-		names(res) <- sapply(res, algorithm)		
+		})
 		
+		# filter out bad results
+		ok <- sapply(res, isNMFfit)
+		if( any(!ok) ){ # throw warning if some methods raised an error
+			err <- lapply(which(!ok), function(i){ paste("'", method[[i]],"': ", res[[i]], sep='')})
+			warning("NMF::nmf - Incomplete results due to ", sum(!ok), " errors: \n- ", paste(err, collapse="- "), call.=FALSE)
+		}
+		res <- res[ok]
+		# TODO error if ok is empty
+
+		# add names to the result list
+		names(res) <- sapply(res, algorithm)
+				
 		# wrap the result in a NMFSet object
 		# DO NOT WRAP anymore here: NMFSet objects are used only for results of multiple runs (single method)
 		# the user can still join on the result if he wants to
@@ -210,6 +226,7 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='NMFStrategy'),
 function(x, rank, method
 		, seed=nmf.getOption('default.seed'), nrun=1, model=NULL, .options=list()
 		, .pbackend=nmf.getOption('parallel.backend')
+		, .callback=NULL #callback function called after a run  
 		, ...)
 {
 	# if options are given as a character string, translate it into a list of booleans
@@ -234,6 +251,12 @@ function(x, rank, method
 					else .pbackend != '' # run in parallel only if the backend is defined
 			
 	keep.all <- if( !is.null(.options$keep.all) ) .options$keep.all else FALSE
+	if( is.function(.callback) ){
+		if( nrun==1 )
+			warning("NMF::nmf - argument '.callback' is not used when performing a single NMF run [nrun=1].", call.=FALSE)
+		else if( keep.all ) 
+			warning("NMF::nmf - argument '.callback' is not used when option 'keep.all' is TRUE", call.=FALSE)
+	}
 	
 	# Set debug/verbosity option just for the time of the run
 	old.opt <- nmf.options(debug=debug, verbose=verbose);
@@ -448,7 +471,7 @@ function(x, rank, method
 	
 				## 2. RUN
 				if( verbose ) cat('Runs:')
-				res.runs <- foreach(n=1:nrun, .verbose=debug) %dopar% {
+				res.runs <- foreach(n=1:nrun, .verbose=debug, .errorhandling='pass') %dopar% {
 					
 					if( verbose ) cat('', n)
 					if( debug ) cat("\n")					
@@ -486,12 +509,24 @@ function(x, rank, method
 						# update the consensus matrix
 						consensus.shared[] <- consensus.shared[] + connectivity(res)[]
 						
+						# call the callback function if necessary
+						if( is.function(.callback) ){
+							cb.res <- tryCatch(.callback(res), error=function(e) e)
+							if( is(cb.res, 'error') ){
+								class(cb.res) <- c(class(cb.res), 'errorCB')
+							}
+						}
+						
 						# unlock the mutex
 						unlock(mut)
 						##END_LOCK_MUTEX
 									
 						# reset the result to NULL
 						res <- NULL
+						
+						# if a callback function was provided, actually return the result of the callback
+						if( is.function(.callback) )
+							res <- cb.res
 					}
 					
 					# return the result
@@ -499,16 +534,27 @@ function(x, rank, method
 				}				
 				##
 				
-				## 3. CHECK FOR ERRORS				
-				errors <- sapply(res.runs, is.character)				
+				## 3. CHECK FOR ERRORS
+				# - in the run
+				errors <- sapply(res.runs, function(x){ is(x, 'error') && !is(x, 'errorCB') })				
 				nerrors <- sum(errors)
 				if( nerrors > 0 ){										
-					stop("NMF::nmf - error in parallel mode: ", nerrors," runs over ", nrun, " threw an error\n"
+					stop("NMF::nmf - ", nerrors,"/", nrun, " fit(s) threw an error.\n"
 						,"# Error(s):\n-- "
-						, paste(unique(res.runs[which(errors)]), collapse="\n-- ")
+						, paste(sapply(unique(res.runs[which(errors)]), function(x) x$message), collapse="\n-- ")
 						, call.=FALSE)
 				}
-				
+				# - in the callback
+				if( is.function(.callback) ){
+					errors <- sapply(res.runs, function(x) is(x, 'errorCB'))				
+					nerrors <- nerrors.cb <- sum(errors)
+					if( nerrors > 0 ){										
+						warning("NMF::nmf - all NMF fits were successful but ", nerrors,"/", nrun, " callback call(s) threw an error.\n"
+								,"# ", if(nerrors>10) "First 10 c" else "C", "allback error(s):\n-- "
+								, paste(paste('Run #', 1:min(nerrors,10),': ', sapply(res.runs[which(errors)[1:min(nerrors,10)]], function(x) x$message), sep=''), collapse="\n-- ")
+								, call.=FALSE)
+					}
+				}	
 				## 4. WRAP UP
 				res <- list(fit=res.runs)
 				
@@ -517,11 +563,17 @@ function(x, rank, method
 					if( !file_test('-f', best.filename) )
 						stop("NMF::nmf - error in parallel mode: the result file does not exist")
 					load(best.filename)					
+					# NB: the object 'res' is now the best NMFfit
 					#remove the result file
 					unlink(best.filename)
 					
-					res$fit <- res
-					res$consensus <- consensus.shared[]
+					# wrap the result in a list: fit + consensus
+					res <- list(fit=res, consensus=consensus.shared[])
+					
+					# add the result of the callback function if necessary
+					if( is.function(.callback) )
+						res$.callback <- if( nerrors.cb > 0 ) res.runs else sapply(res.runs, identity)					
+					
 				}
 				##
 				
@@ -567,8 +619,16 @@ function(x, rank, method
 						# update the static consensus matrix (only if necessary)
 						best.static$consensus <<- best.static$consensus + connectivity(res)
 						
-						# reset the result to NULL
-						res <- NULL
+						# call the callback function if necessary
+						if( is.function(.callback) ){
+							res <- tryCatch(.callback(res), error=function(e) e)
+							if( is(res, 'error') ){								
+								class(res) <- c(class(res), 'errorCB')
+							}							
+						}
+						else # reset the result to NULL
+							res <- NULL
+						
 					}
 					
 					if( debug ) cat("## DONE\n")
@@ -584,12 +644,37 @@ function(x, rank, method
 				res.runs <- lapply(seq(nrun), single.run, ...)
 				##
 				
-				## 3. WRAP UP
+				## 3. CHECK FOR ERRORS
+				# - in the run
+				errors <- sapply(res.runs, function(x){ is(x, 'error') && !is(x, 'errorCB') })				
+				nerrors <- sum(errors)
+				if( nerrors > 0 ){										
+					stop("NMF::nmf - ", nerrors,"/", nrun, " fit(s) threw an error.\n"
+							,"# Error(s):\n-- "
+							, paste(sapply(unique(res.runs[which(errors)]), function(x) x$message), collapse="\n-- ")
+							, call.=FALSE)
+				}
+				# - in the callback
+				if( is.function(.callback) ){
+					errors <- sapply(res.runs, function(x) is(x, 'errorCB'))				
+					nerrors <- nerrors.cb <- sum(errors)
+					if( nerrors > 0 ){										
+						warning("NMF::nmf - all NMF fits were successful but ", nerrors,"/", nrun, " callback call(s) threw an error.\n"
+								,"# ", if(nerrors>10) "First 10 c" else "C", "allback error(s):\n-- "
+								, paste(paste('Run #', 1:min(nerrors,10),': ', sapply(res.runs[which(errors)[1:min(nerrors,10)]], function(x) x$message), sep=''), collapse="\n-- ")
+								, call.=FALSE)
+					}
+				}
+				
+				## 4. WRAP UP
 				res <- list(fit=res.runs)
 				
 				if( !keep.all ){
 					res$fit <- best.static$fit
 					res$consensus <- best.static$consensus
+					# add the result of the callback function if necessary
+					if( is.function(.callback) )
+						res$.callback <- if( nerrors.cb > 0 ) res.runs else sapply(res.runs, identity)
 				}
 				##
 				
@@ -607,11 +692,16 @@ function(x, rank, method
 		stopifnot( !is.null(res$fit) )
 		
 		# if one just want the best result only return the best 
-		#Note: in this case res is full of NULL any way (see function single.run above)
 		if( !keep.all ){
 			# ASSERT the presence of the consensus matrix
 			stopifnot( !is.null(res$consensus) )
-			return( join(res$fit, consensus=res$consensus/nrun, runtime.all=t, nrun=as.integer(nrun)) )
+			res.final <- join(res$fit, consensus=res$consensus/nrun, runtime.all=t, nrun=as.integer(nrun))
+			
+			# set the callback result if necessary
+			if( is.function(.callback) )
+				res.final$.callback <- res$.callback
+			
+			return(res.final)
 		}
 		
 		return( join(res$fit, runtime.all=t) )
@@ -1028,7 +1118,7 @@ nmfEstimateRank <- function(x, range, method=nmf.getOption('default.algorithm')
 		if( length(err) == length(measures) ){ # all runs produced an error
 		
 			# build an warning using the error messages
-			msg <- paste(paste('Run ', seq_along(range), ' [r=', range, '] -> ', measures, sep=''), collapse="\n\t-")
+			msg <- paste(paste('#', seq_along(range),' ', measures, sep=''), collapse="\n\t-")
 			stop("All the runs produced an error:\n\t-", msg)
 		
 		}else if( length(err) > 0 ){ # some of the runs returned an error
@@ -1046,7 +1136,7 @@ nmfEstimateRank <- function(x, range, method=nmf.getOption('default.algorithm')
 			# set only the rank for the error results 
 			tmp.res['rank', err] <- range[err]
 			# build an warning using the error messages
-			msg <- paste(paste('Run ', err, ' [r=', range[err], '] -> ', measures[err], sep=''), collapse="\n\t-")
+			msg <- paste(paste('#', err, measures[err], ' ', sep=''), collapse="\n\t-")
 			warning("NAs were produced due to errors in some of the runs:\n\t-", msg)
 			
 			# return full matrix
@@ -1091,13 +1181,15 @@ nmfEstimateRank <- function(x, range, method=nmf.getOption('default.algorithm')
 				measures
 			} #END_TRY
 	
-			, error = function(e) {					
+			, error = function(e) {
+					mess <- if( is.null(e$call) ) e$message else paste(e$message, " [in call to '", e$call[1],"']", sep='')
+					mess <- paste('[r=', r, '] -> ', mess, sep='')
 					if( stop ){ # throw the error
 						if( verbose ) cat("\n")
-						stop(e$message, call.=FALSE)
+						stop(mess, call.=FALSE)
 					} # pass the error message
 					if( verbose ) message("ERROR")					
-					return(e$message)
+					return(mess)
 				}
 			)
 			

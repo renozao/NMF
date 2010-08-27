@@ -26,6 +26,11 @@
 
 \alias{modelname,NMFfit-method}
 
+\alias{niter-methods}
+\alias{niter}
+\alias{niter,NMFfit-method}
+\alias{niter<-,NMFfit,numeric-method}
+
 \alias{nrun,NMFfit-method}
 
 \alias{objective}
@@ -99,10 +104,20 @@ and parameters used to compute the factorization.
     
     \item{\code{options}:}{A \code{"list"} that contains the options used to compute the object.}
     
-    \item{\code{extra}:}{A \code{"list"} that contains extra miscellaneous data 
-    set by the algorithm. For example it can be used to store extra parameters, 
-    without the need to extend the standard NMF model.}
+    \item{\code{extra}:}{A \code{"list"} that contains extra miscellaneous data for internal usage only.
+    For example it can be used to store extra parameters or temporary data, without the 
+    need to explicitly extend the \code{NMFfit} class.
+    Currently built-in algorithms only use this slot to store the number of iterations performed to fit 
+    the object.
+    Data that need to be easily accessible by the end-user should be stored using the \code{$} and \code{$<-} 
+    methods that access and set the \code{list} slot \code{misc} inherited from class \code{NMF}.
+    }
+    
   }
+}
+
+\section{Extends}{
+Class \code{"\linkS4class{NMF}"}, directly.
 }
 
 \details{
@@ -214,6 +229,15 @@ However, there is usually no need to directly create such an object, as interfac
 	\item{\code{modelname}:}{ returns the name of the model fitted by the object.
 	It corresponds to the name of the S4 class of slot \code{fit}.}
     
+    \item{niter}{\code{signature(object = "NMFfit")}: return the number of iterations 
+    performed to compute \code{object}. If the number of iterations has not explicitly been set, 
+    then it returns \code{NULL}.
+	}
+	
+	\item{niter<-}{\code{signature(object = "NMFfit", value="numeric")}: set the number of iterations 
+    (i.e. a non-negative single numeric) performed to compute \code{object}. This method is usually called by a NMF algorithm.
+	}
+	
 	\item{nrun}{\code{signature(object = "NMFfit")}: return the number of NMF runs 
 	performed to compute \code{object}. In the case of a \code{NMFfit} object, this method 
 	always returns 1, as it is the result of a single NMF run and the method exists 
@@ -278,12 +302,12 @@ However, there is usually no need to directly create such an object, as interfac
     the computation time and the final residuals.}
     
     \item{$}{\code{signature(x = "NMFfit", name)}: Access element \code{name} in 
-    slot \code{extra} (which is a \code{list}) partially matching argument \code{name}.
-    It is equivalent to \code{x@extra[[name, exact=FALSE]]}. 
+    slot \code{misc} (which is a \code{list}) partially matching argument \code{name}.
+    It is equivalent to \code{x@misc[[name, exact=FALSE]]}. 
     }
     
     \item{$<-}{\code{signature(x = "NMFfit", name, value)}: Set the value in of 
-    element \code{name} in slot \code{extra} (which is a \code{list}).
+    element \code{name} in slot \code{misc} (which is a \code{list}).
      Note that it does not partially match argument \code{name}. 
     }
   

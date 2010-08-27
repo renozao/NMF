@@ -118,7 +118,7 @@ if ( is.null(getGeneric('nmfModel')) ) setGeneric('nmfModel', function(rank, tar
 #' 
 #' @export
 setMethod('nmfModel', signature(rank='numeric', target='numeric'),
-	function(rank, target, model='NMFstd', W, H, ...){
+	function(rank, target, ncol=NULL, model='NMFstd', W, H, ...){
 		
 		# check validity of the provided class
 		if( !isClass(model) ) stop("Invalid model name: class '", model,"' is not defined.")
@@ -131,7 +131,7 @@ setMethod('nmfModel', signature(rank='numeric', target='numeric'),
 		# compute the target dimension
 		target <- as.integer(target)
 		n <- target[1]
-		m <- if( length(target) == 2 ) target[2] else n 
+		m <- if( length(target) == 2 ) target[2] else if( !missing(ncol) ) ncol else n 
 		# force rank to be an integer
 		r <- as.integer(rank)
 		
@@ -146,6 +146,10 @@ setMethod('nmfModel', signature(rank='numeric', target='numeric'),
 			W.was.missing <- TRUE
 		}
 		else{
+			# convert numerical vectors into a matrix
+			if( is.vector(W) )
+				W <- matrix(W, n, r)
+			
 			if( r == 0 ) r <- ncol(W)
 			else if( r < ncol(W) ){
 				warning("Objective rank is (",r,") lower than the number of columns in W (",ncol(W),"): only the first of W ", r," columns will be used")
@@ -162,8 +166,13 @@ setMethod('nmfModel', signature(rank='numeric', target='numeric'),
 			else if( n > nrow(W) ) stop("Number of rows in target (",n,") is greater than the number of rows in W (",nrow(W),")")
 		}
 		
-		if( missing(H) ) H <- matrix(NA, ncol(W), m)
+		if( missing(H) ) 
+			H <- matrix(NA, ncol(W), m)
 		else{
+			# convert numerical vectors into a matrix
+			if( is.vector(H) )
+				H <- matrix(H, r, m)
+			
 			if( r == 0 ) r <- nrow(H)
 			else if( r < nrow(H) ){
 				warning("Objective rank (",r,") is lower than the number of rows in H (",nrow(H),"): only the first of H ", r," rows will be used")
@@ -327,20 +336,28 @@ function(x){
 #' @export
 setMethod('dimnames', 'NMF', 
 	function(x){
-		l <- list(rownames(basis(x)), colnames(coef(x)), rownames(coef(x)))
+		b <- dimnames(basis(x))
+		c <- dimnames(coef(x))
+		l <- c(b[1],c[2],b[2])
 		if( all(sapply(l, is.null)) ) NULL else l
 	}
 )
 
 setReplaceMethod('dimnames', 'NMF', 
 	function(x, value){
-		if( is.null(value) ) return(x)
-		# if only the two first dimensions are given then keep the last one
-		if( length(value) == 2 )
-			value[3] <- list(dimnames(x)[[3]])
+		if( !is.null(value) ){
+			if( !is.list(value) )
+				stop("NMF::dimnames - invalid argument 'value' [a 2 or 3-length list is expected]")
+			
+			# if only the two first dimensions reset the third one
+			if( length(value) == 2 )
+				value <- c(value, list(NULL))
+			else if( length(value)!=3 ) # check length of value
+				stop("NMF::dimnames - invalid argument 'value' [a 2 or 3-length list is expected]")
+		}
 		
-		dimnames(basis(x)) <- list(value[[1]], value[[3]])
-		dimnames(coef(x)) <- list(value[[3]], value[[2]])
+		dimnames(basis(x)) <- value[c(1,3)]		
+		dimnames(coef(x)) <- value[c(3,2)]		
 		x	
 	}
 )
@@ -366,29 +383,81 @@ setMethod('nbasis', signature(x='NMF'),
 	}
 )
 
+#' return the basis names
+setGeneric('basisnames', function(x, ...) standardGeneric('basisnames') )
+setMethod('basisnames', signature(x='NMF'), 
+		function(x)
+		{
+			rownames(coef(x))
+		}
+)
+#' set the basis names
+setGeneric('basisnames<-', function(x, ..., value) standardGeneric('basisnames<-') )
+setReplaceMethod('basisnames', signature(x='NMF'), 
+		function(x, ..., value)
+		{
+			rownames(coef(x)) <- value
+			colnames(basis(x)) <- value
+			x
+		}
+)
 
 #' Subsetting method for NMF objects
+#' i = features, j = samples, k = basis
 setMethod('[', 'NMF', 
 	function (x, i, j, ..., drop = FALSE)
 	{
-		if( missing(drop) )
-			drop <- FALSE
+		k <- NULL
+		mdrop <- missing(drop)
 		
-		if (missing(i) && missing(j)) {
+		# compute number of arguments: x and drop are always passed
+		Nargs <- nargs() - !mdrop
+		single.arg <- FALSE
+		k.notmissing <- FALSE
+		if( !missing(i) && Nargs < 3L ){
+			k <- i
+			single.arg <- TRUE
+		}
+		else if( Nargs > 3L ){
+			dots <- list(...)
+			if( length(dots) != 1 )
+				warning("NMF::[ - using only the first extra subset index, the remaining ", length(dots)-1," are discarded.")
+			k <- dots[[1]]
+			k.notmissing <- TRUE
+		}
+		
+		# no indice was provided => return the object unchanged
+		if ( missing(i) && missing(j) && !k.notmissing ) {
 			# check if there is other arguments
-			if (length(list(...)) != 0) 
-				stop("NMF::[] method: specify which features or samples to subset")
+			if (length(list(...)) != 0)
+				stop("NMF::[] method - please specify which features, samples or basis to subset. See class?NMF.")
 			# otherwise return the untouched object
 			return(x)
 		}
 		
-		# subset the columns of mixture coefficient matrix
-		if (!missing(j)) 
-			coef(x) <- coef(x)[, j, ..., drop = drop]
+		# subset the rows of the basis matrix		
+		if ( !missing(i) && !single.arg )			
+			basis(x) <- basis(x)[i, , drop = FALSE]
 		
-		# subset the rows of the basis matrix
-		if (!missing(i)) 
-			basis(x) <- basis(x)[i, , ..., drop = drop]
+		# subset the columns of mixture coefficient matrix		
+		if (!missing(j)) 
+			coef(x) <- coef(x)[, j, drop = FALSE]
+		
+		# subset the basis: columns of basis matrix and row of mixture coefficient matrix		
+		if( single.arg )# return the selected metagenes (as a matrix)
+			return(basis(x)[, k, drop = if( mdrop ) TRUE else drop])			
+		else if( k.notmissing ){
+			basis(x) <- basis(x)[, k, drop = FALSE]
+			coef(x) <- coef(x)[k, , drop = FALSE]
+		}
+		
+		# if drop is TRUE and only one dimension is missing then return affected matrix
+		if( !single.arg && drop ){
+			if( missing(i) && !missing(j) )
+				return( drop(coef(x)) )
+			else if( missing(j) && !missing(i) )
+				return( drop(basis(x)) )
+		}
 		
 		# return subset object
 		return(x)
@@ -1293,7 +1362,8 @@ setMethod('rss', 'NMF',
 				stop("NMF::rss - The 'Biobase' package is required to extract expression data from 'ExpressionSet' objects [see ?'nmf-bioc']")
 			
 			target <- Biobase::exprs(target)
-		}
+		}else if( is.data.frame(target) )
+			target <- as.matrix(target)
 		
 		# return rss using the optimized C function
 		.rss(fitted(object),target)

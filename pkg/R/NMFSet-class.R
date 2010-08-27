@@ -17,6 +17,16 @@ setClass('NMFSet'
 		)
 )
 
+
+isNMFfit <- function(object, recursive=TRUE){
+	res <- is(object, 'NMFfitX') || is(object, 'NMFfit')
+	# if the object is not a NMF result: apply to each element if a list (only in recursive mode)
+	if( !res  && recursive && is.list(object) )
+		sapply(object, isNMFfit)
+	else
+		res
+}
+
 #' NMFlist class definition
 #' 
 #' The class wraps a list of results of NMF runs.

@@ -1,3 +1,46 @@
+#' Exported version for .fcnnls: S4 method to deal with different way of calling it
+
+if( !isGeneric('fcnnls') ) setGeneric('fcnnls', function(x, y, ...) standardGeneric('fcnnls') )
+setMethod('fcnnls', signature(x='matrix', y='matrix'), 
+	function(x, y, verbose=FALSE, pseudo=TRUE, ...){
+		# load corpcor if necessary
+		if( pseudo ) 
+			library(corpcor)
+		
+		# call the internal function
+		res <- .fcnnls(x, y, verbose=verbose, pseudo=pseudo, ...)
+		
+		# process the result
+		f <- x %*% res$K
+		resid <- y - f
+
+		# wrap up the result
+		out <- list(x=res$K, fitted=f, residuals=resid, deviance=norm(resid, 'F')^2, passive=res$Pset, pseudo=pseudo)
+		class(out) <- 'fcnnls'
+		out
+	}
+)
+
+setMethod('fcnnls', signature(x='numeric', y='matrix'), 
+	function(x, y, ...){
+		fcnnls(as.matrix(x), y, ...)
+	}
+)
+
+setMethod('fcnnls', signature(x='ANY', y='numeric'), 
+	function(x, y, ...){
+		fcnnls(x, as.matrix(y), ...)
+	}
+)
+
+print.fcnnls <- function(x){
+	cat("<object of class 'fcnnls': Fast Combinatorial Non-Negative Least Squares>\n")
+	cat("Residual sum of squares:", x$deviance,"\n")
+	cat("Active constraints:", length(x$passive)-sum(x$passive),"/", length(x$passive), "\n")
+	cat("Inverse method:", if(x$pseudo) 'pseudoinverse (corpcor)' else 'QR (solve)', "\n")
+	invisible(x)
+}
+
 #' M. H. Van Benthem and M. R. Keenan, J. Chemometrics 2004; 18: 441-450
 #'
 #' Given A and C this algorithm solves for the optimal 
@@ -12,7 +55,7 @@
 #'
 #' @return [K, Pset]
 #'
-.fcnnls <- function(C, A, verbose=FALSE){
+.fcnnls <- function(C, A, verbose=FALSE, pseudo=FALSE){
 # NNLS using normal equations and the fast combinatorial strategy
 	#
 	# I/O: [K, Pset] = fcnnls(C, A);
@@ -42,7 +85,7 @@
 	CtC = crossprod(C); CtA = crossprod(C,A);
 	
 	# Obtain the initial feasible solution and corresponding passive set
-	K = .cssls(CtC, CtA);
+	K = .cssls(CtC, CtA, pseudo=pseudo);
 	Pset = K > 0;
 	K[!Pset] = 0;
 	D = K;
@@ -55,7 +98,7 @@
 		oitr=oitr+1; if ( verbose && oitr > 5 ) cat(sprintf("%d ",oitr));# HKim
 		
 		#Vc# Solve for the passive variables (uses subroutine below)				
-		K[,Fset] = .cssls(CtC, CtA[,Fset, drop=FALSE], Pset[,Fset, drop=FALSE]);
+		K[,Fset] = .cssls(CtC, CtA[,Fset, drop=FALSE], Pset[,Fset, drop=FALSE], pseudo=pseudo);
 		
 		# Find any infeasible solutions
 		# subset Fset on the columns that have at least one negative entry
@@ -83,7 +126,7 @@
 				idx2zero = (Hset - 1) * lVar + minIdx; # convert array indices to index relative to the matrix D
 				D[idx2zero] = 0;
 				Pset[idx2zero] = FALSE;
-				K[, Hset] = .cssls(CtC, CtA[,Hset, drop=FALSE], Pset[,Hset, drop=FALSE]);
+				K[, Hset] = .cssls(CtC, CtA[,Hset, drop=FALSE], Pset[,Hset, drop=FALSE], pseudo=pseudo);
 				# which column of K have at least one negative entry?
 				Hset = which( colSums(K < 0) > 0 );
 				nHset = length(Hset);
@@ -114,12 +157,12 @@
 }
 # ****************************** Subroutine****************************
 #library(corpcor)
-.cssls <- function(CtC, CtA, Pset=NULL){
+.cssls <- function(CtC, CtA, Pset=NULL, pseudo=FALSE){
 	# Solve the set of equations CtA = CtC*K for the variables in set Pset
 	# using the fast combinatorial approach
 	K = matrix(0, nrow(CtA), ncol(CtA));	
 	if ( is.null(Pset) || length(Pset)==0 || all(Pset) ){		
-		K = solve(CtC) %*% CtA;
+		K <- (if( !pseudo ) solve(CtC) else pseudoinverse(CtC)) %*% CtA;
 		# K = pseudoinverse(CtC) %*% CtA;
 		#K=pinv(CtC)*CtA;
 	}else{
@@ -132,8 +175,8 @@
 		for( k in seq(1,length(breakIdx)-1) ){
 			cols2solve = sortedEset[ seq(breakIdx[k]+1, breakIdx[k+1])];
 			vars = Pset[,sortedEset[breakIdx[k]+1]];			
-			K[vars,cols2solve] = solve(CtC[vars,vars, drop=FALSE]) %*% CtA[vars,cols2solve, drop=FALSE];			
-			#K[vars,cols2solve] = pseudoinverse(CtC[vars,vars]) %*% CtA[vars,cols2solve];
+			K[vars,cols2solve] <- (if( !pseudo ) solve(CtC[vars,vars, drop=FALSE]) else pseudoinverse(CtC[vars,vars, drop=FALSE])) %*% CtA[vars,cols2solve, drop=FALSE];
+			#K[vars,cols2solve] <-  pseudoinverse(CtC[vars,vars, drop=FALSE])) %*% CtA[vars,cols2solve, drop=FALSE];
 			#TODO: check if this is the right way or needs to be reversed
 			#K(vars,cols2solve) = pinv(CtC(vars,vars))*CtA(vars,cols2solve);
 		}
@@ -345,7 +388,7 @@
 		}
 		else{ basis(nmf.fit) <- W; coef(nmf.fit) <- H}
 		# set number of iterations performed
-		nmf.fit$iteration <- i
+		niter(nmf.fit) <- i
 		
 		return(nmf.fit)	
 	}else{

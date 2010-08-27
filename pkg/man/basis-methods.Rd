@@ -1,4 +1,4 @@
-\name{basis-methods}
+\name{basis/coef}
 \docType{methods}
 \alias{basis-methods}
 \alias{basis}
@@ -17,7 +17,7 @@
 \alias{coefficients<-,NMF,matrix-method}
 
 
-\title{ Extract/Set the matrix of basis vectors from a NMF model }
+\title{ Get/Set the matrix factors in a NMF model }
 \description{
  \code{basis} and \code{basis<-} are S4 generic functions which respectively 
  extract and set the matrix of basis vectors (i.e. the first matrix factor) 
@@ -32,7 +32,7 @@
  For example, in the case of the standard NMF model \eqn{V \equiv WH}, 
  method \code{coef} will return matrix \eqn{H}.
  
- Methods \code{coefficients} and \code{coefficients} are simple aliases for methods 
+ Methods \code{coefficients} and \code{coefficients<-} are simple aliases for methods 
  \code{coef} and \code{coef<-} respectively.
 }
 \section{Methods}{

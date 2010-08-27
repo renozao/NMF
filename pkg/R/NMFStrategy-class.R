@@ -200,6 +200,9 @@ setMethod('newNMFStrategy', signature(method='function', key='character'),
 #' Access to registered algorithms
 nmfAlgorithm <- function(name=NULL, model, type=c('C', 'R'), ...){	
 	
+	# if one passes an NMFStrategy just returns it
+	if( is(name, 'NMFStrategy') )
+		return(name)
 	# check for type filtering
 	if( missing(name) && !missing(type)  ){
 		type <- match.arg(type)
