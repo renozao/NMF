@@ -4,7 +4,7 @@ session_start();
 
 // force check on CRAN
 //$_SESSION['cran_cache'] = 0;
-if( isset($_GET['check_cran']) ){
+if( isset($_GET['check_cran']) ){	
 	$_SESSION['cran_cache'] = 0;
 	header('location: ?view=soft');
 }
@@ -102,7 +102,7 @@ div#wrapper{
 }
 
 div.h2{
-	margin:19px 0px 19px 0px;
+	margin:19px 0px 10px 0px;
 	font-size:16pt;
 	font-weight:bold;
 	background-color:#135CAE;
@@ -119,6 +119,10 @@ div.h3{
 h3, div.h3{
 	background-color:#dddddd;
 	padding:2px;
+}
+
+div#citation{
+	font-size:12pt;	
 }
 
 div#abstract{
@@ -184,6 +188,11 @@ div.menu th.selected, div.menu th.selected a{
 
 <div id="wrapper">
 <div class="h2">NMF: A flexible R package for Nonnegative Matrix Factorization</div>
+<div id="citation"><i>BMC Bioinformatics</i> 2010, <b>11</b>:367 -
+<a href="http://www.biomedcentral.com/1471-2105/11/367" target="_new_nmf">doi:10.1186/1471-2105-11-367</a> - PMCID: PMC2912887
+<br />
+<br />
+</div>
 <table width="100%" cellpadding="0" cellspacing="0">
 <tr>
 <td valign="top">
@@ -194,14 +203,14 @@ Renaud Gaujoux&sup1;, Cathal Seoighe*&sup2;
 (2) School of Mathematics, Statistics and Applied Mathematics, National University of Ireland Galway, Ireland<br />
 * Corresponding author
 </p>
-<p>Email: Renaud Gaujoux - &lt;renaud at cbio.uct.ac.za&gt;; Cathal Seoighe - &lt;cathal.seoighe at nuigalway.ie&gt;</p>
+<p>Authors: Renaud Gaujoux - &lt;renaud at cbio dot uct dot ac dot za&gt;; Cathal Seoighe - &lt;cathal dot seoighe at nuigalway dot ie&gt;</p>
 </small>
 </td>
 <td><img src="nmf.png" alt="" /></td>
 </tr></table>
 
 <?php
-$view = $_GET['view']; 
+$view = isset($_GET['view']) ? $_GET['view'] : ''; 
 if( !in_array($view,array('soft', 'references')) ) 
 	$view = 'soft';
 ?>
@@ -258,7 +267,7 @@ function get_cran_version($pkg, $default){
 	return array($pkg_version, $pkg_info);
 }
 	
-if( !(!isset($_SESSION['CRAN']) || $cran_info=$_SESSION['CRAN']) || ($_SESSION['cran_cache'] + (60*5) < time()) ){
+if( !(!isset($_SESSION['CRAN']) || $cran_info=$_SESSION['CRAN']) || (!isset($_SESSION['cran_cache']) || $_SESSION['cran_cache'] + (60*5) < time()) ){
 	$cran_info = get_cran_version('NMF', LAST_CRAN_VERSION);	
 	$_SESSION['CRAN'] = $cran_info;
 	$_SESSION['cran_cache'] = time();
