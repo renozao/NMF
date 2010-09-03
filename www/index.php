@@ -212,12 +212,12 @@ Renaud Gaujoux&sup1;, Cathal Seoighe*&sup2;
 <?php
 $view = isset($_GET['view']) ? $_GET['view'] : ''; 
 if( !in_array($view,array('soft', 'references')) ) 
-	$view = 'soft';
+	$view = '';
 ?>
 <div class='menu'>
 <table cellpadding="0" cellspacing="0"><tr>
 <th>&nbsp;</th>
-<!-- <th class="link <?php echo !$view ? "selected": ""; ?>"><a href="?">Home</a></th> -->
+<th class="link <?php echo !$view ? "selected": ""; ?>"><a href="?">Home</a></th>
 <th class="link <?php echo $view=='soft' ? "selected": ""; ?>"><a href="?view=soft">Software</a></th>
 <th class="link <?php echo $view=='references' ? "selected": ""; ?>"><a href="?view=references">References</a></th>
 <td width="100%"></td>
@@ -280,22 +280,24 @@ echo $cran_info[1]['desc'];
 ?>
 
 <table width="100%"><tr>
-<td valign="top" width="38%">
+<td valign="top" width="50%">
 
 <h3>Software &amp; Documentations</h3>
 
 <?php
 
+$href_pattern = '`href=[\'"](((?<!http://)[^\"])+)[\'"]`siU';
 // change table into ul
 $download_links = preg_replace("`<tr[^>]*> *<td[^>]*>(.*)</td> *<td[^>]*>(.*)</td> *</tr>`siU", '<li>\1 \2</li>', $cran_info[1]['links']);
 // fix links
-$download_links = preg_replace('`href=[\'"](\.[^\'"]+)[\'"]`siU','href="'.CRAN_MIRROR.'/web/packages/'.PKGNAME.'/\1"',$download_links);
+$download_links = preg_replace($href_pattern,'href="'.CRAN_MIRROR.'/web/packages/'.PKGNAME.'/\1"',$download_links);
 echo "<ul>$download_links</ul>";
 ?>
 
-<a href="#" onclick="$('#pkg_details').slideToggle();">+ Details</a><br /><br />
-<div id="pkg_details" style="display:none"><?php 
-$details_links = preg_replace('`href=[\'"](\.[^\'"]+)[\'"]`siU','href="'.CRAN_MIRROR.'/web/packages/'.PKGNAME.'/\1"',$cran_info[1]['detail']);
+<a href="#" onclick="$('#pkg_details').slideToggle();$('#table_details td:first-child').width('100px'); ">+ Package details</a><br /><br />
+<div id="pkg_details" style="display:none;margin-left:20px"><?php 
+$details_links = preg_replace($href_pattern,'href="'.CRAN_MIRROR.'/web/packages/'.PKGNAME.'/\1"',$cran_info[1]['detail']);
+$details_links = str_replace("<table ", "<table id=\"table_details\" width=\"100%\" ", $details_links);
 echo $details_links;?></div>
 <br />
 
@@ -426,15 +428,14 @@ The NMF package has a dedicated <strong>project on <a target="_new" href="http:/
 		readfile('references.html');
 		break;
 	default:
-	if( false ):
 	?>
 	
 <h3>Abstract</h3>
 <div id="abstract">
 <p>
 <b>Background:</b>
-Nonnegative Matrix Factorization (NMF) is an unsupervised learning technique that has been applied successfully in several fields, including signal processing, facial recognition and text mining. 
-Recent applications of NMF in bioinformatics have demonstrated its ability to extract meaningful information from high-dimensional data such as gene expression microarrays. Developments in NMF theory and applications have resulted in a variety of algorithms and methods. 
+Nonnegative Matrix Factorization (NMF) is an unsupervised learning technique that has been applied successfully in several fields, including signal processing, face recognition and text mining.
+Recent applications of NMF in bioinformatics have demonstrated its ability to extract meaningful information from high-dimensional data such as gene expression microarrays. Developments in NMF theory and applications have resulted in a variety of algorithms and methods.
 However, most NMF implementations have been on commercial platforms, while those that are freely available typically require programming skills.
 This limits their use by the wider research community.
 </p>
@@ -450,14 +451,13 @@ Commonly used benchmark data and visualization methods are provided to help in t
 <p>
 <b>Conclusions:</b>
 The NMF package helps realize the potential of Nonnegative Matrix Factorization, especially in bioinformatics, providing easy access to methods that have already yielded new insights in many applications.
-Documentation, source code and sample data are available from CRAN at <a target="_new_nmf" href="http://cran.r-project.org">http://cran.r-project.org</a>.
+Documentation, source code and sample data are available from CRAN at <a target="_new_nmf" href="http://cran.r-project.org/package=NMF">http://cran.r-project.org</a>.
 </p>
 </div>
 
 <?php 
 // Add acknowledgment
 acknowledgment();
-endif;
 
 } //end switch
 ?>
