@@ -5,57 +5,58 @@
 # Author: Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
 ###############################################################################
 
-#' Class to store the results of \strong{Non-negative Matrix Factorization} algorithms (NMF).
-#'
-#' Let \eqn{V} be a \eqn{n \times m} non-negative matrix and \eqn{r} a positive integer. A NMF of \eqn{V} is commonly
-#' defined as two matrices \eqn{W} and \eqn{H} such that:
-#' \deqn{V \equiv W H,}      
-#' where:
-#' - \eqn{W} and \eqn{H} are \eqn{n \times r} and \eqn{r \times m} non-negative matrices respectivelly;
-#' - \eqn{\equiv} is to be understood with respect to some error function (eg. Frobenius norm, Kullbach-Leibler divergence, ...). 
-#'
-#' Integer \eqn{r} is called the \emph{factorization rank}.
-#' Depending on the context of application of NMF, the columns of \eqn{W} and \eqn{H} take different names:
-#' - columns of \eqn{W}: metagenes, factors, source, image basis
-#' - columns of \eqn{H}: metaprofiles, mixture coefficients, weights
-#' 
-#' Because package \code{NMF} was primilary intended to microarray data, the following terminology 
-#' is used
-#' \describe{
-#' \item{samples}{the columns of the target matrix \eqn{V}}
-#' \item{genes}{the rows of the target matrix \eqn{V}}
-#' \item{metagenes}{the columns of matrix \eqn{W}} 
-#' \item{metaprofiles}{the columns of matrix \eqn{H}}
-#' }
-#' 
-#' Class \code{NMF} is a class to handle both matrices \eqn{W} and \eqn{H} within a single object,
-#' together with data about the methods and parameters used to compute them.
-#' 
-#' \section{Validity checks}{ The validity method for class \code{NMF} checks for compatibility of slots
-#' \code{W} and \code{H}, as those matrices must be compatible with respect to the matrix product. 
-#' It also checks the relevance of the factorization, emmiting a warning when the factorization rank is
-#' greater than the number of columns in \code{H}.
-#' }
-#' 
-#' @seealso nmf
-#' 
-#' @slot W a \eqn{n \times r} \code{matrix}, the first matrix factor of the NMF. 
-#' @slot H a \eqn{r \times n} \code{matrix}, the second matrix factor of the NMF.
-#' @slot residuals a \code{numeric} value of the final residuals. That is a measure of how far the estimate \eqn{WH} is from the target \eqn{V}
-#' @slot method a \code{character} string giving the name of the algorithm used to compute the NMF 
-#' @slot seed a \code{character} string giving the name of the seeding method used to compute the NMF
-#' @slot distance a \code{character} string giving the name of the loss function the algorithm is based on
-#' @slot parameters a \code{list} of the algorithm's parameters used as input (in addition to \eqn{V} and \eqn{r}) 
-#' @slot runtime a \code{proc_time} object giving the duration of the computation (as returned by \code{system.time}) 
-#' @slot extra a \code{list} of extra values set by the algorithm for specific report/tracking 
-#' @author Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
-#' @export
+###% Class to store the results of \strong{Non-negative Matrix Factorization} algorithms (NMF).
+###%
+###% Let \eqn{V} be a \eqn{n \times m} non-negative matrix and \eqn{r} a positive integer. A NMF of \eqn{V} is commonly
+###% defined as two matrices \eqn{W} and \eqn{H} such that:
+###% \deqn{V \equiv W H,}      
+###% where:
+###% - \eqn{W} and \eqn{H} are \eqn{n \times r} and \eqn{r \times m} non-negative matrices respectivelly;
+###% - \eqn{\equiv} is to be understood with respect to some error function (eg. Frobenius norm, Kullbach-Leibler divergence, ...). 
+###%
+###% Integer \eqn{r} is called the \emph{factorization rank}.
+###% Depending on the context of application of NMF, the columns of \eqn{W} and \eqn{H} take different names:
+###% - columns of \eqn{W}: metagenes, factors, source, image basis
+###% - columns of \eqn{H}: metaprofiles, mixture coefficients, weights
+###% 
+###% Because package \code{NMF} was primilary intended to microarray data, the following terminology 
+###% is used
+###% \describe{
+###% \item{samples}{the columns of the target matrix \eqn{V}}
+###% \item{genes}{the rows of the target matrix \eqn{V}}
+###% \item{metagenes}{the columns of matrix \eqn{W}} 
+###% \item{metaprofiles}{the columns of matrix \eqn{H}}
+###% }
+###% 
+###% Class \code{NMF} is a class to handle both matrices \eqn{W} and \eqn{H} within a single object,
+###% together with data about the methods and parameters used to compute them.
+###% 
+###% \section{Validity checks}{ The validity method for class \code{NMF} checks for compatibility of slots
+###% \code{W} and \code{H}, as those matrices must be compatible with respect to the matrix product. 
+###% It also checks the relevance of the factorization, emmiting a warning when the factorization rank is
+###% greater than the number of columns in \code{H}.
+###% }
+###% 
+###% @seealso nmf
+###% 
+###% @slot W a \eqn{n \times r} \code{matrix}, the first matrix factor of the NMF. 
+###% @slot H a \eqn{r \times n} \code{matrix}, the second matrix factor of the NMF.
+###% @slot residuals a \code{numeric} value of the final residuals. That is a measure of how far the estimate \eqn{WH} is from the target \eqn{V}
+###% @slot method a \code{character} string giving the name of the algorithm used to compute the NMF 
+###% @slot seed a \code{character} string giving the name of the seeding method used to compute the NMF
+###% @slot distance a \code{character} string giving the name of the loss function the algorithm is based on
+###% @slot parameters a \code{list} of the algorithm's parameters used as input (in addition to \eqn{V} and \eqn{r}) 
+###% @slot runtime a \code{proc_time} object giving the duration of the computation (as returned by \code{system.time}) 
+###% @slot extra a \code{list} of extra values set by the algorithm for specific report/tracking 
+###% @author Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
+###% @export
 setClass('NMFfit'
 	, representation(
 			fit = 'NMF', # NMF model
 			residuals = 'numeric', # residuals from the target matrix
 			method = 'character', # method used to compute the factorization
 			seed = 'character', # seeding method used to compute the factorization
+			rng = 'rstream', # numerical random seed
 			distance = '.functionSlot.null', # method used to compute the distance between the target matrix and its NMF estimate
 			parameters = 'list', # method used to compute the factorization
 			runtime = 'proc_time', # running time to perform the NMF
@@ -85,14 +86,26 @@ setClass('NMFfit'
 	, contains = 'NMF'
 )
 
-#' Estimate the target matrix (wrapper function) -> call method on fit
+###% Factory method for NMFfit objects
+newNMFfit <- function(fit=nmfModel(), ...){
+				
+		args <- list(...)
+		
+		# if the initial RNG stream is not set already: set its value to the current RNG stream (store its packed version)
+		if( is.null(args$rng) )
+			args$rng <- getRNG(packed=TRUE)
+		
+		do.call(new, c(list('NMFfit'), fit=fit, args))
+}
+
+###% Estimate the target matrix (wrapper function) -> call method on fit
 setMethod('fitted', signature(object='NMFfit'),
 	function(object, ...){
 		fitted(fit(object), ...)
 	}
 )
 
-#' Get/Set the basis matrix -> call method on fit
+###% Get/Set the basis matrix -> call method on fit
 setMethod('basis', signature(object='NMFfit'),
 	function(object, ...){
 		basis(fit(object), ...)
@@ -105,7 +118,7 @@ setReplaceMethod('basis', signature(object='NMFfit', value='matrix'),
 	} 
 )
 
-#' Get/Set the mixture coefficients matrix -> call method on fit
+###% Get/Set the mixture coefficients matrix -> call method on fit
 setMethod('coef', signature(object='NMFfit'),
 	function(object, ...){
 		coef(fit(object), ...)
@@ -118,14 +131,14 @@ setReplaceMethod('coef', signature(object='NMFfit', value='matrix'),
 	} 
 )
 
-#' Get/Set the number of iterations
-if ( !isGeneric('niter') ) setGeneric('niter', function(object, ...) standardGeneric('niter'))
+###% Get/Set the number of iterations
+setGeneric('niter', function(object, ...) standardGeneric('niter'))
 setMethod('niter', signature(object='NMFfit'),
 	function(object, ...){
 		object@extra$iteration
 	}
 )
-if ( !isGeneric('niter<-') ) setGeneric('niter<-', function(object, ..., value) standardGeneric('niter<-'))
+setGeneric('niter<-', function(object, ..., value) standardGeneric('niter<-'))
 setReplaceMethod('niter', signature(object='NMFfit', value='numeric'), 
 	function(object, value){
 		if( (length(value) != 1) || value < 0  ) 
@@ -135,9 +148,17 @@ setReplaceMethod('niter', signature(object='NMFfit', value='numeric'),
 	} 
 )
 
-setMethod('show', signature(object='NMFfit'), 
+###% Get the RNG Settings from Multiple NMF Runs
+setGeneric('getRNG1', function(object, ...) standardGeneric('getRNG1') )
+setMethod('getRNG1', signature(object='NMFfit'),
+	function(object){
+		getRNG(object)
+	}
+)
+
+setMethod('show', 'NMFfit', 
 	function(object)
-	{
+	{		
 		cat("<Object of class:", class(object), ">\n")
 		cat(" # Model:\n  ")
 		s <- capture.output(show(fit(object)))
@@ -146,6 +167,13 @@ setMethod('show', signature(object='NMFfit'),
 		.local <- function(){
 			if( algorithm(object) != '' ) cat("algorithm: ", algorithm(object), "\n")
 			if( seeding(object) != '' ) cat("seed: ",  seeding(object), "\n")
+			
+			# initial RNG stream			
+			se <- getRNG(object)
+			cat("RNG: ", se@type , if( is(se, 'rstream.runif') ) paste(' -', se@kind)
+				, ' [', RNGdigest(object) , ']' 				
+				, "\n", sep='')
+	
 			# distance/objective function
 			svalue <- objective(object)
 			svalue <- if( is.function(svalue) ) '<function>' else paste("'", svalue,"'", sep='')
@@ -168,15 +196,19 @@ setMethod('show', signature(object='NMFfit'),
 )
 
 
-#' Returns the fit (i.e. NMF model)
-if ( !isGeneric('fit') ) setGeneric('fit', function(object, ...) standardGeneric('fit'))
+# Return the best fit, i.e. the object itself in the case of NMFfit objects
+setGeneric('minfit', function(object, ...) standardGeneric('minfit') )
+setMethod('minfit', 'NMFfit', function(object) object)
+
+###% Returns the fit (i.e. NMF model)
+setGeneric('fit', function(object, ...) standardGeneric('fit'))
 setMethod('fit', signature(object='NMFfit'), 
 	function(object)
 	{
 		return(slot(object, 'fit'))
 	}
 )
-if ( !isGeneric('fit<-') ) setGeneric('fit<-', function(object, value) standardGeneric('fit<-'))
+setGeneric('fit<-', function(object, value) standardGeneric('fit<-'))
 setReplaceMethod('fit', signature(object='NMFfit', value='NMF'), 
 	function(object, value){ 
 		slot(object, 'fit') <- value		
@@ -184,7 +216,7 @@ setReplaceMethod('fit', signature(object='NMFfit', value='NMF'),
 	} 
 )
 
-#' Returns the NMF model's name
+###% Returns the NMF model's name
 setMethod('modelname', signature(object='NMFfit'), 
 	function(object)
 	{
@@ -192,7 +224,7 @@ setMethod('modelname', signature(object='NMFfit'),
 	}
 )
 
-if( !isGeneric('residuals') ) setGeneric('residuals', package='stats')
+setGeneric('residuals', package='stats')
 setMethod('residuals', 'NMFfit', 
 	function(object, track=FALSE, ...){ 
 		## IMPORTANT: keep this '...' and do not add a 'method' argument as this
@@ -202,7 +234,7 @@ setMethod('residuals', 'NMFfit',
 		if( track ) res else tail(res, n=1)
 	} 
 )
-if( !isGeneric('residuals<-') ) setGeneric('residuals<-', function(object, value) standardGeneric('residuals<-') )
+setGeneric('residuals<-', function(object, value) standardGeneric('residuals<-') )
 setReplaceMethod('residuals', 'NMFfit',
 	function(object, value){ 		
 		slot(object, 'residuals') <- value 
@@ -210,7 +242,15 @@ setReplaceMethod('residuals', 'NMFfit',
 	}
 )
 
-#' Track error 
+###% Tells if an \code{NMFfit} object has a recoded error track.
+###% 
+###% @param object an \code{NMFfit} object
+###% @export
+has.track <- function(object){
+	length( slot(object, 'residuals') ) > 1
+}
+
+###% Track error 
 trackError <- function(object, value, iter, force=FALSE){	
 	track <- run.options(object, 'error.track')
 	track.interval <- run.options(object, 'track.interval')
@@ -225,9 +265,18 @@ trackError <- function(object, value, iter, force=FALSE){
 	object
 }
 
-if (is.null(getGeneric('algorithm'))) setGeneric('algorithm', function(object, ...) standardGeneric('algorithm') )
+###% Returns the deviance of a fitted NMF model
+###% 
+setGeneric('deviance', package='stats')
+setMethod('deviance', 'NMFfit',
+	function(object){
+		setNames(residuals(object), NULL)
+	}
+)
+
+setGeneric('algorithm', function(object, ...) standardGeneric('algorithm') )
 setMethod('algorithm', 'NMFfit', function(object){ object@method } )
-if (is.null(getGeneric('algorithm<-'))) setGeneric('algorithm<-', function(object, ..., value) standardGeneric('algorithm<-') )
+setGeneric('algorithm<-', function(object, ..., value) standardGeneric('algorithm<-') )
 setReplaceMethod('algorithm', 'NMFfit',
 	function(object, value){
 		object@method <- value
@@ -235,9 +284,9 @@ setReplaceMethod('algorithm', 'NMFfit',
 	}
 )
 
-if (is.null(getGeneric('seeding'))) setGeneric('seeding', function(object, ...) standardGeneric('seeding') )
+setGeneric('seeding', function(object, ...) standardGeneric('seeding') )
 setMethod('seeding', 'NMFfit', function(object){ object@seed } )
-if (is.null(getGeneric('seeding<-'))) setGeneric('seeding<-', function(object, ..., value) standardGeneric('seeding<-') )
+setGeneric('seeding<-', function(object, ..., value) standardGeneric('seeding<-') )
 setReplaceMethod('seeding', 'NMFfit',
 	function(object, value){
 		object@seed <- value
@@ -245,8 +294,8 @@ setReplaceMethod('seeding', 'NMFfit',
 	}
 )
 
-#' Accessor methods to slot \code{objective}
-if ( !isGeneric('objective') ) setGeneric('objective', function(object, ...) standardGeneric('objective'))
+###% Accessor methods to slot \code{objective}
+setGeneric('objective', function(object, ...) standardGeneric('objective'))
 setMethod('objective', signature(object='NMFfit'),
 	function(object, x){
 		
@@ -258,7 +307,7 @@ setMethod('objective', signature(object='NMFfit'),
 		
 	}
 )
-if ( is.null(getGeneric('objective<-')) ) setGeneric('objective<-', function(object, ..., value) standardGeneric('objective<-'))
+setGeneric('objective<-', function(object, ..., value) standardGeneric('objective<-'))
 setReplaceMethod('objective', signature(object='NMFfit', value='character'),
 	function(object, value){
 		#TODO: test for the existence of objective method
@@ -275,29 +324,29 @@ setReplaceMethod('objective', signature(object='NMFfit', value='function'),
 	}
 )
 
-#' Returns slot \code{runtime}.
-#' 
-#' @return a numeric vector of class \code{proc_time}
-#' 
-if (is.null(getGeneric("runtime"))) setGeneric('runtime', function(object, ...) standardGeneric('runtime') )
+###% Returns slot \code{runtime}.
+###% 
+###% @return a numeric vector of class \code{proc_time}
+###% 
+setGeneric('runtime', function(object, ...) standardGeneric('runtime') )
 setMethod('runtime', 'NMFfit', 
 	function(object, ...){ 
 		object@runtime; 
 	}
 )
 
-if ( !isGeneric("runtime.all") ) setGeneric('runtime.all', function(object, ...) standardGeneric('runtime.all') )
+setGeneric('runtime.all', function(object, ...) standardGeneric('runtime.all') )
 setMethod('runtime.all', 'NMFfit', getMethod('runtime', 'NMFfit'))
 
-#' Access methods to run options.
-if (!isGeneric("run.options")) setGeneric('run.options', function(object, ...) standardGeneric('run.options') )
+###% Access methods to run options.
+setGeneric('run.options', function(object, ...) standardGeneric('run.options') )
 setMethod('run.options', 'NMFfit', 
 	function(object, name){
 		if( missing(name) ) object@options
 		else object@options[[name]]
 	}
 )
-if (!isGeneric("run.options<-")) setGeneric('run.options<-', function(object, ..., value) standardGeneric('run.options<-') )
+setGeneric('run.options<-', function(object, ..., value) standardGeneric('run.options<-') )
 setReplaceMethod('run.options', 'NMFfit', 
 	function(object, ..., value){
 		
@@ -318,23 +367,23 @@ setReplaceMethod('run.options', 'NMFfit',
 		object
 	}
 )
-if (!isGeneric("verbose")) setGeneric('verbose', function(object, ...) standardGeneric('verbose') )
+setGeneric('verbose', function(object, ...) standardGeneric('verbose') )
 setMethod('verbose', 'NMFfit', 
 	function(object){
 		return(run.options(object, 'verbose') || nmf.getOption('debug'))
 	}
 )
  
-#' Plot the residuals track of a NMF result.
-#'
-#' When slot \code{residuals} of a NMF object contains is not a single value, this function plots
-#' the curve of the objective value against the number of iterations.
-#'
-#' @param x a NMF object
-#' @param extra graphical parameters passed to function \code{plot}
-#' @return this function is used for its side effect of plotting.
-#'
-if ( !isGeneric('errorPlot') ) setGeneric('errorPlot', function(x, ...) standardGeneric('errorPlot') )
+###% Plot the residuals track of a NMF result.
+###%
+###% When slot \code{residuals} of a NMF object contains is not a single value, this function plots
+###% the curve of the objective value against the number of iterations.
+###%
+###% @param x a NMF object
+###% @param extra graphical parameters passed to function \code{plot}
+###% @return this function is used for its side effect of plotting.
+###%
+setGeneric('errorPlot', function(x, ...) standardGeneric('errorPlot') )
 setMethod('errorPlot', signature(x='ANY'), 
 	function(x, ...){
 		.Deprecated('plot', 'NMF')
@@ -358,7 +407,8 @@ setMethod('plot', signature(x='NMFfit', y='missing'),
 				, ylab=paste('Objective value ('
 							, if( is.character(x@distance) ) x@distance else algorithm(x), ')'
 							, sep='' )
-				, main=paste("NMF Residuals\nrank=", nbasis(x), sep='')
+				, main=paste("NMF Residuals\nMethod: ", algorithm(x), " - Rank: ", nbasis(x), sep='')
+				, cex.main = 1
 				, col='#5555ff', lwd=1.4, type='l', cex=0.5)
 		
 		do.call('plot', c(list(names(track), track), params))
@@ -398,3 +448,21 @@ setMethod('distance', signature(target='matrix', x='NMFfit'),
 			return(distance(target, fit(x), method=method, ...))
 		}
 )
+
+###% compare two NMF models when at least one comes from a NMFfit object
+setMethod('nmf.equal', signature(x='NMFfit', y='NMF'), 
+		function(x, y, ...){
+			nmf.equal(fit(x), y, ...)
+		}
+)
+setMethod('nmf.equal', signature(x='NMF', y='NMFfit'), 
+		function(x, y, ...){
+			nmf.equal(x, fit(y), ...)
+		}
+)
+setMethod('nmf.equal', signature(x='NMFfit', y='NMFfit'), 
+		function(x, y, ...){
+			nmf.equal(fit(x), fit(y), ...)
+		}
+)
+

@@ -9,13 +9,14 @@
 
 .onLoad.nmf.bioc <- function(){
 	
-	bioc.loaded <- FALSE
-	if( "Biobase" %in% rownames(utils::installed.packages()) ){
+if( !"Biobase" %in% rownames(utils::installed.packages()) )
+	FALSE
+else{
 
 	# load Biobase package
 	library(Biobase)
 
-	#' Performs NMF on an ExpressionSet: the target matrix is the expression matrix \code{exprs(x)}.
+	###% Performs NMF on an ExpressionSet: the target matrix is the expression matrix \code{exprs(x)}.
 	setMethod('nmf', signature(x='ExpressionSet', rank='ANY', method='ANY'), 
 		function(x, rank, method, ...)
 		{
@@ -28,7 +29,19 @@
 		}
 	)
 	
-	#' Run the algorithm on the expression matrix of an \code{ExpressionSet} object.
+	###% Seeds an NMF model from an ExpressionSet: the target matrix is the expression matrix \code{exprs(x)}.
+	setMethod('seed', signature(x='ExpressionSet', model='ANY', method='ANY'), 
+		function(x, model, method, ...)
+		{
+			# replace missing values by NULL values for correct dispatch
+			if( missing(method) ) method <- nmf.getOption('default.seed')
+			
+			# apply NMF to the gene expression matrix			
+			seed(Biobase::exprs(x), model, method, ...)
+		}
+	)
+	
+	###% Run the algorithm on the expression matrix of an \code{ExpressionSet} object.
 	setMethod('run', signature(method='NMFStrategy', x='ExpressionSet', seed='ANY'),
 		function(method, x, seed, ...){
 			
@@ -37,7 +50,7 @@
 		}
 	)
 	
-	#' Computes the distance between the target ExpressionSet and its NMF fit 
+	###% Computes the distance between the target ExpressionSet and its NMF fit 
 	setMethod('distance', signature(target='ExpressionSet', x='NMF'), 
 			function(target, x, ...){
 								
@@ -46,10 +59,38 @@
 			}
 	)
 	
-	#' Annotate the genes specific to each cluster.
-	#'
-	#' This function uses the \code{annaffy} package to generate an HTML table from the probe identifiers.
-#	if ( is.null(getGeneric("annotate")) ) setGeneric('annotate', function(x, annotation, ...) standardGeneric('annotate') )
+	###% Method 'nmfModel' for 'ExpressionSet' target objects: 
+	###% -> use the expression matrix of 'target' as the target matrix
+	setMethod('nmfModel', signature(rank='ANY', target='ExpressionSet'),
+			function(rank, target, ...){
+				# call nmfModel on the expression matrix
+				nmfModel(rank, exprs(target), ...)
+			}	
+	)
+	setMethod('nmfModel', signature(rank='ExpressionSet', target='ANY'),
+			function(rank, target, ...){
+				# call nmfModel on the expression matrix swapping the arguments
+				nmfModel(target, exprs(rank), ...)
+			}	
+	)	
+	
+	###% Method 'rnmf' for 'ExpressionSet' target objects: 
+	###% -> use the expression matrix of 'target' as the target matrix
+	###% 
+	setMethod('rnmf', signature(x='ANY', target='ExpressionSet'), 
+		function(x, target, ...){
+			rnmf(x, exprs(target), ...)
+		}
+	)
+	
+	###% The method for an \code{ExpressionSet} object returns the data.frame that 
+	###% contains the phenotypic data (i.e. \code{pData(object)})
+	setMethod('.atrack', 'ExpressionSet', function(object, ...) pData(object) )
+	
+	###% Annotate the genes specific to each cluster.
+	###%
+	###% This function uses the \code{annaffy} package to generate an HTML table from the probe identifiers.
+#	setGeneric('annotate', function(x, annotation, ...) standardGeneric('annotate') )
 #	setMethod('annotate', signature(x='factor', annotation='character'), 
 #		function(x, annotation, filename='NMF genes', outdir='.', name='Cluster specific genes', ...)
 #		{
@@ -91,19 +132,62 @@
 	setGeneric('sampleNames<-', package='Biobase')
 		
 	## Assign BioConductor aliases
-	#' number of metagenes
+	###% number of metagenes
 	nmeta <- nbasis
-	#' get/set methods of basis matrix
+	###% get/set methods of basis matrix
 	metagenes <- basis
 	`metagenes<-` <- `basis<-`
-	#' get/set methods of mixture coefficients matrix
+	###% get/set methods of mixture coefficients matrix
 	metaprofiles <- coef
 	`metaprofiles<-` <- `coef<-`
 	
+	###% Get/Set methods for rows/columns names of the basis and mixture matrices
+	setMethod('featureNames', 'NMF',
+		function(object){
+			rownames(object)
+		}
+	)
+	setReplaceMethod('featureNames', 'NMF',
+		function(object, value){
+			rownames(object) <- value
+			object
+		}
+	)
+	###% For NMFfitX objects: returns the featureNames of the best fit 
+	###% There is no replace method for NMFfitX objects
+	setMethod('featureNames', 'NMFfitX',
+		function(object){
+			rownames(fit(object))
+		}
+	)
+	
+	setMethod('sampleNames', 'NMF',
+		function(object){
+			colnames(object)
+		}
+	)
+	setReplaceMethod('sampleNames', 'NMF',
+		function(object, value){
+			colnames(object) <- value
+			object
+		}
+	)
+	###% For NMFfitX objects: returns the sampleNames of the best fit 
+	###% There is no replace method for NMFfitX objects
+	setMethod('sampleNames', 'NMFfitX',
+		function(object){
+			colnames(fit(object))
+		}
+	)
+
 	# Export layer-specific methods [only if one is loading a namespace]
 	ns <- getLoadingNamespace(getenv=TRUE)
-	if( !is.null(ns) ){		
+	if( !is.null(ns) ){
 		namespaceExport(ns, c("nmeta"
+						,"featureNames"
+						,"featureNames<-"
+						,"sampleNames"
+						,"sampleNames<-"
 						,"metagenes"
 						,"metagenes<-"
 						,"metaprofiles"
@@ -111,58 +195,9 @@
 		)
 	}
 	
-	
-	# set result to TRUE
-	bioc.loaded <- TRUE
-}else{
-	# define generic for the rows/columns names, following the Biobase definition (no '...')
-	setGeneric('featureNames', function(object) standardGeneric('featureNames') )
-	setGeneric('featureNames<-', function(object, value) standardGeneric('featureNames<-') )
-	setGeneric('sampleNames', function(object) standardGeneric('sampleNames') )
-	setGeneric('sampleNames<-', function(object, value) standardGeneric('sampleNames<-') )
+	# return TRUE
+	TRUE
 }
 
-
-#' Get/Set methods for rows/columns names of the basis and mixture matrices
-setMethod('featureNames', 'NMF',
-	function(object){
-		rownames(object)
-	}
-)
-setReplaceMethod('featureNames', 'NMF',
-	function(object, value){
-		rownames(object) <- value
-		object
-	}
-)
-#' For NMFfitX objects: returns the featureNames of the best fit 
-#' There is no replace method for NMFfitX objects
-setMethod('featureNames', 'NMFfitX',
-	function(object){
-		rownames(fit(object))
-	}
-)
-
-setMethod('sampleNames', 'NMF',
-	function(object){
-		colnames(object)
-	}
-)
-setReplaceMethod('sampleNames', 'NMF',
-	function(object, value){
-		colnames(object) <- value
-		object
-	}
-)
-#' For NMFfitX objects: returns the sampleNames of the best fit 
-#' There is no replace method for NMFfitX objects
-setMethod('sampleNames', 'NMFfitX',
-	function(object){
-		colnames(fit(object))
-	}
-)
-
-	# return the result
-	bioc.loaded
 }
 

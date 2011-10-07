@@ -17,17 +17,16 @@
 \alias{$,NMFfit-method}
 \alias{$<-,NMFfit-method}
 
-\alias{fit-methods}
-\alias{fit}
-\alias{fit,NMFfit-method}
 \alias{fit<-}
 \alias{fit<-,NMFfit,NMF-method}
 \alias{fitted,NMFfit-method}
 
+\alias{initialize,NMFfit-method}
 \alias{modelname,NMFfit-method}
 
 \alias{niter-methods}
 \alias{niter}
+\alias{niter<-}
 \alias{niter,NMFfit-method}
 \alias{niter<-,NMFfit,numeric-method}
 
@@ -90,6 +89,11 @@ and parameters used to compute the factorization.
     \item{\code{seed}:}{A single \code{"character"} string that contains the name of the seeding method used to seed the 
     algorithm that computed the NMF. Default value is \code{''}. 
     See \code{\link{nmf-methods}} for more details. }
+    
+    \item{\code{rng}:}{An \code{\link{rstream}} object that contains the RNG 
+    settings used for the fit. 
+    It is initialized by the \code{initialized} method. 
+    See \code{\link{getRNG}} for more details. }
     
     \item{\code{distance}:}{Either a single \code{"character"} string that 
     contains the name of the built-in objective function, or a \code{function} 
@@ -205,9 +209,8 @@ However, there is usually no need to directly create such an object, as interfac
     %See function \code{\link{distance}} for more details.
     }
     
-    \item{plot}{\code{signature(x = "NMFfit")}: plot the residuals track of the run 
-    that computed object \code{x}. 
-    See function \code{\link{nmf}} for details on how to enable the tracking of residuals.}
+    \item{initialize}{\code{signature(object = "NMFfit")}: Initializes the object. 
+    Introduced in version 0.6 to initialize slot \code{rng} when the object is created.}
 
     \item{fitted}{\code{signature(object = "NMFfit")}: 
     compute the estimated target matrix according to the NMF model stored in slot
@@ -258,6 +261,10 @@ However, there is usually no need to directly create such an object, as interfac
 	from class \code{NMF} as its second parameter. Extra parameters are passed.
 	}
 
+	\item{plot}{\code{signature(x = "NMFfit")}: plot the residuals track of the run 
+    that computed object \code{x}. 
+    See function \code{\link{nmf}} for details on how to enable the tracking of residuals.}
+    
     \item{residuals}{\code{signature(object = "NMFfit")}: Access slot \code{residuals}. 
     See function \code{\link{residuals}} for details 
     on extra parameters.
@@ -322,7 +329,7 @@ However, there is usually no need to directly create such an object, as interfac
 }
 
 
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 
 \seealso{
 	Main interface to perform NMF in \code{\link{nmf-methods}}. 
@@ -334,7 +341,7 @@ However, there is usually no need to directly create such an object, as interfac
 
 # run default NMF algorithm on a random matrix
 n <- 50; r <- 3; p <- 20
-V <- matrix(runif(n*p), n, p)  
+V <- rmatrix(n, p)  
 res <- nmf(V, r)							
 
 # result class is NMFfit

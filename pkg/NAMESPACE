@@ -7,24 +7,46 @@ useDynLib(NMF
 			, offset_euclidean_update_H, offset_euclidean_update_W # nmf with offset (euclidean based)
 			, Euclidean_rss # compute residual sum of squares (without memory duplication)
 			, KL_divergence # compute the KL divergence (with no memory duplication)
+			, clone_object
 			)
 
 importFrom(graphics, plot)
-importFrom(stats, coefficients, coef, fitted, offset, predict, residuals)
+importFrom(stats, coefficients, coef, fitted, offset, predict, residuals, deviance)
+
+# rstream extension
+import(rstream)
 
 export(
-	isNMFfit
+	aheatmap
+	, has.track
+	, isNMFfit
+	, is.nmf
 	, newNMF
 	, nmf.getOption
 	, nmfAlgorithm
 	, nmfEstimateRank
+	, nmfModels
 	, nmfSeed
-	, nmf.options	
+	, nmf.options
 	, nmf.options.reset
 	, nmf.options.runtime
 	, plot.NMF.rank
+	, plot.NMF.consensus
+	, profplot
 	, randomize
-	, rmatrix	
+	, rng.equal
+	, rng1.equal
+	, RNGdigest
+	, RNGinfo
+	, RNGlib
+	, RNGlibs
+	, RNGprovider
+	, RNGrecovery
+	, RNGseq
+	, RNGseed
+	, RNGwrap
+	, RNGhooks
+	, staticVar
 	, syntheticNMF
 )
 exportMethods(
@@ -37,18 +59,23 @@ exportMethods(
 	"as.NMFList",
     "basis",
     "basis<-",
+    "basiscor",
+    "basismap",
     "basisnames",
     "basisnames<-",
-    "clusters",
+#    "clusters",
     "coef",
     "coef<-",
     "coefficients",
+    "coefmap",
     "compare",
 #    "computeContrib",
     "connectivity",
     "consensus",
+    "consensusmap",
 #    "contribs",
 	"cophcor",
+	"deviance",
     "dim",
     "dimnames",
     "dimnames<-",
@@ -59,25 +86,27 @@ exportMethods(
     'evar',
     "extractFeatures",
     "fcnnls",
-    "featureNames",
-    "featureNames<-",
     "featureScore",
     "fit",
-    "fit<-",
-    "fitted", 
+    "fit<-",    
+    "fitted",
+    "getRNG",
+    "getRNG1", 
 #    "hist",
     "initialize",
     "is.empty.nmf",
-#    "join",
     "metaHeatmap",
+    "minfit",
    "modelname",
 #    "modelname<-",
 #    "name",
 #    "name<-",
     "nbasis",
     "niter",
+    "niter<-",
     "nmf",
     "nmfApply",
+    "nmf.equal",
     "nmfModel",
 #    "nmfRegister",
 #    "nmfRegisterAlgorithm",
@@ -88,9 +117,11 @@ exportMethods(
     "offset",
     "plot",
     "predict",
+    "profcor",    
     "purity",
     "rnmf",
 #    "report",
+	"rmatrix", 
 	"rss",
     "residuals",
     "residuals<-",
@@ -99,12 +130,12 @@ exportMethods(
 #    "run",
     "runtime",
     "runtime.all",
-    "sampleNames",
-    "sampleNames<-",
+    "scoef",
 #    "seed",
     "seeding",
     "seeding<-",
     "seqtime",
+    "setRNG",
     "show",
     "smoothing",
     "sparseness" 

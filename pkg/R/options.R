@@ -1,11 +1,11 @@
-#' Options management
-#' 
-#' 
-#' @author Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
-#' 
+###% Options management
+###% 
+###% 
+###% @author Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
+###% 
 
 .nmf.Options.Runtime <- character()
-#' Get/set package specific options
+###% Get/set package specific options
 nmf.options <- function (..., runtime=FALSE){
 	
 	# no argument: return options as a list	
@@ -66,7 +66,7 @@ nmf.options <- function (..., runtime=FALSE){
 	return(invisible(old))	
 }
 
-#' Get the value of a single option
+###% Get the value of a single option
 nmf.getOption <- function(name){
 	o <- nmf.options(name)
 	stopifnot(length(o) == 1)
@@ -77,6 +77,7 @@ nmf.options.runtime <- function(){
 	nmf.options(.nmf.Options.Runtime)	
 }
 
+#TODO: store options as an environment in .GlobalEnv => allow restoration with workspace
 # initialze the variables that will hold the options' data (IMPORTANT when loaded in a namespace)
 .nmf.Options <- NULL
 .nmf.Options.Builtin <- NULL
@@ -100,7 +101,7 @@ nmf.options.runtime <- function(){
 	return(invisible(TRUE))
 }
 
-#' Define default options
+###% Define default options
 nmf.options.reset <- function(){
 	# default algorithm
 	nmf.options(default.algorithm='brunet')
@@ -112,6 +113,8 @@ nmf.options.reset <- function(){
 	nmf.options(track.interval=30, runtime=TRUE)
 	# define default parallel backend 
 	nmf.options(parallel.backend='mc', runtime=TRUE)
+	# define default RNG mode
+	nmf.options(reproducible=TRUE)
 	# toogle verbosity
 	nmf.options(verbose=FALSE, runtime=TRUE)
 	# toogle debug mode

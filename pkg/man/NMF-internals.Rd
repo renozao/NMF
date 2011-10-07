@@ -33,5 +33,5 @@ Dummy Rd file that gathers undocumented or internal methods and functions for pa
 	\code{\linkS4class{NMF}}, \code{\link{nmf-methods}}, package's vignette
 }
 
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 \keyword{internal}

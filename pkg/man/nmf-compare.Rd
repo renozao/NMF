@@ -113,19 +113,18 @@ the same dimension.
 
 \references{
 
- 	\emph{Metagenes and molecular pattern discovery using matrix factorization}
-	Brunet, J.~P., Tamayo, P., Golub, T.~R., and Mesirov, J.~P. (2004)
-	Proc Natl Acad Sci U S A
-	101(12), 4164--4169.
+	Brunet, J.P. et al. (2004)
+ 	\emph{Metagenes and molecular pattern discovery using matrix factorization}	
+	Proc Natl Acad Sci USA 101(12), 4164--4169.
 
-	\emph{Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis}
-	Kim, H. & Park, H. (2007)
-	Bioinformatics. 
+	Kim, H. and Park, H. (2007).
+	\emph{Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis}.	
+	Bioinformatics 2007; \bold{23(12)}:1495-502.
 	\url{http://dx.doi.org/10.1093/bioinformatics/btm134}.
 	
 }
 
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 
 \examples{
 
@@ -133,7 +132,7 @@ the same dimension.
 # generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)
 n <- 50; counts <- c(5, 5, 8);
 V <- syntheticNMF(n, counts, noise=TRUE)
-\dontrun{metaHeatmap(V)}
+\dontrun{aheatmap(V)}
 
 # build the class factor
 groups <- as.factor(do.call('c', lapply(seq(3), function(x) rep(x, counts[x]))))
@@ -149,7 +148,7 @@ summary(res)
 summary(res, target=V, class=groups)
 
 # plot a heatmap of the consensus matrix with extra annotations
-\dontrun{metaHeatmap(res, class=groups)}
+\dontrun{consensusmap(res, annCol=groups)}
 
 # retrieve the predicted clusters of samples
 predict(res)
@@ -159,6 +158,8 @@ res <- nmf(V, 3, nrun=5, .options='k')
 res
 
 # extract best fit
+minfit(res)
+# extract best NMF model
 fit(res)
 
 # compute/show computational times

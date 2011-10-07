@@ -1,27 +1,27 @@
-#' NMF Algorithm: Pattern Expression NMF
-#'
-#' Implements the PE-NMF algorithm from Zhang et al (2008).
-#'
-#' It is implemented using the iterative schema defined by the 
-#' NMFStrategyIterative class.
-#' The algorithm minimizes the Frobenius norm, with two regularization terms
-#' (one for each matrix factor) parametrized by two parameters:
-#' 
-#' min_{W,H} 1/2 ||V - WH||² 
-#' 			+ alpha \sum_{i<>j} W_i^T W_j 
-#' 			+ beta \sum_{i,j} H_{ij}
-#' 
-#' So there is two parameters: alpha and beta.
-#' The updates for the matrix factors are (in R notations):
-#' 
-#' H_{i+1} = H_i ( W_i^T %*% V ) / ( W_i^T %*% W_i %*% H_i + beta)
-#' W_{i+1} = W_i ( V %*% H_i^T ) / ( W_i %*% H_i %*% H_i^T + alpha W_i %*% M )
-#'
-#' with matrix M is full of one with diagonal zero.
-#' 
-#' @author Renaud Gaujoux
-#' @creation 17 Jan 2010
-#' 
+###% NMF Algorithm: Pattern Expression NMF
+###%
+###% Implements the PE-NMF algorithm from Zhang et al (2008).
+###%
+###% It is implemented using the iterative schema defined by the 
+###% NMFStrategyIterative class.
+###% The algorithm minimizes the Frobenius norm, with two regularization terms
+###% (one for each matrix factor) parametrized by two parameters:
+###% 
+###% min_{W,H} 1/2 ||V - WH||² 
+###% 			+ alpha \sum_{i<>j} W_i^T W_j 
+###% 			+ beta \sum_{i,j} H_{ij}
+###% 
+###% So there is two parameters: alpha and beta.
+###% The updates for the matrix factors are (in R notations):
+###% 
+###% H_{i+1} = H_i ( W_i^T %*% V ) / ( W_i^T %*% W_i %*% H_i + beta)
+###% W_{i+1} = W_i ( V %*% H_i^T ) / ( W_i %*% H_i %*% H_i^T + alpha W_i %*% M )
+###%
+###% with matrix M is full of one with diagonal zero.
+###% 
+###% @author Renaud Gaujoux
+###% @creation 17 Jan 2010
+###% 
 
 penmf.objective <- function(x, fit, alpha, beta, ...)
 {

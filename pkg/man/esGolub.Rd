@@ -40,18 +40,16 @@ the AML samples. It is a \code{\link{factor}} with levels
  \source{\url{http://www.broadinstitute.org/publications/broad872}}
  \references{
  
- 	\emph{Metagenes and molecular pattern discovery using matrix factorization}
-	Brunet, J.~P., Tamayo, P., Golub, T.~R., and Mesirov, J.~P. (2004)
-	Proc Natl Acad Sci U S A
-	101(12), 4164--4169.
+ 	Brunet, J.P., Tamayo, P., Golub, T.R., and Mesirov, J.P. (2004)
+ 	\emph{Metagenes and molecular pattern discovery using matrix factorization}.	
+	Proc Natl Acad Sci USA 101(12), 4164--4169.
 	
- 	\emph{Molecular Classification of Cancer: Class Discovery and Class Prediction by Gene Expression Monitoring}
- 	, Science, 531-537, 1999
- 	, T. R. Golub and D. K. Slonim and P. Tamayo and C. Huard and M. Gaasenbeek 
- 	and J. P. Mesirov and H. Coller and M.L. Loh and J. R. Downing 
- 	and M. A. Caligiuri and C. D. Bloomfield and E. S. Lander
- 	
- 	Original data from Golub et al.: \url{http://www-genome.wi.mit.edu/mpr/data_set_ALL_AML.html}  
+	T. R. Golub et al. (1999)
+	\emph{Molecular Classification of Cancer: Class Discovery and Class Prediction by Gene Expression Monitoring}.
+ 	Science, 531-537, 1999
+ 	 	
+ 	Original data from Golub et al.:\cr
+ 	\url{http://www-genome.wi.mit.edu/mpr/data_set_ALL_AML.html}  
  	 	   
  }
  \examples{

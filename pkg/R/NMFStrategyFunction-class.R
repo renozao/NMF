@@ -1,7 +1,6 @@
-#' @include NMFStrategy-class.R
-#'
-#' Class to define NMF algorithms with a single function.
-#'
+###% Class to define NMF algorithms with a single function.
+###%
+###% @include NMFStrategy-class.R
 setClass('NMFStrategyFunction'
 	, representation(
 		algorithm = 'function' # the function that implements the algorithm				
@@ -19,14 +18,12 @@ setMethod('run', signature(method='NMFStrategyFunction', x='matrix', seed='NMFfi
 	}
 )
 
-#' Accessor methods to slot \code{algorithm}
-if ( is.null(getGeneric('algorithm')) ) setGeneric('algorithm', function(object, ...) standardGeneric('algorithm'))
+###% Accessor methods to slot \code{algorithm}
 setMethod('algorithm', signature(object='NMFStrategyFunction'),
 	function(object){
 		slot(object, 'algorithm')
 	}
 )
-if ( is.null(getGeneric('algorithm<-')) ) setGeneric('algorithm<-', function(object, ..., value) standardGeneric('algorithm<-'))
 setReplaceMethod('algorithm', signature(object='NMFStrategyFunction', value='character'),
 	function(object, value){
 		slot(object, 'algorithm') <- value

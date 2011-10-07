@@ -1,35 +1,29 @@
-#' Framework to perform Non-negative Matrix Factorization (NMF)
-#'
-#' \tabular{ll}{
-#' Package: \tab nmf\cr
-#' Type: \tab Package\cr
-#' Version: \tab 0.1\cr
-#' Date: \tab 2009-08-01\cr
-#' License: \tab GPL (>= 2)\cr
-#' LazyLoad: \tab yes\cr
-#' }
-#'
-#' This package provides a framework to perform Non-negative Matrix Factorization (NMF).
-#' A implements a set of already plublished algorithms and seeding methods, and provides a framework 
-#' to test and develop new algorithms. 
-#'
-#' \code{\link{nmf}} Run a given NMF algorithm
-#'
-#' @name nmf-package
-#' @aliases nmf
-#' @docType package
-#' @title Framework to perform Non-negative Matrix Factorization (NMF)
-#' @author Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
-#' @references
-#' \url{http://www.r-project.org/}
-#' @keywords package
-#' @seealso \code{\link{nmf}}
-#' @examples
-#' # create a synthetic matrix
-#' V <- syntheticNMF(
-#' 
-#' # perform a 3-rank NMF using the default algorithm
-#' res <- nmf(V, 3)
+###% Algorithms and framework for Nonnegative Matrix Factorization (NMF).
+###% 
+###% This package provides a framework to perform Non-negative Matrix Factorization (NMF).
+###% It implements a set of already published algorithms and seeding methods, and provides a framework 
+###% to test, develop and plug new/custom algorithms. 
+###% Most of the built-in algorithms have been optimized in C++, and the main interface function provides 
+###% an easy way of performing parallel computations on multicore machines.
+###% 
+###% \code{\link{nmf}} Run a given NMF algorithm
+###% 
+###% @author Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
+###% @name NMF-package
+###% @aliases NMF
+###% @docType package
+###% 
+###% @references
+###% \url{http://www.r-project.org/}
+###% @keywords package
+###% @seealso \code{\link{nmf}}
+###% @examples
+###% # create a synthetic matrix
+###% V <- syntheticNMF(
+###% 
+###% # perform a 3-rank NMF using the default algorithm
+###% res <- nmf(V, 3)
+NA
 
 .onLoad <- function(libname, pkgname=NULL) {
 	
@@ -54,30 +48,45 @@
 			message("NMF:load: loading BioConductor layer ... OK")
 		else
 			message("NMF:load: loading BioConductor layer ... SKIPPED")
+		
+		## 4. LOAD compiled library if one is loading the package 
+		if( devmode() ){ # only used when developing the package and directly sourcing the files
+			pkgname <- 'NMF'
+			libname <- dirname(dirname(getwd())) # i.e. the package root's parent directory
+			dll <- do.call('rasta.compileLib', list('../src', 'NMF', pkgname, Rcpp=TRUE))
+		}else{	
+			# load the compiled C++ libraries
+			dll <- library.dynam('NMF', pkgname, libname)
+		}
+		
+		## 5. Initialize the RNG layer
+		.init.RNG(pkgname, libname, dll[['path']])
 	}
 	
 	# run intialization sequence suppressing messages or not depending on verbosity options
 	if( getOption('verbose') ) .init.sequence()
 	else suppressMessages(.init.sequence())
 	
-	# load compiled library if one is loading the package 
-	if( !missing(pkgname) )
-		library.dynam('NMF', pkgname, libname)
-	else if( is.null(getLoadingNamespace()) ) # only used when developping the package and directly sourcing the files
-		do.call('rasta.compileLib', list('../src', 'NMF'))
-		
+	# Initialize the package: load NMF algorithms, seeding methods, etc...
+	.init.package(libname, pkgname)
+	
 	return(invisible())
 }
 
 .onUnload <- function(libpath) {
 	
 	# unload compiled library
-	library.dynam.unload("NMF", libpath);
+	dlls <- names(base::getLoadedDLLs())
+	if ( 'NMF' %in%  dlls )
+		library.dynam.unload("NMF", libpath);
+	RNGwrapper.unload()
 }
 
 .onAttach <- function(libname, pkgname){
+}
+
+.init.package <- function(libname, pkgname){
 	
-	if( missing(pkgname) ) pkgname <- NULL
 	.init.sequence <- function(){
 				
 		## 1. BUILT-IN NMF SEED METHODS
@@ -102,14 +111,18 @@
 }
 
 # Define a super class for all the NMF pluggable elements: strategies, seeding methods, etc...
-setClassUnion('NMFPlugin', c('NMFStrategy', 'NMFSeed'))
+#setClassUnion('NMFPlugin', c('NMFStrategy', 'NMFSeed'))
+isNMFPlugin <- function(x){
+	#print(class(x))
+	is(x, 'NMFStrategy') || is(x, 'NMFSeed')	
+}
 
-#' Internal function to populate the registry with the built-in methods
+###% Internal function to populate the registry with the built-in methods
 .init.nmf.plugin.builtin <- function(pkgname){
 	
 	message('NMF: Init built-in plugins')	
-	# if pkgname is not null then search is performed within the package's namespace
-	where <- if( !is.null(pkgname) ) asNamespace(as.name(pkgname)) else .GlobalEnv
+	# if not in devmode then search is performed within the package's namespace
+	where <- if( !devmode() ) asNamespace(as.name(pkgname)) else .GlobalEnv
 		
 	# lookup for all objects that match the correct pattern
 	prefix <- "\\.nmf\\.plugin\\."
@@ -127,7 +140,7 @@ setClassUnion('NMFPlugin', c('NMFStrategy', 'NMFSeed'))
 				strats <- try( fun(), silent=TRUE) 
 				
 				# wrap the result into a list
-				if( is(strats, 'NMFPlugin') )
+				if( isNMFPlugin(strats) )
 					strats <- list(strats)
 				
 				# if the plugin returns NULL then do nothing
@@ -135,8 +148,9 @@ setClassUnion('NMFPlugin', c('NMFStrategy', 'NMFSeed'))
 					message('DISABLED')
 				}
 				# otherwise one should have a list of NMFStrategy objects
-				else if( !is.list(strats) || !all(sapply(strats, function(s) is(s, 'NMFPlugin'))) ){
+				else if( !is.list(strats) || !all(sapply(strats, isNMFPlugin)) ){
 					warning("NMF package: unable to load built-in plugin ", plugin.name, " [error: invalid result returned by '", funname,"']", call.=FALSE)
+					print(strats)
 					message('ERROR')
 				}
 				else{
@@ -173,7 +187,7 @@ setClassUnion('NMFPlugin', c('NMFStrategy', 'NMFSeed'))
 	invisible()
 }
 
-#' Hook to initialize user-defined methods when the package is loaded 
+###% Hook to initialize user-defined methods when the package is loaded 
 .init.nmf.plugin.user <- function(pkgname){
 	# TODO: load some RData file stored in the user's home R directory	
 }

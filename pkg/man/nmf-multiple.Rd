@@ -16,12 +16,11 @@
 \alias{dispersion,matrix-method}
 \alias{dispersion,NMFfitX-method}
 
-\alias{fit,NMFfitX-method}
-
-\alias{metaHeatmap,NMFfitX-method}
+\alias{plot.NMF.consensus}
 
 \alias{nrun}
 \alias{nrun-methods}
+\alias{nrun,matrix-method}
 
 \alias{predict,NMFfitXn-method}
 
@@ -56,7 +55,7 @@ only the best one).
 Note that when only the best result is kept, the result object conveniently inherits from 
 all the methods available for single runs. Therefore it can be handled as if it had been 
 computed by a single NMF run and all the methods defined for such results can be used 
-(cf. \code{\linkS4class{NMFfit}} and \code{\link{NMF-utils}}).
+(cf. \code{\linkS4class{NMFfit}} and \code{\link{utils-NMF}}).
 
 See \code{\linkS4class{NMFfitXn}} and \code{\linkS4class{NMFfitX1}} for details on the classes 
 that implement respectively the case where all the runs are kept and only the best run is kept.
@@ -70,11 +69,9 @@ cophcor(object, ...)
 
 dispersion(object, ...)
 
-\S4method{fit}{NMFfitX}(object)
-
 nrun(object, ...)
 
-\S4method{metaHeatmap}{NMFfitX}(object, ...)
+\S3method{plot}{NMF.consensus}(x, ...)
 
 \S4method{predict}{NMFfitXn}(object, ...)
 
@@ -105,9 +102,14 @@ seqtime(object, ...)
 	and the sequential time is returned instead of \code{NULL} (cf. argument \code{null}).  
 	}	
 	
+	\item{x}{ An object that inherits from the S3 class \code{NMF.consensus} as returned by the method 
+	\code{\link{consensus}}. Technically it is nothing else than a \code{matrix}.
+	}
+	
 	\item{...}{ Used to pass extra arguments to subsequent calls:
 		\itemize{
-			\item in \code{metaHeatmap}: graphical parameters passed to function \code{\link[gplots]{heatmap.2}}
+			\item in \code{consensusmap}: Used to pass extra parameters to the subsequent call to the 
+			heatmap drawing function \code{\link{aheatmap}}. 
 			\item in \code{predict}: extra arguments  passed to function \code{\link{predict,NMF-method}}
 			\item in \code{summary}: extra arguments like \code{target} or \code{class} passed to 
 			the method \code{\link{summary,NMFfit-method}}.
@@ -133,6 +135,9 @@ seqtime(object, ...)
 	
 	Note that argument \code{...} is not used.	
 	}
+	
+	\item{consensusmap}{\code{signature(object = "NMFfitX")}: plots a heatmap of the consensus matrix of \code{object}.	
+	See \code{\link{consensus}}.}
     
 	\item{cophcor}{
 	Computes the cophenetic correlation coefficient of consensus matrix \code{object}, 
@@ -173,38 +178,23 @@ seqtime(object, ...)
  	
  	Note that argument \code{...} is not used.
 	}
-	
-	\item{fit}{: returns the element that achieves the lowest residual approximation error 
-	across the runs.
-	
-	For \code{NMFfitX1} objects it coerces \code{object} into a \code{NMFfit} object.
-	For \code{NMFfitXn} objects it builds and searches the vector of residuals of all the 
-	fits and returns the one with the minimum value.
-	
-	Note that argument \code{...} is not used.
-    }
-    
-	\item{metaHeatmap}{ Produces a heatmap of the consensus matrix using a 
-	\code{heatmap}-like custom function, with parameters tuned for displaying 
-	such result.
-	
-	The function used to draw the heatmap is a mixture of the function \code{heatmap.2} 
-	from the \code{gplots} package, and the function \code{heatmap.plus}
-	 from the \code{heatmap.plus} package. It allows to add extra annotation rows 
-	 using the \code{ColSideColor} argument.
-	 See \code{\link[gplots]{heatmap.2}} and \code{\link[heatmap.plus]{heatmap.plus}}.
-	}
-
+	    
 	\item{nrun}{ returns the number of NMF runs performed to compute \code{object}.
 	
     In the case of a \code{NMFfitXn} object it returns its length -- as it is also a list.
     In the case of a \code{NMFfitX1} object it returns the value of its slot \code{nrun}.
     In the case of a \code{NMFfit} object it always returns 1 (this method exists to create 
     a uniform access interface to NMF results).
+    In the case of a \code{matrix} object, it looks for a value attached the matrix 
+    as an attribute (e.g. by method \code{\link{consensus}}). It returns NULL if 
+    no suitable value was found. This is used to keep track of data about the 
+    parent fit and annotate plots.
     
     Note that argument \code{...} is not used.
     }
     
+    \item{plot.NMF.consensus}{: plots a heatmap of the consensus matrix \code{x}. See \code{\link{consensus}}.}
+	
 	\item{predict}{ returns a \code{factor} that gives the predicted cluster index for 
 	each sample (resp. for each feature) based on the \emph{best NMF factorization} stored in \code{object}.
 	
@@ -255,19 +245,18 @@ seqtime(object, ...)
 
 \references{
 
- 	\emph{Metagenes and molecular pattern discovery using matrix factorization}
-	Brunet, J.~P., Tamayo, P., Golub, T.~R., and Mesirov, J.~P. (2004)
-	Proc Natl Acad Sci U S A
-	101(12), 4164--4169.
+	Brunet, J.P. et al. (2004). 
+	\emph{Metagenes and molecular pattern discovery using matrix factorization}.	
+	Proc Natl Acad Sci USA 101(12), 4164--4169.
 
-	\emph{Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis}
-	Kim, H. & Park, H. (2007)
-	Bioinformatics. 
+	Kim, H. and Park, H. (2007).
+	\emph{Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis}.	
+	Bioinformatics 2007; \bold{23(12)}:1495-502.
 	\url{http://dx.doi.org/10.1093/bioinformatics/btm134}.
 	
 }
 
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 
 \examples{
 
@@ -275,7 +264,7 @@ seqtime(object, ...)
 # generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)
 n <- 50; counts <- c(5, 5, 8);
 V <- syntheticNMF(n, counts, noise=TRUE)
-\dontrun{metaHeatmap(V)}
+\dontrun{aheatmap(V)}
 
 # build the class factor
 groups <- as.factor(do.call('c', lapply(seq(3), function(x) rep(x, counts[x]))))
@@ -291,7 +280,7 @@ summary(res)
 summary(res, target=V, class=groups)
 
 # plot a heatmap of the consensus matrix with extra annotations
-\dontrun{metaHeatmap(res, class=groups)}
+\dontrun{consensusmap(res, annCol=groups)}
 
 # retrieve the predicted clusters of samples
 predict(res)
@@ -300,8 +289,10 @@ predict(res)
 res <- nmf(V, 3, nrun=5, .options='k')
 res
 
-# extract best fit
+# extract best NMF model
 fit(res)
+# extract best result object
+minfit(res)
 
 # compute/show computational times
 runtime.all(res)

@@ -1,17 +1,11 @@
-#' Seeding methods for NMF package.
-#' 
-#' @author Renaud Gaujoux
-#' @created 22 Jul 2009 
-#'
-#' @include registry.R 
-#' @include nndsvd.R  
-NA
-
-#' Base class that defines the interface for NMF seeding methods.
-#'
-#' @slot name character string giving the name of the strategy
-#'
-#'
+###% Base class that defines the interface for NMF seeding methods.
+###%
+###% @slot name character string giving the name of the strategy
+###% 
+###% @include registry.R 
+###% @include nndsvd.R  
+###%
+###%
 setClass('NMFSeed'
 		, representation(
 				name = 'character' # name of the method (also key)
@@ -45,14 +39,12 @@ setMethod('show', 'NMFSeed',
 		}
 )
 
-#' Accessor methods to slot \code{name}
-if ( !isGeneric('name') ) setGeneric('name', function(object, ...) standardGeneric('name'))
+###% Accessor methods to slot \code{name}
 setMethod('name', signature(object='NMFSeed'),
 		function(object){
 			slot(object, 'name')
 		}
 )
-if ( !isGeneric('name<-') ) setGeneric('name<-', function(object, ..., value) standardGeneric('name<-'))
 setReplaceMethod('name', signature(object='NMFSeed', value='character'),
 		function(object, value){
 			slot(object, 'name') <- value
@@ -61,15 +53,15 @@ setReplaceMethod('name', signature(object='NMFSeed', value='character'),
 		}
 )
 
-#' Accessor methods to slot \code{objective}
-if ( !isGeneric('method') ) setGeneric('method', function(object, ...) standardGeneric('method'))
+###% Accessor methods to slot \code{objective}
+setGeneric('method', function(object, ...) standardGeneric('method'))
 setMethod('method', signature(object='NMFSeed'),
 	function(object){						
 		slot(object, 'method')
 	}
 )
 
-if ( !isGeneric('method<-') ) setGeneric('method<-', function(object, ..., value) standardGeneric('method<-'))
+setGeneric('method<-', function(object, ..., value) standardGeneric('method<-'))
 setReplaceMethod('method', signature(object='NMFSeed', value='function'),
 	function(object, value){
 		slot(object, 'method') <- value
@@ -82,9 +74,9 @@ setReplaceMethod('method', signature(object='NMFSeed', value='function'),
 # REGISTRY METHODS FOR SEEDING METHODS
 ###########################################################################
 
-#' Register a new seeding method into the NMF registry.
-#'
-if ( is.null(getGeneric('nmfRegisterSeed')) ) setGeneric('nmfRegisterSeed', function(method, key, ...) standardGeneric('nmfRegisterSeed') )
+###% Register a new seeding method into the NMF registry.
+###%
+setGeneric('nmfRegisterSeed', function(method, key, ...) standardGeneric('nmfRegisterSeed') )
 setMethod('nmfRegisterSeed', signature(method='ANY', key='character'), 
 		function(method, key, ...){	
 			
@@ -96,15 +88,15 @@ setMethod('nmfRegisterSeed', signature(method='ANY', key='character'),
 		}
 )
 
-#' Factory method to retrieve seeding methods from the NMF registry.
-#'
+###% Factory method to retrieve seeding methods from the NMF registry.
+###%
 nmfSeed <- function(name=NULL, ...){
 	
 	nmfGet(name, registry.name='seed', ...)
 	
 }
 
-#' Returns TRUE if the algorithm is registered FALSE otherwise
+###% Returns TRUE if the algorithm is registered FALSE otherwise
 existsNMFSeed <- function(name, exact=TRUE){	
 	
 	res <- !is.null( nmfGet(name, registry.name='seed', error=FALSE, exact=exact) )
@@ -116,7 +108,7 @@ existsNMFSeed <- function(name, exact=TRUE){
 # INITIALIZATION FUNCTIONS
 ###########################################################################
 
-#' Hook to initialize base seeding methods when the package is loaded
+###% Hook to initialize base seeding methods when the package is loaded
 # TODO: trnasform this into a automatically loaded plugin  
 .load.seed.base <- function(){
 	

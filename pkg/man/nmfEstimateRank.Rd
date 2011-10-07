@@ -1,4 +1,4 @@
-\name{nmfEstimateRank}
+\name{nmfEstimateRank: Rank estimation}
 \Rdversion{1.1}
 \alias{nmfEstimateRank}
 \alias{plot.NMF.rank}
@@ -8,11 +8,12 @@
 A critical parameter in NMF algorithms is the factorization rank \eqn{r}. 
 It defines the number of basis effects used to approximate the target matrix.
 Function \code{nmfEstimateRank} helps in choosing an optimal rank by implementing 
-simple approaches proposed in the litterature.
+simple approaches proposed in the literature.
 
 }
 \usage{
 nmfEstimateRank(x, range, method = nmf.getOption("default.algorithm"), nrun = 30, verbose=FALSE, stop=FALSE, ...)
+
 plot.NMF.rank(x, what = c('all', 'cophenetic', 'rss', 'residuals'
 						, 'dispersion', 'evar', 'sparseness'
 						, 'sparseness.basis', 'sparseness.coef')
@@ -98,18 +99,21 @@ is to try different values, compute some quality measures of the results,
 and choose the best value according to this quality criteria.
 See \emph{Brunet et al. (2004)} and \emph{Hutchins et al. (2008)}.
 
-The function \code{nmfEstimateRank} allow to launch this estimation procedure.
+The function \code{nmfEstimateRank} allows to launch this estimation procedure.
 It performs multiple NMF runs for a range of rank of factorization and, for each, 
-returns a set of quality measures together with the associated consensus matrice.
+returns a set of quality measures together with the associated consensus matrix.
 
 }
 \value{
 A S3 object (i.e. a list) of class \code{NMF.rank} with the following slots:
 \item{measures }{a \code{data.frame} containing the quality measures for each 
-rank of factorizations in \code{range}. Each row correspond to a measure, 
+rank of factorizations in \code{range}. Each row corresponds to a measure, 
 each column to a rank.
 }
 \item{consensus }{ a \code{list} of consensus matrices, indexed by the rank of 
+factorization (as a character string).}
+
+\item{fit }{ a \code{list} of the fits, indexed by the rank of 
 factorization (as a character string).}
 
 }
@@ -121,7 +125,7 @@ factorization (as a character string).}
 	101(12), 4164--4169.
 
 }
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 
 \seealso{ nmf }
 \examples{

@@ -1,6 +1,6 @@
-\name{options}
+\name{options: Package specific options}
 \Rdversion{1.1}
-\alias{NMF-options}
+\alias{options-NMF}
 \alias{nmf.options}
 \alias{nmf.getOption}
 \alias{nmf.options.reset}
@@ -107,7 +107,7 @@ time consuming (Default value is 30).
 
 }
 
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 
 \seealso{
 	\code{\link{options}}
@@ -121,7 +121,7 @@ time consuming (Default value is 30).
 
     nmf.getOption("track.interval") == nmf.options()$track.interval # the latter needs more memory
     
-    x <- matrix(runif(50*10), 50, 10) # create a random target matrix
+    x <- rmatrix(50, 10) # create a random target matrix
     # or define a synthetic data with a hidden pattern using function syntheticNMF (see ?syntheticNMF) 
     \dontrun{x <- syntheticNMF(50, 5, 10, noise=TRUE)}
     

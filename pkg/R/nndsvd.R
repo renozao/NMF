@@ -1,33 +1,33 @@
-#' Seeding method: Nonnegative Double Singular Value Decomposition
-#'
-#' @author Renaud Gaujoux
-#' @creation 17 Jul 2009
+###% Seeding method: Nonnegative Double Singular Value Decomposition
+###%
+###% @author Renaud Gaujoux
+###% @creation 17 Jul 2009
 
 
-#' Auxliary functions
+###% Auxliary functions
 .pos <- function(x){ as.numeric(x>=0) * x }
 .neg <- function(x){ - as.numeric(x<0) * x }
 .norm <- function(x){ sqrt(drop(crossprod(x))) }
 
 
-#' This function implements the NNDSVD algorithm described in Boutsidis (2008) for
-#' initializattion of Nonnegative Matrix Factorization Algorithms.
-#' 
-#' @param A the input nonnegative m x n matrix A  
-#' @param k the rank of the computed factors W,H
-#' @param flag indicates the variant of the NNDSVD Algorithm:
-#'        - flag=0 --> NNDSVD
-#'        - flag=1 --> NNDSVDa
-#'        - flag=2 --> NNDSVDar
-#'
-#' @note This code is a port from the MATLAB code from C. Boutsidis and E. Gallopoulos kindly provided by the authors for research purposes.
-#' Original MATLAB code: http://www.cs.rpi.edu/~boutsc/papers/paper1/nndsvd.m
-#' 
-#' @references 	C. Boutsidis and E. Gallopoulos, 
-#' SVD-based initialization: A head start for nonnegative matrix factorization, 
-#' Pattern Recognition, 2007
-#' doi:10.1016/j.patcog.2007.09.010
-#'
+###% This function implements the NNDSVD algorithm described in Boutsidis (2008) for
+###% initializattion of Nonnegative Matrix Factorization Algorithms.
+###% 
+###% @param A the input nonnegative m x n matrix A  
+###% @param k the rank of the computed factors W,H
+###% @param flag indicates the variant of the NNDSVD Algorithm:
+###%        - flag=0 --> NNDSVD
+###%        - flag=1 --> NNDSVDa
+###%        - flag=2 --> NNDSVDar
+###%
+###% @note This code is a port from the MATLAB code from C. Boutsidis and E. Gallopoulos kindly provided by the authors for research purposes.
+###% Original MATLAB code: http://www.cs.rpi.edu/~boutsc/papers/paper1/nndsvd.m
+###% 
+###% @references 	C. Boutsidis and E. Gallopoulos, 
+###% SVD-based initialization: A head start for nonnegative matrix factorization, 
+###% Pattern Recognition, 2007
+###% doi:10.1016/j.patcog.2007.09.010
+###%
 .nndsvd.wrapper <- function(object, x, densify=c('none', 'average', 'random')){
 	
 	# match parameter 'densify'
@@ -42,7 +42,7 @@
 	object
 }
 
-#' Port to R of the MATLAB code from Boutsidis
+###% Port to R of the MATLAB code from Boutsidis
 .nndsvd.internal <- function(A, k, flag=0){
 	
 	#check the input matrix

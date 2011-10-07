@@ -1,6 +1,9 @@
-\name{NMF dimensions}
+\name{dimnames-methods}
 \docType{methods}
 \alias{dimnames-NMF}
+
+\alias{rownames-NMF}
+\alias{colnames-NMF}
 
 \alias{basisnames}
 \alias{basisnames,NMF-method}
@@ -36,6 +39,14 @@ methods \code{\link{rownames}} and \code{\link{colnames}} are the default ones t
 \S4method{dimnames}{NMF}(x)
 \method{dimnames}{NMF}(x) <- value
 
+## This allows to call: 
+# rownames(x)
+# rownames(x) <- value
+# and:
+# colnames(x)
+# colnames(x) <- value
+
+
 }
 \arguments{
 
@@ -59,29 +70,35 @@ methods \code{\link{rownames}} and \code{\link{colnames}} are the default ones t
     \item{colnames, colnames<-}{: 
     returns/sets the names of the columns of the mixture coefficient matrix.
     Note that the standard arguments \code{do.NULL}, \code{prefix} as described in \code{\link{colnames}} 
-    must not be used.    
+    should not be used (it will always return a character vector of length 1, 
+    which is likely to be incorrect).    
     }
     
     \item{rownames, rownames<-}{: 
     returns/sets the names of the columns of the basis vector matrix.
     Note that the standard arguments \code{do.NULL}, \code{prefix} as described in \code{\link{rownames}} 
-    must not be used.    
+    must not be used (it will always return a character vector of length 1, 
+    which is likely to be incorrect).    
     }
     
     \item{dimnames}{\code{signature(x = "NMF")}: returns the dimension names of the 
     NMF model \code{x}.
-    It returns a 3-length list containing the row names of the basis matrix, the 
-    column names of the mixture coefficient matrix, and the column names of the 
-    basis matrix (i.e. the basis vector names). 
+    It returns either NULL if no dimnames are set on the object, or a 3-length 
+    list containing the row names of the basis matrix, the column names of the 
+    mixture coefficient matrix, and the column names of the basis matrix 
+    (i.e. the basis vector names). 
     }
     
     \item{dimnames<-}{\code{signature(x = "NMF", value)}: sets the dimension names of the 
     NMF model \code{x}. 
-    \code{value} can be \code{NULL} which resets all dimension names, or a 2 or 3-length list 
-    providing names at least for the rows of the basis vector matrix and the columns of the 
-    mixture coefficient matrix. If present, the optional third element of \code{value} is used 
-    to set both the names of the columns of the basis vector matrix and the rows of the mixture coefficient matrix. 
-    If a third element is not present these dimension names are set to \code{NULL}.
+    \code{value} can be \code{NULL} which resets all dimension names, 
+    or a 1, 2 or 3-length list providing names at least for the rows of the 
+    basis vector matrix. 
+    The optional second element of \code{value} (NULL if absent) is used to 
+    set the column names of the mixture coefficient matrix.
+    The optional third element of \code{value} (NULL if absent) is used to set 
+    both the column names of the basis vector matrix and the row names of the 
+    mixture coefficient matrix.
     }
     
     
@@ -89,8 +106,7 @@ methods \code{\link{rownames}} and \code{\link{colnames}} are the default ones t
 \examples{
 
 # create a random NMF object
-a <- nmfModel(3, 10, 5)
-a <- rnmf(a)
+a <- rnmf(2, 5, 3)
 
 # set dimensions
 dims <- list( features=paste('f', 1:nrow(a), sep=''), samples=paste('s', 1:ncol(a), sep=''), basis=paste('b', 1:nbasis(a), sep='') )
@@ -104,10 +120,23 @@ rownames(a)
 colnames(a)
 basisnames(a)
 
-# set only the two first dimensions (rows and columns of basis and coef respectively)
+# set only the first dimension (rows of basis): the other two dimnames are set to NULL
+dimnames(a) <- dims[1]
+dimnames(a)
+basis(a)
+coef(a)
+
+# set only the two first dimensions (rows and columns of basis and coef respectively):
+# the basisnames are set to NULL 
 dimnames(a) <- dims[1:2]
 dimnames(a)
 basis(a)
+
+# reset the dimensions
+dimnames(a) <- NULL
+dimnames(a)
+basis(a)
+coef(a)
 
 # set each dimensions separately
 rownames(a) <- paste('X', 1:nrow(a), sep='') # only affect rows of basis

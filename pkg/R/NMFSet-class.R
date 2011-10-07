@@ -1,9 +1,9 @@
-#' @include NMF-class.R
+###% @include NMF-class.R
 NA
 
-#' Old NMFset class definition
-#' 
-#' The class wraps a list of NMFfit objects that results from a multiple NMF runs (of a single method)
+###% Old NMFset class definition
+###% 
+###% The class wraps a list of NMFfit objects that results from a multiple NMF runs (of a single method)
 setClass('NMFSet'
 		, representation(
 				consensus = 'matrix' # average connectivity matrix used when storing the best result only
@@ -17,7 +17,49 @@ setClass('NMFSet'
 		)
 )
 
-
+###% @details  \emph{isNMFfit} tells if an object results from an NMF fit. That is it
+###% checks if \code{object} inherits from class \code{\linkS4class{NMFfit}} or
+###% form class \code{\linkS4class{NMFfitX}}, which are returned by the function
+###% \code{\link{nmf}}.  If \code{object} is a \code{list} and
+###% \code{recursive=TRUE}, then the check is performed on each element of the
+###% list, and the return value is a vector (or a list if \code{object} is a list
+###% of list) of the same length as \code{object}.
+###% 
+###% @rdname advanced
+###% @param object any R object.
+###% @param recursive if \code{TRUE} and \code{object} is a list then the check
+###% is performed on each element of the list. Note that the recursivity only
+###% applies in the case of lists that are not themselves NMFfit objects, unlike
+###% \code{NMFfitXn} objects for which the result of \code{isNMFfit} will always
+###% be \code{TRUE} (a single logical value).
+###% 
+###% @return \code{isNMFfit} returns a \code{logical} vector (or a list if
+###% \code{object} is a list of list) of the same length as \code{object}.
+###% 
+###% @seealso \code{\linkS4class{NMFfit}}, \code{\linkS4class{NMFfitX}}
+###% @examples
+###% 
+###% 	# generate a random 50 x 10 matrix
+###% 	V <- rmatrix(50, 10)
+###% 	
+###% 	# single run
+###% 	res <- nmf(V, 3)
+###% 	isNMFfit(res)
+###% 	
+###% 	# multiple runs - keeping single fit
+###% 	resm <- nmf(V, 3, nrun=3)
+###% 	isNMFfit(resm)
+###% 	
+###% 	# multiple runs - keeping all fits
+###% 	resM <- nmf(V, 3, nrun=3, .opt='k') 
+###% 	isNMFfit(resM)
+###% 	
+###% 	# with a list of results
+###% 	isNMFfit(list(res, resm, resM, 'not a result'))
+###% 	isNMFfit(list(res, list(resm, resM), 'not a result')) # list of list
+###% 	isNMFfit(list(res, resm, resM, 'not a result'), recursive=FALSE)
+###% 	
+###% 
 isNMFfit <- function(object, recursive=TRUE){
 	res <- is(object, 'NMFfitX') || is(object, 'NMFfit')
 	# if the object is not a NMF result: apply to each element if a list (only in recursive mode)
@@ -27,16 +69,16 @@ isNMFfit <- function(object, recursive=TRUE){
 		res
 }
 
-#' NMFlist class definition
-#' 
-#' The class wraps a list of results of NMF runs.
-#' These can be either from a single run (NMFfit) or multiple runs (NMFfitX).
-#' It original aim is to hold NMF results from different methods  
+###% NMFlist class definition
+###% 
+###% The class wraps a list of results of NMF runs.
+###% These can be either from a single run (NMFfit) or multiple runs (NMFfitX).
+###% It original aim is to hold NMF results from different methods  
 setClass('NMFList'
 		, representation(
 			runtime='proc_time'
 		)
-		, contains='list'
+		, contains='namedList'
 		, validity=function(object){
 			
 			# the list must only contains NMFfit objects of the same dimensions
@@ -50,8 +92,8 @@ setClass('NMFList'
 		}
 )
 
-#' Show method for an NMFout object
-setMethod('show', signature(object='NMFList'), 
+###% Show method for an NMFout object
+setMethod('show', 'NMFList', 
 	function(object)
 	{
 		cat("<Object of class:", class(object), ">\n")
@@ -65,7 +107,7 @@ setMethod('show', signature(object='NMFList'),
 	}
 )
 
-#' Returns the name of the method(s) used to compute the element(s) in the list.
+###% Returns the name of the method(s) used to compute the element(s) in the list.
 setMethod('algorithm', 'NMFList', 
 	function(object, collapse=FALSE){
 		l <- length(object)
@@ -89,7 +131,7 @@ setMethod('runtime', 'NMFList',
 	}
 )
 
-if ( !isGeneric("as.NMFList") ) setGeneric('as.NMFList', function(...) standardGeneric('as.NMFList') )
+setGeneric('as.NMFList', function(...) standardGeneric('as.NMFList') )
 setMethod('as.NMFList', 'ANY' 
 		, function(..., unlist=FALSE){
 			arg.l <- list(...)
@@ -106,11 +148,11 @@ setMethod('as.NMFList', 'ANY'
 )
 			
 
-#' NMFfitX class definition
-#' 
-#' Virtual class for the result from a multiple NMF runs (of a single method)
-#' Its objective is to provide a common interface for the result of multiple runs 
-#' wether it holds all the fits or only the best one 
+###% NMFfitX class definition
+###% 
+###% Virtual class for the result from a multiple NMF runs (of a single method)
+###% Its objective is to provide a common interface for the result of multiple runs 
+###% wether it holds all the fits or only the best one 
 setClass('NMFfitX'
 		, representation(
 				runtime.all = 'proc_time' # running time to perform all the NMF runs
@@ -125,20 +167,25 @@ setMethod('runtime.all', 'NMFfitX',
 		}
 )
 
-if ( !isGeneric("nrun") ) setGeneric('nrun', function(object, ...) standardGeneric('nrun') )
+setGeneric('nrun', function(object, ...) standardGeneric('nrun') )
+setMethod('nrun', 'matrix', 
+	function(object){
+		attr(object, 'nrun')
+	}
+)
 setMethod('nrun', 'NMFfitX', 
 		function(object){	
 			stop("NMF::NMFfitX - missing definition for pure virtual method 'nrun' in class '", class(object), "'")
 		}
 )
-#' Dummy 'nrun' method for NMFfit objects: returns 1 (i.e. the number of runs used to compute the fit)
+###% Dummy 'nrun' method for NMFfit objects: returns 1 (i.e. the number of runs used to compute the fit)
 setMethod('nrun', 'NMFfit', 
 	function(object){
 		1
 	}
 )
 
-if ( !isGeneric('consensus') ) setGeneric('consensus', function(object, ...) standardGeneric('consensus') )
+setGeneric('consensus', function(object, ...) standardGeneric('consensus') )
 setMethod('consensus', 'NMFfitX', 
 	function(object, ...){	
 		stop("NMF::NMFfitX - missing definition for pure virtual method 'consensus' in class '", class(object), "'")
@@ -152,10 +199,85 @@ setMethod('consensus', 'NMF',
 	}
 )
 
-if ( !isGeneric("fit") ) setGeneric('fit', function(object, ...) standardGeneric('fit') )
+#' Hierarchical Clustering of a Consensus Matrix
+#' 
+#' The function \code{consensustree} computes the hierarchical clustering of 
+#' a consensus matrix, using the matrix itself as a similarity matrix and 
+#' average linkage.
+#' 
+#' @param object a matrix or an \code{NMFfitX} object, as returned by multiple 
+#' NMF runs. 
+#' @param dendrogram a logical that specifies if the result of the hierarchical 
+#' clustering (en \code{hclust} object) should be converted into a dendrogram. 
+#' Default value is \code{TRUE}.
+#' 
+#' @return an object of class \code{dendrogram} or \code{hclust} depending on the  
+#' value of argument \code{dendrogram}.   
+#' 
+#' @export
+setGeneric('consensustree', function(object, ...) standardGeneric('consensustree'))
+#' @autoRd
+setMethod('consensustree', 'matrix', 
+	function(object, dendrogram=TRUE, ...){
+		
+		# hierachical clustering based on the connectivity matrix
+		hc <- hclust(as.dist(1-object), method='average')
+		
+		# convert into a dendrogram if requested
+		if( dendrogram ) as.dendrogram(hc)
+		else hc
+	}
+)
+#' @autoRd
+setMethod('consensustree', 'NMF', 
+	function(object, ...){		
+		# hierachical clustering based on the connectivity matrix
+		coltree(connectivity(object), ...)		
+	}
+)
+#' @autoRd
+setMethod('consensustree', 'NMFfitX', 
+	function(object, which=c('fit', 'consensus'), ...){
+		
+		which <- match.arg(which)
+		if( which == 'consensus' ){
+			# hierachical clustering on the consensus matrix
+			coltree(consensus(object), ...)
+						
+		}else if( which == 'fit' )
+			coltree(fit(object), ...)
+		
+	}
+)
+
+setMethod('predict', signature(object='NMFfitX'),
+	function(object, what=c('columns', 'rows', 'samples', 'features', 'consensus', 'cmap'), ...){
+		# determine which prediction to do
+		what <- match.arg(what)
+		if( what=='consensus' || what=='cmap' ){
+			# build the tree from consensus matrix
+			h <- hclust(as.dist(1-consensus(object)), method='average')
+			# extract membership from the tree
+			cl <- cutree(h, k=nbasis(object))
+			
+			# reorder the levels in the case of consensus map
+			if( what=='cmap' )
+				cl <- match(cl, unique(cl[h$order]))
+			as.factor(cl)
+		}
+		else predict(fit(object), what=what, ...)
+	}
+)
+
 setMethod('fit', 'NMFfitX', 
 	function(object){	
 		stop("NMF::NMFfitX - missing definition for pure virtual method 'fit' in class '", class(object), "'")
+	}
+)
+
+setMethod('minfit', 'NMFfitX',
+	function(object){
+		stop("NMF::NMFfitX - missing definition for pure virtual method 'minfit' in class '", class(object), "'")
 	}
 )
 
@@ -166,10 +288,30 @@ setMethod('show', 'NMFfitX',
 			cat("  Method:", algorithm(object), "\n")
 			# number of runs
 			cat("  Runs: ", nrun(object),"\n");
+			# initial state
+			cat("  RNG:\n  ", RNGdesc(getRNG1(object)),"\n");
 			if( nrun(object) > 0 ){
 				# show total timing			
 				cat("  Total timing:\n"); show(runtime.all(object));
 			}
+		}
+)
+
+setMethod('getRNG1', signature(object='NMFfitX'),
+	function(object){
+		stop("NMF::getRNG1(", class(object), ") - Unimplemented pure virtual method: could not extract initial RNG settings.")
+	}
+)
+
+###% compare two NMF models when at least one comes from a NMFfitX object 
+setMethod('nmf.equal', signature(x='NMFfitX', y='NMF'), 
+	function(x, y, ...){
+		nmf.equal(fit(x), y, ...)
+	}
+)
+setMethod('nmf.equal', signature(x='NMF', y='NMFfitX'), 
+		function(x, y, ...){
+			nmf.equal(x, fit(y), ...)
 		}
 )
 
@@ -178,14 +320,15 @@ setMethod('show', 'NMFfitX',
 #########################################################
 
 
-#' NMFfitX1 class definition
-#' 
-#' The class holds a single NMFfit object that is the best result from multiple NMF runs (of a single method)
+###% NMFfitX1 class definition
+###% 
+###% The class holds a single NMFfit object that is the best result from multiple NMF runs (of a single method)
 setClass('NMFfitX1'
 	, representation(
 			#fit = 'NMFfit' # holds the best fit from all the runs
 			consensus = 'matrix' # average connectivity matrix of all the NMF runs
 			, nrun = 'integer'
+			, rng1 = 'ANY'
 	)
 	, contains=c('NMFfitX', 'NMFfit')
 	, prototype=prototype(
@@ -196,16 +339,10 @@ setClass('NMFfitX1'
 
 
 
-#' Show method for an NMFfitX1 object
+###% Show method for an NMFfitX1 object
 setMethod('show', 'NMFfitX1', 
 	function(object){
-		cat("<Object of class:", class(object), ">\n")
-		# name of the algorithm
-		cat("  Method:", algorithm(object), "\n")
-		# number of runs
-		cat("  Runs: ", nrun(object),"\n");
-		# show total timing
-		cat("  Total timing:\n"); show(runtime.all(object));
+		callNextMethod(object)
 		
 		# show details of the best fit
 		#cat(" # Best fit:\n  ")
@@ -224,31 +361,69 @@ setMethod('consensus', signature(object='NMFfitX1'),
 	function(object){
 		
 		C <- slot(object, 'consensus')
-		if( length(C) > 0 ) C
-		else NULL
+		if( length(C) > 0 ){
+			class(C) <- c(class(C), 'NMF.consensus')
+			attr(C, 'nrun') <- nrun(object)
+			attr(C, 'nbasis') <- nbasis(object)
+			C
+		}else NULL
 		
 	}
 )
 
-#' Extract the best NMF fit from the object.
-#'
-#' @param x a \code{NMFfitX1} object from which to extract the best result
-#' 
-setMethod('fit', signature(object='NMFfitX1'),
+###% Extract the best NMF fit from the object.
+###%
+###% @param x a \code{NMFfitX1} object from which to extract the best result
+###% 
+setMethod('minfit', 'NMFfitX1',
 	function(object){	
 		# coerce the object into a NMFfit object
 		as(object, 'NMFfit')
 	}
 )
 
+###% Extract the best NMF model from the object.
+###%
+###% @param x a \code{NMFfitX1} object from which to extract the best result
+###%
+.function.gen <- function(){	
+	ncall <- 0
+	function(object){
+		if( ncall < 1 ){
+			warning("NMF - Change in version 0.5.3: Method 'fit' for 'NMFfitX1' objects returns the best 'NMF' model object. Use 'minfit' to get the best 'NMFfit' object as before."
+					, call.=FALSE)
+			ncall <<- ncall + 1
+		}
+		slot(object, 'fit')
+	}
+}
+setMethod('fit', signature(object='NMFfitX1'), .function.gen())
+rm('.function.gen')
+
+
+###% Get RNG Settings for first run 
+setMethod('getRNG1', signature(object='NMFfitX1'),
+	function(object){
+		object@rng1
+	}
+)
+
+###% nmf.equal for NMFfitX1: compare the best fitted models
+setMethod('nmf.equal', signature(x='NMFfitX1', y='NMFfitX1'), 
+		function(x, y, ...){
+			nmf.equal(fit(x), fit(y), ...)
+		}
+)
+
+
 #########################################################
 # END_NMFfitX1
 #########################################################
 
 
-#' NMFfitXn class definition
-#' 
-#' The class holds a list of NMFfit objects from multiple NMF runs (of a single method)
+###% NMFfitXn class definition
+###% 
+###% The class holds a list of NMFfit objects from multiple NMF runs (of a single method)
 setClass('NMFfitXn'
 	, contains=c('NMFfitX', 'list')
 	, validity=function(object){
@@ -290,7 +465,41 @@ setMethod('show', 'NMFfitXn',
 	}
 )
 
-#' Returns the number of runs stored in the list (i.e. the list length)
+###% Method 'nbasis' for 'NMFfitXn' objects: 
+###% 
+setMethod('nbasis', signature(x='NMFfitXn'), 
+	function(x, ...){
+		if( length(x) == 0 ) return(NULL)
+		return( nbasis(x[[1]]) )
+	}
+)
+###% Method 'dim' for 'NMFfitXn' objects: 
+###% 
+setMethod('dim', signature(x='NMFfitXn'), 
+	function(x){
+		if( length(x) == 0 ) return(NULL)
+		return( dim(x[[1]]) )
+	}
+)
+
+###% Method 'coef' for 'NMFfitXn' objects: 
+###% 
+setMethod('coef', signature(object='NMFfitXn'), 
+		function(object){
+			coef(fit(object))
+		}
+)
+
+###% Method 'basis' for 'NMFfitXn' objects: 
+###% 
+setMethod('basis', signature(object='NMFfitXn'), 
+	function(object){
+			basis(fit(object))
+	}
+)
+
+
+###% Returns the number of runs stored in the list (i.e. the list length)
 setMethod('nrun', 'NMFfitXn', 
 	function(object){
 		length(object)
@@ -304,7 +513,22 @@ setMethod('algorithm', 'NMFfitXn',
 	} 
 )
 
-if ( !isGeneric("seqtime") ) setGeneric('seqtime', function(object, ...) standardGeneric('seqtime') )
+setMethod('seeding', 'NMFfitXn',
+	function(object){
+		if( length(object) == 0 ) return(NULL)
+		return( seeding(object[[1]]) )
+	}
+)
+
+setMethod('modelname', signature(object='NMFfitXn'), 
+	function(object){
+		if( length(object) == 0 ) return(NULL)
+		return( modelname(object[[1]]) )
+	}
+)
+
+
+setGeneric('seqtime', function(object, ...) standardGeneric('seqtime') )
 setMethod('seqtime', 'NMFfitXn', 
 	function(object){	
 		if( length(object) == 0 ) return(NULL)
@@ -316,11 +540,11 @@ setMethod('seqtime', 'NMFfitXn',
 	}
 )
 
-#' Returns the total time used to perform all the runs.
-#' If no time data has been set in slot 'runtime.all' then the total sequential time is returned
-#' 
-#' @seealso seqtime
-#' 
+###% Returns the total time used to perform all the runs.
+###% If no time data has been set in slot 'runtime.all' then the total sequential time is returned
+###% 
+###% @seealso seqtime
+###% 
 setMethod('runtime.all', 'NMFfitXn', 
 	function(object, null=FALSE, warning=TRUE){
 		
@@ -338,40 +562,107 @@ setMethod('runtime.all', 'NMFfitXn',
 	}
 )
 
-#' Returns the best NMF run in the list, i.e. the run that have the lower estimation residuals.
-#'
-#' @param x a \code{NMFfitXn} object from which to extract the best result
-#' 
-setMethod('fit', signature(object='NMFfitXn'),
+
+###% Returns the best NMF model in the list, i.e. the run that have the lower estimation residuals.
+###%
+###% @param x a \code{NMFfitXn} object from which to extract the best result
+###% 
+setMethod('minfit', 'NMFfitXn',
 	function(object){
 		
+		b <- which.best(object, deviance)
 		# test for length 0
-		if( length(object) == 0 ) return(NULL)
-		
-		# retirieve the estimation residuals for each run
-		e <- sapply(object, residuals)
-		
+		if( length(b) == 0 ) return(NULL)
+				
 		# return the run with the lower
-		object[[ which.min(e) ]]
+		object[[ b ]]
 	}
 )
+
+# Returns the index of the best fit
+which.best <- function(object, FUN=deviance, ...){
+	
+	# test for length 0
+	if( length(object) == 0 ) 
+		return(integer())
+	
+	# retrieve the measure for each run
+	e <- sapply(object, FUN, ...)
+	
+	# return the run with the lower
+	which.min(e)
+}
+
+###% Get RNG Settings 
+setMethod('getRNG1', signature(object='NMFfitXn'),
+	function(object){
+		if( length(object) == 0 )
+			stop("NMF::getRNG1 - Could not extract RNG data from empty object [class:", class(object), "]")
+		
+		getRNG(object[[1]])
+	}
+)
+setMethod('getRNG', signature(object='NMFfitXn'),
+	function(object){
+		getRNG(minfit(object))
+	}
+)
+
+
+###% Returns the best NMF run in the list, i.e. the run that have the lower estimation residuals.
+###%
+###% @param x a \code{NMFfitXn} object from which to extract the best result
+###%
+.function.gen <- function(){	
+	ncall <- 0
+	function(object){
+		if( ncall < 1 ){
+			warning("NMF - Change in version 0.6: Method 'fit' for 'NMFfitXn' objects returns the best 'NMF' model object. Use 'minfit' to get the best 'NMFfit' object as before."
+					, call.=FALSE)
+			ncall <<- ncall + 1
+		}
+		fit( minfit(object) )
+	}
+}
+setMethod('fit', signature(object='NMFfitXn'), .function.gen())
+#rm(.function.gen)
 
 setMethod('dim', 'NMFfitXn', 
 		function(x){
 			if( length(x) == 0 ) return(NULL)
-			return( dim(x[[1]]) )
+			dim(x[[1]])
 		} 
 )
 
-#' Computes the consensus matrix, i.e. the average connectivity matrix of a set of NMF runs
-#'
-#' The consensus matrix is defined as:
-#' \deqn{C_0 = \frac{1}{N} \sum_{r=1}^N C_r,}
-#' where \eqn{C_r} is the connectivity matrix of run \eqn{r}, and \eqn{N} is the total number of runs.
-#'
-#' A perfect consensus matrix (all entries = 0 or 1) means that the same clusters are found by each run (i.e. independently of the initialization). 
-#' The entries of the consensus matrix reflect the probability for each pair of samples to belong to the same cluster.
-#'
+###% Compare the Results of Multiple NMF Runs
+###% 
+###% Either compare the two best fit, or the result of of each run. 
+###%  
+setMethod('nmf.equal', signature(x='list', y='list'), 
+	function(x, y, all=FALSE, vector=FALSE, ...){
+		if( !all )
+			nmf.equal(x[[ which.best(x) ]], y[[ which.best(y) ]], ...)
+		else{
+			if( length(x) != length(y) )
+				FALSE
+			else
+				res <- mapply(function(a,b) isTRUE(nmf.equal(a,b)), x, y, MoreArgs=list(...))
+				if( !vector )
+					res <- all( res )
+				res
+		}
+	}
+)
+
+###% Computes the consensus matrix, i.e. the average connectivity matrix of a set of NMF runs
+###%
+###% The consensus matrix is defined as:
+###% \deqn{C_0 = \frac{1}{N} \sum_{r=1}^N C_r,}
+###% where \eqn{C_r} is the connectivity matrix of run \eqn{r}, and \eqn{N} is the total number of runs.
+###%
+###% A perfect consensus matrix (all entries = 0 or 1) means that the same clusters are found by each run (i.e. independently of the initialization). 
+###% The entries of the consensus matrix reflect the probability for each pair of samples to belong to the same cluster.
+###%
 setMethod('consensus', signature(object='NMFfitXn'), 
 	function(object){
 		if( length(object) == 0 ) return(NULL)
@@ -391,30 +682,37 @@ setMethod('consensus', signature(object='NMFfitXn'),
 		con <- con / nrun(object)
 				
 		# return result
+		class(con) <- c(class(con), 'NMF.consensus')
+		attr(con, 'nrun') <- nrun(object)
+		attr(con, 'nbasis') <- nbasis(object)
 		con
 	}
 )
 
+###% plot function for consensus matrices
+plot.NMF.consensus <- function(x, ...){
+	consensusmap(x, ...)
+}
 
-#' Computes the dispersion of the consensus matrix associated to a set of NMF run.
-#'
-#' The dispersion coeffificient of a consensus matrix (i.e. the average of connectivity matrices) is a measure of reproducibility of the clusters.
-#' The dispersion coeffificient is given by:
-#' \deqn{\rho = \sum_{i,j=1}^n 4 (C_{ij} - \frac{1}{2})^2 .}
-#', where \eqn{n} is the total number of samples.
-#'
-#' We have \eqn{0 \leq \rho \leq 1} and \eqn{\rho = 1} only for a perfect consensus matrix, where all entries 0 or 1. A perfect consensus matrix is obtained only when all the
-#' the connectivity matrices are the same, meaning that the algorithm gave the same clusters at each run.
-#'
-#' @param x a consensus matrix.
-#' @return the dispersion coefficient -- as a numeric value.
-#'
-#' @references Kim, H. & Park, H. 
-#'	Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis.
-#'	Bioinformatics (2007). 
-#'	\url{http://dx.doi.org/10.1093/bioinformatics/btm134}.
-#'	
-if ( is.null(getGeneric("dispersion")) ) setGeneric('dispersion', function(object, ...) standardGeneric('dispersion') )
+###% Computes the dispersion of the consensus matrix associated to a set of NMF run.
+###%
+###% The dispersion coeffificient of a consensus matrix (i.e. the average of connectivity matrices) is a measure of reproducibility of the clusters.
+###% The dispersion coeffificient is given by:
+###% \deqn{\rho = \sum_{i,j=1}^n 4 (C_{ij} - \frac{1}{2})^2 .}
+###%, where \eqn{n} is the total number of samples.
+###%
+###% We have \eqn{0 \leq \rho \leq 1} and \eqn{\rho = 1} only for a perfect consensus matrix, where all entries 0 or 1. A perfect consensus matrix is obtained only when all the
+###% the connectivity matrices are the same, meaning that the algorithm gave the same clusters at each run.
+###%
+###% @param x a consensus matrix.
+###% @return the dispersion coefficient -- as a numeric value.
+###%
+###% @references Kim, H. & Park, H. 
+###%	Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis.
+###%	Bioinformatics (2007). 
+###%	\url{http://dx.doi.org/10.1093/bioinformatics/btm134}.
+###%	
+setGeneric('dispersion', function(object, ...) standardGeneric('dispersion') )
 setMethod('dispersion', signature(object='matrix'), 
 	function(object, ...){
 		stopifnot( nrow(object) == ncol(object) )
@@ -428,7 +726,7 @@ setMethod('dispersion', signature(object='NMFfitX'),
 	}
 )
 
-if ( is.null(getGeneric("join")) ) setGeneric('join', function(object, ...) standardGeneric('join') )
+setGeneric('join', function(object, ...) standardGeneric('join') )
 setMethod('join', 'list',
 	function(object, ..., .merge=FALSE){
 		
@@ -498,9 +796,11 @@ setMethod('join', 'list',
 		# one wants to keep only the best result
 		if( .merge ){
 			
+			warning("NMF::join - The method for merging lists is still in development")
+			
 			# set the total number of runs
 			extra$nrun <- as.integer(nrun)			
-						
+									
 			# consensus matrix
 			if( !is.null(extra$consensus) )
 				warning("NMF::join - the value of 'consensus' was discarded as slot 'consensus' is computed internally")
@@ -520,8 +820,7 @@ setMethod('join', 'list',
 				temp.res <- residuals(x)
 				if( temp.res < best.res ){
 					# keep best result
-					if( is(x, 'NMFfitX1') ) best.fit <<- fit(x) # deal with the case of NMFfitX1 objects
-					else best.fit <<- x
+					best.fit <<- minfit(x)					
 					best.res <<- temp.res
 				}
 			})
@@ -584,46 +883,52 @@ setMethod('join', 'NMFfitX',
 		}
 )
 
-#' Computes the average purity of a set of NMF runs.
-if ( is.null(getGeneric('purity')) ) setGeneric('purity', function(x, class, ...) standardGeneric('purity') )
+###% Computes the average purity of a set of NMF runs.
 setMethod('purity', signature(x='NMFfitXn', class='ANY'), 
-	function(x, class, method=NULL, ...){
+	function(x, class, method='best', ...){
 		c <- sapply(x, purity, class=class, ...)
 		
-		# aggregate the results
-		aggregate.measure(c, method, decreasing=TRUE)		
+		# aggregate the results if a method is provided
+		if( is.null(method) ) c
+		else aggregate.measure(c, method, decreasing=TRUE)		
 	}
 )
 
-#' Computes the average entropy of a set of NMF runs.
-if ( is.null(getGeneric('entropy')) ) setGeneric('entropy', function(x, class, ...) standardGeneric('entropy') )
+###% Computes the average entropy of a set of NMF runs.
 setMethod('entropy', signature(x='NMFfitXn', class='ANY'), 
-	function(x, class, method=NULL, ...){
+	function(x, class, method='best', ...){
 		c <- sapply(x, entropy, class=class, ...)		
 		
-		# aggregate the results
-		aggregate.measure(c, method)
+		# aggregate the results if a method is provided
+		if( is.null(method) ) c
+		else aggregate.measure(c, method)
 	}
 )
 
-#' Computes the average final residuals of a set of NMF runs.
-if( !isGeneric('residuals') ) setGeneric('residuals', package='stats')
+###% Computes the average final residuals of a set of NMF runs.
 setMethod('residuals', signature(object='NMFfitXn'), 
-	function(object, method=NULL, ...){
+	function(object, method='best', ...){
 		e <- sapply(object, residuals, ...)
 		
-		# aggregate the results
-		aggregate.measure(e, method)		
+		# aggregate the results if a method is provided
+		if( is.null(method) ) e
+		else aggregate.measure(e, method)
+	}
+)
+###% Returns the deviance of a fitted NMF model
+setMethod('deviance', 'NMFfitXn',
+	function(object){
+		setNames(residuals(object), NULL)
 	}
 )
 
-#' Utility function to aggregate numerical quality measures from \code{NMFfitXn} objects.
-#' 
-#' Given a numerical vector, this function computes an aggregated value using one of the following methods:
-#' - mean: the mean of the measures
-#' - best: the best measure according to the specified sorting order (decreasing or not)
-#'  
-aggregate.measure <- function(measure, method=c('mean', 'best'), decreasing=FALSE){
+###% Utility function to aggregate numerical quality measures from \code{NMFfitXn} objects.
+###% 
+###% Given a numerical vector, this function computes an aggregated value using one of the following methods:
+###% - mean: the mean of the measures
+###% - best: the best measure according to the specified sorting order (decreasing or not)
+###%  
+aggregate.measure <- function(measure, method=c('best', 'mean'), decreasing=FALSE){
 	# aggregate the results
 	method <- match.arg(method)
 	res <- switch(method
@@ -639,20 +944,20 @@ aggregate.measure <- function(measure, method=c('mean', 'best'), decreasing=FALS
 } 
 
 
-#' Returns the cluster prediction defined by the best fit
+###% Returns the cluster prediction defined by the best fit
 setMethod('predict', signature(object='NMFfitXn'),
 	function(object, ...){
 		predict(fit(object), ...)
 	}
 )
 
-#' Summary method for class NMFfitX
-#' Computes the summary for the best fit and add some extra measures specific to multiple runs
+###% Summary method for class NMFfitX
+###% Computes the summary for the best fit and add some extra measures specific to multiple runs
 setMethod('summary', signature(object='NMFfitX'),
 	function(object, ...){
 		
 		# compute summary measures for the best fit
-		best.fit <- fit(object)
+		best.fit <- minfit(object)
 		s <- summary(best.fit, ...)
 		# get totaltime
 		t <- runtime.all(object)		
@@ -668,14 +973,14 @@ setMethod('summary', signature(object='NMFfitX'),
 		s
 	}
 )
-#' Compare different runs of NMF.
-#' 
-#' This function compares the factorizations obtained by different runs of NMF. This is typically usefull
-#' to evaluate and compare how different algorithms perform on the same data.
-#' 
-#' @return a \code{data.frame} with the different comparison criteriae in rows and the methods in column
-#'  
-if ( is.null(getGeneric('compare')) ) setGeneric('compare', function(object, ...) standardGeneric('compare') )
+###% Compare different runs of NMF.
+###% 
+###% This function compares the factorizations obtained by different runs of NMF. This is typically usefull
+###% to evaluate and compare how different algorithms perform on the same data.
+###% 
+###% @return a \code{data.frame} with the different comparison criteriae in rows and the methods in column
+###%  
+setGeneric('compare', function(object, ...) standardGeneric('compare') )
 setMethod('compare', signature(object='list'),
 	function(object, ..., unlist=FALSE){
 		# wrap up x into a NMFList object if necessary
@@ -688,7 +993,7 @@ setMethod('summary', signature(object='NMFList'),
 	function(object, sort.by=NULL, select=NULL, ...){
 		
 		# define the sorting schema for each criteria (TRUE for decreasing, FALSE for increasing)
-		sorting.schema <- list(method=FALSE, seed=FALSE, metric=FALSE
+		sorting.schema <- list(method=FALSE, seed=FALSE, rng=FALSE, metric=FALSE
 							, residuals=FALSE, cpu=FALSE, purity=TRUE, nrun=FALSE, cpu.all=FALSE
 							, cophenetic=TRUE, dispersion=TRUE #NMFfitX only
 							, entropy=FALSE, sparseness.basis=TRUE, sparseness.coef=TRUE, rank=FALSE, rss=FALSE
@@ -713,12 +1018,12 @@ setMethod('summary', signature(object='NMFList'),
 		
 		# set up the resulting data.frame		
 		methods <- sapply(object, function(x, ...){
-					if( inherits(x, 'NMFfitX') ) x <- fit(x)
+					x <- minfit(x)
 					m <- algorithm(x)
 					s <- seeding(x) 
 					svalue <- objective(x)
 					svalue <- if( is.function(svalue) ) '<function>' else paste("'", svalue,"'", sep='')
-					c(method=m, seed=s, metric=svalue)
+					c(method=m, seed=s, rng=RNGdigest(x), metric=svalue)
 				}
 		)
 		methods <- t(methods)	
@@ -726,6 +1031,7 @@ setMethod('summary', signature(object='NMFList'),
 		
 		# add the measures to the result		
 		res <- cbind(res, measure.matrix)
+		res$rng <- as.numeric(factor(res$rng))
 				
 		# sort according to the user's preference
 		# ASSERT FOR DEV: all columns measure must have a defined sorting schema 
@@ -761,7 +1067,7 @@ setMethod('summary', signature(object='NMFList'),
 	}
 )
 
-#' Compare objective value trajectories from different NMF algorithms.
+###% Compare objective value trajectories from different NMF algorithms.
 setMethod('plot', signature(x='NMFList', y='missing'), 
 	function(x, y, ...){
 		
@@ -769,7 +1075,7 @@ setMethod('plot', signature(x='NMFList', y='missing'),
 		max.iter <- 0
 		tracks <- lapply( x, 
 				function(res){
-					if( is(res, 'NMFfitX') ) res <- fit(res)
+					res <- minfit(res)
 					t <- residuals(res, track=TRUE)
 					#t <- t[-1]
 					#print(t)
@@ -816,14 +1122,195 @@ setMethod('plot', signature(x='NMFList', y='missing'),
 
 setMethod('metaHeatmap', signature(object='NMFfitX'),
 		function(object, ...){
+			# send deprecated warning
+			.Deprecated('metaHeatmap', 'NMF', "Direct use of the S4-Method 'metaHeatmap' for 'NMFfitX' objects is deprecated, use 'consensusmap' instead.")
+
+			# call the new function 'consmap'
+			return( consensusmap(object, ...) )
 			
-			x <- consensus(object)
-			do.call('metaHeatmap', c(list(x, type='consensus'), list(...)))
 		}
 )
 
-#' Computes cophenetic correlation coefficient
-if ( !isGeneric('cophcor') ) setGeneric('cophcor', function(object, ...) standardGeneric('cophcor') )
+setGeneric('consensusmap', function(object, ...) standardGeneric('consensusmap') )
+setMethod('consensusmap', 'NMFfitX', 
+	function(object, tracks = c('basis', 'consensus'), info = FALSE, ...){
+	
+		# retreive the graphical parameters and match them to the sub-sequent call to 'aheatmap'
+		graphical.params <- list(...)
+		names(graphical.params) <- .match.call.args(names(graphical.params), 'aheatmap', call='NMF::consensusmap')
+		
+		# add side information if requested
+		info <- if( isTRUE(info) ){
+					paste("NMF model: '", modelname(object)
+					, "'\nAlgorithm: '", algorithm(object)
+					, "'\nbasis: ", nbasis(object)
+					,"\nnrun: ", nrun(object), sep='')
+				}else if( isFALSE(info) ) NULL
+				else info
+		
+		graphical.params <- .set.list.defaults(graphical.params
+			, info = info
+			, main = 'Consensus matrix'
+			)
+			
+		# add annotation tracks
+		if( length(tracks) > 0 && !isNA(tracks) ){
+			
+			# create extra annotation tracks
+			tr <- sapply( tracks, function(t){
+				switch(t
+						, consensus = predict(object, 'cmap')
+						, basis = predict(object)
+						, NA
+				)
+			}, simplify=FALSE)
+			
+			tracks <- tracks[is.na(tr)]
+			# add to the other annotations 
+			graphical.params[['annCol']] <- atrack(tr, graphical.params[['annCol']])			
+		}		
+			
+		x <- consensus(object)
+		do.call('consensusmap', c(list(x), graphical.params))	
+	}
+)
+
+setMethod('consensusmap', 'NMF', 
+	function(object, ...){
+		consensusmap(connectivity(object), ...)		
+	}
+)
+
+setMethod('consensusmap', 'matrix', 
+	function(object, info = FALSE, ...){
+		
+		# retreive the graphical parameters and match them to the sub-sequent call to 'aheatmap'
+		graphical.params <- list(...)
+		names(graphical.params) <- .match.call.args(names(graphical.params), 'aheatmap', call='NMF::consensusmap')
+		
+		nr <- nrun(object)
+		nb <- nbasis(object)
+		info <- if( isTRUE(info) ){
+					info <- NULL
+					if( !is.null(nr) ) info <- c(info, paste("nrun:", nr))
+					if( !is.null(nb) ) info <- c(info, paste("nbasis:", nb))
+					info <- c(info, paste("cophcor:", round(cophcor(object), 3)))
+				}else if( isFALSE(info) ) NULL
+				else info
+			
+		# set default graphical parameters for type 'consensus'
+		graphical.params <- .set.list.defaults(graphical.params
+				, distfun = function(x) as.dist(1-x)
+				, hclustfun = 'average'
+				, Rowv = TRUE, Colv = "Rowv"						
+				, color='-RdYlBu'
+				, scale='none'
+				, main = if( is.null(nr) || nr > 1 ) 'Consensus matrix' else 'Connectiviy matrix'
+				, info = info
+		)
+		
+		do.call('aheatmap', c(list(object), graphical.params))	
+	}
+)
+
+setOldClass('NMF.rank')
+setMethod('consensusmap', 'NMF.rank', 
+	function(object, ...){
+
+		# plot the list of consensus matrix (set names to be used as default main titles)
+		consensusmap(setNames(object$consensus, paste("rank = ", lapply(object$fit, nbasis))), ...)
+	}
+)
+
+setMethod('consensusmap', 'list', 
+	function(object, layout, ...){
+		
+		# retreive the graphical parameters and match them to the sub-sequent call to 'aheatmap'
+		graphical.params <- list(...)
+		names(graphical.params) <- .match.call.args(names(graphical.params), 'aheatmap', call='NMF::consensusmap')
+		
+		# set default graphical parameters for type 'consensus'
+		graphical.params <- .set.list.defaults(graphical.params
+				, Rowv = FALSE # reorder but do not show the dendrograms
+				, main = names(object) # default is to use the list's names as main titles
+		)
+		
+		opar <- par(no.readonly=TRUE)
+		on.exit(par(opar))
+		
+		# define default layout
+		if (missing(layout) ){
+			n <- length(object)
+			nr <- nc <- floor(sqrt(n))
+			if( nr^2 != n ){
+				nc <- nr + 1
+				if( nr == 1 && nr*nc < n )
+					nr <- nr + 1
+			}
+			
+			layout <- c(nr, nc)		
+		}
+		if( is.numeric(layout) ){
+			if( length(layout) == 1 )
+				layout <- c(layout, layout)
+			layout <- matrix(1:(layout[1]*layout[2]), layout[1], byrow=TRUE)
+		}
+		
+		graphics::layout(layout)
+		res <- sapply(seq_along(object), function(i){
+			x <- object[[i]]
+			
+			# set main title
+			main <- if( !is.null(graphical.params$main) && length(graphical.params$main) > 1 ){
+				if( length(graphical.params$main) != length(object) )
+					stop("consensusmap - Invalid length for argument `main`: should be either a single character string, or a list or vector of same length as ", deparse(substitute(object)))
+				graphical.params$main <- graphical.params$main[[i]]
+			}			
+			
+			# call method for the fit
+			do.call('consensusmap', c(list(x), graphical.params))
+		})
+		invisible(res)
+	}
+)
+
+setMethod('basismap', signature(object='NMFfitX'),
+	function(object, ...){
+		# call the method on the best fit
+		basismap(minfit(object), ...)	
+	}
+)
+
+setMethod('coefmap', signature(object='NMFfitX'),
+	function(object, tracks=c('basis', 'consensus'), ...){
+		
+		# retreive the graphical parameters and match them to the sub-sequent call to 'heatmap.plus.2'
+		graphical.params <- list(...)	
+		names(graphical.params) <- .match.call.args(names(graphical.params), 'aheatmap', call='NMF::coefmap')
+		
+		# add annotation tracks
+		if( length(tracks) > 0 && !isNA(tracks) ){
+			# create extra annotation tracks
+			tr <- sapply( tracks, function(t){
+				switch(t
+					, consensus = predict(object, 'cmap')			
+					, NA
+				)
+			}, simplify=FALSE)
+			
+			nt <- names(tr)
+			names(tr)[nt==''] <- tracks[nt=='']
+			tracks <- tracks[is.na(tr)]
+			# add to the other annotations 
+			graphical.params[['annCol']] <- atrack(tr, graphical.params[['annCol']])			
+		}		
+		# call the method on the best fit
+		do.call('coefmap', c(list(minfit(object), tracks=tracks), graphical.params))	
+	}
+)
+
+###% Computes cophenetic correlation coefficient
+setGeneric('cophcor', function(object, ...) standardGeneric('cophcor') )
 setMethod('cophcor', signature(object='matrix'),
 	function(object, linkage='average'){
 		
@@ -853,7 +1340,7 @@ setMethod('cophcor', signature(object='matrix'),
 setMethod('cophcor', signature(object='NMFfitX'),
 	function(object, ...){
 		# compute the consensus matrix
-		C <- consensus(object, 'samples')
+		C <- consensus(object)
 		
 		return( cophcor(C, ...))
 	}

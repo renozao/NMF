@@ -43,7 +43,7 @@ The elements are of class \code{NMF}.
    substituted by methods for \code{NMFfitX} objects. 
 }
 
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 
 \seealso{
 	\code{\linkS4class{NMFfitX}}, \code{\linkS4class{NMF}} , \code{\link{nmf-methods}}, \code{\link{nmf-multiple}}  

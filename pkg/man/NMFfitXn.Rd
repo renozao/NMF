@@ -4,10 +4,14 @@
 \alias{NMFfitXn-class}
 
 \alias{algorithm,NMFfitXn-method}
+\alias{basis,NMFfitXn-method}
+\alias{coef,NMFfitXn-method}
+\alias{modelname,NMFfitXn-method}
+\alias{seeding,NMFfitXn-method}
 \alias{consensus,NMFfitXn-method}
-\alias{dim,NMFfitXn-method}
 \alias{entropy,NMFfitXn,ANY-method}
 \alias{fit,NMFfitXn-method}
+\alias{minfit,NMFfitXn-method}
 \alias{nrun,NMFfitXn-method}
 \alias{purity,NMFfitXn,ANY-method}
 \alias{residuals,NMFfitXn-method}
@@ -76,7 +80,25 @@ Class \code{"\link[Biobase]{AssayData-class}"}, by class "list", distance 2.
     Since all elements in the list are results from the same algorithm, the returned name is taken from 
     the first element. The method returns \code{NULL} if the list is empty.
     }
+    
+    \item{algorithm}{: 
+    returns the name of the common seeding method used to initialise the runs.    
+    
+    Since all elements in the list use the same seeding method, the returned 
+    name is taken from the first element. 
+    The method returns \code{NULL} if the list is empty.
+    }
+    
+    \item{basis}{: 
+    returns the basis matrix of the best fit.
+    It is equivalent to \code{basis(fit(object))}.
+    } 
      
+    \item{coef}{: 
+    returns the mixture coefficient matrix of the best fit.
+    It is equivalent to \code{coef(fit(object))}.
+    }
+    
     \item{consensus}{:    
     Computes the consensus matrix associated with the list of runs, i.e. the mean connectivity matrix of all 
     the fits in the list.
@@ -86,34 +108,45 @@ Class \code{"\link[Biobase]{AssayData-class}"}, by class "list", distance 2.
     }
      
     \item{dim}{: 
-    returns the common dimension of the NMF problem fitted by all the runs -- based on the dimension of 
-    the first fit in the list.
-    See \code{\link{dim,NMF-method}} for more details on the returned value.
+    returns the common dimension of the NMF problem fitted by all the runs.
+    See \code{\link{dim,NMFfitXn-method}}.
     }
        
-    \item{entropy}{: 
-    computes the mean (resp. the best) entropy of the list of NMF fit. Which value is computed 
+    \item{entropy(object, method='best', ...)}{: 
+    computes the best (resp. the mean) entropy of the list of NMF fit. Which value is computed 
     depends on argument \code{method}.
+    If \code{method=NULL}, then this function returns the vector containing the 
+    computed value for each fit.
     See \code{\link{entropy}} for more details.
     }
-        
-    \item{fit}{: returns the element of the list that achieves the lowest residual approximation error.
-    See \code{\link{residuals}}.
+            
+    \item{fit}{: returns the NMF model of the best fit (i.e an \code{NMF} object), that is the one 
+    achieving the best approximation error. See \code{\link{fit}}.}
+    
+    \item{minfit}{: returns the result of best fit as an \code{NMFfit} object. See \code{\link{minfit}}.}
+    
+    \item{modelname}{:
+    returns the common NMF model name, based on the first fit in the list.
+    It returns \code{NULL} if the object is empty. 
     }
     
     \item{nrun}{: 
-    returns the number of NMF runs performed to compute the object, i.e. its length -- as a list.
+    returns the number of NMF runs performed to compute the object, i.e. its length -- since it is a list.
     }
     
-    \item{purity}{:  
-    computes the mean (resp. the best) purity of the list of NMF fit. Which value is computed 
+    \item{purity(object, method='best', ...)}{:  
+    computes the best (resp. the mean) purity of the list of NMF fit. Which value is computed 
     depends on argument \code{method}.
+    If \code{method=NULL}, then this function returns the vector containing the 
+    computed value for each fit.
     See \code{\link{purity}} for details.
     }
         
-    \item{residuals}{:
-    computes the mean (resp. the best) residual error of the list of NMF fit. 
+    \item{residuals(object, method='best', ...)}{:
+    computes the best (resp. the mean) residual error of the list of NMF fit. 
     Which value is computed depends on argument \code{method}.
+    If \code{method=NULL}, then this function returns the vector containing the 
+    computed value for each fit.
     See \code{\link{residuals}}  for details.
     }
     
@@ -148,10 +181,10 @@ Class \code{"\link[Biobase]{AssayData-class}"}, by class "list", distance 2.
 	} % end describe
 	
 	Besides these above methods, class \code{NMFfitXn} inherits all the methods from class 
-	\code{\linkS4class{NMFfitX}} like: \code{summary}, \code{metaHeatmap}.
+	\code{\linkS4class{NMFfitX}} like: \code{summary}, \code{coefmap}, \code{basismap}.
 }
 
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 
 \seealso{
 	\code{\linkS4class{NMFfitX}} , \code{\link{nmf-methods}}, \code{\link{nmf-multiple}}  

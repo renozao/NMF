@@ -6,7 +6,7 @@ vers <- paste("R package version", meta$Version)
 author <- as.personList(meta$Author)
 url <- sprintf("http://cran.r-project.org/package=%s", meta$Package)
 
-citHeader(sprintf("To cite package '%s' in publications use:", meta$Package))
+citHeader(sprintf("To cite the package '%s' in publications use:", meta$Package))
 
 citEntry(entry="Article"
 		, title = "A flexible R package for nonnegative matrix factorization"
@@ -40,7 +40,7 @@ citEntry(entry="Manual"
 )
 
 citEntry(entry="Manual"
-		, title = meta$Title
+		, title = "The package NMF: manual pages"
     	, author = author
     	, publisher = "CRAN"
     	, year = year

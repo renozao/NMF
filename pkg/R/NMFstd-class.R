@@ -3,7 +3,7 @@
 # Author: Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
 ###############################################################################
 
-#' Implementation of the standard NMF model 
+###% Implementation of the standard NMF model 
 setClass('NMFstd'
 		, representation(
 				W = 'matrix', # basis matrix
@@ -29,7 +29,7 @@ setClass('NMFstd'
 )
 
 
-#' Get/Set the basis matrix
+###% Get/Set the basis matrix
 setMethod('basis', 'NMFstd',
 	function(object){ 
 		object@W 
@@ -42,7 +42,7 @@ setReplaceMethod('basis', signature(object='NMFstd', value='matrix'),
 	} 
 )
 
-#' Get/Set the mixture matrix
+###% Get/Set the mixture matrix
 setMethod('coef', 'NMFstd',
 	function(object){
 		object@H
@@ -55,16 +55,16 @@ setReplaceMethod('coef', signature(object='NMFstd', value='matrix'),
 		} 
 )
 
-#' Compute the estimate target matrix for NMF \emph{standard model}.
-#' 
-#' The estimate matrix is computed as the porduct of the two matrix slots \code{W} and \code{H}:
-#' \deqn{\hat{V} = WH.} 
-#' 
-#' @param x 
-#' @returnType matrix
-#' @return 
-#' @author Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
-#' @export
+###% Compute the estimate target matrix for NMF \emph{standard model}.
+###% 
+###% The estimate matrix is computed as the porduct of the two matrix slots \code{W} and \code{H}:
+###% \deqn{\hat{V} = WH.} 
+###% 
+###% @param x 
+###% 
+###% @return the estimate target matrix 
+###% @author Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
+###% @export
 setMethod('fitted', signature(object='NMFstd'), 
 	function(object, W, H, ...){
 		if( missing(W) ) W <- object@W

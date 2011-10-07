@@ -1,10 +1,15 @@
-\name{NMF-defunct}
-\alias{NMF-defunct}
+\name{Defunct functions}
+\alias{defunct-NMF}
 \title{Defunct Functions in NMF Package}
 
 \alias{extra}
 \alias{extra-methods}
 \alias{extra,NMFfit-method}
+
+\alias{clusters}
+\alias{clusters-methods}
+\alias{clusters,NMF-method}
+\alias{clusters,matrix-method}
 
 
 \description{
@@ -14,19 +19,13 @@ they are not needed (any more).
 
 }
 
-\usage{
-
-% Removed in 0.3
-extra(object, name)
-% </Removed in 0.3>
-
-}
-
 \details{
 
 	\code{extra} was used to access slot \code{extra} in class \code{NMFfit}.
 	It has been replaced in version 0.3 by methods \code{$} and \code{$<-}. 
 	See \code{\link[=$,NMFfit-method]{$}}.
+	
+	\code{clusters} is a defunct synonym for \code{\link{predict}} (Defunct in 0.6).
 
 }
 

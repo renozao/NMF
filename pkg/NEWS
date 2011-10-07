@@ -1,4 +1,122 @@
 *************************************************************************
+*                       Changes in version 0.6                          *
+*************************************************************************
+
+NEW FEATURES
+
+    o The factory function nmfModel has been enhanced and provides new 
+    methods that makes more easier the creation of NMF objects.
+    See ?nmfModel. 
+    
+    o A new heatmap drawing function 'aheatmap' (for annotated heatmap) is 
+    now used to generate the different heatmaps (basismap, coefmap and consensusmap). 
+    It is an enhancement of the function pheatmap from package pheatmap and draw 
+    -- I think -- very nice heatmaps, providing a convenient and flexible 
+    interface to add annotation tracks to both the columns and rows, with 
+    sensible automatic legends.
+        
+CHANGES
+
+    o Method nmfModel when called with no arguments does not return anymore
+    the list of available NMF models, but an empty NMF model.
+    To list the available models, directly call `nmfModels()`.
+    
+    o The function `rmatrix` is now a S4 generic function.
+    It gains methods for generating random matrices based on a template matrix 
+    or an NMF model.
+    See ?rmatrix.
+    
+    o The function `rnmf` gains a method to generate a random NMF model
+    given numerical dimensions.
+    
+    o The function nmfEstimateRank now returns the fits for each value of the 
+    rank in element 'fit' of the result list. 
+    See ?nmfEstimateRank.
+     
+    
+    
+*************************************************************************
+*                       Changes in version 0.5.3                        *
+*************************************************************************
+
+NEW FEATURES
+
+    o The state of the random number generator is systematically stored in the 
+    'NMFfit' object returned by function 'nmf'.
+    It is stored in a new slot 'rng.seed' and can be access via the new method 
+    'rngSeed' of class 'NMFfit'. 
+    See ?rngSeed for more details.
+    
+    o The number of cores to use in multicore computations can now also be
+     specified by the 'p - parallel' runtime option (e.g. 'p4' to use 4 cores).
+     Note that the value specified in option 'p' takes precedence on the one 
+     passed via argument '.pbackend'.
+     See section 'Runtime options' in ?nmf for more details. 
+    
+    o Function 'nmfApply' now allows values 3 and 4 for argument 'MARGIN' to 
+    apply a given function to the basis vectors (i.e. columns of the basis matrix W) 
+    and basis profiles (i.e. rows of the mixture coefficients H) respectively.
+    See ?nmfApply for more details.
+    
+    o New S4 generic 'basiscor' and 'profcor' to compute the 
+    correlation matrices of the basis vectors and basis profiles respectively 
+    from two NMF models or from an NMF model and a given compatible matrix. 
+    See ?basiscor or ?profcor for more details.
+    
+    o New S4 generic 'fitcmp' to compare the NMF models fitted by two 
+    different runs of function 'nmf' (i.e. two 'NMFfit' objects). 
+    See ?fitcmp for more details.
+    
+    o New S4 generic 'canFit' that tells if an NMF method is able to 
+    exactly or partly fit a given NMF model. 
+    See ?canFit for more details.
+    
+    o New function 'selectMethodNMF' that selects an appropriate NMF method to 
+    fit a given NMF model. 
+    See ?selectMethodNMF for more details.
+        
+    o The verbosity level can be controlled more finely by the 'v - verbose' 
+    runtime option (e.g. using .options='v1' or 'v2'). The greater is 
+    the level the more information is printed.
+    The verbose outputs have been cleaned-up and should be more consistent 
+    across the run mode (sequential or multicore).
+    See section 'Runtime options' in ?nmf for more details.
+
+CHANGES
+
+    o The standard update equations have been optimised further, by making 
+    them modify the factor matrices in place. This speeds up the computation 
+    and greatly improves the algorithms' memory footprint.
+    
+    o The package NMF now depends on the package digest that is used to display 
+    the state of random number generator in a concise way.
+    
+    o The methods 'metaHeatmap' are split into 3 new S4 generic 'basismap' to 
+    plot a heatmap of the basis matrix [formerly plotted by the call : 
+    'metaHeatmap(object.of.class.NMF, 'features', ...) ], 'coefmap' to plot a 
+    heatmap of the mixture coefficient matrix [formerly plotted by the call : 
+    'metaHeatmap(object.of.class.NMF, 'samples', ...) ], and 'consensusmap' to 
+    plot a heatmap of the consensus matrix associated with multiple runs of NMF 
+    [formerly plotted by the call : 'metaHeatmap(object.of.class.NMFfitX, ...) ].
+    
+        
+BUG FIX
+
+    o In factory method 'nmfModel': the colnames (resp. rownames) of 
+    matrix W (resp. H) are now correctly set when the rownames of H 
+    (resp. the colnames of W) are not null.
+    
+NEWLY DEPRECATED CLASSES, METHODS, FUNCTIONS, DATA SETS
+
+    o Deprecated Generics/Methods
+       1) 'metaHeatmap,NMF' and 'metaHeatmap,NMFfitX' - S4 methods remain 
+       with .Deprecated message.
+       They are replaced by the definition of 3 new S4 generic 'basismap', 
+       'coefmap' and 'consensusmap'. See the related point in section 
+       CHANGES above.
+       They will be completely removed from the package in the next version.      
+    
+*************************************************************************
 *                       Changes in version 0.5.1                        *
 *************************************************************************
 

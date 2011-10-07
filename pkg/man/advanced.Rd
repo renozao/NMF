@@ -1,6 +1,7 @@
 \name{advanced}
 \alias{NMF-advanced}
 \alias{isNMFfit}
+\alias{is.nmf}
 
 \title{ Advanced usage of package NMF }
 \description{
@@ -12,11 +13,13 @@
 
 isNMFfit(object, recursive=TRUE)
 
+is.nmf(object)
+
 }
 
 \arguments{
 
-	\item{object}{ any R object.}
+	\item{object}{any R object.}
 	
 	\item{recursive}{ if \code{TRUE} and \code{object} is a list then the check is performed on each 
 	element of the list. Note that the recursivity only applies in the case of lists that are not 
@@ -37,7 +40,10 @@ isNMFfit(object, recursive=TRUE)
 	element of the list, and the return value is a vector (or a list if \code{object} is a list of list) 
 	of the same length as \code{object}. 
 	}
-		
+	
+	\item{is.nmf}{ tests if an object is an NMF model or a class that extends 
+	the class NMF.
+	}	
 }
 }
 \value{
@@ -46,7 +52,7 @@ isNMFfit(object, recursive=TRUE)
 	    
 }
 
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 
 \seealso{
 	\code{\linkS4class{NMFfit}}, \code{\linkS4class{NMFfitX}}

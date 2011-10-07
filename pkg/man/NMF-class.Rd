@@ -1,19 +1,14 @@
-\name{NMF-class}
+\name{NMF-class: Common interface class for NMF models}
 \Rdversion{1.1}
 \docType{class}
 \alias{NMF-class}
 
 \alias{consensus,NMF-method}
 
-\alias{dim,NMF-method}
 \alias{distance}
 \alias{distance,matrix,NMF-method}
 \alias{distance,missing,missing-method}
 
-\alias{featureNames}
-\alias{featureNames,NMF-method}
-\alias{featureNames<-}
-\alias{featureNames<-,NMF-method}
 
 \alias{fitted,NMF-method}
 \alias{is.empty.nmf}
@@ -21,20 +16,6 @@
 
 \alias{modelname}
 \alias{modelname,NMF-method}
-
-\alias{nbasis}
-\alias{nbasis,NMF-method}
-\alias{rnmf}
-\alias{rnmf-methods}
-\alias{rnmf,NMF,numeric-method}
-\alias{rnmf,NMF,matrix-method}
-\alias{rnmf,NMF,missing-method}
-
-\alias{sampleNames}
-\alias{sampleNames,NMF-method}
-\alias{sampleNames<-}
-\alias{sampleNames<-,NMF-method}
-\alias{sampleNames<-,NMF,ANY-method}
 
 \alias{show,NMF-method}
 \alias{summary,NMF-method}
@@ -217,10 +198,8 @@ See \code{\link{nmfModel}} for more details.
     the method is defined to create a uniform access interface to NMF results.
     }
 
-    \item{dim}{\code{signature(x = "NMF")}: returns a 3-length vector containing 
-    the dimension of the target matrix together with the NMF factorization rank. 
-    For example \code{c(2000,30,3)} for a \code{NMF} object that fits a 2000x30 
-    target matrix using 3 basis vectors.}
+    \item{dim}{\code{signature(x = "NMF")}: returns the dimensions of the 
+    NMF model. See \code{\link[=dim,NMF-method]{dim}}.}
     
     \item{dimnames}{\code{signature(x = "NMF")}: returns the dimension names of the 
     NMF model \code{x}.
@@ -251,20 +230,7 @@ See \code{\link{nmfModel}} for more details.
     computes the explained variance of NMF model \code{object} that approximates 
     \code{target}. 
     See generic function \code{\link{evar}} for more details.}
-    
-    \item{featureNames}{\code{signature(object = "NMF")}: 
-    returns the row names of the basis matrix.
-    If BioConductor is installed this method is defined for the generic function 
-    \code{\link[Biobase]{featureNames}} from the \code{Biobase} package.
-    }
-
-	\item{featureNames<-}{\code{signature(object = "NMF", value = "ANY")}: 
-    sets the row names of the basis matrix. Argument \code{value} must be in a 
-    format accepted by the \code{\link{rownames}} method defined for matrices.
-    If BioConductor is installed this method is defined for the generic function 
-    \code{\link[Biobase]{featureNames<-}} from the \code{Biobase} package.
-    }
-    
+        
     \item{fitted}{\code{signature(object = "NMF")}: 
     computes the target matrix estimated by NMF model \code{object}.
     This is a \emph{pure virtual} method that needs to be implemented 
@@ -291,18 +257,19 @@ See \code{\link{nmfModel}} for more details.
     \code{\link{nmfModel}} with no initialisation for any factor matrices.
     }
     
-    \item{metaHeatmap}{ Produces a heatmap of the basis or mixture 
-    matrix using function \code{\link[gplots]{heatmap.2}} with parameters 
-    tuned for displaying NMF results. 
-    See \code{\link{metaHeatmap}} for more details.
+    \item{basismap, coefmap}{ Produces a heatmap of the basis vector and mixture 
+    coefficient matrices respectively.
+    It is based on an internal heatmap function, which is a modified version of 
+    \code{\link[gplots]{heatmap.2}} with parameters tuned for displaying NMF results.
+    See \code{\link{basismap}} and \code{\link{coefmap}} for more details.
 	}
-	
+		
 	\item{\code{modelname}:}{ returns the name of the model fitted by the object.
 	It corresponds to the name of the S4 class of the object.}    
 	
     \item{nbasis}{\code{signature(x = "NMF")}: 
-    returns the number of basis vectors used in NMF model \code{x}. 
-    It is the number of columns of the matrix of basis vectors.}
+    returns the number of basis vectors used in NMF model \code{x}.
+    See \code{\link{nbasis}}.}
 
     \item{predict}{\code{signature(object = "NMF")}: 
     returns a \code{factor} that gives the predicted cluster index for each sample 
@@ -317,36 +284,13 @@ See \code{\link{nmfModel}} for more details.
     The purity definition can be found in \emph{Kim and Park (2007)}.
     See references for more details.}
 
-    \item{rnmf}{\code{signature(x = "NMF", target)}: 
-    seeds NMF model \code{x} with random values drawn from a uniform distribution. 
-    The result is a NMF model of the same class as \code{x} with basis and 
-    mixture matrices filled with random values. 
-    
-    Argument \code{target} can be either:
-    
-	    \describe{
-		    \item{\code{numeric}}{ it must be of length 2 (resp. 1), and give 
-		    the dimension of the target matrix (resp. symmetric matrix) to fit. The result is 
-		    a random NMF model.
-		    } 
-		    
-		    \item{\code{missing}}{ it returns \code{rnmf(x, c(nrow(x), ncol(x)))}, 
-		    that is a random NMF model with the same dimensions as defined in model \code{x}.
-		    }
-		    
-		    \item{\code{matrix}}{ it returns \code{rnmf(x, dim(target))}, 
-		    that is a random NMF model that fits a matrix of the same dimension as \code{target}.
-		    The values are drawn within the interval \code{[0, max(target)]}.
-		    }		    
-	    }
-	    
-	    This method's version with signature \code{(object='NMF', target='numeric')} might need 
-	    to be overloaded if the initialisation of the specific NMF model requires 
-	    setting values for data other than the basis and mixture matrices.
-	    The overloading methods must call the generic version using function 
-	    \code{\link{callNextMethod}}.
+    \item{rnmf}{: 
+    Generates NMF model with random values drawn from a uniform distribution. 
+    It returns an NMF model with basis and mixture coefficient matrices 
+    filled with random values.
+    See \code{\link{rnmf}} for more details. 
     }
-
+    
     \item{rss}{\code{signature(object = "NMF")}: 
     returns the Residual Sum of Squares (RSS) between the target matrix and its 
     estimation by the NMF model \code{object}. \emph{Hutchins et al. (2008)} used 
@@ -354,19 +298,6 @@ See \code{\link{nmfModel}} for more details.
     to estimate the correct number of basis vectors.
     See \code{\link{rss}} for details on its usage.
     
-    }
-
-	\item{sampleNames}{\code{signature(object = "NMF")}: 
-    returns the column names of the mixture coefficient matrix.
-    If BioConductor is installed this method is defined for the generic function 
-    \code{\link[Biobase]{sampleNames}} from the \code{Biobase} package.
-    }
-
-	\item{sampleNames<-}{\code{signature(object = "NMF", value = "ANY")}: 
-    sets the columns names of the basis matrix. Argument \code{value} must be in a 
-    format accepted by the \code{\link{colnames}} method defined for matrices.
-    If BioConductor is installed this method is defined for the generic function 
-    \code{\link[Biobase]{sampleNames<-}} from the \code{Biobase} package.
     }
     
     \item{show}{\code{signature(object = "NMF")}: 
@@ -413,7 +344,7 @@ See \code{\link{nmfModel}} for more details.
 	
 	
 }
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 
 \seealso{
 	Main interface to perform NMF in \code{\link{nmf-methods}}. 
@@ -426,15 +357,16 @@ See \code{\link{nmfModel}} for more details.
 \examples{
 
 # show all the NMF models available (i.e. the classes that inherit from class NMF)
-nmfModel()
+nmfModels()
 # show all the built-in NMF models available
-nmfModel(builtin.only=TRUE)
+nmfModels(builtin.only=TRUE)
 
 # class NMF is a virtual class so cannot be instantiated: 
 # the following generates an error
 \dontrun{new('NMF')}
 
-# To instantiate a NMF model, use factory method nmfModel. see ?nmfModel
+# To instantiate an NMF model, use the factory method nmfModel. see ?nmfModel
+nmfModel()
 nmfModel(3)
 nmfModel(3, model='NMFns')
 

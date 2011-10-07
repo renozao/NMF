@@ -1,4 +1,4 @@
-\name{NMFstd-class}
+\name{NMFstd-class: Model class for standard NMF}
 \Rdversion{1.1}
 \docType{class}
 \alias{NMFstd-class}
@@ -60,7 +60,7 @@ that follow NMF standard model.
  However, because package NMF was primilary implemented to work with gene expression 
  microarray data, it also provides a layer to easily and intuitively work 
  with objects from the Bioconductor base framework. 
- See \link{NMF-bioc} for more details.
+ See \link{bioc-NMF} for more details.
  
  }
  
@@ -200,7 +200,7 @@ Objects can still be created by calls of the usual form:
 	
 	
 }
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 
 \seealso{
 	Main interface to perform NMF in \code{\link{nmf-methods}}. 
@@ -216,25 +216,25 @@ new('NMFstd')
 # create a NMF object based on one random matrix: the missing matrix is deduced
 # Note this only works when using factory method NMF 
 n <- 50; r <- 3; 
-w <- matrix(runif(n*r), n, r) 
+w <- rmatrix(n, r) 
 nmfModel(W=w)
 
 # create a NMF object based on random (compatible) matrices
 p <- 20
-h <- matrix(runif(r*p), r, p)
+h <- rmatrix(r, p)
 nmfModel(W=w, H=h)
 
 # create a NMF object based on incompatible matrices: generate an error
-h <- matrix(runif((r+1)*p), r+1, p)
-\dontrun{new('NMFstd', W=w, H=h)}
+h <- rmatrix(r+1, p)
+\dontrun{
+new('NMFstd', W=w, H=h)
+nmfModel(w, h)
+}
 
-# same thing using the factory method: dimensions are corrected and a warning 
-# is thrown saying that the dimensions used are reduced 
-nmfModel(W=w, H=h)
+# Giving target dimensions to the factory method allow for coping with dimension
+# incompatibilty (a warning is thrown in such case) 
+nmfModel(r, W=w, H=h)
 
-# apply default NMF algorithm to a random target matrix
-V <- matrix(runif(n*p), n, p)
-\dontrun{nmf(V, r)}
 
 
 }

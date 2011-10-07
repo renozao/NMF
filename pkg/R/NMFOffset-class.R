@@ -1,12 +1,12 @@
-#' @include NMF-class.R
+###% @include NMF-class.R
 NA
 
-#' Class for NMF factorization with offset.
-#'
-#' @references Badea (2008)
-#'	, 'Extracting Gene Expression Profiles Common to Colon and Pancreatic Adenocarcinoma Using Simultaneous Nonnegative Matrix Factorization
-#'	, Pacific Symposium on Biocomputing 13:279-290 (2008)
-#'
+###% Class for NMF factorization with offset.
+###%
+###% @references Badea (2008)
+###%	, 'Extracting Gene Expression Profiles Common to Colon and Pancreatic Adenocarcinoma Using Simultaneous Nonnegative Matrix Factorization
+###%	, Pacific Symposium on Biocomputing 13:279-290 (2008)
+###%
 setClass('NMFOffset'
 	, representation(
 				offset = 'numeric' # offset vector
@@ -18,10 +18,10 @@ setClass('NMFOffset'
 	
 )
 
-#' Show method for objects of class \code{NMFOffset}
-setMethod('show', signature(object='NMFOffset'), 
+###% Show method for objects of class \code{NMFOffset}
+setMethod('show', 'NMFOffset', 
 	function(object)
-	{
+	{		
 		callNextMethod()
 		cat("offset: ")
 		if( length(object@offset) > 0 ){
@@ -34,11 +34,11 @@ setMethod('show', signature(object='NMFOffset'),
 	}
 )
 
-#' Initialize method for class \code{NMFOffset}.
-#' 
-#' It tries to correct slot \code{offset} with a value consistent with the parent \code{NMF} object.
-#' It will complete the offset with zeros to get the length equal to the number of rows in slot \code{W}.
-#'  
+###% Initialize method for class \code{NMFOffset}.
+###% 
+###% It tries to correct slot \code{offset} with a value consistent with the parent \code{NMF} object.
+###% It will complete the offset with zeros to get the length equal to the number of rows in slot \code{W}.
+###%  
 setMethod("initialize", 'NMFOffset', 
 		function(.Object, ..., offset){			
 			.Object <- callNextMethod()
@@ -55,27 +55,27 @@ setMethod("initialize", 'NMFOffset',
 		}
 )
 
-#' Returns the offset vector of an \code{NMFOffset} instance.
-#' 
-#' @param object an instance of class \code{NMFOffset}
-#' @returnType numeric
-#' @return the offset vector of \code{object} (from slot \code{offset})
-#' 
-if ( !isGeneric('offset') ) setGeneric('offset', package='stats')
+###% Returns the offset vector of an \code{NMFOffset} instance.
+###% 
+###% @param object an instance of class \code{NMFOffset}
+###% 
+###% @return the offset vector of \code{object} (from slot \code{offset})
+###% 
+setGeneric('offset', package='stats')
 setMethod('offset', signature(object='NMFOffset'), 
 	function(object){
 		object@offset
 	}
 )
 
-#' Compute estimate for an NMFOffset object
+###% Compute estimate for an NMFOffset object
 setMethod('fitted', signature(object='NMFOffset'), 
 	function(object, offset=object@offset){ 
 		object@W %*% object@H + offset
 	}
 )
 
-#' Initialize a random factorization with offset.
+###% Initialize a random factorization with offset.
 setMethod('rnmf', signature(x='NMFOffset', target='numeric'), 
 function(x, target, ...){	
 	

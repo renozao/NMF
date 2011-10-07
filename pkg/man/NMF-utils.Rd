@@ -1,7 +1,7 @@
-\name{NMF-utils}
+\name{Utility functions and methods}
 \Rdversion{1.1}
 \docType{methods}
-\alias{NMF-utils}
+\alias{utils-NMF}
 
 \alias{connectivity}
 \alias{connectivity-methods}
@@ -25,22 +25,13 @@
 \alias{featureScore,NMF-method}
 \alias{featureScore,matrix-method}
 
-\alias{metaHeatmap}
-\alias{metaHeatmap-methods}
-\alias{metaHeatmap,matrix-method}
-\alias{metaHeatmap,NMF-method}
+\alias{has.track}
 
 \alias{nmfApply}
 \alias{nmfApply,NMF-method}
 
 \alias{plot,NMFfit,missing-method}
 \alias{plot,NMFfit-method}
-
-%\alias{predict.nmf}
-\alias{predict}
-\alias{predict-methods}
-\alias{predict,NMF-method}
-\alias{predict,matrix-method}
 
 \alias{purity}
 \alias{purity-methods}
@@ -51,8 +42,6 @@
 
 \alias{randomize}
 
-\alias{residuals}
-\alias{residuals,NMFfit-method}
 \alias{rss}
 \alias{rss,NMF-method}
 
@@ -81,8 +70,6 @@ within package NMF's framework.
 
 \S4method{evar}{NMF}(object, target)
 
-\S4method{residuals}{NMFfit}(object, track=FALSE, ...)
-
 rss(object, ...)
 \S4method{rss}{NMF}(object, target)
 
@@ -91,13 +78,11 @@ rss(object, ...)
 \S4method{extractFeatures}{NMF}(object, method=c('kim', 'max')
 , format=c('list', 'combine', 'subset'))
 
-\S4method{metaHeatmap}{NMF}(object, what=c('samples', 'features'), filter=FALSE, ...)
-
 \S4method{nmfApply}{NMF}(object, MARGIN, FUN, ...)
 
-\S4method{plot}{NMFfit}(x, ...)
+has.track(object)
 
-\S4method{predict}{NMF}(object, what = c('samples', 'features'), prob=FALSE)
+\S4method{plot}{NMFfit}(x, ...)
 
 \S4method{purity}{NMF,factor}(x, class, ...)
 
@@ -115,26 +100,6 @@ syntheticNMF(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE)
 	
 	In methods \code{entropy} and \code{purity}, argument \code{class} is coerce to a 
 	factor if necessary.
-	}
-	
-	\item{filter}{ 
-	Relevant when \code{what='features'}. It specifies how to filter the features that 
-	will appear in the heatmap.	When \code{FALSE} (default), all the features are used. 
-	
-	Other possible values are:
-	
-	\itemize{
-	\item \code{TRUE}: only the features that are basis-specific are used, 
-	using Kim and Park's method (cf. references below and method \code{extractFeatures}).
-	\item a single \code{character} string that specifies the filtering method to be used to 
-	select the basis-specific features that should appear in the heatmap (cf. argument \code{method} 
-	for function \code{extractFeatures} below).
-	\item a \code{logical} vector of length \code{nrow(object)} (i.e. the number of features)
-	that specifies which features that should appear in the heatmap.
-	\item a \code{numeric} vector of length \code{nrow(object)} (i.e. the number of features)
-	that specifies the index of the features that should appear in the heatmap.
-	}
-	
 	}
 	
 	\item{format}{ the output format of the extracted features.
@@ -201,11 +166,7 @@ syntheticNMF(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE)
 	
 	\item{offset}{ a vector giving the offset to add to the synthetic target matrix. 
 	Its length should be equal to the number of rows \code{n}.}
-	
-	\item{prob}{ Should the probability associated with each cluster prediction be 
-	computed and returned.
-	}
-	
+		
 	\item{p}{ Number of columns of the synthetic target matrix. Not used if parameter 
 	\code{r} is a vector (see description of argument \code{r}).}
 	
@@ -226,13 +187,7 @@ syntheticNMF(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE)
 	\item{target}{ the target object estimated by model \code{object}. It can be 
 	a \code{matrix} or an \code{ExpressionSet}.
 	}
-	
-	\item{track}{ if \code{TRUE}, the whole residuals track is returned. 
-	Otherwise only the last residuals computed is returned.}
-	
-	\item{what}{ Specifies on which matrix, basis components (\code{what='features'}) 
-	or mixture coefficients (\code{what='samples'}) the computation should be performed.}
-	
+		
 	\item{x}{ 
 	
 		for \code{randomize}: the \code{matrix} or \code{ExpressionSet} object whose 
@@ -246,10 +201,8 @@ syntheticNMF(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE)
 	
 	\item{...}{ Used to pass extra parameters to subsequent calls:
 		\itemize{
-			\item in \code{metaHeatmap}: Graphical parameters passed to function \code{\link[gplots]{heatmap.2}}
 			\item in \code{nmfApply}: optional arguments to function \code{FUN}.
 			\item in \code{randomize}: passed to the \code{sample} function.
-			\item in \code{residuals}: not used.
 		}
 	}
 }
@@ -268,7 +221,7 @@ syntheticNMF(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE)
  	C_{ij} = 1 if sample i belongs to the same cluster as sample j, 0 otherwise}
 	
 	}
-		
+			
 	\item{entropy}{
 	The entropy is a measure of performance of a clustering method, in 
 	recovering classes defined by factor a priori known	(i.e. one knows the 
@@ -323,17 +276,10 @@ syntheticNMF(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE)
 
 	}
 
-	\item{metaHeatmap}{ Produces a heatmap of the basis components or mixture 
-	coefficients using a \code{heatmap}-like custom function, 
-	with parameters tuned for displaying NMF results.
+	\item{has.track}{Tells if an \code{NMFfit} object has a recorded error track.
+	It should return \code{TRUE} if \code{object} was computed with the option
+	\code{track=TRUE} or the flag \code{'t'}.}
 	
-	The function used to draw the heatmap is a mixture of the function \code{heatmap.2} 
-	from the \code{gplots} package, and the function \code{heatmap.plus}
-	 from the \code{heatmap.plus} package. It allows to add extra annotation rows 
-	 using the \code{ColSideColor} argument.
-	 See \code{\link[gplots]{heatmap.2}} and \code{\link[heatmap.plus]{heatmap.plus}}.
-	}
-
 	\item{nmfApply}{ \code{apply}-like method for objects of class \code{NMF}.
 	
 	When argument \code{MARGIN=1}, it calls the base method \code{apply} to apply 
@@ -342,31 +288,18 @@ syntheticNMF(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE)
 	When \code{MARGIN=2}, it calls the base method \code{apply} to apply 
 	function \code{FUN} on the \emph{columns} of the mixture coefficient matrix.
 	
+	When \code{MARGIN=3}, it calls the base method \code{apply} to apply 
+	function \code{FUN} on the \emph{columns} of the basis matrix.
+	
+	When \code{MARGIN=4}, it calls the base method \code{apply} to apply 
+	function \code{FUN} on the \emph{rows} of the mixture coefficient matrix.
+	
 	See \code{\link[base]{apply}} for more details on the output format.
 	}
 
 	\item{plot}{ plots the residuals track of the run that computed object \code{x}. 
     See function \code{\link{nmf}} for details on how to enable the tracking of residuals.}
     
-	\item{predict}{ Computes the dominant basis component for each sample (resp. feature) 
-	based on its associated entries in the mixture coefficient matrix (i.e in \eqn{H}) 
-	(resp. basis component matrix (i.e in \eqn{W})).
-	
-	When \code{what='samples'} the computation is performed on the mixture 
-	coefficient matrix, or on the transposed basis matrix when \code{what='features'}.
-	
-	For each column, the dominant basis component is computed as the row index 
-	 for which the entry is the maximum within the column.
-	 
-	If argument \code{prob=FALSE} (default), the result is a \code{factor}. 
-	Otherwise it returns a list with two elements: element \code{predict} contains 
-	the computed indexes ( as a \code{factor}) and element \code{prob} contains 
-	the vector of the associated probabilities, that is the relative contribution 
-	of the maximum entry within each column.
-	
-	}
-
-	
 	\item{purity}{
 	Computes the purity of a clustering given a known factor.
 
@@ -398,20 +331,6 @@ syntheticNMF(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE)
 	The result is a \code{matrix} of the same dimension as \code{x} (or \code{exprs(x)} 
 	in the case \code{x} is an \code{ExpressionSet} object.).
 	}
-	
-	\item{residuals}{ returns the -- final -- residuals between the target matrix and the 
-	NMF result \code{object}. They are computed using the objective function 
-	associated to the NMF algorithm that returned \code{object}.
-	When called with \code{track=TRUE}, the whole residuals track is returned, 
-	if available. Note that method \code{nmf} does not compute the residuals track, 
-	unless explicitly required.
-	
-	It is a S4 methods defined for the associated generic functions from package 
-	\code{stats} (See \link[stats]{residuals})
-	
-	See \code{\link{nmf}} and \code{\linkS4class{NMFfit}}.
-	}
-	
 	
 	\item{rss}{
 	returns the Residual Sum of Squares (RSS) between the target object \code{target}
@@ -460,27 +379,25 @@ syntheticNMF(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE)
 
 \references{
 
- 	\emph{Metagenes and molecular pattern discovery using matrix factorization}
-	Brunet, J.~P., Tamayo, P., Golub, T.~R., and Mesirov, J.~P. (2004)
-	Proc Natl Acad Sci U S A
-	101(12), 4164--4169.
+	Brunet, J.P. et al. (2004).
+ 	\emph{Metagenes and molecular pattern discovery using matrix factorization}.	
+	Proc Natl Acad Sci USA 101(12), 4164--4169.
 
-	\emph{Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis}
-	Kim, H. & Park, H. (2007)
-	Bioinformatics. 
+	Kim, H. and Park, H. (2007).
+	\emph{Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis}.
+	Bioinformatics 2007; \bold{23(12)}:1495-502.
 	\url{http://dx.doi.org/10.1093/bioinformatics/btm134}.
 	
-	\emph{Non-negative Matrix Factorization with Sparseness Constraints}
-	Hoyer, P. O. (2004)
-	\emph{Journal of Machine Learning Research} 5 (2004) 1457--1469
+	Hoyer, P. O. (2004).
+	\emph{Non-negative Matrix Factorization with Sparseness Constraints}.	
+	\emph{Journal of Machine Learning Research} 5 (2004) 1457--1469.
 	
-	\emph{Biclustering of gene expression data by non-smooth non-negative matrix factorization}
-	Carmona-Saez, Pedro and Pascual-Marqui, Roberto and Tirado, F and Carazo, Jose and Pascual-Montano, Alberto (2006)
-	BMC Bioinformatics
-	7(1), 78
+	Carmona-Saez, Pedro et al. (2006).
+	\emph{Biclustering of gene expression data by non-smooth non-negative matrix factorization}.
+	BMC Bioinformatics 7(1), 78.
 }
 
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 
 \examples{
 
@@ -488,7 +405,7 @@ syntheticNMF(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE)
 # generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)
 n <- 50; counts <- c(5, 5, 8);
 V <- syntheticNMF(n, counts, noise=TRUE)
-\dontrun{metaHeatmap(V)}
+\dontrun{aheatmap(V)}
 
 # build the class factor
 groups <- as.factor(do.call('c', lapply(seq(3), function(x) rep(x, counts[x]))))
@@ -497,10 +414,8 @@ groups <- as.factor(do.call('c', lapply(seq(3), function(x) rep(x, counts[x]))))
 res <- nmf(V, 2)
 res
 
-\dontrun{metaHeatmap(res, class=groups)}
-\dontrun{metaHeatmap(res, 'features')}
-# see the predicted clusters of samples
-predict(res)
+\dontrun{coefmap(res, class=groups)}
+\dontrun{basismap(res)}
 # compute entropy and purity
 entropy(res, class=groups)
 purity(res, class=groups)
@@ -508,8 +423,8 @@ purity(res, class=groups)
 # perform NMF with the right number of basis components
 res <- nmf(V, 3)
 
-\dontrun{metaHeatmap(res)}
-\dontrun{metaHeatmap(res, 'features')}
+\dontrun{coefmap(res)}
+\dontrun{basismap(res, 'features')}
 entropy(res, class=groups)
 purity(res, class=groups)
 

@@ -1,4 +1,4 @@
-\name{basis/coef}
+\name{basis/coef-methods: Accessing NMF matrix factors}
 \docType{methods}
 \alias{basis-methods}
 \alias{basis}
@@ -16,6 +16,9 @@
 \alias{coefficients,NMF-method}
 \alias{coefficients<-,NMF,matrix-method}
 
+\alias{scoef}
+\alias{scoef-methods}
+\alias{scoef,NMF-method}
 
 \title{ Get/Set the matrix factors in a NMF model }
 \description{
@@ -34,6 +37,10 @@
  
  Methods \code{coefficients} and \code{coefficients<-} are simple aliases for methods 
  \code{coef} and \code{coef<-} respectively.
+ 
+ \code{scoef} returns the mixture coefficient matrix of a NMF model with the 
+ columns scaled so that they sum up to one.
+ 
 }
 \section{Methods}{
 \describe{
@@ -75,6 +82,8 @@
 	 See \code{\linkS4class{NMF}} for more details.
 	}
 	
+	\item{scoef}{ returns the mixture coefficient matrix of a NMF model with the 
+	columns scaled so that they sum up to one.}
 }
 }
 \keyword{methods}

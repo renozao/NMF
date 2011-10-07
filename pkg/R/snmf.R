@@ -1,6 +1,6 @@
-#' Exported version for .fcnnls: S4 method to deal with different way of calling it
+###% Exported version for .fcnnls: S4 method to deal with different way of calling it
 
-if( !isGeneric('fcnnls') ) setGeneric('fcnnls', function(x, y, ...) standardGeneric('fcnnls') )
+setGeneric('fcnnls', function(x, y, ...) standardGeneric('fcnnls') )
 setMethod('fcnnls', signature(x='matrix', y='matrix'), 
 	function(x, y, verbose=FALSE, pseudo=TRUE, ...){
 		# load corpcor if necessary
@@ -41,20 +41,20 @@ print.fcnnls <- function(x){
 	invisible(x)
 }
 
-#' M. H. Van Benthem and M. R. Keenan, J. Chemometrics 2004; 18: 441-450
-#'
-#' Given A and C this algorithm solves for the optimal 
-#' K in a least squares sense, using that
-#'      A = C*K 
-#' in the problem
-#'      min ||A-C*K||, s.t. K>=0, for given A and C.
-#'
-#'
-#' @param C the matrix of coefficients
-#' @param A the target matrix of observations
-#'
-#' @return [K, Pset]
-#'
+###% M. H. Van Benthem and M. R. Keenan, J. Chemometrics 2004; 18: 441-450
+###%
+###% Given A and C this algorithm solves for the optimal 
+###% K in a least squares sense, using that
+###%      A = C*K 
+###% in the problem
+###%      min ||A-C*K||, s.t. K>=0, for given A and C.
+###%
+###%
+###% @param C the matrix of coefficients
+###% @param A the target matrix of observations
+###%
+###% @return [K, Pset]
+###%
 .fcnnls <- function(C, A, verbose=FALSE, pseudo=FALSE){
 # NNLS using normal equations and the fast combinatorial strategy
 	#
@@ -186,64 +186,64 @@ print.fcnnls <- function(x){
 	K
 }
 
-#'
-#' SNMF/R  
-#'
-#' Author: Hyunsoo Kim and Haesun Park, Georgia Insitute of Technology
-#'
-#' Reference: 
-#'
-#'   Sparse Non-negative Matrix Factorizations via Alternating 
-#'   Non-negativity-constrained Least Squares for Microarray Data Analysis
-#'   Hyunsoo Kim and Haesun Park, Bioinformatics, 2007, to appear.
-#'
-#' This software requires fcnnls.m, which can be obtained from 
-#' M. H. Van Benthem and M. R. Keenan, J. Chemometrics 2004; 18: 441-450
-#'
-#' NMF: min_{W,H} (1/2) || A - WH ||_F^2 s.t. W>=0, H>=0 
-#' SNMF/R: NMF with additional sparsity constraints on H
-#'
-#'   min_{W,H} (1/2) (|| A - WH ||_F^2 + eta ||W||_F^2 
-#'                + beta (sum_(j=1)^n ||H(:,j)||_1^2))
-#'                s.t. W>=0, H>=0 
-#'
-#' A: m x n data matrix (m: features, n: data points)
-#' W: m x k basis matrix
-#' H: k x n coefficient matrix
-#'
-#' function [W,H,i]=nmfsh_comb(A,k,param,verbose,bi_conv,eps_conv)
-#'
-#' input parameters:
-#'   A: m x n data matrix (m: features, n: data points)
-#'   k: desired positive integer k
-#'   param=[eta beta]:  
-#'      eta (for supressing ||W||_F)
-#'         if eta < 0, software uses maxmum value in A as eta. 
-#'      beta (for sparsity control)
-#'         Larger beta generates higher sparseness on H.
-#'         Too large beta is not recommended. 
-#'   verbos: verbose = 0 for silence mode, otherwise print output
-#'   eps_conv: KKT convergence test (default eps_conv = 1e-4)
-#'   bi_conv=[wminchange iconv] biclustering convergence test 
-#'        wminchange: the minimal allowance of the change of 
-#'        row-clusters  (default wminchange=0)
-#'        iconv: decide convergence if row-clusters (within wminchange)
-#'        and column-clusters have not changed for iconv convergence 
-#'        checks. (default iconv=10)
-#'
-#' output:
-#'   W: m x k basis matrix
-#'   H: k x n coefficient matrix
-#'   i: the number of iterations
-#'
-#' sample usage:
-#'  [W,H]=nmfsh_comb(amlall,3,[-1 0.01],1);
-#'  [W,H]=nmfsh_comb(amlall,3,[-1 0.01],1,[3 10]); 
-#'     -- in the convergence check, the change of row-clusters to
-#'        at most three rows is allowed.
-#'
-#' @include fcnnls.R
-#' 
+###%
+###% SNMF/R  
+###%
+###% Author: Hyunsoo Kim and Haesun Park, Georgia Insitute of Technology
+###%
+###% Reference: 
+###%
+###%   Sparse Non-negative Matrix Factorizations via Alternating 
+###%   Non-negativity-constrained Least Squares for Microarray Data Analysis
+###%   Hyunsoo Kim and Haesun Park, Bioinformatics, 2007, to appear.
+###%
+###% This software requires fcnnls.m, which can be obtained from 
+###% M. H. Van Benthem and M. R. Keenan, J. Chemometrics 2004; 18: 441-450
+###%
+###% NMF: min_{W,H} (1/2) || A - WH ||_F^2 s.t. W>=0, H>=0 
+###% SNMF/R: NMF with additional sparsity constraints on H
+###%
+###%   min_{W,H} (1/2) (|| A - WH ||_F^2 + eta ||W||_F^2 
+###%                + beta (sum_(j=1)^n ||H(:,j)||_1^2))
+###%                s.t. W>=0, H>=0 
+###%
+###% A: m x n data matrix (m: features, n: data points)
+###% W: m x k basis matrix
+###% H: k x n coefficient matrix
+###%
+###% function [W,H,i]=nmfsh_comb(A,k,param,verbose,bi_conv,eps_conv)
+###%
+###% input parameters:
+###%   A: m x n data matrix (m: features, n: data points)
+###%   k: desired positive integer k
+###%   param=[eta beta]:  
+###%      eta (for supressing ||W||_F)
+###%         if eta < 0, software uses maxmum value in A as eta. 
+###%      beta (for sparsity control)
+###%         Larger beta generates higher sparseness on H.
+###%         Too large beta is not recommended. 
+###%   verbos: verbose = 0 for silence mode, otherwise print output
+###%   eps_conv: KKT convergence test (default eps_conv = 1e-4)
+###%   bi_conv=[wminchange iconv] biclustering convergence test 
+###%        wminchange: the minimal allowance of the change of 
+###%        row-clusters  (default wminchange=0)
+###%        iconv: decide convergence if row-clusters (within wminchange)
+###%        and column-clusters have not changed for iconv convergence 
+###%        checks. (default iconv=10)
+###%
+###% output:
+###%   W: m x k basis matrix
+###%   H: k x n coefficient matrix
+###%   i: the number of iterations
+###%
+###% sample usage:
+###%  [W,H]=nmfsh_comb(amlall,3,[-1 0.01],1);
+###%  [W,H]=nmfsh_comb(amlall,3,[-1 0.01],1,[3 10]); 
+###%     -- in the convergence check, the change of row-clusters to
+###%        at most three rows is allowed.
+###%
+###% @include fcnnls.R
+###% 
 #function [W,H,i] 
 #nmfsh_comb <- function(A, k, param, verbose=FALSE, bi_conv=c(0, 10), eps_conv=1e-4, version=c('R', 'L')){
 .nmfsh_comb <- function(A, k, nmf.fit, eta=-1, beta=0.01, bi_conv=c(0, 10), eps_conv=1e-4, version=c('R', 'L'), verbose=FALSE){
@@ -402,7 +402,7 @@ print.fcnnls <- function(x){
 }
 
 
-#' Computes the objective value for the SNMF algorithm
+###% Computes the objective value for the SNMF algorithm
 .snmf.objective <- function(target, w, h, eta, beta){
 	
 	1/2 * ( sum( (target - (w %*% h))^2 ) 
@@ -411,8 +411,8 @@ print.fcnnls <- function(x){
 				)
 }
 
-#' Wrapper function to use the SNMF/R algorithm with the NMF package.
-#'
+###% Wrapper function to use the SNMF/R algorithm with the NMF package.
+###%
 .snmf <- function(target, seed, ...){	
 	
 	# retrieve the version of SNMF algorithm from its name: 

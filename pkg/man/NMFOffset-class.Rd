@@ -1,4 +1,4 @@
-\name{NMFOffset-class}
+\name{NMFOffset-class: Model class for NMF with offset}
 \Rdversion{1.1}
 \docType{class}
 \alias{NMFOffset-class}
@@ -88,7 +88,7 @@ Class \code{"\linkS4class{NMF}"}, directly.
 	In \emph{Pacific Symposium on Biocomputing}
 	, \bold{13}, 279-290
 }
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 
 \seealso{
 	\code{\linkS4class{NMF}}, \code{\link{nmf-methods}}
@@ -100,12 +100,12 @@ new('NMFOffset')
 
 # create a NMF object based on random (compatible) matrices
 n <- 50; r <- 3; p <- 20
-w <- matrix(runif(n*r), n, r) 
-h <- matrix(runif(r*p), r, p)
+w <- rmatrix(n, r) 
+h <- rmatrix(r, p)
 nmfModel(model='NMFOffset', W=w, H=h, offset=rep(0.5, nrow(w)))
 
 # apply Nonsmooth NMF algorithm to a random target matrix
-V <- matrix(runif(n*p), n, p)
+V <- rmatrix(n, p)
 \dontrun{nmf(V, r, 'offset')}
 
 

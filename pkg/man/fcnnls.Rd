@@ -70,27 +70,28 @@ The code is a port from the original MATLAB code used in Kim and Park (2007) (se
 
 \references{
 	M. H. van Benthem and M. R. Keenan (2004).
-	Fast algo-rithm for the solution of large-scale non-negativity-constrained least squares problems.
+	\emph{Fast algorithm for the solution of large-scale non-negativity-constrained least squares problems}.
 	J. Chemometrics 2004, \bold{18}:441-450.	
 
 	Kim, H. and Park, H. (2007).
-	Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis.
-	\emph{Bioinformatics} 2007; \bold{23(12)}:1495-502.
+	\emph{Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis}.
+	Bioinformatics 2007; \bold{23(12)}:1495-502.
 	
-	Original MATLAB code from Van Benthem and Keenan, slightly modified by H. Kim:
-	http://www.cc.gatech.edu/~hpark/software/fcnnls.m
+Original MATLAB code from Van Benthem and Keenan, slightly modified by H. Kim:\cr
+\url{http://www.cc.gatech.edu/~hpark/software/fcnnls.m} 
+
 	
 }
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 
 \seealso{ \code{\link{nmf}} }
 \examples{
 ## Define a random non-negative matrix matrix
 n <- 200; p <- 20; r <- 3
-V <- matrix(runif(n*p), n, p)
+V <- rmatrix(n, p)
 
 ## Compute the optimal matrix K for a given X matrix
-X <- matrix(runif(n*r), n, r)
+X <- rmatrix(n, r)
 res <- fcnnls(X, V)
 
 ## Compute the same thing using the Moore-Penrose generalized pseudoinverse

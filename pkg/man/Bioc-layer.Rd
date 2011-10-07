@@ -1,8 +1,19 @@
-\name{NMF - integration with Bioconductor}
+\name{Bioconductor specific layer}
 \docType{methods}
-\alias{NMF-bioc}
+\alias{bioc-NMF}
 
 \alias{distance,ExpressionSet,NMF-method}
+
+\alias{featureNames}
+\alias{featureNames,NMF-method}
+\alias{featureNames<-}
+\alias{featureNames<-,NMF-method}
+
+\alias{sampleNames}
+\alias{sampleNames,NMF-method}
+\alias{sampleNames<-}
+\alias{sampleNames<-,NMF-method}
+\alias{sampleNames<-,NMF,ANY-method}
 
 \alias{metagenes}
 \alias{metagenes-methods}
@@ -23,8 +34,8 @@
 
 \title{ Layer to use the NMF package within Bioconductor}
 \description{
- The package NMF provides an optional layer for working with common objects defined in the
- Bioconductor platform.
+ The package NMF provides an optional layer for working with common objects and
+ functions defined in the Bioconductor platform.
  
  It provides:
  
@@ -32,8 +43,8 @@
  
  \item computation functions that support \code{ExpressionSet} objects as inputs.
  
- \item alias functions whose names are more intuitive when NMF is
- applied to bioinformatics data.
+ \item aliases and methods for generic functions defined and widely used by 
+ Bioconductor base packages. 
  
  \item specialized vizualization methods that adapt the titles and legend using 
  bioinformatics terminology.
@@ -56,30 +67,60 @@
     %See function \code{\link{distance}} for more details.
     }
 
+    \item{featureNames}{\code{signature(object = "NMF")}: 
+    returns the row names of the basis matrix, as \code{\link[=rownames-NMF]{rownames}}.
+    If is defined for the generic function \code{\link[Biobase]{featureNames}} 
+    from the \code{Biobase} package.
+    }
+
+	\item{featureNames<-}{\code{signature(object = "NMF", value = "ANY")}: 
+    sets the row names of the basis matrix, as \code{\link[=rownames-NMF]{rownames<-}} 
+    Argument \code{value} must be in a format accepted by the 
+    \code{\link{rownames}} method defined for matrices.
+    If is defined for the generic function \code{\link[Biobase]{featureNames<-}} 
+    from the \code{Biobase} package.
+    }
+
 	\item{metagenes}{\code{signature(object = "NMF")}: 
     returns the metagenes matrix according to the model defined in \code{object}. 
-    It is a simple alias to method \code{\link{basis}}.
+    It is an alias to method \code{\link{basis}}.
     }
 
     \item{metagenes<-}{\code{signature(object = "NMF", value = "matrix")}: 
     sets the metagenes matrix in \code{object}, and returns the updated object. 
-    It is a simple alias to method \code{\link{basis<-}}.
+    It is an alias to method \code{\link{basis<-}}.
     }
 
     \item{metaprofiles}{\code{signature(object = "NMF")}:
     returns the metaprofiles matrix according to the model defined in \code{object}. 
-    It is a simple alias to method \code{\link{coef}}.
+    It is an alias to method \code{\link{coef}}.
     }
 
     \item{metaprofiles<-}{\code{signature(object = "NMF", value = "matrix")}: 
     sets the metaprofiles matrix in \code{object}, and returns the updated object. 
-    It is a simple alias to method \code{\link{coef<-}}.
+    It is an alias to method \code{\link{coef<-}}.
     }
     
     \item{nmeta}{\code{signature(object = "NMF")}: 
     returns the number of metagenes use in NMF model \code{object}.
-    It's an alias to \code{\link{nbasis}}.
+    It is an alias to \code{\link{nbasis}}.
     }
+    
+    \item{sampleNames}{\code{signature(object = "NMF")}: 
+    returns the column names of the mixture coefficient matrix, as 
+    \code{\link[=colnames-NMF]{colnames}}.
+    If is defined for the generic function \code{\link[Biobase]{sampleNames}} 
+    from the \code{Biobase} package.
+    }
+
+	\item{sampleNames<-}{\code{signature(object = "NMF", value = "ANY")}: 
+    sets the columns names of the basis matrix, as \code{\link[=colnames-NMF]{colnames<-}} 
+    Argument \code{value} must be in a format accepted by the \code{\link{colnames}} 
+    method defined for matrices.
+    If is defined for the generic function \code{\link[Biobase]{sampleNames<-}} 
+    from the \code{Biobase} package.
+    }
+    
 }}
 \keyword{methods}
 \seealso{ NMF, NMF-utils}

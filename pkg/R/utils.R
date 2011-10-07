@@ -1,4 +1,4 @@
-#' Generate a synthetic nonnegative matrix
+###% Generate a synthetic nonnegative matrix
 syntheticNMF <- function(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE){
 	
 	# internal parameters
@@ -55,17 +55,187 @@ syntheticNMF <- function(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE
 	return(res)
 }
 
-#' generate a random matrix using a given random distribution function
-rmatrix <- function(nrow, ncol, dist=runif, byrow = FALSE, dimnames = NULL, ...){
-	# check that 'dist' is a function.
-	if( !is.function(dist) )
-		stop("NMF::rmatrix - invalid value for argument 'dist': must be a function [class(dist)='", class(dist), "'].")
-	
-	# build the random matrix using the distribution function
-	matrix(dist(nrow*ncol, ...), nrow, ncol, byrow=byrow, dimnames=dimnames)	
+###% generate a random matrix using a given random distribution function
+setGeneric('rmatrix', function(x, ...) standardGeneric('rmatrix'))
+setMethod('rmatrix', 'numeric', 
+	function(x, y, dist=runif, byrow = FALSE, dimnames = NULL, ...){
+		# check that 'dist' is a function.
+		if( !is.function(dist) )
+			stop("NMF::rmatrix - invalid value for argument 'dist': must be a function [class(dist)='", class(dist), "'].")
+		
+		# create a square matrix if 'y' is missing
+		if( missing(y) )
+			y <- x
+		
+		# build the random matrix using the distribution function
+		matrix(dist(x*y, ...), x, y, byrow=byrow, dimnames=dimnames)	
+	}
+)
+
+###% Generates a random matrix of the same dimension of a target matrix
+setMethod('rmatrix', 'matrix', 
+	function(x, ...){
+		rmatrix(nrow(x), ncol(x), ...)
+	}
+)
+
+###% apply a function to each entry in a matrix
+matapply <- function(x, FUN, ...){
+	res <- sapply(x, FUN, ...)
+	matrix(res, nrow(x))
 }
 
-#' randomize each column separately
+###% try to convert a character string into a numeric
+toNumeric <- function(x){
+	suppressWarnings( as.numeric(x) )
+}
+
+###% Test if a variable is exactly NA
+isNA <- function(x) 
+	identical(x, NA) || identical(x, as.character(NA)) || identical(x, as.numeric(NA)) || identical(x, as.integer(NA))  
+
+###% Test if a variable is exactly FALSE
+isFALSE <- function(x) identical(x, FALSE)
+
+###% Test if a variable is a single number
+isNumber <- function(x, int.ok=TRUE){ 
+	is.numeric(x) && length(x) == 1 && (int.ok || !is.integer(x))
+}
+
+###% Tells one is running in Sweave
+isSweave <- function() !is.null(sweaveLabel()) 
+	
+sweaveLabel <- function(){
+	if ((n.parents <- length(sys.parents())) >= 3) {
+		for (i in seq_len(n.parents) - 1) {
+			if ("chunkopts" %in% ls(envir = sys.frame(i))) {
+				chunkopts = get("chunkopts", envir = sys.frame(i))
+				if (all(c("prefix.string", "label") %in% names(chunkopts))) {
+					img.name = paste(chunkopts$prefix.string, chunkopts$label, 
+							sep = "-")
+					return(img.name)
+					break
+				}
+			}
+		}
+	}
+}
+
+sweaveFile <- function(){
+	label <- sweaveLabel()
+	if( !is.null(label) )
+		paste(label, '.pdf', sep='')
+}
+
+fixSweaveFigure <- function(filename){
+	if( missing(filename) ){
+		filename <- sweaveLabel()
+		if( is.null(filename) ) return()
+		filename <- paste(filename, '.pdf', sep='')
+	}
+	filepath <- normalizePath(filename)
+	tf <- tempfile()
+	system(paste("pdftk", filepath, "cat 2-end output", tf, "; mv -f", tf, filepath))
+}
+
+###% 'more' functionality to read data progressively
+more <- function(x, step.size=10, width=20, header=FALSE, pattern=NULL){
+	
+	if( !(is.matrix(x) || is.data.frame(x) || is.vector(x) || is.list(x)) )
+		stop("NMF::more - invalid argument 'x': only 'matrix', 'data.frame', 'vector' and 'list' objects are handled.")
+	
+	one.dim <- is.null(dim(x))
+	single.char <- FALSE
+	n <-
+		if( is.character(x) && length(x) == 1 ){			
+			cat("<character string:", nchar(x), ">\n")
+			single.char <- TRUE
+			nchar(x)
+		}
+		else if( one.dim ){
+			cat("<", class(x),":", length(x), ">\n")
+			
+			# limit to matching terms if necessary
+			if( !is.null(pattern) )
+				x[grep(pattern, x)]
+			
+			length(x)
+		}else{
+			cat("<", class(x),":", nrow(x), "x", ncol(x), ">\n")
+			head.init <- colnames(x)
+			head.on <- TRUE
+			
+			# limit to matching terms if necessary
+			if( !is.null(pattern) ){
+				idx <- apply(x, 2, grep, pattern=pattern)
+				print(idx)
+				idx <- unique(if( is.list(idx) ) unlist(idx) else as.vector(idx))
+				x <- x[idx,, drop=FALSE]
+			}
+			
+			nrow(x)
+		}	
+		
+	i <- 0
+	while( i < n ){
+		# reduce 'step.size' if necessary
+		step.size <- min(step.size, n-i)
+		
+		what2show <- if( single.char )
+			substr(x, i+1, i+step.size)
+		else if( one.dim )			
+			if( !is.na(width) ) sapply(x[seq(i+1, i+step.size)], function(s) substr(s, 1, width) ) else x[seq(i+1, i+step.size)]
+		else{
+			w <- x[seq(i+1, i+step.size), , drop=FALSE]
+			if( !is.na(width) ){ 
+				w <- apply(w, 2, 
+					function(s){
+						ns <- toNumeric(s)
+						if( !is.na(ns[1]) ) # keep numerical value as is
+							ns
+						else # limit output if required
+							substr(s, 1, width)
+						
+					}) 
+				rownames(w) <- rownames(x)[seq(i+1, i+step.size)]
+			} 
+				
+			
+			# remove header if not required
+			if( !header && head.on ){
+				colnames(x) <- sapply(colnames(x), function(c) paste(rep(' ', nchar(c)), collapse=''))
+				head.on <- FALSE
+			}
+			
+			# return the content
+			w
+		}
+		
+		cat( show(what2show) )
+		i <- i + step.size
+		
+		# early break if necessary
+		if( i >= n )
+			break
+		# ask user what to to next
+		ans <- scan(what='character', quiet=TRUE, n=1, multi.line=FALSE)
+		
+		# process user command if any (otherwise carry on)
+		if( length(ans) > 0 ){		
+			if( !is.na(s <- toNumeric(ans)) ) # change step size
+				step.size <- s
+			else if( !header && ans %in% c('h', 'head') ){
+				colnames(x) <- head.init
+				head.on <- TRUE
+			}
+			else if( ans %in% c('q', 'quit') ) # quit
+				break
+		}
+	}
+	invisible()
+} 
+
+###% randomize each column separately
 randomize <- function(x, ...){
 	
 	if( is(x, 'ExpressionSet') ) x <- exprs(x)
@@ -75,7 +245,7 @@ randomize <- function(x, ...){
 	
 }
 
-#' Returns the rank-k truncated SVD approximation of x
+###% Returns the rank-k truncated SVD approximation of x
 tsvd <- function(x, r, ...){
 	stopifnot( r > 0 && r <= min(dim(x)))
 	s <- svd(x, nu=r, nv=r, ...)
@@ -85,24 +255,51 @@ tsvd <- function(x, r, ...){
 	s
 }
 
-#' Silently load a package (with require) 
-require.quiet <- function(package, ...){
-	suppressWarnings(do.call('require', list(package=substitute(package), ..., quietly=TRUE)))
+###% Subset a list leaving only the arguments from a given function 
+.extract.args <- function(x, fun, ...){
+	
+	fdef <- if( is.character(fun) )	getFunction(fun, ...)
+			else if( is.function(fun) ) fun
+			else stop("invalid argument 'fun': expected function name or definition")
+	
+	if( length(x) == 0 ) return(x)	
+	x.ind <- charmatch(if( is.list(x) ) names(x) else x, args <- formalArgs(fdef))
+	x[!is.na(x.ind)]
 }
 
-#' Returns TRUE if running under Mac OS X + GUI
+###% Returns the version of the package
+nmfInfo <- function(command){	
+	pkg <- 'NMF'
+	curWarn <- getOption("warn")
+	on.exit(options(warn = curWarn), add = TRUE)
+	options(warn = -1)
+	desc <- packageDescription(pkg, fields="Version")
+	if (is.na(desc)) 
+		stop(paste("Package", pkg, "not found"))
+	desc
+}
+
+###% Silently load a package (with require) 
+require.quiet <- function(package, character.only = FALSE, ...){
+	if( !character.only )
+		package <- as.character(substitute(package))
+	capture.output(suppressMessages(suppressWarnings(res <- do.call('require', list(package=package, ..., character.only=TRUE, quietly=TRUE)))))
+	res
+}
+
+###% Returns TRUE if running under Mac OS X + GUI
 is.Mac <- function(check.gui=FALSE){
 	is.mac <- (length(grep("darwin", R.version$platform)) > 0)
 	# return TRUE is running on Mac (adn optionally through GUI)
 	is.mac && (!check.gui || .Platform$GUI == 'AQUA')
 }
 
-#' Test if a given namespace is loaded (without loading it!!)
+###% Test if a given namespace is loaded (without loading it!!)
 isNamespaceLoaded <- function(name){
 	!is.null(.Internal(getRegisteredNamespace(as.name(name))))
 }
 
-#' Test if there is a namespace loading
+###% Test if there is a namespace loading
 getLoadingNamespace <- function(getenv=FALSE){
 	is.loading <- try(info <- loadingNamespaceInfo(), silent=TRUE)
 	if( !is(is.loading, 'try-error') ){
@@ -112,14 +309,21 @@ getLoadingNamespace <- function(getenv=FALSE){
 	else NULL
 }
 
-#' Test if a package is installed
+###% Tells if one is running in development mode or production
+devmode <- function(){
+	is.null(getLoadingNamespace())
+}
+
+###% Test if a package is installed
 isPackageInstalled <- function(..., lib.loc=NULL){
 
 	inst <- utils::installed.packages(lib.loc=lib.loc)
-	pattern <- '^([a-z]+)(_([0-9.]+)?)?$';
+	pattern <- '^([a-zA-Z.]+)(_([0-9.]+)?)?$';
 	res <- sapply(list(...), function(p){
 		vers <- gsub(pattern, '\\3', p)
+		print(vers)
 		pkg <- gsub(pattern, '\\1', p)
+		print(pkg)
 		if( !(pkg %in% rownames(inst)) ) return(FALSE);
 		p.desc <- inst[pkg,]
 		if( (vers != '') && compareVersion(vers, p.desc['Version']) > 0 ) return(FALSE);
@@ -128,43 +332,84 @@ isPackageInstalled <- function(..., lib.loc=NULL){
 	all(res)
 }
 
-#' Test if parallel computation is possible
+###% Test if parallel computation is possible
 parallelEnv <- function(load=TRUE){
 	
-	if( isPackageInstalled('bigmemory_4') ) isPackageInstalled('synchronicity')
-	else if( isPackageInstalled('bigmemory') ) TRUE
-	else FALSE
+	isPackageInstalled('doMC') && 
+	# from bigmemory_4 the package synchronicity is required
+	( (isPackageInstalled('bigmemory_4') && isPackageInstalled('synchronicity'))  
+		|| (!isPackageInstalled('bigmemory_4') && isPackageInstalled('bigmemory'))
+	) 
 }
 
-#'DEV_UTIL:  Compile source code on the fly and load the library
-if( is.null(getLoadingNamespace()) ){#BEGIN_DEV_ONLY
+###% Hash a function body (using digest)
+hash_function <- function(f){
+	b <- body(f)
+	attributes(b) <- NULL
+	fdef <- paste(c(capture.output(args(f))[1], capture.output(print(b))), collapse="\n")
+	# print(fdef)
+	digest(b)
+}
 
-rasta.compileLib <- function(srcdir, libname){
+
+###% Remove the platform specific library extension
+extractLibname <- function(libs){
+	sub(paste("(.*)\\", .Platform$dynlib.ext, "$", sep=''), "\\1", basename(libs))
+}
+
+###% List the library files in a directory
+listDynLibs <- function(dir, ...){
+	list.files(dir, pattern=paste("\\", .Platform$dynlib.ext, "$", sep=''), ...)
+}
+
+###% compare function with copy and with no copy
+cmp.cp <- function(...){
+	res <- nmf(..., copy=F)
+	resc <- nmf(..., copy=T)
+	cat("identical: ", identical(fit(res), fit(resc))
+			, " - all.equal: ", all.equal(fit(res), fit(resc))
+			, " - diff: ", all.equal(fit(res), fit(resc), tol=0)
+			, "\n"
+	)
+	invisible(res)
+} 
+
+if( devmode() ){#BEGIN_DEV_ONLY
+
+###% Compile source code on the fly and load the library
+rasta.compileLib <- function(srcdir, libname, pkg=libname, Rcpp=FALSE, do.load=TRUE
+							, cppargs=character(), cxxargs=character(), libargs=character()
+							, verbose=TRUE){
 	
 	# define a static variable that will old the mapping between dll names and dll filenames
 	if( !exists('.RASTA_dll_map', where=globalenv()) )
 		assign('.RASTA_dll_map', list(), env=globalenv())
 				
 	# check if the dll was already compiled and unload and remove it if needed
-	if( !is.null(dll.info <- .RASTA_dll_map[[libname]]) ){			
-		# unload the library
-		if ( dll.info$name %in% names(base::getLoadedDLLs()) ){
-			message("# Unloading: ", dll.info$path)
-			dyn.unload(dll.info$path)			
-		}
-		
-		# delete the file
-		if( file.exists(dll.info$path) )
-			unlink(dll.info$path)		
-						
-		# remove the dll from the mapping
-		.RASTA_dll_map[[libname]] <<- NULL
+	if( !is.null(dll.info <- .RASTA_dll_map[[libname]]) ){
+				
+		sapply(dll.info, function(dll){
+			dll.path <- dll[['path']]
+			# unload the library
+			if ( dll[['name']] %in% names(base::getLoadedDLLs()) ){
+				message("# Unloading: ", dll.path)
+				dyn.unload(dll.path)
+			}
+			
+			# delete the file
+			if( file.exists(dll.path) )
+				unlink(dll.path)
+		})
 	}
+	# remove the dll from the mapping
+	.RASTA_dll_map[[libname]] <<- NULL	
 	
 	# compile and load the library
 	wd <- getwd()
-	# define a unique temporary name for the compiled dll 
-	libfile <- paste(dllname <- tempfile(paste(libname,'_', sep='')), .Platform$dynlib.ext, sep='')
+	# define a unique temporary name for the compiled dll
+	dir.create(libdir <- file.path(tempdir(), 'RASTA-library', pkg), rec=T, show=F)
+	libfile <- paste(dllname <- tempfile(paste(libname,'_', sep=''), libdir), .Platform$dynlib.ext, sep='')
+	#libfile <- paste(dllname <- file.path(libdir,libname), .Platform$dynlib.ext, sep='')
 	dllname <- basename(dllname)
 	# unload library if necessary
 	if( dllname %in% names(base::getLoadedDLLs()) ){
@@ -178,19 +423,70 @@ rasta.compileLib <- function(srcdir, libname){
 	else{
 		message('OK')
 		message("# Compiling: ", libfile)
-		setwd(srcdir)		
+		
+		if (Rcpp) {
+			if (!require(Rcpp)) 
+				stop("Rcpp cannot be loaded, install it or use the default Rcpp=FALSE")
+			cxxargs <- c(Rcpp:::RcppCxxFlags(), cxxargs)
+			libargs <- c(Rcpp:::RcppLdFlags(), libargs)
+		}
+		if (length(cppargs) != 0) {
+			args <- paste(cppargs, collapse = " ")
+			if (verbose > 1) 
+				cat("Setting PKG_CPPFLAGS to", args, "\n")
+			Sys.setenv(PKG_CPPFLAGS = args)
+		}
+		if (length(cxxargs) != 0) {
+			args <- paste(cxxargs, collapse = " ")
+			if (verbose > 1)
+				cat("Setting PKG_CXXFLAGS to", args, "\n")
+			Sys.setenv(PKG_CXXFLAGS = args)
+		}
+		if (length(libargs) != 0) {
+			args <- paste(libargs, collapse = " ")
+			if (verbose > 1)
+				cat("Setting PKG_LIBS to", args, "\n")
+			Sys.setenv(PKG_LIBS = args)
+		}
+		
+		od <- setwd(srcdir)
+		on.exit(setwd(od))
 		# setup the cleanup on exit
-		on.exit({system(paste('rm ', srcdir,'/*.o', sep=''))}, add=TRUE)
+		on.exit({system(paste('rm -r ', srcdir,'/*.o ', srcdir,'/*.so', sep=''))}, add=TRUE)
 		# compile the dll
-		cmd <- paste('R CMD SHLIB *.cpp -o ', libfile, sep='')
-		system(cmd)
+		cmd <- paste(file.path(R.home(component = "bin"),'R'), ' CMD SHLIB *.cpp -o ', libfile, sep='')
+		if( verbose > 1 )
+			system(cmd)
+		else
+			capture.output(system(cmd))
 		setwd(wd)
+		
+		# copy any other compiled library to the temporary RASTA directory
+		prefix <- extractLibname(libfile)
+		extra <- listDynLibs(srcdir, full.names=TRUE)
+		if( length(extra) > 0 ){
+			message("# Copy extra compiled libraries: ", paste(basename(extra), collapse=", "))
+			extra.dest <- file.path(dirname(libfile), paste(prefix, basename(extra), sep='_'))
+			file.copy(extra, extra.dest)
+		}
 		
 		# load the freshly compiled library
 		message("# Loading: ", libfile, ' ... ', appendLF=FALSE)
-		dll.info <- dyn.load(libfile)
-		message('OK')
-		.RASTA_dll_map[[libname]] <<- list(name=dllname, path=libfile)#dll.info		
+		if( do.load ){
+			dll.info <- dyn.load(libfile)
+			message('OK')
+			.RASTA_dll_map[[libname]] <<- list(dll.info)
+			
+			if( length(extra) > 0 ){
+				sapply(extra.dest, function(l){
+					message("# Loading extra library: ", l, ' ... ', appendLF=FALSE)
+					dll <- dyn.load(l)
+					message('OK')
+					.RASTA_dll_map[[libname]] <<- c(.RASTA_dll_map[[libname]], list(dll))
+				})
+			}
+		}else
+			message('SKIP')
 		#dll_map[[libname]] <<- dll.info
 		
 		# return the DLLInfo object
@@ -200,6 +496,57 @@ rasta.compileLib <- function(srcdir, libname){
 }
 
 }#END_DEV_ONLY
+
+
+# return the internal pointer address 
+C.ptr <- function(x, rec=FALSE)
+{	
+	attribs <- attributes(x)
+	if( !rec || is.null(attribs) )
+		.Call("ptr_address", x)
+	else
+		c( C.ptr(x), sapply(attribs, C.ptr, rec=TRUE))
+	
+}
+
+is.same <- function(x, y){
+	C.ptr(x) == C.ptr(y)
+}
+
+# clone an object
+clone <- function(x){
+	.Call('clone_object', x)
+}
+
+# deep-clone an object
+clone2 <- function(x){
+	if( is.environment(x) ){
+		y <- copyEnv(x)
+		eapply(ls(x, all=TRUE), 
+			function(n){
+				if( is.environment(x[[n]]) ){
+					y[[n]] <<- clone(x[[n]])
+					if( identical(parent.env(x[[n]]), x) )
+						parent.env(y[[n]]) <<- y
+				}
+		})
+	}else{
+		y <- .Call('clone_object', x)		
+		if( isS4(x) ){ ## deep copy R object
+			lapply(slotNames(class(y)), 
+				function(n){					
+					slot(y, n) <<- clone(slot(x, n)) 
+			})
+		}else if( is.list(x) ){ ## copy list or vector
+			sapply(seq_along(x), 
+				function(i){					
+					y[[i]] <<- clone(x[[i]])					
+			})
+		}
+	}
+	
+	y
+}
 
 #compute RSS with C function
 .rss <- function(x, y)
@@ -213,12 +560,68 @@ rasta.compileLib <- function(srcdir, libname){
 	.Call("KL_divergence", x, y)
 }
 
+# pmin in place
+pmin.inplace <- function(x, lim, skip=NULL){
+	
+	.Call('ptr_pmin', x, lim, as.integer(skip))
+	
+}
+
+# colMin
+colMin <- function(x){
+	.Call('colMin', x)
+}
+
+# colMax
+colMax <- function(x){
+	.Call('colMax', x)
+}
+
+# apply unequality constraints in place in place
+neq.constraints.inplace <- function(x, constraints, ratio=NULL, value=NULL, copy=FALSE){
+	
+	# if requested: clone data as neq.constrains.inplace modify the input data in place
+	if( copy )
+		x <- clone(x)
+	
+	.Call('ptr_neq_constraints', x, constraints, ratio, value)	
+}
+
+# Test if an external pointer is nil
+# Taken from package bigmemory 
+ptr_isnil <- function (address) 
+{
+	if (class(address) != "externalptr") 
+		stop("address is not an externalptr.")
+	.Call("ptr_isnil", address)	
+}
 
 
-#' Define a S4 class to handle function slots given as either a function definition 
-#' or a character string that gives the function's name. 
-#' 
+###% Draw the palette of colors
+###% 
+###% Taken from the examples of colorspace::rainbow_hcl
+###% 
+pal <- function(col, border = "light gray", ...)
+{	
+	n <- length(col)	
+	plot(0, 0, type="n", xlim = c(0, 1), ylim = c(0, 1),
+			axes = FALSE, xlab = "", ylab = "", ...)
+	rect(0:(n-1)/n, 0, 1:n/n, 1, col = col, border = border)
+}
+
+###% Draw the Palette of Colors as a Wheel
+###% 
+###% Taken from the examples of colorspace::rainbow_hcl
+###% 
+wheel <- function(col, radius = 1, ...)
+	pie(rep(1, length(col)), col = col, radius = radius, ...)
+
+# Define a S4 class to handle function slots given as either a function definition 
+# or a character string that gives the function's name. 
 setClassUnion('.functionSlot', c('character', 'function'))
+
+# Define a S4 class to handle function slots given as either a function definition 
+# or a character string that gives the function's name or NULL.
 setClassUnion('.functionSlot.null', c('character', 'function', 'NULL'))
 .validFunctionSlot <- function(slot, allow.empty=FALSE, allow.null=TRUE){
 	if( is.null(slot) ){
@@ -234,7 +637,7 @@ setClassUnion('.functionSlot.null', c('character', 'function', 'NULL'))
 }
 
 
-#' Utility function needed in heatmap.plus.2
+###% Utility function needed in heatmap.plus.2
 invalid <- function (x) 
 {
 	if (missing(x) || is.null(x) || length(x) == 0) 
@@ -246,8 +649,8 @@ invalid <- function (x)
 	else return(FALSE)
 }
 
-#' Modification of the function heatmap.2 including a small part of function 
-#' heatmap.plus to allow extra annotation rows
+###% Modification of the function heatmap.2 including a small part of function 
+###% heatmap.plus to allow extra annotation rows
 heatmap.plus.2 <- 
 		function (x, Rowv = TRUE, Colv = if (symm) "Rowv" else TRUE, 
 				distfun = dist, hclustfun = hclust, dendrogram = c("both", 
@@ -445,7 +848,7 @@ heatmap.plus.2 <-
 			
 			if (!is.character(ColSideColors) || dim(ColSideColors)[1] != 
 					nc) 
-				stop("'ColSideColors' dim()[1] must be of length ncol(x)")
+				stop("'ColSideColors' must be a character vector/matrix with length/ncol = ncol(x)")
 			lmat <- rbind(lmat[1, ] + 1, c(NA, 1), lmat[2, ] + 1)
 			lhei <- c(lhei[1], 0.2, lhei[2])
 		}

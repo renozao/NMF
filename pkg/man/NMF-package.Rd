@@ -20,10 +20,10 @@ algorithms' performances or in the interpretation of the results.
 
 	If you use the 'NMF' package in publications cite:
 
-	Renaud Gaujoux, Cathal Seoighe (2010).
-	A flexible R package for nonnegative matrix factorization.
-	\emph{BMC Bioinformatics} 2010, \bold{11}:367
-	http://www.biomedcentral.com/1471-2105/11/367
+	Renaud Gaujoux, Cathal Seoighe (2010).\cr
+	\emph{A flexible R package for nonnegative matrix factorization}.\cr
+	BMC Bioinformatics 2010, \bold{11}:367\cr
+	\url{http://www.biomedcentral.com/1471-2105/11/367}
 
 	For pointers on further readings, please see references therein.
 
@@ -50,7 +50,7 @@ algorithms' performances or in the interpretation of the results.
 \examples{
 
 # run default NMF algorithm on a random matrix
-V <- matrix(runif(10000), 500, 20)
+V <- rmatrix(500, 20)
 res <- nmf(V, 3)
 res
 
@@ -58,8 +58,8 @@ res
 summary(res)
 
 # Visualize the results as heatmaps
-\dontrun{metaheatmap(res)} # mixture coefficients
-\dontrun{metaheatmap(res, 'features')} # basis vectors
+\dontrun{coefmap(res)} # mixture coefficients
+\dontrun{basismap(res)} # basis vectors
 
 # run default NMF algorithm on a random matrix with actual patterns
 set.seed(123456)
@@ -71,8 +71,8 @@ res
 summary(res)
 
 # Visualize the results as heatmaps
-\dontrun{metaheatmap(res)} # mixture coefficients
-\dontrun{metaheatmap(res, 'features')} # basis vectors
+\dontrun{coefmap(res)} # mixture coefficients
+\dontrun{basismap(res)} # basis vectors
 
 
 }

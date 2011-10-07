@@ -50,7 +50,7 @@ Class \code{"\link[Biobase]{AssayData-class}"}, by class "list", distance 2.
 	 }
 }
 
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 
 \seealso{
 	\code{\link{nmf-compare}}, \code{\link{nmf-multiple}}, \code{\link{nmf}}

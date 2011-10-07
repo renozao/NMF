@@ -95,8 +95,10 @@ See \code{\link{nmf-multiple}} for more details on the method arguments.
 	if it is not overloaded by the classes that implement the interface (i.e. that extends class \code{NMFfitX}).}
     }
     
-    \item{metaHeatmap}{ Produces a heatmap of the consensus matrix using 
-	function \code{\link[gplots]{heatmap.2}}. See \code{\link{metaHeatmap}}.}
+    \item{consensusmap}{ Produces a heatmap of the consensus matrix using 
+	function \code{\link[gplots]{heatmap.2}}. 
+	See \code{\link{consensusmap}} for more details.
+	}
 		
     \item{runtime.all}{: 
     returns the total time spent to compute all the runs.
@@ -128,18 +130,17 @@ See \code{\link{nmf-multiple}} for more details on the method arguments.
 
 \references{ 
 
- 	\emph{Metagenes and molecular pattern discovery using matrix factorization}
-	Brunet, J.~P., Tamayo, P., Golub, T.~R., and Mesirov, J.~P. (2004)
-	Proc Natl Acad Sci U S A
-	101(12), 4164--4169.
+	Brunet, J.P. et al. (2004)
+ 	\emph{Metagenes and molecular pattern discovery using matrix factorization}	
+	Proc Natl Acad Sci USA 101(12), 4164--4169.
 
-	\emph{Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis}
-	Kim, H. & Park, H. (2007)
-	Bioinformatics. 
+	Kim, H. and Park, H. (2007).
+	\emph{Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis}.
+	Bioinformatics 2007; \bold{23(12)}:1495-502.
 	\url{http://dx.doi.org/10.1093/bioinformatics/btm134}.
 
 }
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 
 \seealso{
 	\code{\link{nmf-methods}}, \code{\link{nmf-multiple}}, \code{\linkS4class{NMFfitX1}}, \code{\linkS4class{NMFfitXn}}  
@@ -153,6 +154,9 @@ V <- syntheticNMF(n, counts, noise=TRUE)
 # perform multiple runs of one algorithm (default is to keep only best fit)
 res <- nmf(V, 3, nrun=5)
 str(res)
+
+# plot a heatmap of the consensus matrix
+\dontrun{ consensusmap(res) }
 
 # perform multiple runs of one algorithm (keep all the fits)
 res <- nmf(V, 3, nrun=5, .options='k')

@@ -1,4 +1,4 @@
-\name{NMFns-class}
+\name{NMFns-class: Model class for Non-smooth NMF}
 \Rdversion{1.1}
 \docType{class}
 \alias{NMFns-class}
@@ -140,7 +140,7 @@ Nonsmooth Nonnegative Matrix Factorization (nsNMF).
 , Vol. 28, No. 3, March 2006 403
 
 }
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 
 \seealso{	
 	\code{\linkS4class{NMF}} , \code{\link{nmf-methods}}  
@@ -152,12 +152,12 @@ new('NMFns')
 
 # create a NMF object based on random (compatible) matrices
 n <- 50; r <- 3; p <- 20
-w <- matrix(runif(n*r), n, r) 
-h <- matrix(runif(r*p), r, p)
+w <- rmatrix(n, r) 
+h <- rmatrix(r, p)
 nmfModel(model='NMFns', W=w, H=h)
 
 # apply Nonsmooth NMF algorithm to a random target matrix
-V <- matrix(runif(n*p), n, p)
+V <- rmatrix(n, p)
 \dontrun{nmf(V, r, 'ns')}
 
 

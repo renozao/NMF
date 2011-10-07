@@ -5,6 +5,7 @@
 
 \alias{consensus,NMFfitX1-method}
 \alias{fit,NMFfitX1-method}
+\alias{minfit,NMFfitX1-method}
 \alias{nrun,NMFfitX1-method}
 \alias{runtime.all,NMFfitX1-method}
 
@@ -35,6 +36,10 @@ as the results of single NMF run -- as if only the best run had been performed.
     to compute the object.
     }
     
+    \item{\code{rng1}:}{an \code{\link{rstream}} object that contains RNG 
+    settings used for the first run. See \code{\link{getRNG1}}.
+    }
+    
     \item{\code{runtime.all}:}{object of class \code{"proc_time"} that contains 
     various measures of the time spent to perform all the runs (inherited from \code{NMFfitX})}
   }
@@ -63,8 +68,14 @@ Class \code{"\linkS4class{NMF}"}, by class "NMFfit", distance 2.
 	See \code{\link{consensus}}.
     }
     
-    \item{fit}{: returns the best fit as an \code{NMFfit} object.
-    }
+    \item{fit}{: returns the NMF model of the best fit (i.e an \code{NMF} object), that is the one 
+    achieving the best approximation error. Since \code{NMFfitX1} objects only store the best fit 
+    of all the runs, it simply returns slot \code{fit} as inherited from \code{\linkS4class{NMFfit}}. 
+    See \code{\link{fit}}.}
+    
+    \item{minfit}{: returns the result of the best fit as an \code{NMFfit} object. Since \code{NMFfitX1} objects only 
+    store the best fit of all the runs, it simply coerce the object into a \code{\linkS4class{NMFfit}} object.
+    See \code{\link{minfit}}.}
     
     \item{nrun}{: 
     returns the number of NMF runs performed to compute the object, as stored in slot \code{nrun}.
@@ -83,7 +94,7 @@ Class \code{"\linkS4class{NMF}"}, by class "NMFfit", distance 2.
 	\code{\linkS4class{NMFfit}} and as such can be handled exactly as the result of a single NMF run.
 }
 
-\author{ Renaud Gaujoux \email{renaud@cbio.uct.ac.za} }
+\author{ Renaud Gaujoux  }
 
 \seealso{
 	\code{\linkS4class{NMFfitX}} , \code{\link{nmf-methods}}, \code{\link{nmf-multiple}}  

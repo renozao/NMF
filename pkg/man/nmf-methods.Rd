@@ -1,4 +1,4 @@
-\name{nmf-methods}
+\name{nmf-methods: Running NMF algorithms}
 \docType{methods}
 \alias{nmf}
 \alias{seed}
@@ -244,7 +244,7 @@
  This method requires the \code{Biobase} package to be installed.
  Special methods for bioinformatics are provided in an optional layer, 
  which is automatically loaded when the \code{Biobase} is installed.
- See \code{\link{NMF-bioc}}.
+ See \code{\link{bioc-NMF}}.
 }
 
 \item{x = "matrix", rank = "numeric", method = "character"}{ Performs NMF on a 
@@ -369,49 +369,51 @@ as standard matrix products. These are accessible by adding the prefix '.R#' to 
 	}   
 }
 
-\author{Renaud Gaujoux \email{renaud@cbio.uct.ac.za}}
+\author{Renaud Gaujoux }
 
-\seealso{class \code{\linkS4class{NMF}}, \code{\link{NMF-utils}}, package's vignette } 
+\seealso{class \code{\linkS4class{NMF}}, \code{\link{utils-NMF}}, package's vignette } 
 
 \references{
 
-Lee, D.~D. and Seung, H.~S. (2000).
-Algorithms for non-negative matrix factorization. 
+Lee, D.D. and Seung, H.S. (2000).
+\emph{Algorithms for non-negative matrix factorization}. 
 In \emph{NIPS}, 556--562.
 
-Brunet, J.~P., Tamayo, P., Golub, T.~R., and Mesirov, J.~P. (2004).
-Metagenes and molecular pattern discovery using matrix factorization. 
-\emph{Proc Natl Acad Sci U S A}, \bold{101}(12), 4164--4169.
-Original MATLAB code available from: http://www.broadinstitute.org/cancer/pub/nmf
+Brunet, J.P. et al. (2004).
+\emph{Metagenes and molecular pattern discovery using matrix factorization}. 
+Proc Natl Acad Sci U S A, \bold{101}(12), 4164--4169.\cr
+Original MATLAB code available from:\cr
+\url{http://www.broadinstitute.org/cancer/pub/nmf}
 
-Pascual-Montano, A., Carazo, J.~M., Kochi, K., Lehmann, D., and Pascual-Marqui, R.~D. (2006).
-Nonsmooth nonnegative matrix factorization (nsnmf).
-\emph{IEEE transactions on pattern analysis and machine intelligence}, \bold{8}(3), 403--415.
+Pascual-Montano, A. et al. (2006).
+\emph{Nonsmooth nonnegative matrix factorization (nsnmf)}.
+IEEE transactions on pattern analysis and machine intelligence, \bold{8}(3), 403--415.
 
 Kim, H. and Park, H. (2007).
-Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis.
-\emph{Bioinformatics}. 2007; 23(12):1495-502.
-Original MATLAB code available from: 
-http://www.cc.gatech.edu/~hpark/software/nmfsh_comb.m
-http://www.cc.gatech.edu/~hpark/software/fcnnls.m
+\emph{Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis}.
+Bioinformatics. 2007; 23(12):1495-502.\cr
+Original MATLAB code available from:\cr
+\url{http://www.cc.gatech.edu/~hpark/software/nmfsh_comb.m}\cr
+\url{http://www.cc.gatech.edu/~hpark/software/fcnnls.m}
 
 Liviu Badea (2008).
-Extracting Gene Expression Profiles Common To Colon And Pancreatic Adenocaricinoma Using Simultaneous Nonnegative Matrix Factorization.
-In \emph{Pacific Symposium on Biocomputing}, \bold{13}, 279--290
+\emph{Extracting Gene Expression Profiles Common To Colon And Pancreatic Adenocaricinoma Using Simultaneous Nonnegative Matrix Factorization}.
+In Pacific Symposium on Biocomputing, \bold{13}, 279--290
 
 %S. Li, X. Hou, and H. Zhang (2001).
 %Learning spatially localized, parts-based representation. 
 %\emph{In Proc. CVPR}, 2001.
 
-Zhang J, Wei L, Feng X, Ma Z, Wang Y (2008). 
-Pattern expression nonnegative matrix factorization: algorithm and applications to blind source separation.
-\emph{Computational intelligence and neuroscience}  
+Zhang J, et al. (2008). 
+\emph{Pattern expression nonnegative matrix factorization: algorithm and applications to blind source separation}.
+Computational intelligence and neuroscience
 
 C. Boutsidis and E. Gallopoulos (2007) 
-SVD-based initialization: A head start for nonnegative matrix factorization. 
-\emph{Pattern Recognition}.
-doi:10.1016/j.patcog.2007.09.010
-Original MATLAB code available from: http://www.cs.rpi.edu/~boutsc/papers/paper1/nndsvd.m
+\emph{SVD-based initialization: A head start for nonnegative matrix factorization}. 
+Pattern Recognition.
+doi:10.1016/j.patcog.2007.09.010\cr
+Original MATLAB code available from:\cr
+\url{http://www.cs.rpi.edu/~boutsc/papers/paper1/nndsvd.m}
 
 }
 
