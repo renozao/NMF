@@ -253,7 +253,7 @@ staticVar <- function(){
 		# return last workspace
 		if( missing(name) ) return(.Workspace)			
 		else if( is.environment(name) ){ # setup up static environment			
-			message('Strategy Workspace', "initialize static workspace: ", capture.output(.Workspace), "=", capture.output(name))
+			nmf.debug('Strategy Workspace', "initialize static workspace: ", capture.output(.Workspace), "=", capture.output(name))
 			.Workspace <<- name
 		}else if( missing(value) ){
 			get(name, envir=.Workspace, inherits=FALSE)
