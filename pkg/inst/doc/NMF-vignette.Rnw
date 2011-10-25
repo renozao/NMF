@@ -215,10 +215,21 @@ Key & Description\\
 \hline
 \code{brunet} & Standard NMF. Based on Kullbach-Leibler divergence, it uses simple multiplicative updates from \cite{Lee2000}, enhanced to avoid numerical underflow.
 
+\begin{eqnarray}
+H_{kj} & \leftarrow & H_{kj}  \frac{\left( \sum_l \frac{W_{lk} V_{lj}}{(WH)_{lj}} \right)}{ \sum_l W_{lk} }\\
+W_{ik} & \leftarrow & W_{ik} \frac{ \sum_l [H_{kl} A_{il} / (WH)_{il} ] }{\sum_l H_{kl} }
+\end{eqnarray}
+
 \textbf{Reference:} \cite{Brunet04}\\
 \hline
 %
 \code{lee} & Standard NMF. Based on euclidean distance, it uses simple multiplicative updates
+
+\begin{eqnarray}
+H_{kj} & \leftarrow & H_{kj}  \frac{(W^T V)_{kj}}{(W^T W H)_{kj}}\\
+W_{ik} & \leftarrow & W_{ik} \frac{(V H^T)_{ik}}{(W H H^T)_{ik}}
+\end{eqnarray}
+
 
 \textbf{Reference:} \cite{Lee2000}\\
 \hline
