@@ -14,15 +14,15 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	coln_height <- unit(10, "bigpts")
 	if(!is.null(coln)){
 		longest_coln = which.max(nchar(coln))
-		gp = list(fontsize = fontsize_col, ...)
-		coln_height <- coln_height +  unit(1.1, "grobheight", textGrob(coln[longest_coln], rot = 90, gp = do.call(gpar, gp)))
+		gp = gpar(fontsize = fontsize_col, ...)
+		coln_height <- coln_height +  unit(1.1, "grobheight", textGrob(coln[longest_coln], rot = 90, gp = gp))
 	}
 
-	rown_width <- unit(10, "bigpts")
+	rown_width <- rown_width_min <- unit(10, "bigpts")
 	if(!is.null(rown)){
 		longest_rown = which.max(nchar(rown))
-		gp = list(fontsize = fontsize_row, ...)
-		rown_width <- rown_width + unit(1.2, "grobwidth", textGrob(rown[longest_rown], gp = do.call(gpar, gp)))
+		gp = gpar(fontsize = fontsize_row, ...)
+		rown_width <- rown_width_min + unit(1.2, "grobwidth", textGrob(rown[longest_rown], gp = gp))
 	}
 	
 	gp = list(fontsize = fontsize, ...)
@@ -104,6 +104,15 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 
 	if(is.na(cellheight)){
 		matheight = unit(1, "npc") - treeheight_col - annot_height - main_height - coln_height - sub_height - info_height
+	
+		# recompute the cell width depending on the automatic fontsize
+		if( is.na(cellwidth) && !is.null(rown) ){
+			cellheight <- convertHeight(unit(1, "grobheight", rectGrob(0,0, matwidth, matheight)), "bigpts", valueOnly = T) / nrow
+			fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.6*cellheight, 'bigpts')), 'points')
+			
+			rown_width <- rown_width_min + unit(1.2, "grobwidth", textGrob(rown[longest_rown], gp = gpar(fontsize=fontsize_row, ...)))
+			matwidth <- unit(1, "npc") - rown_width - legend_width - row_annot_width  - treeheight_row - annot_legend_width
+		}
 	}
 	else{
 		matheight = unit(cellheight * nrow, "bigpts")
@@ -123,8 +132,8 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	#grid.show.layout(lo); stop('sas')
 	# Get cell dimensions
 	vplayout('mat')
-	cellwidth = convertWidth(unit(0:1, "npc"), "bigpts", valueOnly = T)[2] / ncol
-	cellheight = convertHeight(unit(0:1, "npc"), "bigpts", valueOnly = T)[2] / nrow
+	cellwidth = convertWidth(unit(1, "npc"), "bigpts", valueOnly = T) / ncol
+	cellheight = convertHeight(unit(1, "npc"), "bigpts", valueOnly = T) / nrow
 	upViewport()
 	
 	height <- as.numeric(convertHeight(sum(lo$height), "inches"))
@@ -1629,6 +1638,12 @@ aheatmap = function(x
 , filename = NA, width = NA, height = NA
 , main = NULL, sub = NULL, info = NULL
 , verbose=getOption('verbose'), ...){
+
+	# convert ExpressionSet into 
+	if( is(x, 'ExpressionSet') ){
+		library(Biobase)
+		x <- exprs(x)
+	}
 
 	# rename to old parameter name
 	mat <- x
