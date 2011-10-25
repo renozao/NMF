@@ -125,9 +125,12 @@ setMethod('algorithm', 'NMFList',
 )
 
 setMethod('runtime', 'NMFList', 
-	function(object){
-		t <- slot(object, 'runtime')
-		if( length(t)==0 ) NULL else t
+	function(object, all=FALSE){
+		if( !all ){
+			t <- slot(object, 'runtime')
+			if( length(t)==0 ) NULL else t
+		}else
+			sapply(object, runtime)
 	}
 )
 
@@ -1022,7 +1025,7 @@ setMethod('summary', signature(object='NMFList'),
 					m <- algorithm(x)
 					s <- seeding(x) 
 					svalue <- objective(x)
-					svalue <- if( is.function(svalue) ) '<function>' else paste("'", svalue,"'", sep='')
+					svalue <- if( is.function(svalue) ) '<function>' else svalue
 					c(method=m, seed=s, rng=RNGdigest(x), metric=svalue)
 				}
 		)
