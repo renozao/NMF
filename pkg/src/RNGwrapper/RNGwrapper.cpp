@@ -1,8 +1,8 @@
 #ifndef RNGTOOLS_H // include header only once
 #define RNGTOOLS_H
 
-// check GCC version for compatibility with Rcpp
-#if (__GNUC__ < 4 ) || ((__GNUC__ == 4) && (__GNUC_MINOR__ < 2) )
+// check GCC version for compatibility with Rcpp: require at least version 4.4
+#if (__GNUC__ < 4 ) || ((__GNUC__ == 4) && (__GNUC_MINOR__ < 4) )
 #define NO_RNGTOOLS
 #endif
 
@@ -329,178 +329,178 @@ static cache _runif_cache;
 static bool _runif_fake_init = false;
 static bool _runif_init_cache = false;
 
-/**
- * Identify the currently active user-supplied RNG provider by the length and
- * value of .Random.seed.
- *
- * This lookup is not guaranteed to succeed as RNG libraries often do not provide
- * the hook 'user_unif_seedloc', but if it does identify a unique provider then
- * it makes the RNGwrapper library compatible with the given RNG library.
- *
- */
-static int searchRNG_bySeed(const Rcpp::CharacterVector& libs, Rcpp::LogicalVector& flags){
+///**
+// * Identify the currently active user-supplied RNG provider by the length and
+// * value of .Random.seed.
+// *
+// * This lookup is not guaranteed to succeed as RNG libraries often do not provide
+// * the hook 'user_unif_seedloc', but if it does identify a unique provider then
+// * it makes the RNGwrapper library compatible with the given RNG library.
+// *
+// */
+//static int searchRNG_bySeed(const Rcpp::CharacterVector& libs, Rcpp::LogicalVector& flags){
+//
+//	using namespace Rcpp;
+//
+//	DEBUG_VERB( Rprintf("# Search matching seed ... \n"); )
+//
+//	int unique_match = -1;
+//	bool all_have_seedloc = true;
+//	for(int i=libs.length()-1; i>=0; --i){
+//		const char* provider = libs[i];
+//
+//		// discard indexes already flagged by previous searches
+//		if( !flags[i] ){
+//			DEBUG_VERB( Rprintf("\t* Provider '%s' ... SKIP [discarded]\n", provider); )
+//			continue;
+//		}
+//		DEBUG_VERB( Rprintf("\t* Provider '%s' ... ", provider); )
+//
+//		// load the user_unif_seedloc hook from provider
+//		DL_FUNC seedloc = R_FindSymbol(RNG_unif_seedloc, provider, NULL);
+//		if( !seedloc ){
+//			all_have_seedloc = false;
+//			DEBUG_VERB( Rprintf("SKIP [no seedloc hook]\n"); )
+//			continue;
+//		}
+//		// load the user_unif_nseed hook from provider
+//		DL_FUNC nseed = R_FindSymbol(RNG_unif_nseed, provider, NULL);
+//		if( !nseed ){
+//			all_have_seedloc = false;
+//			DEBUG_VERB( Rprintf("SKIP [no nseed hook]\n"); )
+//			continue;
+//		}
+//
+//		// load value of .Random.seed
+//		IntegerVector Random_seed( findVarInFrame(R_GlobalEnv, R_SeedsSymbol) );
+//		int ns = *(int*) nseed();
+//
+//		// look for differences in the seed's length
+//		if( ns != Random_seed.length()-1 ){
+//			DEBUG_VERB( Rprintf("FAILED [length]\n"); )
+//			// flag the index to be discarded in the following searches
+//			flags[i] = false;
+//			continue;
+//		}
+//
+//		// look for differences in the seed's value
+//		Int32* seed = static_cast<Int32*>(seedloc());
+//		bool diff = false;
+//		for(int k=ns-1; k>=0; --k){
+//			if( seed[k] != Random_seed[k+1] ){
+//				diff = true;
+//				break;
+//			}
+//		}
+//		if( diff ){
+//			DEBUG_VERB( Rprintf("FAILED [value]\n"); )
+//			// flag the index to be discarded in the following searches
+//			flags[i] = false;
+//			continue;
+//		}
+//
+//		DEBUG_VERB( Rprintf("MATCH\n"); )
+//
+//		// flag the index that uniquely passed
+//		if( unique_match < 0 ) unique_match = i; // it's the first index that passed: store it
+//		else unique_match = libs.length(); // it's the second index that passed: stop storing
+//
+//	}
+//	DEBUG_VERB( Rprintf("# DONE\n"); )
+//
+//	// return something meaningful if a unique match was found and all the libraries
+//	// provides a hook for user_unif_seedloc.
+//	if( all_have_seedloc && unique_match >= 0 && unique_match < libs.length() )
+//		return unique_match;
+//	else
+//		return -1;
+//}
 
-	using namespace Rcpp;
-
-	DEBUG_VERB( Rprintf("# Search matching seed ... \n"); )
-
-	int unique_match = -1;
-	bool all_have_seedloc = true;
-	for(int i=libs.length()-1; i>=0; --i){
-		const char* provider = libs[i];
-
-		// discard indexes already flagged by previous searches
-		if( !flags[i] ){
-			DEBUG_VERB( Rprintf("\t* Provider '%s' ... SKIP [discarded]\n", provider); )
-			continue;
-		}
-		DEBUG_VERB( Rprintf("\t* Provider '%s' ... ", provider); )
-
-		// load the user_unif_seedloc hook from provider
-		DL_FUNC seedloc = R_FindSymbol(RNG_unif_seedloc, provider, NULL);
-		if( !seedloc ){
-			all_have_seedloc = false;
-			DEBUG_VERB( Rprintf("SKIP [no seedloc hook]\n"); )
-			continue;
-		}
-		// load the user_unif_nseed hook from provider
-		DL_FUNC nseed = R_FindSymbol(RNG_unif_nseed, provider, NULL);
-		if( !nseed ){
-			all_have_seedloc = false;
-			DEBUG_VERB( Rprintf("SKIP [no nseed hook]\n"); )
-			continue;
-		}
-
-		// load value of .Random.seed
-		IntegerVector Random_seed( findVarInFrame(R_GlobalEnv, R_SeedsSymbol) );
-		int ns = *(int*) nseed();
-
-		// look for differences in the seed's length
-		if( ns != Random_seed.length()-1 ){
-			DEBUG_VERB( Rprintf("FAILED [length]\n"); )
-			// flag the index to be discarded in the following searches
-			flags[i] = false;
-			continue;
-		}
-
-		// look for differences in the seed's value
-		Int32* seed = static_cast<Int32*>(seedloc());
-		bool diff = false;
-		for(int k=ns-1; k>=0; --k){
-			if( seed[k] != Random_seed[k+1] ){
-				diff = true;
-				break;
-			}
-		}
-		if( diff ){
-			DEBUG_VERB( Rprintf("FAILED [value]\n"); )
-			// flag the index to be discarded in the following searches
-			flags[i] = false;
-			continue;
-		}
-
-		DEBUG_VERB( Rprintf("MATCH\n"); )
-
-		// flag the index that uniquely passed
-		if( unique_match < 0 ) unique_match = i; // it's the first index that passed: store it
-		else unique_match = libs.length(); // it's the second index that passed: stop storing
-
-	}
-	DEBUG_VERB( Rprintf("# DONE\n"); )
-
-	// return something meaningful if a unique match was found and all the libraries
-	// provides a hook for user_unif_seedloc.
-	if( all_have_seedloc && unique_match >= 0 && unique_match < libs.length() )
-		return unique_match;
-	else
-		return -1;
-}
-
-/**
- * Load the external or custom state vectors for a vector of RNG providers.
- *
- */
-void load_RNGstates(const Rcpp::CharacterVector& libs, const Rcpp::LogicalVector& flags, std::vector<SEXP>& states){
-
-	using namespace Rcpp;
-
-	BEGIN_RCPP
-
-		// reset the state vector
-		states.clear();
-
-		// load some environments
-		Environment base = Environment("package:base");
-		Function r_Call = base[".Call"];
-		Environment ns_digest = Environment("package:digest");
-		Function r_digest = ns_digest["digest"];
-		Environment RNGwrap_env = RNGWRAP_ENV;
-		Environment glob = Environment::global_env();
-
-		for( int i=0; i<libs.length(); ++i){
-			const char* provider = libs[i];
-
-			states.push_back(R_NilValue);
-			if( !flags[i] ){
-				DEBUG_VERB( Rprintf("\t* Provider '%s' ... SKIP [discarded]\n", provider); )
-				continue;
-			}
-
-			DEBUG_VERB( Rprintf("\t* Provider '%s' ... ", provider); )
-			if( !strcmp(provider, "rlecuyer") ){
-
-				SEXP tmp = r_Call("r_get_current_stream", Named("PACKAGE", "rlecuyer"));
-				NumericVector seed(clone(VECTOR_ELT(tmp,0)));
-				states[i] = wrap(seed);
-				DEBUG_VERB(	Rprintf("OK [state: %s]\n", as<const char*>(r_digest(seed)) ); )
-
-			}
-			else if( !strcmp(provider, "rstream") ){
-
-				Environment rstream_ns = Environment::namespace_env("rstream");
-				if( !rstream_ns.exists(".rstream.envir") ){
-					DEBUG_VERB( Rprintf("SKIP [not initialised]\n"); )
-					continue;
-				}
-				Environment rstream_env = rstream_ns[".rstream.envir"];
-				if( !rstream_env.exists(".rstream.current") ){
-					DEBUG_VERB( Rprintf("SKIP [not in use]\n"); )
-					continue;
-				}
-				SEXP current = rstream_env[".rstream.current"];
-					RObject stream(current);
-					try{
-
-						SEXP tmp = r_Call("R_RngStreams_GetData", stream.slot("stream"), Named("PACKAGE","rstream"));
-						NumericVector seed(clone(tmp));
-						states[i] = wrap(seed);
-						DEBUG_VERB(	Rprintf("OK [state: %s]\n", as<const char*>(r_digest(seed)) ); )
-
-					}catch(...){
-						DEBUG_VERB( Rprintf("SKIP [bad pointer]\n"); )
-					continue;
-				}
-
-			}else{
-
-				IntegerVector Random_seed = glob[".Random.seed"];
-				// only load the state if Random_seed contains specific data (first element gives the RNG kinds)
-				if( Random_seed.length() > 1 ){
-					states[i] = wrap(clone(Random_seed));
-					DEBUG_VERB(
-						DEBUG_VERB(	Rprintf("OK [.Random.seed: %s]\n", as<const char*>(r_digest(Random_seed)) ); )
-					)
-				}else{
-					DEBUG_VERB( Rprintf("SKIP [unknown]\n"); )
-				}
-
-			}
-
-		}
-
-	VOID_END_RCPP
-
-}
+///**
+// * Load the external or custom state vectors for a vector of RNG providers.
+// *
+// */
+//void load_RNGstates(const Rcpp::CharacterVector& libs, const Rcpp::LogicalVector& flags, std::vector<SEXP>& states){
+//
+//	using namespace Rcpp;
+//
+//	BEGIN_RCPP
+//
+//		// reset the state vector
+//		states.clear();
+//
+//		// load some environments
+//		Environment base = Environment("package:base");
+//		Function r_Call = base[".Call"];
+//		Environment ns_digest = Environment("package:digest");
+//		Function r_digest = ns_digest["digest"];
+//		Environment RNGwrap_env = RNGWRAP_ENV;
+//		Environment glob = Environment::global_env();
+//
+//		for( int i=0; i<libs.length(); ++i){
+//			const char* provider = libs[i];
+//
+//			states.push_back(R_NilValue);
+//			if( !flags[i] ){
+//				DEBUG_VERB( Rprintf("\t* Provider '%s' ... SKIP [discarded]\n", provider); )
+//				continue;
+//			}
+//
+//			DEBUG_VERB( Rprintf("\t* Provider '%s' ... ", provider); )
+//			if( !strcmp(provider, "rlecuyer") ){
+//
+//				SEXP tmp = r_Call("r_get_current_stream", Named("PACKAGE", "rlecuyer"));
+//				NumericVector seed(clone(VECTOR_ELT(tmp,0)));
+//				states[i] = wrap(seed);
+//				DEBUG_VERB(	Rprintf("OK [state: %s]\n", as<const char*>(r_digest(seed)) ); )
+//
+//			}
+//			else if( !strcmp(provider, "rstream") ){
+//
+//				Environment rstream_ns = Environment::namespace_env("rstream");
+//				if( !rstream_ns.exists(".rstream.envir") ){
+//					DEBUG_VERB( Rprintf("SKIP [not initialised]\n"); )
+//					continue;
+//				}
+//				Environment rstream_env = rstream_ns[".rstream.envir"];
+//				if( !rstream_env.exists(".rstream.current") ){
+//					DEBUG_VERB( Rprintf("SKIP [not in use]\n"); )
+//					continue;
+//				}
+//				SEXP current = rstream_env[".rstream.current"];
+//					RObject stream(current);
+//					try{
+//
+//						SEXP tmp = r_Call("R_RngStreams_GetData", stream.slot("stream"), Named("PACKAGE","rstream"));
+//						NumericVector seed(clone(tmp));
+//						states[i] = wrap(seed);
+//						DEBUG_VERB(	Rprintf("OK [state: %s]\n", as<const char*>(r_digest(seed)) ); )
+//
+//					}catch(...){
+//						DEBUG_VERB( Rprintf("SKIP [bad pointer]\n"); )
+//					continue;
+//				}
+//
+//			}else{
+//
+//				IntegerVector Random_seed = glob[".Random.seed"];
+//				// only load the state if Random_seed contains specific data (first element gives the RNG kinds)
+//				if( Random_seed.length() > 1 ){
+//					states[i] = wrap(clone(Random_seed));
+//					DEBUG_VERB(
+//						DEBUG_VERB(	Rprintf("OK [.Random.seed: %s]\n", as<const char*>(r_digest(Random_seed)) ); )
+//					)
+//				}else{
+//					DEBUG_VERB( Rprintf("SKIP [unknown]\n"); )
+//				}
+//
+//			}
+//
+//		}
+//
+//	VOID_END_RCPP
+//
+//}
 
 
 /**
@@ -527,313 +527,313 @@ static void fake_set_seed(const char* kind = NULL){
 
 }
 
-/**
- * Auto-detect the currently active user-supplied RNG provider.
- */
-SEXP rngtools_detectProvider(){
-
-	using namespace Rcpp;
-
-	BEGIN_RCPP
-
-	DEBUG_VERB( Rprintf("# RNGwrapper: Trying to detect current user-supplied RNG ...\n"); )
-
-	// identify the RNG library that was in use before reloading
-	//1. get all the RNG libs (they are in loading order: the last one is the
-	// more likely to be the one that was in use
-	Environment RNGwrap_env = RNGWRAP_ENV;
-	Function RNGlibs = RNGwrap_env["RNGlibs"];
-	DEBUG_VERB( Rprintf("# Loading RNG libraries\n"); )
-	CharacterVector libs = as<CharacterVector>(RNGlibs());
-
-	// if there is no loaded RNG provider then reset the hooks
-	if( libs.length() == 0 ){
-		DEBUG_VERB( Rprintf("# Detected no RNG provider\n"); )
-		rngtools_setProvider(wrap(""), wrap(true));
-		return( wrap("") );
-	}
-	// if there is only one possible library then this must be the one
-	if( libs.length() == 1 ){
-		const char* provider = libs[0];
-		DEBUG_VERB( Rprintf("# Detected unique RNG provider '%s'\n", provider); )
-
-		// load the detected RNG provider, reloading the hooks
-		rngtools_setProvider( wrap(provider), wrap(true));
-
-		// return the identified provider
-		return( wrap(provider) );
-	}
-
-	DEBUG_VERB( Rprintf("# Allocate memory for hooks\n"); )
-	std::vector<DL_FUNC> lib_hooks;
-	lib_hooks.reserve(libs.length());
-
-	// create a vector of flags: 1=lookup, 0=discard
-	LogicalVector flags(Dimension(libs.length()), true);
-	int match = -1;
-
-	// Load R-level function: runif
-	Environment stats = Environment("package:stats");
-	Function stats_runif = stats["runif"];
-
-	//2. Search a matching RNG by seed
-	match = searchRNG_bySeed(libs, flags);
-
-	match = -1;
-	// no unique match was found: carry on the search
-	if( match < 0 ){
-
-		// find index for currently wrapped RNG
-		DEBUG_VERB( Rprintf("# Lookup for currently wrapped RNG '%s' ... ", _current_provider.name.c_str()); )
-		int current_index = -1;
-		for(int i=libs.length()-1; i>=0; --i){
-			const char* provider = libs[i];
-			if( _current_provider.name ==  provider ){
-				current_index = i;
-				break;
-			}
-		}
-		if( current_index < 0 ){
-			DEBUG_VERB( Rprintf("ERROR\n"); )
-			error("Could not find the currently wrapped RNG provider in the provider list");
-		}
-		DEBUG_VERB( Rprintf("OK [index:%i]\n", current_index); )
-
-		DEBUG_VERB( Rprintf("# Store external state for each RNG provider ... \n"); )
-		// 2. Load states for known RNG libraries, call `runif` and see if it changes
-		// the state.
-		std::vector<SEXP> states_0;
-		states_0.reserve(libs.length());
-		load_RNGstates(libs, flags, states_0);
-		DEBUG_VERB( Rprintf("DONE\n"); )
-
-		// 3. check if the active RNG was wrapped already, in
-		// this case, the provider is known as it was restored in the R function
-		// RNGwrap.
-		DEBUG_VERB( Rprintf("# Drawing from runif ... "); )
-		_do_runif_calltest = true;
-		_runif_cache.reset();
-		_runif_cache.add( as<double>( stats_runif(1) ) );
-		DEBUG_VERB( Rprintf("OK [%f]\n", _runif_cache[0]); )
-
-		// if there is now a cached value it means that the RNG was already wrapped:
-		// run a fake set.seed to enforce User_unif_fun to be refreshed in RNG.c [line 240]
-		// NB: because the RNGwrapper library is now the last loaded RNG library
-		// the other hooks are actually already active.
-		DEBUG_VERB( Rprintf("# Check if active RNG is the one currently wrapped ... "); )
-		if( !_do_runif_calltest ){
-			DEBUG_VERB( Rprintf("YES\n"); )
-			match = current_index;
-		}else{
-			_do_runif_calltest = false;
-			DEBUG_VERB( Rprintf("NO\n"); )
-		}
-
-		// 4. Reload the states for the RNG libraries and look for any change
-		if( match < 0 ){
-			DEBUG_VERB( Rprintf("# Load internal states for each RNG provider ... \n"); )
-			std::vector<SEXP> states_1;
-			states_1.reserve(libs.length());
-			load_RNGstates(libs, flags, states_1);
-			DEBUG_VERB( Rprintf("DONE\n"); )
-
-			DEBUG_VERB( Rprintf("# Check changes in internal states ... \n"); )
-			int unique_match = -1;
-			for( int i=libs.length()-1; i>=0; --i){
-				const char* provider = libs[i];
-
-				DEBUG_VERB( Rprintf("\t* Provider '%s' ... ", provider); )
-				//Environment base = Environment("package:base");
-				//Function _print = base["print"];
-				//_print(states_0[i]);
-				//_print(states_1[i]);
-
-				if( !flags[i] ){
-					DEBUG_VERB( Rprintf("SKIP [discarded]\n"); )
-					continue;
-				}
-
-				// look for differences only if the states have been loaded
-				if( !isNull(states_0[i]) && !isNull(states_1[i]) ){
-					bool diff = false;
-					if( TYPEOF(states_0[i]) == REALSXP ){
-						NumericVector s0(states_0[i]);
-						NumericVector s1(states_1[i]);
-						diff = any( s1 != s0 ).is_true();
-					}else{
-						IntegerVector s0(states_0[i]);
-						IntegerVector s1(states_1[i]);
-						diff = any( s1 != s0 ).is_true();
-					}
-					if( diff ){// found differences
-						DEBUG_VERB( Rprintf("YES\n"); )
-						if( unique_match < 0 ) unique_match = i;
-						else unique_match = libs.length();
-
-					}else{
-						flags[i] = false;
-						DEBUG_VERB( Rprintf("NO [identical]\n"); )
-					}
-				}
-				DEBUG_VERB( else Rprintf("SKIP [not comparable]\n"); )
-
-				// set match to a meaningful value if a unique match was found
-				match = unique_match >= 0 && unique_match < libs.length() ? unique_match : -1;
-				if( unique_match >= libs.length() )
-					warning("Multiple RNG providers changed their state after runif draw");
-			}
-		}
-	}
-
-	// 5. Draw once from each RNG provider and once from runif:
-	// look for possibility of prediction of the result by pointer obtain
-	// from the first draw
-	if( match < 0 ){
-
-		// allocate memory for storing the drawn values and pointers
-		NumericVector runif_val(libs.length());
-		std::vector<double*> runif_ptr;
-		runif_ptr.reserve(libs.length());
-
-		DEBUG_VERB( Rprintf("# Drawing once from each RNG provider ... \n"); )
-		for( int i=libs.length()-1; i>=0; --i){
-
-			const char* provider = libs[i];
-			runif_val[i] = -1;
-			runif_ptr[i] = NULL;
-
-			if( !flags[i] ){
-				DEBUG_VERB( Rprintf("\t* Drawing from provider '%s' ... SKIP [discarded]\n", provider); )
-				continue;
-			}
-
-			DEBUG_VERB( Rprintf("\t* Drawing from provider '%s' ... ", provider); )
-			// load the user_unif_rand hook from RNG library i
-			lib_hooks[i] = R_FindSymbol(RNG_unif_rand, provider, NULL);
-
-			// try to get a value from it if present
-			if( !lib_hooks[i] ){
-				DEBUG_VERB( Rprintf("FAILED [invalid hook]\n"); )
-				continue;
-			}
-
-			try{
-				// call the provider's unif_rand hook
-				GetRNGstate();
-				double* val = runif_ptr[i] = static_cast<double*>( lib_hooks[i]() );
-				PutRNGstate();
-				if( !val ){
-					DEBUG_VERB( Rprintf("FAILED [null pointer]\n"); )
-					continue;
-				}
-				runif_val[i] = *val;
-				DEBUG_VERB( Rprintf("OK [%f]\n", *val); )
-			}catch(...){
-				// do nothing
-			}
-		}
-
-		// put a dummy value for the second cached RNG value. It will be filled
-		// with its correct value once the RNG is identified
-		_runif_cache.add(-1);
-
-		// Draw once again from the active RNG
-		//NB: there is no issue with the cache being called since we already
-		// tested that the RNG wrapper hook is not called by runif.
-		DEBUG_VERB( Rprintf("# Drawing from current runif ... "); )
-		double runif_val2 = _runif_cache.add(as<double>( stats_runif(1) ));
-		DEBUG_VERB( Rprintf("OK [%f]\n", runif_val2); )
-
-		DEBUG_VERB( Rprintf("# Check each RNG provider's ability to predict next drawn ... \n"); )
-		int unique_match = -1;
-		for( int i=libs.length()-1; i>=0; --i){
-
-			const char* provider = libs[i];
-
-			if( !flags[i] ){
-				DEBUG_VERB( Rprintf("\t* Comparing values for provider '%s' ... SKIP [discarded]\n", provider); )
-				continue;
-			}
-
-			DEBUG_VERB( Rprintf("\t* Comparing values for provider '%s' ... ", provider); )
-
-			// skip bad values
-			if( runif_ptr[i] == NULL || runif_val[i] == -1 ){
-				DEBUG_VERB( Rprintf("FAILED [invalid values]\n"); )
-				continue;
-			}
-
-			try{
-				// if the previous pointer predicts the value, we've got a match
-				if( *runif_ptr[i] == runif_val2 ){
-
-					DEBUG_VERB( Rprintf("YES [value]\n"); )
-					if( unique_match < 0 ) unique_match = i;
-					else if(unique_match < libs.length() )
-						unique_match = libs.length() + unique_match;
-
-				}else if( runif_ptr[i]+1 != NULL && *(runif_ptr[i]+1) == runif_val2 ){// maybe the internal state only shifts
-
-					DEBUG_VERB( Rprintf("YES [shifted value]\n"); )
-					if( unique_match < 0 ) unique_match = i;
-					else if(unique_match < libs.length() )
-						unique_match = libs.length() + unique_match;
-
-				}
-			}catch(...){
-				// do nothing
-			}
-		}
-
-		// set match to a meaningful value: use first match in case of multiple match
-		if( unique_match >= libs.length() ){
-			warning("Multiple RNG providers changed their pointer's value after runif draw: using first match");
-			match = unique_match - libs.length();
-		}
-		else if( unique_match >= 0 )
-			match = unique_match;
-
-		// set the second cached RNG value with its correct value
-		if( match >= 0 )
-			_runif_cache[1] = runif_val[match];
-	}
-
-
-	const char* provider = NULL;
-
-	// if the active RNG provider was not found, then set the last loaded RNG
-	// as the currently wrapped provider and throw a warning about it.
-	//NB: this means that the active RNG is still called by the R function `runif`.
-	// The change of provider will only occur at the next call to `RNGkind` or
-	// `set.seed`.
-	if( match < 0 ){
-		const char* last = as<const char*>(RNGlibs(1));
-		warning("Could not identify the active user-supplied RNG provider: "
-				"using the last loaded RNG library '%s' as the next provider."
-				" [NB: restoration will not be possible]"
-				, last);
-
-		// reset the next RNG provider
-		rngtools_setNextProvider( wrap(last) );
-		// return an empty string
-		return( R_NilValue );
-
-	}else{
-		// the current user-supplied RNG provider was identified
-		provider = libs[match];
-		DEBUG_VERB( Rprintf("# Detected RNG provider '%s'\n", provider); )
-
-		// load the detected RNG provider, reloading the hooks
-		rngtools_setProvider( wrap(provider), wrap(true));
-
-		// return the identified provider
-		return( wrap(provider) );
-	}
-
-
-	END_RCPP
-
-}
+///**
+// * Auto-detect the currently active user-supplied RNG provider.
+// */
+//SEXP rngtools_detectProvider(){
+//
+//	using namespace Rcpp;
+//
+//	BEGIN_RCPP
+//
+//	DEBUG_VERB( Rprintf("# RNGwrapper: Trying to detect current user-supplied RNG ...\n"); )
+//
+//	// identify the RNG library that was in use before reloading
+//	//1. get all the RNG libs (they are in loading order: the last one is the
+//	// more likely to be the one that was in use
+//	Environment RNGwrap_env = RNGWRAP_ENV;
+//	Function RNGlibs = RNGwrap_env["RNGlibs"];
+//	DEBUG_VERB( Rprintf("# Loading RNG libraries\n"); )
+//	CharacterVector libs = as<CharacterVector>(RNGlibs());
+//
+//	// if there is no loaded RNG provider then reset the hooks
+//	if( libs.length() == 0 ){
+//		DEBUG_VERB( Rprintf("# Detected no RNG provider\n"); )
+//		rngtools_setProvider(wrap(""), wrap(true));
+//		return( wrap("") );
+//	}
+//	// if there is only one possible library then this must be the one
+//	if( libs.length() == 1 ){
+//		const char* provider = libs[0];
+//		DEBUG_VERB( Rprintf("# Detected unique RNG provider '%s'\n", provider); )
+//
+//		// load the detected RNG provider, reloading the hooks
+//		rngtools_setProvider( wrap(provider), wrap(true));
+//
+//		// return the identified provider
+//		return( wrap(provider) );
+//	}
+//
+//	DEBUG_VERB( Rprintf("# Allocate memory for hooks\n"); )
+//	std::vector<DL_FUNC> lib_hooks;
+//	lib_hooks.reserve(libs.length());
+//
+//	// create a vector of flags: 1=lookup, 0=discard
+//	LogicalVector flags(Dimension(libs.length()), true);
+//	int match = -1;
+//
+//	// Load R-level function: runif
+//	Environment stats = Environment("package:stats");
+//	Function stats_runif = stats["runif"];
+//
+//	//2. Search a matching RNG by seed
+//	match = searchRNG_bySeed(libs, flags);
+//
+//	match = -1;
+//	// no unique match was found: carry on the search
+//	if( match < 0 ){
+//
+//		// find index for currently wrapped RNG
+//		DEBUG_VERB( Rprintf("# Lookup for currently wrapped RNG '%s' ... ", _current_provider.name.c_str()); )
+//		int current_index = -1;
+//		for(int i=libs.length()-1; i>=0; --i){
+//			const char* provider = libs[i];
+//			if( _current_provider.name ==  provider ){
+//				current_index = i;
+//				break;
+//			}
+//		}
+//		if( current_index < 0 ){
+//			DEBUG_VERB( Rprintf("ERROR\n"); )
+//			error("Could not find the currently wrapped RNG provider in the provider list");
+//		}
+//		DEBUG_VERB( Rprintf("OK [index:%i]\n", current_index); )
+//
+//		DEBUG_VERB( Rprintf("# Store external state for each RNG provider ... \n"); )
+//		// 2. Load states for known RNG libraries, call `runif` and see if it changes
+//		// the state.
+//		std::vector<SEXP> states_0;
+//		states_0.reserve(libs.length());
+//		load_RNGstates(libs, flags, states_0);
+//		DEBUG_VERB( Rprintf("DONE\n"); )
+//
+//		// 3. check if the active RNG was wrapped already, in
+//		// this case, the provider is known as it was restored in the R function
+//		// RNGwrap.
+//		DEBUG_VERB( Rprintf("# Drawing from runif ... "); )
+//		_do_runif_calltest = true;
+//		_runif_cache.reset();
+//		_runif_cache.add( as<double>( stats_runif(1) ) );
+//		DEBUG_VERB( Rprintf("OK [%f]\n", _runif_cache[0]); )
+//
+//		// if there is now a cached value it means that the RNG was already wrapped:
+//		// run a fake set.seed to enforce User_unif_fun to be refreshed in RNG.c [line 240]
+//		// NB: because the RNGwrapper library is now the last loaded RNG library
+//		// the other hooks are actually already active.
+//		DEBUG_VERB( Rprintf("# Check if active RNG is the one currently wrapped ... "); )
+//		if( !_do_runif_calltest ){
+//			DEBUG_VERB( Rprintf("YES\n"); )
+//			match = current_index;
+//		}else{
+//			_do_runif_calltest = false;
+//			DEBUG_VERB( Rprintf("NO\n"); )
+//		}
+//
+//		// 4. Reload the states for the RNG libraries and look for any change
+//		if( match < 0 ){
+//			DEBUG_VERB( Rprintf("# Load internal states for each RNG provider ... \n"); )
+//			std::vector<SEXP> states_1;
+//			states_1.reserve(libs.length());
+//			load_RNGstates(libs, flags, states_1);
+//			DEBUG_VERB( Rprintf("DONE\n"); )
+//
+//			DEBUG_VERB( Rprintf("# Check changes in internal states ... \n"); )
+//			int unique_match = -1;
+//			for( int i=libs.length()-1; i>=0; --i){
+//				const char* provider = libs[i];
+//
+//				DEBUG_VERB( Rprintf("\t* Provider '%s' ... ", provider); )
+//				//Environment base = Environment("package:base");
+//				//Function _print = base["print"];
+//				//_print(states_0[i]);
+//				//_print(states_1[i]);
+//
+//				if( !flags[i] ){
+//					DEBUG_VERB( Rprintf("SKIP [discarded]\n"); )
+//					continue;
+//				}
+//
+//				// look for differences only if the states have been loaded
+//				if( !isNull(states_0[i]) && !isNull(states_1[i]) ){
+//					bool diff = false;
+//					if( TYPEOF(states_0[i]) == REALSXP ){
+//						NumericVector s0(states_0[i]);
+//						NumericVector s1(states_1[i]);
+//						diff = any( s1 != s0 ).is_true();
+//					}else{
+//						IntegerVector s0(states_0[i]);
+//						IntegerVector s1(states_1[i]);
+//						diff = any( s1 != s0 ).is_true();
+//					}
+//					if( diff ){// found differences
+//						DEBUG_VERB( Rprintf("YES\n"); )
+//						if( unique_match < 0 ) unique_match = i;
+//						else unique_match = libs.length();
+//
+//					}else{
+//						flags[i] = false;
+//						DEBUG_VERB( Rprintf("NO [identical]\n"); )
+//					}
+//				}
+//				DEBUG_VERB( else Rprintf("SKIP [not comparable]\n"); )
+//
+//				// set match to a meaningful value if a unique match was found
+//				match = unique_match >= 0 && unique_match < libs.length() ? unique_match : -1;
+//				if( unique_match >= libs.length() )
+//					warning("Multiple RNG providers changed their state after runif draw");
+//			}
+//		}
+//	}
+//
+//	// 5. Draw once from each RNG provider and once from runif:
+//	// look for possibility of prediction of the result by pointer obtain
+//	// from the first draw
+//	if( match < 0 ){
+//
+//		// allocate memory for storing the drawn values and pointers
+//		NumericVector runif_val(libs.length());
+//		std::vector<double*> runif_ptr;
+//		runif_ptr.reserve(libs.length());
+//
+//		DEBUG_VERB( Rprintf("# Drawing once from each RNG provider ... \n"); )
+//		for( int i=libs.length()-1; i>=0; --i){
+//
+//			const char* provider = libs[i];
+//			runif_val[i] = -1;
+//			runif_ptr[i] = NULL;
+//
+//			if( !flags[i] ){
+//				DEBUG_VERB( Rprintf("\t* Drawing from provider '%s' ... SKIP [discarded]\n", provider); )
+//				continue;
+//			}
+//
+//			DEBUG_VERB( Rprintf("\t* Drawing from provider '%s' ... ", provider); )
+//			// load the user_unif_rand hook from RNG library i
+//			lib_hooks[i] = R_FindSymbol(RNG_unif_rand, provider, NULL);
+//
+//			// try to get a value from it if present
+//			if( !lib_hooks[i] ){
+//				DEBUG_VERB( Rprintf("FAILED [invalid hook]\n"); )
+//				continue;
+//			}
+//
+//			try{
+//				// call the provider's unif_rand hook
+//				GetRNGstate();
+//				double* val = runif_ptr[i] = static_cast<double*>( lib_hooks[i]() );
+//				PutRNGstate();
+//				if( !val ){
+//					DEBUG_VERB( Rprintf("FAILED [null pointer]\n"); )
+//					continue;
+//				}
+//				runif_val[i] = *val;
+//				DEBUG_VERB( Rprintf("OK [%f]\n", *val); )
+//			}catch(...){
+//				// do nothing
+//			}
+//		}
+//
+//		// put a dummy value for the second cached RNG value. It will be filled
+//		// with its correct value once the RNG is identified
+//		_runif_cache.add(-1);
+//
+//		// Draw once again from the active RNG
+//		//NB: there is no issue with the cache being called since we already
+//		// tested that the RNG wrapper hook is not called by runif.
+//		DEBUG_VERB( Rprintf("# Drawing from current runif ... "); )
+//		double runif_val2 = _runif_cache.add(as<double>( stats_runif(1) ));
+//		DEBUG_VERB( Rprintf("OK [%f]\n", runif_val2); )
+//
+//		DEBUG_VERB( Rprintf("# Check each RNG provider's ability to predict next drawn ... \n"); )
+//		int unique_match = -1;
+//		for( int i=libs.length()-1; i>=0; --i){
+//
+//			const char* provider = libs[i];
+//
+//			if( !flags[i] ){
+//				DEBUG_VERB( Rprintf("\t* Comparing values for provider '%s' ... SKIP [discarded]\n", provider); )
+//				continue;
+//			}
+//
+//			DEBUG_VERB( Rprintf("\t* Comparing values for provider '%s' ... ", provider); )
+//
+//			// skip bad values
+//			if( runif_ptr[i] == NULL || runif_val[i] == -1 ){
+//				DEBUG_VERB( Rprintf("FAILED [invalid values]\n"); )
+//				continue;
+//			}
+//
+//			try{
+//				// if the previous pointer predicts the value, we've got a match
+//				if( *runif_ptr[i] == runif_val2 ){
+//
+//					DEBUG_VERB( Rprintf("YES [value]\n"); )
+//					if( unique_match < 0 ) unique_match = i;
+//					else if(unique_match < libs.length() )
+//						unique_match = libs.length() + unique_match;
+//
+//				}else if( runif_ptr[i]+1 != NULL && *(runif_ptr[i]+1) == runif_val2 ){// maybe the internal state only shifts
+//
+//					DEBUG_VERB( Rprintf("YES [shifted value]\n"); )
+//					if( unique_match < 0 ) unique_match = i;
+//					else if(unique_match < libs.length() )
+//						unique_match = libs.length() + unique_match;
+//
+//				}
+//			}catch(...){
+//				// do nothing
+//			}
+//		}
+//
+//		// set match to a meaningful value: use first match in case of multiple match
+//		if( unique_match >= libs.length() ){
+//			warning("Multiple RNG providers changed their pointer's value after runif draw: using first match");
+//			match = unique_match - libs.length();
+//		}
+//		else if( unique_match >= 0 )
+//			match = unique_match;
+//
+//		// set the second cached RNG value with its correct value
+//		if( match >= 0 )
+//			_runif_cache[1] = runif_val[match];
+//	}
+//
+//
+//	const char* provider = NULL;
+//
+//	// if the active RNG provider was not found, then set the last loaded RNG
+//	// as the currently wrapped provider and throw a warning about it.
+//	//NB: this means that the active RNG is still called by the R function `runif`.
+//	// The change of provider will only occur at the next call to `RNGkind` or
+//	// `set.seed`.
+//	if( match < 0 ){
+//		const char* last = as<const char*>(RNGlibs(1));
+//		warning("Could not identify the active user-supplied RNG provider: "
+//				"using the last loaded RNG library '%s' as the next provider."
+//				" [NB: restoration will not be possible]"
+//				, last);
+//
+//		// reset the next RNG provider
+//		rngtools_setNextProvider( wrap(last) );
+//		// return an empty string
+//		return( R_NilValue );
+//
+//	}else{
+//		// the current user-supplied RNG provider was identified
+//		provider = libs[match];
+//		DEBUG_VERB( Rprintf("# Detected RNG provider '%s'\n", provider); )
+//
+//		// load the detected RNG provider, reloading the hooks
+//		rngtools_setProvider( wrap(provider), wrap(true));
+//
+//		// return the identified provider
+//		return( wrap(provider) );
+//	}
+//
+//
+//	END_RCPP
+//
+//}
 
 /**
  * Wrapper call to the current user-supplied hook 'unif_user_rand'
