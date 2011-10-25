@@ -26,6 +26,7 @@ export(
 	, nmfAlgorithm
 	, nmfEstimateRank
 	, nmfModels
+	, nmfRegisterAlgorithm
 	, nmfSeed
 	, nmf.options
 	, nmf.options.reset
