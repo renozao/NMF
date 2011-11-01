@@ -14,7 +14,7 @@ simple approaches proposed in the literature.
 \usage{
 nmfEstimateRank(x, range, method = nmf.getOption("default.algorithm"), nrun = 30, verbose=FALSE, stop=FALSE, ...)
 
-plot.NMF.rank(x, what = c('all', 'cophenetic', 'rss', 'residuals'
+\method{plot}{NMF.rank}(x, what = c('all', 'cophenetic', 'rss', 'residuals'
 						, 'dispersion', 'evar', 'sparseness'
 						, 'sparseness.basis', 'sparseness.coef')
 						, ref=NULL, na.rm=FALSE, ...)

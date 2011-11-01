@@ -23,6 +23,13 @@
 \alias{$,NMF-method}
 \alias{$<-,NMF-method}
 
+\alias{nmfRegisterAlgorithm}
+\alias{nmfRegisterAlgorithm,NMFStrategy,character-method}
+\alias{nmfRegisterAlgorithm,NMFStrategy,missing-method}
+\alias{nmfRegisterAlgorithm,character,ANY-method}
+\alias{nmfRegisterAlgorithm,function,character-method}
+
+
 \title{Undocumented or Internal methods and functions for package NMF}
 
 \description{

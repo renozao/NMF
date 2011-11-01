@@ -1338,6 +1338,8 @@ subset_index <- function(x, margin, subset){
 #' Please read the associated vignette for more information and sample code.
 #' 
 #' @param x numeric matrix of the values to be plotted.
+#' An \code{\link[Biobase:ExpressionSet-class]{ExpressionSet}} objects can also 
+#' be passed, in which case the expression values are plotted (\code{exprs(x)}).
 #' 
 #' @param color colour specification for the heatmap. Default to palette 
 #' '-RdYlBu2:100', i.e. reversed palette 'RdYlBu2' (a slight modification of 

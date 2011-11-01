@@ -14,21 +14,24 @@
 }
 \usage{
   aheatmap(x, color = "-RdYlBu2:100", breaks = NA,
-  border_color = NA, cellwidth = NA, cellheight = NA, scale
-  = "none", Rowv = TRUE, Colv = TRUE, revC =
-  identical(Colv, "Rowv") || isNA(Rowv) ||
-  (is.integer(Rowv) && length(Rowv) > 1), distfun =
-  "euclidean", hclustfun = "complete", reorderfun =
-  function(d, w) reorder(d, w), treeheight = 50, legend =
-  TRUE, annCol = NA, annRow = NA, annColors = NA, annLegend
-  = TRUE, labRow = NULL, labCol = NULL, subsetRow = NULL,
-  subsetCol = NULL, fontsize = 10, cexRow = min(0.2 +
-  1/log10(nr), 1.2), cexCol = min(0.2 + 1/log10(nc), 1.2),
-  filename = NA, width = NA, height = NA, main = NULL, sub
-  = NULL, info = NULL, verbose = getOption("verbose"), ...)
+  border_color = NA, cellwidth = NA, cellheight = NA,
+  scale = "none", Rowv = TRUE, Colv = TRUE,
+  revC = identical(Colv, "Rowv") || isNA(Rowv) || (is.integer(Rowv) && length(Rowv) > 1),
+  distfun = "euclidean", hclustfun = "complete",
+  reorderfun = function(d, w) reorder(d, w),
+  treeheight = 50, legend = TRUE, annCol = NA, annRow = NA,
+  annColors = NA, annLegend = TRUE, labRow = NULL,
+  labCol = NULL, subsetRow = NULL, subsetCol = NULL,
+  fontsize = 10, cexRow = min(0.2 + 1/log10(nr), 1.2),
+  cexCol = min(0.2 + 1/log10(nc), 1.2), filename = NA,
+  width = NA, height = NA, main = NULL, sub = NULL,
+  info = NULL, verbose = getOption("verbose"), ...)
 }
 \arguments{
-  \item{x}{numeric matrix of the values to be plotted.}
+  \item{x}{numeric matrix of the values to be plotted. An
+  \code{\link[Biobase:ExpressionSet-class]{ExpressionSet}}
+  objects can also be passed, in which case the expression
+  values are plotted (\code{exprs(x)}).}
 
   \item{color}{colour specification for the heatmap.
   Default to palette '-RdYlBu2:100', i.e. reversed palette
@@ -260,7 +263,7 @@
   \item{sub}{Subtitle as a character string or a grob.}
 
   \item{info}{(experimental) Extra information as a
-  character vector or a grob. If \code{info=TRUE},
+  character vector or a grob.  If \code{info=TRUE},
   information about the clustering methods is displayed at
   the bottom of the plot.}
 
@@ -296,11 +299,6 @@
 
   Please read the associated vignette for more information
   and sample code.
-}
-\author{
-  Original version of \code{\link[pheatmap]{pheatmap}}:
-  Raivo Kolde <rkolde@gmail.com> Enhancement into
-  \code{aheatmap}: Renaud Gaujoux
 }
 \examples{
 # Generate random data
@@ -361,5 +359,11 @@ aheatmap(x, annCol = annotation, annColors = ann_colors)
 drows = dist(x, method = "minkowski")
 dcols = dist(t(x), method = "minkowski")
 aheatmap(x, Rowv = drows, Colv = dcols)
+}
+\author{
+  Original version of \code{\link[pheatmap]{pheatmap}}:
+  Raivo Kolde <rkolde@gmail.com>
+
+  Enhancement into \code{aheatmap}: Renaud Gaujoux
 }
 

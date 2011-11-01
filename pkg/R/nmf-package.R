@@ -43,11 +43,11 @@ NA
 		env <- if( !is.null(pkgname) ) asNamespace(pkgname) else .GlobalEnv
 		bioc.loaded <- eval(b, envir=env)
 		if( is(bioc.loaded, 'try-error') )
-			message("NMF:load: loading BioConductor layer ... ERROR")
+			packageStartupMessage("NMF:load: loading BioConductor layer ... ERROR")
 		else if ( bioc.loaded )
-			message("NMF:load: loading BioConductor layer ... OK")
+			packageStartupMessage("NMF:load: loading BioConductor layer ... OK")
 		else
-			message("NMF:load: loading BioConductor layer ... SKIPPED")
+			packageStartupMessage("NMF:load: loading BioConductor layer ... SKIPPED")
 		
 		## 4. LOAD compiled library if one is loading the package 
 		if( devmode() ){ # only used when developing the package and directly sourcing the files

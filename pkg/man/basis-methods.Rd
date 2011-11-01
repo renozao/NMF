@@ -1,4 +1,4 @@
-\name{basis/coef-methods: Accessing NMF matrix factors}
+\name{basis_coef}
 \docType{methods}
 \alias{basis-methods}
 \alias{basis}

@@ -11,6 +11,9 @@
 \alias{nmfModel,numeric,numeric-method}
 \alias{nmfModel,matrix,ANY-method}
 \alias{nmfModel,matrix,matrix-method}
+\alias{nmfModel,ExpressionSet,ANY-method}
+\alias{nmfModel,ANY,ExpressionSet-method}
+
 \alias{nmfModels}
 
 \title{Factory Method for NMF Models}
@@ -219,6 +222,14 @@ for both factors:
 
 }
 
+\item{\code{signature(rank = "ANY", target = "ExpressionSet")}}{
+	Uses the expression matrix of \code{target}, i.e. it is equivalent to 
+	\code{nmfModel(rank, exprs(target), ...)}.
+}
+\item{\code{signature(rank = "ExpressionSet", target = "ANY")}}{ 
+	Uses the expression matrix of \code{rank}, i.e. it is equivalent to
+	\code{nmfModel(exprs(rank), target, ...)}.
+}
 
 }}
 

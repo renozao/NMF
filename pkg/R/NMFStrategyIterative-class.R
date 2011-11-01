@@ -240,10 +240,12 @@ xifyStrategy <- function(strategy, workspace){
 
 #' Get/Set a Static Variable in NMF Algorithms
 #' 
-#' @param name 
-#' @param value 
-#' @param init 
-#' @return 
+#' @param name Name of the static variable (as a single character string)
+#' @param value New value of the static variable
+#' @param init a logical used when a \code{value} is provided, that specifies 
+#' if the variable should be set to the new value only if it does not exist yet 
+#' (\code{init=TRUE}). 
+#' @return The static variable's value
 #' @export
 staticVar <- function(){
 	

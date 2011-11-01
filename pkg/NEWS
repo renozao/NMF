@@ -1,16 +1,20 @@
 *************************************************************************
-*                       Changes in version 0.6                          *
+*                       Changes in version 0.6.03                       *
 *************************************************************************
+
+WARNING
+    Due to the major changes made in the internal structure of the standard NMF 
+    models, previous NMF fits are not compatible with this version.
 
 NEW FEATURES
 
     o The factory function nmfModel has been enhanced and provides new 
     methods that makes more easier the creation of NMF objects.
-    See ?nmfModel. 
+    See ?nmfModel.
     
     o A new heatmap drawing function 'aheatmap' (for annotated heatmap) is 
     now used to generate the different heatmaps (basismap, coefmap and consensusmap). 
-    It is an enhancement of the function pheatmap from package pheatmap and draw 
+    It is a enhancement/fork of the function pheatmap from package pheatmap and draw 
     -- I think -- very nice heatmaps, providing a convenient and flexible 
     interface to add annotation tracks to both the columns and rows, with 
     sensible automatic legends.

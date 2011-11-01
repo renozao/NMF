@@ -13,13 +13,13 @@ Description: This package provides a framework to perform Non-negative Matrix Fa
 License: GPL (>=2)
 URL: http://nmf.r-forge.r-project.org
 LazyLoad: yes
-Depends: R (>= 2.12.1), methods, stats, graphics, digest, rstream (>= 1.3.1), Rcpp, gridBase, stringr, colorspace
+Depends: R (>= 2.12.1), methods, stats, graphics, digest, rstream (>= 1.3.1), Rcpp, gridBase, stringr,
+            colorspace
 Suggests: Biobase, RColorBrewer, fastICA, bigmemory, doMC, synchronicity, corpcor, xtable
 Enhances: Biobase
-Collate: utils.R colorcode.R options.R rstream-extension.R 
-		NMF-class.R NMFstd-class.R NMFOffset-class.R NMFns-class.R
-		NMFfit-class.R NMFSet-class.R registry.R 
-		NMFStrategy-class.R NMFStrategyFunction-class.R NMFStrategyIterative-class.R
-		snmf.R lnmf.R pe-nmf.R ica.R nndsvd.R seed.R parallel.R nmf.R 
-		Bioc-layer.R NMFplots.R aheatmap.R nmf-package.R		
+Collate: utils.R colorcode.R options.R rstream-extension.R NMF-class.R NMFstd-class.R NMFOffset-class.R
+            NMFns-class.R NMFfit-class.R NMFSet-class.R registry.R NMFStrategy-class.R
+            NMFStrategyFunction-class.R NMFStrategyIterative-class.R snmf.R lnmf.R pe-nmf.R ica.R nndsvd.R
+            seed.R parallel.R nmf.R Bioc-layer.R NMFplots.R aheatmap.R nmf-package.R
 LinkingTo: Rcpp
+Packaged: 2011-11-01 13:32:23 UTC; renaud
