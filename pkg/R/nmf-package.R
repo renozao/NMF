@@ -59,8 +59,6 @@ NA
 			dll <- library.dynam('NMF', pkgname, libname)
 		}
 		
-		## 5. Initialize the RNG layer
-		.init.RNG(pkgname, libname, dll[['path']])
 	}
 	
 	# run intialization sequence suppressing messages or not depending on verbosity options
@@ -78,8 +76,7 @@ NA
 	# unload compiled library
 	dlls <- names(base::getLoadedDLLs())
 	if ( 'NMF' %in%  dlls )
-		library.dynam.unload("NMF", libpath);
-	RNGwrapper.unload()
+		library.dynam.unload("NMF", libpath);	
 }
 
 .onAttach <- function(libname, pkgname){

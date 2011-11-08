@@ -607,10 +607,10 @@ This value is used to set the state of the RNG, and the initialization is perfor
 When the function \code{nmf} exits, the value of the random seed (\code{.Random.seed}) is restored to its original state -- as before the call.
 
 In the case of a single run (i.e. with \code{nrun=1}), the default is to use the current RNG, set with the R core function \code{set.seed}. 
-In the case of multiple runs, the computations use RNGstream, as provided by the package \code{rstream} \cite{Lecuyer2002, Lecuyer2005}, which generates multiple independent random streams (one per run).
+In the case of multiple runs, the computations use RNGstream, as provided by the core RNG ``L'Ecuyer-CMRG" \cite{Lecuyer2002}, which generates multiple independent random streams (one per run).
 This ensures the complete reproducibility of any given set of runs, even when their computation is performed in parallel.
 Since RNGstream requires a 6-length numeric seed, a random one is generated if only a single numeric value is passed to \code{seed}.
-Moreover, single runs can also use RNGstream by readily passing a 6-length seed.
+Moreover, single runs can also use RNGstream by passing a 6-length seed.
   
 <<seed_numeric>>=
 # single run and single numeric seed

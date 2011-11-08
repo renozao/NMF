@@ -10,11 +10,9 @@ useDynLib(NMF
 			, clone_object
 			)
 
+import(methods)
 importFrom(graphics, plot)
 importFrom(stats, coefficients, coef, fitted, offset, predict, residuals, deviance)
-
-# rstream extension
-import(rstream)
 
 export(
 	aheatmap
@@ -45,8 +43,6 @@ export(
 	, RNGrecovery
 	, RNGseq
 	, RNGseed
-	, RNGwrap
-	, RNGhooks
 	, staticVar
 	, syntheticNMF
 )

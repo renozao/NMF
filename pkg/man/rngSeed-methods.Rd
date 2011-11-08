@@ -10,7 +10,8 @@
 \alias{getRNG,list-method}
 \alias{getRNG,ANY-method}
 \alias{getRNG,NMFfitXn-method}
-\alias{getRNG,rstream-method}
+%\alias{getRNG,rstream-method}
+\alias{getRNG,integer-method}
 
 \alias{getRNG1}
 \alias{getRNG1-methods}
@@ -37,8 +38,9 @@
  This is useful to reproduce or compare results from different multiple runs. 
  
  The function \code{RNGdigest} returns a hash that uniquely identifies given 
- RNG settings. The hash can be -- and is -- used to compare two \code{\link{rstream}}
- objects and test if they represent the same random streams, in the same state.
+ RNG settings. 
+ %The hash can be -- and is -- used to compare two \code{\link{rstream}}
+ %objects and test if they represent the same random streams, in the same state.
  The hash is computed based on the result of \code{getRNG}.
   
  The function \code{rng.equal} tests whether two -- embedded -- RNG objects 
@@ -57,7 +59,7 @@ for S4 objects, or from element \code{rng} or \code{noise$rng} for a \code{list}
 }
 \usage{
 
-\S4method{getRNG}{missing}(object, packed=FALSE)
+\S4method{getRNG}{missing}(object)
 \S4method{getRNG}{ANY}(object)
 \S4method{getRNG1}{NMFfitX}(object)
 
@@ -75,8 +77,8 @@ If missing, the returned value is based on the current RNG settings.
  
 For \code{getRNG1}, an \code{NMFfitX} object.}
 
-\item{packed}{a logical that specifies if the returned \code{rstream} object 
-should be packed or not.}
+%\item{packed}{a logical that specifies if the returned \code{rstream} object 
+%should be packed or not.}
 
 \item{x}{ any object handled by \code{getRNG}.
 For \code{rng1.equal}, \code{x} must be an \code{\linkS4class{NMFfitX}} object, such as 
@@ -91,11 +93,12 @@ such as returned by multiple NMF runs.}
 
 \value{
 
-For \code{getRNG}, the class of the returned value depends on the type of the 
-extracted object (see details).
-For \code{NMFfit} objects, the result is an \code{\linkS4class{rstream}} object 
-that contains the RNG settings as before the computation starts, i.e. before the 
-seeding step.
+\code{getRNG} returns an integer vector (see \code{\link{.Random.seed}}) 
+%For \code{getRNG}, the class of the returned value depends on the type of the 
+%extracted object (see details).
+%For \code{NMFfit} objects, the result is an \code{\linkS4class{rstream}} object 
+%that contains the RNG settings as before the computation starts, i.e. before the 
+%seeding step.
 
 \code{RNGdigest} returns the RNG hash as a single character string.
 
@@ -113,8 +116,6 @@ See details for the differences between these two functions.
 
 # current random seed (by default it is a 626-length numeric vector)
 getRNG()
-# packed version
-getRNG(packed=TRUE)
 
 # fit an NMF model on a random target matrix
 V <- rmatrix(100,20)

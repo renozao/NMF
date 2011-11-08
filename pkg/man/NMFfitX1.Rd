@@ -36,7 +36,7 @@ as the results of single NMF run -- as if only the best run had been performed.
     to compute the object.
     }
     
-    \item{\code{rng1}:}{an \code{\link{rstream}} object that contains RNG 
+    \item{\code{rng1}:}{an object that contains RNG 
     settings used for the first run. See \code{\link{getRNG1}}.
     }
     

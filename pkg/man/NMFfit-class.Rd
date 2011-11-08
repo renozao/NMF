@@ -90,8 +90,9 @@ and parameters used to compute the factorization.
     algorithm that computed the NMF. Default value is \code{''}. 
     See \code{\link{nmf-methods}} for more details. }
     
-    \item{\code{rng}:}{An \code{\link{rstream}} object that contains the RNG 
-    settings used for the fit. 
+    \item{\code{rng}:}{An object that contains the RNG settings used for the fit. 
+    Currently the settings are stored as an integer vector, the value of 
+    \code{\link{.Random.seed}} at the time the object is created.  
     It is initialized by the \code{initialized} method. 
     See \code{\link{getRNG}} for more details. }
     

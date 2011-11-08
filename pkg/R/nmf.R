@@ -239,16 +239,8 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='function'),
 	return(res)
 }
 
-.showRNG <- function(...){
-	
+.showRNG <- function(...){	
 	message(paste(capture.output( RNGinfo(..., prefix="#") ), collapse="\n"))	
-#	if( missing(object) ){
-#		message("# RNG kind: ", paste(baseRNGkind(), collapse=" / "), " [", RNGproviderInfo(user.supplied=TRUE, version=TRUE), "]")								
-#		message("# RNG state: ", RNGdesc())
-#	}else{
-#		message("# RNG kind: ", paste(rstream.provider(object), baseRNGkind()[2], sep=" / "), " [", RNGproviderInfo(user.supplied=TRUE, version=TRUE), "]")								
-#		message("# RNG state: ", RNGdesc(object))
-#	}
 } 
 
 # locally define readRDS and saveRDS 
@@ -274,7 +266,7 @@ function(x, rank, method
 				c(t='track', v='verbose', d='debug'
 				, p='parallel', P='parallel.required'
 				, k='keep.all', r='restore.seed', f='dry.run'
-				, R='reproducible', g='garbage.collect'))
+				, g='garbage.collect'))
 	}
 	
 	# setup verbosity options
@@ -297,8 +289,6 @@ function(x, rank, method
 		
 	# dry run
 	dry.run <- if( is.null(.options$dry.run) ) FALSE else .options$dry.run 
-	# using rstream
-	opt.reproducible <- if( is.null(.options$reproducible) ) nmf.getOption('reproducible') else .options$reproducible
 	# call the garbage collector regularly
 	opt.gc <- if( is.null(.options$garbage.collect) ) FALSE else .options$garbage.collect
 	if( is.logical(opt.gc) && opt.gc )
@@ -445,7 +435,7 @@ function(x, rank, method
 					}
 					else if( require.quiet(doMC) ){
 						
-						ncores.machine <- getNCores()
+						ncores.machine <- parallel::detectCores()
 						if( ncores.machine == 1 ){
 							if( opt.parallel.required ){
 								if( verbose > 1 ) message("ERROR")
@@ -578,20 +568,25 @@ function(x, rank, method
 			message("# ** Original RNG settings:")
 			.showRNG()
 		}
-		# Get the original active RNG
-		mainRNG <- getRNG()
 		# setup the RNG sequence
-		.RNG.config <- .setupRNG(seed, nrun, use.streams=opt.reproducible, verbose=verbose) 
-		# update the seeding method
-		seed <- .RNG.config$method
-		# get the RNG sequence
-		.RNG.seed <- .RNG.config$seq
-		# partially assert the result
-		if( opt.reproducible )
-			stopifnot( (!is.null(.RNG.seed[[1]]) && !is.null(.RNG.seed[[2]])) )
-		else
-			stopifnot( is.null(.RNG.seed[[2]]) )
-		
+		.RNG.seed <- .setupRNG(seed, n = nrun, verbose=verbose)
+		stopifnot( length(.RNG.seed) == nrun )
+		# store the current RNG state
+		#NB: if no seeding occured then the RNG has still been drawn once in RNGseq
+		mainRNG <- getRNG()
+		# update the seeding method if necessary
+		if( is.numeric(seed) )			
+			seed <- 'random'
+		# restore RNG settings on exit
+		on.exit({
+			if( verbose > 2 )
+				message("# Restoring RNG settings ... ", appendLF=FALSE)							
+			setRNG(mainRNG)					
+			if( verbose > 2 ){
+				message("OK")
+				.showRNG()
+			}
+		}, add=TRUE)
 		#end_RNG_all
 		
 		####FOREACH_NMF
@@ -603,28 +598,7 @@ function(x, rank, method
 			if( verbose > 1 )
 					message("# Using foreach backend: ", getDoParName()
 							," [version ", getDoParVersion(),"]")
-			
-			#start_RNG
-			# setup RNG restoration if at least the first RNG is forced
-			if( !is.null(.RNG.seed[[1]]) ){
 				
-				# Update the old active RNG in mode:repro as a draw might have 
-				# changed its state when the seed is not used
-				if( opt.reproducible )
-					mainRNG <- getRNG()
-				
-				on.exit({
-					if( verbose > 2 )
-						message("# Restoring RNG settings ... ", appendLF=FALSE)							
-					setRNG(mainRNG)					
-					if( verbose > 2 ){
-						message("OK")
-						.showRNG()
-					}
-				}, add=TRUE)
-			}
-			#end_RNG
-	
 			run.all <- function(...){
 								
 				## 1. SETUP			
@@ -704,13 +678,14 @@ function(x, rank, method
 						cat("\n## Run: ",n, "/", nrun, "\n", sep='')
 					
 					# set the RNG if necessary and restore after each run 
-					if( !is.null(RNGobj) ){
+#					if( !is.null(RNGobj) ){
 						if( .MODE_SEQ && verbose > 2 )
 							message("# Setting up loop RNG ... ", appendLF=FALSE)
 						
 						# unpack and set the RNG stream  
-						rstream.packed(RNGobj) <- FALSE
-						oldRNG <- .tryCatch_setRNG(RNGobj, verbose=verbose>3 && .MODE_SEQ)
+#						rstream.packed(RNGobj) <- FALSE
+#						oldRNG <- .tryCatch_setRNG(RNGobj, verbose=verbose>3 && .MODE_SEQ)
+						setRNG(RNGobj, verbose=verbose>3 && .MODE_SEQ)
 						
 						if( .MODE_SEQ && verbose > 2 )
 							message("OK")
@@ -725,7 +700,7 @@ function(x, rank, method
 #								.showRNG()
 #							}
 #						}, add=TRUE)
-					}
+#					}
 									
 					# limited verbosity in simple mode
 					if( verbose && !(.MODE_SEQ && verbose > 1)){
@@ -890,28 +865,7 @@ function(x, rank, method
 					# statis list with best result: fit, residual, consensus
 					best.static <- list(fit=NULL, residuals=NA, consensus=matrix(0, ncol(x), ncol(x)))					
 				}
-				
-				#start_RNG
-				# setup RNG restoration if at least the first RNG is forced
-				if( !is.null(.RNG.seed[[1]]) ){
-					
-					# Update the old active RNG in mode:repro as a draw might have 
-					# changed its state when the seed is not used
-					if( opt.reproducible )
-						mainRNG <- getRNG()
-					
-					on.exit({
-						if( verbose > 2 )
-							message("# Restoring RNG settings ... ", appendLF=FALSE)							
-						setRNG(mainRNG)					
-						if( verbose > 2 ){
-							message("OK")
-							.showRNG()
-						}
-					}, add=TRUE)
-				}
-				#end_RNG
-							
+											
 				## 2. RUN:
 				# perform a single run `nrun` times								
 				if( verbose && !debug ) cat('Runs:')
@@ -934,12 +888,13 @@ function(x, rank, method
 					
 					# set the RNG if necessary and restore after each run
 					RNGobj <- .RNG.seed[[n]]
-					if( !is.null(RNGobj) ){
+#					if( !is.null(RNGobj) ){
 						if( verbose > 2 )
 							message("# Setting up loop RNG ... ", appendLF=FALSE)
 						
 						# set the RNG stream  						
-						oldRNG <- .tryCatch_setRNG(RNGobj, verbose=verbose>3)
+#						oldRNG <- .tryCatch_setRNG(RNGobj, verbose=verbose>3)
+						setRNG(RNGobj, verbose=verbose>3)
 						
 						if( verbose > 2 )
 							message("OK")
@@ -955,7 +910,7 @@ function(x, rank, method
 #								.showRNG()
 #							}
 #						}, add=TRUE)
-					}
+#					}
 				
 					# fit a single NMF model
 					res <- nmf(x, rank, method, nrun=1, seed=seed, .options=pass.options, ...)
@@ -1089,10 +1044,13 @@ function(x, rank, method
 	
 	# do something if the RNG was actually changed
 	mainRNG <- getRNG()
-	.RNG.config <- .setupRNG(seed, use.streams=FALSE, verbose=verbose)
+	.RNG.seed <- .setupRNG(seed, 1, verbose=verbose)
+	if( verbose > 2 ) .showRNG()
+	
 	# update the seeding method
-	seed <- .RNG.config$method
-	if( !is.null(.RNG.config$seq) ){
+	if( !is.null(.RNG.seed) ){
+		seed <- 'random'
+		# restore RNG settings
 		on.exit({
 			if( verbose > 2 )
 				message("# Restoring original RNG settings ... ", appendLF=FALSE)							
@@ -1192,7 +1150,8 @@ function(x, rank, method
 			if( (is.character(seed) && length(seed) == 1) 
 				|| is.numeric(seed) 
 				|| is.null(seed) 
-				|| is(seed, 'rstream') ) seed.method <- seed
+#				|| is(seed, 'rstream') 
+				) seed.method <- seed
 			else if( is.function(seed) ) seed.method <- seed
 			else if( is.list(seed) ){ # seed is a list...
 				
@@ -1215,7 +1174,7 @@ function(x, rank, method
 							, "the name of a seeding method (see ?nmfSeed)"
 							, "a valid seed method definition"
 							, "a list containing the seeding method (i.e. a function or a character string) as its first element\n\tor as an element named 'method' [and optionnally extra arguments it will be called with]"
-							, "a numerical value or an 'rstream' object used to set the seed of the random generator"
+							, "a numerical value used to set the seed of the random generator"
 							, "NULL to directly pass the model instanciated from arguments 'model' or '...'."
 							, sep="\n\t- "))
 						 			
@@ -1356,20 +1315,20 @@ setMethod('seed', signature(x='ANY', model='ANY', method='numeric'),
 			return(res)
 		}
 )
-setMethod('seed', signature(x='ANY', model='ANY', method='rstream'),
-		function(x, model, method, ...){
-			
-			# set the seed using the numerical value by argument 'method'
-			orng <- setRNG(method)
-			#TODO: restore the RNG state? 
-			
-			# call seeding method 'random'
-			res <- seed(x, model, 'random', ...)
-			
-			# return result
-			return(res)
-		}
-)
+#setMethod('seed', signature(x='ANY', model='ANY', method='rstream'),
+#		function(x, model, method, ...){
+#			
+#			# set the seed using the numerical value by argument 'method'
+#			orng <- setRNG(method)
+#			#TODO: restore the RNG state? 
+#			
+#			# call seeding method 'random'
+#			res <- seed(x, model, 'random', ...)
+#			
+#			# return result
+#			return(res)
+#		}
+#)
 setMethod('seed', signature(x='ANY', model='ANY', method='character'),
 		function(x, model, method, ...){
 			

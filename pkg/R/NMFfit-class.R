@@ -56,7 +56,7 @@ setClass('NMFfit'
 			residuals = 'numeric', # residuals from the target matrix
 			method = 'character', # method used to compute the factorization
 			seed = 'character', # seeding method used to compute the factorization
-			rng = 'rstream', # numerical random seed
+			rng = 'ANY', # numerical random seed
 			distance = '.functionSlot.null', # method used to compute the distance between the target matrix and its NMF estimate
 			parameters = 'list', # method used to compute the factorization
 			runtime = 'proc_time', # running time to perform the NMF
@@ -93,7 +93,7 @@ newNMFfit <- function(fit=nmfModel(), ...){
 		
 		# if the initial RNG stream is not set already: set its value to the current RNG stream (store its packed version)
 		if( is.null(args$rng) )
-			args$rng <- getRNG(packed=TRUE)
+			args$rng <- getRNG()#packed=TRUE)
 		
 		do.call(new, c(list('NMFfit'), fit=fit, args))
 }
@@ -170,9 +170,7 @@ setMethod('show', 'NMFfit',
 			
 			# initial RNG stream			
 			se <- getRNG(object)
-			cat("RNG: ", se@type , if( is(se, 'rstream.runif') ) paste(' -', se@kind)
-				, ' [', RNGdigest(object) , ']' 				
-				, "\n", sep='')
+			cat("RNG: ", RNGdesc(se), "\n", sep='')
 	
 			# distance/objective function
 			svalue <- objective(object)
