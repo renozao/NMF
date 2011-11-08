@@ -1,2 +1,0 @@
-## Use the R HOME indirection to support installations of multiple R version
-PKG_LIBS = `$(R_HOME)/bin$(R_ARCH_BIN)/Rscript -e "Rcpp:::LdFlags()"`
