@@ -26,12 +26,17 @@
 \newcommand{\nbnote}[1]{\ \bigskip\todo[inline, backgroundcolor=blue!20!white]{\scriptsize\textsf{\textbf{NB:} #1}}\ \\}
 
 \definecolor{midnightblue}{rgb}{0.098,0.098,0.439}
+
+\makeatletter
+\@ifundefined{Houtput}{}{%
 \renewenvironment{Houtput}%
 {\vspace{5pt}\hspace{1em}
 \begin{minipage}[b]{.95\textwidth}%
 \color{midnightblue}\bfseries}%
 {\end{minipage}%
 \vspace{5pt}}%
+}
+\makeatother
 
 % put table of contents on two columns
 \usepackage[toc]{multitoc}
