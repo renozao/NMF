@@ -222,3 +222,42 @@ nmfUnregister <- function(name, registry.name){
 	invisible(TRUE)
 }
 nmfUnregister <- Vectorize(nmfUnregister, 'name')
+
+
+#' Get Stopping Criterion
+#' 
+#' Convert a key into a stopping criterion (i.e. a \code{function}).
+#' 
+#' Functions are returned unchanged, integer values are used to create a stopping 
+#' criterion of that number of iterations, numeric values are used to create a 
+#' stopping criterion of that stationary threshold.
+#' 
+#' @param val access key that can be a character string, a single integer or 
+#' numeric, or a function.
+#' 
+#' @return a function
+#' @aliases stop-nmf stop-NMF
+#' @export
+NMFStop <- function(val){
+	
+	key <- val
+	if( is.integer(key) )	nmf.stop.iteration(key)
+	else if( is.numeric(key) ) nmf.stop.threshold(key)
+	else if( is.function(key) ) key
+	else if( is.character(key) ){
+		# update .stop for back compatibility:
+		if( key == 'nmf.stop.consensus') key <- 'connectivity'
+		
+		# first lookup for a `nmf.stop.*` function
+		key2 <- paste('nmf.stop.', key, sep='')
+		sfun <- getFunction(key2, mustFind=FALSE)			
+		if( is.null(sfun) ) # lookup for the function as such
+			sfun <- getFunction(key, mustFind = FALSE)			
+		if( is.null(sfun) )
+			stop("Invalid key ['", key,"']: could not find functions '",key2, "' or '", key, "'")
+		sfun
+	}else if( identical(val, FALSE) ) # create a function that does not stop 
+		function(strategy, i, target, data, ...){FALSE}
+	else
+		stop("Invalid key: should be a function, a character string or a single integer/numeric value. See ?NMFStop.")	
+}

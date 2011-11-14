@@ -66,5 +66,5 @@ nmf.update.penmf <- function(i, x, data, alpha, beta, ...){
 		, name='pe-nmf', objective = penmf.objective
 		, model='NMFstd'
 		, Update= nmf.update.penmf
-		, Stop='nmf.stop.stationary')
+		, Stop='stationary')
 }

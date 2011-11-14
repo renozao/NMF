@@ -61,7 +61,10 @@ setClass('NMFStrategyIterative'
 
 		# at least 3 arguments for 'Stop'
 		if( !is.null(object@Stop) ){
-			n.stop <- names(formals(object@Stop))
+			
+			# retrieve the stopping criterion 
+			.stop <- NMFStop(object@Stop)
+			n.stop <- names(formals(.stop))
 			
 			if( length(n.stop) < 4 )
 				return("Invalid 'Stop' method - must have at least 4 arguments: 'strategy', 'i', 'target' [target matrix], 'data' [current NMF model]")
@@ -131,27 +134,24 @@ xifyStrategy <- function(strategy, workspace){
 		svalue <- slot(strategy,sname)
 		
 		# if the slot is valid (i.e. it's a non-empty character string), then process the name into a valid function
-		if( is.character(svalue) && nchar(svalue) > 0 ){
-			# set the slot with the executable version of the function 
-			fun <- getFunction(svalue)
-		}else if( is.function(svalue) )
-			fun <- svalue
-		else if( !missing(default) )
-			fun <- default
+		fun <-
+		if( is.null(svalue) && !missing(default) ) default
+		else if( sname == 'Stop' ) NMFStop(svalue)
+		else if( is.character(svalue) && nchar(svalue) > 0 ){
+			# set the slot with the executable version of the function			
+			getFunction(svalue)
+		}else if( is.function(svalue) )	svalue		
 		else
-			stop("NMFStrategyIterativeX - could not preload slot '", sname, "'")
-		
-		# setup a dedicated evaluation environment: use the strategy's workspace
-		#environment(fun) <- strategy@workspace
-		
+			stop("NMFStrategyIterativeX - could not pre-load slot '", sname, "'")		
+
 		# return the loaded function
 		fun
 	}
 	
 	# preload the function slots
 	slot(strategyX, 'Update') <- preload.slot(strategyX, 'Update')
-	slot(strategyX, 'Stop') <- preload.slot(strategyX, 'Stop', function(strategy, i, x, data, ...){FALSE})
-	slot(strategyX, 'WrapNMF') <- preload.slot(strategyX, 'WrapNMF', function(data){data})
+	slot(strategyX, 'Stop') <- preload.slot(strategyX, 'Stop', function(strategy, i, target, data, ...){FALSE})
+	slot(strategyX, 'WrapNMF') <- preload.slot(strategyX, 'WrapNMF', identity)
 	
 	# load the objective function
 	objective(strategyX) <- distance(method=objective(strategy))
@@ -274,27 +274,10 @@ staticVar <- staticVar()
 setMethod('run', signature(method='NMFStrategyIterative', x='matrix', seed='NMFfit'),
 	function(method, x, seed, .stop=NULL, ...){
 	
+	no.stop <- identical(.stop, FALSE)
 	# override the stop method on runtime
 	if( !is.null(.stop) ){
-		method@Stop <- 
-		if( is.integer(.stop) )	nmf.stop.iteration(.stop)
-		else if( is.numeric(.stop) ) nmf.stop.threshold(.stop)
-		else if( is.function(.stop) ) .stop
-		else if( is.character(.stop) ){
-			# update .stop for back compatibility:
-			if( .stop == 'nmf.stop.consensus') .stop <- 'connectivity'
-
-			# first lookup for a `nmf.stop.*` function
-			.stop2 <- paste('nmf.stop.', .stop, sep='')
-			sfun <- getFunction(.stop2, mustFind=FALSE)			
-			if( is.null(sfun) ) # lookup for the function as such
-				sfun <- getFunction(.stop, mustFind = FALSE)			
-			if( is.null(sfun) )
-				stop("NMF::nmf - Invalid argument `.stop` ['", .stop,"']: could not find functions '",.stop2, "' or '", .stop, "'")
-			sfun
-		}
-		else
-			stop("NMF::nmf - Invalid argument `.stop`: should be a function, a character string or a single integer/numeric value. See ?nmf.")
+		method@Stop <- NMFStop(.stop)
 	}
 	
 	# debug object in debug mode
@@ -308,8 +291,14 @@ setMethod('run', signature(method='NMFStrategyIterative', x='matrix', seed='NMFf
 		
 	# runtime resolution of the strategy's functions by their names if necessary
 	strategyX = xifyStrategy(method, .Workspace)
-	# call the xified startegy's run method			
-	run(strategyX, x, seed, ...)
+	
+	# call the xified startegy's run method				
+	if( no.stop ){
+		# issue a message for the user to manually stop the algorithm
+		message("#######\n# NMF - Using no stopping criterion: press Ctrl+C to stop\n#######")
+		run(strategyX, x, seed, maxIter=Inf, ...)
+	}else
+		run(strategyX, x, seed, ...)
 })
 
 ###% Generic algorithm for NMF, based on NMFStrategyIterativeX object.

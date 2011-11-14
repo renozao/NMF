@@ -15,12 +15,11 @@ URL: http://nmf.r-forge.r-project.org
 LazyLoad: yes
 Depends: R (>= 2.14.0), methods, stats, graphics, parallel, digest, gridBase, stringr, colorspace
 Imports: methods, stats, graphics
-Suggests: Biobase, RColorBrewer, fastICA, bigmemory, doMC, synchronicity, corpcor, xtable
+Suggests: Biobase, RColorBrewer, fastICA, bigmemory, doMC, synchronicity, corpcor, xtable, devtools
 Enhances: Biobase
-Collate: utils.R colorcode.R options.R RNG.R 
-		NMF-class.R NMFstd-class.R NMFOffset-class.R NMFns-class.R
-		NMFfit-class.R NMFSet-class.R registry.R 
-		NMFStrategy-class.R NMFStrategyFunction-class.R NMFStrategyIterative-class.R
-		snmf.R lnmf.R pe-nmf.R ls-nmf.R ica.R nndsvd.R seed.R parallel.R nmf.R 
-		Bioc-layer.R NMFplots.R aheatmap.R nmf-package.R		
+Collate: utils.R colorcode.R options.R RNG.R NMF-class.R NMFstd-class.R NMFOffset-class.R NMFns-class.R
+            NMFfit-class.R NMFSet-class.R registry.R NMFStrategy-class.R NMFStrategyFunction-class.R
+            NMFStrategyIterative-class.R snmf.R lnmf.R pe-nmf.R ls-nmf.R ica.R nndsvd.R seed.R parallel.R
+            nmf.R Bioc-layer.R NMFplots.R aheatmap.R nmf-package.R
 LinkingTo: Rcpp
+Packaged: 2011-11-14 07:53:24 UTC; renaud
