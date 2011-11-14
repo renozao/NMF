@@ -96,7 +96,7 @@ See \code{\link{nmf-multiple}} for more details on the method arguments.
     }
     
     \item{consensusmap}{ Produces a heatmap of the consensus matrix using 
-	function \code{\link[gplots]{heatmap.2}}. 
+	function \code{\link{aheatmap}}. 
 	See \code{\link{consensusmap}} for more details.
 	}
 		

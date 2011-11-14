@@ -35,7 +35,7 @@ that follow NMF standard model.
  matrices respectively with non-negative entries;
  \item \eqn{\equiv} is to be understood with respect to some loss function. 
  Common choices of loss functions are based on Frobenius norm or 
- Kullbach-Leibler divergence. 
+ Kullback-Leibler divergence. 
 }
 
  Integer \eqn{r} is called the \emph{factorization rank}.

@@ -953,12 +953,12 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 	factor_colors = hcl(h = seq(1, 360, length.out = max(count+1,20)), 100, 70)	
 		
 	# get random seeds to restore/update on exit
-	rs <- get('.Random.seed', env=.GlobalEnv)
+	rs <- RNGscope()
 	on.exit({
 		# update local random seed on exit
 		assign('.Random.seed', get('.Random.seed', env=.GlobalEnv), env=.Rd.seed)
 		# restore global random seed
-		assign('.Random.seed', rs, env=.GlobalEnv)
+		RNGscope(rs)
 	})
 	# restore local random seed if it exists 
 	if( !is.null(.Rd.seed$.Random.seed) )

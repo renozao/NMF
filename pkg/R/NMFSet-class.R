@@ -649,7 +649,7 @@ setMethod('nmf.equal', signature(x='list', y='list'),
 			if( length(x) != length(y) )
 				FALSE
 			else
-				res <- mapply(function(a,b) isTRUE(nmf.equal(a,b)), x, y, MoreArgs=list(...))
+				res <- mapply(function(a,b,...) isTRUE(nmf.equal(a,b,...)), x, y, MoreArgs=list(...))
 				if( !vector )
 					res <- all( res )
 				res

@@ -25,7 +25,15 @@
 ###% res <- nmf(V, 3)
 NA
 
+devnmf <- function(){
+	.LOCAL_PKG_NAME <- 'nmf'
+	load_all(.LOCAL_PKG_NAME)
+	compile_src(.LOCAL_PKG_NAME)
+}
+
 .onLoad <- function(libname, pkgname=NULL) {
+	
+	pkgEnv <- getPackageEnv()
 	
 	.init.sequence <- function(){
 	
@@ -40,33 +48,25 @@ NA
 		
 		## 3. INITIALIZE BIOC LAYER
 		b <- body(.onLoad.nmf.bioc)
-		env <- if( !is.null(pkgname) ) asNamespace(pkgname) else .GlobalEnv
-		bioc.loaded <- eval(b, envir=env)
+		bioc.loaded <- eval(b, envir=pkgEnv)
 		if( is(bioc.loaded, 'try-error') )
-			packageStartupMessage("NMF:load: loading BioConductor layer ... ERROR")
-		else if ( bioc.loaded )
-			packageStartupMessage("NMF:load: loading BioConductor layer ... OK")
+			packageStartupMessage("NMF - loading BioConductor layer ... ERROR")
+		else if ( isTRUE(bioc.loaded) )
+			packageStartupMessage("NMF - loading BioConductor layer ... OK")
 		else
-			packageStartupMessage("NMF:load: loading BioConductor layer ... SKIPPED")
-		
-		## 4. LOAD compiled library if one is loading the package 
-		if( devmode() ){ # only used when developing the package and directly sourcing the files
-			pkgname <- 'NMF'
-			libname <- dirname(dirname(getwd())) # i.e. the package root's parent directory
-			dll <- do.call('rasta.compileLib', list('../src', 'NMF', pkgname, Rcpp=TRUE))
-		}else{	
-			# load the compiled C++ libraries
-			dll <- library.dynam('NMF', pkgname, libname)
-		}
-		
+			packageStartupMessage("NMF - loading BioConductor layer ... SKIPPED")
 	}
+	
+	## LOAD compiled library if one is loading the package
+	if( !missing(libname) ) library.dynam('NMF', pkgname, libname)
+	else compile_src('nmf')	
 	
 	# run intialization sequence suppressing messages or not depending on verbosity options
 	if( getOption('verbose') ) .init.sequence()
 	else suppressMessages(.init.sequence())
 	
 	# Initialize the package: load NMF algorithms, seeding methods, etc...
-	.init.package(libname, pkgname)
+	.init.package()
 	
 	return(invisible())
 }
@@ -82,7 +82,7 @@ NA
 .onAttach <- function(libname, pkgname){
 }
 
-.init.package <- function(libname, pkgname){
+.init.package <- function(){
 	
 	.init.sequence <- function(){
 				
@@ -94,10 +94,10 @@ NA
 			
 		## 2. POPULATE THE REGISTRY WITH BUILT-IN NMF METHODS: ALGORITHMS
 		# TODO: support for plugin of seeding methods
-		.init.nmf.plugin.builtin(pkgname)
+		.init.nmf.plugin.builtin()
 		
 		## 2. USER-DEFINED NMF METHODS
-		.init.nmf.plugin.user(pkgname)
+		.init.nmf.plugin.user()
 	}
 	
 	# run intialization sequence suppressing messages or not depending on verbosity options
@@ -115,11 +115,11 @@ isNMFPlugin <- function(x){
 }
 
 ###% Internal function to populate the registry with the built-in methods
-.init.nmf.plugin.builtin <- function(pkgname){
+.init.nmf.plugin.builtin <- function(){
 	
 	message('NMF: Init built-in plugins')	
-	# if not in devmode then search is performed within the package's namespace
-	where <- if( !devmode() ) asNamespace(as.name(pkgname)) else .GlobalEnv
+	# the search is performed within the package's namespace/dev environment
+	where <- getPackageEnv()
 		
 	# lookup for all objects that match the correct pattern
 	prefix <- "\\.nmf\\.plugin\\."
@@ -185,6 +185,6 @@ isNMFPlugin <- function(x){
 }
 
 ###% Hook to initialize user-defined methods when the package is loaded 
-.init.nmf.plugin.user <- function(pkgname){
+.init.nmf.plugin.user <- function(){
 	# TODO: load some RData file stored in the user's home R directory	
 }

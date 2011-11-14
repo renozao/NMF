@@ -70,7 +70,7 @@ others clearly nonzero.
 \section{Algorithm}{
 
 The Nonsmooth NMF algorithm uses a modified version of the multiplicative update 
-equations in Lee & Seung's method for Kullbach-Leibler divergence minimization. 
+equations in Lee & Seung's method for Kullback-Leibler divergence minimization. 
 The update equations are modified to take into account the -- constant -- 
 smoothing matrix. 
 The modification reduces to using matrix \eqn{W S} instead of matrix \eqn{W} in 

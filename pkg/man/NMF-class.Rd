@@ -259,8 +259,8 @@ See \code{\link{nmfModel}} for more details.
     
     \item{basismap, coefmap}{ Produces a heatmap of the basis vector and mixture 
     coefficient matrices respectively.
-    It is based on an internal heatmap function, which is a modified version of 
-    \code{\link[gplots]{heatmap.2}} with parameters tuned for displaying NMF results.
+    It is based on an the function \code{\link{aheatmap}} with parameters tuned 
+    for displaying NMF results.
     See \code{\link{basismap}} and \code{\link{coefmap}} for more details.
 	}
 		

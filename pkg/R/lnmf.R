@@ -78,10 +78,10 @@ nmf.update.lnmf <- function(i, v, data, ...){
 	list(
 			new('NMFStrategyIterative', name='lnmf', objective='KL'
 						, Update=nmf.update.lnmf
-						, Stop='nmf.stop.consensus')
+						, Stop='connectivity')
 			
 			, new('NMFStrategyIterative', name='.R#lnmf', objective='KL'
 				, Update=R_nmf.update.lnmf
-				, Stop='nmf.stop.consensus')
+				, Stop='connectivity')
 	)
 }

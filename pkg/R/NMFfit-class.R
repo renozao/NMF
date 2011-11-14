@@ -12,7 +12,7 @@
 ###% \deqn{V \equiv W H,}      
 ###% where:
 ###% - \eqn{W} and \eqn{H} are \eqn{n \times r} and \eqn{r \times m} non-negative matrices respectivelly;
-###% - \eqn{\equiv} is to be understood with respect to some error function (eg. Frobenius norm, Kullbach-Leibler divergence, ...). 
+###% - \eqn{\equiv} is to be understood with respect to some error function (eg. Frobenius norm, Kullback-Leibler divergence, ...). 
 ###%
 ###% Integer \eqn{r} is called the \emph{factorization rank}.
 ###% Depending on the context of application of NMF, the columns of \eqn{W} and \eqn{H} take different names:

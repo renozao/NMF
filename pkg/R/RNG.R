@@ -106,10 +106,11 @@ RNGprovider <- function(user.supplied=FALSE){
 RNGscope <- function(seed){
 	
 	res <- if( missing(seed) ){
-				if( exists('.Random.seed', .GlobalEnv) )
+				if( exists('.Random.seed', where = .GlobalEnv) )
 					get('.Random.seed', .GlobalEnv)
 			}else if( is.null(seed) ){
-				rm('.Random.seed', .GlobalEnv)
+				if( exists('.Random.seed', where = .GlobalEnv) )
+					rm('.Random.seed', envir = .GlobalEnv)
 			}else{
 				assign('.Random.seed', seed, .GlobalEnv)
 			}

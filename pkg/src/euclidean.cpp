@@ -125,7 +125,7 @@ SEXP euclidean_update_H (
 	// auxiliary temporary variable
 	double temp = 0.0;
 
-	// Pre-compute symetric matrix t(W)W
+	// Pre-compute symmetric matrix t(W)W
 	// -> allocate internal memory as a upper triangular in column major
 	double* p_tWW = (double*) R_alloc((int) (r*(r+1))/2, sizeof(double));
 	double* p_row = NULL;

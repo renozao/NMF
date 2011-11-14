@@ -213,7 +213,7 @@ identical(nmfAlgorithm('br'), nmfAlgorithm('brunet'))
 \hline
 Key & Description\\
 \hline
-\code{brunet} & Standard NMF. Based on Kullbach-Leibler divergence, it uses simple multiplicative updates from \cite{Lee2000}, enhanced to avoid numerical underflow.
+\code{brunet} & Standard NMF. Based on Kullback-Leibler divergence, it uses simple multiplicative updates from \cite{Lee2000}, enhanced to avoid numerical underflow.
 
 \begin{eqnarray}
 H_{kj} & \leftarrow & H_{kj}  \frac{\left( \sum_l \frac{W_{lk} V_{lj}}{(WH)_{lj}} \right)}{ \sum_l W_{lk} }\\
@@ -235,12 +235,12 @@ W_{ik} & \leftarrow & W_{ik} \frac{(V H^T)_{ik}}{(W H H^T)_{ik}}
 \hline
 %
 %\code{lnmf} & Local Nonnegative Matrix Factorization. Based on a 
-%regularized Kullbach-Leibler divergence, it uses a modified version of 
+%regularized Kullback-Leibler divergence, it uses a modified version of 
 %Lee and Seung's multiplicative updates.
 %
 %\textbf{Reference:} \cite{Li2001}\\
 %
-\code{nsNMF} & Non-smooth NMF. Uses a modified version of Lee and Seung's multiplicative updates for Kullbach-Leibler divergence to fit a extension of the standard NMF model. 
+\code{nsNMF} & Non-smooth NMF. Uses a modified version of Lee and Seung's multiplicative updates for Kullback-Leibler divergence to fit a extension of the standard NMF model. 
 It is meant to give sparser results.
 
 \textbf{Reference:} \cite{nsNMF2006}\\
@@ -1113,7 +1113,7 @@ The default distance measure is based on the euclidean distance.
 If the algorithm is based on another distance measure, this one can be specified in argument \code{objective}, either as a \code{character} string corresponding to a built-in objective function, or a custom \code{function} definition:
 
 <<custom_algo_run_obj>>=
-# based on Kullbach-Leibler divergence
+# based on Kullback-Leibler divergence
 nmf(V, 3, my.algorithm, scale.factor=10, objective='KL')
 # based on custom distance metric
 nmf(V, 3, my.algorithm, scale.factor=10

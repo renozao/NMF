@@ -9,9 +9,7 @@
 
 .onLoad.nmf.bioc <- function(){
 	
-if( !"Biobase" %in% rownames(utils::installed.packages()) )
-	FALSE
-else{
+if( "Biobase" %in% rownames(utils::installed.packages()) ){
 
 	# load Biobase package
 	library(Biobase)
@@ -125,12 +123,6 @@ else{
 #		}
 #	)
 
-	# define generic for the rows/columns names, using the Biobase definition
-	setGeneric('featureNames', package='Biobase')
-	setGeneric('featureNames<-', package='Biobase')
-	setGeneric('sampleNames', package='Biobase')
-	setGeneric('sampleNames<-', package='Biobase')
-		
 	## Assign BioConductor aliases
 	###% number of metagenes
 	nmeta <- nbasis
@@ -142,6 +134,9 @@ else{
 	`metaprofiles<-` <- `coef<-`
 	
 	###% Get/Set methods for rows/columns names of the basis and mixture matrices
+	# using the Biobase definition standard generics
+	setGeneric('featureNames', package='Biobase')
+	setGeneric('featureNames<-', package='Biobase')	
 	setMethod('featureNames', 'NMF',
 		function(object){
 			rownames(object)
@@ -161,6 +156,8 @@ else{
 		}
 	)
 	
+	setGeneric('sampleNames', package='Biobase')
+	setGeneric('sampleNames<-', package='Biobase')	
 	setMethod('sampleNames', 'NMF',
 		function(object){
 			colnames(object)

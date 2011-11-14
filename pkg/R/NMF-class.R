@@ -142,9 +142,7 @@ nmfModels <- function(builtin.only=FALSE){
 }
 
 # Define the loading namespace
-.PKG.NAMESPACE <- getLoadingNamespace(TRUE)
-if( is.null(.PKG.NAMESPACE) )
-	.PKG.NAMESPACE <- .GlobalEnv
+.PKG.NAMESPACE <- getPackageEnv()
 
 ###% Advanced usage of package NMF
 ###% 
@@ -1810,7 +1808,9 @@ setMethod('distance', signature(target='missing', x='missing'),
 setGeneric('nmf.equal', function(x, y, ...) standardGeneric('nmf.equal') )
 setMethod('nmf.equal', signature(x='NMF', y='NMF'), 
 		function(x, y, identical=TRUE, ...){
-			if( identical )
+			
+			dots <- list(...)
+			if( identical && length(dots) == 0 )
 				identical(x, y)
 			else
 				all.equal(x, y, ...)

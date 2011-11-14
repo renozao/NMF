@@ -23,8 +23,8 @@
 \title{Plots a Heatmap of the Basis Vector and Mixture Coefficient Matrices from an NMF model}
 
 \description{
-Produces a heatmap of the basis vectors or mixture coefficients using a \code{heatmap}-like custom function, 
-with parameters tuned for displaying NMF results.
+Produces a heatmap of the basis vectors or mixture coefficients using a 
+\code{\link{aheatmap}}, with parameters tuned for displaying NMF results.
 
 }
 
@@ -88,13 +88,6 @@ with parameters tuned for displaying NMF results.
 }
 
 \details{	
-The underlying function used to draw the heatmap is a mixture of the function \code{heatmap.2} 
-from the \code{gplots} package, and the function \code{heatmap.plus} 
-from the \code{heatmap.plus} package. 
-In particular, it allows to add extra annotation rows and column using the arguments \code{ColSideColor} 
-and \code{RowSideColor} respectively. 
-See \code{\link[gplots]{heatmap.2}} and \code{\link[heatmap.plus]{heatmap.plus}}.
-
 Both \code{basismap} and \code{coefmap} are S4 generic functions.
 }
 

@@ -283,7 +283,7 @@ The following algorithms are available:
 
 \describe{
 
-\item{\code{brunet}}{ Standard NMF. Based on Kullbach-Leibler divergence, it uses simple 
+\item{\code{brunet}}{ Standard NMF. Based on Kullback-Leibler divergence, it uses simple 
 multiplicative updates from \emph{Lee and Seung (2000)}, enhanced to avoid numerical underflow.
 See \emph{Brunet et al. (2004)}.
 }
@@ -293,12 +293,12 @@ multiplicative updates. See \emph{Lee and Seung (2000)}.
 }
 
 %\item{\code{lnmf}}{ Local Nonnegative Matrix Factorization. Based on a 
-%regularized Kullbach-Leibler divergence, it uses a modified version of 
+%regularized Kullback-Leibler divergence, it uses a modified version of 
 %Lee and Seung's multiplicative updates.
 %See \emph{Li et al. (2001)}.}
 
 \item{\code{nsNMF}}{ Nonsmooth NMF. Uses a modified version of Lee and Seung's 
-multiplicative updates for Kullbach-Leibler divergence to fit a extension 
+multiplicative updates for Kullback-Leibler divergence to fit a extension 
 of the standard NMF model. It is meant to give sparser results.
 See \emph{Pascual-Montatno et al. (2006)}.}
 

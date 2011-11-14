@@ -180,27 +180,27 @@ xifyStrategy <- function(strategy, workspace){
 		# Brunet
 		new('NMFStrategyIterative', name='brunet', objective='KL'
 					, Update='nmf.update.brunet'
-					, Stop='nmf.stop.consensus'
+					, Stop='connectivity'
 			)
 
 		# Lee	
 		, new('NMFStrategyIterative', name='lee', objective='euclidean'
 					, Update='nmf.update.lee'
-					, Stop='nmf.stop.consensus'
+					, Stop='connectivity'
 			)
 		
 		# NMF with offset
 		, new('NMFStrategyIterative', name='offset', objective='euclidean'
 					, model = 'NMFOffset'
 					, Update='nmf.update.offset'
-					, Stop='nmf.stop.consensus'
+					, Stop='connectivity'
 			)
 			
 		# nsNMF
 		, new('NMFStrategyIterative', name='nsNMF', objective='KL'
 					, model='NMFns'
 					, Update='nmf.update.ns'
-					, Stop='nmf.stop.consensus'
+					, Stop='connectivity'
 			)
 	)
 }
@@ -212,27 +212,27 @@ xifyStrategy <- function(strategy, workspace){
 			# Brunet
 			new('NMFStrategyIterative', name='.R#brunet', objective='KL'
 					, Update='R_nmf.update.brunet'
-					, Stop='nmf.stop.consensus'
+					, Stop='connectivity'
 			)
 			
 			# Lee	
 			, new('NMFStrategyIterative', name='.R#lee', objective='euclidean'
 					, Update='R_nmf.update.lee'
-					, Stop='nmf.stop.consensus'
+					, Stop='connectivity'
 			)			
 	
 			# NMF with offset
 			, new('NMFStrategyIterative', name='.R#offset', objective='euclidean'
 					, model = 'NMFOffset'
 					, Update='R_nmf.update.offset'
-					, Stop='nmf.stop.consensus'
+					, Stop='connectivity'
 			)
 			
 			# nsNMF
 			, new('NMFStrategyIterative', name='.R#nsNMF', objective='KL'
 					, model='NMFns'
 					, Update='R_nmf.update.ns'
-					, Stop='nmf.stop.consensus'
+					, Stop='connectivity'
 			)
 	
 	)
@@ -280,8 +280,21 @@ setMethod('run', signature(method='NMFStrategyIterative', x='matrix', seed='NMFf
 		if( is.integer(.stop) )	nmf.stop.iteration(.stop)
 		else if( is.numeric(.stop) ) nmf.stop.threshold(.stop)
 		else if( is.function(.stop) ) .stop
+		else if( is.character(.stop) ){
+			# update .stop for back compatibility:
+			if( .stop == 'nmf.stop.consensus') .stop <- 'connectivity'
+
+			# first lookup for a `nmf.stop.*` function
+			.stop2 <- paste('nmf.stop.', .stop, sep='')
+			sfun <- getFunction(.stop2, mustFind=FALSE)			
+			if( is.null(sfun) ) # lookup for the function as such
+				sfun <- getFunction(.stop, mustFind = FALSE)			
+			if( is.null(sfun) )
+				stop("NMF::nmf - Invalid argument `.stop` ['", .stop,"']: could not find functions '",.stop2, "' or '", .stop, "'")
+			sfun
+		}
 		else
-			stop("NMF::nmf - Invalid argument `stop`: should be a function or a single integer/numeric value. See ?nmf.")
+			stop("NMF::nmf - Invalid argument `.stop`: should be a function, a character string or a single integer/numeric value. See ?nmf.")
 	}
 	
 	# debug object in debug mode
@@ -803,7 +816,7 @@ R_nmf.update.ns <- function(i, v, data, ...)
 #' @rdname stop-NMF
 nmf.stop.iteration <- function(n){
 	
-	message("Iteration: ", n)
+	nmf.debug("Using stopping criterion - Fixed number of iterations: ", n)
 	if( !is.numeric(n) )
 		stop("Invalid argument `n`: must be an integer value")
 	if( length(n) > 1 )
@@ -815,7 +828,7 @@ nmf.stop.iteration <- function(n){
 
 nmf.stop.threshold <- function(threshold){	
 	
-	message("Threshold: ", threshold)
+	nmf.debug("Using stopping criterion - Stationatiry threshold: ", threshold)
 	if( !is.numeric(threshold) )
 		stop("Invalid argument `threshold`: must be a numeric value")
 	if( length(threshold) > 1 )
@@ -846,12 +859,10 @@ nmf.stop.stationary <- function(strategy, i, target, data, stationary.th=10^-6, 
 		FALSE
 }
 
-nmf.stop.consensus <- function(strategy, i, target, data, ...){
+nmf.stop.connectivity <- function(strategy, i, target, data, stopconv=40, ...){
 			
 		# test convergence only every 10 iterations
 		if( i %% 10 != 0 ) return( FALSE );
-				
-		stopconv <- 40		
 		
 		# retrieve metaprofiles
 		h <- coef(data)

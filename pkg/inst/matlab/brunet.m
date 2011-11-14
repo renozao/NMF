@@ -1,18 +1,74 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NMF algorithm using the update equations for the Kullback-Leibler divergence
+% from Lee and Seung (2001), implemented in MATLAB by Brunet et al. (2004).
 %
-% Original MATLAB/Octave code for NMF from Brunet et al.
+% USAGE: [w, h, elapsed, user, sys] = brunet(v, r, verbose, w, h)
 %
-% The original function 'nmf' was adapted to accept arguments to set the initial
-% values for the matrix factors W and H.
+% ARGUMENTS:
 %
-% Original MATLAB codes can be found at:
+% v (n,m) : N (genes) x M (samples) original matrix 
+%           Numerical data only. 
+%           Must be non negative. 
+%           Not all entries in a row can be 0. If so, add a small constant to the 
+%           matrix, eg.v+0.01*min(min(v)),and restart.
+%           
+% r       : number of desired factors (rank of the factorization)
+%
+% verbose : prints iteration count and changes in connectivity matrix elements
+%           unless verbose is 0 
+%
+% OPTIONAL ARGUMENTS:
+%
+% w : N (genes) x r matrix to used to seed the computation
+% h : r x M (samples) matrix to used to seed the computation
+%
+% Note : both matrices w and h must be supplied to effectively seed the 
+% computation. Otherwise the original random initialization of both is 
+% used.
+%           
+% Note : NMF iterations stop when connectivity matrix has not changed 
+%        for 10*stopconv interations. This is experimental and can be
+%        adjusted.
+%
+% RETURNED VALUE(S):
+%
+% w    : N x r NMF factor
+% h    : r x M NMF factor
+% elapsed : Elapsed wallclock time
+% user    : Elapsed user time
+% sys     : Elapsed system time
+%
+% DETAILS:
+%
+% The original MATLAB/Octave code for NMF is from Brunet et al.
+%
+% It was slightly adapted for the purpose of the development of the 
+% NMF package (http://cran.r-project.org/package=NMF)
+% Modifications include:
+% - renaming of the function from `nmf` to `brunet`
+% - add arguments to allow setting the initial values for the matrix 
+% factors W and H
+% - compute and return CPU timing
+%
+% Modifications in the code are signaled with tags RG, RG_START and RG_END.
+%
+% REFERENCES
+%
+% Lee, D..D., and Seung, H.S. (2001).
+% 'Algorithms for Non-negative Matrix Factorization'.
+% Adv. Neural Info. Proc. Syst. 13, 556-562.
+%
+% Brunet, J.P. et al. (2004).
+% 'Metagenes and molecular pattern discovery using matrix factorization'. 
+% Proc Natl Acad Sci U S A, \bold{101}(12), 4164--4169.
+%
+% Original MATLAB files can be found at:
 % http://www.broadinstitute.org/mpr/publications/projects/NMF/nmf.m
 % http://www.broadinstitute.org/publications/broad872
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-function [w,h]=nmf(v,r,verbose, w, h)
+function [w,h,elapsed,user,sys] = brunet(v,r,verbose, w, h)
 %
 % Jean-Philippe Brunet
 % Cancer Genomics 
@@ -40,15 +96,6 @@ function [w,h]=nmf(v,r,verbose, w, h)
 % verbose : prints iteration count and changes in connectivity matrix elements
 %           unless verbose is 0 
 %
-%% RG_START: Added by Renaud Gaujoux (2009)
-% w : N (genes) x r matrix to used to seed the computation
-% h : r x M (samples) matrix to used to seed the computation
-%
-% Note : both matrices w and h must be supplied to effectively seed the 
-% computation. Otherwise the original random initialisation of both is 
-% used.
-%% RG_END: 
-%           
 % Note : NMF iterations stop when connectivity matrix has not changed 
 %        for 10*stopconv interations. This is experimental and can be
 %        adjusted.
@@ -86,6 +133,8 @@ if nargin<5,
  h=rand(r,m);
 end
 %% RG_END
+
+[total, user, sys] = cputime(); % [RG] Add CPU timing
 
 for i=1:niter
 
@@ -127,3 +176,10 @@ consold=cons;
 
 end
 end
+
+% [RG_START] Compute CPU time
+[total2, user2, sys2] = cputime();
+elapsed = total2 - total;
+user = user2 - user;
+sys = sys2 - sys;
+% [RG_END]
