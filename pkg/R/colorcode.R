@@ -29,41 +29,47 @@ revPalette <- function(x){
 	x
 }
 
-
 #' Builds a Color Palette from Compact Color Specification
 #' @keywords internal
 ccPalette <- function(x, n=NA, verbose=FALSE){
 		
 	if( length(x)==1 ){
 	
+		# shortcut for single colors
+		if( (isNA(n) || n==1) && length(x) > 1L && all(grepl("^#", x)) ) return(x)
+		
 		sp <- ccSpec(x)
 		x <- sp$palette
 		if( isNA(n) )
 			n <- sp$n
 		
 		a <- attributes(x)
-		
+				
 		if( is.integer(x) ) # integer code between 1 and 8: R basic colour
 			x <- c("#F1F1F1", col2hex(x))
 		else if( is.numeric(x) ) # numeric: hcl colour
 			x <- rev(sequential_hcl(2, h = x, l = c(50, 95)))
 		else if( is.character(x) ){ # Palette name: 
 		
-			if( !require(RColorBrewer) )
-				stop("aheatmap - Package RColorBrewer is required to build colour ramps from compact specifications.")
-			
-			if( x %in% rownames(brewer.pal.info) ){		
+			if( require.quiet('RColorBrewer') && x %in% rownames(brewer.pal.info) ){
 				if( verbose ) message("Load and generate ramp from RColorBrewer colour palette '", x, "'")			
 				x <- brewer.pal(brewer.pal.info[x, 'maxcolors'], x)
 			}else{
 				cpal <- c('RdYlBu2', 'rainbow', 'heat', 'topo', 'terrain', 'cm', 'gray', 'grey')
-				i <- pmatch(x, cpal)
-				if( is.na(i) && (x %in% colours() || grepl("^#[0-9a-fA-F]+$", x)) )
+				i <- pmatch(x, cpal)				
+				if( is.na(i) && (x %in% colours() || grepl("^#[0-9a-fA-F]+$", x)) ){
 					x <- c("#F1F1F1", x)
-				else{
+				}else{
 					
-					if( is.na(i) )
-						stop("Invalid palette name '", x, "': should be one of RColorBrewer's palette or ", paste("'", cpal ,"'", sep='', collapse=', '), ".")
+					if( is.na(i) ){
+						
+						suggest <-
+						if( !require.quiet('RColorBrewer') )
+							"\n\tNOTE: the `RColorBrewer` package is not installed. Re-try after installing it."
+						
+						stop("Invalid palette name '", x, "': should be one of RColorBrewer's palette or "
+							, paste("'", cpal ,"'", sep='', collapse=', '), ".", suggest)
+					}
 					x <- cpal[i]
 					
 					# use default value of 10 for n if not specified
@@ -78,7 +84,7 @@ ccPalette <- function(x, n=NA, verbose=FALSE){
 							, topo = topo.colors(np)
 							, terrain = terrain.colors(np)
 							, cm = cm.colors(np)
-							, stop("Unexpected palette '", x, "'")
+							, stop("Unknown colour palette name: '", x, "'")
 					)
 				}
 			}
@@ -158,15 +164,23 @@ ccSpec <- function(x){
 			}
 			
 			# convert to a colour code if possible
-			if( grepl("^[1-8]$", x) ) # integer code between 1 and 8: R basic colour
-				x <- as.integer(x)
-			else if( grepl("^[0-9.]+$", x) ) # numeric: hcl colour
+			# use maximum colour number of brewer sets 
+			if( isNA(n) && isString(x) && require.quiet('RColorBrewer') && x %in% rownames(brewer.pal.info) ){
+				n <- brewer.pal.info[x,'maxcolors']
+			}else if( grepl("^[1-8]$", x) ){# integer code between 1 and 8: R basic colour
+				x <- palette()[as.integer(x)]
+			}else if( grepl("^[0-9.]+$", x) ) # numeric: hcl colour
 				x <- as.numeric(x)
 		
 		}else if( is.numeric(x) ){
 			if( x < 0 ){
 				x <- -x
 				rv<- TRUE
+			}
+			# single integer specification: use R default colours  
+			if( isInteger(x) ){
+				if( x <= 8 ) x <- palette()[x]
+				else x <- colours()[x]
 			}
 		}
 		
@@ -175,7 +189,9 @@ ccSpec <- function(x){
 	if( rv )
 		x <- revPalette(x)
 	
-	list(palette=x, n=n, rev=rv)
+	res <- list(palette=x, n=n, rev=rv)
+#	print(res)
+	res
 }
 
 #' Builds a Color Ramp from Compact Color Specification
@@ -192,10 +208,9 @@ ccRamp <- function(x, n=NA, ...){ #breaks, data, ...){
 	x <- sp$palette
 	if( missing(n) ){
 		n <- sp$n
-		if( isNA(n) )
-			n <- 50
+		if( isNA(n) ) n <- 50		
 	}
-		
+	
 	# create a palette from specification x
 	x <- ccPalette(x, ...)
 	

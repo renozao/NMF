@@ -1,11 +1,22 @@
-###% Base class that defines the interface for NMF seeding methods.
-###%
-###% @slot name character string giving the name of the strategy
-###% 
-###% @include registry.R 
-###% @include nndsvd.R  
-###%
-###%
+#' @include registry.R
+NULL
+
+# create sub-registry for seeding methods
+setPackageRegistry('seed', "NMFSeed"
+				, description="Seeding methods for NMF algorithms")
+
+#' Base class that defines the interface for NMF seeding methods.
+#' 
+#' This class implements a simple wrapper strategy object that defines a unified
+#' interface to seeding methods, that are used to initialise NMF models before 
+#' fitting them with any NMF algorithm. 
+#' 
+#' @slot name character string giving the name of the seeding strategy
+#' @slot method workhorse function that implements the seeding strategy.
+#' It must have signature \code{(object="NMF", x="matrix", ...)} and initialise
+#' the NMF model \code{object} with suitable values for fitting the target 
+#' matrix \code{x}.
+#'
 setClass('NMFSeed'
 		, representation(
 				name = 'character' # name of the method (also key)
@@ -19,50 +30,47 @@ setClass('NMFSeed'
 			if( !is.character(obj) || length(obj)!=1 || obj=='' )
 				return("Slot 'name' must be a non-empty character string.")
 			
-			# slot 'method' must either be a non-empty character string or a function
-#			obj <- method(object)
-#			if( !(is.character(obj) && obj != '') && !is.function(obj) )
-#				return("Slot 'method' must either be a non-empty character string or a defined function.")
-
 			return(TRUE)
 		}		
 )
 
+#' Show method for objects of class \code{NMFSeed} 
 setMethod('show', 'NMFSeed',
 		function(object){			
 			cat('<object of class: ', class(object), ">\n")
 			cat("name:\t", name(object), "\n")
-			svalue <- method(object)
+			svalue <- algorithm(object)
 			svalue <- if( is.function(svalue) ) '<function>' else paste("'", svalue,"'", sep='')
 			cat("method:\t", svalue, "\n")
 			return(invisible())
 		}
 )
 
-###% Accessor methods to slot \code{name}
+#' Returns the name of the seeding method described by \code{object}.
 setMethod('name', signature(object='NMFSeed'),
 		function(object){
 			slot(object, 'name')
 		}
 )
+#' Sets the name of the seeding method described by \code{object}.
+#' 
+#' This method is not meant to be called directly
 setReplaceMethod('name', signature(object='NMFSeed', value='character'),
-		function(object, value){
-			slot(object, 'name') <- value
-			validObject(object)
-			object
-		}
+	function(object, value){
+		slot(object, 'name') <- value
+		validObject(object)
+		object
+	}
 )
 
-###% Accessor methods to slot \code{objective}
-setGeneric('method', function(object, ...) standardGeneric('method'))
-setMethod('method', signature(object='NMFSeed'),
+#' Returns the workhorse function of the seeding method described by \code{object}. 
+setMethod('algorithm', signature(object='NMFSeed'),
 	function(object){						
 		slot(object, 'method')
 	}
 )
-
-setGeneric('method<-', function(object, ..., value) standardGeneric('method<-'))
-setReplaceMethod('method', signature(object='NMFSeed', value='function'),
+#' Sets the workhorse function of the seeding method described by \code{object}.
+setReplaceMethod('algorithm', signature(object='NMFSeed', value='function'),
 	function(object, value){
 		slot(object, 'method') <- value
 		validObject(object)
@@ -76,27 +84,111 @@ setReplaceMethod('method', signature(object='NMFSeed', value='function'),
 
 ###% Register a new seeding method into the NMF registry.
 ###%
-setGeneric('nmfRegisterSeed', function(method, key, ...) standardGeneric('nmfRegisterSeed') )
-setMethod('nmfRegisterSeed', signature(method='ANY', key='character'), 
-		function(method, key, ...){	
-			
-			# wrap function method into a new NMFSeed object
-			seedObj <- new('NMFSeed', name=key, method=method)
-			# register the newly created object
-			nmfRegister(seedObj, key, registry.name='seed', ...)
-			
-		}
+setGeneric('NMFSeed', function(key, method, ...) standardGeneric('NMFSeed') )
+setMethod('NMFSeed', signature(key='character', method='ANY'), 
+	function(key, method, ...){
+		
+		# development/tracking trick 
+		if( !isNamespaceLoaded('NMF') ) overwrite <- TRUE 
+		if( isLoadingNamespace('NMF') ) verbose <- TRUE 
+		
+		# wrap function method into a new NMFSeed object
+		new('NMFSeed', name=key, method=method, ...)
+		
+	}
 )
 
-###% Factory method to retrieve seeding methods from the NMF registry.
-###%
+setNMFSeed <- function(..., overwrite=FALSE, verbose=nmf.getOption('verbose')){
+		
+	# development/tracking trick 
+	if( !isNamespaceLoaded('NMF') ) overwrite <- TRUE 
+	lverbose <- verbose || isLoadingNamespace('NMF')
+	
+	# wrap function method into a new NMFSeed object
+	method <- NMFSeed(...)
+	parent.method <- attr(method, 'parent')
+	key <- name(method)[1]
+	
+	if( lverbose ){
+		tmpl <- if( !is.null(parent.method) && parent.method != key )
+					stringr::str_c(" based on template '", parent.method, "'")
+		
+		message("Registering NMF seeding method '", key,"'", tmpl,"... ", appendLF=FALSE)
+	}
+	
+	# register the newly created object
+	res <- nmfRegister(method, key, registry.name='seed'
+					, overwrite=overwrite, verbose=verbose)
+	
+	if( !is.null(res) && res > 0L ){
+		if( lverbose ) message( if(res == 1L) "OK" else "UPDATED" )
+		method
+	}else{
+		if( lverbose ) message( "ERROR" )
+		NULL
+	}
+	
+}
+
+nmfRegisterSeed <- setNMFSeed
+
+#' Seeding Strategies for NMF Algorithms
+#' 
+#' \code{nmfSeed} lists and retrieves NMF seeding methods.
+#' 
+#' Currently the internal registry contains the following seeding methods, 
+#' which may be specified to the function \code{\link{nmf}} via its argument 
+#' \code{seed} using their access keys:
+#' 
+#' \describe{
+#' \item{random}{ The entries of each factors are drawn from a uniform 
+#' distribution over \eqn{[0, max(x)]}, where $x$ is the target matrix.}
+#' \item{nndsvd}{ Nonnegative Double Singular Value Decomposition.
+#' 
+#' The basic algorithm contains no randomization and is based on two SVD processes, 
+#' one approximating the data matrix, the other approximating positive sections 
+#' of the resulting partial SVD factors utilising an algebraic property of 
+#' unit rank matrices.
+#' 
+#' It is well suited to initialise NMF algorithms with sparse factors.
+#' Simple practical variants of the algorithm allows to generate dense factors.
+#' 
+#' \strong{Reference:} \cite{Boutsidis2008}}
+#' \item{ica}{ Uses the result of an Independent Component Analysis (ICA) 
+#' (from the \code{fastICA} package).
+#' Only the positive part of the result are used to initialise the factors.}
+#' \item{none}{ Fixed seed.
+#' 
+#' This method allows the user to manually provide initial values for 
+#' both matrix factors.}
+#' }
+#' 
+#' @param name access key of a seeding method stored in registry.
+#' If missing, \code{nmfSeed} returns the list of all available seeding methods.
+#' @param ... extra arguments used for internal calls
+#'  
+#' @export
+#' 
+#' @examples
+#' 
+#' # list all registered seeding methods
+#' nmfSeed()
+#' # retrieve one of the methods
+#' nmfSeed('ica') 
+#' 
 nmfSeed <- function(name=NULL, ...){
 	
 	nmfGet(name, registry.name='seed', ...)
 	
 }
 
-###% Returns TRUE if the algorithm is registered FALSE otherwise
+#' \code{existsNMFSeed} tells if a given seeding method exists in the registry.
+#' 
+#' @param exact a logical that indicates if the access key should be matched 
+#' exactly or partially.
+#'  
+#' @rdname nmfSeed
+#' @export
 existsNMFSeed <- function(name, exact=TRUE){	
 	
 	res <- !is.null( nmfGet(name, registry.name='seed', error=FALSE, exact=exact) )
@@ -105,17 +197,11 @@ existsNMFSeed <- function(name, exact=TRUE){
 }
 
 ###########################################################################
-# INITIALIZATION FUNCTIONS
+# REGISTRATION
 ###########################################################################
 
-###% Hook to initialize base seeding methods when the package is loaded
-# TODO: trnasform this into a automatically loaded plugin  
-.load.seed.base <- function(){
-	
-	# None [do nothing]
-	nmfRegisterSeed(function(object, x, ...){object}, 'none', overwrite=TRUE)
-	
-	# Random
-	nmfRegisterSeed(rnmf, 'random', overwrite=TRUE)
-		
-}
+## Register base seeding methods
+# None: do nothing and return object unchanged
+setNMFSeed('none', function(object, x, ...){object}, overwrite=TRUE)
+# Random: use function rnmf
+setNMFSeed('random', rnmf, overwrite=TRUE)

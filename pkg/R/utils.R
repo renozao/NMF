@@ -1,9 +1,104 @@
-###% Generate a synthetic nonnegative matrix
-syntheticNMF <- function(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE){
+#' Internal verbosity option
+#' @param val logical that sets the verbosity level.
+#' @return the old verbose level   
+#' @keywords internal
+lverbose <- local({
+			.val <- 0
+			function(val){
+				if( missing(val) ) return(.val)
+				oval <- .val
+				.val <<- val
+				invisible(oval)
+			}
+		})
+vmessage <- function(..., appendLF=TRUE) if( lverbose() ) cat(..., if(appendLF) "\n", sep='')
+
+
+nmf_stop <- function(name, ...){
+	stop("NMF::", name , ' - ', ..., call.=FALSE)
+}
+nmf_warning <- function(name, ...){
+	warning("NMF::", name , ' - ', ..., call.=FALSE)
+}
+
+# or-NULL operator
+'%||%' <- function(x, y) if( !is.null(x) ) x else y 
+
+# cat object or class for nice cat/message
+quick_str <- function(x) if( is.atomic(x) ) x else class(x)[1]
+
+# remove all attributes from an object
+rmAttributes <- function(x){
+	attributes(x) <- NULL
+	x
+}
+
+#' Simulating Datasets
+#' 
+#' The function \code{syntheticNMF} generates random target matrices that follow
+#' some defined NMF model, and may be used to test NMF algorithms.
+#' It is designed to designed to produce data with known or clear classes of 
+#' samples.
+#' 
+#' @param n number of rows of the target matrix. 
+#' @param r specification of the factorization rank. 
+#' It may be a single \code{numeric}, in which case argument \code{p} is required
+#' and \code{r} groups of samples are generated from a draw from a multinomial 
+#' distribution with equal probabilities, that provides their sizes.
+#' 
+#' It may also be a numerical vector, which contains the number of samples in 
+#' each class (i.e integers). In this case argument \code{p} is discarded
+#' and forced to be the sum of \code{r}.
+#' @param p number of columns of the synthetic target matrix. 
+#' Not used if parameter \code{r} is a vector (see description of argument \code{r}).
+#' @param offset specification of a common offset to be added to the synthetic target
+#' matrix, before noisification.
+#' Its may be a numeric vector of length \code{n}, or a single numeric value that
+#' is used as the standard deviation of a centred normal distribution from which 
+#' the actual offset values are drawn.
+#' @param noise a logical that indicate if noise should be added to the 
+#' matrix.
+#' @param factors a logical that indicates if the NMF factors should be return 
+#' together with the matrix.
+#' @param seed a single numeric value used to seed the random number generator 
+#' before generating the matrix.
+#' The state of the RNG is restored on exit.
+#' 
+#' @return a matrix, or a list if argument \code{factors=TRUE}
+#' 
+#' @export
+#' @examples
+#' 
+#' # generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)
+#' n <- 50
+#' counts <- c(5, 5, 8)
+#' 
+#' # no noise
+#' V <- syntheticNMF(n, counts, noise=FALSE)
+#' \dontrun{aheatmap(V)}
+#' 
+#' # with noise
+#' V <- syntheticNMF(n, counts)
+#' \dontrun{aheatmap(V)}
+#' 
+syntheticNMF <- function(n, r, p, offset=NULL, noise=TRUE, factors=FALSE, seed=NULL){
+	
+	# set seed if necessary
+	if( !is.null(seed) ){
+		os <- RNGscope()
+		set.seed(seed)
+		on.exit( RNGscope(os) )
+	}
 	
 	# internal parameters
 	mu.W <- 1; sd.W <- 1
-	mu.noise <- 0; sd.noise <- 1
+	if( isTRUE(noise) ){
+		noise <- list(mean=0, sd=1)
+	}else if( is.list(noise) ){
+		stopifnot( length(noise) == 2L )
+		noise <- setNames(noise, c('mean', 'sd'))
+	}else
+		noise <- FALSE
 	
 	if( length(r) == 1 ){
 		g <- rmultinom(1, p, rep(1, r))			
@@ -38,44 +133,145 @@ syntheticNMF <- function(n, r, p, offset=NULL, noise=FALSE, return.factors=FALSE
 	
 	# build the composite matrix
 	res <- W %*% H
-	
-	# add some noise if required
-	if( noise ) res <- res + matrix( pmax(rnorm(nrow(res) * ncol(res), mu.noise, sd.noise), -min(res)), nrow(res), ncol(res) );
-	
 	# add the offset if necessary
 	if( !is.null(offset) ){
+		if( length(offset) == 1L )
+			offset <- rnorm(n, mean=0, sd=offset)
+		
 		stopifnot(length(offset)==n)
 		res <- res +  offset
 	}
-
+	
+	# add some noise if required
+	if( !isFALSE(noise) )
+		res <- pmax(res + rmatrix(res, dist=rnorm, mean=noise$mean, sd=noise$sd), 0)	
+	
 	# return the factors if required
-	if( return.factors ) res <- list(res, W=W, H=H)
+	if( factors ) res <- list(res, W=W, H=H, offset=offset)
 	
 	# return the result	
 	return(res)
 }
 
-###% generate a random matrix using a given random distribution function
+#' Generating Random Matrices
+#' 
+#' The S4 generic \code{rmatrix} generates a random matrix from a given object.  
+#' Methods are provided to generate matrices with entries drawn from any 
+#' given random distribution function, e.g. \code{\link{runif}} or 
+#' \code{\link{rnorm}}.
+#' 
+#' @param x object from which to generate a random matrix 
+#' 
+#' @export
 setGeneric('rmatrix', function(x, ...) standardGeneric('rmatrix'))
+#' Generates a random matrix of given dimensions, whose entries 
+#' are drawn using the distribution function \code{dist}.
+#' 
+#' This is the workhorse method that is eventually called by all other methods.
+#' It returns a matrix with:
+#' \itemize{
+#' \item \code{x} rows and \code{y} columns if \code{y} is not missing and 
+#' not \code{NULL};
+#' \item dimension \code{x[1]} x \code{x[2]} if \code{x} has at least two elements;
+#' \item dimension \code{x} (i.e. a square matrix) otherwise.
+#' }
+#' 
+#' The default is to draw its entries from the standard uniform distribution using
+#' the base function \code{\link{runif}}, but any other function that generates 
+#' random numeric vectors of a given length may be specified in argument \code{dist}.
+#' All arguments in \code{...} are passed to the function specified in \code{dist}.
+#' 
+#' The only requirement is that the function in \code{dist} is of the following form:
+#' 
+#' \samp{
+#' function(n, ...){
+#' # return vector of length n
+#' ...
+#' }}
+#' 
+#' This is the case of all base random draw function such as \code{\link{rnorm}}, 
+#' \code{\link{rgamma}}, etc\ldots
+#'  
+#' 
+#' @param y optional specification of number of columns
+#' @param dist a random distribution function (see details of method 
+#' \code{rmatrix,numeric})
+#' @param byrow a logical passed in the internal call to the function 
+#' \code{\link{matrix}}
+#' @param dimnames \code{NULL} or a \code{list} passed in the internal call to 
+#' the function \code{\link{matrix}}
+#' @param ... extra arguments passed to the distribution function \code{dist}.
+#' 
+#' @inline
+#' 
+#' @examples
+#' ## Generate a random matrix of a given size
+#' rmatrix(5, 3)
+#' \dontshow{ stopifnot( identical(dim(rmatrix(5, 3)), c(5L,3L)) ) }
+#' 
+#' ## Generate a random matrix of the same dimension of a template matrix
+#' a <- matrix(1, 3, 4)
+#' rmatrix(a)
+#' \dontshow{ stopifnot( identical(dim(rmatrix(a)), c(3L,4L)) ) }
+#' 
+#' ## Specificy the distribution to use
+#' 
+#' # the default is uniform
+#' a <- rmatrix(1000, 50)
+#' \dontrun{ hist(a) }
+#' 
+#' # use normal ditribution
+#' a <- rmatrix(1000, 50, rnorm)
+#' \dontrun{ hist(a) }
+#' 
+#' # extra arguments can be passed to the random variate generation function 
+#' a <- rmatrix(1000, 50, rnorm, mean=2, sd=0.5)
+#' \dontrun{ hist(a) }
+#' 
 setMethod('rmatrix', 'numeric', 
-	function(x, y, dist=runif, byrow = FALSE, dimnames = NULL, ...){
+	function(x, y=NULL, dist=runif, byrow = FALSE, dimnames = NULL, ...){
+		
+		x <- as.integer(x)
+		# early exit if x has length 0
+		if( length(x) == 0L )
+			stop("NMF::rmatrix - invalid empty vector in argument `x`.")
+		
 		# check that 'dist' is a function.
 		if( !is.function(dist) )
 			stop("NMF::rmatrix - invalid value for argument 'dist': must be a function [class(dist)='", class(dist), "'].")
 		
-		# create a square matrix if 'y' is missing
-		if( missing(y) )
-			y <- x
+		# if 'y' is not specified:
+		if( is.null(y) ){
+			
+			if( length(x) == 1L ) y <- x # create a square matrix 
+			else{ # assume x contains all dimensions (e.g. returned by dim())
+				y <- x[2L]
+				x <- x[1L]
+			}
+			
+		}else{
+			y <- as.integer(y)
+			y <- y[1L] # only use first element
+		}
 		
 		# build the random matrix using the distribution function
 		matrix(dist(x*y, ...), x, y, byrow=byrow, dimnames=dimnames)	
 	}
 )
 
-###% Generates a random matrix of the same dimension of a target matrix
-setMethod('rmatrix', 'matrix', 
+#' Default method which calls \code{rmatrix,vector} on the dimensions of \code{x}
+#' that is assumed to be returned by a suitable \code{dim} method:
+#' it is equivalent to \code{rmatrix(dim(x), y=NULL, ...)}.
+#' 
+#' @examples
+#' 
+#' # random matrix of the same dimension as another matrix
+#' x <- matrix(3,4)
+#' dim(rmatrix(x))
+#' 
+setMethod('rmatrix', 'ANY', 
 	function(x, ...){
-		rmatrix(nrow(x), ncol(x), ...)
+		rmatrix(x=dim(x), y=NULL, ...)
 	}
 )
 
@@ -88,18 +284,6 @@ matapply <- function(x, FUN, ...){
 ###% try to convert a character string into a numeric
 toNumeric <- function(x){
 	suppressWarnings( as.numeric(x) )
-}
-
-###% Test if a variable is exactly NA
-isNA <- function(x) 
-	identical(x, NA) || identical(x, as.character(NA)) || identical(x, as.numeric(NA)) || identical(x, as.integer(NA))  
-
-###% Test if a variable is exactly FALSE
-isFALSE <- function(x) identical(x, FALSE)
-
-###% Test if a variable is a single number
-isNumber <- function(x, int.ok=TRUE){ 
-	is.numeric(x) && length(x) == 1 && (int.ok || !is.integer(x))
 }
 
 ###% Tells one is running in Sweave
@@ -235,13 +419,34 @@ more <- function(x, step.size=10, width=20, header=FALSE, pattern=NULL){
 	invisible()
 } 
 
-###% randomize each column separately
+#' Randomizing Data
+#' 
+#' \code{randomize} permutates independently the entries in each column 
+#' of a matrix-like object, to produce random data that can be used 
+#' in permutation tests or bootstrap analysis.
+#' 
+#' In the context of NMF, it may be used to generate random data, whose 
+#' factorization serves as a reference for selecting a factorization rank,
+#' that does not overfit the data.
+#' 
+#' @param x data to be permutated. It must be an object suitable to be 
+#' passed to the function \code{\link{apply}}.
+#' @param ... extra arguments passed to the function \code{\link{sample}}.
+#' 
+#' @return a matrix
+#' 
+#' @export
+#' @examples
+#' x <- matrix(1:32, 4, 8)
+#' randomize(x)
+#' randomize(x)
+#' 
 randomize <- function(x, ...){
 	
 	if( is(x, 'ExpressionSet') ) x <- exprs(x)
 		
 	# resample the columns
-	res <- apply(x, 2, function(c, ...) sample(c, ...), ...)
+	apply(x, 2, function(c, ...) sample(c, size=length(c), ...), ...)
 	
 }
 
@@ -279,89 +484,11 @@ nmfInfo <- function(command){
 	desc
 }
 
-###% Silently load a package (with require) 
-require.quiet <- function(package, character.only = FALSE, ...){
-	if( !character.only )
-		package <- as.character(substitute(package))
-	capture.output(suppressMessages(suppressWarnings(res <- do.call('require', list(package=package, ..., character.only=TRUE, quietly=TRUE)))))
-	res
-}
-
 ###% Returns TRUE if running under Mac OS X + GUI
 is.Mac <- function(check.gui=FALSE){
 	is.mac <- (length(grep("darwin", R.version$platform)) > 0)
 	# return TRUE is running on Mac (adn optionally through GUI)
 	is.mac && (!check.gui || .Platform$GUI == 'AQUA')
-}
-
-###% Test if a given namespace is loaded (without loading it!!)
-isNamespaceLoaded <- function(name){
-	!is.null(.Internal(getRegisteredNamespace(as.name(name))))
-}
-
-###% Test if there is a namespace loading
-getLoadingNamespace <- function(getenv=FALSE){
-	is.loading <- try(info <- loadingNamespaceInfo(), silent=TRUE)
-	if( !is(is.loading, 'try-error') ){
-		if( getenv ) asNamespace(as.name(info$pkgname))
-		else info$pkgname
-	}
-	else NULL
-}
-
-getPackageEnv <- function(){
-	parent.env(environment())
-}
-
-#' Execute R Commands
-R.exec <- function(...){	
-	system(paste(file.path(R.home(), 'bin', 'R'),' ', ..., sep=''))
-}
-
-#' Execute R CMD Commands
-R.CMD <- function(cmd, ...){
-	R.exec('CMD ', cmd, ' ', ...)
-}
-
-#' Execute R CMD SHLIB
-R.SHLIB <- function(libname, ...){
-	R.CMD('SHLIB', '-o ', libname, .Platform$dynlib.ext, ...)
-}
-
-#' Compile Package Source Code Files
-compile_src <- function(pkg, load=TRUE){
-	
-	library(devtools)
-	p <- as.package(pkg)
-	owd <- getwd()
-	on.exit(setwd(owd))
-	
-	# Compile code in /src
-	srcdir <- file.path(p$path, 'src')
-	if( file.exists(srcdir) ){
-		setwd(srcdir)
-		R.SHLIB(pkg, " *.cpp ")		
-		if( load )
-			load_c(pkg)
-	}
-}
-
-###% Test if a package is installed
-isPackageInstalled <- function(..., lib.loc=NULL){
-
-	inst <- utils::installed.packages(lib.loc=lib.loc)
-	pattern <- '^([a-zA-Z.]+)(_([0-9.]+)?)?$';
-	res <- sapply(list(...), function(p){
-		vers <- gsub(pattern, '\\3', p)
-		print(vers)
-		pkg <- gsub(pattern, '\\1', p)
-		print(pkg)
-		if( !(pkg %in% rownames(inst)) ) return(FALSE);
-		p.desc <- inst[pkg,]
-		if( (vers != '') && compareVersion(vers, p.desc['Version']) > 0 ) return(FALSE);
-		TRUE
-	})
-	all(res)
 }
 
 ###% Test if parallel computation is possible
@@ -384,16 +511,6 @@ hash_function <- function(f){
 }
 
 
-###% Remove the platform specific library extension
-extractLibname <- function(libs){
-	sub(paste("(.*)\\", .Platform$dynlib.ext, "$", sep=''), "\\1", basename(libs))
-}
-
-###% List the library files in a directory
-listDynLibs <- function(dir, ...){
-	list.files(dir, pattern=paste("\\", .Platform$dynlib.ext, "$", sep=''), ...)
-}
-
 ###% compare function with copy and with no copy
 cmp.cp <- function(...){
 	res <- nmf(..., copy=F)
@@ -411,7 +528,7 @@ C.ptr <- function(x, rec=FALSE)
 {	
 	attribs <- attributes(x)
 	if( !rec || is.null(attribs) )
-		.Call("ptr_address", x)
+		.Call("ptr_address", x, PACKAGE='NMF')
 	else
 		c( C.ptr(x), sapply(attribs, C.ptr, rec=TRUE))
 	
@@ -423,14 +540,14 @@ is.same <- function(x, y){
 
 # clone an object
 clone <- function(x){
-	.Call('clone_object', x)
+	.Call('clone_object', x, PACKAGE='NMF')
 }
 
 # deep-clone an object
 clone2 <- function(x){
 	if( is.environment(x) ){
 		y <- copyEnv(x)
-		eapply(ls(x, all=TRUE), 
+		eapply(ls(x, all.names=TRUE), 
 			function(n){
 				if( is.environment(x[[n]]) ){
 					y[[n]] <<- clone(x[[n]])
@@ -439,7 +556,7 @@ clone2 <- function(x){
 				}
 		})
 	}else{
-		y <- .Call('clone_object', x)		
+		y <- .Call('clone_object', x, PACKAGE='NMF')		
 		if( isS4(x) ){ ## deep copy R object
 			lapply(slotNames(class(y)), 
 				function(n){					
@@ -459,30 +576,30 @@ clone2 <- function(x){
 #compute RSS with C function
 .rss <- function(x, y)
 {	
-	.Call("Euclidean_rss", x, y)
+	.Call("Euclidean_rss", x, y, PACKAGE='NMF')
 }
 
 #compute KL divergence with C function
 .KL <- function(x, y)
 {	
-	.Call("KL_divergence", x, y)
+	.Call("KL_divergence", x, y, PACKAGE='NMF')
 }
 
 # pmin in place
 pmin.inplace <- function(x, lim, skip=NULL){
 	
-	.Call('ptr_pmin', x, lim, as.integer(skip))
+	.Call('ptr_pmin', x, lim, as.integer(skip), PACKAGE='NMF')
 	
 }
 
 # colMin
 colMin <- function(x){
-	.Call('colMin', x)
+	.Call('colMin', x, PACKAGE='NMF')
 }
 
 # colMax
 colMax <- function(x){
-	.Call('colMax', x)
+	.Call('colMax', x, PACKAGE='NMF')
 }
 
 # apply unequality constraints in place in place
@@ -492,7 +609,7 @@ neq.constraints.inplace <- function(x, constraints, ratio=NULL, value=NULL, copy
 	if( copy )
 		x <- clone(x)
 	
-	.Call('ptr_neq_constraints', x, constraints, ratio, value)	
+	.Call('ptr_neq_constraints', x, constraints, ratio, value, PACKAGE='NMF')	
 }
 
 # Test if an external pointer is nil
@@ -501,7 +618,7 @@ ptr_isnil <- function (address)
 {
 	if (class(address) != "externalptr") 
 		stop("address is not an externalptr.")
-	.Call("ptr_isnil", address)	
+	.Call("ptr_isnil", address, PACKAGE='NMF')	
 }
 
 
@@ -509,14 +626,12 @@ ptr_isnil <- function (address)
 ###% 
 ###% Taken from the examples of colorspace::rainbow_hcl
 ###% 
-pal <- function(col, border = "light gray", ...)
-{	
+pal <- function(col, h=1, border = "light gray")
+{
 	n <- length(col)	
-	plot(0, 0, type="n", xlim = c(0, 1), ylim = c(0, 1),
-			axes = FALSE, xlab = "", ylab = "", ...)
-	rect(0:(n-1)/n, 0, 1:n/n, 1, col = col, border = border)
+	plot(0, 0, type="n", xlim = c(0, 1), ylim = c(0, h), axes = FALSE, xlab = "", ylab = "")
+	rect(0:(n-1)/n, 0, 1:n/n, h, col = col, border = border)
 }
-
 ###% Draw the Palette of Colors as a Wheel
 ###% 
 ###% Taken from the examples of colorspace::rainbow_hcl

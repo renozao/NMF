@@ -1,3 +1,7 @@
+#' @include atracks.R
+#' @include colorcode.R
+NULL
+
 library(grid)
 library(colorspace)
 library(stringr)
@@ -770,7 +774,7 @@ subset2orginal_idx <- function(idx, subset){
 #' subset mat. This is required to be able to return the original indexes. 
 #' 
 #' @keywords internal
-cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, subset=NULL){
+cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, subset=NULL, verbose = FALSE){
 	
 	# do nothing if an hclust object is passed	
 	parg <- deparse(substitute(param))
@@ -847,12 +851,14 @@ cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, s
 				stop("aheatmap - Invalid dissimilarity method, must be one of: ", paste("'", av, "'", sep='', collapse=', '))
 			
 			distfun <- av[i]
+			if( verbose ) message("Using distance method: ", distfun)
 			if(distfun == "correlation"){ d <- dist(1 - cor(t(mat))); attr(d, 'method') <- 'correlation'; d }
 			else dist(mat, method = distfun)
 	
-		}else if(class(distfun) == "dist")
+		}else if( is(distfun, "dist") ){
+			if( verbose ) message("Using dist object: ", distfun)
 			distfun
-		else if( is.function(distfun) )
+		}else if( is.function(distfun) )
 			distfun(mat)
 		else
 			stop("aheatmap - Invalid dissimilarity function: must be a character string, an object of class 'dist', or a function")
@@ -866,6 +872,7 @@ cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, s
 				stop("aheatmap - Invalid clustering method, must be one of: ", paste("'", av, "'", sep='', collapse=', '))
 			
 			hclustfun <- av[i]
+			if( verbose ) message("Using clustering method: ", hclustfun)
 			hclust(d, method=hclustfun)
 			
 		}else if( is.function(hclustfun) )
@@ -940,15 +947,26 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 	if( isNA(annotation_colors) ){
 		annotation_colors = list()
 	}
+	
 	count = 0
-	for(i in 1:length(annotation)){
-		if(class(annotation[[i]]) %in% c("character", "factor")){
-			# convert to factor
-			if( !is.factor(annotation[[i]]) )
-				annotation[[i]] <- as.factor(annotation[[i]])
-			count = count + nlevels(annotation[[i]])
-		}
-	}
+	annotation2 <- list()
+	anames <- names(annotation)
+	sapply(seq_along(annotation), function(i){
+		a <- annotation[[i]]
+		if( class(annotation[[i]]) %in% c("character", "factor")){			
+			# convert to character vector
+			a <- if( is.factor(a) ) levels(a) else unique(a)
+			count <<- count + nlevels(a)
+			# merge if possible
+			if( !is.null(anames) && anames[i]!='' )	
+				annotation2[[anames[i]]] <<- unique(c(annotation2[[anames[i]]], a))
+			else 
+				annotation2 <<- c(annotation2, list(a))			
+		}else
+			annotation2 <<- a
+	})
+	annotation <- annotation2
+	#str(annotation2)
 
 	factor_colors = hcl(h = seq(1, 360, length.out = max(count+1,20)), 100, 70)	
 		
@@ -956,18 +974,18 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 	rs <- RNGscope()
 	on.exit({
 		# update local random seed on exit
-		assign('.Random.seed', get('.Random.seed', env=.GlobalEnv), env=.Rd.seed)
+		.Rd.seed$.Random.seed <- getRNG()
 		# restore global random seed
 		RNGscope(rs)
 	})
 	# restore local random seed if it exists 
 	if( !is.null(.Rd.seed$.Random.seed) )
-		assign('.Random.seed', .Rd.seed$.Random.seed, env=.GlobalEnv)
+		setRNG(.Rd.seed$.Random.seed)
 	# set seed and restore on exit
 	if( isTRUE(seed) ){
 		# reset .Random.seed to a dummy RNG in case the current kind is user-supplied:
 		# we do not want to draw even once from the current RNG
-		assign('.Random.seed', c(401L, 0L, 0L), env=.GlobalEnv)
+		setRNG(c(401L, 0L, 0L))
 		set.seed(12345, 'default', 'default')
 	}
 	factor_colors <- sample(factor_colors)
@@ -978,12 +996,13 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 		ann <- annotation[[i]]
 		aname <- names(annotation)[i]
 		# skip already generated colors
-		if( !is.null(res_colors[[aname]]) ) next;
+		acol_def <- res_colors[[aname]]
+		if( !is.null(acol_def) ) next;
 		acol <- annotation_colors[[aname]]
 		if( is.null(acol) ){
 			res_colors[[aname]] <-
-			if(class(annotation[[i]]) %in% c("character", "factor")){
-				lev <- levels(ann)
+			if( class(annotation[[i]]) %in% c("character", "factor")){
+				lev <- ann
 				ind = 1:length(lev)
 				acol <- setNames(factor_colors[ind], lev)
 				factor_colors = factor_colors[-ind]
@@ -1001,14 +1020,27 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 			acol <- 
 			if( length(acol) == 1 && grepl("^\\$", acol) ) # copy colors from other columns if the spec starts with '$'
 				annotation_colors[[substr(acol, 2, nchar(acol))]]
-			else if( is.factor(ann) ){
-				# convert to a palette of the number of levels
-				acol <- ccPalette(acol, nlevels(ann))
-				
-				if( is.null(names(acol)) )
-					names(acol) <- levels(ann)
-				
-				acol
+			else if( !is.numeric(ann) ){				
+				local({ #do this locally so that it does not affect `ann`
+					
+					# subset to the levels for which no colour has already been defined
+					lev <- ann
+					# subset to the levels for which no colour has already been defined
+#					idx <- which(!lev %in% names(acol_def) & !is.na(lev))
+#					lev <- lev[idx]
+#					#idx <- idx + length(acol_def)
+#					
+#					if( length(lev) == 0L ) acol_def # nothing to add
+#					else
+					{
+						# convert to a palette of the number of levels if necessary
+						nl <- length(lev)
+						acol <- ccPalette(acol, nl)
+						if( is.null(names(acol)) )
+							names(acol) <- lev
+						c(acol_def, acol)
+					}
+				})
 			}else{
 				acol <- ccPalette(acol)
 				if( is.null(names(acol)) )
@@ -1023,7 +1055,7 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 		}
 		
 		# store type information
-		attr(res_colors[[aname]], 'afactor') <- is.factor(ann) 		
+		attr(res_colors[[aname]], 'afactor') <- !is.numeric(ann) 		
 				
 	}	
 	
@@ -1043,128 +1075,7 @@ generate_dimnames <- function(x, n){
 	else stop("aheatmap - Invalid row/column label. Possible values are: NA, a vector of correct length, value 1 (or 1L) or single character string.")
 }
 
-# Generic framework for handling annotation tracks
-setOldClass('annotationTrack')
-is.atrack <- function(x) is(x, 'annotationTrack')
-setGeneric('.atrack', function(object, ...) standardGeneric('.atrack'))
 
-aname <- function(x, name){
-	return(x)
-	if( missing(name) ){
-		cn <- colnames(x)
-		an <- attr(x, 'aname')
-		if( !is.null(x) ) cn		
-		else if( !is.null(an) ) an
-		else class(x)[1]
-	}else{
-		attr(x, 'aname') <- name
-		x
-	}
-}
-#' The default method converts character or integer vectors into factors. 
-#' Numeric vectors, factors, a single NA or \code{annotationTrack} objects are 
-#' returned unchanged (except from reordering by argument \code{order}).
-#' Data frames are not changed either, but class 'annotationTrack' is appended 
-#' to their original class set.
-#' 
-setMethod('.atrack', signature(object='ANY'),
-		function(object, ...){
-			# apply convertion rules for standard classes
-			if( is.integer(object) || is.character(object) ) aname(as.factor(object), "Group")
-			else if( is.factor(object) ) aname(object, "Factor")
-			else if( is.numeric(object) ) aname(object, "Variable")
-			else if( is.null(object) || isNA(object) || is.atrack(object) ) object
-			else if( is.data.frame(object) ) as.list(object)
-			else if( is.list(object) ){
-				object <- object[!sapply(object, function(x) length(x) == 0 || isNA(x) )]				
-				if( length(object) == 0 ) NULL
-				else{
-					# convert into a list of tracks
-					sapply(object, .atrack, simplify=FALSE) 
-				}
-				
-			}else stop("aheatmap - Invalid annotation item `", substitute(object), "`: must be a factor, or a character, numeric or integer vector")
-		}
-)
-
-#' Creates/Concatenates objects into an \code{annotationTrack} object
-atrack <- function(..., order = NULL, enforceNames=FALSE){
-	
-	# cbind object with the other arguments
-	l <- list(...)
-	if( length(l) == 1 && is.atrack(l[[1]]) )
-		object <- l[[1]]
-	else if( length(l) > 0 ){
-		
-		object <- list()
-		#print(l)
-		lapply(seq_along(l), function(i){
-					x <- l[[i]]
-					if( isNA(x) || is.null(x) )
-						return()
-					
-					xa <- .atrack(x)
-					if( isNA(xa) || is.null(xa) )
-						return()
-					
-					n <- names(object)
-					# convert into a track
-					if( !is.list(xa) )
-						xa <- setNames(list(xa), names(l)[i])
-					
-					# remove NA and NULL elements
-					if( is.null(xa) || isNA(xa) ) return()
-					
-					# cbind with previous tracks
-					if( is.null(object) ) object <<- xa
-					else object <<- c(object, xa)
-					
-				})		
-	}	
-	
-	# exit now if object is NULL
-	if( is.null(object) ) return()
-		
-	# reorder if necessary
-	if( !is.null(order) ){
-		object <- sapply(object, function(x) x[order], simplify=FALSE)
-		#lapply(seq_along(object), function(i) object[[i]] <<- object[[i]][order])
-	}
-	
-	if( enforceNames ){
-		n <- names(object)
-		xnames <- paste('X', 1:length(object), sep='')
-		if( is.null(n) ) names(object) <- xnames
-		else names(object)[n==''] <- xnames[n==''] 
-	}
-	
-	# add class 'annotationTrack' if not already there
-	if( !is.atrack(object) )
-		class(object) <- c('annotationTrack', class(object))
-	
-	#print(object)
-	# return object
-	object
-}
-
-#setGeneric('atrack<-', function(object, value) standardGeneric('atrack<-'))
-#setReplaceMethod('atrack', signature(object='ANY', value='ANY'),
-#	function(object, value){
-#		# if the annotation track is not NA: convert it into a atrack 
-#		# and set the value
-#		if( !isNA(object) && length(value) > 0 ){
-#			object <- atrack(object, value)
-#		}
-#		object
-#	}
-#)
-#setReplaceMethod('atrack', signature(object='annotationTrack'),
-#	function(object, value, replace = FALSE){
-#		if( !replace && length(value) > 0 )	atrack(object, value)			
-#		else if( replace ) atrack(value)
-#		else object
-#	}
-#)
 .make_annotation <- function(x, ord=NULL){
 	# convert into a data.frame if necessary
 	if( !is.data.frame(x) ){
@@ -1326,7 +1237,7 @@ subset_index <- function(x, margin, subset){
 #' enabling the easy drawing of multiple heatmaps on a single a plot -- at last!.
 #'
 #' The development of this function started as a fork of the function 
-#' \code{\link{aheatmap}} from the package \code{pheatmap}, and provides
+#' \code{\link[pheatmap]{pheatmap}} from the package \code{pheatmap}, and provides
 #' several enhancements such as:
 #' \itemize{
 #' \item it replicates the arguments of the base \code{\link{heatmap}} function 
@@ -1641,6 +1552,10 @@ aheatmap = function(x
 , main = NULL, sub = NULL, info = NULL
 , verbose=getOption('verbose'), ...){
 
+	# set verbosity level
+	ol <- lverbose(verbose)
+	on.exit( lverbose(ol) )
+	
 	# convert ExpressionSet into 
 	if( is(x, 'ExpressionSet') ){
 		library(Biobase)
@@ -1702,7 +1617,7 @@ aheatmap = function(x
 	tree_row <- if( !isNA(Rowv) ){
 		if( verbose ) message("Cluster rows")
 		# single numeric Rowv means treeheight
-		if( isNumber(Rowv, int.ok = FALSE) ){
+		if( isReal(Rowv) ){
 			# treeheight
 			treeheight_row <- Rowv			
 			# do cluster the rows
@@ -1710,7 +1625,8 @@ aheatmap = function(x
 		}
 		cluster_mat(mat, Rowv
 						, distfun=distfun, hclustfun=hclustfun
-						, reorderfun=reorderfun, subset=subsetRow)		
+						, reorderfun=reorderfun, subset=subsetRow
+						, verbose = verbose)		
 	}
 	else NA
 	
@@ -1727,7 +1643,7 @@ aheatmap = function(x
 			tree_row
 		}else{
 			# single numeric Colv means treeheight
-			if( isNumber(Colv, int.ok = FALSE) ){
+			if( isReal(Colv) ){
 				# tree height
 				treeheight_col <- Colv				
 				# do cluster the columns
@@ -1736,7 +1652,8 @@ aheatmap = function(x
 			if( verbose ) message("Cluster columns")
 			cluster_mat(t(mat), Colv
 							, distfun=distfun, hclustfun=hclustfun
-							, reorderfun=reorderfun, subset=subsetCol)
+							, reorderfun=reorderfun, subset=subsetCol
+							, verbose = verbose)
 		}		
 	}
 	else NA
@@ -1857,8 +1774,8 @@ aheatmap = function(x
 	annotation_colors <- annColors
 	
 	# render annotation tracks for both rows and columns
-	annTracks <- renderAnnotations(atrack(annCol, order=res$colInd)
-								, atrack(annRow, order=res$rowInd)
+	annTracks <- renderAnnotations(atrack(annCol, order=res$colInd, .DATA=amargin(x,2L))
+								, atrack(annRow, order=res$rowInd, .DATA=amargin(x,1L))
 								, annotation_colors = annotation_colors, verbose=verbose)
 	
 	# retrieve dimension for computing cexRow and cexCol (evaluated from the arguments)

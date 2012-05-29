@@ -6,15 +6,58 @@
 # Author: Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
 ###############################################################################
 
+#' Specific NMF Layer for Bioconductor 
+#' 
+#' The package NMF provides an optional layer for working with common objects
+#' and functions defined in the Bioconductor platform.
+#' 
+#' It provides:
+#' \itemize{
+#' \item computation functions that support \code{ExpressionSet} objects as
+#' inputs.
+#' \item aliases and methods for generic functions defined and widely used by
+#' Bioconductor base packages.
+#' \item specialised visualisation methods that adapt the titles and legend
+#' using bioinformatics terminology.
+#' \item functions to link the results with annotations, etc...
+#' }
+#' 
+#' @rdname bioc
+#' @name bioc-NMF
+#' 
+#' @aliases nmf,ExpressionSet,ANY,ANY-method
+#' @aliases nmf,matrix,ExpressionSet,ANY-method
+#' 
+#' @aliases seed,ExpressionSet,ANY,ANY-method
+#' 
+#' @aliases run,NMFStrategy,ExpressionSet,ANY-method
+#' 
+#' @aliases nmfModel,ExpressionSet,ANY-method
+#' @aliases nmfModel,ANY,ExpressionSet-method
+#' 
+#' @aliases rnmf,ANY,ExpressionSet-method
+#' 
+#' @aliases .atrack,ExpressionSet-method
+#' 
+#' @aliases sampleNames,NMF-method
+#' @aliases sampleNames,NMFfitX-method
+#' @aliases featureNames,NMF-method
+#' @aliases featureNames,NMFfitX-method
+#' 
+#' @aliases nmeta
+#' @aliases metagenes metagenes<-
+#' @aliases metaprofiles metaprofiles<-
+NULL
 
 .onLoad.nmf.bioc <- function(){
 	
-if( "Biobase" %in% rownames(utils::installed.packages()) ){
+if( pkgmaker::require.quiet('Biobase') ){
 
 	# load Biobase package
 	library(Biobase)
 
-	###% Performs NMF on an ExpressionSet: the target matrix is the expression matrix \code{exprs(x)}.
+	#' Performs NMF on an ExpressionSet: the target matrix is the expression matrix \code{exprs(x)}.
+	#' @rdname bioc
 	setMethod('nmf', signature(x='ExpressionSet', rank='ANY', method='ANY'), 
 		function(x, rank, method, ...)
 		{
@@ -27,48 +70,73 @@ if( "Biobase" %in% rownames(utils::installed.packages()) ){
 		}
 	)
 	
-	###% Seeds an NMF model from an ExpressionSet: the target matrix is the expression matrix \code{exprs(x)}.
+	#' Fits an NMF model partially seeding the computation with a given 
+	#' ExpressionSet object passed in \code{rank}.
+	#' 
+	#' This method provides a shortcut for \code{nmf(x, exprs(rank), method, ...)}. 
+	#' 
+	#' @examples
+	#' # partially seed with an ExpressionSet (requires package Biobase)
+	#' \dontrun{
+	#' data(esGolub)
+	#' nmf(esGolub, esGolub[,1:3])
+	#' }
+	#' 
+	setMethod('nmf', signature(x='matrix', rank='ExpressionSet', method='ANY'),
+		function(x, rank, method, ...){
+			# replace missing values by NULL values for correct dispatch
+			if( missing(method) ) method <- NULL
+			
+			nmf(x, exprs(rank), method, ...)
+		}
+	)
+	
+	
+	#' Seeds an NMF model directly on an ExpressionSet object.
+	#' This method provides a shortcut for \code{seed(exprs(x), model, method, ...)}. 
+	#' 
+	#' @examples
+	#' # run on an ExpressionSet (requires package Biobase)
+	#' \dontrun{
+	#' data(esGolub)
+	#' nmf(esGolub, 3)
+	#' }
+	#' 
 	setMethod('seed', signature(x='ExpressionSet', model='ANY', method='ANY'), 
 		function(x, model, method, ...)
 		{
 			# replace missing values by NULL values for correct dispatch
-			if( missing(method) ) method <- nmf.getOption('default.seed')
+			if( missing(method) ) method <- NULL
+			if( missing(model) ) model <- NULL
 			
 			# apply NMF to the gene expression matrix			
 			seed(Biobase::exprs(x), model, method, ...)
 		}
 	)
 	
-	###% Run the algorithm on the expression matrix of an \code{ExpressionSet} object.
-	setMethod('run', signature(method='NMFStrategy', x='ExpressionSet', seed='ANY'),
-		function(method, x, seed, ...){
+	#' Runs an NMF algorithm on the expression matrix of an \code{ExpressionSet} object.
+	setMethod('run', signature(object='NMFStrategy', y='ExpressionSet', x='ANY'),
+		function(object, y, x, ...){
 			
-			run(method, Biobase::exprs(x), seed, ...)
+			run(object, Biobase::exprs(y), x, ...)
 			
 		}
 	)
-	
-	###% Computes the distance between the target ExpressionSet and its NMF fit 
-	setMethod('distance', signature(target='ExpressionSet', x='NMF'), 
-			function(target, x, ...){
-								
-				# compute the distance between the expression matrix and the fitted NMF model
-				distance(Biobase::exprs(target), x, ...)
-			}
-	)
-	
+		
 	###% Method 'nmfModel' for 'ExpressionSet' target objects: 
 	###% -> use the expression matrix of 'target' as the target matrix
 	setMethod('nmfModel', signature(rank='ANY', target='ExpressionSet'),
 			function(rank, target, ...){
+				if( missing(rank) ) rank <- NULL
 				# call nmfModel on the expression matrix
 				nmfModel(rank, exprs(target), ...)
 			}	
 	)
 	setMethod('nmfModel', signature(rank='ExpressionSet', target='ANY'),
 			function(rank, target, ...){
-				# call nmfModel on the expression matrix swapping the arguments
-				nmfModel(target, exprs(rank), ...)
+				if( missing(target) ) target <- NULL
+				# call nmfModel on the expression matrix
+				nmfModel(exprs(rank), target, ...)
 			}	
 	)	
 	
@@ -83,7 +151,7 @@ if( "Biobase" %in% rownames(utils::installed.packages()) ){
 	
 	###% The method for an \code{ExpressionSet} object returns the data.frame that 
 	###% contains the phenotypic data (i.e. \code{pData(object)})
-	setMethod('.atrack', 'ExpressionSet', function(object, ...) pData(object) )
+	setMethod('.atrack', 'ExpressionSet', function(object, ...) .atrack(pData(object), ...) )
 	
 	###% Annotate the genes specific to each cluster.
 	###%
@@ -178,19 +246,11 @@ if( "Biobase" %in% rownames(utils::installed.packages()) ){
 	)
 
 	# Export layer-specific methods [only if one is loading a namespace]
-	ns <- getLoadingNamespace(getenv=TRUE)
-	if( !is.null(ns) ){
-		namespaceExport(ns, c("nmeta"
-						,"featureNames"
-						,"featureNames<-"
-						,"sampleNames"
-						,"sampleNames<-"
-						,"metagenes"
-						,"metagenes<-"
-						,"metaprofiles"
-						,"metaprofiles<-")
-		)
-	}
+	ns <- pkgmaker::addNamespaceExport(c("nmeta"
+						,"featureNames", "featureNames<-"
+						,"sampleNames", "sampleNames<-"
+						,"metagenes", "metagenes<-"
+						,"metaprofiles", "metaprofiles<-"))
 	
 	# return TRUE
 	TRUE

@@ -1,3 +1,7 @@
+#' @include registry.R
+#' @include algorithmic.R
+NULL
+
 ## Base abstract class that defines a strategy.
 #setClass('Strategy'
 #	, representation(
@@ -58,20 +62,24 @@
 #	}
 #)
 
-###% Base abstract class that defines the interface for NMF algorithms.
-###%
-###% @aliases NMFStrategy-class
-###% 
-###% @slot name character string giving the name of the strategy
-###%
-###% @slot objective the objective function associated with the algorithm (Frobenius, Kullback-Leibler, etc...). 
-###% It is either a character string as a key registered by \code{nmfRegisterDistance} or a function definition. 
-###% In the latter case, the given function must have the following signature (x=matrix, y=matrix) and return a nonnegative real value.
-###%
-###% @slot model a character string giving either the (sub)class name of the NMF-class instance used and returned by the strategy, or a function name.
-###% In the latter case, the given function must have the following signature \code{(v=matrix, r=integer, ...)}, where the \code{v} is the target
-###% matrix to approximate and \code{r} is the rank of factorization to achieve.
-###%
+#' Virtual Interface for NMF Algorithms
+#' 
+#' This class partially implements the generic interface defined for general 
+#' algorithms defined in the package NMF (see \code{\link{algorithmic-NMF}}).
+#'  
+#' @slot name character string giving the name of the algorithm
+#' 
+#' @slot objective the objective function associated with the algorithm (Frobenius, Kullback-Leibler, etc...). 
+#'  It is either an access key of a registered objective function or a function definition. 
+#'  In the latter case, the given function must have the following signature \code{(x="NMF", y="matrix")}
+#'  and return a nonnegative real value.
+#' 
+#' @slot model a character string giving either the (sub)class name of the NMF-class instance used 
+#' and returned by the strategy, or a function name.
+#' 
+#' @slot mixed a logical that indicates if the algorithm works on mixed-sign data. 
+#' 
+#' @keywords internal
 setClass('NMFStrategy'
 	, representation(
 				name = 'character' # name of the method (also key)
@@ -96,7 +104,7 @@ setClass('NMFStrategy'
 		obj <- modelname(object)
 		if( !is.character(obj) )
 			return("Slot 'model' must be a character vector")
-		if( any(inv <- !sapply(obj, is.nmf)) )
+		if( any(inv <- !sapply(obj, isNMFclass)) )
 			return(paste("Slot 'model' must contain only names of a class that extends class 'NMF' [failure on class(es) "
 					, paste( paste("'", obj[inv], "'", sep=''), collapse=', ')  
 					,"]"
@@ -110,6 +118,8 @@ setClass('NMFStrategy'
 	, contains = 'VIRTUAL'
 )
 
+#' @export
+#' @rdname NMFStrategy-class
 setMethod('show', 'NMFStrategy',
 		function(object){			
 			cat('<object of class: ', class(object), ">\n")
@@ -127,22 +137,147 @@ setAs('NMFStrategy', 'character'
 	, def = function(from) name(from)	
 ) 
 
-###% Main interface to run the algorithm
-setGeneric('run', function(method, x, seed, ...) standardGeneric('run'))
-setMethod('run', signature(method='NMFStrategy', x='matrix', seed='NMFfit'),
-	function(method, x, seed, ...){
-		stop("NMFStrategy::run is a pure virtual method that should be overloaded in class '", class(method),"'.")
+#' Factory Method for NMFStrategy Objects
+#' 
+#' Creates NMFStrategy objects that wraps implementation of NMF algorithms into 
+#' a unified interface.
+#' 
+#' @param name name of an NMF algorithm.
+#' @param method definition of the algorithm
+#' @param ... extra arguments passed to \code{\link{new}}.
+#' 
+#' @export
+#' @inline
+setGeneric('NMFStrategy', function(name, method, ...) standardGeneric('NMFStrategy') )
+#' Creates an \code{NMFStrategyFunction} object that wraps the function \code{method}
+#' into a unified interface.
+#' 
+#' \code{method} must be a function with signature \code{(y="matrix", x="NMFfit", ...)}, 
+#' and return an object of class \code{\linkS4class{NMFfit}}.
+setMethod('NMFStrategy', signature(name='character', method='function'), 
+		function(name, method, ...){
+			
+			# build a NMFStrategyFunction object on the fly to wrap function 'method'
+			strategy <- new('NMFStrategyFunction', name=name, algorithm=method, ...)
+			
+			# valid the new strategy
+			validObject(strategy)
+			
+			# return new object
+			strategy
+		}
+)
+
+#' Creates an \code{NMFStrategy} object based on a template object (Constructor-Copy).
+setMethod('NMFStrategy', signature(name='character', method='NMFStrategy'), 
+		function(name, method, ...){
+			
+			# build an NMFStrategy object based on template object
+			strategy <- new(class(method), method, name=name, ...)
+			
+			# valid the new strategy
+			validObject(strategy)
+			
+			# add trace of inheritance from parent NMF algorithm
+			attr(strategy, 'parent') <- name(method)[1]
+			
+			# return new object
+			strategy
+		}
+)
+#' Creates an \code{NMFStrategy} based on a template object (Constructor-Copy) 
+#' using a randomly generated name.
+setMethod('NMFStrategy', signature(name='NMFStrategy', method='missing'), 
+		function(name, method, ...){
+			
+			# use the name as a key
+			# NB: need special trick to avoid conflict between argument and function 
+			e <- parent.frame()
+			mname <- match.fun('name')(name)
+			mname <- basename(tempfile(str_c(mname, '_')))
+			
+			NMFStrategy(name=mname, method=name, ...)
+		}
+)
+
+#' Creates an \code{NMFStrategy} based on a registered NMF algorithm, that is used 
+#' as a template.
+setMethod('NMFStrategy', signature(name='character', method='character'), 
+		function(name, method, ...){
+			NMFStrategy(name=name, method=nmfAlgorithm(method), ...) 
+		}
+)
+#' Creates an \code{NMFStrategy} based on a registered NMF algorithm (Constructor-Copy) 
+#' using a randomly generated name.
+setMethod('NMFStrategy', signature(name='missing', method='character'), 
+		function(name, method, ...){
+			NMFStrategy(nmfAlgorithm(method), ...) 
+		}
+)
+#' Creates an NMFStrategy, determining its type from the extra arguments passed 
+#' in \code{...}: if there is an argument named \code{Update} then an 
+#' \code{NMFStrategyIterative} is created, or if there is an argument 
+#' named \code{algorithm} then an \code{NMFStrategyFunction} is created.
+#' Calls other than these generates an error.
+#'  
+setMethod('NMFStrategy', signature(name='character', method='missing'), 
+		function(name, method, ...){
+			
+			# check iterative strategy
+			if( hasArg(Update) ){ # create a new NMFStrategyIterative object
+				new('NMFStrategyIterative', name=name, ...)
+			}else if( hasArg(algorithm) ){
+				new('NMFStrategyFunction', name=name, ...)
+			}else{
+				stop('NMFStrategy - Could not infer the type of NMF strategy to instantiate.')
+			}
+			
+		}
+)
+
+#' Pure virtual method defined for all NMF algorithms to ensure 
+#' that a method \code{run} is defined by sub-classes of \code{NMFStrategy}.
+#' 
+#' It throws an error if called directly.
+#' @rdname NMFStrategy
+setMethod('run', signature(object='NMFStrategy', y='matrix', x='NMFfit'),
+	function(object, y, x, ...){
+		stop("NMFStrategy::run is a pure virtual method that should be overloaded in class '", class(object),"'.")
+	}
+)
+#' Method to run an NMF algorithm directly starting from a given NMF model.
+#' @rdname NMFStrategy
+setMethod('run', signature(object='NMFStrategy', y='matrix', x='NMF'),
+	function(object, y, x, ...){
+		run(object, y, NMFfit(fit=x, seed='none', method=name(object)), ...)
 	}
 )
 
-###% Accessor methods to slot \code{name}
+#' \code{name} and \code{name<-} gets and sets the name associated with an object.
+#' In the case of \code{NMFStrategy} object it is the the name of 
+#' the algorithm.
+#' 
+#' @param object an NMFStrategy object
+#' @param ... extra arguments to allow extension
+#' @param value replacement value 
+#' 
+#' @export
+#' @rdname NMFStrategy-class
+#' @inline 
 setGeneric('name', function(object, ...) standardGeneric('name'))
+#' Returns the name of an algorithm
+#' @param all a logical that indicates if all the names associated with a strategy 
+#' should be return (\code{TRUE}), or only the first (primary) one (\code{FALSE}).
 setMethod('name', signature(object='NMFStrategy'),
 	function(object, all=FALSE){
 		if( !all ) slot(object, 'name')[1] else slot(object, 'name')
 	}
 )
+#' @export
+#' @rdname NMFStrategy-class
+#' @inline 
 setGeneric('name<-', function(object, ..., value) standardGeneric('name<-'))
+#' Sets the name(s) of an NMF algorithm
 setReplaceMethod('name', signature(object='NMFStrategy', value='character'),
 	function(object, value){
 		slot(object, 'name') <- value
@@ -151,9 +286,14 @@ setReplaceMethod('name', signature(object='NMFStrategy', value='character'),
 	}
 )
 
-###% Accessor methods to slot \code{objective}
+#' Gets the objective function associated with an NMF algorithm, 
+#' or computes the objective value for an NMF model with respect to 
+#' a given target matrix.
+#' 
+#' @export
+#' @rdname NMFStrategy-class
 setMethod('objective', signature(object='NMFStrategy'),
-	function(object, x, y, ...){
+	function(object, y, x, ...){
 	
 		obj.fun <- slot(object, 'objective')
 		
@@ -162,12 +302,16 @@ setMethod('objective', signature(object='NMFStrategy'),
 		
 		# return the distance computed using the strategy's objective function
 		if( !is.function(obj.fun) )
-			distance(x, y, method=obj.fun, ...)
+			deviance(x, y, method=obj.fun, ...)
 		else # directly compute the objective function
 			obj.fun(x, y, ...)
 		
 	}
 )
+#' Sets the objective function associated with an NMF algorithm, with a character string
+#' that must be a registered objective function.
+#' @export
+#' @rdname NMFStrategy-class
 setReplaceMethod('objective', signature(object='NMFStrategy', value='character'),
 	function(object, value){
 		#TODO: test for the existence of objective method
@@ -176,6 +320,10 @@ setReplaceMethod('objective', signature(object='NMFStrategy', value='character')
 		object
 	}
 )
+#' Sets the objective function associated with an NMF algorithm, with a function
+#' that computes the approximation error between an NMF model and a target matrix.
+#' @export
+#' @rdname NMFStrategy-class
 setReplaceMethod('objective', signature(object='NMFStrategy', value='function'),
 	function(object, value){
 		slot(object, 'objective') <- value
@@ -184,128 +332,114 @@ setReplaceMethod('objective', signature(object='NMFStrategy', value='function'),
 	}
 )
 
-###% Accessor methods to slot \code{model}
+#' Returns the model(s) that an NMF algorithm can fit.
+#' 
+#' @examples
+#' # get the type of model(s) associated with an NMF algorithm
+#' modelname( nmfAlgorithm('brunet') )
+#' modelname( nmfAlgorithm('nsNMF') )
+#' modelname( nmfAlgorithm('offset') )
+#' 
 setMethod('modelname', signature(object='NMFStrategy'),
 	function(object){
 		slot(object, 'model')
 	}
 )
-setGeneric('modelname<-', function(object, ..., value) standardGeneric('modelname<-'))
-setReplaceMethod('modelname', signature(object='NMFStrategy', value='character'),
-	function(object, value){
-		slot(object, 'model') <- value
-		validObject(object)
-		object
-	}
-)
-
-###% Accessor methods to slot \code{mixed}
-setGeneric('is.mixed', function(object, ...) standardGeneric('is.mixed'))
-setMethod('is.mixed', signature(object='NMFStrategy'),
-		function(object){
-			return( slot(object, 'mixed') )
-		}
-)
+#' \code{is.mixed} tells if an NMF algorithm works on mixed-sign data. 
+#' @export
+#' @rdname NMFStrategy-class
+is.mixed <-	function(object){
+	return( slot(object, 'mixed') )
+}
 
 ###########################################################################
 # REGISTRY METHODS FOR ALGORITHMS
 ###########################################################################
 
-###% Register a new algorithm into the NMF registry.
-###%
-setGeneric('nmfRegisterAlgorithm', function(method, key, ...) standardGeneric('nmfRegisterAlgorithm') )
+# create sub-registry for NMF algorithm
+setPackageRegistry('algorithm', "NMFStrategy", description="NMF algorithms") 
 
-###% Define an alias
-setMethodNMF <- nmfRegisterAlgorithm
+#' Registering NMF Algorithms
+#' 
+#' Adds a new algorithm to the registry of algorithms that perform 
+#' Nonnegative Matrix Factorization.
+#'   
+#' @param overwrite logical that indicates if any existing NMF method with the 
+#' same name should be overwritten (\code{TRUE}) or not (\code{FALSE}), 
+#' in which case an error is thrown.
+#' @param verbose a logical that indicates if information about the registration 
+#' should be printed (\code{TRUE}) or not (\code{FALSE}).
+#' @param ... arguments passed to the factory function \code{\link{NMFStrategy}},
+#' which instantiate the \code{\linkS4class{NMFStrategy}} object that is stored
+#' in registry. 
+#' 
+#' @export
+setNMFMethod <- function(..., overwrite=FALSE, verbose=nmf.getOption('verbose')){
+	
+	# development/tracking trick 
+	if( !isNamespaceLoaded('NMF') ) overwrite <- TRUE 
+	lverbose <- verbose || isLoadingNamespace('NMF')
+	
+	# build the NMFStrategy object
+	method <- NMFStrategy(...)
+	parent.method <- attr(method, 'parent')
+	key <- name(method)[1]
 
-setMethod('nmfRegisterAlgorithm', signature(method='NMFStrategy', key='character'),
-		function(method, key, ...){
-			
-			original.name <- name(method)
-			fname <- key[1]
-			if( original.name != fname )
-				message("Registering method '", fname,"' based on template '", original.name, "'")
-			
-			# reset slots if necessary
-			dots <- list(...)
-			if( any(ndots <- names(dots) != '') > 0 ){
-				dots <- dots[ndots]
-				# partially match the slots
-				mslots <- charmatch(names(dots), slotNames(class(method)))
-				
-				# if necessary: create object using 'method' as a template and the new values for the slots 
-				if( length(dot.slots <- dots[!is.na(mslots)]) > 0 ){
-					method <- do.call(new, c(list(class(method), method), dot.slots))
-					# valid the new strategy
-					validObject(method)
-				}
-			}
-			
-			# force the name to match the registering key, and warn the user if necessary			
-			if( !is.null(dots$name) && dots$name != fname )
-				warning("Argument 'name' discarded: the NMF algorithm's name was forced to match its key ['",fname,"'].")							
-			name(method) <- fname
-			
-			# add to the algorithm registry 
-			nmfRegister(method, key, registry.name='algorithm', ...)
-		}
-)
-setMethod('nmfRegisterAlgorithm', signature(method='NMFStrategy', key='missing'), 
-		function(method, key, ...){
-			
-			# use the name as a key
-			key <- name(method)
-			
-			# register the method
-			nmfRegisterAlgorithm(method, key, ...)		
-		}
-)
-setMethod('nmfRegisterAlgorithm', signature(method='function', key='character'), 
-	function(method, key, overwrite=FALSE, save=FALSE, ...){
-		
-		# build the NMFStrategy
-		strategy <- newNMFStrategy(method, key, ...)
-		
-		# register the method
-		nmfRegisterAlgorithm(strategy, key, overwrite, save, ...)
+	if( lverbose ){
+		tmpl <- 
+		if( !is.null(parent.method) && parent.method != key )
+			stringr::str_c(" based on template '", parent.method, "'")
+	
+		message("Registering NMF algorithm '", key,"'", tmpl,"... ", appendLF=FALSE)
 	}
-)
-
-setMethod('nmfRegisterAlgorithm', signature(method='character', key='ANY'), 
-		function(method, key, ...){
-			
-			# register/update the already registered method
-			method <- nmfAlgorithm(method)
-			if( missing(key) )
-				key <- name(method)
-			nmfRegisterAlgorithm(nmfAlgorithm(method), key, ...)
-		}
-)
-
-
-###% Factory method to create NMFStrategy objects.
-###%
-###% Create predefined NMFStrategy objects that implement algorithms from different papers.
-setGeneric('newNMFStrategy', function(method, key, ...) standardGeneric('newNMFStrategy') )
-setMethod('newNMFStrategy', signature(method='function', key='character'), 
-	function(method, key, ...){
-			
-		# build a NMFStrategyFunction object on the fly to wrap function 'method'
-		strategy.params <- list('NMFStrategyFunction', name=key, algorithm=method)
-		strategy <- do.call('new', c(strategy.params, list(...)))
-		
-		# valid the new strategy
-		validObject(strategy)
-		
-		# register the method
-		strategy
+	
+	# add to the algorithm registry
+	res <- nmfRegister(method, key, registry.name='algorithm'
+					, overwrite=overwrite, verbose=verbose)
+	
+	if( !is.null(res) && res > 0L ){
+		if( lverbose ) message( if(res == 1L) "OK" else "UPDATED" )
+		method
+	}else{
+		if( lverbose ) message( "ERROR" )
+		NULL
 	}
-)
+}
 
-###% tells if an NMFStrategy can fit a given NMF model
+#' \code{nmfRegisterAlgorithm} is an alias to \code{setNMFMethod} for backward
+#' compatibility.
+#' 
+#' @export 
+#' @rdname setNMFMethod
+nmfRegisterAlgorithm <- setNMFMethod
+
+
+#' Registry for NMF Algorithms 
+#' 
+#' @name methods-NMF
+#' @rdname registry-algorithm
+#' @family regalgo Registry for NMF algorithms
+NULL
+
+#' Testing Compatibility of Algorithm and Models
+#' 
+#' \code{canFit} is an S4 generic that tests if an algorithm can 
+#' fit a particular model.
+#' 
+#' @param x an object that describes an algorithm
+#' @param y an object that describes a model
+#' @param ... extra arguments to allow extension
+#' 
+#' @export
+#' @inline
+#' @family regalgo
 setGeneric('canFit', function(x, y, ...) standardGeneric('canFit') )
-
-###% tells if an NMFStrategy can fit a given NMF model given by its name
+#' Tells if an NMF algorithm can fit a given class of NMF models
+#' 
+#' @param exact for logical that indicates if an algorithm is considered able to fit 
+#' only the models that it explicitly declares (\code{TRUE}), or if it should be
+#' considered able to also fit models that extend models that it explicitly fits. 
+#'    
 setMethod('canFit', signature(x='NMFStrategy', y='character'),
 	function(x, y, exact=FALSE){
 		
@@ -321,51 +455,81 @@ setMethod('canFit', signature(x='NMFStrategy', y='character'),
 			is.element(y, modelname(x))
 	}
 )
-###% tells if an NMFStrategy can fit a given NMF model given by an instance of it
+#' Tells if an NMF algorithm can fit the same class of models as \code{y}
 setMethod('canFit', signature(x='NMFStrategy', y='NMF'),
 		function(x, y, ...){
 			canFit(x, modelname(y), ...)
 		}
 )
-###% tells if an NMFStrategy given by its name can fit a given NMF model
+#' Tells if a registered NMF algorithm can fit a given NMF model
 setMethod('canFit', signature(x='character', y='ANY'),
 		function(x, y, ...){
 			canFit(nmfAlgorithm(x), y, ...)
 		}
 )
 
-###% try to select the correct NMF algorithm given the NMF model
-selectMethodNMF <- function(model, load=FALSE, exact=FALSE, all=FALSE, warning=TRUE){
+#' \code{selectMethodNMF} tries to select an appropriate NMF algorithm that is 
+#' able to fit a given the NMF model.
+#' 
+#' @param name name of a registered NMF algorithm
+#' @param model class name of an NMF model, i.e. a class that inherits from class 
+#' \code{\linkS4class{NMF}}.
+#' @param load a logical that indicates if the selected algorithms should be loaded
+#' into \code{NMFStrategy} objects
+#' @param all a logical that indicates if all algorithms that can fit \code{model}
+#' should be returned or only the default or first found.
+#' @param quiet a logical that indicates if warnings or errors should be thrown 
+#' in case of the selected algorithm is not the default algorithm.
+#' 
+#' @return \code{selectMethodNMF} returns a character vector or \code{NMFStrategy} objects, 
+#' or NULL if no suitable algorithm was found.
+#' 
+#' @rdname registry-algorithm
+#' 
+selectMethodNMF <- function(name, model, load=FALSE, exact=FALSE, all=FALSE, quiet=FALSE){
+	
+	# lookup for an algorithm suitable for the given NMF model
+	if( !isNMFclass(model) )
+		stop("argument 'model' must be the name of a class that extends class 'NMF'")
+	
+	
+	algo_list <- if( !missing(name) ){
+			algo <- nmfAlgorithm(name)
+			name(algo) 
+		}else nmfAlgorithm()
 	
 	# lookup for all the algorithms that can fit the given model
 	#NB: if only one model needs to be selected then first look for an exact fit as 
 	# this would need to be done with exact=FALSE and TRUE anyways
-	w <- sapply(algo <- nmfAlgorithm(), canFit, model, exact= if(all) exact else TRUE)	
-	algo <- algo[w]
+	w <- sapply(algo_list, canFit, model, exact= if(all) exact else TRUE)	
+	algo <- algo_list[w]
 	
 	# if no suitable algorithm was found, and an exact match is not required 
 	# then look for other potential non-exact algorithms
 	if( !all && !exact && length(algo) == 0 ){
-		w <- sapply(algo <- nmfAlgorithm(), canFit, model, exact=FALSE)
-		algo <- algo[w]
+		w <- sapply(algo_list, canFit, model, exact=FALSE)
+		algo <- algo_list[w]
 	}
 	
 	# return NULL if no algorithm was found
-	if( length(algo) == 0 )		
+	if( length(algo) == 0L ){
+		if( !quiet ) 
+			stop("Could not find an NMF algorithm to fit model '", model, "'"
+				, if( !missing(name) ) paste(" amongst ", str_out(algo_list, Inf)))
 		return(NULL)
+	}
 			
 	# if all=FALSE then try to choose the default algorithm if present in the list, or the first one
-	res <- if( !all && length(algo) > 1 ){
+	res <- if( !all && length(algo) > 1L ){
 		
-		if( is.element(default <- nmf.getOption('default.algorithm'), algo) )
-			default
-		else{
-			if( warning ) 
-				warning("Non default NMF algorithm '", algo[1], "' was selected against other possible algorithm(s): "
-						, paste(paste("'", algo[-1], "'", sep=''), collapse=", "))
-			algo[1]
-		}
+		idx <- which( algo == nmf.getOption('default.algorithm') ) 
+		if( !length(idx) ) idx <- 1L
 		
+		res <- algo[idx]
+		if( !quiet ) 
+			warning("Selected NMF algorithm '", res, "' amongst other possible algorithm(s): "
+					, paste(paste("'", algo[-idx], "'", sep=''), collapse=", "))
+		res
 	}else # otherwise return all the algorithms
 		algo
 	
@@ -377,45 +541,100 @@ selectMethodNMF <- function(model, load=FALSE, exact=FALSE, all=FALSE, warning=T
 		res	
 }
 
-###% Access to registered algorithms
-nmfAlgorithm <- function(name=NULL, model, type=c('C', 'R'), ...){	
+
+#' \code{getNMFMethod} retrieves NMF algorithm objects from the registry.
+#' 
+#' @param ... extra arguments passed to \code{\link[pkgmaker]{regfetch}}.
+#' 
+#' @export
+#' @rdname registry-algorithm
+getNMFMethod <- function(...) nmfGet(..., registry.name='algorithm', msg='NMF algorithm')
+
+#' Listing and Retrieving NMF Algorithms
+#' 
+#' \code{nmfAlgorithm} lists access keys or retrieves NMF algorithms that are 
+#' stored in registry.
+#' It allows to list 
+#'  
+#' @param name Access key. 
+#' If not missing, it must be a single character string that is partially matched 
+#' against the available algorithms in the registry.
+#' In this case, if \code{all=FALSE} (default), then the algorithm is returned 
+#' as an \code{NMFStrategy} object that can be directly passed to \code{\link{nmf}}.
+#' An error is thrown if no matching algorithm is found.
+#' 
+#' If missing or \code{NULL}, then access keys of algorithms -- that 
+#' match the criteria \code{version}, are returned.
+#' This argument is assumed to be regular expression if \code{all=TRUE} or 
+#' \code{version} is not \code{NULL}.
+#' @param version version of the algorithm(s) to retrieve. 
+#' Currently only value \code{'R'} is supported, which searched for plain R 
+#' implementations. 
+#' @param all a logical that indicates if all algorithm keys should be returned, 
+#' including the ones from alternative algorithm versions (e.g. plain R 
+#' implementations of algorithms, for which a version based on optimised 
+#' C updates is used by default). 
+#' @param ... extra arguments passed to \code{\link{getNMFMethod}} when \code{name} 
+#' is not \code{NULL} and \code{all=FALSE}. It is not used otherwise.
+#' 
+#' @return an \code{\linkS4class{NMFStrategy}} object if \code{name} is not 
+#' \code{NULL} and \code{all=FALSE}, or a named character vector that contains 
+#' the access keys of the matching algorithms.
+#' The names correspond to the access key of the primary algorithm: e.g. 
+#' algorithm \sQuote{lee} has two registered versions, one plain R (\sQuote{.R#lee}) 
+#' and the other uses optimised C updates (\sQuote{lee}), which will all get 
+#' named \sQuote{lee}.
+#' 
+#' @export
+#' @family regalgo
+#' 
+#' @examples 
+#' 
+#' # list all main algorithms 
+#' nmfAlgorithm()
+#' # list all versions of algorithms 
+#' nmfAlgorithm(all=TRUE)
+#' # list all plain R versions 
+#' nmfAlgorithm(version='R')
+#'  
+nmfAlgorithm <- function(name=NULL, version=NULL, all=FALSE, ...){	
 	
 	# if one passes an NMFStrategy just returns it
-	if( is(name, 'NMFStrategy') )
-		return(name)
-	# check for type filtering
-	if( missing(name) && !missing(type)  ){
-		type <- match.arg(type)
-		algo <- nmfGet(name, registry.name='algorithm', all=TRUE)
-		algo <- algo[grep(paste("^\\.", type, '#', sep=''), algo)]
-		names(algo) <- sub(paste(".", type, '#', sep=''), '', algo, fixed=TRUE)
-	}
-	else algo <- nmfGet(name, registry.name='algorithm', ...)
+	if( is(name, 'NMFStrategy') ) return(name)
 	
-	# if no model was specified then return the selected algorithm(s)
-	if( missing(model) )
-		algo
-	else{ # lookup for an algorithm suitable for the given NMF model
-		if( !is.character(model) || (length(model) != 1) || nchar(model) == 0 || !extends(model, 'NMF') )
-			stop("argument 'model' must be the name of a class that extends class 'NMF'")
-		
-		# if a single algorithm was found then check if it can fit the given model before returning it
-		if( length(algo) == 1 ){
-			if( !canFit(algo, model) )
-				stop("NMF algorithm '", as(algo, 'character'), "' cannot fit model '", model, "'.")
-			
-			return( algo )
-		}
-		
-		# returns the algorithms that are defined to fit the given model
-		selectMethodNMF(model, exact=TRUE)
-		
+	# force all=TRUE if type is provided
+	if( !is.null(version) ) all <- TRUE
+	
+	# directly return the algorithm object if a key is supplied and all=FALSE
+	if( !is.null(name) && !all ) return( getNMFMethod(name, ...) )
+	
+	# get all algorithms
+	algo <- getNMFMethod(all=TRUE)
+	# set names to match the primary key
+	algo <- setNames(algo, sub("^\\.(.+#)?", '', algo))	
+	# filter out hidden methods
+	if( !all ) algo <- algo[!grepl("^\\.", algo)]
+	# filter out methods not from the requested algorithm
+	if( !is.null(name) ) algo <- algo[grepl(str_c("^", name), names(algo))]
+	# filter out types
+	if( !is.null(version)  ){
+		type <- match.arg(version, c('R'))
+		algo <- Filter( function(x) grepl(str_c("^\\.", version, '#'), x), algo)
 	}
+	
+	# return the selected algorithm(s)
+	algo
 }
 
-###% Returns TRUE if the algorithm is registered FALSE otherwise
-existsNMFAlgorithm <- function(name, exact=TRUE){	
+#' \code{existsNMFMethod} tells if an NMF algorithm is registered under the
+#' 
+#' @param exact a logical that indicates if the access key should be matched 
+#' exactly (\code{TRUE}) or partially (\code{FALSE}).
+#' 
+#' @export
+#' @rdname registry-algorithm  
+existsNMFMethod <- function(name, exact=TRUE){	
 	
-	!is.null( nmfGet(name, registry.name='algorithm', all=TRUE, error=FALSE, exact=exact) )
+	!is.null( getNMFMethod(name, error=FALSE, exact=exact) )
 	
 }

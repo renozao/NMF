@@ -1,0 +1,133 @@
+\name{is.nmf}
+\alias{hasBasis}
+\alias{hasCoef}
+\alias{is.empty.nmf}
+\alias{is.nmf}
+\alias{isNMFfit}
+\title{Testing NMF Objects}
+\usage{
+  is.nmf(x)
+
+  is.empty.nmf(x, ...)
+
+  hasBasis(x)
+
+  hasCoef(x)
+
+  isNMFfit(object, recursive = TRUE)
+}
+\arguments{
+  \item{x}{an R object. See section \emph{Details}, for how
+  each function uses this argument.}
+
+  \item{...}{extra parameters to allow extension or passed
+  to subsequent calls}
+
+  \item{object}{any R object.}
+
+  \item{recursive}{if \code{TRUE} and \code{object} is a
+  plain list then \code{isNMFfit} tests each element of the
+  list. Note that the recursive test only applies in the
+  case of lists that are not themselves NMFfit objects,
+  like \code{NMFfitXn} objects for which the result of
+  \code{isNMFfit} will always be \code{TRUE}, although they
+  are list objects (a single logical value).}
+}
+\value{
+  \code{isNMFfit} returns a \code{logical} vector (or a
+  list if \code{object} is a list of list) of the same
+  length as \code{object}.
+}
+\description{
+  The functions documented here tests different
+  characteristics of NMF objects.
+
+  \code{is.nmf} tests if an object is an NMF model or a
+  class that extends the class NMF.
+
+  \code{is.empty.nmf} tests whether an \code{NMF} object
+  describes an empty NMF model, i.e. it contains no data.
+
+  \code{hasBasis} tests whether an objects contains a basis
+  matrix -- returned by a suitable method \code{basis} --
+  with at least one row.
+
+  \code{hasBasis} tests whether an objects contains a
+  coefficient matrix -- returned by a suitable method
+  \code{coef} -- with at least one column.
+
+  \code{isNMFfit} tells if an object results from an NMF
+  fit.
+}
+\details{
+  \code{is.nmf} tests if \code{object} is the name of a
+  class (if a \code{character} string), or inherits from a
+  class, that extends \code{\linkS4class{NMF}}.
+
+  \code{is.empty.nmf} returns \code{TRUE} if the basis and
+  coefficient matrices of \code{x} have respectively zero
+  rows and zero columns. It returns \code{FALSE} otherwise.
+
+  In particular, this means that an empty model can still
+  have a non-zero number of basis components, i.e. a
+  factorization rank that is not null. This happens, for
+  example, in the case of NMF models created calling the
+  factory method \code{\link{nmfModel}} with a value only
+  for the factorization rank.
+
+  \emph{isNMFfit} checks if \code{object} inherits from
+  class \code{\linkS4class{NMFfit}} or
+  \code{\linkS4class{NMFfitX}}, which are the two types of
+  objects returned by the function \code{\link{nmf}}. If
+  \code{object} is a plain \code{list} and
+  \code{recursive=TRUE}, then the test is performed on each
+  element of the list, and the return value is a logical
+  vector (or a list if \code{object} is a list of list) of
+  the same length as \code{object}.
+}
+\note{
+  The function \code{is.nmf} does some extra work with the
+  namespace as this function needs to return correct
+  results even when called in \code{.onLoad}. See
+  discussion on r-devel:
+  \url{https://stat.ethz.ch/pipermail/r-devel/2011-June/061357.html}
+}
+\examples{
+# test if an object is an NMF model, i.e. that it implements the NMF interface
+is.nmf(1:4)
+is.nmf('NMFstd')
+is.nmf('NMFblah')
+is.nmf( nmfModel(3) )
+is.nmf( nmf(rmatrix(20,10), 3) )
+# empty model
+is.empty.nmf( nmfModel(3) )
+# non empty models
+is.empty.nmf( nmfModel(3, 10, 0) )
+is.empty.nmf( rnmf(3, 10, 5) )
+## Testing results of fits
+	# generate a random 50 x 10 matrix
+	V <- rmatrix(50, 10)
+
+	# single run
+	res <- nmf(V, 3)
+	isNMFfit(res)
+
+	# multiple runs - keeping single fit
+	resm <- nmf(V, 3, nrun=3)
+	isNMFfit(resm)
+
+	# multiple runs - keeping all fits
+	resM <- nmf(V, 3, nrun=3, .opt='k')
+	isNMFfit(resM)
+
+	# with a list of results
+	isNMFfit(list(res, resm, resM, 'not a result'))
+	isNMFfit(list(res, list(resm, resM), 'not a result')) # list of list
+	isNMFfit(list(res, resm, resM, 'not a result'), recursive=FALSE)
+}
+\seealso{
+  \code{\linkS4class{NMFfit}},
+  \code{\linkS4class{NMFfitX}},
+  \code{\linkS4class{NMFfitXn}}
+}
+

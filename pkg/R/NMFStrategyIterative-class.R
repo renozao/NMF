@@ -1,34 +1,37 @@
-###% @include NMFStrategy-class.R
-###% @include NMF-class.R
-###% @include NMFOffset-class.R
-###% @include NMFns-class.R
-###% @include registry.R
-NA
+#' @include NMFStrategy-class.R
+#' @include NMFfit-class.R
+NULL
 
-###% NMFStrategyIterative class definition
-###%
-###% An NMFStrategyIterative is the implementation of strategy design-pattern for NMF algorithms.
-###% It implements the following interface:
-###% - Initialization of the NMF object
-###% - Update of variables at each iteration
-###% - Stop specific task
-###% - WrapUp the NMF object
-###%
-###% @author Renaud Gaujoux
-
-#Initialise verbosity with VComments 
-#V1# threshold=0
-
-###% Base class to define NMF algorithms.
-###%
-###% This class defines the common strategy interface used by most NMF algorithms.
-###%
-###% @slot Update the update method that compute the values of the factors and parameters at each iteration.
-###%
-###% @slot Stop the stop method that implement the algorithm's stopping criteria.
-###%
-###% @slot WrapNMF the method that wrap up the result as an NMFClass instance
-###%
+#' Interface for Algorithms: Implementation for Iterative NMF Algorithms
+#' 
+#' @description
+#' This class provides a specific implementation for the function \code{run} -- completing the 
+#' the interface class \code{\linkS4class{NMFStrategy}}, 
+#' for NMF algorithms that conform to the following iterative schema:
+#'  
+#' \itemize{
+#' \item 1. Initialisation
+#' \item 2. Update the model at each iteration
+#' \item 3. Stop if some criterion is satisfied
+#' \item 4. Wrap up
+#' }
+#' 
+#' This schema could possibly apply to all NMF algorithms, since these are essentially optimisation algorithms, 
+#' almost all of which use iterative methods to approximate a solution of the optimisation problem.
+#' The main advantage is that it allows to implement updates and stopping criterion separately, and combine them
+#' in different ways.
+#' In particular, many NMF algorithms are based on multiplicative updates, following the approach from  
+#' \cite{Lee2001}, which are specially suitable to be cast into this simple schema. 
+#'  
+#' @slot Update function that implement the update step, which computes new values for the model, based on its
+#' previous value.
+#' It is called at each iteration, until the stopping criterion is met or the maximum number of iteration is 
+#' achieved.
+#' @slot Stop function that implements the stopping criterion.
+#' It is called \emph{before} each Update step.
+#' @slot WrapNMF function that wraps up the result into an NMF object.
+#' It is called just before returning the 
+#'  
 setClass('NMFStrategyIterative'
 	, representation(
 				Update = '.functionSlot', # update method	
@@ -86,6 +89,8 @@ setClass('NMFStrategyIterative'
 )
 
 
+#' Show method for objects of class \code{NMFStrategyIterative}
+#' @export
 setMethod('show', 'NMFStrategyIterative',
 	function(object){
 		
@@ -154,7 +159,7 @@ xifyStrategy <- function(strategy, workspace){
 	slot(strategyX, 'WrapNMF') <- preload.slot(strategyX, 'WrapNMF', identity)
 	
 	# load the objective function
-	objective(strategyX) <- distance(method=objective(strategy))
+	objective(strategyX) <- nmfDistance(objective(strategy))
 
 	# valid the preloaded object
 	validObject(strategyX)
@@ -174,80 +179,28 @@ xifyStrategy <- function(strategy, workspace){
 #setMethod('WrapNMF', signature(object='NMFStrategyIterative'), function(object){ object@WrapNMF(object@data) })
 
 ###% Hook to initialize built-in iterative methods when the package is loaded
-.nmf.plugin.core <- function(){
-	
-	list(
-		# Brunet
-		new('NMFStrategyIterative', name='brunet', objective='KL'
-					, Update='nmf.update.brunet'
-					, Stop='connectivity'
-			)
 
-		# Lee	
-		, new('NMFStrategyIterative', name='lee', objective='euclidean'
-					, Update='nmf.update.lee'
-					, Stop='connectivity'
-			)
-		
-		# NMF with offset
-		, new('NMFStrategyIterative', name='offset', objective='euclidean'
-					, model = 'NMFOffset'
-					, Update='nmf.update.offset'
-					, Stop='connectivity'
-			)
-			
-		# nsNMF
-		, new('NMFStrategyIterative', name='nsNMF', objective='KL'
-					, model='NMFns'
-					, Update='nmf.update.ns'
-					, Stop='connectivity'
-			)
-	)
-}
 
 ###% Hook to initialize old R version built-in iterative methods
-.nmf.plugin.core_R <- function(){
-	
-	list(
-			# Brunet
-			new('NMFStrategyIterative', name='.R#brunet', objective='KL'
-					, Update='R_nmf.update.brunet'
-					, Stop='connectivity'
-			)
-			
-			# Lee	
-			, new('NMFStrategyIterative', name='.R#lee', objective='euclidean'
-					, Update='R_nmf.update.lee'
-					, Stop='connectivity'
-			)			
-	
-			# NMF with offset
-			, new('NMFStrategyIterative', name='.R#offset', objective='euclidean'
-					, model = 'NMFOffset'
-					, Update='R_nmf.update.offset'
-					, Stop='connectivity'
-			)
-			
-			# nsNMF
-			, new('NMFStrategyIterative', name='.R#nsNMF', objective='KL'
-					, model='NMFns'
-					, Update='R_nmf.update.ns'
-					, Stop='connectivity'
-			)
-	
-	)
-}
 
 #' Get/Set a Static Variable in NMF Algorithms
+#' 
+#' @description
+#' This function is used in iterative NMF algorithms to manage variables
+#' stored in a local workspace, that are accessible to all functions that 
+#' define the iterative schema described in \code{\linkS4class{NMFStrategyIterative}}.
+#' 
+#' It is specially useful for computing stopping criteria, which often require model data from   
+#' different iterations.
 #' 
 #' @param name Name of the static variable (as a single character string)
 #' @param value New value of the static variable
 #' @param init a logical used when a \code{value} is provided, that specifies 
 #' if the variable should be set to the new value only if it does not exist yet 
 #' (\code{init=TRUE}). 
-#' @return The static variable's value
+#' @return The value of the static variable
 #' @export
-staticVar <- function(){
+staticVar <- local({
 	
 	.Workspace <- NULL
 	function(name, value, init=FALSE){	
@@ -268,16 +221,36 @@ staticVar <- function(){
 		}
 		
 	}
-}
-staticVar <- staticVar()
+})
 
-setMethod('run', signature(method='NMFStrategyIterative', x='matrix', seed='NMFfit'),
-	function(method, x, seed, .stop=NULL, ...){
+#' Runs an NMF iterative algorithm on a target matrix \code{y}.
+#' 
+#' @param .stop specification of a stopping criterion, that is used instead of the 
+#' one associated to the NMF algorithm.
+#' It may be specified as:
+#' \itemize{
+#' \item the access key of a registered stopping criterion;
+#' \item a single integer that specifies the exact number of iterations to perform, which will 
+#' be honoured unless a lower value is explicitly passed in argument \code{maxIter}.
+#' \item a single numeric value that specifies the stationnarity threshold for the 
+#' objective function, used in with \code{\link{nmf.stop.stationary}}; 
+#' \item a function with signature \code{(object="NMFStrategy", i="integer", y="matrix", x="NMF", ...)}, 
+#' where \code{object} is the \code{NMFStrategy} object that describes the algorithm being run, 
+#' \code{i} is the current iteration, \code{y} is the target matrix and \code{x} is the current value of 
+#' the NMF model.  
+#' }
+#' @param maxIter maximum number of iterations to perform.
+#'   
+#' @rdname NMFStrategy
+setMethod('run', signature(object='NMFStrategyIterative', y='matrix', x='NMFfit'),
+	function(object, y, x, .stop=NULL, maxIter=2000L, ...){
 	
-	no.stop <- identical(.stop, FALSE)
+	method <- object
 	# override the stop method on runtime
 	if( !is.null(.stop) ){
 		method@Stop <- NMFStop(.stop)
+		if( is.integer(.stop) && missing(maxIter) )
+			maxIter <- .stop[1]
 	}
 	
 	# debug object in debug mode
@@ -291,22 +264,16 @@ setMethod('run', signature(method='NMFStrategyIterative', x='matrix', seed='NMFf
 		
 	# runtime resolution of the strategy's functions by their names if necessary
 	strategyX = xifyStrategy(method, .Workspace)
-	
-	# call the xified startegy's run method				
-	if( no.stop ){
-		# issue a message for the user to manually stop the algorithm
-		message("#######\n# NMF - Using no stopping criterion: press Ctrl+C to stop\n#######")
-		run(strategyX, x, seed, maxIter=Inf, ...)
-	}else
-		run(strategyX, x, seed, ...)
+	run(strategyX, y, x, maxIter=maxIter, ...)
 })
 
-###% Generic algorithm for NMF, based on NMFStrategyIterativeX object.
-setMethod('run', signature(method='NMFStrategyIterativeX', x='matrix', seed='NMFfit'),
-	function(method, x, seed, maxIter=2000, ...){
+#' @rdname NMFStrategy
+setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit'),
+	function(object, y, x, maxIter, ...){
 				
-	strategy <- method
-	v <- x
+	strategy <- object
+	v <- y
+	seed <- x
 	#V!# NMFStrategyIterativeX::run
 	
 	#Vc# Define workspace accessor function
@@ -372,22 +339,26 @@ setMethod('run', signature(method='NMFStrategyIterativeX', x='matrix', seed='NMF
 	stopFun <- strategy@Stop
 	
 	if( verbose ) cat('Iterations:')
-	for( i in 1:maxIter ){
+	i <- 0L
+	while( TRUE ){
 		
-		if( verbose && (i %% 50 == 0) ) cat('', i)
+		#Vc# Stopping criteria
+		# check convergence (generally do not stop for i=0L, but only initialise static variables
+		stop.signal <- stopFun(strategy, i, v, nmfFit, ...)
+		
+		# if the strategy ask for stopping, then stop the iteration
+		if( stop.signal || i >= maxIter ) break;
+		
+		# increment i
+		i <- i+1L
+		
+		if( verbose && (i==1L || i %% 50 == 0) ) cat('', i)
 		
 		#Vc# update the matrices
 		nmfFit <- updateFun(i, v, nmfFit, ...)
 		
-		#Vc# Stopping criteria
-		# give the strategy the opportunity to perform stuff after the update: modify the data and/or stop iteration
-		stop.signal <- stopFun(strategy, i, v, nmfFit, ...)
-	
 		# every now and then track the error if required
 		nmfData <- trackError(nmfData, objective(strategy, v, nmfFit, ...), i)
-		
-		# if the strategy ask for stopping, then stop the iteration
-		if( stop.signal ) break;
 				
 	}
 	if( verbose ) cat("\nDONE (stopped at ",i,'/', maxIter," iterations)\n", sep='')
@@ -442,7 +413,7 @@ R_std.divergence.update.h <- function(v, w, h, wh=NULL)
 }
 std.divergence.update.h <- function(v, w, h, copy=TRUE)
 {	
-	.Call("divergence_update_H", v, w, h, copy)
+	.Call("divergence_update_H", v, w, h, copy, PACKAGE='NMF')
 }
 
 ###% Standard multiplicative update for matrix \code{W} (i.e. the second factor) in a divergence based NMF.
@@ -470,99 +441,15 @@ R_std.divergence.update.w <- function(v, w, h, wh=NULL)
 }
 std.divergence.update.w <- function(v, w, h, copy=TRUE)
 {	
-	.Call("divergence_update_W", v, w, h, copy)
+	.Call("divergence_update_W", v, w, h, copy, PACKAGE='NMF')
 }
 
-###% Computes the Nonegative Matrix Factorization of a matrix.
-###%
-###% This software and its documentation are copyright 2004 by the
-###% Broad Institute/Massachusetts Institute of Technology. All rights are reserved.
-###% This software is supplied without any warranty or guaranteed support whatsoever. 
-###% Neither the Broad Institute nor MIT can not be responsible for its use, misuse, 
-###% or functionality. 
-###%
-###% @param v N (genes) x M (samples) original matrix to be factorized.
-###%           Numerical data only. 
-###%           Must be non negative. 
-###%           Not all entries in a row can be 0. If so, add a small constant to the 
-###%           matrix, eg.v+0.01*min(min(v)),and restart.
-###%           
-###% @param r the number of desired factors (i.e. the rank of factorization)
-###% @param verbose prints iteration count and changes in connectivity matrix elements unless verbose is 0 
-###% @return The two factors of the factorization:
-###% \item{w }{N x r NMF factor}
-###% \item{h }{r x M NMF factor}
-###%
-###% @note NMF iterations stop when connectivity matrix has not changed 
-###%        for 10*stopconv interations. This is experimental and can be
-###%        adjusted.
-###% @author Jean-Philippe Brunet \email{brunet@@broad.mit.edu}
-###% @author Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
-###% @references
-###% Metagenes and molecular pattern discovery using matrix factorization
-###% , Brunet, J.~P., Tamayo, P., Golub, T.~R., and Mesirov, J.~P. (2004)
-###% , Proc Natl Acad Sci U S A
-###% , 101(12)
-###% , 4164--4169.
-###% NMF divergence update equations :
-###% Lee, D..D., and Seung, H.S., (2001), 'Algorithms for Non-negative Matrix 
-###% Factorization', Adv. Neural Info. Proc. Syst. 13, 556-562.
-R_nmf.update.brunet <- function(i, v, data, eps=.Machine$double.eps, ...)
-{
-	# retrieve each factor
-	w <- basis(data); h <- coef(data);
-	
-	# standard divergence-reducing NMF update for H
-	h <- R_std.divergence.update.h(v, w, h)
-	
-	# standard divergence-reducing NMF update for W
-	w <- R_std.divergence.update.w(v, w, h)
-	
-	#every 10 iterations: adjust small values to avoid underflow 
-	if( i %% 10 == 0 ){
-		#precision threshold for numerical stability
-		#eps <- .Machine$double.eps
-		h[h<eps] <- eps;
-		w[w<eps] <- eps;
-	}
-	
-	#return the modified data
-	basis(data) <- w; coef(data) <- h;	
-	return(data)
-	
-}
-nmf.update.brunet <- function(i, v, data, copy=FALSE, eps=.Machine$double.eps, ...)
-{
-	# retrieve each factor
-	w <- basis(data); h <- coef(data);	
-	
-	# standard divergence-reducing NMF update for H	
-	h <- std.divergence.update.h(v, w, h, copy=copy)
-		
-	# standard divergence-reducing NMF update for W
-	w <- std.divergence.update.w(v, w, h, copy=copy)
-	
-	#every 10 iterations: adjust small values to avoid underflow
-	# NB: one adjusts in place even when copy=TRUE, as 'h' and 'w' are local variables
-	if( i %% 10 == 0 ){
-		#eps <- .Machine$double.eps
-		h <- pmin.inplace(h, eps)
-		w <- pmin.inplace(w, eps)
-	}
-	
-	# update object if the updates duplicated the data
-	if( copy ){		
-		#return the modified data	
-		basis(data) <- w; 
-		coef(data) <- h;
-	}
-	return(data)
-	
-}
+
 
 ###% Updates for Euclidean norm reduction
 ###% based on Lee and Seung algorithm
-###% 
+###%
+# H
 R_std.euclidean.update.h <- function(v, w, h, wh=NULL, eps=10^-9){
 	# compute WH if necessary	
 	den <- if( is.null(wh) ) crossprod(w) %*% h
@@ -572,13 +459,9 @@ R_std.euclidean.update.h <- function(v, w, h, wh=NULL, eps=10^-9){
 	pmax(h * crossprod(w,v),eps) / (den + eps);
 }
 std.euclidean.update.h <- function(v, w, h, eps=10^-9, copy=TRUE){
-	.Call("euclidean_update_H", v, w, h, eps, copy)
+	.Call("euclidean_update_H", v, w, h, eps, copy, PACKAGE='NMF')
 }
-# with offset
-offset.std.euclidean.update.h <- function(v, w, h, offset, eps=10^-9, copy=TRUE){
-	.Call("offset_euclidean_update_H", v, w, h, offset, eps, copy)
-}
-
+# W
 R_std.euclidean.update.w <- function(v, w, h, wh=NULL, eps=10^-9){
 	# compute WH if necessary	
 	den <- if( is.null(wh) ) w %*% tcrossprod(h)
@@ -588,195 +471,7 @@ R_std.euclidean.update.w <- function(v, w, h, wh=NULL, eps=10^-9){
 	pmax(w * tcrossprod(v, h), eps) / (den + eps);
 }
 std.euclidean.update.w <- function(v, w, h, eps=10^-9, copy=TRUE){
-	.Call("euclidean_update_W", v, w, h, eps, copy)
-}
-# with offset
-offset.std.euclidean.update.w <- function(v, w, h, offset, eps=10^-9, copy=TRUE){
-	.Call("offset_euclidean_update_W", v, w, h, offset, eps, copy)
-}
-
-###% Multiplicative update for reducing the euclidean distance.
-###%
-###% 
-R_nmf.update.lee <- function(i, v, data, rescale=TRUE, eps=10^-9, ...)
-{
-	# retrieve each factor
-	w <- basis(data); h <- coef(data);	
-	
-	#precision threshold for numerical stability
-	#eps <- 10^-9
-	
-	# compute the estimate WH
-	#wh <- estimate(data)
-	
-	# euclidean-reducing NMF iterations	
-	# H_au = H_au (W^T V)_au / (W^T W H)_au
-	#h <- pmax(h * (t(w) %*% v),eps) / ((t(w) %*% w) %*% h + eps);
-	h <- R_std.euclidean.update.h(v, w, h, eps=eps)
-	
-	# update H and recompute the estimate WH
-	#metaprofiles(data) <- h
-	#wh <- estimate(data)
-
-	# W_ia = W_ia (V H^T)_ia / (W H H^T)_ia and columns are rescaled after each iteration	
-	#w <- pmax(w * (v %*% t(h)), eps) / (w %*% (h %*% t(h)) + eps);
-	w <- R_std.euclidean.update.w(v, w, h, eps=eps)
-	#rescale columns TODO: effect of rescaling? the rescaling makes the update with offset fail
-	if( rescale ) w <- sweep(w, 2L, colSums(w), "/", check.margin=FALSE)
-	
-	#return the modified data
-	basis(data) <- w; coef(data) <- h;	
-	return(data)
-}
-
-nmf.update.lee <- function(i, v, data, rescale=TRUE, copy=FALSE, eps=10^-9, ...)
-{
-	# retrieve each factor
-	w <- basis(data); h <- coef(data);	
-	
-	#precision threshold for numerical stability
-	#eps <- 10^-9
-	
-	# compute the estimate WH
-	#wh <- estimate(data)
-	
-	# euclidean-reducing NMF iterations	
-	# H_au = H_au (W^T V)_au / (W^T W H)_au
-	h <- std.euclidean.update.h(v, w, h, eps=eps, copy=copy)
-	# update original object if not modified in place
-	if( copy ) coef(data) <- h
-	
-	# W_ia = W_ia (V H^T)_ia / (W H H^T)_ia and columns are rescaled after each iteration	
-	w <- std.euclidean.update.w(v, w, h, eps=eps, copy=copy)
-	#rescale columns TODO: effect of rescaling? the rescaling makes the update with offset fail
-	if( rescale ) w <- sweep(w, 2L, colSums(w), "/", check.margin=FALSE)
-	
-	#return the modified data
-	basis(data) <- w; 	
-	return(data)
-}
-
-###% Multiplicative update for reducing the euclidean distance including on offset.
-###%
-###% The method is a modified version of Lee's method that also fits an offset vector which model a common expression baseline for each gene accross all samples.
-R_nmf.update.offset <- function(i, v, data, eps=10^-9, ...)
-{	
-	# retrieve each factor
-	w <- basis(data); h <- coef(data);
-	# retrieve offset and fill it if necessary (with mean of rows)
-	off <- offset(data)
-	if( i == 1 && length(off) == 0 )
-		off <- rowMeans(v)
-	
-	#precision threshold for numerical stability
-	#eps <- 10^-9
-	
-	# compute standard lee update (it will take the offset into account) without rescaling W's columns
-	
-	h <- R_std.euclidean.update.h(v, w, h, wh=w%*%h + off, eps=eps)
-	w <- R_std.euclidean.update.w(v, w, h, wh=w%*%h + off, eps=eps)
-	#data <- nmf.update.lee(i, v, data, rescale=FALSE, ...)
-	
-	# update the offset	
-	# V0_i = V0_i ( sum_j V_ij ) / ( sum_j (V.off + W H)_ij )
-	data@offset <- off * pmax(rowSums(v), eps) / (rowSums(w%*%h + off) + eps)
-		
-	#return the modified data
-	basis(data) <- w; coef(data) <- h;
-	return(data)
-}
-
-nmf.update.offset <- function(i, v, data, copy=FALSE, eps=10^-9, ...)
-{	
-	# retrieve each factor
-	w <- basis(data); h <- coef(data);
-	# retrieve offset and fill it if necessary (with mean of rows)
-	off <- offset(data)
-	if( i == 1 && length(off) == 0 )
-		off <- rowMeans(v)
-	
-	#precision threshold for numerical stability
-	#eps <- 10^-9
-	
-	# compute standard offset updates
-	h <- offset.std.euclidean.update.h(v, w, h, off, eps=eps, copy=copy)
-	w <- offset.std.euclidean.update.w(v, w, h, off, eps=eps, copy=copy)
-	
-	# update the offset	
-	# V0_i = V0_i ( sum_j V_ij ) / ( sum_j (V.off + W H)_ij )
-	data@offset <- off * pmax(rowSums(v), eps) / (rowSums(w%*%h + off) + eps)	
-	
-	# update the original object if not modified in place
-	if( copy ){ 
-		basis(data) <- w; 
-		coef(data) <- h;
-	}
-	return(data)
-}
-
-###% Multiplicative update for Nonsmooth Nonnegative Matrix Factorization (nsNMF).
-###%
-###% The update rules are essentialy the same as in Brunet, but WH is replaced by WSH 
-###% whereas W (resp. H) is replaced by WS (resp. SH) in the update of H (resp. of W).
-###%
-###% @references 
-###% Alberto Pascual-Montano et al. (2006), 'Nonsmooth Nonnegative Matrix Factorization (nsNMF)'
-###% , IEEE Transactions On Pattern Analysis And Machine Intelligence, Vol. 28, No. 3, March 2006 403
-###%
-nmf.update.ns <- function(i, v, data, copy=FALSE, ...)
-{
-	# retrieve and alter the factors for updating H
-	S <- smoothing(data)
-	w <- basis(data)
-	h <- coef(data);
-	
-	# standard divergence-reducing update for H with modified W
-	h <- std.divergence.update.h(v, w %*% S, h, copy=copy)
-	
-	# update H if not modified in place
-	if( copy ) coef(data) <- h
-	
-	# standard divergence-reducing update for W with modified H
-	w <- std.divergence.update.w(v, w, S %*% h, copy=copy)
-	
-	# rescale columns of W
-	w <- sweep(w, 2L, colSums(w), '/', check.margin=FALSE)
-	
-	#return the modified data
-	basis(data) <- w;
-	return(data)
-}
-
-R_nmf.update.ns <- function(i, v, data, ...)
-{
-	# retrieve and alter the factors for updating H
-	S <- smoothing(data)
-	w <- basis(data)
-	#w <- metagenes(data) %*% smoothing(fit(data)); # W <- WS
-	h <- coef(data);
-	
-	# compute the estimate WH
-	#wh <- estimate(data, W=w.init, H=h, S=S)
-	
-	# standard divergence-reducing update for H with modified W
-	h <- R_std.divergence.update.h(v, w %*% S, h)
-	
-	# update H and recompute the estimate WH
-	coef(data) <- h
-	# retrieve and alter the factors for updating W
-	#w <- tmp;
-	#h <- smoothing(fit(data)) %*% metaprofiles(data); # H <- SH
-	#h <- S %*% h; # H <- SH
-	
-	# standard divergence-reducing update for W with modified H
-	w <- R_std.divergence.update.w(v, w, S %*% h)
-	
-	# rescale columns of W
-	w <- sweep(w, 2L, colSums(w), '/', check.margin=FALSE)
-	
-	#return the modified data
-	basis(data) <- w; #metaprofiles(data) <- h;
-	return(data)
+	.Call("euclidean_update_W", v, w, h, eps, copy, PACKAGE='NMF')
 }
 
 
@@ -786,18 +481,20 @@ R_nmf.update.ns <- function(i, v, data, ...)
 
 #' Stopping Criteria for NMF Iterative Strategies
 #' 
+#' The function documented here implement stopping/convergence criterion 
+#' commonly used in NMF algorithms.
 #' 
-#' \code{nmf.stop.iteration}: the stopping criterium is that a given number of 
-#' iterations (\code{n}) are performed. That is it returns 
-#' \code{TRUE} if \code{i>=n}, \code{FALSE} otherwise.
+#' \code{nmf.stop.iteration} generates a function that implements the stopping 
+#' criterion that limits the number of iterations to a maximum of \code{n}),
+#' i.e. that returns \code{TRUE} if \code{i>=n}, \code{FALSE} otherwise.
 #' 
-#' @param n The exact number of iteration to perform.
+#' @param n maximum number of iteration to perform.
 #'   
 #' @return a function that can be used as a stopping criterion for NMF algorithms 
-#' defined as \code{\linkS4class{NMFStrategyIterative}} objects. That is a function 
-#' with arguments \code{(strategy, i, target, data, ...)} that returns 
-#' \code{TRUE} if the stopping criterium is satisfied -- which in turn stops the 
-#' iterative process, and \code{FALSE} otherwise.
+#' defined as \code{\linkS4class{NMFStrategyIterative}} objects. 
+#' That is a function with arguments \code{(strategy, i, target, data, ...)} 
+#' that returns \code{TRUE} if the stopping criterion is satisfied -- which in 
+#' turn stops the iterative process, and \code{FALSE} otherwise.
 #'   
 #' @export
 #' @aliases stop-NMF
@@ -812,12 +509,22 @@ nmf.stop.iteration <- function(n){
 		warning("NMF::nmf - Argument `n` [", deparse(substitute(n)), "] has length > 1: only using the first element.")
 	
 	.max <- n[1]
-	function(strategy, i, target, data, ...) i >= .max
+	function(object, i, y, x, ...) i >= .max
 }
 
+#' \code{nmf.stop.threshold} generates a function that implements the stopping 
+#' criterion that stops when a given stationarity threshold is achieved by 
+#' successive iterations. 
+#' The returned function is identical to \code{nmf.stop.stationary}, but with 
+#' the default threshold set to \code{threshold}.
+#' 
+#' @param threshold default stationarity threshold  
+#' 
+#' @export
+#' @rdname stop-NMF
 nmf.stop.threshold <- function(threshold){	
 	
-	nmf.debug("Using stopping criterion - Stationatiry threshold: ", threshold)
+	nmf.debug("Using stopping criterion - Stationarity threshold: ", threshold)
 	if( !is.numeric(threshold) )
 		stop("Invalid argument `threshold`: must be a numeric value")
 	if( length(threshold) > 1 )
@@ -827,17 +534,45 @@ nmf.stop.threshold <- function(threshold){
 		nmf.stop.stationary(strategy, i, target, data, stationary.th=stationary.th, ...)")))
 }
 
-nmf.stop.stationary <- function(strategy, i, target, data, stationary.th=10^-6, check.interval=10, ...){
+
+#' \code{nmf.stop.stationary} implements the stopping criterion of stationarity 
+#' of the objective value, which stops when the objective value does not change 
+#' anymore with further iterations.
+#' Objective values are compared at given regular intervals and using a given 
+#' threshold.
+#' 
+#' @param object an NMF strategy object
+#' @param i the current iteration
+#' @param y the target matrix
+#' @param x the current NMF model 
+#' @param stationary.th maximum difference for two objective values to be 
+#' considered equal.
+#' @param check.interval interval (in number of iterations) on which stationarity 
+#' is computed. 
+#' @param ... extra arguments passed to the function \code{\link{objective}}, 
+#' which computes the objective value between \code{x} and \code{y}.
+#' 
+#' @export
+#' @rdname stop-NMF
+nmf.stop.stationary <- function(object, i, y, x, stationary.th=10^-6, check.interval=10, ...){
 		
-		# first call compute the initial error
-		if( i == 1 ) staticVar('objective.value', objective(strategy, target, data, ...), init=TRUE)
+		if( i == 0L ){ # initialisation call: compute initial objective value
+			current.value <- objective(object, y, x, ...)
+			# check for NaN, i.e. probably infinitely small value (cf. bug reported by Nadine POUKEN SIEWE)
+			if( is.nan(current.value) ) return(TRUE)
+			# store value in workspace for later calls
+			staticVar('objective.value', current.value, init=TRUE)
+			return(FALSE)
+		}
 		
 		# test convergence only every 10 iterations
 		if( i %% check.interval != 0 ) return( FALSE );
 		
-		# initialize static variables to store the error across the calls		
+		# get last objective value from workspace		
 		last.value <- staticVar('objective.value')
-		current.value <- objective(strategy, target, data, ...)
+		current.value <- objective(object, y, x, ...)
+		# check for NaN, i.e. probably infinitely small value (cf. bug reported by Nadine POUKEN SIEWE)
+		if( is.nan(current.value) ) return(TRUE)
 		# if the relative decrease in the objective value is to small then stop
 		if( abs( (last.value - current.value)/check.interval ) <= stationary.th ) return( TRUE )
 		
@@ -847,20 +582,32 @@ nmf.stop.stationary <- function(strategy, i, target, data, stationary.th=10^-6, 
 		# do NOT stop
 		FALSE
 }
+#' \code{nmf.stop.connectivity} implements the stopping criterion that is based 
+#' on the stationarity of the connectivity matrix.
+#' 
+#' @param stopconv number of iterations intervals over which the connectivity 
+#' matrix must not change for stationarity to be achieved.
+#'   
+#' @export
+#' @rdname stop-NMF
+nmf.stop.connectivity <- function(object, i, y, x, stopconv=40, check.interval=10, ...){
 
-nmf.stop.connectivity <- function(strategy, i, target, data, stopconv=40, ...){
-			
+		if( i == 0L ){ # initialisation call
+			# Initialize consensus variables 
+			# => they are static variables within the strategy's workspace so that
+			# they are persistent and available throughout across the calls
+			h <- coef(x)
+			staticVar('consold', matrix(0, ncol(h), ncol(h)), init=TRUE)
+			staticVar('inc', 0, init=TRUE)
+			return(FALSE)
+		}
+	
 		# test convergence only every 10 iterations
-		if( i %% 10 != 0 ) return( FALSE );
+		if( i %% check.interval != 0 ) return( FALSE );
 		
 		# retrieve metaprofiles
-		h <- coef(data)
+		h <- coef(x)
 		
-		# Initialize consensus variables 
-		# => they are static variables within the strategy's workspace so that
-		# they are persistent and available throughout across the calls
-		staticVar('consold', matrix(0, ncol(h), ncol(h)), init=TRUE)
-		staticVar('inc', 0, init=TRUE)
 		# retrieve the last values of the consensus variables
 		consold <- staticVar('consold')
 		inc <- staticVar('inc')
@@ -877,7 +624,7 @@ nmf.stop.connectivity <- function(strategy, i, target, data, stopconv=40, ...){
 		}
 		
 		# prints number of changing elements 		
-		#if( verbose(data) ) cat( sprintf('%d ', sum(changes)) ) 
+		#if( verbose(x) ) cat( sprintf('%d ', sum(changes)) ) 
 		#cat( sprintf('%d ', sum(changes)) )
 										
 		# assume convergence is connectivity stops changing 

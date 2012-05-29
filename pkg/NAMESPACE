@@ -1,154 +1,148 @@
-#exportPattern("^[[:alpha:]]+")
-
-# Declare compiled functions
-useDynLib(NMF
-			, divergence_update_H, divergence_update_W # divergence based updates
-			, euclidean_update_H, euclidean_update_W # euclidean based updates
-			, offset_euclidean_update_H, offset_euclidean_update_W # nmf with offset (euclidean based)
-			, Euclidean_rss # compute residual sum of squares (without memory duplication)
-			, KL_divergence # compute the KL divergence (with no memory duplication)
-			, clone_object
-			)
-
-import(methods)
-importFrom(graphics, plot)
-importFrom(stats, coefficients, coef, fitted, offset, predict, residuals, deviance)
-
-export(
-	aheatmap
-	, has.track
-	, isNMFfit
-	, is.nmf
-	, newNMF
-	, nmf.getOption
-	, nmfAlgorithm
-	, nmfEstimateRank
-	, nmfModels
-	, nmfRegisterAlgorithm
-	, nmfSeed
-	, nmf.options
-	, nmf.options.reset
-	, nmf.options.runtime
-	, plot.NMF.rank
-	, plot.NMF.consensus
-	, profplot
-	, randomize
-	, rng.equal
-	, rng1.equal
-	, RNGdigest
-	, RNGinfo
-	, RNGlib
-	, RNGlibs
-	, RNGprovider
-	, RNGrecovery
-	, RNGseq
-	, RNGseed
-	, staticVar
-	, syntheticNMF
-)
-exportMethods(
-	"[",
-	"$",
-	"$<-",
-    "algorithm",
-    "algorithm<-",
-#    "annotate",
-	"as.NMFList",
-    "basis",
-    "basis<-",
-    "basiscor",
-    "basismap",
-    "basisnames",
-    "basisnames<-",
-#    "clusters",
-    "coef",
-    "coef<-",
-    "coefficients",
-    "coefmap",
-    "compare",
-#    "computeContrib",
-    "connectivity",
-    "consensus",
-    "consensusmap",
-#    "contribs",
-	"cophcor",
-	"deviance",
-    "dim",
-    "dimnames",
-    "dimnames<-",
-    "dispersion",
-    "distance",
-    "entropy",
-    "errorPlot",
-    'evar',
-    "extractFeatures",
-    "fcnnls",
-    "featureScore",
-    "fit",
-    "fit<-",    
-    "fitted",
-    "getRNG",
-    "getRNG1", 
-#    "hist",
-    "initialize",
-    "is.empty.nmf",
-    "metaHeatmap",
-    "minfit",
-   "modelname",
-#    "modelname<-",
-#    "name",
-#    "name<-",
-    "nbasis",
-    "niter",
-    "niter<-",
-    "nmf",
-    "nmfApply",
-    "nmf.equal",
-    "nmfModel",
-#    "nmfRegister",
-#    "nmfRegisterAlgorithm",
-#    "nmfRegisterSeed",
-	"nrun",
-    "objective",
-    "objective<-",
-    "offset",
-    "plot",
-    "predict",
-    "profcor",    
-    "purity",
-    "rnmf",
-#    "report",
-	"rmatrix", 
-	"rss",
-    "residuals",
-    "residuals<-",
-#    "run.options",
-#    "run.options<-",
-#    "run",
-    "runtime",
-    "runtime.all",
-    "scoef",
-#    "seed",
-    "seeding",
-    "seeding<-",
-    "seqtime",
-    "setRNG",
-    "show",
-    "smoothing",
-    "sparseness" 
-    , "summary"
-)
-exportClasses(
-    "NMF",
-    "NMFstd",
-     "NMFns",
-     "NMFOffset",
-     "NMFSet"
-     , "NMFfitX"
-     , "NMFfitX1"
-     , "NMFfitXn"
-#     , "NMFStrategy",
-#     "NMFStrategyFunction",
-#     "NMFStrategyIterative",
-#     "NMFStrategyIterativeX" 
-)
+S3method(plot,NMF.rank)
+S3method(print,fcnnls)
+S3method(print,foreach_backend)
+S3method(register,doMPI_backend)
+S3method(register,foreach_backend)
+S3method(scale,NMF)
+export("algorithm<-")
+export("basis<-")
+export("basisnames<-")
+export("coef<-")
+export("fit<-")
+export("name<-")
+export("niter<-")
+export("objective<-")
+export("seeding<-")
+export(.atrack)
+export(.getRNG)
+export(.setRNG)
+export(ForeachBackend)
+export(NMFStop)
+export(NMFStrategy)
+export(RNGdigest)
+export(RNGinfo)
+export(RNGrecovery)
+export(RNGtype)
+export(aheatmap)
+export(algorithm)
+export(atrack)
+export(basis)
+export(basiscor)
+export(basismap)
+export(basisnames)
+export(canFit)
+export(coef)
+export(coefficients)
+export(coefmap)
+export(compare)
+export(connectivity)
+export(consensus)
+export(consensushc)
+export(consensusmap)
+export(cophcor)
+export(deviance)
+export(dispersion)
+export(entropy)
+export(errorPlot)
+export(evar)
+export(existsNMFMethod)
+export(existsNMFSeed)
+export(extractFeatures)
+export(fcnnls)
+export(featureScore)
+export(fit)
+export(fitted)
+export(gVariable)
+export(getDoBackend)
+export(getDoParHosts)
+export(getNMFMethod)
+export(getRNG)
+export(getRNG1)
+export(hasBasis)
+export(hasCoef)
+export(hasTrack)
+export(hostfile)
+export(is.empty.nmf)
+export(is.mixed)
+export(is.nmf)
+export(isNMFfit)
+export(join)
+export(loadings)
+export(logs)
+export(match_atrack)
+export(metaHeatmap)
+export(minfit)
+export(misc)
+export(modelname)
+export(name)
+export(nbasis)
+export(nextRNG)
+export(niter)
+export(nmf)
+export(nmf.equal)
+export(nmf.getOption)
+export(nmf.options)
+export(nmf.stop.connectivity)
+export(nmf.stop.iteration)
+export(nmf.stop.stationary)
+export(nmf.stop.threshold)
+export(nmfAlgorithm)
+export(nmfApply)
+export(nmfDistance)
+export(nmfEstimateRank)
+export(nmfModel)
+export(nmfModels)
+export(nmfRegisterAlgorithm)
+export(nmfSeed)
+export(nneg)
+export(nrun)
+export(objective)
+export(offset)
+export(plot)
+export(plot.NMF.consensus)
+export(posneg)
+export(predict)
+export(profcor)
+export(profplot)
+export(purity)
+export(randomize)
+export(register)
+export(residuals)
+export(rmatrix)
+export(rng.equal)
+export(rng1.equal)
+export(rnmf)
+export(rss)
+export(run)
+export(runtime)
+export(runtime.all)
+export(scoef)
+export(seeding)
+export(seqtime)
+export(setDoBackend)
+export(setNMFMethod)
+export(setRNG)
+export(smoothing)
+export(sparseness)
+export(staticVar)
+export(summary)
+export(syntheticNMF)
+export(trackError)
+export(ts_eval)
+export(ts_tempfile)
+export(which.best)
+exportMethods("$")
+exportMethods("$<-")
+exportMethods("[")
+exportMethods("dimnames<-")
+exportMethods("objective<-")
+exportMethods(dim)
+exportMethods(dimnames)
+exportMethods(fitted)
+exportMethods(initialize)
+exportMethods(objective)
+exportMethods(rposneg)
+exportMethods(show)
+importFrom(graphics,plot)
+importFrom(stats,offset)
+importFrom(stats,predict)
