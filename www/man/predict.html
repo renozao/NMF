@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Clustering and Prediction. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Clustering and Prediction</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='predict.html'>predict</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='predict.html'>predict</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">what</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"columns"</span><span class="keyword">,</span> <span class="string">"rows"</span><span class="keyword">,</span> <span class="string">"samples"</span><span class="keyword">,</span> <span class="string">"features"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">prob</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='predict.html'>predict</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">what</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"columns"</span><span class="keyword">,</span> <span class="string">"rows"</span><span class="keyword">,</span> <span class="string">"samples"</span><span class="keyword">,</span> <span class="string">"features"</span><span class="keyword">,</span> <span class="string">"consensus"</span><span class="keyword">,</span> <span class="string">"cmap"</span><span class="keyword">)</span><span class="keyword">,</span>
+  <span class="symbol">...</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>object</dt>
+            <dd>an NMF model</dd>
+            <dt>what</dt>
+            <dd>a character string that indicates the type of
+  cluster membership should be returned: &#145;columns&#146;
+  or &#145;rows&#146; for clustering the colmuns or the rows
+  of the target matrix respectively. The values
+  &#145;samples&#146; and &#145;features&#146; are aliases for
+  &#145;colmuns&#146; and &#145;rows&#146; respectively.</dd>
+            <dt>prob</dt>
+            <dd>logical that indicates if the relative
+  contributions of/to the dominant basis component should
+  be computed and returned. See <em>Details</em>.</dd>
+            <dt>...</dt>
+            <dd>additional arguments affecting the predictions
+  produced.</dd>
+          </dl>
+          
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>The methods <code>predict</code> for NMF models return the
+  cluster membership of each sample or each feature.
+  Currently the classification/prediction of new data is
+  not implemented.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p>The cluster membership is computed as the index of the
+  dominant basis component for each sample
+  (<code>what='samples' or 'columns'</code>) or each feature
+  (<code>what='features' or 'rows'</code>), based on their
+  corresponding entries in the coefficient matrix or basis
+  matrix respectively.</p>
+        
+            <p>For example, if <code>what='samples'</code>, then the dominant
+  basis component is computed for each column of the
+  coefficient matrix as the row index of the maximum within
+  the column.</p>
+        
+            <p>If argument <code>prob=FALSE</code> (default), the result is a
+  <code>factor</code>. Otherwise a list with two elements is
+  returned: element <code>predict</code> contains the cluster
+  membership index (as a <code>factor</code>) and element
+  <code>prob</code> contains the relative contribution of the
+  dominant component to each sample (resp. the relative
+  contribution of each feature to the dominant basis
+  component):</p>
+        
+            <p><ul>
+<li> Samples: <pre class = 'eq'>p(j) = x(k0) / sum_k x(k)</code>, for each sample
+  <code class = 'eq'>1\leq j \leq p</code>, where <code class = 'eq'>x(k)</code> is the
+  contribution of the <code class = 'eq'>k</code>-th basis component to
+  <code class = 'eq'>j</code>-th sample (i.e. <code>H[k ,j]</code>), and
+  <code class = 'eq'>x(k0)</code> is the maximum of these
+  contributions.</p>
+        
+            <p></li>
+<li> Features: <pre class = 'eq'>p(i) =
+  y(k0) / sum_k y(k)</code>, for each feature <code class = 'eq'>1\leq i \leq
+  p</code>, where <code class = 'eq'>y(k)</code> is the contribution of the
+  <code class = 'eq'>k</code>-th basis component to <code class = 'eq'>i</code>-th feature (i.e.
+  <code>W[i, k]</code>), and <code class = 'eq'>y(k0)</code> is the maximum
+  of these contributions.</p>
+        
+            <p></li>
+</ul></p>
+        
+            <p></p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>predict<code>signature(object = "NMF")</code>: Default
+  method for NMF models</p>
+        
+            <p>predict<code>signature(object = "NMFfitX")</code>:
+  Returns the cluster membership index from an NMF model
+  fitted with multiple runs.</p>
+        
+            <p>Besides the type of clustering available for any NMF
+  models (<code>'columns', 'rows', 'samples', 'features'</code>),
+  this method can return the cluster membership index based
+  on the consensus matrix, computed from the multiple NMF
+  runs.</p>
+        
+            <p>Argument <code>what</code> accepts the following extra types:
+  <span class='describe'> <code>'consensus'</code> returns the cluster
+  membership based on the hierarchical clustering of the
+  consensus matrix, as performed by
+  <code><a href='consensushc.html'>consensushc</a></code>. <code>'cmap'</code> same as
+  <code>'consensus'</code> but the levels of the membership index
+  are re-labeled to match the order of the clusters as they
+  would be displayed on the associated dendrogram, like on
+  the default annotation track in consensus heatmap
+  produced by <code><a href='heatmaps.html'>consensusmap</a></code>. </span></p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="References">
+            <h2>References</h2>
+            
+            <p>Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).
+  "Metagenes and molecular pattern discovery using matrix
+  factorization." _Proceedings of the National Academy of
+  Sciences of the United States of America_, *101*(12), pp.
+  4164-9. ISSN 0027-8424, <URL:
+  http://dx.doi.org/10.1073/pnas.0308531101>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/15016911>.</p>
+        
+            <p>Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and
+  Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix
+  factorization (nsNMF)." _IEEE Trans. Pattern Anal. Mach.
+  Intell_, *28*, pp. 403-415.</p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># random target matrix</span>
+<span class="symbol">v</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span>
+<span class="comment"># fit an NMF model</span>
+<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span>
+
+<span class="comment"># predicted column and row clusters</span>
+<span class="functioncall"><a href='predict.html'>predict</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
+<div class='output'> [1] 2 1 3 3 2 2 4 3 5 5
+Levels: 1 2 3 4 5
+</div>
+<div class='input'><span class="functioncall"><a href='predict.html'>predict</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="string">'rows'</span><span class="keyword">)</span></div>
+<div class='output'> [1] 4 3 3 1 2 1 3 2 2 4 5 2 2 5 2 2 2 3 5 1
+Levels: 1 2 3 4 5
+</div>
+<div class='input'>
+<span class="comment"># with relative contributions of each basis component</span>
+<span class="functioncall"><a href='predict.html'>predict</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">prob</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span></div>
+<div class='output'>$predict
+ [1] 2 1 3 3 2 2 4 3 5 5
+Levels: 1 2 3 4 5
+
+$prob
+ [1] 0.6548911 0.5736570 0.3991033 0.4738792 0.7041045 0.3985352 0.7131128 0.4525372 0.5564594 0.4987524
+
+</div>
+<div class='input'><span class="functioncall"><a href='predict.html'>predict</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="string">'rows'</span><span class="keyword">,</span> <span class="argument">prob</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span></div>
+<div class='output'>$predict
+ [1] 4 3 3 1 2 1 3 2 2 4 5 2 2 5 2 2 2 3 5 1
+Levels: 1 2 3 4 5
+
+$prob
+ [1] 0.3316286 0.4483612 0.4585225 0.3756082 0.5058462 0.4518340 0.7303948 0.3822813 0.4583829 0.4653933 0.7779704 0.4404912 0.3925128 0.4034469 0.4019369 0.5154141 0.4928875 0.3634886 0.3868426
+[20] 0.7014758
+
+</div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>predict</li><li>predict-methods</li><li>predict,NMFfitX-method</li><li>predict,NMF-method</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Interface for Algorithms: Implementation for Iterative NMF Algorithms. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Interface for Algorithms: Implementation for Iterative NMF Algorithms</h1>
+
+      <div class="row">
+        <div class="span8">
+                    
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>This class provides a specific implementation for the
+  function <code>run</code> -- completing the the interface class
+  <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code>, for NMF algorithms that
+  conform to the following iterative schema:</p>
+        
+            <p><ul>
+<li> 1. Initialisation </li>
+<li> 2. Update the
+  model at each iteration </li>
+<li> 3. Stop if some criterion
+  is satisfied </li>
+<li> 4. Wrap up </li>
+</ul></p>
+        
+            <p>This schema could possibly apply to all NMF algorithms,
+  since these are essentially optimisation algorithms,
+  almost all of which use iterative methods to approximate
+  a solution of the optimisation problem. The main
+  advantage is that it allows to implement updates and
+  stopping criterion separately, and combine them in
+  different ways. In particular, many NMF algorithms are
+  based on multiplicative updates, following the approach
+  from <cite>Lee et al. (2001)</cite>, which are specially
+  suitable to be cast into this simple schema.</p>
+        
+          </div>
+
+          <div class="Slots">
+            <h2>Slots</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>Updatefunction that implement the update step,
+  which computes new values for the model, based on its
+  previous value. It is called at each iteration, until the
+  stopping criterion is met or the maximum number of
+  iteration is achieved.</p>
+        
+            <p>Stopfunction that implements the stopping
+  criterion. It is called <em>before</em> each Update step.</p>
+        
+            <p>WrapNMFfunction that wraps up the result into an
+  NMF object. It is called just before returning the</p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>run<code>signature(object =
+  "NMFStrategyIterative", y = "matrix", x = "NMFfit")</code>:
+  Runs an NMF iterative algorithm on a target matrix
+  <code>y</code>.</p>
+        
+            <p>show<code>signature( = "NMFStrategyIterative")</code>:
+  Show method for objects of class
+  <code>NMFStrategyIterative</code></p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="References">
+            <h2>References</h2>
+            
+            <p>Lee DD and Seung H (2001). "Algorithms for non-negative
+  matrix factorization." _Advances in neural information
+  processing systems_. <URL:
+  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>NMFStrategyIterative-class</li>
+          </ul>
+          <ul>
+            
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Heatmaps of NMF Factors. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Heatmaps of NMF Factors</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="string">"YlOrRd:50"</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="string">"r1"</span><span class="keyword">,</span> <span class="argument">Colv</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">subsetRow</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span>
+  <span class="argument">annRow</span> <span class="argument">=</span> <span class="string">"basis"</span><span class="keyword">,</span> <span class="argument">main</span> <span class="argument">=</span> <span class="string">"Basis components"</span><span class="keyword">,</span> <span class="argument">info</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="string">"YlOrRd:50"</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="string">"c1"</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="string">"basis"</span><span class="keyword">,</span>
+      <span class="argument">main</span> <span class="argument">=</span> <span class="string">"Mixture coefficients"</span><span class="keyword">,</span> <span class="argument">info</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='heatmaps.html'>consensusmap</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='heatmaps.html'>consensusmap</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"basis"</span><span class="keyword">,</span> <span class="string">"consensus"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">main</span> <span class="argument">=</span> <span class="string">"Consensus matrix"</span><span class="keyword">,</span>
+      <span class="argument">info</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='heatmaps.html'>consensusmap</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="string">"-RdYlBu"</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">distfun</span> <span class="argument">=</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">x</span><span class="keyword">)</span> <span class="functioncall"><a href='NA'>as.dist</a></span><span class="keyword">(</span><span class="number">1</span> <span class="keyword">-</span> <span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span>
+      <span class="argument">hclustfun</span> <span class="argument">=</span> <span class="string">"average"</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">Colv</span> <span class="argument">=</span> <span class="string">"Rowv"</span><span class="keyword">,</span> <span class="argument">main</span> <span class="argument">=</span> <span class="keyword">if</span> <span class="keyword">(</span><span class="functioncall"><a href='NA'>is.null</a></span><span class="keyword">(</span><span class="symbol">nr</span><span class="keyword">)</span> <span class="keyword">||</span>
+          <span class="symbol">nr</span> <span class="keyword">&gt;</span> <span class="number">1</span><span class="keyword">)</span> <span class="string">"Consensus matrix"</span> <span class="keyword">else</span> <span class="string">"Connectiviy matrix"</span><span class="keyword">,</span> <span class="argument">info</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"basis"</span><span class="keyword">,</span> <span class="string">"consensus"</span><span class="keyword">)</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>object</dt>
+            <dd>an object from which is extracted NMF
+  factors or a consensus matrix</dd>
+            <dt>...</dt>
+            <dd>extra arguments passed to
+  <code><a href='aheatmap.html'>aheatmap</a></code>.</dd>
+            <dt>subsetRow</dt>
+            <dd>Argument that specifies how to filter
+  the rows that will appear in the heatmap. When
+  <code>FALSE</code> (default), all rows are used. Besides the
+  values supported by argument <code>subsetRow</code> of
+  <code><a href='aheatmap.html'>aheatmap</a></code>, other possible values are:
+
+  <ul>
+<li> <code>TRUE</code>: only the rows that are
+  basis-specific are used. The default selection method is
+  from <cite>KimH2007</cite>. This is equivalent to
+  <code>subsetRow='kim'</code>.
+
+  </li>
+<li> a single <code>character</code> string or numeric value
+  that specifies the method to use to select the
+  basis-specific rows, that should appear in the heatmap
+  (cf. argument <code>method</code> for function
+  <code><a href='scores.html'>extractFeatures</a></code>).
+
+  Note <code><a href='scores.html'>extractFeatures</a></code> is called with
+  argument <code>nodups=TRUE</code>, so that features that are
+  selected for multiple components only appear once. </li>
+</ul>
+</dd>
+            <dt>info</dt>
+            <dd>if <code>TRUE</code> then the name of the algorithm
+  that fitted the NMF model is displayed at the bottom of
+  the plot, if available. Other wise it is passed as is to
+  <code>aheatmap</code>.</dd>
+            <dt>color</dt>
+            <dd>colour specification for the heatmap.
+  Default to palette '-RdYlBu2:100', i.e. reversed palette
+  'RdYlBu2' (a slight modification of RColorBrewer's
+  palette 'RdYlBu') with 100 colors. Possible values are:
+  <ul>
+<li> a character/integer vector of length
+  greater than 1 that is directly used and assumed to
+  contain valid R color specifications. </li>
+<li> a single
+  color/integer (between 0 and 8)/other numeric value that
+  gives the dominant colors. Numeric values are converted
+  into a pallete by <code>rev(sequential_hcl(2, h = x, l =
+  c(50, 95)))</code>. Other values are concatenated with the grey
+  colour '#F1F1F1'. </li>
+<li> one of RColorBrewer's palette
+  name, or one of 'RdYlBu2', 'rainbow', 'heat', 'topo',
+  'terrain', 'cm'. </li>
+</ul>
+ When the coluor palette is specified
+  with a single value, and is negative or preceded a minus
+  ('-'), the reversed palette is used. The number of breaks
+  can also be specified after a colon (':'). For example,
+  the default colour palette is specified as
+  '-RdYlBu2:100'.</dd>
+            <dt>scale</dt>
+            <dd>character indicating how the values should
+  scaled in either the row direction or the column
+  direction. Note that the scaling is performed after
+  row/column clustering, so that it has no effect on the
+  row/column ordering. Possible values are: <ul>
+<li>
+  <code>"row"</code>: center and standardize each row separately
+  to row Z-scores </li>
+<li> <code>"column"</code>: center and
+  standardize each column separately to column Z-scores
+  </li>
+<li> <code>"r1"</code>: scale each row to sum up to one </li>
+<li>
+  <code>"c1"</code>: scale each column to sum up to one </li>
+<li>
+  <code>"none"</code>: no scaling </li>
+</ul>
+</dd>
+            <dt>Colv</dt>
+            <dd>clustering specification(s) for the columns.
+  It accepts the same values as argument <code>Rowv</code>
+  (modulo the expected length for vector specifications),
+  and allow specifying the
+  distance/clustering/ordering/display parameters to be
+  used for the <em>columns only</em>. <code>Colv</code> may also be
+  set to <code>"Rowv"</code>, in which case the dendrogram or
+  ordering specifications applied to the rows are also
+  applied to the columns. Note that this is allowed only
+  for square input matrices, and that the row ordering is
+  in this case by default reversed (<code>revC=TRUE</code>) to
+  obtain the diagonal in the standard way (from top-left to
+  bottom-right). See argument <code>Rowv</code> for other
+  possible values.</dd>
+            <dt>annRow</dt>
+            <dd>specifications of row annotation tracks
+  displayed as coloured columns on the left of the
+  heatmaps. The annotation tracks are drawn from left to
+  right. The same conversion, renaming and colouring rules
+  as for argument <code>annCol</code> apply.</dd>
+            <dt>main</dt>
+            <dd>Main title as a character string or a grob.</dd>
+            <dt>Rowv</dt>
+            <dd>clustering specification(s) for the rows. It
+  allows to specify the
+  distance/clustering/ordering/display parameters to be
+  used for the <em>rows only</em>. Possible values are:
+  <ul>
+<li> <code>TRUE</code> or <code>NULL</code> (to be
+  consistent with <code><a href='NA'>heatmap</a></code>): compute a
+  dendrogram from hierarchical clustering using the
+  distance and clustering methods <code>distfun</code> and
+  <code>hclustfun</code>.
+
+  </li>
+<li> <code>NA</code>: disable any ordering. In this case, and
+  if not otherwise specified with argument
+  <code>revC=FALSE</code>, the heatmap shows the input matrix
+  with the rows in their original order, with the first row
+  on top to the last row at the bottom. Note that this
+  differ from the behaviour or <code><a href='NA'>heatmap</a></code>, but
+  seemed to be a more sensible choice when vizualizing a
+  matrix without reordering.
+
+  </li>
+<li> an integer vector of length the number of rows of
+  the input matrix (<code>nrow(x)</code>), that specifies the row
+  order. As in the case <code>Rowv=NA</code>, the ordered matrix
+  is shown first row on top, last row at the bottom.
+
+  </li>
+<li> a character vector or a list specifying values to
+  use instead of arguments <code>distfun</code>, <code>hclustfun</code>
+  and <code>reorderfun</code> when clustering the rows (see the
+  respective argument descriptions for a list of accepted
+  values). If <code>Rowv</code> has no names, then the first
+  element is used for <code>distfun</code>, the second (if
+  present) is used for <code>hclustfun</code>, and the third (if
+  present) is used for <code>reorderfun</code>.
+
+  </li>
+<li> a numeric vector of weights, of length the number
+  of rows of the input matrix, used to reorder the
+  internally computed dendrogram <code>d</code> by
+  <code>reorderfun(d, Rowv)</code>.
+
+  </li>
+<li> <code>FALSE</code>: the dendrogram <em>is</em> computed
+  using methods <code>distfun</code>, <code>hclustfun</code>, and
+  <code>reorderfun</code> but is not shown.
+
+  </li>
+<li> a single integer that specifies how many subtrees
+  (i.e. clusters) from the computed dendrogram should have
+  their root faded out. This can be used to better
+  highlight the different clusters.
+
+  </li>
+<li> a single double that specifies how much space is
+  used by the computed dendrogram. That is that this value
+  is used in place of <code>treeheight</code>. </li>
+</ul>
+</dd>
+            <dt>annCol</dt>
+            <dd>specifications of column annotation tracks
+  displayed as coloured rows on top of the heatmaps. The
+  annotation tracks are drawn from bottom to top. A single
+  annotation track can be specified as a single vector;
+  multiple tracks are specified as a list, a data frame, or
+  an
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code>
+  object, in which case the phenotypic data is used
+  (<code>pData(eset)</code>). Character or integer vectors are
+  converted and displayed as factors. Unnamed tracks are
+  internally renamed into <code>Xi</code>, with i being
+  incremented for each unamed track, across both column and
+  row annotation tracks. For each track, if no
+  corresponding colour is specified in argument
+  <code>annColors</code>, a palette or a ramp is automatically
+  computed and named after the track's name.</dd>
+            <dt>distfun</dt>
+            <dd>default distance measure used in
+  clustering rows and columns. Possible values are:
+  <ul>
+<li> <code>"correlation"</code> and all the
+  distances supported by <code><a href='NA'>dist</a></code> (e.g.
+  <code>"euclidean"</code>). </li>
+<li> an object of class <code>dist</code>
+  such as returned by <code><a href='NA'>dist</a></code> or
+  <code><a href='NA'>as.dist</a></code>. </li>
+</ul>
+</dd>
+            <dt>hclustfun</dt>
+            <dd>default clustering method used to
+  cluster rows and columns. Possible values are: <ul>
+<li>  </li>
+<li> a method name (a character string) supported by
+  <code><a href='NA'>hclust</a></code> (e.g. <code>'average'</code>). </li>
+<li> an
+  object of class <code>hclust</code> such as returned by
+  <code><a href='NA'>hclust</a></code> </li>
+<li> a dendrogram </li>
+</ul>
+</dd>
+          </dl>
+          
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>The NMF package ships an advanced heatmap engine
+  implemented by the function <code><a href='aheatmap.html'>aheatmap</a></code>. Some
+  convenience heatmap functions are implemented, that
+  redefine default values for some of the arguments of
+  <code><a href='aheatmap.html'>aheatmap</a></code>, to tune the output specifically
+  for NMF models.</p>
+        
+            <p><code>basimap</code> draws an annotated heatmap of the basis
+  matrix.</p>
+        
+            <p><code>coefmap</code> draws an annotated heatmap of the
+  coefficient matrix.</p>
+        
+            <p><code>consensusmap</code> plots heatmaps of consensus matrices.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p><code>basimap</code> default values for the following arguments
+  of <code><a href='aheatmap.html'>aheatmap</a></code>: <ul>
+<li> the color
+  palette; </li>
+<li> the scaling specification, which by
+  default scales each row separately so that they sum up to
+  one (<code>scale='r1'</code>); </li>
+<li> the column ordering which
+  is disabled; </li>
+<li> allowing for passing feature
+  extraction methods in argument <code>subsetRow</code>, that are
+  passed to <code><a href='scores.html'>extractFeatures</a></code>. See argument
+  description here and therein. </li>
+<li> the addition of a
+  default named annotation track, that shows the dominant
+  basis component for each row (i.e. each feature).</p>
+        
+            <p>This track, named <code>'basis'</code>, is specified as a
+  single character string, that is looked-up in argument
+  <code>annRow</code>, which may be of any type supported by
+  <code><a href='aheatmap.html'>aheatmap</a></code>. The only difference is that
+  character annotation vectors that have elements other
+  than <code>'basis'</code>, are not are not allowed as-is, and
+  must be encapsulated in a list (see examples). </li>
+<li> a
+  suitable title and extra information like the fitting
+  algorithm, when <code>object</code> is a fitted NMF model. </li>
+</ul></p>
+        
+            <p><code>coefmap</code> redefines default values for the following
+  arguments of <code><a href='aheatmap.html'>aheatmap</a></code>: <ul>
+<li> the
+  color palette; </li>
+<li> the scaling specification, which by
+  default scales each column separately so that they sum up
+  to one (<code>scale='c1'</code>); </li>
+<li> the row ordering which
+  is disabled; </li>
+<li> the addition of a default annotation
+  track, that shows the most contributing basis component
+  for each column (i.e. each sample).</p>
+        
+            <p>This track is specified in argument <code>annCol</code>, which
+  behaves like argument <code>annRow</code> in <code>basismap</code>
+  (see above). </li>
+<li> a suitable title and extra information
+  like the fitting algorithm, when <code>object</code> is a
+  fitted NMF model. </li>
+</ul></p>
+        
+            <p><code>consensusmap</code> redefines default values for the
+  following arguments of <code><a href='aheatmap.html'>aheatmap</a></code>: <ul>
+<li>  </li>
+<li> the color palette; </li>
+<li> the column ordering which
+  is set equal to the row ordering, since a consensus
+  matrix is symetric; </li>
+<li> the distance and linkage
+  methods used to order the rows (and columns). The default
+  is to use 1 minus the consensus matrix itself as
+  distance, and average linkage. </li>
+<li> the addition of two
+  default named annotation tracks, <code>'basis'</code> and
+  <code>'consensus'</code>, that show, for each column (i.e. each
+  sample), the dominant basis component in the best fit and
+  the hierarchical clustering of the consensus matrix
+  respectively (using 1-consensus as distance and average
+  linkage).</p>
+        
+            <p>This track is specified in argument <code>annCol</code>, which
+  behaves like argument <code>annRow</code> in
+  <code><a href='heatmaps.html'>basismap</a></code>. </li>
+<li> a suitable title and extra
+  information like the type of NMF model or the fitting
+  algorithm, when <code>object</code> is a fitted NMF model. </li>
+</ul></p>
+        
+            <p></p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>basismap<code>signature(object = "NMF")</code>: Plots a
+  heatmap of the basis matrix of the NMF model
+  <code>object</code>. This method also works for fitted NMF
+  models (i.e. <code>NMFfit</code> objects).</p>
+        
+            <p>basismap<code>signature(object = "NMFfitX")</code>:
+  Plots a heatmap of the basis matrix of the best fit in
+  <code>object</code>.</p>
+        
+            <p>coefmap<code>signature(object = "NMFfitX")</code>:
+  Plots a heatmap of the coefficient matrix of the best fit
+  in <code>object</code>.</p>
+        
+            <p>consensusmap<code>signature(object = "NMFfitX")</code>:
+  Plots a heatmap of the consensus matrix obtained when
+  fitting an NMF model with multiple runs.</p>
+        
+            <p>consensusmap<code>signature(object = "NMF")</code>:
+  Plots a heatmap of the connectivity matrix of an NMF
+  model.</p>
+        
+            <p>consensusmap<code>signature(object = "matrix")</code>:
+  Main method that redefines default values for arguments
+  of <code><a href='aheatmap.html'>aheatmap</a></code>.</p>
+        
+            <p></span></p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># random data with underlying NMF model</span>
+<span class="symbol">v</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="number">50</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="number">20</span><span class="keyword">)</span>
+<span class="comment"># estimate a model</span>
+<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
+
+<span class="comment"># show basis matrix</span>
+<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span>
+<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annRow</span><span class="argument">=</span><span class="number">NA</span><span class="keyword">)</span> <span class="comment"># no annotation track</span>
+
+<span class="comment"># character annotation vector: ok if it does not contain 'basis'</span>
+<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annRow</span><span class="argument">=</span><span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">'alpha'</span><span class="keyword">,</span> <span class="string">'beta'</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># annotate first and second row</span>
+<span class="functioncall"><a href='NA'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annRow</span><span class="argument">=</span><span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">'alpha'</span><span class="keyword">,</span> <span class="string">'beta'</span><span class="keyword">,</span> <span class="string">'basis'</span><span class="keyword">)</span><span class="keyword">)</span> <span class="keyword">)</span> <span class="comment"># error</span>
+<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annRow</span><span class="argument">=</span><span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">'alpha'</span><span class="keyword">,</span> <span class="string">'beta'</span><span class="keyword">,</span> <span class="string">'basis'</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># ok</span>
+<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annRow</span><span class="argument">=</span><span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="string">'basis'</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">'alpha'</span><span class="keyword">,</span> <span class="string">'beta'</span><span class="keyword">,</span> <span class="string">'basis'</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># ok</span>
+
+<span class="comment"># changing the name of the basis annotation</span>
+<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annRow</span><span class="argument">=</span><span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="argument">new_name</span><span class="argument">=</span><span class="string">'basis'</span><span class="keyword">)</span><span class="keyword">)</span>
+<span class="comment"># coefficient matrix</span>
+<span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span>
+<span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span><span class="argument">=</span><span class="number">NA</span><span class="keyword">)</span>
+<span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span><span class="argument">=</span><span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">'alpha'</span><span class="keyword">,</span> <span class="string">'beta'</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># annotate first and second sample</span>
+<span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span><span class="argument">=</span><span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="string">'basis'</span><span class="keyword">,</span> <span class="argument">Greek</span><span class="argument">=</span><span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">'alpha'</span><span class="keyword">,</span> <span class="string">'beta'</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># annotate first and second sample + basis annotation</span>
+<span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span><span class="argument">=</span><span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="argument">new_name</span><span class="argument">=</span><span class="string">'basis'</span><span class="keyword">)</span><span class="keyword">)</span></div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>basismap</li><li>basismap-methods</li><li>basismap,NMFfitX-method</li><li>basismap,NMF-method</li><li>coefmap</li><li>coefmap-methods</li><li>coefmap,NMFfitX-method</li><li>coefmap,NMF-method</li><li>consensusmap</li><li>consensusmap,matrix-method</li><li>consensusmap-methods</li><li>consensusmap,NMFfitX-method</li><li>consensusmap,NMF-method</li><li>heatmap-NMF</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Virtual Class to Handle Results from Multiple Runs of NMF Algorithms. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Virtual Class to Handle Results from Multiple Runs of NMF Algorithms</h1>
+
+      <div class="row">
+        <div class="span8">
+                    
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>This class defines a common interface to handle the
+  results from multiple runs of a single NMF algorithm,
+  performed with the <code><a href='nmf.html'>nmf</a></code> method.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p>Currently, this interface is implemented by two classes,
+  <code><a href='NMFfitX1-class.html'>NMFfitX1-class</a></code> and
+  <code><a href='NMFfitXn-class.html'>NMFfitXn-class</a></code>, which respectively handle
+  the case where only the best fit is kept, and the case
+  where the list of all the fits is returned.</p>
+        
+            <p>See <code><a href='NA'>nmf-multiple</a></code> for more details on the
+  method arguments.</p>
+        
+          </div>
+
+          <div class="Slots">
+            <h2>Slots</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>runtime.allObject of class <code>proc_time</code> that
+  contains CPU times required to perform all the runs.</p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>basismap<code>signature(object = "NMFfitX")</code>:
+  Plots a heatmap of the basis matrix of the best fit in
+  <code>object</code>.</p>
+        
+            <p>coefmap<code>signature(object = "NMFfitX")</code>:
+  Plots a heatmap of the coefficient matrix of the best fit
+  in <code>object</code>.</p>
+        
+            <p>consensus<code>signature(object = "NMFfitX")</code>:
+  Pure virtual method defined to ensure <code>consensus</code> is
+  defined for sub-classes of <code>NMFfitX</code>. It throws an
+  error if called.</p>
+        
+            <p>consensushc<code>signature(object = "NMFfitX")</code>:
+  Compute the hierarchical clustering on the consensus
+  matrix of <code>object</code>, or on the connectivity matrix of
+  the best fit in <code>object</code>.</p>
+        
+            <p>consensusmap<code>signature(object = "NMFfitX")</code>:
+  Plots a heatmap of the consensus matrix obtained when
+  fitting an NMF model with multiple runs.</p>
+        
+            <p>cophcor<code>signature(object = "NMFfitX")</code>:
+  Computes the cophenetic correlation coefficient on the
+  consensus matrix of <code>object</code>. All arguments in
+  <code>...</code> are passed to the method
+  <code>cophcor,matrix</code>.</p>
+        
+            <p>deviance<code>signature(object = "NMFfitX")</code>:
+  Returns the deviance achieved by the best fit object,
+  i.e. the lowest deviance achieved across all NMF runs.</p>
+        
+            <p>dispersion<code>signature(object = "NMFfitX")</code>:
+  Computes the dispersion on the consensus matrix obtained
+  from multiple NMF runs.</p>
+        
+            <p>fit<code>signature(object = "NMFfitX")</code>: Returns
+  the model object that achieves the lowest residual
+  approximation error across all the runs.</p>
+        
+            <p>It is a pure virtual method defined to ensure <code>fit</code>
+  is defined for sub-classes of <code>NMFfitX</code>, which
+  throws an error if called.</p>
+        
+            <p>getRNG1<code>signature(object = "NMFfitX")</code>:
+  Returns the RNG settings used for the first NMF run of
+  multiple NMF runs.</p>
+        
+            <p>metaHeatmap<code>signature(object = "NMFfitX")</code>:
+  Deprecated method subsituted by
+  <code><a href='heatmaps.html'>consensusmap</a></code>.</p>
+        
+            <p>minfit<code>signature(object = "NMFfitX")</code>:
+  Returns the fit object that achieves the lowest residual
+  approximation error across all the runs.</p>
+        
+            <p>It is a pure virtual method defined to ensure
+  <code>minfit</code> is defined for sub-classes of
+  <code>NMFfitX</code>, which throws an error if called.</p>
+        
+            <p>nmf.equal<code>signature(x = "NMFfitX", y =
+  "NMF")</code>: Compares two NMF models when at least one comes
+  from multiple NMF runs.</p>
+        
+            <p>NMFfitX<code>signature(object = "NMFfitX")</code>:
+  Provides a way to aggregate <code>NMFfitXn</code> objects into
+  an <code>NMFfitX1</code> object.</p>
+        
+            <p>nrun<code>signature(object = "NMFfitX")</code>: Returns
+  the number of NMF runs performed to create <code>object</code>.</p>
+        
+            <p>It is a pure virtual method defined to ensure <code>nrun</code>
+  is defined for sub-classes of <code>NMFfitX</code>, which
+  throws an error if called.</p>
+        
+            <p>See <code><a href='algorithmic.html'>nrun,NMFfitX-method</a></code> for more details.</p>
+        
+            <p>predict<code>signature(object = "NMFfitX")</code>:
+  Returns the cluster membership index from an NMF model
+  fitted with multiple runs.</p>
+        
+            <p>Besides the type of clustering available for any NMF
+  models (<code>'columns', 'rows', 'samples', 'features'</code>),
+  this method can return the cluster membership index based
+  on the consensus matrix, computed from the multiple NMF
+  runs.</p>
+        
+            <p>See <code><a href='predict.html'>predict,NMFfitX-method</a></code> for more
+  details.</p>
+        
+            <p>residuals<code>signature(object = "NMFfitX")</code>:
+  Returns the residuals achieved by the best fit object,
+  i.e. the lowest residual approximation error achieved
+  across all NMF runs.</p>
+        
+            <p>runtime.all<code>signature(object = "NMFfitX")</code>:
+  Returns the CPU time required to compute all the NMF
+  runs. It returns <code>NULL</code> if no CPU data is available.</p>
+        
+            <p>show<code>signature( = "NMFfitX")</code>: Show method
+  for objects of class <code>NMFfitX</code></p>
+        
+            <p>summary<code>signature(object = "NMFfitX")</code>:
+  Computes a set of measures to help evaluate the quality
+  of the <em>best fit</em> of the set. The result is similar
+  to the result from the <code>summary</code> method of
+  <code>NMFfit</code> objects. See <code><a href='NMF-class.html'>NMF-class</a></code> for
+  details on the computed measures. In addition, the
+  cophenetic correlation (<code><a href='cophcor.html'>cophcor</a></code>) and
+  <code><a href='dispersion.html'>dispersion</a></code> coefficients of the consensus
+  matrix are returned, as well as the total CPU time
+  (<code><a href='algorithmic.html'>runtime.all</a></code>).</p>
+        
+            <p></span></p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># generate a synthetic dataset with known classes</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">)</span><span class="keyword">;</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span>
+
+<span class="comment"># perform multiple runs of one algorithm (default is to keep only best fit)</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>str</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>Formal class 'NMFfitX1' [package "NMF"] with 15 slots
+  ..@ consensus  : num [1:18, 1:18] 1 1 1 1 1 0 0 0 0 0 ...
+  ..@ nrun       : int 5
+  ..@ rng1       : int [1:7] 407 -1834564630 -1419262877 1265912392 -1641208919 413016918 -507270689
+  ..@ runtime.all:Class 'proc_time'  Named num [1:5] 4.277 0.024 4.779 0 0
+  .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
+  ..@ fit        :Formal class 'NMFstd' [package "NMF"] with 3 slots
+  .. .. ..@ W   : num [1:50, 1:3] 2.22e-16 2.22e-16 1.73 1.59 1.37 ...
+  .. .. ..@ H   : num [1:3, 1:18] 3.06e-02 2.22e-16 1.94e-01 1.69e-02 5.93e-02 ...
+  .. .. ..@ misc: list()
+  ..@ residuals  : Named num 250
+  .. ..- attr(*, "names")= chr "430"
+  ..@ method     : chr "brunet"
+  ..@ seed       : chr "random"
+  ..@ rng        : int [1:7] 407 -1834564630 -1419262877 1265912392 -1641208919 413016918 -507270689
+  ..@ distance   : chr "KL"
+  ..@ parameters : list()
+  ..@ runtime    :Class 'proc_time'  Named num [1:5] 0.404 0 0.436 0 0
+  .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
+  ..@ options    :List of 11
+  .. ..$ default.algorithm: chr "brunet"
+  .. ..$ default.seed     : chr "random"
+  .. ..$ error.track      : logi FALSE
+  .. ..$ track.interval   : num 30
+  .. ..$ gc               : num 50
+  .. ..$ parallel.backend :Class 'option_symlink'  chr "backend"
+  .. ..$ backend          : chr "seq"
+  .. ..$ reproducible     : logi TRUE
+  .. ..$ verbose          : logi FALSE
+  .. ..$ debug            : logi FALSE
+  .. ..$ shared.memory    : logi TRUE
+  ..@ extra      :List of 1
+  .. ..$ iteration: int 430
+  ..@ misc       : list()
+</div>
+<div class='input'>
+<span class="comment"># plot a heatmap of the consensus matrix</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;:  consensusmap(res) </span>
+
+<span class="comment"># perform multiple runs of one algorithm (keep all the fits)</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">5</span><span class="keyword">,</span> <span class="argument">.options</span><span class="argument">=</span><span class="string">'k'</span><span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>str</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>Formal class 'NMFfitXn' [package "NMF"] with 2 slots
+  ..@ .Data      :List of 5
+  .. ..$ :Formal class 'NMFfit' [package "NMF"] with 11 slots
+  .. .. .. ..@ fit       :Formal class 'NMFstd' [package "NMF"] with 3 slots
+  .. .. .. .. .. ..@ W   : num [1:50, 1:3] 1.14e-01 6.26 1.66 2.22e-16 2.22e-16 ...
+  .. .. .. .. .. ..@ H   : num [1:3, 1:18] 2.22e-16 1.98e-01 2.75e-02 6.29e-02 1.28e-01 ...
+  .. .. .. .. .. ..@ misc: list()
+  .. .. .. ..@ residuals : Named num 250
+  .. .. .. .. ..- attr(*, "names")= chr "440"
+  .. .. .. ..@ method    : chr "brunet"
+  .. .. .. ..@ seed      : chr "random"
+  .. .. .. ..@ rng       : int [1:7] 407 -1355721004 582962117 -707940926 1430847067 -21410336 -1321747359
+  .. .. .. ..@ distance  : chr "KL"
+  .. .. .. ..@ parameters: list()
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.424 0 0.672 0 0
+  .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
+  .. .. .. ..@ options   :List of 11
+  .. .. .. .. ..$ default.algorithm: chr "brunet"
+  .. .. .. .. ..$ default.seed     : chr "random"
+  .. .. .. .. ..$ error.track      : logi FALSE
+  .. .. .. .. ..$ track.interval   : num 30
+  .. .. .. .. ..$ gc               : num 50
+  .. .. .. .. ..$ parallel.backend :Class 'option_symlink'  chr "backend"
+  .. .. .. .. ..$ backend          : chr "seq"
+  .. .. .. .. ..$ reproducible     : logi TRUE
+  .. .. .. .. ..$ verbose          : logi FALSE
+  .. .. .. .. ..$ debug            : logi FALSE
+  .. .. .. .. ..$ shared.memory    : logi TRUE
+  .. .. .. ..@ extra     :List of 1
+  .. .. .. .. ..$ iteration: int 440
+  .. .. .. ..@ misc      : list()
+  .. ..$ :Formal class 'NMFfit' [package "NMF"] with 11 slots
+  .. .. .. ..@ fit       :Formal class 'NMFstd' [package "NMF"] with 3 slots
+  .. .. .. .. .. ..@ W   : num [1:50, 1:3] 2.22e-16 6.22 1.67 7.00e-01 2.22e-16 ...
+  .. .. .. .. .. ..@ H   : num [1:3, 1:18] 2.22e-16 2.68e-02 2.04e-01 5.14e-02 1.49e-02 ...
+  .. .. .. .. .. ..@ misc: list()
+  .. .. .. ..@ residuals : Named num 250
+  .. .. .. .. ..- attr(*, "names")= chr "440"
+  .. .. .. ..@ method    : chr "brunet"
+  .. .. .. ..@ seed      : chr "random"
+  .. .. .. ..@ rng       : int [1:7] 407 -517354913 -1514777308 -1360749460 -1787334871 -1660615091 1977118747
+  .. .. .. ..@ distance  : chr "KL"
+  .. .. .. ..@ parameters: list()
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.416 0 0.434 0 0
+  .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
+  .. .. .. ..@ options   :List of 11
+  .. .. .. .. ..$ default.algorithm: chr "brunet"
+  .. .. .. .. ..$ default.seed     : chr "random"
+  .. .. .. .. ..$ error.track      : logi FALSE
+  .. .. .. .. ..$ track.interval   : num 30
+  .. .. .. .. ..$ gc               : num 50
+  .. .. .. .. ..$ parallel.backend :Class 'option_symlink'  chr "backend"
+  .. .. .. .. ..$ backend          : chr "seq"
+  .. .. .. .. ..$ reproducible     : logi TRUE
+  .. .. .. .. ..$ verbose          : logi FALSE
+  .. .. .. .. ..$ debug            : logi FALSE
+  .. .. .. .. ..$ shared.memory    : logi TRUE
+  .. .. .. ..@ extra     :List of 1
+  .. .. .. .. ..$ iteration: int 440
+  .. .. .. ..@ misc      : list()
+  .. ..$ :Formal class 'NMFfit' [package "NMF"] with 11 slots
+  .. .. .. ..@ fit       :Formal class 'NMFstd' [package "NMF"] with 3 slots
+  .. .. .. .. .. ..@ W   : num [1:50, 1:3] 2.22e-16 2.22e-16 1.61 1.31 9.94e-01 ...
+  .. .. .. .. .. ..@ H   : num [1:3, 1:18] 3.36e-02 2.16e-01 2.22e-16 1.87e-02 1.50e-01 ...
+  .. .. .. .. .. ..@ misc: list()
+  .. .. .. ..@ residuals : Named num 250
+  .. .. .. .. ..- attr(*, "names")= chr "420"
+  .. .. .. ..@ method    : chr "brunet"
+  .. .. .. ..@ seed      : chr "random"
+  .. .. .. ..@ rng       : int [1:7] 407 -1913805653 -367674901 -1633159124 1999390028 -340202606 -1230713693
+  .. .. .. ..@ distance  : chr "KL"
+  .. .. .. ..@ parameters: list()
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.384 0 0.403 0 0
+  .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
+  .. .. .. ..@ options   :List of 11
+  .. .. .. .. ..$ default.algorithm: chr "brunet"
+  .. .. .. .. ..$ default.seed     : chr "random"
+  .. .. .. .. ..$ error.track      : logi FALSE
+  .. .. .. .. ..$ track.interval   : num 30
+  .. .. .. .. ..$ gc               : num 50
+  .. .. .. .. ..$ parallel.backend :Class 'option_symlink'  chr "backend"
+  .. .. .. .. ..$ backend          : chr "seq"
+  .. .. .. .. ..$ reproducible     : logi TRUE
+  .. .. .. .. ..$ verbose          : logi FALSE
+  .. .. .. .. ..$ debug            : logi FALSE
+  .. .. .. .. ..$ shared.memory    : logi TRUE
+  .. .. .. ..@ extra     :List of 1
+  .. .. .. .. ..$ iteration: int 420
+  .. .. .. ..@ misc      : list()
+  .. ..$ :Formal class 'NMFfit' [package "NMF"] with 11 slots
+  .. .. .. ..@ fit       :Formal class 'NMFstd' [package "NMF"] with 3 slots
+  .. .. .. .. .. ..@ W   : num [1:50, 1:3] 9.67 6.74 4.22 2.18 11.23 ...
+  .. .. .. .. .. ..@ H   : num [1:3, 1:18] 1.85e-01 2.22e-16 3.11e-02 1.20e-01 6.27e-02 ...
+  .. .. .. .. .. ..@ misc: list()
+  .. .. .. ..@ residuals : Named num 250
+  .. .. .. .. ..- attr(*, "names")= chr "430"
+  .. .. .. ..@ method    : chr "brunet"
+  .. .. .. ..@ seed      : chr "random"
+  .. .. .. ..@ rng       : int [1:7] 407 2071823022 -1401670214 -1137598863 1636842190 -378016098 252249562
+  .. .. .. ..@ distance  : chr "KL"
+  .. .. .. ..@ parameters: list()
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.404 0 0.425 0 0
+  .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
+  .. .. .. ..@ options   :List of 11
+  .. .. .. .. ..$ default.algorithm: chr "brunet"
+  .. .. .. .. ..$ default.seed     : chr "random"
+  .. .. .. .. ..$ error.track      : logi FALSE
+  .. .. .. .. ..$ track.interval   : num 30
+  .. .. .. .. ..$ gc               : num 50
+  .. .. .. .. ..$ parallel.backend :Class 'option_symlink'  chr "backend"
+  .. .. .. .. ..$ backend          : chr "seq"
+  .. .. .. .. ..$ reproducible     : logi TRUE
+  .. .. .. .. ..$ verbose          : logi FALSE
+  .. .. .. .. ..$ debug            : logi FALSE
+  .. .. .. .. ..$ shared.memory    : logi TRUE
+  .. .. .. ..@ extra     :List of 1
+  .. .. .. .. ..$ iteration: int 430
+  .. .. .. ..@ misc      : list()
+  .. ..$ :Formal class 'NMFfit' [package "NMF"] with 11 slots
+  .. .. .. ..@ fit       :Formal class 'NMFstd' [package "NMF"] with 3 slots
+  .. .. .. .. .. ..@ W   : num [1:50, 1:3] 2.22e-16 2.22e-16 1.66 1.35 1.03 ...
+  .. .. .. .. .. ..@ H   : num [1:3, 1:18] 3.26e-02 2.22e-16 2.04e-01 1.82e-02 4.71e-02 ...
+  .. .. .. .. .. ..@ misc: list()
+  .. .. .. ..@ residuals : Named num 250
+  .. .. .. .. ..- attr(*, "names")= chr "420"
+  .. .. .. ..@ method    : chr "brunet"
+  .. .. .. ..@ seed      : chr "random"
+  .. .. .. ..@ rng       : int [1:7] 407 -574243509 622315560 656642999 -614223016 1552997537 196997062
+  .. .. .. ..@ distance  : chr "KL"
+  .. .. .. ..@ parameters: list()
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.384 0 0.4 0 0
+  .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
+  .. .. .. ..@ options   :List of 11
+  .. .. .. .. ..$ default.algorithm: chr "brunet"
+  .. .. .. .. ..$ default.seed     : chr "random"
+  .. .. .. .. ..$ error.track      : logi FALSE
+  .. .. .. .. ..$ track.interval   : num 30
+  .. .. .. .. ..$ gc               : num 50
+  .. .. .. .. ..$ parallel.backend :Class 'option_symlink'  chr "backend"
+  .. .. .. .. ..$ backend          : chr "seq"
+  .. .. .. .. ..$ reproducible     : logi TRUE
+  .. .. .. .. ..$ verbose          : logi FALSE
+  .. .. .. .. ..$ debug            : logi FALSE
+  .. .. .. .. ..$ shared.memory    : logi TRUE
+  .. .. .. ..@ extra     :List of 1
+  .. .. .. .. ..$ iteration: int 420
+  .. .. .. ..@ misc      : list()
+  ..@ runtime.all:Class 'proc_time'  Named num [1:5] 3.68 0 4.14 0 0
+  .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
+</div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>NMFfitX-class</li>
+          </ul>
+          <ul>
+            
+          </ul> -->
+            
+          <h2>See also</h2>
+          
+  Other multipleNMF: <code><a href='NMFfitX1-class.html'>NMFfitX1-class</a></code>,
+  <code><a href='NMFfitXn-class.html'>NMFfitXn-class</a></code>
+
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

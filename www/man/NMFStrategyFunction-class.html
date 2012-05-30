@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Interface for Single Function NMF Strategies. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Interface for Single Function NMF Strategies</h1>
+
+      <div class="row">
+        <div class="span8">
+                    
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>This class implements the virtual interface
+  <code><a href='NMFStrategy.html'>NMFStrategy</a></code> for NMF algorithms that are
+  implemented by a single workhorse R function.</p>
+        
+          </div>
+
+          <div class="Slots">
+            <h2>Slots</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>algorithma function that implements an NMF
+  algorithm. It must have signature <code>(y='matrix',
+  x='NMFfit')</code>, where <code>y</code> is the target matrix to
+  approximate and <code>x</code> is the NMF model assumed to be
+  seeded with an appropriate initial value -- as it is done
+  internally by function <code><a href='nmf.html'>nmf</a></code>.</p>
+        
+            <p>Note that argument names currently do not matter, but it
+  is recommended to name them as specified above.</p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>algorithm<code>signature(object =
+  "NMFStrategyFunction")</code>: Returns the single R function
+  that implements the NMF algorithm -- as stored in slot
+  <code>algorithm</code>.</p>
+        
+            <p>algorithm<-<code>signature(object =
+  "NMFStrategyFunction", value = "function")</code>: Sets the
+  function that implements the NMF algorithm, stored in
+  slot <code>algorithm</code>.</p>
+        
+            <p>run<code>signature(object =
+  "NMFStrategyFunction", y = "matrix", x = "NMFfit")</code>: Runs
+  the NMF algorithms implemented by the single R function
+  -- and stored in slot <code>'algorithm'</code> of
+  <code>object</code>, on the data object <code>y</code>, using
+  <code>x</code> as starting point. It is equivalent to calling
+  <code>object@algorithm(y, x, ...)</code>.</p>
+        
+            <p>This method is usually not called directly, but only via
+  the function <code><a href='nmf.html'>nmf</a></code>, which takes care of many
+  other details such as seeding the computation, handling
+  RNG settings, or setting up parallelisation.</p>
+        
+            <p></span></p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>NMFStrategyFunction-class</li>
+          </ul>
+          <ul>
+            
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

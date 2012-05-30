@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>NMF Model - Nonnegative Matrix Factorization with Offset. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>NMF Model - Nonnegative Matrix Factorization with Offset</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='NA'>initialize</a></span><span class="keyword">(</span><span class="symbol">.Object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="symbol">offset</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>offset</dt>
+            <dd>optional numeric vector used to initialise
+  slot &#145;offset&#146;.</dd>
+            <dt>.Object</dt>
+            <dd> An object: see the Details section.</dd>
+            <dt>...</dt>
+            <dd>data to include in the new object.  Named
+  arguments correspond to slots in the class definition.
+  Unnamed arguments must be objects from classes that this
+  class extends.</dd>
+          </dl>
+          
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>This class implements the <em>Nonnegative Matrix
+  Factorization with Offset</em> model, required by the NMF
+  with Offset algorithm.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p>The NMF with Offset algorithm is defined by <cite>Badea
+  (2008)</cite> as a modification of the euclidean based NMF
+  algorithm from <code>Lee2001</code> (see section Details and
+  references below). It aims at obtaining 'cleaner' factor
+  matrices, by the introduction of an offset matrix,
+  explicitly modelling a feature specific baseline --
+  constant across samples.</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>fitted<code>signature(object = "NMFOffset")</code>:
+  Computes the target matrix estimate for an NMFOffset
+  object.</p>
+        
+            <p>The estimate is computed as: <pre class = 'eq'> W H + offset </code></p>
+        
+            <p>offset<code>signature( = "NMFOffset")</code>: The
+  function <code>offset</code> returns the offset vector from an
+  NMF model that has an offset, e.g. an <code>NMFOffset</code>
+  model.</p>
+        
+            <p>rnmf<code>signature(x = "NMFOffset", target =
+  "numeric")</code>: Generates a random NMF model with offset,
+  from class <code>NMFOffset</code>.</p>
+        
+            <p>The offset values are drawn from a uniform distribution
+  between 0 and the maximum entry of the basis and
+  coefficient matrices, which are drawn by the next
+  suitable <code><a href='rnmf.html'>rnmf</a></code> method, which is the
+  workhorse method <code>rnmf,NMF,numeric</code>.</p>
+        
+            <p>show<code>signature( = "NMFOffset")</code>: Show method
+  for objects of class <code>NMFOffset</code></p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="Creating objects from the Class">
+            <h2>Creating objects from the Class</h2>
+            
+            <p>Object of class <code>NMFOffset</code> can be created using the
+  standard way with operator <code><a href='NA'>new</a></code></p>
+        
+            <p>However, as for all NMF model classes -- that extend
+  class <code><a href='NMF-class.html'>NMF-class</a></code>, objects of class
+  <code>NMFOffset</code> should be created using factory method
+  <code><a href='nmfModel.html'>nmfModel</a></code> :</p>
+        
+            <p><code>new('NMFOffset')</code></p>
+        
+            <p><code>nmfModel(model='NMFOffset')</code></p>
+        
+            <p><code>nmfModel(model='NMFOffset', W=w, offset=rep(1,
+  nrow(w)))</code></p>
+        
+            <p>See <code><a href='nmfModel.html'>nmfModel</a></code> for more details on how to use
+  the factory method.</p>
+        
+          </div>
+
+          <div class="Initialize method">
+            <h2>Initialize method</h2>
+            
+            <p>The initialize method for <code>NMFOffset</code> objects tries
+  to correct the initial value passed for slot
+  <code>offset</code>, so that it is consistent with the
+  dimensions of the <code>NMF</code> model: it will pad the
+  offset vector with NA values to get the length equal to
+  the number of rows in the basis matrix.</p>
+        
+          </div>
+
+          <div class="References">
+            <h2>References</h2>
+            
+            <p>Badea L (2008). "Extracting gene expression profiles
+  common to colon and pancreatic adenocarcinoma using
+  simultaneous nonnegative matrix factorization." _Pacific
+  Symposium on Biocomputing. Pacific Symposium on
+  Biocomputing_, *290*, pp. 267-78. ISSN 1793-5091, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/18229692>.</p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># create a completely empty NMF object</span>
+<span class="functioncall"><a href='NA'>new</a></span><span class="keyword">(</span><span class="string">'NMFOffset'</span><span class="keyword">)</span></div>
+<div class='output'><Object of class: NMFOffset >
+features: 0 
+basis/rank: 0 
+samples: 0 
+offset: none
+</div>
+<div class='input'>
+<span class="comment"># create a NMF object based on random (compatible) matrices</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span> <span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span>
+<span class="symbol">w</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">)</span>
+<span class="symbol">h</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
+<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">model</span><span class="argument">=</span><span class="string">'NMFOffset'</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">,</span> <span class="argument">offset</span><span class="argument">=</span><span class="functioncall"><a href='NA'>rep</a></span><span class="keyword">(</span><span class="number">0.5</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>nrow</a></span><span class="keyword">(</span><span class="symbol">w</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='output'><Object of class: NMFOffset >
+features: 50 
+basis/rank: 3 
+samples: 20 
+offset: none
+</div>
+<div class='input'>
+<span class="comment"># apply Nonsmooth NMF algorithm to a random target matrix</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: nmf(V, r, 'offset')</span>
+
+<span class="comment"># random NMF model with offset</span>
+<span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFOffset'</span><span class="keyword">)</span></div>
+<div class='output'><Object of class: NMFOffset >
+features: 10 
+basis/rank: 3 
+samples: 5 
+offset: [ 0.7077995 0.371856 0.9309802 0.9233326 0.2382089 ... ]
+</div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>initialize,NMFOffset-method</li><li>NMFOffset-class</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+          <h2>See also</h2>
+          
+  Other NMF-model: <code><a href='NMFns-class.html'>NMFns-class</a></code>,
+  <code><a href='NMFstd-class.html'>NMFstd-class</a></code>
+
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

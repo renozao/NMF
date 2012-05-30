@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Sparseness. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Sparseness</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='sparseness.html'>sparseness</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>x</dt>
+            <dd>an object whose sparseness is computed.</dd>
+            <dt>...</dt>
+            <dd>extra arguments to allow extension</dd>
+          </dl>
+          
+          <div class="Value">
+            <h2>Value</h2>
+            
+            <p>usually a single numeric value -- in [0,1], or a numeric
+  vector. See each method for more details.</p>
+        
+          </div>
+
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>Generic function that computes the <em>sparseness</em> of
+  an object, as defined by <cite>Hoyer (2004)</cite>. The
+  sparseness quantifies how much energy of a vector is
+  packed into only few components.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p>In <cite>Hoyer (2004)</cite>, the sparseness is defined for a
+  real vector <code class = 'eq'>x</code> as: <pre class = 'eq'> (srqt(n) - ||x||_1 / ||x||_2) /
+  (sqrt(n) - 1)</code></p>
+        
+            <p>, where <code class = 'eq'>n</code> is the length of <code class = 'eq'>x</code>.</p>
+        
+            <p>The sparseness is a real number in <code class = 'eq'>[0,1]</code>. It is
+  equal to 1 if and only if <code>x</code> contains a single
+  nonzero component, and is equal to 0 if and only if all
+  components of <code>x</code> are equal. It interpolates
+  smoothly between these two extreme values. The closer to
+  1 is the sparseness the sparser is the vector.</p>
+        
+            <p>The basic definition is for a <code>numeric</code> vector, and
+  is extended for matrices as the mean sparseness of its
+  column vectors.</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>sparseness<code>signature(x = "numeric")</code>: Base
+  method that computes the sparseness of a numeric vector.</p>
+        
+            <p>It returns a single numeric value, computed following the
+  definition given in section <em>Description</em>.</p>
+        
+            <p>sparseness<code>signature(x = "matrix")</code>:
+  Computes the sparseness of a matrix as the mean
+  sparseness of its column vectors. It returns a single
+  numeric value.</p>
+        
+            <p>sparseness<code>signature(x = "NMF")</code>: Compute
+  the sparseness of an object of class <code>NMF</code>, as the
+  sparseness of the basis and coefficient matrices computed
+  separately.</p>
+        
+            <p>It returns the two values in a numeric vector with names
+  &#145;basis&#146; and &#145;coef&#146;.</p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="References">
+            <h2>References</h2>
+            
+            <p>Hoyer P (2004). "Non-negative matrix factorization with
+  sparseness constraints." _The Journal of Machine Learning
+  Research_, *5*, pp. 1457-1469. <URL:
+  http://portal.acm.org/citation.cfm?id=1044709>.</p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>sparseness</li><li>sparseness,matrix-method</li><li>sparseness-methods</li><li>sparseness,NMF-method</li><li>sparseness,numeric-method</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+          <h2>See also</h2>
+          
+  Other assess: <code><a href='purity.html'>entropy</a></code>, <code><a href='purity.html'>purity</a></code>
+
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

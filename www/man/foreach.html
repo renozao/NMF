@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Utilities and Extensions for Foreach Loops. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Utilities and Extensions for Foreach Loops</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='foreach.html'>registerDoBackend</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='foreach.html'>getDoBackend</a></span><span class="keyword">(</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='foreach.html'>setDoBackend</a></span><span class="keyword">(</span><span class="symbol">data</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='foreach.html'>register</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='foreach.html'>getDoParHosts</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='foreach.html'>ForeachBackend</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='foreach.html'>ForeachBackend</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">cl</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='foreach.html'>ForeachBackend</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">cl</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>object</dt>
+            <dd>specification of a foreach backend, e.g.
+  &#145;SEQ&#146;, &#145;PAR&#146; (for doParallel),
+  &#145;MPI&#146;, etc...</dd>
+            <dt>...</dt>
+            <dd>extra arguments passed to the backend own
+  registration function.</dd>
+            <dt>data</dt>
+            <dd>internal data of a foreach %dopar%
+  backend.</dd>
+            <dt>x</dt>
+            <dd>specification of a foreach backend</dd>
+            <dt>cl</dt>
+            <dd>cluster specification: a cluster object or a
+  numeric that indicates the number of nodes to use.</dd>
+          </dl>
+          
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p><code>registerDoBackend</code> is a unified register function
+  for foreach backends.</p>
+        
+            <p><code>getDoBackend</code> returns the internal data of the
+  currently registered foreach %dopar% backend.</p>
+        
+            <p><code>setDoBackend</code> is identical to
+  <code><a href='http://www.inside-r.org/r-doc/foreach/setDoPar'>setDoPar</a></code>, but returns the internal
+  of the previously registered backend.</p>
+        
+            <p><code>register</code> is a generic function that register
+  objects. It is used to as a unified interface to register
+  foreach backends.</p>
+        
+            <p><code>getDoParHosts</code> returns the hostnames of the nodes
+  used by a backend.</p>
+        
+            <p><code>ForeachBackend</code> is a factory method for foreach
+  backend objects.</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>ForeachBackend<code>signature(object = "ANY")</code>:
+  Default method defined to throw an informative error
+  message, when no other method was found.</p>
+        
+            <p>ForeachBackend<code>signature(object =
+  "character")</code>: Creates a foreach backend object based on
+  its name.</p>
+        
+            <p>ForeachBackend<code>signature(object =
+  "missing")</code>: Creates a foreach backend object for the
+  currently registered backend.</p>
+        
+            <p>ForeachBackend<code>signature(object = "NULL")</code>:
+  Dummy method that returns <code>NULL</code>, defined for
+  correct dispatch.</p>
+        
+            <p>ForeachBackend<code>signature(object =
+  "cluster")</code>: Creates a doParallel foreach backend that
+  uses the cluster described in <code>object</code>.</p>
+        
+            <p>ForeachBackend<code>signature(object =
+  "numeric")</code>: Creates a doParallel foreach backend with
+  <code>object</code> processes.</p>
+        
+            <p>ForeachBackend<code>signature(object =
+  "doParallel_backend")</code>: doParallel-specific backend
+  factory</p>
+        
+            <p>ForeachBackend<code>signature(object =
+  "mpicluster")</code>: Creates a doMPI foreach backend that uses
+  the MPI cluster described in <code>object</code>.</p>
+        
+            <p>ForeachBackend<code>signature(object =
+  "doMPI_backend")</code>: doMPI-specific backend factory</p>
+        
+            <p></span></p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>ForeachBackend</li><li>ForeachBackend,ANY-method</li><li>ForeachBackend,character-method</li><li>ForeachBackend,cluster-method</li><li>ForeachBackend,doMPI_backend-method</li><li>ForeachBackend,doParallel_backend-method</li><li>ForeachBackend-methods</li><li>ForeachBackend,missing-method</li><li>ForeachBackend,mpicluster-method</li><li>ForeachBackend,NULL-method</li><li>ForeachBackend,numeric-method</li><li>getDoBackend</li><li>getDoParHosts</li><li>register</li><li>registerDoBackend</li><li>setDoBackend</li>
+          </ul>
+          <ul>
+            <li>internal</li><li>methods</li>
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

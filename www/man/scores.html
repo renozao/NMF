@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Feature Selection in NMF Models. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Feature Selection in NMF Models</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='scores.html'>featureScore</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='scores.html'>featureScore</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">method</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"kim"</span><span class="keyword">,</span> <span class="string">"max"</span><span class="keyword">)</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">method</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"kim"</span><span class="keyword">,</span> <span class="string">"max"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">format</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"list"</span><span class="keyword">,</span> <span class="string">"combine"</span><span class="keyword">,</span> <span class="string">"subset"</span><span class="keyword">)</span><span class="keyword">,</span>
+  <span class="argument">nodups</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>object</dt>
+            <dd>an object from which scores/features are
+  computed/extracted</dd>
+            <dt>...</dt>
+            <dd>extra arguments to allow extension</dd>
+            <dt>method</dt>
+            <dd>scoring or selection method. It specifies
+  the name of one of the method described in sections
+  <em>Feature scores</em> and <em>Feature selection</em>.
+
+  Additionally for <code>extractFeatures</code>, it may be an
+  integer vector that indicates the number of top most
+  contributing features to extract from each column of
+  <code>object</code>, when ordered in decreasing order, or a
+  numeric value between 0 and 1 that indicates the minimum
+  relative basis contribution above which a feature is
+  selected (i.e. basis contribution threshold). In the case
+  of a single numeric value (integer or percentage), it is
+  used for all columns.
+
+  Note that <code>extractFeatures(x, 1)</code> means relative
+  contribution threshold of 100%, to select the top
+  contributing features one must explicitly specify an
+  integer value as in <code>extractFeatures(x, 1L)</code>.
+  However, if all elements in methods are > 1, they are
+  automatically treated as if they were integers:
+  <code>extractFeatures(x, 2)</code> means the top-2 most
+  contributing features in each component.</dd>
+            <dt>format</dt>
+            <dd>output format. The following values are
+  accepted: <span class='describe'> &#145;list&#146;(default)
+  returns a list with one element per column in
+  <code>object</code>, each containing the indexes of the
+  selected features, as an integer vector. If <code>object</code>
+  has row names, these are used to name each index vector.
+  Components for which no feature were selected are
+  assigned a <code>NA</code> value.
+
+  &#145;combine&#146; returns all indexes in a single
+  vector. Duplicated indexes are made unique if
+  <code>nodups=TRUE</code> (default).
+
+  &#145;subset&#146; returns an object of the same
+  class as <code>object</code>, but subset with the selected
+  indexes, so that it contains data only from
+  basis-specific features. </span></dd>
+            <dt>nodups</dt>
+            <dd>logical that indicates if duplicated
+  indexes, i.e. features selected on multiple basis
+  components (which should in theory not happen), should be
+  only appear once in the result. Only used when
+  <code>format='combine'</code>.</dd>
+          </dl>
+          
+          <div class="Value">
+            <h2>Value</h2>
+            
+            <p><code>featureScore</code> returns a numeric vector of the
+  length the number of rows in <code>object</code> (i.e. one
+  score per feature).</p>
+        
+            <p><code>extractFeatures</code> returns the selected features as a
+  list of indexes, a single integer vector or an object of
+  the same class as <code>object</code> that only contains the
+  selected features.</p>
+        
+          </div>
+
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>The function <code>featureScore</code> implements different
+  methods to computes basis-specificity scores for each
+  feature in the data.</p>
+        
+            <p>The function <code>extractFeatures</code> implements different
+  methods to select the most basis-specific features of
+  each basis component.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p>One of the properties of Nonnegative Matrix Factorization
+  is that is tend to produce sparse representation of the
+  observed data, leading to a natural application to
+  bi-clustering, that characterises groups of samples by a
+  small number of features.</p>
+        
+            <p>In NMF models, samples are grouped according to the basis
+  components that contributes the most to each sample, i.e.
+  the basis components that have the greatest coefficient
+  in each column of the coefficient matrix (see
+  <code><a href='predict.html'>predict,NMF-method</a></code>). Each group of samples
+  is then characterised by a set of features selected based
+  on basis-specifity scores that are computed on the basis
+  matrix.</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>extractFeatures<code>signature(object =
+  "matrix")</code>: Select features on a given matrix, that
+  contains the basis component in columns.</p>
+        
+            <p>extractFeatures<code>signature(object = "NMF")</code>:
+  Select basis-specific features from an NMF model, by
+  applying the method <code>extractFeatures,matrix</code> to its
+  basis matrix.</p>
+        
+            <p>featureScore<code>signature(object = "matrix")</code>:
+  Computes feature scores on a given matrix, that contains
+  the basis component in columns.</p>
+        
+            <p>featureScore<code>signature(object = "NMF")</code>:
+  Computes feature scores on the basis matrix of an NMF
+  model.</p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="Feature scores">
+            <h2>Feature scores</h2>
+            
+            <p>The function <code>featureScore</code> can compute
+  basis-specificity scores using the following methods:</p>
+        
+            <p><span class='describe'></p>
+        
+            <p>&#145;kim&#146; Method defined by <cite>Kim et al. (2007)</cite>.</p>
+        
+            <p>The score for feature <code class = 'eq'>i</code> is defined as: <pre class = 'eq'> S_i = 1 + 1/log2(k) sum_q [ p(i,q) log2( p(i,q)
+  ) ] </code>,</p>
+        
+            <p>where <code class = 'eq'>p(i,q)</code> is the probability that the <code class = 'eq'>i</code>-th
+  feature contributes to basis <code class = 'eq'>q</code>: <pre class = 'eq'> p(i,q) = W(i,q) /
+  (sum_r W(i,r)) </code></p>
+        
+            <p>The feature scores are real values within the range
+  [0,1]. The higher the feature score the more
+  basis-specific the corresponding feature.</p>
+        
+            <p>&#145;max&#146;Method defined by
+  <cite>Carmona-Saez et al. (2006)</cite>.</p>
+        
+            <p>The feature scores are defined as the row maximums.</p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="Feature selection">
+            <h2>Feature selection</h2>
+            
+            <p>The function <code>extractFeatures</code> can select features
+  using the following methods: <span class='describe'>
+  &#145;kim&#146; uses <cite>Kim et al. (2007)</cite> scoring schema
+  and feature selection method.</p>
+        
+            <p>The features are first scored using the function
+  <code>featureScore</code> with method &#145;kim&#146;. Then only
+  the features that fulfil both following criteria are
+  retained:</p>
+        
+            <p><ul>
+<li> score greater than <code class = 'eq'>\hat{\mu} + 3
+  \hat{\sigma}</code>, where <code class = 'eq'>\hat{\mu}</code> and
+  <code class = 'eq'>\hat{\sigma}</code> are the median and the median absolute
+  deviation (MAD) of the scores respectively;</p>
+        
+            <p></li>
+<li> the maximum contribution to a basis component is
+  greater than the median of all contributions (i.e. of all
+  elements of W). </li>
+</ul></p>
+        
+            <p></p>
+        
+            <p>&#145;max&#146; uses the selection method used in
+  the <code>bioNMF</code> software package and described in
+  <cite>Carmona-Saez et al. (2006)</cite>.</p>
+        
+            <p>For each basis component, the features are first sorted
+  by decreasing contribution. Then, one selects only the
+  first consecutive features whose highest contribution in
+  the basis matrix is effectively on the considered basis.</p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="References">
+            <h2>References</h2>
+            
+            <p>Kim H and Park H (2007). "Sparse non-negative matrix
+  factorizations via alternating non-negativity-constrained
+  least squares for microarray data analysis."
+  _Bioinformatics (Oxford, England)_, *23*(12), pp.
+  1495-502. ISSN 1460-2059, <URL:
+  http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
+        
+            <p>Carmona-Saez P, Pascual-Marqui RD, Tirado F, Carazo JM
+  and Pascual-Montano A (2006). "Biclustering of gene
+  expression data by Non-smooth Non-negative Matrix
+  Factorization." _BMC bioinformatics_, *7*, pp. 78. ISSN
+  1471-2105, <URL:
+  http://dx.doi.org/10.1186/1471-2105-7-78>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/16503973>.</p>
+        
+            <p>Kim H and Park H (2007). "Sparse non-negative matrix
+  factorizations via alternating non-negativity-constrained
+  least squares for microarray data analysis."
+  _Bioinformatics (Oxford, England)_, *23*(12), pp.
+  1495-502. ISSN 1460-2059, <URL:
+  http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
+        
+            <p>Carmona-Saez P, Pascual-Marqui RD, Tirado F, Carazo JM
+  and Pascual-Montano A (2006). "Biclustering of gene
+  expression data by Non-smooth Non-negative Matrix
+  Factorization." _BMC bioinformatics_, *7*, pp. 78. ISSN
+  1471-2105, <URL:
+  http://dx.doi.org/10.1186/1471-2105-7-78>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/16503973>.</p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># random NMF model</span>
+<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">50</span><span class="keyword">,</span><span class="number">20</span><span class="keyword">)</span>
+
+<span class="comment"># probably no feature is selected</span>
+<span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
+<div class='output'>[[1]]
+[1] 2
+
+[[2]]
+[1] NA
+
+[[3]]
+[1] 28 12
+
+attr(,"method")
+[1] "kim"
+</div>
+<div class='input'><span class="comment"># extract top 5 for each basis</span>
+<span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">5L</span><span class="keyword">)</span></div>
+<div class='output'>[[1]]
+[1] 14 46 42 17 13
+
+[[2]]
+[1] 38 30 22 19 23
+
+[[3]]
+[1]  6 39 11  4 10
+
+attr(,"method")
+[1] 5 5 5
+</div>
+<div class='input'><span class="comment"># extract features that have a relative basis contribution above a threshold</span>
+<span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">0.5</span><span class="keyword">)</span></div>
+<div class='output'>[[1]]
+[1]  2  9 14 40 42 45
+
+[[2]]
+[1]  7  8 18 23 29 38 48
+
+[[3]]
+ [1]  1  4 10 11 12 28 32 33 36 37 44 49 50
+
+attr(,"method")
+[1] 0.5 0.5 0.5
+</div>
+<div class='input'><span class="comment"># ambiguity?</span>
+<span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">)</span> <span class="comment"># means relative contribution above 100%</span></div>
+<div class='output'>[[1]]
+[1] NA
+
+[[2]]
+[1] NA
+
+[[3]]
+[1] NA
+
+attr(,"method")
+[1] 1 1 1
+</div>
+<div class='input'><span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">1L</span><span class="keyword">)</span> <span class="comment"># means top contributing feature in each component</span></div>
+<div class='output'>[[1]]
+[1] 14
+
+[[2]]
+[1] 38
+
+[[3]]
+[1] 6
+
+attr(,"method")
+[1] 1 1 1
+</div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>extractFeatures</li><li>extractFeatures,matrix-method</li><li>extractFeatures-methods</li><li>extractFeatures,NMF-method</li><li>featureScore</li><li>featureScore,matrix-method</li><li>featureScore-methods</li><li>featureScore,NMF-method</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

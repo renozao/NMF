@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Plotting Basis Profiles. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Plotting Basis Profiles</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">match.names</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">legend</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="symbol">Colv</span><span class="keyword">,</span> <span class="symbol">labels</span><span class="keyword">,</span> <span class="symbol">annotation</span><span class="keyword">,</span>
+  <span class="symbol">...</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>x</dt>
+            <dd>a matrix or an NMF object from which is
+  extracted the mixture coefficient matrix. It is extracted
+  from the best fit if <code>x</code> is the results from
+  multiple NMF runs.</dd>
+            <dt>y</dt>
+            <dd>a matrix or an NMF object from which is
+  extracted the mixture coefficient matrix.It is extracted
+  from the best fit if <code>y</code> is the results from
+  multiple NMF runs.</dd>
+            <dt>scale</dt>
+            <dd>a logical that specifies whether the columns
+  of the matrices should be scaled into proportions (i.e.
+  to sum up to one) before plotting. Default is
+  <code>FALSE</code>.</dd>
+            <dt>match.names</dt>
+            <dd>a logical that indicates if the
+  profiles in <code>y</code> should be subset and/or re-ordered
+  to match the profile names in <code>x</code> (i.e. the
+  rownames). This is attempted only when both <code>x</code> and
+  <code>y</code> have names.</dd>
+            <dt>legend</dt>
+            <dd>a logical that specifies whether drawing
+  the legend or not, or coordinates specifications passed
+  to argument <code>x</code> of <code><a href='NA'>legend</a></code>, that
+  specifies the position of the legend.</dd>
+            <dt>Colv</dt>
+            <dd>specifies the way the columns of <code>x</code> are
+  ordered before plotting. It is used only when <code>y</code> is
+  missing.  It can be: <ul>
+<li> a single numeric
+  value, specifying the index of a row of <code>x</code>, that is
+  used to order the columns by <code>x[,
+  order(x[abs(Colv),])]</code>. Decreasing order is specified
+  with a negative index.  </li>
+<li> an integer vector directly
+  specifying the order itself, in which case the columns
+  are ordered by <code>x[, Colv]</code> </li>
+<li> a factor used to
+  order the columns by <code>x[, order(Colv)]</code> and as
+  argument <code>annotation</code> if this latter is missing or
+  not <code>NA</code>.  </li>
+<li> any other object with a suitable
+  <code>order</code> method. The columns are by <code>x[,
+  order(Colv)]</code> </li>
+</ul>
+</dd>
+            <dt>labels</dt>
+            <dd>a character vector containing labels for
+  each sample (i.e. each column of <code>x</code>). These are
+  used for labelling the x-axis.</dd>
+            <dt>annotation</dt>
+            <dd>a factor annotating each sample (i.e.
+  each column of <code>x</code>). If not missing, a coloured raw
+  is plotted under the x-axis and annotates each sample
+  accordingly. If argument <code>Colv</code> is a factor, then it
+  is used to annotate the plot, unless
+  <code>annotation=NA</code>.</dd>
+            <dt>...</dt>
+            <dd>graphical parameters passed to matplot.</dd>
+          </dl>
+          
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>The function <code>profplot</code> draws plots of the basis
+  profiles, i.e. the rows of the coefficient matrix of NMF
+  models. A given profile is composed of the contribution
+  of the corresponding basis to each sample.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p>When using NMF for clustering in particular, one looks
+  for strong associations between the basis and a priori
+  known groups of samples. Plotting the profiles may
+  highlight such patterns.</p>
+        
+            <p>The function can also be used to compare the profiles
+  from two NMF models or mixture coefficient matrices. In
+  this case, it draws a scatter plot of the paired
+  profiles.</p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="keyword">if</span><span class="keyword">(</span> <span class="functioncall"><a href='NA'>interactive</a></span><span class="keyword">(</span><span class="keyword">)</span> <span class="keyword">)</span><span class="keyword">{</span>
+
+<span class="comment"># create a random target matrix</span>
+<span class="symbol">v</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">50</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span>
+
+<span class="comment"># fit a single NMF model</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
+<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span>
+
+<span class="comment"># ordering according to first profile</span>
+<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">Colv</span><span class="argument">=</span><span class="number">1</span><span class="keyword">)</span> <span class="comment"># increasing</span>
+<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">Colv</span><span class="argument">=</span><span class="keyword">-</span><span class="number">1</span><span class="keyword">)</span> <span class="comment"># decreasing</span>
+
+<span class="comment"># fit a multi-run NMF model</span>
+<span class="symbol">res2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span>
+<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res2</span><span class="keyword">)</span>
+
+<span class="comment"># draw a profile correlation plot: this show how the basis components are</span>
+<span class="comment"># returned in an unpredictable order</span>
+<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">res2</span><span class="keyword">)</span>
+
+<span class="comment"># looking at all the correlations allow to order the components in a "common" order</span>
+<span class="functioncall"><a href='basiscor.html'>profcor</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">res2</span><span class="keyword">)</span>
+
+<span class="keyword">}</span></div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>profplot</li>
+          </ul>
+          <ul>
+            <li>aplot</li>
+          </ul> -->
+            
+          <h2>See also</h2>
+          
+  <code><a href='basiscor.html'>profcor</a></code>
+
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

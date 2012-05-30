@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cophenetic Correlation Coefficient. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Cophenetic Correlation Coefficient</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='cophcor.html'>cophcor</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='cophcor.html'>cophcor</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">linkage</span> <span class="argument">=</span> <span class="string">"average"</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>object</dt>
+            <dd>an object from which is extracted a
+  consensus matrix.</dd>
+            <dt>...</dt>
+            <dd>extra arguments to allow extension and passed
+  to subsequent calls.</dd>
+            <dt>linkage</dt>
+            <dd>linkage method used in the hierarchical
+  clustering. It is passed to <code><a href='NA'>hclust</a></code>.</dd>
+          </dl>
+          
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>The function <code>cophcor</code> computes the cophenetic
+  correlation coefficient from consensus matrix
+  <code>object</code>, e.g. as obtained from multiple NMF runs.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p>The cophenetic correlation coeffificient is based on the
+  consensus matrix (i.e. the average of connectivity
+  matrices) and was proposed by <cite>Brunet et al. (2004)</cite>
+  to measure the stability of the clusters obtained from
+  NMF.</p>
+        
+            <p>It is defined as the Pearson correlation between the
+  samples' distances induced by the consensus matrix (seen
+  as a similarity matrix) and their cophenetic distances
+  from a hierachical clustering based on these very
+  distances (by default an average linkage is used). See
+  <cite>Brunet et al. (2004)</cite>.</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>cophcor<code>signature(object = "matrix")</code>:
+  Workhorse method for matrices.</p>
+        
+            <p>cophcor<code>signature(object = "NMFfitX")</code>:
+  Computes the cophenetic correlation coefficient on the
+  consensus matrix of <code>object</code>. All arguments in
+  <code>...</code> are passed to the method
+  <code>cophcor,matrix</code>.</p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="References">
+            <h2>References</h2>
+            
+            <p>Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).
+  "Metagenes and molecular pattern discovery using matrix
+  factorization." _Proceedings of the National Academy of
+  Sciences of the United States of America_, *101*(12), pp.
+  4164-9. ISSN 0027-8424, <URL:
+  http://dx.doi.org/10.1073/pnas.0308531101>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/15016911>.</p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>cophcor</li><li>cophcor,matrix-method</li><li>cophcor-methods</li><li>cophcor,NMFfitX-method</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+          <h2>See also</h2>
+          
+  <code><a href='NA'>cophenetic</a></code>
+
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

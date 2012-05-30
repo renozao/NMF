@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Estimate Rank for NMF Models. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Estimate Rank for NMF Models</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='nmfEstimateRank.html'>nmfEstimateRank</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">range</span><span class="keyword">,</span> <span class="argument">method</span> <span class="argument">=</span> <span class="functioncall"><a href='options.html'>nmf.getOption</a></span><span class="keyword">(</span><span class="string">"default.algorithm"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">nrun</span> <span class="argument">=</span> <span class="number">30</span><span class="keyword">,</span>
+  <span class="argument">verbose</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">stop</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='NA'>plot</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">y</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">what</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"all"</span><span class="keyword">,</span> <span class="string">"cophenetic"</span><span class="keyword">,</span> <span class="string">"rss"</span><span class="keyword">,</span> <span class="string">"residuals"</span><span class="keyword">,</span> <span class="string">"dispersion"</span><span class="keyword">,</span>
+      <span class="string">"evar"</span><span class="keyword">,</span> <span class="string">"sparseness"</span><span class="keyword">,</span> <span class="string">"sparseness.basis"</span><span class="keyword">,</span> <span class="string">"sparseness.coef"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">na.rm</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span>
+      <span class="symbol">...</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>x</dt>
+            <dd>For <code>nmfEstimateRank</code> a target object to be
+  estimated, in one of the format accepted by interface
+  <code><a href='nmf.html'>nmf</a></code>.
+
+  For <code>plot.NMF.rank</code> an object of class
+  <code>NMF.rank</code> as returned by function
+  <code>nmfEstimateRank</code>.</dd>
+            <dt>range</dt>
+            <dd>a <code>numeric</code> vector containing the ranks
+  of factorization to try. Note that duplicates are removed
+  and values are sorted in increasing order. The results
+  are notably returned in this order.</dd>
+            <dt>method</dt>
+            <dd>A single NMF algorithm, in one of the
+  format accepted by the function <code><a href='nmf.html'>nmf</a></code>.</dd>
+            <dt>nrun</dt>
+            <dd>a <code>numeric</code> giving the number of run to
+  perform for each value in <code>range</code>.</dd>
+            <dt>verbose</dt>
+            <dd>toggle verbosity.  This parameter only
+  affects the verbosity of the outer loop over the values
+  in <code>range</code>. To print verbose (resp. debug) messages
+  from each NMF run, one can use <code>.options='v'</code> (resp.
+  <code>.options='d'</code>) that will be passed to the function
+  <code><a href='nmf.html'>nmf</a></code>.</dd>
+            <dt>stop</dt>
+            <dd>logical flag for running the estimation
+  process with fault tolerance.  When <code>TRUE</code>, the
+  whole execution will stop if any error is raised.  When
+  <code>FALSE</code> (default), the runs that raise an error will
+  be skipped, and the execution will carry on. The summary
+  measures for the runs with errors are set to NA values,
+  and a warning is thrown.</dd>
+            <dt>...</dt>
+            <dd>For <code>nmfEstimateRank</code>, these are extra
+  parameters passed to interface <code>nmf</code>. Note that the
+  same parameters are used for each value of the rank.  See
+  <code><a href='nmf.html'>nmf</a></code>.
+
+  For <code>plot.NMF.rank</code>, these are extra graphical
+  parameter passed to the standard function <code>plot</code>.
+  See <code><a href='NA'>plot</a></code>.</dd>
+            <dt>na.rm</dt>
+            <dd>single logical that specifies if the rank
+  for which the measures are NA values should be removed
+  from the graph or not (default to <code>FALSE</code>).  This is
+  useful when plotting results which include NAs due to
+  error during the estimation process. See argument
+  <code>stop</code> for <code>nmfEstimateRank</code>.</dd>
+            <dt>y</dt>
+            <dd>reference object of class <code>NMF.rank</code>, as
+  returned by function <code>nmfEstimateRank</code>. The measures
+  contained in <code>ref</code> are used and plotted as a
+  reference. It is typically used to plot results obtained
+  on randomized data. The associated curves are drawn in
+  <em>red</em>, while those from <code>x</code> are drawn in
+  <em>blue</em>.</dd>
+            <dt>what</dt>
+            <dd>a <code>character</code> string that partially
+  matches one of the following item: &#145;all&#146;,
+  &#145;cophenetic&#146;, &#145;rss&#146;, &#145;residuals&#146; ,
+  &#145;dispersion&#146;. It specifies which measure must be
+  plotted (<code>what='all'</code> plots all the measures).</dd>
+          </dl>
+          
+          <div class="Value">
+            <h2>Value</h2>
+            
+            <p><code>nmfEstimateRank</code> returns a S3 object (i.e. a list)
+  of class <code>NMF.rank</code> with the following elements:</p>
+        
+            <p>measures a <code>data.frame</code> containing the
+  quality measures for each rank of factorizations in
+  <code>range</code>. Each row corresponds to a measure, each
+  column to a rank.  consensus  a <code>list</code> of
+  consensus matrices, indexed by the rank of factorization
+  (as a character string). fit  a <code>list</code> of
+  the fits, indexed by the rank of factorization (as a
+  character string).</p>
+        
+          </div>
+
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>A critical parameter in NMF algorithms is the
+  factorization rank <code class = 'eq'>r</code>. It defines the number of
+  basis effects used to approximate the target matrix.
+  Function <code>nmfEstimateRank</code> helps in choosing an
+  optimal rank by implementing simple approaches proposed
+  in the literature.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p>Note that from version <em>0.7</em>, one can equivalently
+  call the function <code><a href='nmf.html'>nmf</a></code> with a range of
+  ranks.</p>
+        
+            <p>Given a NMF algorithm and the target matrix, a common way
+  of estimating <code class = 'eq'>r</code> is to try different values, compute
+  some quality measures of the results, and choose the best
+  value according to this quality criteria. See
+  <cite>Brunet et al. (2004)</cite> and <cite>Hutchins et al.
+  (2008)</cite>.</p>
+        
+            <p>The function <code>nmfEstimateRank</code> allows to perform
+  this estimation procedure. It performs multiple NMF runs
+  for a range of rank of factorization and, for each,
+  returns a set of quality measures together with the
+  associated consensus matrix.</p>
+        
+            <p>In order to avoid overfitting, it is recommended to run
+  the same procedure on randomized data. The results on the
+  original and the randomised data may be plotted on the
+  same plots, using argument <code>y</code>.</p>
+        
+          </div>
+
+          <div class="References">
+            <h2>References</h2>
+            
+            <p>Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).
+  "Metagenes and molecular pattern discovery using matrix
+  factorization." _Proceedings of the National Academy of
+  Sciences of the United States of America_, *101*(12), pp.
+  4164-9. ISSN 0027-8424, <URL:
+  http://dx.doi.org/10.1073/pnas.0308531101>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/15016911>.</p>
+        
+            <p>Hutchins LN, Murphy SM, Singh P and Graber JH (2008).
+  "Position-dependent motif characterization using
+  non-negative matrix factorization." _Bioinformatics
+  (Oxford, England)_, *24*(23), pp. 2684-90. ISSN
+  1367-4811, <URL:
+  http://dx.doi.org/10.1093/bioinformatics/btn526>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/18852176>.</p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="functioncall"><a href='NA'>set.seed</a></span><span class="keyword">(</span><span class="number">123456</span><span class="keyword">)</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span> <span class="symbol">m</span> <span class="assignement">&lt;-</span> <span class="number">20</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">,</span> <span class="symbol">m</span><span class="keyword">)</span>
+
+<span class="comment"># Use a seed that will be set before each first run</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: </span>
+<span class="comment"># res &lt;- nmfEstimateRank(V, seq(2,5), method='brunet', nrun=10, seed=123456)</span>
+<span class="comment"># # or equivalently</span>
+<span class="comment"># res &lt;- nmf(V, seq(2,5), method='brunet', nrun=10, seed=123456)</span>
+<span class="comment"># ## &lt;strong&gt;End(Not run)&lt;/strong&gt;</span>
+
+<span class="comment"># plot all the measures</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: plot(res)</span>
+<span class="comment"># or only one: e.g. the cophenetic correlation coefficient</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: plot(res, 'cophenetic')</span>
+
+<span class="comment"># run same estimation on randomized data</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: </span>
+<span class="comment"># rV &lt;- randomize(V)</span>
+<span class="comment"># rand &lt;- nmfEstimateRank(rV, seq(2,5), method='brunet', nrun=10, seed=123456)</span>
+<span class="comment"># plot(res, rand)</span>
+<span class="comment"># ## &lt;strong&gt;End(Not run)&lt;/strong&gt;</span></div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>nmfEstimateRank</li><li>plot.NMF.rank</li>
+          </ul>
+          <ul>
+            
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

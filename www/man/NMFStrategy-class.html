@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Virtual Interface for NMF Algorithms. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Virtual Interface for NMF Algorithms</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='NA'>show</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='NMFStrategy-class.html'>name</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='NMFStrategy-class.html'>name</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">all</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='NMFStrategy-class.html'>name</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">value</span>
+
+<span class="functioncall"><a href='algorithmic.html'>objective</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='algorithmic.html'>objective</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">value</span>
+
+<span class="functioncall"><a href='algorithmic.html'>objective</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">value</span>
+
+<span class="functioncall"><a href='NMFStrategy-class.html'>is.mixed</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>object</dt>
+            <dd>an NMFStrategy object</dd>
+            <dt>...</dt>
+            <dd>extra arguments to allow extension</dd>
+            <dt>value</dt>
+            <dd>replacement value</dd>
+            <dt>all</dt>
+            <dd>a logical that indicates if all the names
+  associated with a strategy should be return
+  (<code>TRUE</code>), or only the first (primary) one
+  (<code>FALSE</code>).</dd>
+            <dt>y</dt>
+            <dd>data object, e.g. a target matrix</dd>
+            <dt>x</dt>
+            <dd>a model object used as a starting point by the
+  algorithm, e.g. a non-empty NMF model.</dd>
+          </dl>
+          
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>This class partially implements the generic interface
+  defined for general algorithms defined in the package NMF
+  (see <code><a href='algorithmic.html'>algorithmic-NMF</a></code>).</p>
+        
+            <p><code>name</code> and <code>name<-</code> gets and sets the name
+  associated with an object. In the case of
+  <code>NMFStrategy</code> object it is the the name of the
+  algorithm.</p>
+        
+            <p><code>is.mixed</code> tells if an NMF algorithm works on
+  mixed-sign data.</p>
+        
+          </div>
+
+          <div class="Slots">
+            <h2>Slots</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>namecharacter string giving the name of the
+  algorithm</p>
+        
+            <p>objectivethe objective function associated with
+  the algorithm (Frobenius, Kullback-Leibler, etc...).  It
+  is either an access key of a registered objective
+  function or a function definition.  In the latter case,
+  the given function must have the following signature
+  <code>(x="NMF", y="matrix")</code> and return a nonnegative
+  real value.</p>
+        
+            <p>modela character string giving either the
+  (sub)class name of the NMF-class instance used and
+  returned by the strategy, or a function name.</p>
+        
+            <p>mixeda logical that indicates if the algorithm
+  works on mixed-sign data.</p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>canFit<code>signature(x = "NMFStrategy", y =
+  "character")</code>: Tells if an NMF algorithm can fit a given
+  class of NMF models</p>
+        
+            <p>canFit<code>signature(x = "NMFStrategy", y =
+  "NMF")</code>: Tells if an NMF algorithm can fit the same class
+  of models as <code>y</code></p>
+        
+            <p>modelname<code>signature(object =
+  "NMFStrategy")</code>: Returns the model(s) that an NMF
+  algorithm can fit.</p>
+        
+            <p>name<code>signature(object = "NMFStrategy")</code>:
+  Returns the name of an algorithm</p>
+        
+            <p>name<code>signature(object = "NMFStrategy")</code>:
+  Returns the name of an algorithm</p>
+        
+            <p>name<code>signature(object = "NMFSeed")</code>: Returns
+  the name of the seeding method described by
+  <code>object</code>.</p>
+        
+            <p>name<-<code>signature(object = "NMFStrategy",
+  value = "character")</code>: Sets the name(s) of an NMF
+  algorithm</p>
+        
+            <p>name<-<code>signature(object = "NMFStrategy",
+  value = "character")</code>: Sets the name(s) of an NMF
+  algorithm</p>
+        
+            <p>name<-<code>signature(object = "NMFSeed", value =
+  "character")</code>: Sets the name of the seeding method
+  described by <code>object</code>.</p>
+        
+            <p>This method is not meant to be called directly</p>
+        
+            <p>NMFStrategy<code>signature(name = "NMFStrategy",
+  method = "missing")</code>: Creates an <code>NMFStrategy</code> based
+  on a template object (Constructor-Copy) using a randomly
+  generated name.</p>
+        
+            <p>objective<code>signature(object =
+  "NMFStrategy")</code>: Gets the objective function associated
+  with an NMF algorithm, or computes the objective value
+  for an NMF model with respect to a given target matrix.</p>
+        
+            <p>objective<code>signature(object =
+  "NMFStrategy")</code>: Gets the objective function associated
+  with an NMF algorithm, or computes the objective value
+  for an NMF model with respect to a given target matrix.</p>
+        
+            <p>objective<-<code>signature(object =
+  "NMFStrategy", value = "character")</code>: Sets the objective
+  function associated with an NMF algorithm, with a
+  character string that must be a registered objective
+  function.</p>
+        
+            <p>objective<-<code>signature(object =
+  "NMFStrategy", value = "character")</code>: Sets the objective
+  function associated with an NMF algorithm, with a
+  character string that must be a registered objective
+  function.</p>
+        
+            <p>objective<-<code>signature(object =
+  "NMFStrategy", value = "function")</code>: Sets the objective
+  function associated with an NMF algorithm, with a
+  function that computes the approximation error between an
+  NMF model and a target matrix.</p>
+        
+            <p>objective<-<code>signature(object =
+  "NMFStrategy", value = "function")</code>: Sets the objective
+  function associated with an NMF algorithm, with a
+  function that computes the approximation error between an
+  NMF model and a target matrix.</p>
+        
+            <p>run<code>signature(object = "NMFStrategy", y =
+  "matrix", x = "NMFfit")</code>: Pure virtual method defined for
+  all NMF algorithms to ensure that a method <code>run</code> is
+  defined by sub-classes of <code>NMFStrategy</code>.</p>
+        
+            <p>It throws an error if called directly.</p>
+        
+            <p>run<code>signature(object = "NMFStrategy", y =
+  "matrix", x = "NMF")</code>: Method to run an NMF algorithm
+  directly starting from a given NMF model.</p>
+        
+            <p></span></p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>is.mixed</li><li>name</li><li>name&lt;-</li><li>name&lt;--methods</li><li>name-methods</li><li>name&lt;-,NMFSeed,character-method</li><li>name,NMFSeed-method</li><li>name&lt;-,NMFStrategy,character-method</li><li>name,NMFStrategy-method</li><li>NMFStrategy-class</li><li>objective&lt;-,NMFStrategy,character-method</li><li>objective&lt;-,NMFStrategy,function-method</li><li>objective,NMFStrategy-method</li><li>show,NMFStrategy-method</li>
+          </ul>
+          <ul>
+            <li>internal</li><li>methods</li>
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

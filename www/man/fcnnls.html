@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Fast Combinatorial Non-Negative Least-Square. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Fast Combinatorial Non-Negative Least-Square</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="argument">verbose</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">pseudo</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>x</dt>
+            <dd>the coefficient matrix</dd>
+            <dt>y</dt>
+            <dd>the target matrix to be approximated by <code class = 'eq'>X
+  K</code>.</dd>
+            <dt>...</dt>
+            <dd>extra arguments passed to the internal
+  function <code>.fcnnls</code>. Currently not used.</dd>
+            <dt>verbose</dt>
+            <dd>toggle verbosity (default is
+  <code>FALSE</code>).</dd>
+            <dt>pseudo</dt>
+            <dd>By default (<code>pseudo=FALSE</code>) the
+  algorithm uses Gaussian elimination to solve the
+  successive internal linear problems, using the
+  <code><a href='NA'>solve</a></code> function.  If <code>pseudo=TRUE</code> the
+  algorithm uses Moore-Penrose generalized
+  <code><a href='http://www.inside-r.org/r-doc/corpcor/pseudoinverse'>pseudoinverse</a></code> from the
+  <code>corpcor</code> package instead of <a href='NA'>solve</a>.</dd>
+          </dl>
+          
+          <div class="Value">
+            <h2>Value</h2>
+            
+            <p>The returned value is a list containing the following
+  components: x the estimated optimal matrix
+  <code class = 'eq'>K</code>. fitted the fitted matrix <code class = 'eq'>X K</code>.
+  residuals the residual matrix <code class = 'eq'>Y - X K</code>.
+  deviance the residual sum of squares between the
+  fitted matrix <code class = 'eq'>X K</code> and the target matrix <code class = 'eq'>Y</code>.
+  That is the sum of the square residuals. passive
+  a <code class = 'eq'>r x p</code> logical matrix containing the passive set,
+  that is the set of entries in <code class = 'eq'>K</code> that are not null
+  (i.e. strictly positive). pseudo a logical that
+  is <code>TRUE</code> if the computation was performed using the
+  pseudoinverse. See argument <code>pseudo</code>.</p>
+        
+          </div>
+
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>This function solves the following non-negative least
+  square linear problem using normal equations and the fast
+  combinatorial strategy from <cite>Van Benthem et al.
+  (2004)</cite>:</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p><pre class = 'eq'>min ||Y - X K||_F, s.t. K>=0</code></p>
+        
+            <p>where <code class = 'eq'>Y</code> and <code class = 'eq'>X</code> are two real matrices of
+  dimension <code class = 'eq'>n x p</code> and <code class = 'eq'>n
+  x r</code> respectively, and <code class = 'eq'>|.|_F</code> is the
+  Frobenius norm.</p>
+        
+            <p>The algorithm is very fast compared to other approaches,
+  as it optimised for handling multiple right-hand sides.</p>
+        
+            <p>Within the <code>NMF</code> package, this algorithm is used
+  internally by the SNMF/R(L) algorithm from <cite>Kim et
+  al. (2007)</cite> to solve general Nonnegative Matrix
+  Factorization (NMF) problems, using alternating
+  non-negative constrained least-squares. That is by
+  iteratively and alternatively estimate each matrix
+  factor.</p>
+        
+            <p>The algorithm is an active/passive set method, which
+  rearrange the right-hand side to reduce the number of
+  pseudo-inverse calculations. It uses the unconstrained
+  solution <code class = 'eq'>K_u</code> obtained from the unconstrained least
+  squares problem, i.e. <code class = 'eq'>min ||Y
+  - X K||_F^2</code> , so as to determine the initial passive
+  sets.</p>
+        
+            <p>The function <code>fcnnls</code> is provided separately so that
+  it can be used to solve other types of non-negative least
+  squares problem. For faster computation, it is
+  recommended to use the internal -- non-exported --
+  function <code>NMF:::.fcnnls</code>. The code is a port from
+  the original MATLAB code used in <cite>Kim et al.
+  (2007)</cite>.</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>fcnnls<code>signature(x = "matrix", y =
+  "matrix")</code>: This method wraps a call to the internal
+  function <code>.fcnnls</code>, and formats the results in a
+  similar way as other lest-squares methods such as
+  <code><a href='NA'>lm</a></code>.</p>
+        
+            <p>fcnnls<code>signature(x = "numeric", y =
+  "matrix")</code>: Shortcut for <code>fcnnls(as.matrix(x), y,
+  ...)</code>.</p>
+        
+            <p>fcnnls<code>signature(x = "ANY", y = "numeric")</code>:
+  Shortcut for <code>fcnnls(x, as.matrix(y), ...)</code>.</p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="References">
+            <h2>References</h2>
+            
+            <p>Original MATLAB code from Van Benthem and Keenan,
+  slightly modified by H. Kim:
+  <a href = 'http://www.cc.gatech.edu/~hpark/software/fcnnls.m'>http://www.cc.gatech.edu/~hpark/software/fcnnls.m</a></p>
+        
+            <p>Van Benthem M and Keenan MR (2004). "Fast algorithm for
+  the solution of large-scale non-negativity-constrained
+  least squares problems." _Journal of Chemometrics_,
+  *18*(10), pp. 441-450. ISSN 0886-9383, <URL:
+  http://dx.doi.org/10.1002/cem.889>, <URL:
+  http://doi.wiley.com/10.1002/cem.889>.</p>
+        
+            <p>Kim H and Park H (2007). "Sparse non-negative matrix
+  factorizations via alternating non-negativity-constrained
+  least squares for microarray data analysis."
+  _Bioinformatics (Oxford, England)_, *23*(12), pp.
+  1495-502. ISSN 1460-2059, <URL:
+  http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment">## Define a random non-negative matrix matrix</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">200</span><span class="keyword">;</span> <span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
+
+<span class="comment">## Compute the optimal matrix K for a given X matrix</span>
+<span class="symbol">X</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">)</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">,</span> <span class="symbol">V</span><span class="keyword">)</span>
+
+<span class="comment">## Compute the same thing using the Moore-Penrose generalized pseudoinverse</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">,</span> <span class="symbol">V</span><span class="keyword">,</span> <span class="argument">pseudo</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span>
+
+<span class="comment">## It also works in the case of single vectors</span>
+<span class="symbol">y</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>runif</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">)</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span>
+<span class="comment"># or</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">[</span><span class="keyword">,</span><span class="number">1</span><span class="keyword">]</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span></div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>fcnnls</li><li>fcnnls,ANY,numeric-method</li><li>fcnnls,matrix,matrix-method</li><li>fcnnls-methods</li><li>fcnnls,numeric,matrix-method</li>
+          </ul>
+          <ul>
+            <li>methods</li><li>multivariate</li><li>optimize</li><li>regression</li>
+          </ul> -->
+            
+          <h2>See also</h2>
+          
+  <code><a href='nmf.html'>nmf</a></code>
+
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

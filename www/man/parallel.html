@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Utilities for Parallel Computations. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Utilities for Parallel Computations</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='parallel.html'>ts_eval</a></span><span class="keyword">(</span><span class="argument">mutex</span> <span class="argument">=</span> <span class="package">synchronicity</span><span class="keyword">::</span><span class="functioncall"><a href='NA'>boost.mutex</a></span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">verbose</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='parallel.html'>ts_tempfile</a></span><span class="keyword">(</span><span class="argument">pattern</span> <span class="argument">=</span> <span class="string">"file"</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">host</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">pid</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='parallel.html'>hostfile</a></span><span class="keyword">(</span><span class="argument">pattern</span> <span class="argument">=</span> <span class="string">"file"</span><span class="keyword">,</span> <span class="argument">tmpdir</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>tempdir</a></span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">fileext</span> <span class="argument">=</span> <span class="string">""</span><span class="keyword">,</span> <span class="argument">host</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">pid</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='parallel.html'>gVariable</a></span><span class="keyword">(</span><span class="symbol">init</span><span class="keyword">,</span> <span class="argument">shared</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>mutex</dt>
+            <dd>a mutex or a mutex descriptor. If missing, a
+  new mutex is created via the function
+  <code><a href='http://www.inside-r.org/r-doc/synchronicity/boost.mutex'>boost.mutex</a></code>.</dd>
+            <dt>verbose</dt>
+            <dd>a logical that indicates if messages
+  should be printed when locking and unlocking the mutex.</dd>
+            <dt>...</dt>
+            <dd>extra arguments passed to
+  <code><a href='http://www.inside-r.org/r-doc/base/tempfile'>tempfile</a></code>.</dd>
+            <dt>host</dt>
+            <dd>logical that indicates if the host machine
+  name should be appear in the filename.</dd>
+            <dt>pid</dt>
+            <dd>logical that indicates if the current process
+  id be appear in the filename.</dd>
+            <dt>init</dt>
+            <dd>initial value</dd>
+            <dt>shared</dt>
+            <dd>a logical that indicates if the variable
+  should be stored in shared memory or in the global
+  environment.</dd>
+            <dt>pattern</dt>
+            <dd>a non-empty character vector giving the
+  initial part of the name.</dd>
+            <dt>tmpdir</dt>
+            <dd>a non-empty character vector giving the
+  directory name</dd>
+            <dt>fileext</dt>
+            <dd>a non-empty character vector giving the
+  file extension</dd>
+          </dl>
+          
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>Utilities for Parallel Computations</p>
+        
+            <p><code>ts_eval</code> generates a thread safe version of
+  <code><a href='NA'>eval</a></code>. It uses boost mutexes provided by the
+  <code><a href='http://www.inside-r.org/r-doc/synchronicity/synchronicity-package'>synchronicity</a></code> package. The
+  generated function has arguments <code>expr</code> and
+  <code>envir</code>, which are passed to <code><a href='NA'>eval</a></code>.</p>
+        
+            <p><code>ts_tempfile</code> generates a <em>unique</em> temporary
+  filename that includes the name of the host machine
+  and/or the caller's process id, so that it is thread
+  safe.</p>
+        
+            <p><code>hostfile</code> generates a temporary filename composed
+  with the name of the host machine and/or the current
+  process id.</p>
+        
+            <p><code>gVariable</code> generates a function that access a
+  global static variable, possibly in shared memory (only
+  for numeric matrix-coercible data in this case). It is
+  used primarily in parallel computations, to preserve data
+  accross computations that are performed by the same
+  process.</p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>gVariable</li><li>hostfile</li><li>parallel-NMF</li><li>ts_eval</li><li>ts_tempfile</li>
+          </ul>
+          <ul>
+            
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

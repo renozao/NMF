@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>NMF Model - Standard model. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>NMF Model - Standard model</h1>
+
+      <div class="row">
+        <div class="span8">
+                    
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>This class implements the standard model of Nonnegative
+  Matrix Factorization. It provides a general structure and
+  generic functions to manage factorizations that follow
+  the standard NMF model, as defined by <cite>Lee et al.
+  (2001)</cite>.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p>Let <code class = 'eq'>V</code> be a <code class = 'eq'>n \times m</code> non-negative matrix and
+  <code class = 'eq'>r</code> a positive integer.  In its standard form (see
+  references below), a NMF of <code class = 'eq'>V</code> is commonly defined
+  as a pair of matrices <code class = 'eq'>(W, H)</code> such that:</p>
+        
+            <p><pre class = 'eq'>V \equiv W H,</code></p>
+        
+            <p>where: <ul>
+<li> <code class = 'eq'>W</code> and <code class = 'eq'>H</code> are <code class = 'eq'>n
+  \times r</code> and <code class = 'eq'>r \times m</code> matrices respectively with
+  non-negative entries; </li>
+<li> <code class = 'eq'>\equiv</code> is to be
+  understood with respect to some loss function. Common
+  choices of loss functions are based on Frobenius norm or
+  Kullback-Leibler divergence. </li>
+</ul></p>
+        
+            <p>Integer <code class = 'eq'>r</code> is called the <em>factorization rank</em>.
+  Depending on the context of application of NMF, the
+  columns of <code class = 'eq'>W</code> and <code class = 'eq'>H</code> are given different names:
+  <span class='describe'> columns of <code>W</code>basis vector,
+  metagenes, factors, source, image basis columns of
+  <code>H</code>mixture coefficients, metagene sample
+  expression profiles, weights rows of
+  <code>H</code>basis profiles, metagene expression profiles </span></p>
+        
+            <p>NMF approach has been successfully applied to several
+  fields. The package NMF was implemented trying to use
+  names as generic as possible for objects and methods.</p>
+        
+            <p>The following terminology is used: <span class='describe'>
+  samplesthe columns of the target matrix <code class = 'eq'>V</code>
+  featuresthe rows of the target matrix <code class = 'eq'>V</code>
+  basis matrixthe first matrix factor <code class = 'eq'>W</code>
+  basis vectorsthe columns of first matrix factor
+  <code class = 'eq'>W</code> mixture matrixthe second matrix factor
+  <code class = 'eq'>H</code> mixtures coefficientsthe columns of
+  second matrix factor <code class = 'eq'>H</code> </span></p>
+        
+            <p>However, because the package NMF was primarily
+  implemented to work with gene expression microarray data,
+  it also provides a layer to easily and intuitively work
+  with objects from the Bioconductor base framework. See
+  <a href='bioc.html'>bioc-NMF</a> for more details.</p>
+        
+          </div>
+
+          <div class="Slots">
+            <h2>Slots</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>WA <code>matrix</code> that contains the basis matrix,
+  i.e. the <em>first</em> matrix factor of the factorisation</p>
+        
+            <p>HA <code>matrix</code> that contains the coefficient
+  matrix, i.e. the <em>second</em> matrix factor of the
+  factorisation</p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>basis<code>signature(object = "NMFstd")</code>: Get the
+  basis matrix in standard NMF models</p>
+        
+            <p>This function returns slot <code>W</code> of <code>object</code>.</p>
+        
+            <p>basis<-<code>signature( = "NMFstd", = "matrix")</code>:
+  Set the basis matrix in standard NMF models</p>
+        
+            <p>This function sets slot <code>W</code> of <code>object</code>.</p>
+        
+            <p>coef<code>signature(object = "NMFstd")</code>: Get the
+  mixture coefficient matrix in standard NMF models</p>
+        
+            <p>This function returns slot <code>H</code> of <code>object</code>.</p>
+        
+            <p>coef<-<code>signature( = "NMFstd", = "matrix")</code>:
+  Set the mixture coefficient matrix in standard NMF models</p>
+        
+            <p>This function sets slot <code>H</code> of <code>object</code>.</p>
+        
+            <p>fitted<code>signature(object = "NMFstd")</code>:
+  Compute the target matrix estimate in <em>standard NMF
+  models</em>.</p>
+        
+            <p>The estimate matrix is computed as the product of the two
+  matrix slots <code>W</code> and <code>H</code>: <pre class = 'eq'>V ~ W H</code></p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="References">
+            <h2>References</h2>
+            
+            <p>Lee DD and Seung H (2001). "Algorithms for non-negative
+  matrix factorization." _Advances in neural information
+  processing systems_. <URL:
+  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># create a completely empty NMFstd object</span>
+<span class="functioncall"><a href='NA'>new</a></span><span class="keyword">(</span><span class="string">'NMFstd'</span><span class="keyword">)</span></div>
+<div class='output'><Object of class: NMFstd >
+features: 0 
+basis/rank: 0 
+samples: 0 
+</div>
+<div class='input'>
+<span class="comment"># create a NMF object based on one random matrix: the missing matrix is deduced</span>
+<span class="comment"># Note this only works when using factory method NMF</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span>
+<span class="symbol">w</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">)</span>
+<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">)</span></div>
+<div class='output'><Object of class: NMFstd >
+features: 50 
+basis/rank: 3 
+samples: 0 
+</div>
+<div class='input'>
+<span class="comment"># create a NMF object based on random (compatible) matrices</span>
+<span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span>
+<span class="symbol">h</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
+<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span></div>
+<div class='output'><Object of class: NMFstd >
+features: 50 
+basis/rank: 3 
+samples: 20 
+</div>
+<div class='input'>
+<span class="comment"># create a NMF object based on incompatible matrices: generate an error</span>
+<span class="symbol">h</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">+</span><span class="number">1</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='NA'>new</a></span><span class="keyword">(</span><span class="string">'NMFstd'</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span> <span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">)</span> <span class="keyword">)</span>
+
+<span class="comment"># Giving target dimensions to the factory method allow for coping with dimension</span>
+<span class="comment"># incompatibilty (a warning is thrown in such case)</span>
+<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span></div>
+<strong class='warning'>Warning message:
+nmfModel - Objective rank [3] is lower than the number of rows in H [4]: only the first 3 rows of H  will be used</strong>
+<div class='output'><Object of class: NMFstd >
+features: 50 
+basis/rank: 3 
+samples: 20 
+</div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>NMFstd-class</li>
+          </ul>
+          <ul>
+            
+          </ul> -->
+            
+          <h2>See also</h2>
+          
+  Other NMF-model:
+  <code><a href='NMFOffset-class.html'>initialize,NMFOffset-method</a></code>,
+  <code><a href='NMFns-class.html'>NMFns-class</a></code>, <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code>
+
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>
