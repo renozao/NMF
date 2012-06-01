@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>RNG Settings. NMF 0.8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF 0.8</a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>RNG Settings</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='rng.html'>RNGrecovery</a></span><span class="keyword">(</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='rng.html'>RNGtype</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='rng.html'>RNGinfo</a></span><span class="keyword">(</span><span class="argument">object</span> <span class="argument">=</span> <span class="functioncall"><a href='rng.html'>getRNG</a></span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">indent</span> <span class="argument">=</span> <span class="string">""</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='rng.html'>getRNG</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='rng.html'>.getRNG</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='rng.html'>getRNG1</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='rng.html'>nextRNG</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='rng.html'>setRNG</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">verbose</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='rng.html'>.setRNG</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='rng.html'>RNGdigest</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='rng.html'>rng.equal</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='rng.html'>rng1.equal</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>indent</dt>
+            <dd>character string to use as indentation
+  prefix in the output from <code>RNGinfo</code>.</dd>
+            <dt>object</dt>
+            <dd>an R object from which RNG settings can be
+  extracted, e.g. an integer vector containing a suitable
+  value for <code>.Random.seed</code> or embedded RNG data such
+  objects returned by the function <code><a href='nmf.html'>nmf</a></code>.</dd>
+            <dt>...</dt>
+            <dd>extra arguments to allow extension and passed
+  to a suitable method <code>.getRNG</code>.</dd>
+            <dt>verbose</dt>
+            <dd>a logical that indicates if the new RNG
+  settings should be displayed.</dd>
+            <dt>x</dt>
+            <dd>objects from which RNG settings are extracted</dd>
+            <dt>y</dt>
+            <dd>object from which RNG settings are extracted</dd>
+          </dl>
+          
+          <div class="Value">
+            <h2>Value</h2>
+            
+            <p><code>getRNG</code> returns the RNG settings as a single
+  integer vector as <code><a href='NA'>.Random.seed</a></code> or
+  <code>NULL</code> if no RNG data was found.</p>
+        
+            <p><code>getRNG</code>, <code>getRNG1</code>, <code>nextRNG</code> and
+  <code>setRNG</code> return an integer vector of length greater
+  than 3 (see <code><a href='NA'>.Random.seed</a></code>.</p>
+        
+            <p><code>setRNG</code> invisibly returns the old RNG settings as
+  they were before changing them.</p>
+        
+            <p><code>rng.equal</code> and <code>rng.equal1</code> return a
+  <code>TRUE</code> or <code>FALSE</code>.</p>
+        
+          </div>
+
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>The functions documented here provide a unified interface
+  to work with RNG settings.</p>
+        
+            <p><code>RNGrecovery</code> allows to recover from a broken state
+  of <code>.Random.seed</code>.</p>
+        
+            <p><code>RNGtype</code> returns the same type of values as
+  <code>RNGkind()</code>, except that it can extract the RNG
+  settings from an object. If <code>object</code> is missing it
+  returns the kinds of the current RNG settings, i.e. it is
+  identical to <code>RNGkind()</code>.</p>
+        
+            <p><code>RNGinfo</code> shows displays human readable information
+  about RNG settings. If <code>object</code> is missing it
+  displays information about the current RNG.</p>
+        
+            <p>The functions documented here provide a unified interface
+  to work with RNG settings.</p>
+        
+            <p><code>.getRNG</code> is an S4 generic that extract RNG settings
+  from a variety of object types. Its methods define the
+  workhorse functions that are called by <code>getRNG</code>.</p>
+        
+            <p><code>getRNG1</code> is defined to provide separate access to
+  the RNG settings as they were at the very beginning of a
+  whole computation, which might differ from the RNG
+  settings returned by <code>getRNG</code>, that allows to
+  reproduce the result only.</p>
+        
+            <p><code>nextRNG</code> returns the RNG settings as they would be
+  after seeding with <code>seed</code>.</p>
+        
+            <p><code>setRNG</code> tries to extract RNG settings from
+  <code>object</code>, using a suitable <code>.setRNG</code> method to
+  set these settings. All arguments are passed to the next
+  call to <code>.setRNG</code>.</p>
+        
+            <p><code>.setRNG</code> is an S4 generic that sets the current RNG
+  settings, from a variety of specifications. Its methods
+  define the workhorse functions that are called by
+  <code>setRNG</code>.</p>
+        
+            <p><code>RNGdigest</code> computes a hash from the RNG settings
+  associated with an object.</p>
+        
+            <p><code>rng.equal</code> and <code>rng1.equal</code> return <code>TRUE</code>
+  the RNG settings associated with two objects are
+  identical, and <code>FALSE</code> otherwise. The comparison is
+  made between the hashes returned by <code>RNGdigest</code>.</p>
+        
+            <p>The function <code>rng1.equal</code> tests whether two objects
+  have identical <strong>initial</strong> RNG settings.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p><code>getRNG</code> returns the Random Number Generator (RNG)
+  settings used for computing an object, using a suitable
+  <code>.getRNG</code> method to extract these settings. For
+  example, in the case of results from multiple NMF runs,
+  it returns the RNG settings used to compute the best fit.</p>
+        
+            <p>Think of a sequence of separate computations, from which
+  only one result is used for the result (e.g. the one that
+  maximise a likelihood): <code>getRNG1</code> would return the
+  RNG settings to reproduce the complete sequence of
+  computations, while <code>getRNG</code> would return the RNG
+  settings necessary to reproduce only the computation
+  whose result has maximum likelihood.</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>.getRNG<code>signature(object = "missing")</code>:
+  Returns the current RNG settings.</p>
+        
+            <p>.getRNG<code>signature(object = "ANY")</code>: Default
+  method that tries to extract RNG information from
+  <code>object</code>, by looking sequentially to a slot named
+  <code>'rng'</code>, a slot named <code>'rng.seed'</code> or an
+  attribute names <code>'rng'</code>.</p>
+        
+            <p>It returns <code>NULL</code> if no RNG data was found.</p>
+        
+            <p>.getRNG<code>signature(object = "list")</code>: Method
+  for S3 objects, that aims at reproducing the behaviour of
+  the function <code>getRNG</code> of the package <code>getRNG</code>.</p>
+        
+            <p>It sequentially looks for RNG data in elements
+  <code>'rng'</code>, <code>noise$rng</code> if element <code>'noise'</code>
+  exists and is a <code>list</code>, or in attribute
+  <code>'rng'</code>.</p>
+        
+            <p>.getRNG<code>signature(object = "numeric")</code>:
+  Methods for numeric vectors, which returns the object
+  itself, if it has more than one element, coerced into an
+  integer vector if necessary, as it is assumed to already
+  represent a value for <code><a href='NA'>.Random.seed</a></code>.</p>
+        
+            <p>Or if <code>object</code> has a single element, the value of
+  <code>.Random.seed</code> as it would be after calling
+  <code>set.seed(object, ...)</code> In this case, all arguments
+  in <code>...</code> are passed to <code><a href='NA'>set.seed</a></code>.</p>
+        
+            <p>.getRNG<code>signature(object = "NMFfitXn")</code>:
+  Returns the RNG settings used for the best fit.</p>
+        
+            <p>This method throws an error if the object is empty.</p>
+        
+            <p>getRNG1<code>signature(object = "ANY")</code>: Default
+  method that is identical to <code>getRNG(object, ...)</code>.</p>
+        
+            <p>getRNG1<code>signature(object = "NMFfitX")</code>:
+  Returns the RNG settings used for the first NMF run of
+  multiple NMF runs.</p>
+        
+            <p>getRNG1<code>signature(object = "NMFfitX1")</code>:
+  Returns the RNG settings used to compute the first of all
+  NMF runs, amongst which <code>object</code> was selected as the
+  best fit.</p>
+        
+            <p>getRNG1<code>signature(object = "NMFfitXn")</code>:
+  Returns the RNG settings used for the first run.</p>
+        
+            <p>This method throws an error if the object is empty.</p>
+        
+            <p>.setRNG<code>signature(object = "character")</code>:
+  Sets the RNG to kind <code>object</code>, assuming is a valid
+  RNG kind: it is equivalent to <code>RNGkind(object, ...</code>.
+  All arguments in <code>...</code> are passed to
+  <code><a href='NA'>RNGkind</a></code>.</p>
+        
+            <p>.setRNG<code>signature(object = "numeric")</code>: Sets
+  the RNG settings using <code>object</code> directly the new
+  value for <code>.Random.seed</code> or to initialise it with
+  <code><a href='NA'>set.seed</a></code>.</p>
+        
+            <p></span></p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># get current RNG settings</span>
+<span class="functioncall"><a href='NA'>head</a></span><span class="keyword">(</span><span class="functioncall"><a href='rng.html'>getRNG</a></span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='output'>[1]         403         503 -2055597952 -1983695743  1682659118  1170624289
+</div>
+<div class='input'><span class="symbol">obj</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="argument">x</span><span class="argument">=</span><span class="number">10</span><span class="keyword">,</span> <span class="argument">rng</span><span class="argument">=</span><span class="number">123</span><span class="keyword">)</span>
+<span class="functioncall"><a href='rng.html'>setRNG</a></span><span class="keyword">(</span><span class="symbol">obj</span><span class="keyword">)</span>
+<span class="symbol">rng</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rng.html'>getRNG</a></span><span class="keyword">(</span><span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>runif</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">)</span></div>
+<div class='output'> [1] 0.2875775 0.7883051 0.4089769 0.8830174 0.9404673 0.0455565 0.5281055 0.8924190 0.5514350 0.4566147
+</div>
+<div class='input'><span class="functioncall"><a href='NA'>set.seed</a></span><span class="keyword">(</span><span class="number">123</span><span class="keyword">)</span>
+<span class="functioncall"><a href='rng.html'>rng.equal</a></span><span class="keyword">(</span><span class="symbol">rng</span><span class="keyword">)</span></div>
+<div class='output'>[1] TRUE
+</div>
+<div class='input'><span class="comment"># set RNG kind</span>
+<span class="symbol">old</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rng.html'>setRNG</a></span><span class="keyword">(</span><span class="string">'Marsaglia'</span><span class="keyword">)</span>
+<span class="comment"># restore</span>
+<span class="functioncall"><a href='rng.html'>setRNG</a></span><span class="keyword">(</span><span class="symbol">old</span><span class="keyword">)</span>
+<span class="comment"># directly set .Random.seed</span>
+<span class="symbol">rng</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rng.html'>getRNG</a></span><span class="keyword">(</span><span class="keyword">)</span>
+<span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>runif</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">)</span>
+<span class="functioncall"><a href='rng.html'>setRNG</a></span><span class="keyword">(</span><span class="symbol">rng</span><span class="keyword">)</span>
+<span class="functioncall"><a href='rng.html'>rng.equal</a></span><span class="keyword">(</span><span class="symbol">rng</span><span class="keyword">)</span></div>
+<div class='output'>[1] TRUE
+</div>
+<div class='input'>
+<span class="comment"># initialise from a single number (&lt;=&gt; set.seed)</span>
+<span class="functioncall"><a href='rng.html'>setRNG</a></span><span class="keyword">(</span><span class="number">123</span><span class="keyword">)</span>
+<span class="symbol">rng</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rng.html'>getRNG</a></span><span class="keyword">(</span><span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>runif</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">)</span></div>
+<div class='output'> [1] 0.2875775 0.7883051 0.4089769 0.8830174 0.9404673 0.0455565 0.5281055 0.8924190 0.5514350 0.4566147
+</div>
+<div class='input'><span class="functioncall"><a href='NA'>set.seed</a></span><span class="keyword">(</span><span class="number">123</span><span class="keyword">)</span>
+<span class="functioncall"><a href='rng.html'>rng.equal</a></span><span class="keyword">(</span><span class="symbol">rng</span><span class="keyword">)</span></div>
+<div class='output'>[1] TRUE
+</div>
+<div class='input'><span class="comment"># For multiple NMF runs, the RNG settings used for the first run is also stored</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">)</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">4</span><span class="keyword">)</span></div>
+<strong class='warning'>Warning message:
+error 'Interrupted system call' in select</strong>
+<div class='input'><span class="comment"># RNG used for the best fit</span>
+<span class="functioncall"><a href='rng.html'>getRNG</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>[1]         407  1469097512   493688329   813832758 -1917207745 -1485036428 -1867049755
+</div>
+<div class='input'><span class="comment"># RNG used for the first of all fits</span>
+<span class="functioncall"><a href='rng.html'>getRNG1</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>[1]         407  1469097512   493688329   813832758 -1917207745 -1485036428 -1867049755
+</div>
+<div class='input'><span class="comment"># they may differ if the best fit is not the first one</span>
+<span class="functioncall"><a href='rng.html'>rng.equal</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="functioncall"><a href='rng.html'>getRNG1</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='output'>[1] TRUE
+</div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>getRNG</li><li>.getRNG</li><li>getRNG1</li><li>getRNG1,ANY-method</li><li>getRNG1-methods</li><li>getRNG1,NMFfitX1-method</li><li>getRNG1,NMFfitX-method</li><li>getRNG1,NMFfitXn-method</li><li>.getRNG,ANY-method</li><li>.getRNG,list-method</li><li>.getRNG-methods</li><li>.getRNG,missing-method</li><li>.getRNG,NMFfitXn-method</li><li>.getRNG,numeric-method</li><li>nextRNG</li><li>rng1.equal</li><li>RNGdigest</li><li>rng.equal</li><li>RNGinfo</li><li>RNG-NMF</li><li>RNGrecovery</li><li>RNGtype</li><li>setRNG</li><li>.setRNG</li><li>.setRNG,character-method</li><li>.setRNG-methods</li><li>.setRNG,numeric-method</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

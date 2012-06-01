@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Listing and Retrieving NMF Algorithms. NMF 0.8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF 0.8</a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Listing and Retrieving NMF Algorithms</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='nmfAlgorithm.html'>nmfAlgorithm</a></span><span class="keyword">(</span><span class="argument">name</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">version</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">all</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>name</dt>
+            <dd>Access key. If not missing, it must be a
+  single character string that is partially matched against
+  the available algorithms in the registry. In this case,
+  if <code>all=FALSE</code> (default), then the algorithm is
+  returned as an <code>NMFStrategy</code> object that can be
+  directly passed to <code><a href='nmf.html'>nmf</a></code>. An error is thrown
+  if no matching algorithm is found.
+
+  If missing or <code>NULL</code>, then access keys of algorithms
+  -- that match the criteria <code>version</code>, are returned.
+  This argument is assumed to be regular expression if
+  <code>all=TRUE</code> or <code>version</code> is not <code>NULL</code>.</dd>
+            <dt>version</dt>
+            <dd>version of the algorithm(s) to retrieve.
+  Currently only value <code>'R'</code> is supported, which
+  searched for plain R implementations.</dd>
+            <dt>all</dt>
+            <dd>a logical that indicates if all algorithm keys
+  should be returned, including the ones from alternative
+  algorithm versions (e.g. plain R implementations of
+  algorithms, for which a version based on optimised C
+  updates is used by default).</dd>
+            <dt>...</dt>
+            <dd>extra arguments passed to
+  <code><a href='registry-algorithm.html'>getNMFMethod</a></code> when <code>name</code> is not
+  <code>NULL</code> and <code>all=FALSE</code>. It is not used
+  otherwise.</dd>
+          </dl>
+          
+          <div class="Value">
+            <h2>Value</h2>
+            
+            <p>an <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code> object if <code>name</code>
+  is not <code>NULL</code> and <code>all=FALSE</code>, or a named
+  character vector that contains the access keys of the
+  matching algorithms. The names correspond to the access
+  key of the primary algorithm: e.g. algorithm &#145;lee&#146;
+  has two registered versions, one plain R
+  (&#145;.R#lee&#146;) and the other uses optimised C updates
+  (&#145;lee&#146;), which will all get named &#145;lee&#146;.</p>
+        
+          </div>
+
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p><code>nmfAlgorithm</code> lists access keys or retrieves NMF
+  algorithms that are stored in registry. It allows to list</p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># list all main algorithms</span>
+<span class="functioncall"><a href='nmfAlgorithm.html'>nmfAlgorithm</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
+<div class='output'>  brunet      lee   offset    nsNMF   ls-nmf   pe-nmf   snmf/r   snmf/l 
+"brunet"    "lee" "offset"  "nsNMF" "ls-nmf" "pe-nmf" "snmf/r" "snmf/l" 
+</div>
+<div class='input'><span class="comment"># list all versions of algorithms</span>
+<span class="functioncall"><a href='nmfAlgorithm.html'>nmfAlgorithm</a></span><span class="keyword">(</span><span class="argument">all</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span></div>
+<div class='output'>     brunet      brunet         lee         lee      offset      offset       nsNMF       nsNMF      ls-nmf      pe-nmf      snmf/r      snmf/l 
+".R#brunet"    "brunet"    ".R#lee"       "lee" ".R#offset"    "offset"  ".R#nsNMF"     "nsNMF"    "ls-nmf"    "pe-nmf"    "snmf/r"    "snmf/l" 
+</div>
+<div class='input'><span class="comment"># list all plain R versions</span>
+<span class="functioncall"><a href='nmfAlgorithm.html'>nmfAlgorithm</a></span><span class="keyword">(</span><span class="argument">version</span><span class="argument">=</span><span class="string">'R'</span><span class="keyword">)</span></div>
+<div class='output'>     brunet         lee      offset       nsNMF 
+".R#brunet"    ".R#lee" ".R#offset"  ".R#nsNMF" 
+</div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>nmfAlgorithm</li>
+          </ul>
+          <ul>
+            
+          </ul> -->
+            
+          <h2>See also</h2>
+          
+  Other regalgo: <code><a href='canFit.html'>canFit</a></code>
+
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

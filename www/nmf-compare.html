@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Comparing Results from Different NMF Runs. NMF 0.8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF 0.8</a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Comparing Results from Different NMF Runs</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='algorithmic.html'>compare</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='algorithmic.html'>compare</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">sort.by</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">select</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='NA'>plot</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="argument">skip</span> <span class="argument">=</span> <span class="keyword">-</span><span class="number">1</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='heatmaps.html'>consensusmap</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='heatmaps.html'>consensusmap</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">layout</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">main</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>names</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">)</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>...</dt>
+            <dd>extra arguments passed by <code>compare</code> to
+  <code>summary,NMFList</code> or to the <code>summary</code> method of
+  each fit.</dd>
+            <dt>select</dt>
+            <dd>the columns to be output in the result
+  <code>data.frame</code>.  The column are given by their names
+  (partially matched).  The column names are the names of
+  the summary measures returned by the <code>summary</code>
+  methods of the corresponding NMF results.</dd>
+            <dt>sort.by</dt>
+            <dd>the sorting criteria, i.e. a partial match
+  of a column name, by which the result <code>data.frame</code>
+  is sorted.  The sorting direction (increasing or
+  decreasing) is computed internally depending on the
+  chosen criteria (e.g. decreasing for the cophenetic
+  coefficient, increasing for the residuals).</dd>
+            <dt>x</dt>
+            <dd>an <code>NMFList</code> object that contains fits from
+  separate NMF runs.</dd>
+            <dt>y</dt>
+            <dd>missing</dd>
+            <dt>layout</dt>
+            <dd>specification of the layout. It may be a
+  single numeric or a numeric couple, to indicate a square
+  or rectangular layout respectively, that is filled row by
+  row. It may also be a matrix that is directly passed to
+  the function <code><a href='http://www.inside-r.org/r-doc/graphics/layout'>layout</a></code> from the
+  package <code>graphics</code>.</dd>
+            <dt>object</dt>
+            <dd>an object computed using some algorithm, or
+  that describes an algorithm itself.</dd>
+            <dt>skip</dt>
+            <dd>an integer that indicates the number of
+  points to skip/remove from the beginning of the curve. If
+  <code>skip=1L</code> (default) only the initial residual --
+  that is computed before any iteration, is skipped, if
+  present in the track (it associated with iteration 0).</dd>
+            <dt>Rowv</dt>
+            <dd>clustering specification(s) for the rows. It
+  allows to specify the
+  distance/clustering/ordering/display parameters to be
+  used for the <em>rows only</em>. Possible values are:
+  <ul>
+<li> <code>TRUE</code> or <code>NULL</code> (to be
+  consistent with <code><a href='NA'>heatmap</a></code>): compute a
+  dendrogram from hierarchical clustering using the
+  distance and clustering methods <code>distfun</code> and
+  <code>hclustfun</code>.
+
+  </li>
+<li> <code>NA</code>: disable any ordering. In this case, and
+  if not otherwise specified with argument
+  <code>revC=FALSE</code>, the heatmap shows the input matrix
+  with the rows in their original order, with the first row
+  on top to the last row at the bottom. Note that this
+  differ from the behaviour or <code><a href='NA'>heatmap</a></code>, but
+  seemed to be a more sensible choice when vizualizing a
+  matrix without reordering.
+
+  </li>
+<li> an integer vector of length the number of rows of
+  the input matrix (<code>nrow(x)</code>), that specifies the row
+  order. As in the case <code>Rowv=NA</code>, the ordered matrix
+  is shown first row on top, last row at the bottom.
+
+  </li>
+<li> a character vector or a list specifying values to
+  use instead of arguments <code>distfun</code>, <code>hclustfun</code>
+  and <code>reorderfun</code> when clustering the rows (see the
+  respective argument descriptions for a list of accepted
+  values). If <code>Rowv</code> has no names, then the first
+  element is used for <code>distfun</code>, the second (if
+  present) is used for <code>hclustfun</code>, and the third (if
+  present) is used for <code>reorderfun</code>.
+
+  </li>
+<li> a numeric vector of weights, of length the number
+  of rows of the input matrix, used to reorder the
+  internally computed dendrogram <code>d</code> by
+  <code>reorderfun(d, Rowv)</code>.
+
+  </li>
+<li> <code>FALSE</code>: the dendrogram <em>is</em> computed
+  using methods <code>distfun</code>, <code>hclustfun</code>, and
+  <code>reorderfun</code> but is not shown.
+
+  </li>
+<li> a single integer that specifies how many subtrees
+  (i.e. clusters) from the computed dendrogram should have
+  their root faded out. This can be used to better
+  highlight the different clusters.
+
+  </li>
+<li> a single double that specifies how much space is
+  used by the computed dendrogram. That is that this value
+  is used in place of <code>treeheight</code>. </li>
+</ul>
+</dd>
+            <dt>main</dt>
+            <dd>Main title as a character string or a grob.</dd>
+          </dl>
+          
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>The functions documented here allow to compare the fits
+  computed in different NMF runs. The fits do not need to
+  be from the same algorithm, nor have the same dimension.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p>The methods <code>compare</code> enables to compare multiple
+  NMF fits either passed as arguments or as a list of fits.
+  These methods eventually call the method
+  <code>summary,NMFList</code>, so that all its arguments can be
+  passed <strong>named</strong> in <code>...</code>.</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>compare<code>signature(object = "NMFfit")</code>:
+  Compare multiple NMF fits passed as arguments.</p>
+        
+            <p>compare<code>signature(object = "list")</code>:
+  Compares multiple NMF fits passed as a standard list.</p>
+        
+            <p>consensusmap<code>signature(object =
+  "NMF.rank")</code>: Draw a single plot with a heatmap of the
+  consensus matrix obtained for each value of the rank, in
+  the range tested with <code><a href='nmfEstimateRank.html'>nmfEstimateRank</a></code>.</p>
+        
+            <p>consensusmap<code>signature(object = "list")</code>:
+  Draw a single plot with a heatmap of the consensus matrix
+  of each element in the list <code>object</code>.</p>
+        
+            <p>plot<code>signature(x = "NMFList", y =
+  "missing")</code>: <code>plot</code> plot on a single graph the
+  residuals tracks for each fit in <code>x</code>. See function
+  <code><a href='nmf.html'>nmf</a></code> for details on how to enable the
+  tracking of residuals.</p>
+        
+            <p>summary<code>signature(object = "NMFList")</code>:
+  <code>summary,NMFList</code> computes summary measures for each
+  NMF result in the list and return them in rows in a
+  <code>data.frame</code>. By default all the measures are
+  included in the result, and <code>NA</code> values are used
+  where no data is available or the measure does not apply
+  to the result object (e.g. the dispersion for single' NMF
+  runs is not meaningful). This method is very useful to
+  compare and evaluate the performance of different
+  algorithms.</p>
+        
+            <p></span></p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">)</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
+<span class="symbol">res2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="string">'lee'</span><span class="keyword">)</span>
+
+<span class="comment"># compare arguments</span>
+<span class="functioncall"><a href='algorithmic.html'>compare</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">res2</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="symbol">x</span><span class="keyword">)</span></div>
+<div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef       rss      evar residuals niter  cpu cpu.all nrun
+1 brunet random   1        KL    3        0.2347272       0.4947914  8.161254 0.8782451  9.683435   660 0.32    0.32    1
+2    lee random   2 euclidean    2        0.1352266       0.4651332 10.335377 0.8458101  5.167688   440 0.30    0.30    1
+</div>
+<div class='input'><span class="comment"># compare elements of a list</span>
+<span class="functioncall"><a href='algorithmic.html'>compare</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">res2</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="symbol">x</span><span class="keyword">)</span></div>
+<div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef       rss      evar residuals niter  cpu cpu.all nrun
+1 brunet random   1        KL    3        0.2347272       0.4947914  8.161254 0.8782451  9.683435   660 0.32    0.32    1
+2    lee random   2 euclidean    2        0.1352266       0.4651332 10.335377 0.8458101  5.167688   440 0.30    0.30    1
+</div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>compare,list-method</li><li>compare-NMF</li><li>compare,NMFfit-method</li><li>consensusmap,list-method</li><li>consensusmap,NMF.rank-method</li><li>plot,NMFList,missing-method</li><li>summary,NMFList-method</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

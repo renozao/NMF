@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Registry for NMF Algorithms. NMF 0.8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF 0.8</a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Registry for NMF Algorithms</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='registry-algorithm.html'>selectMethodNMF</a></span><span class="keyword">(</span><span class="symbol">name</span><span class="keyword">,</span> <span class="symbol">model</span><span class="keyword">,</span> <span class="argument">load</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">exact</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">all</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">quiet</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='registry-algorithm.html'>getNMFMethod</a></span><span class="keyword">(</span><span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='registry-algorithm.html'>existsNMFMethod</a></span><span class="keyword">(</span><span class="symbol">name</span><span class="keyword">,</span> <span class="argument">exact</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>name</dt>
+            <dd>name of a registered NMF algorithm</dd>
+            <dt>model</dt>
+            <dd>class name of an NMF model, i.e. a class
+  that inherits from class <code><a href='NMF-class.html'>NMF-class</a></code>.</dd>
+            <dt>load</dt>
+            <dd>a logical that indicates if the selected
+  algorithms should be loaded into <code>NMFStrategy</code>
+  objects</dd>
+            <dt>all</dt>
+            <dd>a logical that indicates if all algorithms
+  that can fit <code>model</code> should be returned or only the
+  default or first found.</dd>
+            <dt>quiet</dt>
+            <dd>a logical that indicates if warnings or
+  errors should be thrown in case of the selected algorithm
+  is not the default algorithm.</dd>
+            <dt>...</dt>
+            <dd>extra arguments passed to
+  <code><a href='http://www.inside-r.org/r-doc/pkgmaker/regfetch'>regfetch</a></code>.</dd>
+            <dt>exact</dt>
+            <dd>a logical that indicates if the access key
+  should be matched exactly (<code>TRUE</code>) or partially
+  (<code>FALSE</code>).</dd>
+          </dl>
+          
+          <div class="Value">
+            <h2>Value</h2>
+            
+            <p><code>selectMethodNMF</code> returns a character vector or
+  <code>NMFStrategy</code> objects, or NULL if no suitable
+  algorithm was found.</p>
+        
+          </div>
+
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>Registry for NMF Algorithms</p>
+        
+            <p><code>selectMethodNMF</code> tries to select an appropriate NMF
+  algorithm that is able to fit a given the NMF model.</p>
+        
+            <p><code>getNMFMethod</code> retrieves NMF algorithm objects from
+  the registry.</p>
+        
+            <p><code>existsNMFMethod</code> tells if an NMF algorithm is
+  registered under the</p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>existsNMFMethod</li><li>getNMFMethod</li><li>methods-NMF</li><li>selectMethodNMF</li>
+          </ul>
+          <ul>
+            
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

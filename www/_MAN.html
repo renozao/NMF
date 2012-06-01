@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Algorithms and framework for Nonnegative Matrix Factorization (NMF).. NMF 0.8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <!-- START_Navigation bar -->
+    <div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8</a>
+      <div class="nav">
+        <ul class="nav">
+       <li><a href="_MAN.html">Documentation</a></li>
+       <li><a href="_REFERENCES.html">References</a></li>
+       </ul>
+   </div>
+    </div>
+  </div>
+</div>
+    <!-- END_Navigation bar -->
+
+    <div class="container">
+       
+       <h1>Documentation</h1><br />
+
+<h3></h3>
+
+
+<ul class="index">
+
+  <li>
+    <code><a href="advanced.html">advanced-NMF</a></code>(which.best)<br />Advanced Usage of the Package NMF</li>
+
+  <li>
+    <code><a href="aheatmap.html">aheatmap</a></code><br />Annotated Heatmaps</li>
+
+  <li>
+    <code><a href="algorithmic.html">algorithmic-NMF</a></code>(algorithm, algorithm&lt;-, algorithm&lt;--methods, algorithm-methods, algorithm&lt;-,NMFfit,ANY-method, algorithm,NMFfit-method, algorithm,NMFfitXn-method, algorithm&lt;-,NMFSeed,function-method, algorithm,NMFSeed-method, algorithm&lt;-,NMFStrategyFunction,function-method, algorithm,NMFStrategyFunction-method, compare, compare-methods, compare,NMFfitXn-method, logs, logs,ANY-method, logs-methods, modelname, modelname,ANY-method, modelname-methods, modelname,NMFfit-method, modelname,NMFfitXn-method, modelname,NMFStrategy-method, niter, niter&lt;-, niter&lt;--methods, niter-methods, niter,NMFfit-method, niter&lt;-,NMFfit,numeric-method, nrun, nrun,ANY-method, nrun-methods, nrun,NMFfit-method, nrun,NMFfitX1-method, nrun,NMFfitX-method, nrun,NMFfitXn-method, objective, objective&lt;-, objective&lt;--methods, objective-methods, objective&lt;-,NMFfit,ANY-method, run, run-methods, runtime, runtime.all, runtime.all-methods, runtime.all,NMFfit-method, runtime.all,NMFfitX-method, runtime-methods, runtime,NMFfit-method, seeding, seeding&lt;-, seeding&lt;--methods, seeding-methods, seeding&lt;-,NMFfit-method, seeding,NMFfit-method, seeding,NMFfitXn-method, seqtime, seqtime-methods, seqtime,NMFfitXn-method, seqtime,NMFList-method)<br />Generic Interface for Algorithms</li>
+
+  <li>
+    <code><a href="algorithm-commaNMFList-method.html">algorithm,NMFList-method</a></code><br />Returns the method names used to compute the NMF fits in the list.
+</li>
+
+  <li>
+    <code><a href="basis-coef-methods.html">basis</a></code>(basis&lt;-, basis&lt;--methods, basis-methods, basis&lt;-,NMFfit,matrix-method, basis,NMFfit-method, basis,NMFfitXn-method, basis&lt;-,NMF,matrix-method, basis,NMF-method, basis&lt;-,NMFstd,matrix-method, basis,NMFstd-method, coef, coef&lt;-, coefficients, coefficients-methods, coefficients,NMF-method, coef&lt;--methods, coef-methods, coef&lt;-,NMFfit,matrix-method, coef,NMFfit-method, coef,NMFfitXn-method, coef&lt;-,NMF,matrix-method, coef,NMF-method, coef&lt;-,NMFstd,matrix-method, coef,NMFstd-method, loadings,NMF-method, scoef, scoef-methods, scoef,NMF-method)<br />Accessing NMF Factors</li>
+
+  <li>
+    <code><a href="basiscor.html">basiscor</a></code>(basiscor,matrix,NMF-method, basiscor-methods, basiscor,NMF,matrix-method, basiscor,NMF,missing-method, basiscor,NMF,NMF-method, profcor, profcor,matrix,NMF-method, profcor-methods, profcor,NMF,matrix-method, profcor,NMF,missing-method, profcor,NMF,NMF-method)<br />Correlations in NMF Models</li>
+
+  <li>
+    <code><a href="dimnames.html">basisnames</a></code>(basisnames&lt;-, basisnames&lt;-,ANY-method, basisnames,ANY-method, basisnames&lt;--methods, basisnames-methods, dimnames-NMF, dimnames&lt;-,NMF,ANY-method, dimnames,NMF-method)<br />Dimension names for NMF objects</li>
+
+  <li>
+    <code><a href="bioc.html">bioc-NMF</a></code>(.atrack,ExpressionSet-method, featureNames,NMFfitX-method, featureNames,NMF-method, metagenes, metagenes&lt;-, metaprofiles, metaprofiles&lt;-, nmeta, nmf,ExpressionSet,ANY,ANY-method, nmf,matrix,ExpressionSet,ANY-method, nmfModel,ANY,ExpressionSet-method, nmfModel,ExpressionSet,ANY-method, rnmf,ANY,ExpressionSet-method, run,NMFStrategy,ExpressionSet,ANY-method, sampleNames,NMFfitX-method, sampleNames,NMF-method, seed,ExpressionSet,ANY,ANY-method)<br />Specific NMF Layer for Bioconductor</li>
+
+  <li>
+    <code><a href="canFit.html">canFit</a></code>(canFit,character,ANY-method, canFit-methods, canFit,NMFStrategy,character-method, canFit,NMFStrategy,NMF-method)<br />Testing Compatibility of Algorithm and Models</li>
+
+  <li>
+    <code><a href="nmf-compare.html">compare-NMF</a></code>(compare,list-method, compare,NMFfit-method, consensusmap,list-method, consensusmap,NMF.rank-method, plot,NMFList,missing-method, summary,NMFList-method)<br />Comparing Results from Different NMF Runs</li>
+
+  <li>
+    <code><a href="connectivity.html">connectivity</a></code>(connectivity,ANY-method, connectivity,factor-method, connectivity-methods, connectivity,NMF-method, connectivity,numeric-method, consensus, consensus-methods, consensus,NMFfitX-method, consensus,NMF-method)<br />Clustering Connectivity and Consensus Matrices</li>
+
+  <li>
+    <code><a href="consensushc.html">consensushc</a></code>(consensushc,matrix-method, consensushc-methods, consensushc,NMFfitX-method, consensushc,NMF-method)<br />Hierarchical Clustering of a Consensus Matrix</li>
+
+  <li>
+    <code><a href="consensus-commaNMFfitX1-method.html">consensus,NMFfitX1-method</a></code><br />Returns the consensus matrix computed while performing all NMF runs,
+</li>
+
+  <li>
+    <code><a href="consensus-commaNMFfitXn-method.html">consensus,NMFfitXn-method</a></code>(plot.NMF.consensus)<br />Computes the consensus matrix of the set of fits stored in </li>
+
+  <li>
+    <code><a href="cophcor.html">cophcor</a></code>(cophcor,matrix-method, cophcor-methods, cophcor,NMFfitX-method)<br />Cophenetic Correlation Coefficient</li>
+
+  <li>
+    <code><a href="current.vpPath2.html">current.vpPath2</a></code><br />Custom Access to Viewport Paths</li>
+
+  <li>
+    <code><a href="deviance.html">deviance</a></code>(deviance-methods, deviance,NMFfit-method, deviance,NMFfitX-method, deviance,NMF-method, nmfDistance)<br />Distances and Objective Functions</li>
+
+  <li>
+    <code><a href="dispersion.html">dispersion</a></code>(dispersion,matrix-method, dispersion-methods, dispersion,NMFfitX-method)<br />Dispersion of a Matrix</li>
+
+  <li>
+    <code><a href="esGolub.html">esGolub</a></code><br />Golub ExpressionSet</li>
+
+  <li>
+    <code><a href="fcnnls.html">fcnnls</a></code>(fcnnls,ANY,numeric-method, fcnnls,matrix,matrix-method, fcnnls-methods, fcnnls,numeric,matrix-method)<br />Fast Combinatorial Non-Negative Least-Square</li>
+
+  <li>
+    <code><a href="scores.html">featureScore</a></code>(extractFeatures, extractFeatures,matrix-method, extractFeatures-methods, extractFeatures,NMF-method, featureScore,matrix-method, featureScore-methods, featureScore,NMF-method)<br />Feature Selection in NMF Models</li>
+
+  <li>
+    <code><a href="fit.html">fit</a></code>(fit&lt;-, fit&lt;--methods, fit-methods, fit,NMFfit-method, fit&lt;-,NMFfit,NMF-method, fit,NMFfitX1-method, fit,NMFfitX-method, fit,NMFfitXn-method, minfit, minfit-methods, minfit,NMFfit-method, minfit,NMFfitX1-method, minfit,NMFfitX-method, minfit,NMFfitXn-method)<br />Extracting Fitted Models</li>
+
+  <li>
+    <code><a href="fitted.html">fitted</a></code>(fitted-methods, fitted,NMFfit-method, fitted,NMF-method, fitted,NMFns-method, fitted,NMFOffset-method, fitted,NMFstd-method)<br />Fitted Matrix in NMF Models</li>
+
+  <li>
+    <code><a href="heatmaps.html">heatmap-NMF</a></code>(basismap, basismap-methods, basismap,NMFfitX-method, basismap,NMF-method, coefmap, coefmap-methods, coefmap,NMFfitX-method, coefmap,NMF-method, consensusmap, consensusmap,matrix-method, consensusmap-methods, consensusmap,NMFfitX-method, consensusmap,NMF-method)<br />Heatmaps of NMF Factors</li>
+
+  <li>
+    <code><a href="types.html">is.nmf</a></code>(hasBasis, hasCoef, is.empty.nmf, isNMFfit)<br />Testing NMF Objects</li>
+
+  <li>
+    <code><a href="match_atrack.html">match_atrack</a></code><br />Extending Annotation Vectors</li>
+
+  <li>
+    <code><a href="registry-algorithm.html">methods-NMF</a></code>(existsNMFMethod, getNMFMethod, selectMethodNMF)<br />Registry for NMF Algorithms</li>
+
+  <li>
+    <code><a href="dims.html">nbasis</a></code>(dim-NMF, dim,NMFfitXn-method, dim,NMF-method, nbasis,ANY-method, nbasis,matrix-method, nbasis-methods, nbasis,NMFfitXn-method)<br />Dimension of NMF Objects</li>
+
+  <li>
+    <code><a href="nmf.html">nmf</a></code>(nmf,data.frame,ANY,ANY-method, nmf,matrix,data.frame,ANY-method, nmf,matrix,matrix,ANY-method, nmf,matrix,missing,ANY-method, nmf,matrix,NMF,ANY-method, nmf,matrix,NULL,ANY-method, nmf,matrix,numeric,character-method, nmf,matrix,numeric,function-method, nmf,matrix,numeric,list-method, nmf,matrix,numeric,missing-method, nmf,matrix,numeric,NMFStrategy-method, nmf,matrix,numeric,NULL-method, nmf-methods)<br />Running NMF algorithms</li>
+
+  <li>
+    <code><a href="nmfAlgorithm.html">nmfAlgorithm</a></code><br />Listing and Retrieving NMF Algorithms</li>
+
+  <li>
+    <code><a href="open-brace-commaNMF-commaANY-commaANY-commaANY-method.html">[,NMF,ANY,ANY,ANY-method</a></code><br />Sub-setting NMF Objects</li>
+
+  <li>
+    <code><a href="nmfApply.html">nmfApply</a></code><br />Apply Function for NMF Objects</li>
+
+  <li>
+    <code><a href="NMF-class.html">NMF-class</a></code>(misc, $&lt;-,NMF-method, $,NMF-method)<br />Generic Interface for Nonnegative Matrix Factorisation Models</li>
+
+  <li>
+    <code><a href="NMF-defunct.html">NMF-defunct</a></code>(errorPlot)<br />Defunct Functions in the Package NMF</li>
+
+  <li>
+    <code><a href="NMF-deprecated.html">NMF-deprecated</a></code>(join, metaHeatmap, metaHeatmap,matrix-method, metaHeatmap-methods, metaHeatmap,NMFfitX-method, metaHeatmap,NMF-method)<br />Deprecated Functions in the Package NMF</li>
+
+  <li>
+    <code><a href="nmf.equal.html">nmf.equal</a></code>(nmf.equal,list,list-method, nmf.equal-methods, nmf.equal,NMFfit,NMFfit-method, nmf.equal,NMFfit,NMF-method, nmf.equal,NMFfitX1,NMFfitX1-method, nmf.equal,NMFfitX,NMF-method, nmf.equal,NMF,NMFfit-method, nmf.equal,NMF,NMFfitX-method, nmf.equal,NMF,NMF-method)<br />Testing Equality of NMF Models</li>
+
+  <li>
+    <code><a href="nmfEstimateRank.html">nmfEstimateRank</a></code>(plot.NMF.rank)<br />Estimate Rank for NMF Models</li>
+
+  <li>
+    <code><a href="NMFfit-class.html">NMFfit-class</a></code>(NMFfit)<br />Base Class for to store Nonnegative Matrix Factorisation results</li>
+
+  <li>
+    <code><a href="NMFfitX1-class.html">NMFfitX1-class</a></code><br />Structure for Storing the Best Fit Amongst Multiple NMF Runs</li>
+
+  <li>
+    <code><a href="NMFfitX-class.html">NMFfitX-class</a></code><br />Virtual Class to Handle Results from Multiple Runs of NMF Algorithms</li>
+
+  <li>
+    <code><a href="NMFfitXn-class.html">NMFfitXn-class</a></code><br />Structure for Storing All Fits from Multiple NMF Runs</li>
+
+  <li>
+    <code><a href="nmfModel.html">nmfModel</a></code>(nmfModel,matrix,ANY-method, nmfModel,matrix,matrix-method, nmfModel-methods, nmfModel,missing,ANY-method, nmfModel,missing,missing-method, nmfModel,NULL,ANY-method, nmfModel,numeric,matrix-method, nmfModel,numeric,missing-method, nmfModel,numeric,numeric-method, nmfModels)<br />Factory Methods NMF Models</li>
+
+  <li>
+    <code><a href="NMFns-class.html">NMFns-class</a></code><br />NMF Model - Nonsmooth Nonnegative Matrix Factorization</li>
+
+  <li>
+    <code><a href="NMFOffset-class.html">NMFOffset-class</a></code>(initialize,NMFOffset-method)<br />NMF Model - Nonnegative Matrix Factorization with Offset</li>
+
+  <li>
+    <code><a href="options.html">nmf.options</a></code>(nmf.getOption)<br />Package Specific Options</li>
+
+  <li>
+    <code><a href="NMF-package.html">NMF-package</a></code>(NMF)<br />Algorithms and framework for Nonnegative Matrix Factorization (NMF).</li>
+
+  <li>
+    <code><a href="nmfSeed.html">nmfSeed</a></code>(existsNMFSeed)<br />Seeding Strategies for NMF Algorithms</li>
+
+  <li>
+    <code><a href="NMFSeed-class.html">NMFSeed-class</a></code><br />Base class that defines the interface for NMF seeding methods.</li>
+
+  <li>
+    <code><a href="NMFstd-class.html">NMFstd-class</a></code><br />NMF Model - Standard model</li>
+
+  <li>
+    <code><a href="NMFStop.html">NMFStop</a></code>(stop-nmf, stop-NMF)<br />Get Stopping Criterion</li>
+
+  <li>
+    <code><a href="stop-NMF.html">nmf.stop.iteration</a></code>(nmf.stop.connectivity, nmf.stop.stationary, nmf.stop.threshold, stop-NMF)<br />Stopping Criteria for NMF Iterative Strategies</li>
+
+  <li>
+    <code><a href="NMFStrategy.html">NMFStrategy</a></code>(NMFStrategy,character,character-method, NMFStrategy,character,function-method, NMFStrategy,character,missing-method, NMFStrategy,character,NMFStrategy-method, NMFStrategy-methods, NMFStrategy,missing,character-method, NMFStrategy,NMFStrategy,missing-method, run,NMFStrategyFunction,matrix,NMFfit-method, run,NMFStrategyIterative,matrix,NMFfit-method, run,NMFStrategyIterativeX,matrix,NMFfit-method, run,NMFStrategy,matrix,NMFfit-method, run,NMFStrategy,matrix,NMF-method)<br />Factory Method for NMFStrategy Objects</li>
+
+  <li>
+    <code><a href="NMFStrategyFunction-class.html">NMFStrategyFunction-class</a></code><br />Interface for Single Function NMF Strategies</li>
+
+  <li>
+    <code><a href="NMFStrategyIterative-class.html">NMFStrategyIterative-class</a></code><br />Interface for Algorithms: Implementation for Iterative NMF Algorithms</li>
+
+  <li>
+    <code><a href="lsnmf.html">nmf.update.lsnmf</a></code>(lsnmf-nmf, wrss)<br />Multiplicative Updates for LS-NMF</li>
+
+  <li>
+    <code><a href="nneg.html">nneg</a></code>(nneg,matrix-method, nneg-methods, nneg,NMF-method, posneg, rposneg, rposneg,matrix-method, rposneg-methods, rposneg,NMF-method)<br />Transforming from Mixed-sign to Nonnegative Data</li>
+
+  <li>
+    <code><a href="objective-commaNMFfit-method.html">objective,NMFfit-method</a></code><br />Returns the objective function associated with the algorithm that computed the
+</li>
+
+  <li>
+    <code><a href="offset-commaNMFOffset-method.html">offset,NMFOffset-method</a></code><br />Offsets in NMF Models with Offset</li>
+
+  <li>
+    <code><a href="parallel.html">parallel-NMF</a></code>(gVariable, hostfile, ts_eval, ts_tempfile)<br />Utilities for Parallel Computations</li>
+
+  <li>
+    <code><a href="plot-commaNMFfit-commamissing-method.html">plot,NMFfit,missing-method</a></code><br />Plots the residual track computed at regular interval during the fit of
+</li>
+
+  <li>
+    <code><a href="predict.html">predict</a></code>(predict-methods, predict,NMFfitX-method, predict,NMF-method)<br />Clustering and Prediction</li>
+
+  <li>
+    <code><a href="profplot.html">profplot</a></code><br />Plotting Basis Profiles</li>
+
+  <li>
+    <code><a href="purity.html">purity</a></code>(entropy, entropy,ANY,ANY-method, entropy,factor,ANY-method, entropy-methods, entropy,NMFfitXn,ANY-method, entropy,table,missing-method, purity,ANY,ANY-method, purity,factor,ANY-method, purity-methods, purity,NMFfitXn,ANY-method, purity,table,missing-method)<br />Purity and Entropy of a Clustering</li>
+
+  <li>
+    <code><a href="randomize.html">randomize</a></code><br />Randomizing Data</li>
+
+  <li>
+    <code><a href="residuals.html">residuals</a></code>(hasTrack, residuals-methods, residuals,NMFfit-method, residuals,NMFfitX-method, trackError)<br />Residuals in NMF Models</li>
+
+  <li>
+    <code><a href="rmatrix.html">rmatrix</a></code>(rmatrix,ANY-method, rmatrix-methods, rmatrix,NMF-method, rmatrix,numeric-method)<br />Generating Random Matrices</li>
+
+  <li>
+    <code><a href="rng.html">RNG-NMF</a></code>(getRNG, .getRNG, getRNG1, getRNG1,ANY-method, getRNG1-methods, getRNG1,NMFfitX1-method, getRNG1,NMFfitX-method, getRNG1,NMFfitXn-method, .getRNG,ANY-method, .getRNG,list-method, .getRNG-methods, .getRNG,missing-method, .getRNG,NMFfitXn-method, .getRNG,numeric-method, nextRNG, rng1.equal, RNGdigest, rng.equal, RNGinfo, RNGrecovery, RNGtype, setRNG, .setRNG, .setRNG,character-method, .setRNG-methods, .setRNG,numeric-method)<br />RNG Settings</li>
+
+  <li>
+    <code><a href="rnmf.html">rnmf</a></code>(rnmf,ANY,matrix-method, rnmf-methods, rnmf,missing,missing-method, rnmf,NMF,missing-method, rnmf,NMF,numeric-method, rnmf,NMFOffset,numeric-method, rnmf,numeric,missing-method, rnmf,numeric,numeric-method)<br />Generating Random NMF Models</li>
+
+  <li>
+    <code><a href="rss.html">rss</a></code>(evar, evar,ANY-method, evar-methods, rss,ANY-method, rss,matrix-method, rss-methods)<br />Residual Sum of Squares and Explained Variance</li>
+
+  <li>
+    <code><a href="runtime.all-commaNMFfitXn-method.html">runtime.all,NMFfitXn-method</a></code><br />Returns the CPU time used to perform all the NMF fits stored in </li>
+
+  <li>
+    <code><a href="runtime-commaNMFList-method.html">runtime,NMFList-method</a></code><br />Returns the CPU time required to compute all NMF fits in the list.
+</li>
+
+  <li>
+    <code><a href="scale.NMF.html">scale.NMF</a></code><br />Rescaling NMF Models</li>
+
+  <li>
+    <code><a href="setNMFMethod.html">setNMFMethod</a></code>(nmfRegisterAlgorithm)<br />Registering NMF Algorithms</li>
+
+  <li>
+    <code><a href="setup.html">setupBackend</a></code>(setupLibPaths, setupRNG, setupSharedMemory, setupTempDirectory)<br />Computational Setup Functions</li>
+
+  <li>
+    <code><a href="show-commaNMFfit-method.html">show,NMFfit-method</a></code><br />Show method for objects of class </li>
+
+  <li>
+    <code><a href="show-commaNMFfitX1-method.html">show,NMFfitX1-method</a></code><br />Show method for objects of class </li>
+
+  <li>
+    <code><a href="show-commaNMFfitX-method.html">show,NMFfitX-method</a></code><br />Show method for objects of class </li>
+
+  <li>
+    <code><a href="show-commaNMFfitXn-method.html">show,NMFfitXn-method</a></code><br />Show method for objects of class </li>
+
+  <li>
+    <code><a href="show-commaNMFList-method.html">show,NMFList-method</a></code><br />Show method for objects of class </li>
+
+  <li>
+    <code><a href="show-commaNMF-method.html">show,NMF-method</a></code><br />Show method for objects of class </li>
+
+  <li>
+    <code><a href="show-commaNMFns-method.html">show,NMFns-method</a></code><br />Show method for objects of class </li>
+
+  <li>
+    <code><a href="show-commaNMFOffset-method.html">show,NMFOffset-method</a></code><br />Show method for objects of class </li>
+
+  <li>
+    <code><a href="show-commaNMFSeed-method.html">show,NMFSeed-method</a></code><br />Show method for objects of class </li>
+
+  <li>
+    <code><a href="show-commaNMFStrategyIterative-method.html">show,NMFStrategyIterative-method</a></code><br />Show method for objects of class </li>
+
+  <li>
+    <code><a href="smoothing.html">smoothing</a></code><br />Smoothing Matrix in Nonsmooth NMF Models</li>
+
+  <li>
+    <code><a href="sparseness.html">sparseness</a></code>(sparseness,matrix-method, sparseness-methods, sparseness,NMF-method, sparseness,numeric-method)<br />Sparseness</li>
+
+  <li>
+    <code><a href="staticVar.html">staticVar</a></code><br />Get/Set a Static Variable in NMF Algorithms</li>
+
+  <li>
+    <code><a href="assess.html">summary</a></code>(summary-methods, summary-NMF, summary,NMFfit-method, summary,NMFfitX-method, summary,NMF-method)<br />Assessing and Comparing NMF Models</li>
+
+  <li>
+    <code><a href="syntheticNMF.html">syntheticNMF</a></code><br />Simulating Datasets</li>
+
+</ul>
+          
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

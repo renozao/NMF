@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Fitted Matrix in NMF Models. NMF 0.8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF 0.8</a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Fitted Matrix in NMF Models</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='fitted.html'>fitted</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='fitted.html'>fitted</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">W</span><span class="keyword">,</span> <span class="symbol">H</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='fitted.html'>fitted</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">W</span><span class="keyword">,</span> <span class="symbol">H</span><span class="keyword">,</span> <span class="argument">offset</span> <span class="argument">=</span> <span class="symbol">object</span><span class="keyword">@</span><span class="slot">offset</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='fitted.html'>fitted</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">W</span><span class="keyword">,</span> <span class="symbol">H</span><span class="keyword">,</span> <span class="symbol">S</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>object</dt>
+            <dd>an object that inherit from class
+  <code>NMF</code></dd>
+            <dt>...</dt>
+            <dd>extra arguments to allow extension</dd>
+            <dt>W</dt>
+            <dd>a matrix to use in the computation as the basis
+  matrix in place of <code>basis(object)</code>. It must be
+  compatible with the coefficient matrix used in the
+  computation (i.e. number of columns in <code>W</code> = number
+  of rows in <code>H</code>).</dd>
+            <dt>H</dt>
+            <dd>a matrix to use in the computation as the
+  coefficient matrix in place of <code>coef(object)</code>. It
+  must be compatible with the basis matrix used in the
+  computation (i.e. number of rows in <code>H</code> = number of
+  columns in <code>W</code>).</dd>
+            <dt>offset</dt>
+            <dd>offset vector</dd>
+            <dt>S</dt>
+            <dd>smoothing matrix to use instead of
+  <code>smoothing(object)</code> It must be a square matrix
+  compatible with the basis and coefficient matrices used
+  in the computation.</dd>
+          </dl>
+          
+          <div class="Value">
+            <h2>Value</h2>
+            
+            <p>the target matrix estimate as fitted by the model
+  <code>object</code></p>
+        
+          </div>
+
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>Computes the estimated target matrix based on a given
+  <em>NMF</em> model. The estimation depends on the
+  underlying NMF model. For example in the standard model
+  <code class = 'eq'>V ~ W H</code>, the target matrix is
+  estimated by the matrix product <code class = 'eq'>W H</code>. In other
+  models, the estimate may depend on extra
+  parameters/matrix (cf. Non-smooth NMF in
+  <code><a href='NMFns-class.html'>NMFns-class</a></code>).</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p>This function is a S4 generic function imported from
+  <a href='http://www.inside-r.org/r-doc/stats/fitted.values'>fitted</a> in the package <em>stats</em>. It is
+  implemented as a pure virtual method for objects of class
+  <code>NMF</code>, meaning that concrete NMF models must provide
+  a definition for their corresponding class (i.e.
+  sub-classes of class <code>NMF</code>). See
+  <code><a href='NMF-class.html'>NMF-class</a></code> for more details.</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>fitted<code>signature(object = "NMF")</code>: Pure
+  virtual method for objects of class
+  <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
+  sub-classes, and throws an error if called.</p>
+        
+            <p>fitted<code>signature(object = "NMFstd")</code>:
+  Compute the target matrix estimate in <em>standard NMF
+  models</em>.</p>
+        
+            <p>The estimate matrix is computed as the product of the two
+  matrix slots <code>W</code> and <code>H</code>: <pre class = 'eq'>V ~ W H</code></p>
+        
+            <p>fitted<code>signature(object = "NMFOffset")</code>:
+  Computes the target matrix estimate for an NMFOffset
+  object.</p>
+        
+            <p>The estimate is computed as: <pre class = 'eq'> W H + offset </code></p>
+        
+            <p>fitted<code>signature(object = "NMFns")</code>: Compute
+  estimate for an NMFns object, according to the Nonsmooth
+  NMF model (cf. <code><a href='NMFns-class.html'>NMFns-class</a></code>).</p>
+        
+            <p>Extra arguments in <code>...</code> are passed to method
+  <code>smoothing</code>, and are typically used to pass a value
+  for <code>theta</code>, which is used to compute the smoothing
+  matrix instead of the one stored in <code>object</code>.</p>
+        
+            <p>fitted<code>signature(object = "NMFfit")</code>:
+  Computes and return the estimated target matrix from an
+  NMF model fitted with function <code><a href='nmf.html'>nmf</a></code>.</p>
+        
+            <p>It is a shortcut for <code>fitted(fit(object), ...)</code>,
+  dispatching the call to the <code>fitted</code> method of the
+  actual NMF model.</p>
+        
+            <p></span></p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># random standard NMF model</span>
+<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>all.equal</a></span><span class="keyword">(</span><span class="functioncall"><a href='fitted.html'>fitted</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="keyword">%*%</span> <span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='output'>[1] TRUE
+</div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>fitted</li><li>fitted-methods</li><li>fitted,NMFfit-method</li><li>fitted,NMF-method</li><li>fitted,NMFns-method</li><li>fitted,NMFOffset-method</li><li>fitted,NMFstd-method</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

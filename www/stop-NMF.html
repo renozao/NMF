@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Stopping Criteria for NMF Iterative Strategies. NMF 0.8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF 0.8</a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Stopping Criteria for NMF Iterative Strategies</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='stop-NMF.html'>nmf.stop.iteration</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='stop-NMF.html'>nmf.stop.threshold</a></span><span class="keyword">(</span><span class="symbol">threshold</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='stop-NMF.html'>nmf.stop.stationary</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">i</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="argument">stationary.th</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">^</span><span class="keyword">-</span><span class="number">6</span><span class="keyword">,</span> <span class="argument">check.interval</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">,</span>
+  <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='stop-NMF.html'>nmf.stop.connectivity</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">i</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="argument">stopconv</span> <span class="argument">=</span> <span class="number">40</span><span class="keyword">,</span> <span class="argument">check.interval</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>n</dt>
+            <dd>maximum number of iteration to perform.</dd>
+            <dt>threshold</dt>
+            <dd>default stationarity threshold</dd>
+            <dt>object</dt>
+            <dd>an NMF strategy object</dd>
+            <dt>i</dt>
+            <dd>the current iteration</dd>
+            <dt>y</dt>
+            <dd>the target matrix</dd>
+            <dt>x</dt>
+            <dd>the current NMF model</dd>
+            <dt>stationary.th</dt>
+            <dd>maximum difference for two objective
+  values to be considered equal.</dd>
+            <dt>check.interval</dt>
+            <dd>interval (in number of iterations)
+  on which stationarity is computed.</dd>
+            <dt>...</dt>
+            <dd>extra arguments passed to the function
+  <code><a href='algorithmic.html'>objective</a></code>, which computes the objective
+  value between <code>x</code> and <code>y</code>.</dd>
+            <dt>stopconv</dt>
+            <dd>number of iterations intervals over which
+  the connectivity matrix must not change for stationarity
+  to be achieved.</dd>
+          </dl>
+          
+          <div class="Value">
+            <h2>Value</h2>
+            
+            <p>a function that can be used as a stopping criterion for
+  NMF algorithms defined as
+  <code><a href='NMFStrategyIterative-class.html'>NMFStrategyIterative-class</a></code> objects. That
+  is a function with arguments <code>(strategy, i, target,
+  data, ...)</code> that returns <code>TRUE</code> if the stopping
+  criterion is satisfied -- which in turn stops the
+  iterative process, and <code>FALSE</code> otherwise.</p>
+        
+          </div>
+
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>The function documented here implement
+  stopping/convergence criterion commonly used in NMF
+  algorithms.</p>
+        
+            <p><code>nmf.stop.threshold</code> generates a function that
+  implements the stopping criterion that stops when a given
+  stationarity threshold is achieved by successive
+  iterations. The returned function is identical to
+  <code>nmf.stop.stationary</code>, but with the default
+  threshold set to <code>threshold</code>.</p>
+        
+            <p><code>nmf.stop.stationary</code> implements the stopping
+  criterion of stationarity of the objective value, which
+  stops when the objective value does not change anymore
+  with further iterations. Objective values are compared at
+  given regular intervals and using a given threshold.</p>
+        
+            <p><code>nmf.stop.connectivity</code> implements the stopping
+  criterion that is based on the stationarity of the
+  connectivity matrix.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p><code>nmf.stop.iteration</code> generates a function that
+  implements the stopping criterion that limits the number
+  of iterations to a maximum of <code>n</code>), i.e. that
+  returns <code>TRUE</code> if <code>i>=n</code>, <code>FALSE</code>
+  otherwise.</p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>nmf.stop.connectivity</li><li>nmf.stop.iteration</li><li>nmf.stop.stationary</li><li>nmf.stop.threshold</li><li>stop-NMF</li>
+          </ul>
+          <ul>
+            
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

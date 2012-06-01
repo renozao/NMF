@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Base class that defines the interface for NMF seeding methods.. NMF 0.8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF 0.8</a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Base class that defines the interface for NMF seeding methods.</h1>
+
+      <div class="row">
+        <div class="span8">
+                    
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>This class implements a simple wrapper strategy object
+  that defines a unified interface to seeding methods, that
+  are used to initialise NMF models before fitting them
+  with any NMF algorithm.</p>
+        
+          </div>
+
+          <div class="Slots">
+            <h2>Slots</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>namecharacter string giving the name of the
+  seeding strategy</p>
+        
+            <p>methodworkhorse function that implements the
+  seeding strategy. It must have signature
+  <code>(object="NMF", x="matrix", ...)</code> and initialise the
+  NMF model <code>object</code> with suitable values for fitting
+  the target matrix <code>x</code>.</p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>algorithm<code>signature(object = "NMFSeed")</code>:
+  Returns the workhorse function of the seeding method
+  described by <code>object</code>.</p>
+        
+            <p>algorithm<-<code>signature(object = "NMFSeed",
+  value = "function")</code>: Sets the workhorse function of the
+  seeding method described by <code>object</code>.</p>
+        
+            <p>name<code>signature(object = "NMFSeed")</code>: Returns
+  the name of the seeding method described by
+  <code>object</code>.</p>
+        
+            <p>name<-<code>signature(object = "NMFSeed", value =
+  "character")</code>: Sets the name of the seeding method
+  described by <code>object</code>.</p>
+        
+            <p>This method is not meant to be called directly</p>
+        
+            <p>show<code>signature( = "NMFSeed")</code>: Show method
+  for objects of class <code>NMFSeed</code></p>
+        
+            <p></span></p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>NMFSeed-class</li>
+          </ul>
+          <ul>
+            
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

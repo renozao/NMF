@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Generating Random Matrices. NMF 0.8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF 0.8</a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Generating Random Matrices</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">y</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">dist</span> <span class="argument">=</span> <span class="symbol">runif</span><span class="keyword">,</span> <span class="argument">byrow</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">dimnames</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>x</dt>
+            <dd>object from which to generate a random matrix</dd>
+            <dt>y</dt>
+            <dd>optional specification of number of columns</dd>
+            <dt>dist</dt>
+            <dd>a random distribution function (see details
+  of method <code>rmatrix,numeric</code>)</dd>
+            <dt>byrow</dt>
+            <dd>a logical passed in the internal call to the
+  function <code><a href='NA'>matrix</a></code></dd>
+            <dt>dimnames</dt>
+            <dd><code>NULL</code> or a <code>list</code> passed in
+  the internal call to the function <code><a href='NA'>matrix</a></code></dd>
+            <dt>...</dt>
+            <dd>extra arguments passed to the distribution
+  function <code>dist</code>.</dd>
+          </dl>
+          
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>The S4 generic <code>rmatrix</code> generates a random matrix
+  from a given object. Methods are provided to generate
+  matrices with entries drawn from any given random
+  distribution function, e.g. <code><a href='NA'>runif</a></code> or
+  <code><a href='NA'>rnorm</a></code>.</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>rmatrix<code>signature(x = "numeric")</code>: Generates
+  a random matrix of given dimensions, whose entries are
+  drawn using the distribution function <code>dist</code>.</p>
+        
+            <p>This is the workhorse method that is eventually called by
+  all other methods. It returns a matrix with: <ul>
+<li>  </li>
+<li> <code>x</code> rows and <code>y</code> columns if <code>y</code> is
+  not missing and not <code>NULL</code>; </li>
+<li> dimension
+  <code>x[1]</code> x <code>x[2]</code> if <code>x</code> has at least two
+  elements; </li>
+<li> dimension <code>x</code> (i.e. a square matrix)
+  otherwise. </li>
+</ul></p>
+        
+            <p>The default is to draw its entries from the standard
+  uniform distribution using the base function
+  <code><a href='NA'>runif</a></code>, but any other function that
+  generates random numeric vectors of a given length may be
+  specified in argument <code>dist</code>. All arguments in
+  <code>...</code> are passed to the function specified in
+  <code>dist</code>.</p>
+        
+            <p>The only requirement is that the function in <code>dist</code>
+  is of the following form:</p>
+        
+            <p><span class = "samp"> function(n, ...){ # return vector of length n ...
+  }</span></p>
+        
+            <p>This is the case of all base random draw function such as
+  <code><a href='NA'>rnorm</a></code>, <code><a href='NA'>rgamma</a></code>, etc...</p>
+        
+            <p>rmatrix<code>signature(x = "ANY")</code>: Default
+  method which calls <code>rmatrix,vector</code> on the
+  dimensions of <code>x</code> that is assumed to be returned by
+  a suitable <code>dim</code> method: it is equivalent to
+  <code>rmatrix(dim(x), y=NULL, ...)</code>.</p>
+        
+            <p>rmatrix<code>signature(x = "NMF")</code>: Returns the
+  target matrix estimate of the NMF model <code>x</code>,
+  perturbated by adding a random matrix generated using the
+  default method of <code>rmatrix</code>: it is a equivalent to
+  <code>fitted(x) + rmatrix(fitted(x), ...)</code>.</p>
+        
+            <p>This method can be used to generate random target
+  matrices that depart from a known NMF model to a
+  controlled extend. This is useful to test the robustness
+  of NMF algorithms to the presence of certain types of
+  noise in the data.</p>
+        
+            <p></span></p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment">## Generate a random matrix of a given size</span>
+<span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span></div>
+<div class='output'>          [,1]      [,2]      [,3]
+[1,] 0.4064256 0.7744019 0.4661575
+[2,] 0.7891679 0.5371672 0.3223440
+[3,] 0.1058685 0.7871715 0.5445300
+[4,] 0.3415946 0.7975892 0.9715694
+[5,] 0.3335944 0.2239059 0.1493010
+</div>
+<div class='input'>
+
+<span class="comment">## Generate a random matrix of the same dimension of a template matrix</span>
+<span class="symbol">a</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>matrix</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="number">4</span><span class="keyword">)</span>
+<span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>          [,1]      [,2]      [,3]      [,4]
+[1,] 0.3636828 0.5397895 0.4508375 0.5710001
+[2,] 0.7871068 0.8738860 0.9390541 0.1073091
+[3,] 0.5866091 0.7694266 0.5585891 0.3887622
+</div>
+<div class='input'>
+
+<span class="comment">## Specificy the distribution to use</span>
+
+<span class="comment"># the default is uniform</span>
+<span class="symbol">a</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">1000</span><span class="keyword">,</span> <span class="number">50</span><span class="keyword">)</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;:  hist(a) </span>
+
+<span class="comment"># use normal ditribution</span>
+<span class="symbol">a</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">1000</span><span class="keyword">,</span> <span class="number">50</span><span class="keyword">,</span> <span class="symbol">rnorm</span><span class="keyword">)</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;:  hist(a) </span>
+
+<span class="comment"># extra arguments can be passed to the random variate generation function</span>
+<span class="symbol">a</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">1000</span><span class="keyword">,</span> <span class="number">50</span><span class="keyword">,</span> <span class="symbol">rnorm</span><span class="keyword">,</span> <span class="argument">mean</span><span class="argument">=</span><span class="number">2</span><span class="keyword">,</span> <span class="argument">sd</span><span class="argument">=</span><span class="number">0.5</span><span class="keyword">)</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;:  hist(a) </span>
+<span class="comment"># random matrix of the same dimension as another matrix</span>
+<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>matrix</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span><span class="number">4</span><span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>dim</a></span><span class="keyword">(</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='output'>[1] 4 1
+</div>
+<div class='input'><span class="comment"># generate noisy fitted target from an NMF model (the true model)</span>
+<span class="symbol">gr</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>as.numeric</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>mapply</a></span><span class="keyword">(</span><span class="symbol">rep</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span><span class="keyword">)</span>
+<span class="symbol">h</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>outer</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">,</span> <span class="symbol">gr</span><span class="keyword">,</span> <span class="string">'=='</span><span class="keyword">)</span> <span class="keyword">+</span> <span class="number">0</span>
+<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span>
+<span class="symbol">y</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: </span>
+<span class="comment"># # show heatmap of the noisy target matrix: block patterns should be clear</span>
+<span class="comment"># aheatmap(y)</span>
+<span class="comment"># ## &lt;strong&gt;End(Not run)&lt;/strong&gt;</span>
+
+
+<span class="comment"># test NMF algorithm on noisy data</span>
+<span class="comment"># add some noise to the true model (drawn from uniform [0,1])</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
+<span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun 
+       3.0000000        0.2323495        0.4287898        2.0721683      430.0000000        0.2000000        0.2000000        1.0000000 
+</div>
+<div class='input'>
+<span class="comment"># add more noise to the true model (drawn from uniform [0,10])</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">max</span><span class="argument">=</span><span class="number">10</span><span class="keyword">)</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
+<span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun 
+       3.0000000        0.3642709        0.3487202       22.7477594      580.0000000        0.2800000        0.2800000        1.0000000 
+</div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>rmatrix</li><li>rmatrix,ANY-method</li><li>rmatrix-methods</li><li>rmatrix,NMF-method</li><li>rmatrix,numeric-method</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

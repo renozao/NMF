@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Annotated Heatmaps. NMF 0.8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="
+  Original version of &lt;code&gt;&lt;a href='http://www.inside-r.org/r-doc/pheatmap/pheatmap'&gt;pheatmap&lt;/a&gt;&lt;/code&gt;:
+  Raivo Kolde &lt;rkolde@gmail.com&gt;
+
+  Enhancement into &lt;code&gt;aheatmap&lt;/code&gt;: Renaud Gaujoux
+">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF 0.8</a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Annotated Heatmaps</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="string">"-RdYlBu2:100"</span><span class="keyword">,</span> <span class="argument">breaks</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">border_color</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">cellwidth</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span>
+  <span class="argument">cellheight</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="string">"none"</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">Colv</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">revC</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>identical</a></span><span class="keyword">(</span><span class="symbol">Colv</span><span class="keyword">,</span>
+          <span class="string">"Rowv"</span><span class="keyword">)</span> <span class="keyword">||</span> <span class="functioncall"><a href='NA'>isNA</a></span><span class="keyword">(</span><span class="symbol">Rowv</span><span class="keyword">)</span> <span class="keyword">||</span> <span class="keyword">(</span><span class="functioncall"><a href='NA'>is.integer</a></span><span class="keyword">(</span><span class="symbol">Rowv</span><span class="keyword">)</span> <span class="keyword">&amp;&amp;</span> <span class="functioncall"><a href='NA'>length</a></span><span class="keyword">(</span><span class="symbol">Rowv</span><span class="keyword">)</span> <span class="keyword">&gt;</span> <span class="number">1</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">distfun</span> <span class="argument">=</span> <span class="string">"euclidean"</span><span class="keyword">,</span>
+      <span class="argument">hclustfun</span> <span class="argument">=</span> <span class="string">"complete"</span><span class="keyword">,</span> <span class="argument">reorderfun</span> <span class="argument">=</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">d</span><span class="keyword">,</span> <span class="formalargs">w</span><span class="keyword">)</span> <span class="functioncall"><a href='NA'>reorder</a></span><span class="keyword">(</span><span class="symbol">d</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">treeheight</span> <span class="argument">=</span> <span class="number">50</span><span class="keyword">,</span>
+      <span class="argument">legend</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">annRow</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">annColors</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">annLegend</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">labRow</span> <span class="argument">=</span> NULL<span class="keyword">,</span>
+      <span class="argument">labCol</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">subsetRow</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">subsetCol</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">fontsize</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">,</span> <span class="argument">cexRow</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>min</a></span><span class="keyword">(</span><span class="number">0.2</span> <span class="keyword">+</span>
+          <span class="number">1</span><span class="keyword">/</span><span class="functioncall"><a href='NA'>log10</a></span><span class="keyword">(</span><span class="symbol">nr</span><span class="keyword">)</span><span class="keyword">,</span> <span class="number">1.2</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">cexCol</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>min</a></span><span class="keyword">(</span><span class="number">0.2</span> <span class="keyword">+</span> <span class="number">1</span><span class="keyword">/</span><span class="functioncall"><a href='NA'>log10</a></span><span class="keyword">(</span><span class="symbol">nc</span><span class="keyword">)</span><span class="keyword">,</span> <span class="number">1.2</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">filename</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">width</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span>
+      <span class="argument">height</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">main</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">sub</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">info</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">verbose</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>getOption</a></span><span class="keyword">(</span><span class="string">"verbose"</span><span class="keyword">)</span><span class="keyword">,</span>
+      <span class="symbol">...</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>x</dt>
+            <dd>numeric matrix of the values to be plotted. An
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code>
+  objects can also be passed, in which case the expression
+  values are plotted (<code>exprs(x)</code>).</dd>
+            <dt>color</dt>
+            <dd>colour specification for the heatmap.
+  Default to palette '-RdYlBu2:100', i.e. reversed palette
+  'RdYlBu2' (a slight modification of RColorBrewer's
+  palette 'RdYlBu') with 100 colors. Possible values are:
+  <ul>
+<li> a character/integer vector of length
+  greater than 1 that is directly used and assumed to
+  contain valid R color specifications. </li>
+<li> a single
+  color/integer (between 0 and 8)/other numeric value that
+  gives the dominant colors. Numeric values are converted
+  into a pallete by <code>rev(sequential_hcl(2, h = x, l =
+  c(50, 95)))</code>. Other values are concatenated with the grey
+  colour '#F1F1F1'. </li>
+<li> one of RColorBrewer's palette
+  name, or one of 'RdYlBu2', 'rainbow', 'heat', 'topo',
+  'terrain', 'cm'. </li>
+</ul>
+ When the coluor palette is specified
+  with a single value, and is negative or preceded a minus
+  ('-'), the reversed palette is used. The number of breaks
+  can also be specified after a colon (':'). For example,
+  the default colour palette is specified as
+  '-RdYlBu2:100'.</dd>
+            <dt>breaks</dt>
+            <dd>a sequence of numbers that covers the range
+  of values in <code>x</code> and is one element longer than
+  color vector. Used for mapping values to colors. Useful,
+  if needed to map certain values to certain colors. If
+  value is NA then the breaks are calculated automatically.
+  If <code>breaks</code> is a single value, then the colour
+  palette is centered on this value.</dd>
+            <dt>border_color</dt>
+            <dd>color of cell borders on heatmap, use
+  NA if no border should be drawn.</dd>
+            <dt>cellwidth</dt>
+            <dd>individual cell width in points. If left
+  as NA, then the values depend on the size of plotting
+  window.</dd>
+            <dt>cellheight</dt>
+            <dd>individual cell height in points. If
+  left as NA, then the values depend on the size of
+  plotting window.</dd>
+            <dt>scale</dt>
+            <dd>character indicating how the values should
+  scaled in either the row direction or the column
+  direction. Note that the scaling is performed after
+  row/column clustering, so that it has no effect on the
+  row/column ordering. Possible values are: <ul>
+<li>
+  <code>"row"</code>: center and standardize each row separately
+  to row Z-scores </li>
+<li> <code>"column"</code>: center and
+  standardize each column separately to column Z-scores
+  </li>
+<li> <code>"r1"</code>: scale each row to sum up to one </li>
+<li>
+  <code>"c1"</code>: scale each column to sum up to one </li>
+<li>
+  <code>"none"</code>: no scaling </li>
+</ul>
+</dd>
+            <dt>Rowv</dt>
+            <dd>clustering specification(s) for the rows. It
+  allows to specify the
+  distance/clustering/ordering/display parameters to be
+  used for the <em>rows only</em>. Possible values are:
+  <ul>
+<li> <code>TRUE</code> or <code>NULL</code> (to be
+  consistent with <code><a href='NA'>heatmap</a></code>): compute a
+  dendrogram from hierarchical clustering using the
+  distance and clustering methods <code>distfun</code> and
+  <code>hclustfun</code>.
+
+  </li>
+<li> <code>NA</code>: disable any ordering. In this case, and
+  if not otherwise specified with argument
+  <code>revC=FALSE</code>, the heatmap shows the input matrix
+  with the rows in their original order, with the first row
+  on top to the last row at the bottom. Note that this
+  differ from the behaviour or <code><a href='NA'>heatmap</a></code>, but
+  seemed to be a more sensible choice when vizualizing a
+  matrix without reordering.
+
+  </li>
+<li> an integer vector of length the number of rows of
+  the input matrix (<code>nrow(x)</code>), that specifies the row
+  order. As in the case <code>Rowv=NA</code>, the ordered matrix
+  is shown first row on top, last row at the bottom.
+
+  </li>
+<li> a character vector or a list specifying values to
+  use instead of arguments <code>distfun</code>, <code>hclustfun</code>
+  and <code>reorderfun</code> when clustering the rows (see the
+  respective argument descriptions for a list of accepted
+  values). If <code>Rowv</code> has no names, then the first
+  element is used for <code>distfun</code>, the second (if
+  present) is used for <code>hclustfun</code>, and the third (if
+  present) is used for <code>reorderfun</code>.
+
+  </li>
+<li> a numeric vector of weights, of length the number
+  of rows of the input matrix, used to reorder the
+  internally computed dendrogram <code>d</code> by
+  <code>reorderfun(d, Rowv)</code>.
+
+  </li>
+<li> <code>FALSE</code>: the dendrogram <em>is</em> computed
+  using methods <code>distfun</code>, <code>hclustfun</code>, and
+  <code>reorderfun</code> but is not shown.
+
+  </li>
+<li> a single integer that specifies how many subtrees
+  (i.e. clusters) from the computed dendrogram should have
+  their root faded out. This can be used to better
+  highlight the different clusters.
+
+  </li>
+<li> a single double that specifies how much space is
+  used by the computed dendrogram. That is that this value
+  is used in place of <code>treeheight</code>. </li>
+</ul>
+</dd>
+            <dt>Colv</dt>
+            <dd>clustering specification(s) for the columns.
+  It accepts the same values as argument <code>Rowv</code>
+  (modulo the expected length for vector specifications),
+  and allow specifying the
+  distance/clustering/ordering/display parameters to be
+  used for the <em>columns only</em>. <code>Colv</code> may also be
+  set to <code>"Rowv"</code>, in which case the dendrogram or
+  ordering specifications applied to the rows are also
+  applied to the columns. Note that this is allowed only
+  for square input matrices, and that the row ordering is
+  in this case by default reversed (<code>revC=TRUE</code>) to
+  obtain the diagonal in the standard way (from top-left to
+  bottom-right). See argument <code>Rowv</code> for other
+  possible values.</dd>
+            <dt>revC</dt>
+            <dd>a logical that specify if the <em>row
+  order</em> defined by <code>Rowv</code> should be reversed. This is
+  mainly used to get the rows displayed from top to bottom,
+  which is not the case by default. Its default value is
+  computed at runtime, to suit common situations where
+  natural ordering is a more sensible choice: no or fix
+  ordering of the rows (<code>Rowv=NA</code> or an integer vector
+  of indexes -- of length > 1), and when a symmetric
+  ordering is requested -- so that the diagonal is shown as
+  expected. An argument in favor of the "odd" default
+  display (bottom to top) is that the row dendrogram is
+  plotted from bottom to top, and reversing its reorder may
+  take a not too long but non negligeable time.</dd>
+            <dt>distfun</dt>
+            <dd>default distance measure used in
+  clustering rows and columns. Possible values are:
+  <ul>
+<li> <code>"correlation"</code> and all the
+  distances supported by <code><a href='NA'>dist</a></code> (e.g.
+  <code>"euclidean"</code>). </li>
+<li> an object of class <code>dist</code>
+  such as returned by <code><a href='NA'>dist</a></code> or
+  <code><a href='NA'>as.dist</a></code>. </li>
+</ul>
+</dd>
+            <dt>hclustfun</dt>
+            <dd>default clustering method used to
+  cluster rows and columns. Possible values are: <ul>
+<li>  </li>
+<li> a method name (a character string) supported by
+  <code><a href='NA'>hclust</a></code> (e.g. <code>'average'</code>). </li>
+<li> an
+  object of class <code>hclust</code> such as returned by
+  <code><a href='NA'>hclust</a></code> </li>
+<li> a dendrogram </li>
+</ul>
+</dd>
+            <dt>reorderfun</dt>
+            <dd>default dendrogram reordering function,
+  used to reorder the dendrogram, when either <code>Rowv</code>
+  or <code>Colv</code> is a numeric weight vector, or provides or
+  computes a dendrogram. It must take 2 parameters: a
+  dendrogram, and a weight vector.</dd>
+            <dt>subsetRow</dt>
+            <dd>Specification of subsetting the rows
+  before drawing the heatmap. Possible values are:
+  <ul>
+<li> an integer vector of length > 1
+  specifying the indexes of the rows to keep; </li>
+<li> a
+  character vector of length > 1 specyfing the names of the
+  rows to keep. These are the original rownames, not the
+  names specified in <code>labRow</code>. </li>
+<li> a logical vector
+  of length > 1, whose elements are recycled if the vector
+  has not as many elements as rows in <code>x</code>. </li>
+</ul>
+ Note that
+  in the case <code>Rowv</code> is a dendrogram or hclust object,
+  it is first converted into an ordering vector, and cannot
+  be displayed -- and a warning is thrown.</dd>
+            <dt>subsetCol</dt>
+            <dd>Specification of subsetting the columns
+  before drawing the heatmap. It accepts the similar values
+  as <code>subsetRow</code>. See details above.</dd>
+            <dt>treeheight</dt>
+            <dd>how much space (in points) should be
+  used to display dendrograms. If specified as a single
+  value, it is used for both dendrograms. A length-2 vector
+  specifies separate values for the row and column
+  dendrogram respectively. Default value: 50 points.</dd>
+            <dt>legend</dt>
+            <dd>boolean value that determines if a colour
+  ramp for the heatmap's colour palette should be drawn or
+  not. Default is <code>TRUE</code>.</dd>
+            <dt>annCol</dt>
+            <dd>specifications of column annotation tracks
+  displayed as coloured rows on top of the heatmaps. The
+  annotation tracks are drawn from bottom to top. A single
+  annotation track can be specified as a single vector;
+  multiple tracks are specified as a list, a data frame, or
+  an
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code>
+  object, in which case the phenotypic data is used
+  (<code>pData(eset)</code>). Character or integer vectors are
+  converted and displayed as factors. Unnamed tracks are
+  internally renamed into <code>Xi</code>, with i being
+  incremented for each unamed track, across both column and
+  row annotation tracks. For each track, if no
+  corresponding colour is specified in argument
+  <code>annColors</code>, a palette or a ramp is automatically
+  computed and named after the track's name.</dd>
+            <dt>annRow</dt>
+            <dd>specifications of row annotation tracks
+  displayed as coloured columns on the left of the
+  heatmaps. The annotation tracks are drawn from left to
+  right. The same conversion, renaming and colouring rules
+  as for argument <code>annCol</code> apply.</dd>
+            <dt>annColors</dt>
+            <dd>list for specifying annotation track
+  colors manually. It is possible to define the colors for
+  only some of the annotations. Check examples for
+  details.</dd>
+            <dt>annLegend</dt>
+            <dd>boolean value specifying if the legend
+  for the annotation tracks should be drawn or not. Default
+  is <code>TRUE</code>.</dd>
+            <dt>labRow</dt>
+            <dd>labels for the rows.</dd>
+            <dt>labCol</dt>
+            <dd>labels for the columns. See description for
+  argument <code>labRow</code> for a list of the possible
+  values.</dd>
+            <dt>fontsize</dt>
+            <dd>base fontsize for the plot</dd>
+            <dt>cexRow</dt>
+            <dd>fontsize for the rownames, specified as a
+  fraction of argument <code>fontsize</code>.</dd>
+            <dt>cexCol</dt>
+            <dd>fontsize for the colnames, specified as a
+  fraction of argument <code>fontsize</code>.</dd>
+            <dt>main</dt>
+            <dd>Main title as a character string or a grob.</dd>
+            <dt>sub</dt>
+            <dd>Subtitle as a character string or a grob.</dd>
+            <dt>info</dt>
+            <dd>(experimental) Extra information as a
+  character vector or a grob.  If <code>info=TRUE</code>,
+  information about the clustering methods is displayed at
+  the bottom of the plot.</dd>
+            <dt>filename</dt>
+            <dd>file path ending where to save the
+  picture. Currently following formats are supported: png,
+  pdf, tiff, bmp, jpeg. Even if the plot does not fit into
+  the plotting window, the file size is calculated so that
+  the plot would fit there, unless specified otherwise.</dd>
+            <dt>width</dt>
+            <dd>manual option for determining the output
+  file width in</dd>
+            <dt>height</dt>
+            <dd>manual option for determining the output
+  file height in inches.</dd>
+            <dt>verbose</dt>
+            <dd>if <code>TRUE</code> then verbose messages are
+  displayed and the borders of some viewports are
+  highlighted. It is entended for debugging purposes.</dd>
+            <dt>...</dt>
+            <dd>graphical parameters for the text used in
+  plot. Parameters passed to <code><a href='NA'>grid.text</a></code>, see
+  <code><a href='NA'>gpar</a></code>.</dd>
+          </dl>
+          
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>The function <code>aheatmap</code> plots high-quality heatmaps,
+  with a detailed legend and unlimited annotation tracks
+  for both columns and rows. The annotations are coloured
+  differently according to their type (factor or numeric
+  covariate). Although it uses grid graphics, the generated
+  plot is compatible with base layouts such as the ones
+  defined with <code>'mfrow'</code> or <code><a href='NA'>layout</a></code>,
+  enabling the easy drawing of multiple heatmaps on a
+  single a plot -- at last!.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p>The development of this function started as a fork of the
+  function <code><a href='http://www.inside-r.org/r-doc/pheatmap/pheatmap'>pheatmap</a></code> from the
+  package <code>pheatmap</code>, and provides several
+  enhancements such as: <ul>
+<li> it replicates the
+  arguments of the base <code><a href='NA'>heatmap</a></code> function
+  </li>
+<li> annotation of both columns and rows, with
+  simplified interface </li>
+<li> easy specification of
+  clustering methods and colors </li>
+<li> return clustering
+  data and grid grob object </li>
+</ul></p>
+        
+            <p>Please read the associated vignette for more information
+  and sample code.</p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># Generate random data</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span>
+<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>abs</a></span><span class="keyword">(</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">,</span> <span class="symbol">rnorm</span><span class="keyword">,</span> <span class="argument">mean</span><span class="argument">=</span><span class="number">4</span><span class="keyword">,</span> <span class="argument">sd</span><span class="argument">=</span><span class="number">1</span><span class="keyword">)</span><span class="keyword">)</span>
+<span class="symbol">x</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">:</span><span class="number">10</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>seq</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span><span class="keyword">]</span> <span class="assignement">&lt;-</span> <span class="symbol">x</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">:</span><span class="number">10</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>seq</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span><span class="keyword">]</span> <span class="keyword">+</span> <span class="number">3</span>
+<span class="symbol">x</span><span class="keyword">[</span><span class="number">11</span><span class="keyword">:</span><span class="number">20</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>seq</a></span><span class="keyword">(</span><span class="number">2</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span><span class="keyword">]</span> <span class="assignement">&lt;-</span> <span class="symbol">x</span><span class="keyword">[</span><span class="number">11</span><span class="keyword">:</span><span class="number">20</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>seq</a></span><span class="keyword">(</span><span class="number">2</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span><span class="keyword">]</span> <span class="keyword">+</span> <span class="number">2</span>
+<span class="functioncall"><a href='NA'>rownames</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>paste</a></span><span class="keyword">(</span><span class="string">"ROW"</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="symbol">n</span><span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>colnames</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>paste</a></span><span class="keyword">(</span><span class="string">"COL"</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="symbol">p</span><span class="keyword">)</span>
+
+<span class="comment">## Default heatmap</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span>
+
+<span class="comment">## Distance methods</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="string">"correlation"</span><span class="keyword">)</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="string">"man"</span><span class="keyword">)</span> <span class="comment"># partially matched to 'manhattan'</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="string">"man"</span><span class="keyword">,</span> <span class="argument">Colv</span><span class="argument">=</span><span class="string">"binary"</span><span class="keyword">)</span>
+
+<span class="comment">## Scaling</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="string">"row"</span><span class="keyword">)</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="string">"col"</span><span class="keyword">)</span> <span class="comment"># partially matched to 'column'</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="string">"r1"</span><span class="keyword">)</span> <span class="comment"># each row sum up to 1</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="string">"c1"</span><span class="keyword">)</span> <span class="comment"># each colum sum up to 1</span>
+
+<span class="comment">## Heatmap colors</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>colorRampPalette</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"navy"</span><span class="keyword">,</span> <span class="string">"white"</span><span class="keyword">,</span> <span class="string">"firebrick3"</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">(</span><span class="number">50</span><span class="keyword">)</span><span class="keyword">)</span>
+<span class="comment"># color specification as an integer: use R basic colors</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="number">1L</span><span class="keyword">)</span>
+<span class="comment"># color specification as a negative integer: use reverse basic palette</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="keyword">-</span><span class="number">1L</span><span class="keyword">)</span>
+<span class="comment"># color specification as a numeric: use HCL color</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="number">1</span><span class="keyword">)</span>
+<span class="comment"># do not cluster the rows</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">)</span>
+<span class="comment"># no heatmap legend</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">legend</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+<span class="comment"># cell and font size</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">cellwidth</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">,</span> <span class="argument">cellheight</span> <span class="argument">=</span> <span class="number">5</span><span class="keyword">)</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">cellwidth</span> <span class="argument">=</span> <span class="number">15</span><span class="keyword">,</span> <span class="argument">cellheight</span> <span class="argument">=</span> <span class="number">12</span><span class="keyword">,</span> <span class="argument">fontsize</span> <span class="argument">=</span> <span class="number">8</span><span class="keyword">,</span> <span class="argument">filename</span> <span class="argument">=</span> <span class="string">"aheatmap.pdf"</span><span class="keyword">)</span>
+
+<span class="comment"># Generate column annotations</span>
+<span class="symbol">annotation</span> <span class="assignement">=</span> <span class="functioncall"><a href='NA'>data.frame</a></span><span class="keyword">(</span><span class="argument">Var1</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>factor</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">:</span><span class="number">10</span> <span class="keyword">%%</span> <span class="number">2</span> == <span class="number">0</span><span class="keyword">,</span> <span class="argument">labels</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"Class1"</span><span class="keyword">,</span> <span class="string">"Class2"</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">Var2</span> <span class="argument">=</span> <span class="number">1</span><span class="keyword">:</span><span class="number">10</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="symbol">annotation</span><span class="keyword">)</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="symbol">annotation</span><span class="keyword">,</span> <span class="argument">annLegend</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+
+
+<span class="comment"># Specify colors</span>
+<span class="symbol">Var1</span> <span class="assignement">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"navy"</span><span class="keyword">,</span> <span class="string">"darkgreen"</span><span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>names</a></span><span class="keyword">(</span><span class="symbol">Var1</span><span class="keyword">)</span> <span class="assignement">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"Class1"</span><span class="keyword">,</span> <span class="string">"Class2"</span><span class="keyword">)</span>
+<span class="symbol">Var2</span> <span class="assignement">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"lightgreen"</span><span class="keyword">,</span> <span class="string">"navy"</span><span class="keyword">)</span>
+
+<span class="symbol">ann_colors</span> <span class="assignement">=</span> <span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="argument">Var1</span> <span class="argument">=</span> <span class="symbol">Var1</span><span class="keyword">,</span> <span class="argument">Var2</span> <span class="argument">=</span> <span class="symbol">Var2</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="symbol">annotation</span><span class="keyword">,</span> <span class="argument">annColors</span> <span class="argument">=</span> <span class="symbol">ann_colors</span><span class="keyword">)</span>
+
+<span class="comment"># Specifying clustering from distance matrix</span>
+<span class="symbol">drows</span> <span class="assignement">=</span> <span class="functioncall"><a href='NA'>dist</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">method</span> <span class="argument">=</span> <span class="string">"minkowski"</span><span class="keyword">)</span>
+<span class="symbol">dcols</span> <span class="assignement">=</span> <span class="functioncall"><a href='NA'>dist</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>t</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">method</span> <span class="argument">=</span> <span class="string">"minkowski"</span><span class="keyword">)</span>
+<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="symbol">drows</span><span class="keyword">,</span> <span class="argument">Colv</span> <span class="argument">=</span> <span class="symbol">dcols</span><span class="keyword">)</span></div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>aheatmap</li>
+          </ul>
+          <ul>
+            
+          </ul> -->
+            
+          
+          <h2>Author</h2>
+          
+  Original version of <code><a href='http://www.inside-r.org/r-doc/pheatmap/pheatmap'>pheatmap</a></code>:
+  Raivo Kolde <rkolde@gmail.com>
+
+  Enhancement into <code>aheatmap</code>: Renaud Gaujoux
+
+          
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

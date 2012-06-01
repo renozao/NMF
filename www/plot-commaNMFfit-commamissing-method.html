@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Plots the residual track computed at regular interval during the fit of
+the NMF model &lt;code&gt;x&lt;/code&gt;.. NMF 0.8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF 0.8</a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Plots the residual track computed at regular interval during the fit of
+the NMF model <code>x</code>.</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='NA'>plot</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="argument">skip</span> <span class="argument">=</span> <span class="keyword">-</span><span class="number">1</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>skip</dt>
+            <dd>an integer that indicates the number of
+  points to skip/remove from the beginning of the curve. If
+  <code>skip=1L</code> (default) only the initial residual --
+  that is computed before any iteration, is skipped, if
+  present in the track (it associated with iteration 0).</dd>
+            <dt>x</dt>
+            <dd>the coordinates of points in the plot.
+  Alternatively, a single plotting structure, function or
+  <em>any <span style="R">R</span> object with a <code>plot</code> method</em> can be
+  provided.</dd>
+            <dt>y</dt>
+            <dd>the y coordinates of points in the plot,
+  <em>optional</em> if <code>x</code> is an appropriate structure.</dd>
+            <dt>...</dt>
+            <dd>Arguments to be passed to methods, such as
+  <a href='NA'>graphical parameters</a> (see <code><a href='NA'>par</a></code>).
+  Many methods will accept the following arguments:
+  <span class='describe'> <code>type</code>what type of plot should be
+  drawn.  Possible types are <ul>
+<li> <code>"p"</code> for
+  <b>p</b>oints, </li>
+<li> <code>"l"</code> for <b>l</b>ines, </li>
+<li>
+  <code>"b"</code> for <b>b</b>oth, </li>
+<li> <code>"c"</code> for the
+  lines part alone of <code>"b"</code>, </li>
+<li> <code>"o"</code> for both
+  &#145;<b>o</b>verplotted&#146;, </li>
+<li> <code>"h"</code> for
+  &#145;<b>h</b>istogram&#146; like (or &#145;high-density&#146;)
+  vertical lines, </li>
+<li> <code>"s"</code> for stair <b>s</b>teps,
+  </li>
+<li> <code>"S"</code> for other <b>s</b>teps, see
+  &#145;Details&#146; below, </li>
+<li> <code>"n"</code> for no plotting.
+  </li>
+</ul>
+ All other <code>type</code>s give a warning or an error;
+  using, e.g., <code>type = "punkte"</code> being equivalent to
+  <code>type = "p"</code> for S compatibility.  Note that some
+  methods, e.g. <code><a href='NA'>plot.factor</a></code>, do not accept
+  this.   <code>main</code>an overall title for the
+  plot: see <code><a href='NA'>title</a></code>. <code>sub</code>a sub
+  title for the plot: see <code><a href='NA'>title</a></code>.
+  <code>xlab</code>a title for the x axis: see
+  <code><a href='NA'>title</a></code>. <code>ylab</code>a title for the
+  y axis: see <code><a href='NA'>title</a></code>. <code>asp</code>the
+  <code class = 'eq'>y/x</code> aspect ratio, see <code><a href='NA'>plot.window</a></code>. </span>
+  </dd>
+          </dl>
+          
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>Plots the residual track computed at regular interval
+  during the fit of the NMF model <code>x</code>.</p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>plot,NMFfit,missing-method</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

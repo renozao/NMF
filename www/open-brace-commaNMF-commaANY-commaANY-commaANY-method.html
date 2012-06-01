@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Sub-setting NMF Objects. NMF 0.8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF 0.8</a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Sub-setting NMF Objects</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="symbol">x</span><span class="keyword">[</span><span class="symbol">i</span><span class="keyword">,</span> <span class="symbol">j</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">drop</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">]</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>i</dt>
+            <dd>index used to subset on the <strong>rows</strong> of the
+  basis matrix (i.e. the features). It can be a
+  <code>numeric</code>, <code>logical</code>, or <code>character</code>
+  vector (whose elements must match the row names of
+  <code>x</code>). In the case of a <code>logical</code> vector the
+  entries are recycled if necessary.</dd>
+            <dt>j</dt>
+            <dd>index used to subset on the <strong>columns</strong> of
+  the mixture coefficient matrix (i.e. the samples). It can
+  be a <code>numeric</code>, <code>logical</code>, or <code>character</code>
+  vector (whose elements must match the column names of
+  <code>x</code>). In the case of a <code>logical</code> vector the
+  entries are recycled if necessary.</dd>
+            <dt>...</dt>
+            <dd>used to specify a third index to subset on the
+  basis components, i.e. on both the columns and rows of
+  the basis matrix and mixture coefficient respectively. It
+  can be a <code>numeric</code>, <code>logical</code>, or
+  <code>character</code> vector (whose elements must match the
+  basis names of <code>x</code>). In the case of a <code>logical</code>
+  vector the entries are recycled if necessary.
+
+  Note that only the first extra subset index is used. A
+  warning is thrown if more than one extra argument is
+  passed in <code>...</code>.</dd>
+            <dt>drop</dt>
+            <dd>single <code>logical</code> value used to drop the
+  <code>NMF-class</code> wrapping and only return subsets of one
+  of the factor matrices: <ul>
+<li> When
+  <code>drop=FALSE</code> it returns the <code>NMF</code> object
+  <code>x</code> with the basis matrix and/or mixture coefficient
+  matrix subset accordingly to the values in <code>i</code>,
+  <code>j</code>, and <code>...</code>.
+
+  </li>
+<li> When <code>drop=TRUE</code> it returns the factor that is
+  subset "the more" (see section <em>Value</em>). </li>
+</ul>
+
+
+  Note that in the case where both indexes <code>i</code> and
+  <code>j</code> are provided, argument <code>drop</code> is ignored:
+  <code>x[i,j, drop=TRUE]</code> (resp. <code>x[i,j,k,
+  drop=TRUE]</code>) is identical to <code>x[i,j, drop=FALSE]</code>
+  (resp. <code>x[i,j,k, drop=FALSE]</code>).</dd>
+            <dt>x</dt>
+            <dd> object from which to extract element(s) or in
+  which to replace element(s).  </dd>
+          </dl>
+          
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>This method provides a convenient way of sub-setting
+  objects of class <code>NMF</code>, using a matrix-like syntax.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p>It allows to consistently subset one or both matrix
+  factors in the NMF model, as well as retrieving part of
+  the basis components or part of the mixture coefficients
+  with a reduced amount of code.</p>
+        
+            <p>The returned value depends on the number of subset index
+  passed and the value of argument <code>drop</code>:</p>
+        
+            <p><ul>
+<li> No index as in <code>x[]</code> or <code>x[,]</code>:
+  the value is the object <code>x</code> unchanged.</p>
+        
+            <p></li>
+<li> One single index as in <code>x[i]</code>: the value is
+  the basis matrix subset by <code>i</code>.  Precisely the call
+  <code>x[i]</code> is equivalent to <code>basis(x)[, i,
+  drop=TRUE]</code>. If argument <code>drop</code> is present then it
+  is used: <code>x[i, drop=TRUE.or.FALSE]</code> <=>
+  <code>basis(x)[, i, drop=TRUE.or.FALSE]</code>.</p>
+        
+            <p></li>
+<li> More than one index with <code>drop=FALSE</code>
+  (default) as in <code>x[i,j]</code>, <code>x[i,]</code>,
+  <code>x[,j]</code>, <code>x[i,j,k]</code>, <code>x[i,,k]</code>, etc...:
+  the value is a <code>NMF</code> object whose basis and/or
+  mixture coefficient matrices have been subset
+  accordingly. The third index <code>k</code> affects
+  simultaneously the columns of the basis matrix AND the
+  rows of the mixture coefficient matrix.</p>
+        
+            <p></li>
+<li> More than one index with <code>drop=TRUE</code> and
+  <code>i</code> xor <code>j</code> missing: the value returned is the
+  matrix that is the more affected by the subset index.
+  That is that <code>x[i, , drop=TRUE]</code> and <code>x[i, , k,
+  drop=TRUE]</code> return the basis matrix subset by <code>[i,]</code>
+  and <code>[i,k]</code> respectively, while <code>x[, j,
+  drop=TRUE]</code> and <code>x[, j, k, drop=TRUE]</code> return the
+  mixture coefficient matrix subset by <code>[,j]</code> and
+  <code>[k,j]</code> respectively.</p>
+        
+            <p></li>
+</ul></p>
+        
+            <p></p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># create a dummy NMF object that highlight the different way of subsetting</span>
+<span class="symbol">a</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">W</span><span class="argument">=</span><span class="functioncall"><a href='NA'>outer</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>seq</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span><span class="number">5</span><span class="keyword">)</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">^</span><span class="keyword">(</span><span class="number">0</span><span class="keyword">:</span><span class="number">2</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="functioncall"><a href='NA'>outer</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">^</span><span class="keyword">(</span><span class="number">0</span><span class="keyword">:</span><span class="number">2</span><span class="keyword">)</span><span class="keyword">,</span><span class="functioncall"><a href='NA'>seq</a></span><span class="keyword">(</span><span class="keyword">-</span><span class="number">1</span><span class="keyword">,</span><span class="keyword">-</span><span class="number">10</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span>
+<span class="functioncall"><a href='dimnames.html'>basisnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>paste</a></span><span class="keyword">(</span><span class="string">'b'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>rownames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>paste</a></span><span class="keyword">(</span><span class="string">'f'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='NA'>nrow</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>colnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>paste</a></span><span class="keyword">(</span><span class="string">'s'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='NA'>ncol</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span>
+
+<span class="comment"># or alternatively:</span>
+<span class="comment"># dimnames(a) &lt;- list( features=paste('f', 1:nrow(a), sep=''), samples=paste('s', 1:ncol(a), sep=''), basis=paste('b', 1:nbasis(a)) )</span>
+
+<span class="comment"># look at the resulting NMF object</span>
+<span class="symbol">a</span></div>
+<div class='output'><Object of class: NMFstd >
+features: 5 
+basis/rank: 3 
+samples: 10 
+</div>
+<div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>   b1 b2  b3
+f1  1 10 100
+f2  2 20 200
+f3  3 30 300
+f4  4 40 400
+f5  5 50 500
+</div>
+<div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>     s1   s2   s3   s4   s5   s6   s7   s8   s9   s10
+b1   -1   -2   -3   -4   -5   -6   -7   -8   -9   -10
+b2  -10  -20  -30  -40  -50  -60  -70  -80  -90  -100
+b3 -100 -200 -300 -400 -500 -600 -700 -800 -900 -1000
+</div>
+<div class='input'>
+<span class="comment"># extract basis components</span>
+<span class="symbol">a</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">]</span></div>
+<div class='output'>f1 f2 f3 f4 f5 
+ 1  2  3  4  5 
+</div>
+<div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">FALSE</span><span class="keyword">]</span> <span class="comment"># not dropping matrix dimension</span></div>
+<div class='output'>   b1
+f1  1
+f2  2
+f3  3
+f4  4
+f5  5
+</div>
+<div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">]</span></div>
+<div class='output'>   b2  b3
+f1 10 100
+f2 20 200
+f3 30 300
+f4 40 400
+f5 50 500
+</div>
+<div class='input'>
+<span class="comment"># subset on the features</span>
+<span class="symbol">a</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">,</span><span class="keyword">]</span></div>
+<div class='output'><Object of class: NMFstd >
+features: 1 
+basis/rank: 3 
+samples: 10 
+</div>
+<div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">2</span><span class="keyword">:</span><span class="number">4</span><span class="keyword">,</span><span class="keyword">]</span></div>
+<div class='output'><Object of class: NMFstd >
+features: 3 
+basis/rank: 3 
+samples: 10 
+</div>
+<div class='input'><span class="comment"># dropping the NMF-class wrapping =&gt; return subset basis matrix</span>
+<span class="symbol">a</span><span class="keyword">[</span><span class="number">2</span><span class="keyword">:</span><span class="number">4</span><span class="keyword">,</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">]</span></div>
+<div class='output'>   b1 b2  b3
+f2  2 20 200
+f3  3 30 300
+f4  4 40 400
+</div>
+<div class='input'>
+<span class="comment"># subset on the samples</span>
+<span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="number">1</span><span class="keyword">]</span></div>
+<div class='output'><Object of class: NMFstd >
+features: 5 
+basis/rank: 3 
+samples: 1 
+</div>
+<div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">4</span><span class="keyword">]</span></div>
+<div class='output'><Object of class: NMFstd >
+features: 5 
+basis/rank: 3 
+samples: 3 
+</div>
+<div class='input'><span class="comment"># dropping the NMF-class wrapping =&gt; return subset coef matrix</span>
+<span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">4</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">]</span></div>
+<div class='output'>     s2   s3   s4
+b1   -2   -3   -4
+b2  -20  -30  -40
+b3 -200 -300 -400
+</div>
+<div class='input'>
+<span class="comment"># subset on the basis =&gt; subsets simultaneously basis and coef matrix</span>
+<span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">1</span><span class="keyword">]</span></div>
+<div class='output'><Object of class: NMFstd >
+features: 5 
+basis/rank: 1 
+samples: 10 
+</div>
+<div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">]</span></div>
+<div class='output'><Object of class: NMFstd >
+features: 5 
+basis/rank: 2 
+samples: 10 
+</div>
+<div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">4</span><span class="keyword">:</span><span class="number">5</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">]</span></div>
+<div class='output'><Object of class: NMFstd >
+features: 2 
+basis/rank: 2 
+samples: 10 
+</div>
+<div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">4</span><span class="keyword">:</span><span class="number">5</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">]</span> <span class="comment"># return subset basis matrix</span></div>
+<div class='output'>   b2  b3
+f4 40 400
+f5 50 500
+</div>
+<div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="number">4</span><span class="keyword">:</span><span class="number">5</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">]</span> <span class="comment"># return subset coef matrix</span></div>
+<div class='output'>     s4   s5
+b2  -40  -50
+b3 -400 -500
+</div>
+<div class='input'>
+<span class="comment"># 'drop' has no effect here</span>
+<span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">]</span></div>
+<div class='output'><Object of class: NMFstd >
+features: 5 
+basis/rank: 2 
+samples: 10 
+</div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>[,NMF,ANY,ANY,ANY-method</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Testing Compatibility of Algorithm and Models. NMF 0.8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF 0.8</a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Testing Compatibility of Algorithm and Models</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='canFit.html'>canFit</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='canFit.html'>canFit</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="argument">exact</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>x</dt>
+            <dd>an object that describes an algorithm</dd>
+            <dt>y</dt>
+            <dd>an object that describes a model</dd>
+            <dt>...</dt>
+            <dd>extra arguments to allow extension</dd>
+            <dt>exact</dt>
+            <dd>for logical that indicates if an algorithm
+  is considered able to fit only the models that it
+  explicitly declares (<code>TRUE</code>), or if it should be
+  considered able to also fit models that extend models
+  that it explicitly fits.</dd>
+          </dl>
+          
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p><code>canFit</code> is an S4 generic that tests if an algorithm
+  can fit a particular model.</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>canFit<code>signature(x = "NMFStrategy", y =
+  "character")</code>: Tells if an NMF algorithm can fit a given
+  class of NMF models</p>
+        
+            <p>canFit<code>signature(x = "NMFStrategy", y =
+  "NMF")</code>: Tells if an NMF algorithm can fit the same class
+  of models as <code>y</code></p>
+        
+            <p>canFit<code>signature(x = "character", y =
+  "ANY")</code>: Tells if a registered NMF algorithm can fit a
+  given NMF model</p>
+        
+            <p></span></p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>canFit</li><li>canFit,character,ANY-method</li><li>canFit-methods</li><li>canFit,NMFStrategy,character-method</li><li>canFit,NMFStrategy,NMF-method</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+          <h2>See also</h2>
+          
+  Other regalgo: <code><a href='nmfAlgorithm.html'>nmfAlgorithm</a></code>
+
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Residual Sum of Squares and Explained Variance. NMF 0.8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF 0.8</a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Residual Sum of Squares and Explained Variance</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='rss.html'>rss</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='rss.html'>rss</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">target</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='rss.html'>evar</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='rss.html'>evar</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">target</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>object</dt>
+            <dd>an R object with a suitable
+  <code><a href='fitted.html'>fitted</a></code>, <code>rss</code> or <code>evar</code> method.</dd>
+            <dt>...</dt>
+            <dd>extra arguments to allow extension, e.g.
+  passed to <code>rss</code> in <code>evar</code> calls.</dd>
+            <dt>target</dt>
+            <dd>target matrix</dd>
+          </dl>
+          
+          <div class="Value">
+            <h2>Value</h2>
+            
+            <p>a single numeric value</p>
+        
+          </div>
+
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p><code>rss</code> and <code>evar</code> are S4 generic functions that
+  respectively computes the Residual Sum of Squares (RSS)
+  and explained variance achieved by a model.</p>
+        
+            <p>The explained variance for a target <code class = 'eq'>V</code> is computed
+  as: <pre class = 'eq'>evar = 1 - RSS/sum v_{ij}^2</code>,</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p>where RSS is the residual sum of squares.</p>
+        
+            <p>The explained variance is usefull to compare the
+  performance of different models and their ability to
+  accurately reproduce the original target matrix. Note,
+  however, that a possible caveat is that some models
+  explicitly aim at minimizing the RSS (i.e. maximizing the
+  explained variance), while others do not.</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>evar<code>signature(object = "ANY")</code>: Default
+  method for <code>evar</code>.</p>
+        
+            <p>It requires a suitable <code>rss</code> method to be defined
+  for <code>object</code>, as it internally calls
+  <code>rss(object, target, ...)</code>.</p>
+        
+            <p>rss<code>signature(object = "matrix")</code>: Computes
+  the RSS between a target matrix and its estimate
+  <code>object</code>, which must be a matrix of the same
+  dimensions as <code>target</code>.</p>
+        
+            <p>The RSS between a target matrix <code class = 'eq'>V</code> and its estimate
+  <code class = 'eq'>v</code> is computed as: <pre class = 'eq'>RSS = \sum_{i,j} (v_{ij} -
+  V_{ij})^2</code></p>
+        
+            <p>Internally, the computation is performed using an
+  optimised C++ implementation, that is light in memory
+  usage.</p>
+        
+            <p>rss<code>signature(object = "ANY")</code>: Residual sum
+  of square between a given target matrix and a model that
+  has a suitable <code><a href='fitted.html'>fitted</a></code> method. It is
+  equivalent to <code>rss(fitted(object), ...)</code></p>
+        
+            <p>In the context of NMF, <cite>Hutchins et al. (2008)</cite> used the
+  variation of the RSS in combination with the algorithm
+  from <cite>Lee et al. (1999)</cite> to estimate the correct number of
+  basis vectors. The optimal rank is chosen where the graph
+  of the RSS first shows an inflexion point, i.e. using a
+  screeplot-type criterium. See section <em>Rank
+  estimation</em> in <code><a href='nmf.html'>nmf</a></code>.</p>
+        
+            <p>Note that this way of estimation may not be suitable for
+  all models. Indeed, if the NMF optimisation problem is
+  not based on the Frobenius norm, the RSS is not directly
+  linked to the quality of approximation of the NMF model.
+  However, it is often the case that it still decreases
+  with the rank.</p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="References">
+            <h2>References</h2>
+            
+            <p>Hutchins LN, Murphy SM, Singh P and Graber JH (2008).
+  "Position-dependent motif characterization using
+  non-negative matrix factorization." _Bioinformatics
+  (Oxford, England)_, *24*(23), pp. 2684-90. ISSN
+  1367-4811, <URL:
+  http://dx.doi.org/10.1093/bioinformatics/btn526>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/18852176>.</p>
+        
+            <p>Lee DD and Seung HS (1999). "Learning the parts of
+  objects by non-negative matrix factorization." _Nature_,
+  *401*(6755), pp. 788-91. ISSN 0028-0836, <URL:
+  http://dx.doi.org/10.1038/44565>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/10548103>.</p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># RSS bewteeen random matrices</span>
+<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">,</span> <span class="argument">max</span><span class="argument">=</span><span class="number">50</span><span class="keyword">)</span>
+<span class="symbol">y</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">,</span> <span class="argument">max</span><span class="argument">=</span><span class="number">50</span><span class="keyword">)</span>
+<span class="functioncall"><a href='rss.html'>rss</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span></div>
+<div class='output'>[1] 81633.99
+</div>
+<div class='input'><span class="functioncall"><a href='rss.html'>rss</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">x</span> <span class="keyword">+</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">max</span><span class="argument">=</span><span class="number">0.1</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='output'>[1] 0.6919072
+</div>
+<div class='input'><span class="comment"># RSS between an NMF model and a target matrix</span>
+<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span>
+<span class="symbol">y</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">)</span> <span class="comment"># random compatible model</span>
+<span class="functioncall"><a href='rss.html'>rss</a></span><span class="keyword">(</span><span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">)</span></div>
+<div class='output'>[1] 62.3479
+</div>
+<div class='input'>
+<span class="comment"># fit a model with nmf(): one should do better</span>
+<span class="symbol">y2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span> <span class="comment"># default minimizes the KL-divergence</span>
+<span class="functioncall"><a href='rss.html'>rss</a></span><span class="keyword">(</span><span class="symbol">y2</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">)</span></div>
+<div class='output'>[1] 7.345777
+</div>
+<div class='input'><span class="symbol">y2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="string">'lee'</span><span class="keyword">)</span> <span class="comment"># 'lee' minimizes the RSS</span>
+<span class="functioncall"><a href='rss.html'>rss</a></span><span class="keyword">(</span><span class="symbol">y2</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">)</span></div>
+<div class='output'>[1] 7.017785
+</div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>evar</li><li>evar,ANY-method</li><li>evar-methods</li><li>rss</li><li>rss,ANY-method</li><li>rss,matrix-method</li><li>rss-methods</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

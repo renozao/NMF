@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>NMF Model - Nonsmooth Nonnegative Matrix Factorization. NMF 0.8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF 0.8</a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>NMF Model - Nonsmooth Nonnegative Matrix Factorization</h1>
+
+      <div class="row">
+        <div class="span8">
+                    
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>This class implements the <em>Nonsmooth Nonnegative
+  Matrix Factorization</em> (nsNMF) model, required by the
+  Nonsmooth NMF algorithm.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p>The Nonsmooth NMF algorithm is defined by
+  <cite>Pascual-Montano et al. (2006)</cite> as a modification of
+  the standard divergence based NMF algorithm (see section
+  Details and references below).  It aims at obtaining
+  sparser factor matrices, by the introduction of a
+  smoothing matrix.</p>
+        
+            <p>The Nonsmooth NMF algorithm is a modification of the
+  standard divergence based NMF algorithm (see
+  <code><a href='NMF-class.html'>NMF-class</a></code>). Given a non-negative <code class = 'eq'>n x p</code> matrix <code class = 'eq'>V</code> and a factorization rank
+  <code class = 'eq'>r</code>, it fits the following model:</p>
+        
+            <p><pre class = 'eq'>V &#126; W S(theta) H,</code>
+  where: <ul>
+<li>
+  </li>
+<li> <code class = 'eq'>W</code> and <code class = 'eq'>H</code> are such as in the standard
+  model, i.e. non-negative matrices of dimension <code class = 'eq'>n x r</code> and <code class = 'eq'>r x p</code>
+  respectively;</p>
+        
+            <p></li>
+<li> <code class = 'eq'>S</code> is a <code class = 'eq'>r \times r</code> square matrix whose
+  entries depends on an extra parameter <code class = 'eq'>0\leq \theta
+  \leq 1</code> in the following way: <pre class = 'eq'>S = (1-\theta)I +
+  \frac{\theta}{r} 11^T ,</code> where <code class = 'eq'>I</code> is the identity
+  matrix and <code class = 'eq'>1</code> is a vector of ones.</p>
+        
+            <p></li>
+</ul></p>
+        
+            <p>The interpretation of S as a smoothing matrix can be
+  explained as follows: Let <code class = 'eq'>X</code> be a positive, nonzero,
+  vector. Consider the transformed vector <code class = 'eq'>Y = S X</code>. If
+  <code class = 'eq'>\theta = 0</code>, then <code class = 'eq'>Y = X</code> and no smoothing on
+  <code class = 'eq'>X</code> has occurred.  However, as <code class = 'eq'>theta tends to 1</code>, the vector <code class = 'eq'>Y</code> tends to the
+  constant vector with all elements almost equal to the
+  average of the elements of <code class = 'eq'>X</code>. This is the smoothest
+  possible vector in the sense of non-sparseness because
+  all entries are equal to the same nonzero value, instead
+  of having some values close to zero and others clearly
+  nonzero.</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>fitted<code>signature(object = "NMFns")</code>: Compute
+  estimate for an NMFns object, according to the Nonsmooth
+  NMF model (cf. <code><a href='NMFns-class.html'>NMFns-class</a></code>).</p>
+        
+            <p>Extra arguments in <code>...</code> are passed to method
+  <code>smoothing</code>, and are typically used to pass a value
+  for <code>theta</code>, which is used to compute the smoothing
+  matrix instead of the one stored in <code>object</code>.</p>
+        
+            <p>show<code>signature( = "NMFns")</code>: Show method for
+  objects of class <code>NMFns</code></p>
+        
+            <p></span></p>
+        
+          </div>
+
+          <div class="Creating objects from the Class">
+            <h2>Creating objects from the Class</h2>
+            
+            <p>Object of class <code>NMFns</code> can be created using the
+  standard way with operator <code><a href='NA'>new</a></code></p>
+        
+            <p>However, as for all NMF model classes -- that extend
+  class <code><a href='NMF-class.html'>NMF-class</a></code>, objects of class
+  <code>NMFns</code> should be created using factory method
+  <code><a href='nmfModel.html'>nmfModel</a></code> :</p>
+        
+            <p><code>new('NMFns')</code></p>
+        
+            <p><code>nmfModel(model='NMFns')</code></p>
+        
+            <p><code>nmfModel(model='NMFns', W=w, theta=0.3</code></p>
+        
+            <p>See <code><a href='nmfModel.html'>nmfModel</a></code> for more details on how to use
+  the factory method.</p>
+        
+          </div>
+
+          <div class="Algorithm">
+            <h2>Algorithm</h2>
+            
+            <p>The Nonsmooth NMF algorithm uses a modified version of
+  the multiplicative update equations in Lee & Seung's
+  method for Kullback-Leibler divergence minimization. The
+  update equations are modified to take into account the --
+  constant -- smoothing matrix. The modification reduces to
+  using matrix <code class = 'eq'>W S</code> instead of matrix <code class = 'eq'>W</code> in the
+  update of matrix <code class = 'eq'>H</code>, and similarly using matrix
+  <code class = 'eq'>S H</code> instead of matrix <code class = 'eq'>H</code> in the update of
+  matrix <code class = 'eq'>W</code>.</p>
+        
+            <p>After the matrix <code class = 'eq'>W</code> has been updated, each of its
+  columns is scaled so that it sums up to 1.</p>
+        
+          </div>
+
+          <div class="References">
+            <h2>References</h2>
+            
+            <p>Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and
+  Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix
+  factorization (nsNMF)." _IEEE Trans. Pattern Anal. Mach.
+  Intell_, *28*, pp. 403-415.</p>
+        
+          </div>
+      
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># create a completely empty NMFns object</span>
+<span class="functioncall"><a href='NA'>new</a></span><span class="keyword">(</span><span class="string">'NMFns'</span><span class="keyword">)</span></div>
+<div class='output'><Object of class: NMFns >
+features: 0 
+basis/rank: 0 
+samples: 0 
+theta: 0.5 
+</div>
+<div class='input'>
+<span class="comment"># create a NMF object based on random (compatible) matrices</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span> <span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span>
+<span class="symbol">w</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">)</span>
+<span class="symbol">h</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
+<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">model</span><span class="argument">=</span><span class="string">'NMFns'</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span></div>
+<div class='output'><Object of class: NMFns >
+features: 50 
+basis/rank: 3 
+samples: 20 
+theta: 0.5 
+</div>
+<div class='input'>
+<span class="comment"># apply Nonsmooth NMF algorithm to a random target matrix</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: nmf(V, r, 'ns')</span>
+
+<span class="comment"># random nonsmooth NMF model</span>
+<span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFns'</span><span class="keyword">,</span> <span class="argument">theta</span><span class="argument">=</span><span class="number">0.3</span><span class="keyword">)</span></div>
+<div class='output'><Object of class: NMFns >
+features: 10 
+basis/rank: 3 
+samples: 5 
+theta: 0.3 
+</div></pre>
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>NMFns-class</li>
+          </ul>
+          <ul>
+            
+          </ul> -->
+            
+          <h2>See also</h2>
+          
+  Other NMF-model:
+  <code><a href='NMFOffset-class.html'>initialize,NMFOffset-method</a></code>,
+  <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code>, <code><a href='NMFstd-class.html'>NMFstd-class</a></code>
+
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

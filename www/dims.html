@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Dimension of NMF Objects. NMF 0.8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF 0.8</a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Dimension of NMF Objects</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='NA'>dim</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='NA'>dim</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>x</dt>
+            <dd>an object with suitable <code>basis</code> and
+  <code>coef</code> methods, such as an object that inherit from
+  <code><a href='NMF-class.html'>NMF-class</a></code>.</dd>
+            <dt>...</dt>
+            <dd>extra arguments to allow extension.</dd>
+          </dl>
+          
+          <div class="Value">
+            <h2>Value</h2>
+            
+            <p>a single integer value or, for <code>dim</code>, a length-3
+  integer vector, e.g. <code>c(2000, 30, 3)</code> for an
+  <code>NMF</code> model that fits a 2000 x 30 matrix using 3
+  basis components.</p>
+        
+          </div>
+
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>The methods <code>dim</code>, <code>nrow</code>, <code>ncol</code> and
+  <code>nbasis</code> return the different dimensions associated
+  with an NMF model.</p>
+        
+            <p><code>dim</code> returns all dimensions in a length-3 integer
+  vector: the number of row and columns of the estimated
+  target matrix, as well as the factorization rank (i.e.
+  the number of basis components).</p>
+        
+            <p><code>nrow</code>, <code>ncol</code> and <code>nbasis</code> provide
+  separate access to each of these dimensions respectively.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p>The NMF package does not implement specific functions
+  <code>nrow</code> and <code>ncol</code>, but rather the S4 method
+  <code>dim</code> for objects of class <code><a href='NMF-class.html'>NMF-class</a></code>.
+  This allows the base methods <code><a href='NA'>nrow</a></code> and
+  <code><a href='NA'>ncol</a></code> to directly work with such objects, to
+  get the number of rows and columns of the target matrix
+  estimated by an NMF model.</p>
+        
+            <p>The function <code>nbasis</code> is a new S4 generic defined in
+  the package NMF, that returns the number of basis
+  components of an object. Its default method should work
+  for any object, that has a suitable <code>basis</code> method
+  defined for its class.</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>dim<code>signature( = "NMF")</code>: method for NMF
+  objects for the base generic <code><a href='NA'>dim</a></code>. It
+  returns all dimensions in a length-3 integer vector: the
+  number of row and columns of the estimated target matrix,
+  as well as the factorization rank (i.e. the number of
+  basis components).</p>
+        
+            <p>dim<code>signature( = "NMFfitXn")</code>: Returns the
+  dimension common to all fits.</p>
+        
+            <p>Since all fits have the same dimensions, it returns the
+  dimension of the first fit. This method returns
+  <code>NULL</code> if the object is empty.</p>
+        
+            <p>nbasis<code>signature(x = "ANY")</code>: Default method
+  which returns the number of columns of the basis matrix
+  extracted from <code>x</code> using a suitable method
+  <code>basis</code>.</p>
+        
+            <p>For NMF models, this also corresponds to the number of
+  rows in the coefficient matrix.</p>
+        
+            <p>nbasis<code>signature(x = "matrix")</code>: For a
+  matrix, the attribute 'nbasis' is returned, e.g. as
+  attached to the consensus matrix returned by the method
+  <code><a href='connectivity.html'>consensus</a></code>.</p>
+        
+            <p>This is used internally to keep track of data about the
+  parent fit and annotate plots.</p>
+        
+            <p>nbasis<code>signature(x = "NMFfitXn")</code>: Returns
+  the number of basis components common to all fits.</p>
+        
+            <p>Since all fits have been computed using the same rank, it
+  returns the factorization rank of the first fit. This
+  method returns <code>NULL</code> if the object is empty.</p>
+        
+            <p></span></p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>dim-NMF</li><li>dim,NMFfitXn-method</li><li>dim,NMF-method</li><li>nbasis</li><li>nbasis,ANY-method</li><li>nbasis,matrix-method</li><li>nbasis-methods</li><li>nbasis,NMFfitXn-method</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

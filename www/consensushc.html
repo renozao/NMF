@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Hierarchical Clustering of a Consensus Matrix. NMF 0.8</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF 0.8</a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Hierarchical Clustering of a Consensus Matrix</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='consensushc.html'>consensushc</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='consensushc.html'>consensushc</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">dendrogram</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='consensushc.html'>consensushc</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">what</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"consensus"</span><span class="keyword">,</span> <span class="string">"fit"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>object</dt>
+            <dd>a matrix or an <code>NMFfitX</code> object, as
+  returned by multiple NMF runs.</dd>
+            <dt>...</dt>
+            <dd>extra arguments passed to next method calls</dd>
+            <dt>dendrogram</dt>
+            <dd>a logical that specifies if the result
+  of the hierarchical clustering (en <code>hclust</code> object)
+  should be converted into a dendrogram. Default value is
+  <code>TRUE</code>.</dd>
+            <dt>what</dt>
+            <dd>character string that indicates which matrix
+  to use in the computation.</dd>
+          </dl>
+          
+          <div class="Value">
+            <h2>Value</h2>
+            
+            <p>an object of class <code>dendrogram</code> or <code>hclust</code>
+  depending on the value of argument <code>dendrogram</code>.</p>
+        
+          </div>
+
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>The function <code>consensushc</code> computes the hierarchical
+  clustering of a consensus matrix, using the matrix itself
+  as a similarity matrix and average linkage. It is</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>consensushc<code>signature(object = "matrix")</code>:
+  Workhorse method for matrices.</p>
+        
+            <p>consensushc<code>signature(object = "NMF")</code>:
+  Compute the hierarchical clustering on the connectivity
+  matrix of <code>object</code>.</p>
+        
+            <p>consensushc<code>signature(object = "NMFfitX")</code>:
+  Compute the hierarchical clustering on the consensus
+  matrix of <code>object</code>, or on the connectivity matrix of
+  the best fit in <code>object</code>.</p>
+        
+            <p></span></p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>consensushc</li><li>consensushc,matrix-method</li><li>consensushc-methods</li><li>consensushc,NMFfitX-method</li><li>consensushc,NMF-method</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>
