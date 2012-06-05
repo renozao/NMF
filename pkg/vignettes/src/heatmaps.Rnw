@@ -1,0 +1,424 @@
+% 
+\documentclass[a4paper]{article}
+\usepackage[OT1]{fontenc}
+\usepackage{Rd}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{a4wide}
+\usepackage{xspace}
+
+\newcommand{\Rcode}{\texttt}
+\newcommand{\nmfpack}{\Rcode{NMF}\xspace}
+\newcommand{\MATLAB}{MATLAB\textsuperscript{\textregistered}\xspace}
+\newcommand{\refeqn}[1]{(\ref{#1})}
+
+
+\usepackage{Sweave}
+\usepackage{framed}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{mathabx}
+
+\usepackage{url}
+\urlstyle{rm}
+
+% define commands for notes
+\usepackage{todonotes}
+\newcommand{\nbnote}[1]{\ \bigskip\todo[inline, backgroundcolor=blue!20!white]{\scriptsize\textsf{\textbf{NB:} #1}}\ \\}
+
+\definecolor{midnightblue}{rgb}{0.098,0.098,0.439}
+
+\makeatletter
+\@ifundefined{Houtput}{}{%
+\renewenvironment{Houtput}%
+{\vspace{5pt}\hspace{1em}
+\begin{minipage}[b]{.95\textwidth}%
+\color{midnightblue}\bfseries}%
+{\end{minipage}%
+\vspace{5pt}}%
+}
+\makeatother
+
+% put table of contents on two columns
+\usepackage[toc]{multitoc}
+
+\SweaveOpts{keep.source=TRUE}
+<<options, echo=FALSE>>=
+options(prompt=' ')
+options(continue=' ')
+set.seed(123456)
+if( Sys.info()['user'] == 'renaud' ) .libPaths(c('./loclib', .libPaths()))
+library(NMF)
+@
+
+\setkeys{Gin}{width=0.95\textwidth}
+
+\begin{document}
+% \VignetteIndexEntry{NMF: generating heatmaps}
+% \VignetteDepends{NMF}
+% \VignetteKeyword{aplot}
+
+\title{Generating heatmaps for Nonnegative Matrix Factorization\\
+\small Package \nmfpack\ - Version \Sexpr{NMF:::nmfInfo()}}
+\author{Renaud Gaujoux}
+
+\maketitle
+
+\begin{abstract}
+This vignette describes how to produce different informative heatmaps from NMF objects, 
+such as returned by the function \Rcode{nmf} in the package \nmfpack \cite{Gaujoux2010}.
+The main drawing engine is implemented by the function \Rcode{aheatmap}, which is 
+a modification of the function \Rcode{pheatmap} from the package \Rcode{pheatmap} 
+\cite{pheatmap}, and provides convenient and quick ways of producing high quality
+and customizable annotated heatmaps.
+Currently this function is part of the package \nmfpack, but may eventually 
+compose a separate package by itself.
+\end{abstract}
+
+{\small \tableofcontents}
+
+\section{Preliminaries}
+
+\subsection{Quick reminder on NMF models}
+
+Given a nonnegative target matrix $X$ of dimension $n\times p$, NMF algorithms 
+aim at finding a rank $k$ approximation of the form:
+$$
+X \approx W H,
+$$
+where $W$ and $H$ are nonnegative matrices of dimensions $n\times k$ and $k\times p$ 
+respectively.
+
+The matrix $W$ is the basis matrix, whose columns are the basis components.
+The matrix $H$ is the mixture coefficient or weight matrix, whose columns contain 
+the contribution of each basis component to the corresponding column of $X$.
+We call the rows of $H$ the basis profiles.
+
+\subsection{Heatmaps for NMF}
+
+Because NMF objects essentially wrap up a pair of matrices, heatmaps are convenient 
+to visualise the results of NMF runs. 
+The package \nmfpack provides several specialised heatmap functions, designed to produce 
+heatmaps with sensible default configurations according to the data being drawn.
+Being all based on a common drawing engine they share almost identical interfaces 
+and capabilities.
+The Following specialised functions are currently implemented:
+
+\begin{description}
+\item[\Rcode{basismap}] draws heatmaps of the basis matrix 
+\item[\Rcode{coefmap}] draws heatmaps of the mixture coefficient matrix
+\item[\Rcode{consensusmap}] draws heatmaps of the consensus matrix, for results 
+of multiple NMF runs.
+\end{description}
+
+\subsection{Heatmap engine}
+
+All the above functions eventually call a common heatmap engine, with 
+different default parameters, chosen to be relevant for the given underlying data.
+The engine is implemented by the function \Rcode{aheatmap}. 
+Its development started as modification of the function \Rcode{pheatmap} from 
+the package \Rcode{pheatmap} \cite{pheatmap}. 
+The initial objective was to improve and increase its capabilities, as well as 
+a defining a simplified interface, more consistent with the R core function \Rcode{heatmap}.
+We eventually aim at providing a general, flexible, powerful and easy to use engine 
+for drawing annotated heatmaps.
+  
+The function \Rcode{aheatmap} has many advantages compared to other heatmap functions 
+such as \Rcode{heatmap}, \Rcode{gplots::heatmap2}, \Rcode{heatmap.plus::heatmap.plus} 
+, or even \Rcode{pheatmap}:
+
+\begin{itemize}
+\item Annotations: unlimited number of annotation tracks can be added to 
+\emph{both} columns and rows, with automated colouring for categorical and 
+numeric variables.
+\item Compatibility with both base and grid graphics: the function can be 
+directly called in drawing contexts such as grid, mfrow or layout.
+This is a feature many R users were looking for, and that was strictly 
+impossible with base heatmaps.
+\item Legends: default automatic legend and colouring;
+\item Customisation: clustering methods, annotations, colours and legend can all 
+be customised, even separately for rows and columns;
+\item Convenient interface: many arguments provide multiple ways of 
+specifying their value(s), which speeds up developping/writing and reduce the 
+amount of code required to generate customised plots (e.g. see \ref{sec:colour_spec}).
+\item Aesthetics: the heatmaps look globally cleaner, the image and text components 
+are by default well proportioned relatively to each other, and all fit within 
+the graphic device.
+\end{itemize}
+
+\subsection{Data and model}
+\label{sec:data}
+
+For the purpose of illustrating the use of each heatmap function, we generate a 
+random target matrix, as well as some annotations or covariates:
+
+<<data>>=
+# random data matrix
+X <- rmatrix(100,20)
+
+# row annotations and covariates
+n <- nrow(X)
+d <- rnorm(n)
+e <- unlist(mapply(rep, c('Brain', 'Muscle', 'Skin'), 10))
+e <- c(e, rep(NA, n-length(e)))
+
+# column annotations and covariates
+p <- ncol(X)
+a <- sample(c('alpha', 'beta', 'gamma'), p, replace=TRUE)
+b <- sample(letters[10:15], p, replace=TRUE)
+c <- rnorm(p)
+# gather them in a data.frame
+covariates <- data.frame(a, b, c)
+	
+@
+
+Then, we fit an NMF model using multiple runs:
+
+<<model, cache=TRUE>>=
+	res <- nmf(X, 3, nrun=10)
+	res
+@
+
+\nbnote{To keep the vignette simple, we always use the default NMF method 
+(i.e. \Rcode{'brunet'}), but all steps could be performed using a different method, 
+or multiple methods in order to compare their perfromances.}
+
+\section{Mixture Coefficient matrix: \Rcode{coefmap}}
+
+The basis matrix of the result can be plotted using the function \Rcode{coefmap}.
+The default behaviour for multiple NMF runs is to add two annotation tracks that 
+show the clusters obtained by the best fit and the hierarchical clustering of 
+the consensus matrix\footnote{The hierarchical clustering is computed using the 
+consensus matrix itself as a similarity measure, and average linkage. See \Rcode{?consensusmap}.}. 
+In the legend, these tracks are named \emph{basis} and \emph{consensus} respectively.
+For single NMF run or NMF model objects, no consensus data are available, and 
+only the clusters from the fit are displayed.
+
+\SweaveOpts{width=14,height=7}
+<<coefmap_res, fig=TRUE>>=
+opar <- par(mfrow=c(1,2))
+# coefmap from multiple run fit: includes a consensus track
+coefmap(res)
+# coefmap of a single run fit: no consensus track
+coefmap(minfit(res))
+par(opar)
+@
+
+\nbnote{Note how both heatmaps were drawn on the same plot, simply using the standard 
+call to \Rcode{par(mfrow=c(1,2)}.
+This is impossible to achieve with the R core function \Rcode{heatmap}.
+See section \ref{sec:aheatmap} for more details about compatibility with base 
+and grid graphics.}
+
+By default:
+\begin{itemize}
+\item the rows are not ordered;
+\item the columns are grouped by the clusters defined by the dominant basis 
+component for each column;
+\item each column is scaled to sum up to one;
+\item the color palette used is \Rcode{'YlOrRd'} from the package 
+\Rcode{RColorBrewer} \cite{RColorBrewer}.
+\end{itemize}
+
+In term of arguments passed to the heatmap engine \Rcode{aheatmap}, these default 
+settings translate as:
+
+<<coefmap_default, eval=FALSE>>=
+	Rowv = NA
+	Colv = order(as.numeric(predict(object)))
+	scale = 'c1'
+	color = 'YlOrRd'
+@
+
+Since the ordering does not come from hierarchical clustering, no dendrogram is displayed.
+The default behaviour of \Rcode{aheatmap} can be obtained by setting arguments 
+\Rcode{Rowv=TRUE, Colv=TRUE, scale='none'}.
+
+\medskip
+The automatic annotation tracks can be hidden all together by setting argument 
+\Rcode{tracks=NA}, displayed separately by passing only one of the given names 
+(e.g. \Rcode{tracks='basis'}), and their legend names may be changed by specifying e.g. 
+\Rcode{tracks=c(Metagene='basis', 'consensus')}.
+Beside this, they are handled by the heatmap engine function \Rcode{aheatmap} 
+and can be customised as any other annotation tracks -- that can be added via 
+argument \Rcode{annCol} (see \ref{sec:aheatmap} or \Rcode{?aheatmap} for more details).
+
+<<coefmap_custom, fig=TRUE>>=
+opar <- par(mfrow=c(1,2))
+# removing all automatic annotation tracks
+coefmap(res, tracks=NA)
+# customized plot
+coefmap(res, Colv = 'euclidean'
+	, main = "Metagene contributions in each sample", labCol = NULL
+	, tracks = c(Metagene='basis'), annCol = list(Class=a, Index=c)
+	, annColors = list(Metagene='Set2')
+	, info = TRUE)
+par(opar)
+@
+
+\nbnote{The feature that allows to display some information about the fit 
+at the bottom of the plot via argument \Rcode{info=TRUE} is still experimental.
+It is helpful mostly when developping algorithms or doing an analysis, but 
+would seldom be used in publications.}
+
+\section{Basis matrix: \Rcode{basismap}}
+
+The basis matrix can be plotted using the function \Rcode{basismap}. 
+The default behaviour is to add an annotation track that shows for each row 
+the dominant basis component.
+That is, for each row, the index of the basis component with the highest 
+loading.
+
+Again, the track can be disabled by setting \Rcode{tracks=NA}, and extra 
+row annotations can be added using argument \Rcode{annRow}.
+
+<<basismap_res, fig=TRUE>>=
+opar <- par(mfrow=c(1,2))
+# default plot
+basismap(res)
+# customized plot
+basismap(res, main="Metagenes", annRow=list(Var=d, Markers=e))
+par(opar)
+@
+
+By default:
+\begin{itemize}
+\item the columns are not ordered;
+\item the rows are ordered by hierarchical clustering using default distance and 
+linkage methods (\Rcode{'eculidean'} and \Rcode{'complete'});
+\item each row is scaled to sum up to one;
+\item the color palette used is \Rcode{'YlOrRd'} from the package 
+\Rcode{RColorBrewer} \cite{RColorBrewer}.
+\end{itemize}
+
+In term of arguments passed to the heatmap engine \Rcode{aheatmap}, these default 
+settings translate as:
+
+<<basismap_default, eval=FALSE>>=
+	Colv = NA
+	scale = 'r1'
+	color = 'YlOrRd'
+@
+
+\section{Consensus matrix: \Rcode{consensusmap}}
+
+When doing clustering with NMF, a common way of assessing the stability of the 
+clusters obtained for a given rank is to consider the consensus matrix 
+computed over multiple independent NMF runs, which is the average of the connectivity 
+matrices of each separate run
+\footnote{Hence, stability here means robustness with regards to the initial starting point, 
+and shall not be interpreted as in e.g. cross-validation/bootstrap analysis. 
+However, one can argue that having very consistent clusters across runs somehow supports 
+for a certain regularity or the presence of an underlying pattern in the data.}.
+This procedure is usually repeated over a certain range of factorization ranks, 
+and the results are compared to identify which rank gives the best clusters, 
+possibly in the light of some extra knowledge one could have about the samples 
+(e.g. covariates).
+The functions \Rcode{nmf} and \Rcode{consensusmap} make it easy to implement 
+this whole process.
+
+\nbnote{The consensus plots can also be generated for fits obtained from single NMF runs, 
+in which case the consensus matrix simply reduces to a single connectivity matrix. 
+This is a binary matrix (i.e. entries are either 0 or 1), that will always produce 
+a bi-colour heatmap, and by default clear blocks for each cluster.}
+
+\subsection{Single fit}
+In section \ref{sec:data}, the NMF fit \Rcode{res} was computed with argument 
+\Rcode{nrun=10}, and therefore contains the best fit over 10 runs, as well as 
+the consensus matrix computed over all the runs
+\footnote{If one were interested in keeping the fits from all the runs, the 
+function \Rcode{nmf} should have been called with argument \Rcode{.options='k'}.
+See section \emph{Options} in \Rcode{?nmf}.
+The downstream hanlding of the result would remain identical.}.
+This can be ploted using the function \Rcode{consensusmap}, which allows for the 
+same kind of customization as the other NMF heatmap functions:
+
+<<consensusmap_res, fig=TRUE>>=
+opar <- par(mfrow=c(1,2))
+# default plot
+consensusmap(res)
+# customized plot
+consensusmap(res, annCol=covariates, annColors=list(c='blue')
+		, labCol='sample ', main='Cluster stability'
+		, sub='Consensus matrix and all covariates')
+par(opar)
+@
+
+By default:
+\begin{itemize}
+\item the rows and columns of the consensus heatmap are symmetrically 
+ordered by hierarchical clustering using the consensus matrix as a similarity 
+measure and average linkage, and the associated dendrogram is displayed;
+\item the color palette used is the reverse of \Rcode{'RdYlBu'} from the package 
+\Rcode{RColorBrewer} \cite{RColorBrewer}.
+\end{itemize}
+
+In term of arguments passed to the heatmap engine \Rcode{aheatmap}, these default 
+settings translate as:
+
+<<cmap_default, eval=FALSE>>=
+	distfun = function(x) as.dist(1-x) # x being the consensus matrix
+	hclustfun = 'average'
+	Rowv = TRUE
+	Colv = "Rowv"
+	color = '-RdYlBu'
+@
+
+\subsection{Single method over a range of ranks}
+
+The function \Rcode{nmf} accepts a range of value for the rank (argument \Rcode{rank}), 
+making it fit NMF models for each value in the given range
+\footnote{Before version 0.6, this feature was provided by the function \Rcode{nmfEstimateRank}.
+From version 0.6, the function \Rcode{nmf} accepts ranges of ranks, and internally 
+calls the function \Rcode{nmfEstimateRank} -- that remains exported and can still 
+be called directly. 
+See documentation \Rcode{?nmfEstimateRank} for more details on the returned value.}:
+
+<<estimate, cache=TRUE>>=
+res2_7 <- nmf(X, 2:7, nrun=10, .options='v')
+class(res2_7)
+@
+
+The result \Rcode{res2\_7} is an S3 object of class \Rcode{'NMF.rank'}, 
+that contains -- amongst other data -- a list of the best fits obtained for each 
+value of the rank in range $\ldbrack 2, 7\rdbrack]$.
+The method of \Rcode{consensusmap} defined for class \Rcode{'NMF.rank'}, 
+which plots all the consensus matrices on the same plot: 
+
+<<consensusmap_estimate, fig=TRUE>>=
+consensusmap(res2_7)
+@
+
+\nbnote{ The main title of each consensus heatmap can be customized by passing 
+to argument \Rcode{main} a character vector or a list whose elements specify each title.
+All other arguments are used in each internal call to consensusmap, and will 
+therefore affect all the plots simultaneously.
+The layout can be specified via argument \Rcode{layout} as a numeric vector 
+giving the number of rows and columns in a \Rcode{mfrow}-like way, or as a 
+matrix that will be passed to R core function \Rcode{layout}.
+See \Rcode{?consensusmap} for more details and example code.
+}
+
+\subsection{Single rank over a range of methods}
+If one is interested in comparing methods, for a given factorization rank, then 
+on can fit an NMF model for each method by providing the function \Rcode{nmf} with 
+a \Rcode{list} in argument \Rcode{method}:
+
+<<fit_methods, cache=TRUE>>=
+res_methods <- nmf(X, 3, list('lee', 'brunet', 'nsNMF'), nrun=10)
+class(res_methods)
+@
+
+The result \Rcode{res\_methods} is an S4 object of class \Rcode{NMFList}, which 
+is essentially a named list, that contains each fits and the CPU time required 
+by the whole computation.
+As previously, the sequence of consensus matrices is plotted with \Rcode{consensusmap}:
+
+\SweaveOpts{width=10,height=7}
+<<consensusmap_methods, fig=TRUE>>=
+consensusmap(res_methods)	
+@
+
+\section{Generic heatmap engine: \Rcode{aheatmap}}
+\label{sec:aheatmap}
+
+\end{document}

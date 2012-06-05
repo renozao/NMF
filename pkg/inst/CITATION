@@ -19,7 +19,6 @@ citEntry(entry="Article"
 		, url = "http://www.biomedcentral.com/1471-2105/11/367"
 		, doi = "10.1186/1471-2105-11-367"
 		, issn = "1471-2105"
-		, note = vers
 		, textVersion =
 				paste("Renaud Gaujoux, Cathal Seoighe (2010)"
 					, "A flexible R package for nonnegative matrix factorization"

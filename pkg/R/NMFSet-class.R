@@ -195,7 +195,7 @@ as.NMFList <- function(..., unlist=FALSE){
 #' respectively handle the case where only the best fit is kept, and the case
 #' where the list of all the fits is returned.
 #' 
-#' See \code{\link{nmf-multiple}} for more details on the method arguments.
+#' See \code{\link{nmf}} for more details on the method arguments.
 #' 
 #' @slot runtime.all Object of class \code{proc_time} that contains CPU times 
 #' required to perform all the runs.
@@ -874,6 +874,7 @@ setMethod('minfit', 'NMFfitXn',
 #' 
 #' @param object an NMF model fitted by multiple runs. 
 #' @param FUN the function that computes the quantitative measure.
+#' @param ... extra arguments passed to \code{FUN}. 
 #' 
 #' @export
 #' @rdname advanced
@@ -1341,6 +1342,8 @@ NULL
 
 #' Compare multiple NMF fits passed as arguments.
 #' 
+#' @rdname nmf-compare
+#' 
 #' @examples
 #' 
 #' x <- rmatrix(20,10)
@@ -1372,6 +1375,7 @@ setMethod('compare', signature(object='NMFfitXn'),
 	}
 )
 #' Compares multiple NMF fits passed as a standard list.
+#' 
 #' @rdname nmf-compare
 #'  
 #' @examples

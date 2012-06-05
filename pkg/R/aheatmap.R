@@ -1,4 +1,5 @@
 #' @include atracks.R
+#' @include grid.R
 #' @include colorcode.R
 NULL
 
@@ -78,8 +79,10 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	}
 	
 	# Width of the annotation legend
-	annot_legend_width <- if( annotation_legend ) .annLegend.dim(annotation_colors, fontsize)
-			else unit(0, "npc")
+	annot_legend_width <- 
+		if( annotation_legend && !isNA(annotation_colors) ){ 
+			.annLegend.dim(annotation_colors, fontsize)
+		}else unit(0, "bigpts")
 
 	# Tree height
 	treeheight_col = unit(treeheight_col, "bigpts") + unit(5, "bigpts")
@@ -139,7 +142,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	cellwidth = convertWidth(unit(1, "npc"), "bigpts", valueOnly = T) / ncol
 	cellheight = convertHeight(unit(1, "npc"), "bigpts", valueOnly = T) / nrow
 	upViewport()
-	
+		
 	height <- as.numeric(convertHeight(sum(lo$height), "inches"))
 	width <- as.numeric(convertWidth(sum(lo$width), "inches"))
 	# Return minimal cell dimension in bigpts to decide if borders are drawn
@@ -193,7 +196,8 @@ draw_dendrogram = function(hc, horizontal = T){
 #	}
 	
 	.draw.dendrodram <- function(hc, ...){
-		suppressWarnings( opar <- par(plt = gridPLT(), new = TRUE) )
+#		suppressWarnings( opar <- par(plt = gridPLT(), new = TRUE) )
+		( opar <- par(plt = gridPLT(), new = TRUE) )
 		on.exit(par(opar))
 		if( getOption('verbose') ) grid.rect(gp = gpar(col = "blue", lwd = 2))
 		if( !is(hc, 'dendrogram') )
@@ -329,18 +333,6 @@ draw_annotation_legend = function(annotation_colors, border_color, ...){
 	}
 }
 
-tryViewport <- function(name){
-	vpo <- current.viewport()
-	vp <- try( seekViewport(name), silent=TRUE )
-	
-	res <- if( is(vp, 'try-error') ){
-		seekViewport(vpo$name)
-		NULL
-	}else vp
-	
-	invisible(res)
-}
-
 vplayout <- function ()
 {
 	graphic.name <- NULL
@@ -360,8 +352,7 @@ vplayout <- function ()
 				y$name <- name
 				return(pushViewport(y))			
 			}
-			if( verbose ) message("vp - lookup for ", name)
-			if( !is.null(tryViewport(name)) )
+			if( !is.null(tryViewport(name, verbose=verbose)) )
 				return()
 			
 			switch(x
@@ -420,25 +411,83 @@ gfile <- function(filename, width, height, ...){
 	do.call('f', args)	
 }
 
-#' Custom Access to Viewport Paths
-#' 
-#' This function was defined to substitute current.vpPath because this latter 
-#' calls grid.Call("L_currentViewport") which calls 'L_gridDirty' before 
-#' effectively calling 'L_currentViewport'. 
-#' This starts a new page (not sure why), which is not ok when writing to a 
-#' device that records each page (e.g. PDF or SVG)
-#' 
-current.vpPath2 <- function(){
-	names <- NULL
-	pvp <- .Call('L_currentViewport', PACKAGE='grid')
-	if( is.null(pvp) ) return(NULL)
-	while (!grid:::rootVP(pvp)) {
-		names <- c(names, pvp$name)
-		pvp <- pvp$parent
-	}
-	if (!is.null(names)) 
-		grid:::vpPathFromVector(rev(names))
-	else names	
+gt <- function(){
+	
+	x <- rmatrix(20, 10)
+	z <- unit(0.1, "npc")
+	w <- unit(0.4, "npc")
+	h <- unit(0.3, "npc")
+	lo <- grid.layout(nrow = 7, ncol = 6
+			, widths = unit.c(z, z, w, z, z, z)
+			, heights = unit.c(z, z,  z, h, z, z, z))
+	
+	nvp <- 0
+	on.exit( upViewport(nvp) )
+	
+	u <- vplayout(NULL)
+	vname <- function(x) basename(tempfile(x))
+
+	hvp <- viewport( name=u, layout = lo)
+	pushViewport(hvp)
+	nvp <- nvp + 1
+	
+	pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 3, name='test'))
+	#vplayout('mat')
+	nvp <- nvp + 1
+	
+	grid.rect()
+	NULL
+}
+
+gt2 <- function(){
+	
+	x <- rmatrix(10, 5)
+	lo(NULL, NULL, nrow(x), ncol(x), cellheight = NA, cellwidth = NA
+			, treeheight_col=0, treeheight_row=0, legend=FALSE, main = NULL, sub = NULL, info = NULL
+			, annTracks=list(colors=NA, annRow=NA, annCol=NA), annotation_legend=FALSE
+			, fontsize=NULL, fontsize_row=NULL, fontsize_col=NULL)
+	
+	#vplayout('mat')
+	vname <- function(x) basename(tempfile(x))
+	pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 3, name=vname('test')))
+	print(current.vpPath())
+	grid.rect()
+	upViewport(2)
+	NULL
+}
+
+d <- function(x){
+	
+	if( is.character(x) ) x <- rmatrix(dim(x))
+	
+	nvp <- 0
+	on.exit(upViewport(nvp), add=TRUE)
+	lo <- grid.layout(nrow = 4, ncol = 3)
+	hvp <- viewport( name=basename(tempfile()), layout = lo)
+	pushViewport(hvp)
+	nvp <- nvp + 1
+	
+	pushViewport(viewport(layout.pos.row = 2, layout.pos.col = 1))
+	nvp <- nvp + 1
+	w = convertWidth(unit(1, "npc"), "bigpts", valueOnly = T) / 10
+	h = convertHeight(unit(1, "npc"), "bigpts", valueOnly = T) / 10
+	grid.rect()
+	upViewport()
+	nvp <- nvp - 1
+	
+	pushViewport(viewport(layout.pos.row = 1, layout.pos.col = 2))
+	nvp <- nvp + 1
+	# add inner padding viewport
+	pushViewport( viewport(x=0,y=0,width=0.9,height=0.9,just=c("left", "bottom")) )
+	nvp <- nvp + 1
+	
+	( opar <- par(plt = gridPLT(), new = TRUE) )
+	on.exit(par(opar), add=TRUE)
+		
+	hc <- hclust(dist(x))
+	plot(as.dendrogram(hc), xaxs="i", yaxs="i", axes=FALSE, leaflab="none")
+	
+	invisible(basename(tempfile()))
 }
 
 heatmap_motor = function(matrix, border_color, cellwidth, cellheight
@@ -474,20 +523,29 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 		# if in in mfrow/layout context: setup fake-ROOT viewports with gridBase
 		# and do not call plot.new as it is called in grid.base.mix. 
 		new <- if( !identical(mf, c(1L,1L)) ){ 
-			if( verbose ) message("Detected mfrow: ", mf[1], " - ", mf[2])
+			if( verbose ) message("Detected mfrow: ", mf[1], " - ", mf[2], ' ... MIXED')
 			opar <- grid.base.mix(trace=verbose>1)
 			on.exit( grid.base.mix(opar) )
 			FALSE
 		}		
-		else new
+		else{
+			if( verbose ){
+				message("Detected mfrow: ", mf[1], " - ", mf[2])
+				message("Honouring ", if( missing(new) ) "default "
+						,"argument `new=", new, '` ... '
+						, if( new ) "NEW" else "OVERLAY")				
+			}
+			new
+		}
 	}else{
 		if( verbose ) message("Detected path: ", vpp)
 		# if new is not specified: change the default behaviour by not calling 
 		# plot.new so that drawing occurs in the current viewport
 		if( missing(new) ){
-			if( verbose ) message("Force no new plot")
+			if( verbose ) message("Missing argument `new` ... OVERLAY")
 			new <- FALSE
-		}
+		}else if( verbose ) message("Honouring argument `new=", new, '` ... '
+									, if( new ) "NEW" else "OVERLAY")
 	}
 	# reset device if necessary or requested
 	if( new ){
@@ -564,7 +622,8 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	#vplayout(3, 2)
 	vplayout('mat')
 	draw_matrix(matrix, border_color)
-	#grid.imageGrob(nrow(matrix), ncol(matrix), matrix, byrow=FALSE, gp=gpar(col=border_color))
+	#d(matrix)
+	#grid.rect()
 	upViewport()
 
 	# Draw colnames
@@ -601,7 +660,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	}
 	
 	# Draw annotation legend
-	if( annotation_legend ){
+	if( annotation_legend && !isNA(annotation_colors) ){
 		#vplayout(3, 5)
 		vplayout('aleg')
 		draw_annotation_legend(annotation_colors, border_color, fontsize = fontsize, ...)
@@ -638,11 +697,16 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	}
 		
 	# return current vp tree
-	ct <- current.vpTree()
+	#ct <- current.vpTree()
+	#print(current.vpPath())
+	upViewport()
+	#popViewport()
 	
-	popViewport()
-	
-	ct
+	# grab current grob and return
+#	gr <- grid.grab()
+#	grid.draw(gr)
+	#ct
+	NULL
 }
 
 generate_breaks = function(x, n, center=NA){
@@ -1761,7 +1825,7 @@ aheatmap = function(x
 		cbreaks <- if( isNumber(breaks) ) breaks else NA
 		breaks = generate_breaks(as.vector(mat), length(color), center=cbreaks)
 	}
-	if (legend) {
+	if( isTRUE(legend) ){
 		if( verbose ) message("Generate data legend breaks")
 		legend = grid.pretty(range(as.vector(breaks)))
 	}

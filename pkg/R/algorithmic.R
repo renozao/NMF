@@ -13,7 +13,7 @@
 #' This interface builds upon the broad definition of an algorithm as a workhorse function
 #' to which is associated auxiliary objects such as an underlying model or an objective function 
 #' that measures the adequation of the model with observed data.
-#' It aims at complementing the interface provided by the package \code{\link[NMF]{stats}}. 
+#' It aims at complementing the interface provided by the \code{\link{stats}} package. 
 #' 
 #' @section Interface fo NMF algorithms:
 #' This interface is implemented for NMF algorithms by the classes \code{\link{NMFfit}}, 

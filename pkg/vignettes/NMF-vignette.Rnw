@@ -1,0 +1,9 @@
+\documentclass[10pt]{article}
+%\VignetteIndexEntry{Using the package NMF}
+%\VignetteDepends{NMF,Biobase,bigmemory,xtable}
+%\VignetteKeyword{math}
+\usepackage{url}
+\usepackage[colorlinks]{hyperref}
+
+\begin{document}
+\end{document}

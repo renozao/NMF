@@ -220,18 +220,19 @@ RNGinfo <- function(object=getRNG(), indent=''){
 #' The functions documented here provide a unified interface to work with 
 #' RNG settings.
 #' 
-#' \code{getRNG} is an S4 generic that returns the Random Number Generator (RNG) 
-#' settings used for computing an object.
+#' \code{getRNG} returns the Random Number Generator (RNG) settings used for 
+#' computing an object, using a suitable \code{.getRNG} method to extract 
+#' these settings.
 #' For example, in the case of results from multiple NMF runs, it returns the 
 #' RNG settings used to compute the best fit.
 #' 
 #' @param object an R object from which RNG settings can be extracted, e.g. an 
-#' integer vector containing a suitable value for \code{.Random.seed} or an 
-#' object returned by the function \code{\link{nmf}}.
-#' @param ... extra arguments passed to a suitable method \code{.getRNG}.
+#' integer vector containing a suitable value for \code{.Random.seed} or embedded 
+#' RNG data such objects returned by the function \code{\link{nmf}}.
+#' @param ... extra arguments to allow extension and passed to a suitable method \code{.getRNG}.
 #' 
-#' @return the RNG settings as a single integer vector as \code{\link{.Random.seed}} 
-#' or \code{NULL} if no RNG data was found.
+#' @return \code{getRNG} returns the RNG settings as a single integer vector as 
+#' \code{\link{.Random.seed}} or \code{NULL} if no RNG data was found.
 #' 
 #' @rdname rng
 #' @export
@@ -248,18 +249,9 @@ getRNG <- function(object, ...){
 	
 }
 
-#' \code{getRNG} is an S4 generic that returns the Random Number Generator (RNG) 
-#' settings used for computing an object.
-#' For example, in the case of results from multiple NMF runs, it returns the 
-#' RNG settings used to compute the best fit.
-#' 
-#' @param object an R object from which RNG settings can be extracted, e.g. an 
-#' integer vector containing a suitable value for \code{.Random.seed} or an 
-#' object returned by the function \code{\link{nmf}}.
-#' @param ... extra arguments to allow extension
-#' 
-#' @return the RNG settings as a single integer vector as \code{\link{.Random.seed}} 
-#' or \code{NULL} if no RNG data was found.
+#' \code{.getRNG} is an S4 generic that extract RNG settings from a variety of 
+#' object types.
+#' Its methods define the workhorse functions that are called by \code{getRNG}.
 #' 
 #' @rdname rng
 #' @export
@@ -312,7 +304,7 @@ setMethod('.getRNG', 'list',
 #			object	
 #		}
 #)
-#' Methods for numeric object, which returns the object itself, if it has more than one 
+#' Methods for numeric vectors, which returns the object itself, if it has more than one 
 #' element, coerced into an integer vector if necessary, as it is assumed to 
 #' already represent a value for \code{\link{.Random.seed}}.
 #' 
@@ -406,7 +398,7 @@ nextRNG <- function(object, ...){
 
 RNGshow <- .showRNG
 
-#' \code{setRNG} tries to extract RNG settings from \code{object} and use a 
+#' \code{setRNG} tries to extract RNG settings from \code{object}, using a 
 #' suitable \code{.setRNG} method to set these settings.
 #' All arguments are passed to the next call to \code{.setRNG}.
 #'
@@ -451,7 +443,7 @@ setRNG <- function(object, ..., verbose=FALSE){
 }
 
 #' \code{.setRNG} is an S4 generic that sets the current RNG settings, from a 
-#' variety of format.
+#' variety of specifications.
 #' Its methods define the workhorse functions that are called by \code{setRNG}.
 #' 
 #' @inline

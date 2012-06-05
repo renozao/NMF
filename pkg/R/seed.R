@@ -87,14 +87,8 @@ setReplaceMethod('algorithm', signature(object='NMFSeed', value='function'),
 setGeneric('NMFSeed', function(key, method, ...) standardGeneric('NMFSeed') )
 setMethod('NMFSeed', signature(key='character', method='ANY'), 
 	function(key, method, ...){
-		
-		# development/tracking trick 
-		if( !isNamespaceLoaded('NMF') ) overwrite <- TRUE 
-		if( isLoadingNamespace('NMF') ) verbose <- TRUE 
-		
 		# wrap function method into a new NMFSeed object
 		new('NMFSeed', name=key, method=method, ...)
-		
 	}
 )
 
@@ -102,7 +96,9 @@ setNMFSeed <- function(..., overwrite=FALSE, verbose=nmf.getOption('verbose')){
 		
 	# development/tracking trick 
 	if( !isNamespaceLoaded('NMF') ) overwrite <- TRUE 
-	lverbose <- verbose || isLoadingNamespace('NMF')
+	lverbose <- # if not specified: always when loading or in dev mode
+			if( missing(verbose) ) isLoadingNamespace() || !isNamespaceLoaded('NMF')
+			else verbose 
 	
 	# wrap function method into a new NMFSeed object
 	method <- NMFSeed(...)

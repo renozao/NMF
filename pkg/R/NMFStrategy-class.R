@@ -378,7 +378,9 @@ setNMFMethod <- function(..., overwrite=FALSE, verbose=nmf.getOption('verbose'))
 	
 	# development/tracking trick 
 	if( !isNamespaceLoaded('NMF') ) overwrite <- TRUE 
-	lverbose <- verbose || isLoadingNamespace('NMF')
+	lverbose <- # if not specified: always when loading or in dev mode
+			if( missing(verbose) ) isLoadingNamespace() || !isNamespaceLoaded('NMF')
+			else verbose
 	
 	# build the NMFStrategy object
 	method <- NMFStrategy(...)
