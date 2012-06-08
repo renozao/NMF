@@ -13,9 +13,7 @@
 \alias{algorithm<-,NMFStrategyFunction,function-method}
 \alias{algorithm,NMFStrategyFunction-method}
 \alias{compare}
-\alias{compare,list-method}
 \alias{compare-methods}
-\alias{compare,NMFfit-method}
 \alias{compare,NMFfitXn-method}
 \alias{logs}
 \alias{logs,ANY-method}
@@ -44,13 +42,8 @@
 \alias{objective<--methods}
 \alias{objective-methods}
 \alias{objective<-,NMFfit,ANY-method}
-\alias{objective<-,NMFStrategy,character-method}
-\alias{objective<-,NMFStrategy,function-method}
 \alias{run}
 \alias{run-methods}
-\alias{run,NMFStrategyFunction,matrix,NMFfit-method}
-\alias{run,NMFStrategy,matrix,NMFfit-method}
-\alias{run,NMFStrategy,matrix,NMF-method}
 \alias{runtime}
 \alias{runtime.all}
 \alias{runtime.all-methods}
@@ -62,7 +55,7 @@
 \alias{seeding<-}
 \alias{seeding<--methods}
 \alias{seeding-methods}
-\alias{seeding<-,NMFfit,ANY-method}
+\alias{seeding<-,NMFfit-method}
 \alias{seeding,NMFfit-method}
 \alias{seeding,NMFfitXn-method}
 \alias{seqtime}
@@ -125,8 +118,7 @@
   auxiliary objects such as an underlying model or an
   objective function that measures the adequation of the
   model with observed data. It aims at complementing the
-  interface provided by the package
-  \code{\link[NMF]{stats}}.
+  interface provided by the \code{\link{stats}} package.
 }
 \details{
   \code{algorithm} and \code{algorithm<-} get/set an object
@@ -159,7 +151,7 @@
 
   \code{runtime} returns the CPU time required to compute
   an object. This would generally be an object of class
-  \code{\link{proc_time}}.
+  \code{\link[=proc.time]{proc_time}}.
 
   \code{runtime.all} returns the CPU time required to
   compute a collection of objects, e.g. a sequence of
@@ -224,15 +216,9 @@
   value = "function")}: Sets the workhorse function of the
   seeding method described by \code{object}. }
 
-  \item{compare}{\code{signature(object = "NMFfit")}:
-  Compare multiple NMF fits passed as arguments. }
-
   \item{compare}{\code{signature(object = "NMFfitXn")}:
   Compares the fits obtained by separate runs of NMF, in a
   single call to \code{\link{nmf}}. }
-
-  \item{compare}{\code{signature(object = "list")}:
-  Compares multiple NMF fits passed as a standard list. }
 
   \item{logs}{\code{signature(object = "ANY")}: Default
   method that returns the value of attribute/slot
@@ -330,59 +316,6 @@
   See \code{\link{objective,NMFfit-method}} for more
   details. }
 
-  \item{objective}{\code{signature(object =
-  "NMFStrategy")}: Gets the objective function associated
-  with an NMF algorithm, or computes the objective value
-  for an NMF model with respect to a given target matrix.
-
-  See \code{\link{objective,NMFStrategy-method}} for more
-  details. }
-
-  \item{objective<-}{\code{signature(object =
-  "NMFStrategy", value = "character")}: Sets the objective
-  function associated with an NMF algorithm, with a
-  character string that must be a registered objective
-  function. }
-
-  \item{objective<-}{\code{signature(object =
-  "NMFStrategy", value = "function")}: Sets the objective
-  function associated with an NMF algorithm, with a
-  function that computes the approximation error between an
-  NMF model and a target matrix. }
-
-  \item{run}{\code{signature(object = "NMFStrategy", y =
-  "matrix", x = "NMFfit")}: Pure virtual method defined for
-  all NMF algorithms to ensure that a method \code{run} is
-  defined by sub-classes of \code{NMFStrategy}.
-
-  It throws an error if called directly. }
-
-  \item{run}{\code{signature(object = "NMFStrategy", y =
-  "matrix", x = "NMF")}: Method to run an NMF algorithm
-  directly starting from a given NMF model. }
-
-  \item{run}{\code{signature(object =
-  "NMFStrategyFunction", y = "matrix", x = "NMFfit")}: Runs
-  the NMF algorithms implemented by the single R function
-  -- and stored in slot \code{'algorithm'} of
-  \code{object}, on the data object \code{y}, using
-  \code{x} as starting point. It is equivalent to calling
-  \code{object@algorithm(y, x, ...)}.
-
-  This method is usually not called directly, but only via
-  the function \code{\link{nmf}}, which takes care of many
-  other details such as seeding the computation, handling
-  RNG settings, or setting up parallelisation. }
-
-  \item{run}{\code{signature(object =
-  "NMFStrategyIterative", y = "matrix", x = "NMFfit")}:
-  Runs an NMF iterative algorithm on a target matrix
-  \code{y}.
-
-  See
-  \code{\link{run,NMFStrategyIterative,matrix,NMFfit-method}}
-  for more details. }
-
   \item{runtime}{\code{signature(object = "NMFfit")}:
   Returns the CPU time required to compute a single NMF
   fit. }
@@ -461,14 +394,6 @@
 modelname(nmfModel(3))
 modelname(nmfModel(3, model='NMFns'))
 modelname(nmfModel(3, model='NMFOffset'))
-x <- rmatrix(20,10)
-res <- nmf(x, 3)
-res2 <- nmf(x, 2, 'lee')
-
-# compare arguments
-compare(res, res2, target=x)
-# compare elements of a list
-compare(list(res, res2), target=x)
 # get the type of model(s) associated with an NMF algorithm
 modelname( nmfAlgorithm('brunet') )
 modelname( nmfAlgorithm('nsNMF') )

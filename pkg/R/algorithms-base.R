@@ -49,7 +49,7 @@ NULL
 ###% NMF divergence update equations :
 ###% Lee, D..D., and Seung, H.S., (2001), 'Algorithms for Non-negative Matrix 
 ###% Factorization', Adv. Neural Info. Proc. Syst. 13, 556-562.
-R_nmf.update.brunet <- function(i, v, data, eps=.Machine$double.eps, ...)
+nmf_update.brunet_R <- function(i, v, data, eps=.Machine$double.eps, ...)
 {
 	# retrieve each factor
 	w <- basis(data); h <- coef(data);
@@ -77,10 +77,10 @@ R_nmf.update.brunet <- function(i, v, data, eps=.Machine$double.eps, ...)
 # Brunet (R version)
 setNMFMethod('.R#brunet'
 			, objective='KL' 
-			, Update=R_nmf.update.brunet
+			, Update=nmf_update.brunet_R
 			, Stop='connectivity')
 
-nmf.update.brunet <- function(i, v, data, copy=FALSE, eps=.Machine$double.eps, ...)
+nmf_update.brunet <- function(i, v, data, copy=FALSE, eps=.Machine$double.eps, ...)
 {
 	# retrieve each factor
 	w <- basis(data); h <- coef(data);	
@@ -110,7 +110,7 @@ nmf.update.brunet <- function(i, v, data, copy=FALSE, eps=.Machine$double.eps, .
 }
 
 # Brunet (optimised version)
-setNMFMethod('brunet', '.R#brunet', Update=nmf.update.brunet)
+setNMFMethod('brunet', '.R#brunet', Update=nmf_update.brunet)
 
 ################################################################################
 # LEE (standard Euclidean-based NMF)
@@ -119,7 +119,7 @@ setNMFMethod('brunet', '.R#brunet', Update=nmf.update.brunet)
 ###% Multiplicative update for reducing the euclidean distance.
 ###%
 ###% 
-R_nmf.update.lee <- function(i, v, data, rescale=TRUE, eps=10^-9, ...)
+nmf_update.lee_R <- function(i, v, data, rescale=TRUE, eps=10^-9, ...)
 {
 	# retrieve each factor
 	w <- basis(data); h <- coef(data);	
@@ -152,10 +152,10 @@ R_nmf.update.lee <- function(i, v, data, rescale=TRUE, eps=10^-9, ...)
 
 # Lee (R version)	
 setNMFMethod('.R#lee', objective='euclidean'
-			, Update=R_nmf.update.lee
+			, Update=nmf_update.lee_R
 			, Stop='connectivity')	
 
-nmf.update.lee <- function(i, v, data, rescale=TRUE, copy=FALSE, eps=10^-9, ...)
+nmf_update.lee <- function(i, v, data, rescale=TRUE, copy=FALSE, eps=10^-9, ...)
 {
 	# retrieve each factor
 	w <- basis(data); h <- coef(data);	
@@ -183,7 +183,7 @@ nmf.update.lee <- function(i, v, data, rescale=TRUE, copy=FALSE, eps=10^-9, ...)
 }
 
 # Lee (optimised version)	
-setNMFMethod('lee', '.R#lee', Update=nmf.update.lee)
+setNMFMethod('lee', '.R#lee', Update=nmf_update.lee)
 
 ################################################################################
 # OFFSET (Euclidean-based NMF with offset) [Badea (2008)]
@@ -192,11 +192,11 @@ setNMFMethod('lee', '.R#lee', Update=nmf.update.lee)
 
 # Updates for NMF with offset
 # H
-offset.std.euclidean.update.h <- function(v, w, h, offset, eps=10^-9, copy=TRUE){
+nmf_update.euclidean_offset.h <- function(v, w, h, offset, eps=10^-9, copy=TRUE){
 	.Call("offset_euclidean_update_H", v, w, h, offset, eps, copy, PACKAGE='NMF')
 }
 # W
-offset.std.euclidean.update.w <- function(v, w, h, offset, eps=10^-9, copy=TRUE){
+nmf_update.euclidean_offset.w <- function(v, w, h, offset, eps=10^-9, copy=TRUE){
 	.Call("offset_euclidean_update_W", v, w, h, offset, eps, copy, PACKAGE='NMF')
 }
 
@@ -205,7 +205,7 @@ offset.std.euclidean.update.w <- function(v, w, h, offset, eps=10^-9, copy=TRUE)
 ###% The method is a modified version of Lee's method that also fits an offset 
 ###% vector which model a common expression baseline for each gene accross all 
 ###% samples.
-R_nmf.update.offset <- function(i, v, data, eps=10^-9, ...)
+nmf_update.offset_R <- function(i, v, data, eps=10^-9, ...)
 {	
 	# retrieve each factor
 	w <- basis(data); h <- coef(data);
@@ -221,7 +221,7 @@ R_nmf.update.offset <- function(i, v, data, eps=10^-9, ...)
 	
 	h <- R_std.euclidean.update.h(v, w, h, wh=w%*%h + off, eps=eps)
 	w <- R_std.euclidean.update.w(v, w, h, wh=w%*%h + off, eps=eps)
-	#data <- nmf.update.lee(i, v, data, rescale=FALSE, ...)
+	#data <- nmf_update.lee(i, v, data, rescale=FALSE, ...)
 	
 	# update the offset	
 	# V0_i = V0_i ( sum_j V_ij ) / ( sum_j (V.off + W H)_ij )
@@ -235,10 +235,10 @@ R_nmf.update.offset <- function(i, v, data, eps=10^-9, ...)
 # NMF with offset (R version)
 setNMFMethod('.R#offset', objective='euclidean'
 		, model = 'NMFOffset'
-		, Update=R_nmf.update.offset
+		, Update=nmf_update.offset_R
 		, Stop='connectivity')
 
-nmf.update.offset <- function(i, v, data, copy=FALSE, eps=10^-9, ...)
+nmf_update.offset <- function(i, v, data, copy=FALSE, eps=10^-9, ...)
 {	
 	# retrieve each factor
 	w <- basis(data); h <- coef(data);
@@ -251,8 +251,8 @@ nmf.update.offset <- function(i, v, data, copy=FALSE, eps=10^-9, ...)
 	#eps <- 10^-9
 	
 	# compute standard offset updates
-	h <- offset.std.euclidean.update.h(v, w, h, off, eps=eps, copy=copy)
-	w <- offset.std.euclidean.update.w(v, w, h, off, eps=eps, copy=copy)
+	h <- nmf_update.euclidean_offset.h(v, w, h, off, eps=eps, copy=copy)
+	w <- nmf_update.euclidean_offset.w(v, w, h, off, eps=eps, copy=copy)
 	
 	# update the offset	
 	# V0_i = V0_i ( sum_j V_ij ) / ( sum_j (V.off + W H)_ij )
@@ -267,22 +267,70 @@ nmf.update.offset <- function(i, v, data, copy=FALSE, eps=10^-9, ...)
 }
 
 # NMF with offset (optimised version)
-setNMFMethod('offset', '.R#offset', Update=R_nmf.update.offset)
+setNMFMethod('offset', '.R#offset', Update=nmf_update.offset)
 
 ################################################################################
 # Non-smooth NMF (KL-based NMF) [Pascual-Montano (2006)]
 ################################################################################
 
-###% Multiplicative update for Nonsmooth Nonnegative Matrix Factorization (nsNMF).
-###%
-###% The update rules are essentialy the same as in Brunet, but WH is replaced by WSH 
-###% whereas W (resp. H) is replaced by WS (resp. SH) in the update of H (resp. of W).
-###%
-###% @references 
-###% Alberto Pascual-Montano et al. (2006), 'Nonsmooth Nonnegative Matrix Factorization (nsNMF)'
-###% , IEEE Transactions On Pattern Analysis And Machine Intelligence, Vol. 28, No. 3, March 2006 403
-###%
-R_nmf.update.ns <- function(i, v, data, ...)
+#' NMF Multiplicative Update for Nonsmooth Nonnegative Matrix Factorization (nsNMF).
+#' 
+#' These update rules, defined for the \code{nsNMF} model \eqn{V \approx W S H} from 
+#' \cite{Pascual-Montano2006}, that introduces an intermediate smoothing matrix to enhance
+#' sparsity of the factors.  
+#' 
+#' \code{nmf_update.ns} computes the updated nsNMF model.
+#' It uses the optimized \emph{C++} implementations \code{\link{nmf_update.KL.w}} and 
+#' \code{\link{nmf_update.KL.h}} to update \eqn{W} and \eqn{H} respectively.
+#' 
+#' @details
+#' The multiplicative updates are based on the updates proposed by \cite{Brunet2004}, 
+#' except that the NMF estimate \eqn{W H} is replaced by \eqn{W S H} and \eqn{W} 
+#' (resp. \eqn{H}) is replaced by \eqn{W S} (resp. \eqn{S H}) in the update of 
+#' \eqn{H} (resp. \eqn{W}).
+#' 
+#' See \code{\link{nmf_update.KL}} for more details on the update formula.
+#' 
+#' @param i current iteration
+#' @param v target matrix
+#' @param data current NMF model
+#' @param copy logical that indicates if the update should be made in place 
+#' (\code{FALSE}) or on a copy of the current NMF model (\code{TRUE} - default).
+#' @param ... extra arguments to cope with arguments that are not aimed at this 
+#' function 
+#' 
+#' @return an \code{\linkS4class{NMFns}} model object.
+#' 
+#' @export
+#' @rdname nmf_update_ns
+nmf_update.ns <- function(i, v, data, copy=FALSE, ...)
+{
+	# retrieve and alter the factors for updating H
+	S <- smoothing(data)
+	w <- basis(data)
+	h <- coef(data);
+	
+	# standard divergence-reducing update for H with modified W
+	h <- std.divergence.update.h(v, w %*% S, h, copy=copy)
+	
+	# update H if not modified in place
+	if( copy ) coef(data) <- h
+	
+	# standard divergence-reducing update for W with modified H
+	w <- std.divergence.update.w(v, w, S %*% h, copy=copy)
+	
+	# rescale columns of W
+	w <- sweep(w, 2L, colSums(w), '/', check.margin=FALSE)
+	
+	#return the modified data
+	basis(data) <- w;
+	return(data)
+}
+#' \code{nmf_update.ns_R} implements the same updates in \emph{plain R}.
+#' 
+#' @export
+#' @rdname nmf_update_ns
+nmf_update.ns_R <- function(i, v, data, ...)
 {
 	# retrieve and alter the factors for updating H
 	S <- smoothing(data)
@@ -314,37 +362,12 @@ R_nmf.update.ns <- function(i, v, data, ...)
 	return(data)
 }
 
-
+## REGISTRATION
 # nsNMF (R version)
 setNMFMethod('.R#nsNMF', objective='KL'
 		, model='NMFns'
-		, Update=R_nmf.update.ns
+		, Update=nmf_update.ns_R
 		, Stop='connectivity')
 
-nmf.update.ns <- function(i, v, data, copy=FALSE, ...)
-{
-	# retrieve and alter the factors for updating H
-	S <- smoothing(data)
-	w <- basis(data)
-	h <- coef(data);
-	
-	# standard divergence-reducing update for H with modified W
-	h <- std.divergence.update.h(v, w %*% S, h, copy=copy)
-	
-	# update H if not modified in place
-	if( copy ) coef(data) <- h
-	
-	# standard divergence-reducing update for W with modified H
-	w <- std.divergence.update.w(v, w, S %*% h, copy=copy)
-	
-	# rescale columns of W
-	w <- sweep(w, 2L, colSums(w), '/', check.margin=FALSE)
-	
-	#return the modified data
-	basis(data) <- w;
-	return(data)
-}
-
-
 # nsNMF (optimised version)
-setNMFMethod('nsNMF', '.R#nsNMF', Update=R_nmf.update.ns)
+setNMFMethod('nsNMF', '.R#nsNMF', Update=nmf_update.ns)

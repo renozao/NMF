@@ -15,12 +15,12 @@
 \usage{
   nmfModel(rank, target = 0L, ...)
 
-  \S4method{nmfModel}{numeric,numeric}(rank, target = 0L,
+  \S4method{nmfModel}{numeric,numeric}(rank, target,
     ncol = NULL, model = "NMFstd", W, H, ...,
     force.dim = TRUE, order.basis = TRUE)
 
-  \S4method{nmfModel}{numeric,matrix}(rank, target = 0L,
-    ..., use.names = TRUE)
+  \S4method{nmfModel}{numeric,matrix}(rank, target, ...,
+    use.names = TRUE)
 
   nmfModels(builtin.only = FALSE)
 }
@@ -345,9 +345,9 @@ nmfModels(builtin.only=TRUE)
   \code{\link{basis<-}}, \code{\link{coef}},
   \code{\link{coef<-}}, \code{\link{coefficients}},
   \code{\link{loadings,NMF-method}}, \code{\link{misc}},
-  \code{\link{$<-,NMF,ANY,ANY-method}},
-  \code{\link{$,NMF,ANY-method}}, \code{\link{NMF-class}},
-  \code{\link{rnmf}}, \code{\link{scoef}}
+  \code{\link{NMF-class}}, \code{\link{$<-,NMF-method}},
+  \code{\link{$,NMF-method}}, \code{\link{rnmf}},
+  \code{\link{scoef}}
 }
 \keyword{methods}
 

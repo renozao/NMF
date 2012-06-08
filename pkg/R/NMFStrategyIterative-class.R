@@ -390,19 +390,56 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 # UPDATE METHODS
 ################################################################################################
 
-###% Standard multiplicative update for matrix \code{H} (i.e. the second factor) in a divergence based NMF.
-###% 
-###% The matrix \code{H} is updated as follows:
-###% \deqn{%
-###% H_{ij} \leftarrow H_{ij}  \frac{\left( sum_k \frac{W_ki V_kj}{(WH)_kj} \right)}{ sum_k W_ka }.%
-###% }
-###% 
-###% @refrences ﻿Lee, D., & Seung, H. (2001)
-###% , Algorithms for non-negative matrix factorization
-###% , Advances in neural information processing systems,
-###% http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization#0
-###% 
-R_std.divergence.update.h <- function(v, w, h, wh=NULL)
+#' NMF Multiplicative Updates for Kullback-Leibler Divergence
+#' 
+#' Multiplicative updates from \cite{Lee2001} for standard Nonnegative Matrix Factorization 
+#' models \eqn{V \approx W H}, where the distance between the target matrix and its NMF 
+#' estimate is measured by the Kullback-Leibler divergence.
+#' 
+#' \code{nmf_update.KL.w} and \code{nmf_update.KL.h} compute the updated basis and coefficient 
+#' matrices respectively.
+#' They use a \emph{C++} implementation which is optimised for speed and memory usage. 
+#' 
+#' @details
+#' The coefficient matrix (\code{H}) is updated as follows:
+#' \deqn{
+#' H_{kj} \leftarrow H_{kj}  \frac{\left( sum_i \frac{W_{ik} V_{ij}}{(WH)_{ij}} \right)}{ sum_i W_{ik} }.
+#' }{
+#' H_kj <- H_kj ( sum_i [ W_ik V_ij / (WH)_ij ] ) / ( sum_i W_ik )
+#' }
+#' 
+#' @param v target matrix
+#' @param w current basis matrix
+#' @param h current coefficient matrix
+#' @param copy logical that indicates if the update should be made on the original
+#' matrix directly (\code{FALSE}) or on a copy (\code{TRUE} - default).
+#' With \code{copy=FALSE} the memory footprint is very small, and some speed-up may be 
+#' achieved in the case of big matrices.
+#'
+#' @return a matrix of the same dimension as the input matrix to update 
+#' (i.e. \code{w} or \code{h}).
+#' If \code{copy=FALSE}, the returned matrix uses the same memory as the input object.
+#' 
+#' @author 
+#' Update definitions by \cite{Lee2001}. 
+#' 
+#' C++ optimised implementation by Renaud Gaujoux. 
+#' 
+#' @rdname nmf_update_KL
+#' @aliases nmf_update.KL
+#' @export
+nmf_update.KL.h <- std.divergence.update.h <- function(v, w, h, copy=TRUE)
+{	
+	.Call("divergence_update_H", v, w, h, copy, PACKAGE='NMF')
+}
+#' \code{nmf_update.KL.w_R} and \code{nmf_update.KL.h_R} implement the same updates 
+#' in \emph{plain R}.
+#' 
+#' @param wh already computed NMF estimate used to compute the denominator term.
+#' 
+#' @rdname nmf_update_KL
+#' @export   
+nmf_update.KL.h_R <- R_std.divergence.update.h <- function(v, w, h, wh=NULL)
 {	
 	# compute WH if necessary	
 	if( is.null(wh) ) wh <- w %*% h
@@ -411,24 +448,23 @@ R_std.divergence.update.h <- function(v, w, h, wh=NULL)
 	# H_au = H_au ( sum_i [ W_ia V_iu / (WH)_iu ] ) / ( sum_k W_ka ) -> each row of H is divided by a the corresponding colSum of W
 	h * crossprod(w, v / wh) / colSums(w)	
 }
-std.divergence.update.h <- function(v, w, h, copy=TRUE)
-{	
-	.Call("divergence_update_H", v, w, h, copy, PACKAGE='NMF')
-}
 
-###% Standard multiplicative update for matrix \code{W} (i.e. the second factor) in a divergence based NMF.
-###% 
-###% The matrix \code{W} is updated as follows:
-###% \deqn{%
-###% W_ij \leftarrow W_ij \frac{ sum_k [H_jk A_ik / (WH)_ik ] }{sum_k H_jk } %
-###% }
-###% 
-###% @refrences
-###% Lee, D..D., and Seung, H.S., (2001), 'Algorithms for Non-negative Matrix Factorization'
-###% , Advances in neural information processing systems 13, 556-562.
-###% , http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization#0
-###% 
-R_std.divergence.update.w <- function(v, w, h, wh=NULL)
+#' @details
+#' The basis matrix (\code{W}) is updated as follows:
+#' \deqn{
+#' W_{ik} \leftarrow W_{ik} \frac{ sum_j [\frac{H_{kj} A_{ij}}{(WH)_{ij}} ] }{sum_j H_{kj} }
+#' }{
+#' W_ik <- W_ik ( sum_u [H_kl A_il / (WH)_il ] ) / ( sum_l H_kl )
+#' }
+#' @rdname nmf_update_KL
+#' @export
+nmf_update.KL.w <- std.divergence.update.w <- function(v, w, h, copy=TRUE)
+{	
+	.Call("divergence_update_W", v, w, h, copy, PACKAGE='NMF')
+}
+#' @rdname nmf_update_KL
+#' @export
+nmf_update.KL.w_R <- R_std.divergence.update.w <- function(v, w, h, wh=NULL)
 {			
 	# compute WH if necessary	
 	if( is.null(wh) ) wh <- w %*% h
@@ -439,18 +475,59 @@ R_std.divergence.update.w <- function(v, w, h, wh=NULL)
 	sweep(w * tcrossprod(v / wh, h), 2L, rowSums(h), "/", check.margin = FALSE) # optimize version?
 	
 }
-std.divergence.update.w <- function(v, w, h, copy=TRUE)
-{	
-	.Call("divergence_update_W", v, w, h, copy, PACKAGE='NMF')
+
+
+
+#' NMF Multiplicative Updates for Euclidean Distance
+#' 
+#' Multiplicative updates from \cite{Lee2001} for standard Nonnegative Matrix Factorization 
+#' models \eqn{V \approx W H}, where the distance between the target matrix and its NMF 
+#' estimate is measured by the -- euclidean -- Frobenius norm.
+#' 
+#' \code{nmf_update.euclidean.w} and \code{nmf_update.euclidean.h} compute the updated basis and coefficient 
+#' matrices respectively.
+#' They use a \emph{C++} implementation which is optimised for speed and memory usage. 
+#' 
+#' @details
+#' The coefficient matrix (\code{H}) is updated as follows:
+#' \deqn{
+#' H_{kj} \leftarrow \frac{\max(H_{kj} W^T V)_{kj}, \varepsilon) }{(W^T W H)_{kj} + \varepsilon}
+#' }{
+#' H_kj <- max(H_kj (W^T V)_kj, eps) / ( (W^T W H)_kj + eps )
+#' }
+#' 
+#' @param v target matrix
+#' @param w current basis matrix
+#' @param h current coefficient matrix
+#' @param eps small numeric value used to ensure numeric stability 
+#' @param copy logical that indicates if the update should be made on the original
+#' matrix directly (\code{FALSE}) or on a copy (\code{TRUE} - default).
+#' With \code{copy=FALSE} the memory footprint is very small, and some speed-up may be 
+#' achieved in the case of big matrices.
+#'
+#' @return a matrix of the same dimension as the input matrix to update 
+#' (i.e. \code{w} or \code{h}).
+#' If \code{copy=FALSE}, the returned matrix uses the same memory as the input object.
+#' 
+#' @author 
+#' Update definitions by \cite{Lee2001}. 
+#' 
+#' C++ optimised implementation by Renaud Gaujoux. 
+#' 
+#' @rdname nmf_update_euclidean
+#' @aliases nmf_update.euclidean
+#' @export
+nmf_update.euclidean.h <- std.euclidean.update.h <- function(v, w, h, eps=10^-9, copy=TRUE){
+	.Call("euclidean_update_H", v, w, h, eps, copy, PACKAGE='NMF')
 }
-
-
-
-###% Updates for Euclidean norm reduction
-###% based on Lee and Seung algorithm
-###%
-# H
-R_std.euclidean.update.h <- function(v, w, h, wh=NULL, eps=10^-9){
+#' \code{nmf_update.euclidean.w_R} and \code{nmf_update.euclidean.h_R} implement the same updates 
+#' in \emph{plain R}.
+#' 
+#' @param wh already computed NMF estimate used to compute the denominator term. 
+#' 
+#' @rdname nmf_update_euclidean
+#' @export
+nmf_update.euclidean.h_R <- R_std.euclidean.update.h <- function(v, w, h, wh=NULL, eps=10^-9){
 	# compute WH if necessary	
 	den <- if( is.null(wh) ) crossprod(w) %*% h
 			else{ t(w) %*% wh}
@@ -458,20 +535,28 @@ R_std.euclidean.update.h <- function(v, w, h, wh=NULL, eps=10^-9){
 	# H_au = H_au (W^T V)_au / (W^T W H)_au
 	pmax(h * crossprod(w,v),eps) / (den + eps);
 }
-std.euclidean.update.h <- function(v, w, h, eps=10^-9, copy=TRUE){
-	.Call("euclidean_update_H", v, w, h, eps, copy, PACKAGE='NMF')
+
+#' @details
+#' The basis matrix (\code{W}) is updated as follows:
+#' \deqn{
+#' W_ik \leftarrow \frac{\max(W_ik (V H^T)_ik, \varepsilon) }{ (W H H^T)_ik + \varepsilon}
+#' }{
+#' W_ik <- max(W_ik (V H^T)_ik, eps) / ( (W H H^T)_ik + eps )
+#' }
+#' @rdname nmf_update_euclidean
+#' @export
+nmf_update.euclidean.w <- std.euclidean.update.w <- function(v, w, h, eps=10^-9, copy=TRUE){
+	.Call("euclidean_update_W", v, w, h, eps, copy, PACKAGE='NMF')
 }
-# W
-R_std.euclidean.update.w <- function(v, w, h, wh=NULL, eps=10^-9){
+#' @rdname nmf_update_euclidean
+#' @export
+nmf_update.euclidean.w_R <- R_std.euclidean.update.w <- function(v, w, h, wh=NULL, eps=10^-9){
 	# compute WH if necessary	
 	den <- if( is.null(wh) ) w %*% tcrossprod(h)
 			else{ wh %*% t(h)}
 	
 	# W_ia = W_ia (V H^T)_ia / (W H H^T)_ia and columns are rescaled after each iteration	
 	pmax(w * tcrossprod(v, h), eps) / (den + eps);
-}
-std.euclidean.update.w <- function(v, w, h, eps=10^-9, copy=TRUE){
-	.Call("euclidean_update_W", v, w, h, eps, copy, PACKAGE='NMF')
 }
 
 
@@ -481,9 +566,55 @@ std.euclidean.update.w <- function(v, w, h, eps=10^-9, copy=TRUE){
 
 #' Stopping Criteria for NMF Iterative Strategies
 #' 
-#' The function documented here implement stopping/convergence criterion 
+#' The function documented here implement stopping/convergence criteria 
 #' commonly used in NMF algorithms.
 #' 
+#' \code{NMFStop} acts as a factory method that create stopping criterion functions 
+#' to be used with \code{\link{nmf}}, from different types of values.
+#' 
+#' @details
+#' \code{NMFStop} returns functions unchanged, integer values are used to 
+#' create a stopping criterion of that number of iterations via \code{nmf.stop.iteration}, 
+#' numeric values are used to create a stopping criterion of that stationary threshold 
+#' via \code{nmf.stop.threshold}.
+#' Character strings are assumed to be access keys for registered criteria (currently 
+#' available: \dQuote{connectivity} and \dQuote{stationary}), or a function name in the 
+#' global environment or the namespace of the loading package.
+#' 
+#' @param val access key that can be a character string, a single integer or 
+#' numeric, or a function.
+#' 
+#' @return a function that can be passed to argument \code{.stop} of function 
+#' \code{\link{nmf}}.
+#' 
+#' @aliases stop-NMF
+#' @rdname stop-NMF
+#' @export
+NMFStop <- function(val){
+	
+	key <- val
+	if( is.integer(key) )	nmf.stop.iteration(key)
+	else if( is.numeric(key) ) nmf.stop.threshold(key)
+	else if( is.function(key) ) key
+	else if( is.character(key) ){
+		# update .stop for back compatibility:
+		if( key == 'nmf.stop.consensus') key <- 'connectivity'
+		
+		# first lookup for a `nmf.stop.*` function
+		key2 <- paste('nmf.stop.', key, sep='')
+		e <- pkgmaker::packageEnv()
+		sfun <- getFunction(key2, mustFind=FALSE, where = e)
+		if( is.null(sfun) ) # lookup for the function as such
+			sfun <- getFunction(key, mustFind = FALSE, where = e)			
+		if( is.null(sfun) )
+			stop("Invalid key ['", key,"']: could not find functions '",key2, "' or '", key, "'")
+		sfun
+	}else if( identical(val, FALSE) ) # create a function that does not stop 
+		function(strategy, i, target, data, ...){FALSE}
+	else
+		stop("Invalid key: should be a function, a character string or a single integer/numeric value. See ?NMFStop.")	
+}
+
 #' \code{nmf.stop.iteration} generates a function that implements the stopping 
 #' criterion that limits the number of iterations to a maximum of \code{n}),
 #' i.e. that returns \code{TRUE} if \code{i>=n}, \code{FALSE} otherwise.
@@ -497,7 +628,6 @@ std.euclidean.update.w <- function(v, w, h, eps=10^-9, copy=TRUE){
 #' turn stops the iterative process, and \code{FALSE} otherwise.
 #'   
 #' @export
-#' @aliases stop-NMF
 #' @family NMFStrategyIterative
 #' @rdname stop-NMF
 nmf.stop.iteration <- function(n){

@@ -1,10 +1,10 @@
-\name{nmf.update.lsnmf}
+\name{nmf_update.lsnmf}
 \alias{lsnmf-nmf}
-\alias{nmf.update.lsnmf}
+\alias{nmf_update.lsnmf}
 \alias{wrss}
 \title{Multiplicative Updates for LS-NMF}
 \usage{
-  nmf.update.lsnmf(i, X, object, weight, eps = 10^-9, ...)
+  nmf_update.lsnmf(i, X, object, weight, eps = 10^-9, ...)
 
   wrss(object, X, weight)
 }
@@ -26,7 +26,7 @@
 
   \item{eps}{small number passed to the standard
   euclidean-based NMF updates (see
-  \code{\link{nmf.update.euclidean}}).}
+  \code{\link{nmf_update.euclidean}}).}
 
   \item{...}{extra arguments (not used)}
 }

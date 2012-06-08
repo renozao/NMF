@@ -1,6 +1,5 @@
 \docType{class}
 \name{NMFStrategyFunction-class}
-\alias{NMFStrategyFunction}
 \alias{NMFStrategyFunction-class}
 \title{Interface for Single Function NMF Strategies}
 \description{

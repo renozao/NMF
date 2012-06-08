@@ -133,7 +133,7 @@ test.match_atrack <- function(){
 	mat <- as.matrix(setNames(1:10, na))
 	
 	.check <- function(x){		
-		cat(class(x), " [", str_out(x, Inf, use=TRUE), "] :\n")
+		cat(class(x), " [", str_out(x, Inf, use.names=TRUE), "] :\n")
 		y <- match_atrack(x, mat)
 		print(y)
 		checkEquals( class(y), class(x), "Same class as input")

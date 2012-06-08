@@ -135,9 +135,9 @@
   dispatching the call to the \code{basis} method of the
   actual NMF model. }
 
-  \item{basis<-}{\code{signature( = "NMFfit", = "matrix")}:
-  Sets the the basis matrix of an NMF model fitted with
-  function \code{\link{nmf}}.
+  \item{basis<-}{\code{signature(object = "NMFfit", value =
+  "matrix")}: Sets the the basis matrix of an NMF model
+  fitted with function \code{\link{nmf}}.
 
   It is a shortcut for \code{basis(fit(object)) <- value},
   dispatching the call to the \code{basis<-} method of the
@@ -153,9 +153,9 @@
   dispatching the call to the \code{coef} method of the
   actual NMF model. }
 
-  \item{coef<-}{\code{signature( = "NMFfit", = "matrix")}:
-  Sets the the coefficient matrix of an NMF model fitted
-  with function \code{\link{nmf}}.
+  \item{coef<-}{\code{signature(object = "NMFfit", value =
+  "matrix")}: Sets the the coefficient matrix of an NMF
+  model fitted with function \code{\link{nmf}}.
 
   It is a shortcut for \code{coef(fit(object)) <- value},
   dispatching the call to the \code{coef<-} method of the
@@ -185,9 +185,9 @@
   \item{fit}{\code{signature(object = "NMFfit")}: Returns
   the NMF model object stored in slot \code{'fit'}. }
 
-  \item{fit<-}{\code{signature( = "NMFfit", = "NMF")}:
-  Updates the NMF model object stored in slot \code{'fit'}
-  with a new value. }
+  \item{fit<-}{\code{signature(object = "NMFfit", value =
+  "NMF")}: Updates the NMF model object stored in slot
+  \code{'fit'} with a new value. }
 
   \item{fitted}{\code{signature(object = "NMFfit")}:
   Computes and return the estimated target matrix from an
@@ -269,8 +269,8 @@
   starting point for the NMF algorithm that fitted the NMF
   model \code{object}. }
 
-  \item{show}{\code{signature( = "NMFfit")}: Show method
-  for objects of class \code{NMFfit} }
+  \item{show}{\code{signature(object = "NMFfit")}: Show
+  method for objects of class \code{NMFfit} }
 
   \item{summary}{\code{signature(object = "NMFfit")}:
   Computes summary measures for a single fit from

@@ -648,7 +648,7 @@ setupTempDirectory <- function(verbose){
 	dir.create(NMF_TMPDIR)
 	if( !is.dir(NMF_TMPDIR) ){
 		if( verbose > 2 ) message('ERROR')
-		fstop("could not create temporary result directory '", NMF_TMPDIR, "'")
+		nmf_stop('nmf', "could not create temporary result directory '", NMF_TMPDIR, "'")
 	}
 	
 	# ensure that all workers can see the temporary directory
@@ -660,7 +660,7 @@ setupTempDirectory <- function(verbose){
 	# check it worked
 	if( any(!wd) ){
 		if( verbose > 2 ) message('ERROR')
-		fstop("could not create/see temporary result directory '", NMF_TMPDIR, "' on worker nodes ", str_out(which(!wd), Inf))	
+		nmf_stop('nmf', "could not create/see temporary result directory '", NMF_TMPDIR, "' on worker nodes ", str_out(which(!wd), Inf))	
 	}
 	if( verbose > 2 ) message('OK')
 	

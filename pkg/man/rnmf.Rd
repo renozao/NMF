@@ -327,10 +327,9 @@ offset(x)
   \code{\link{basis<-}}, \code{\link{coef}},
   \code{\link{coef<-}}, \code{\link{coefficients}},
   \code{\link{loadings,NMF-method}}, \code{\link{misc}},
-  \code{\link{$<-,NMF,ANY,ANY-method}},
-  \code{\link{$,NMF,ANY-method}}, \code{\link{NMF-class}},
-  \code{\link{nmfModel}}, \code{\link{nmfModels}},
-  \code{\link{scoef}}
+  \code{\link{NMF-class}}, \code{\link{$<-,NMF-method}},
+  \code{\link{$,NMF-method}}, \code{\link{nmfModel}},
+  \code{\link{nmfModels}}, \code{\link{scoef}}
 }
 \keyword{methods}
 

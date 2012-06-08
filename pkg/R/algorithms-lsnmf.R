@@ -26,13 +26,13 @@ NULL
 #' in which case the standard rules for entry wise product between matrices and vectors apply 
 #' (e.g. recylcing elements).
 #' @param eps small number passed to the standard euclidean-based NMF updates 
-#' (see \code{\link{nmf.update.euclidean}}).
+#' (see \code{\link{nmf_update.euclidean}}).
 #' @param ... extra arguments (not used)
 #'  
 #' @return updated object \code{object}
 #' @aliases lsnmf-nmf
 #' @rdname lsnmf
-nmf.update.lsnmf <- function(i, X, object, weight, eps=10^-9, ...)
+nmf_update.lsnmf <- function(i, X, object, weight, eps=10^-9, ...)
 {
 	if( i == 1 ){# pre-compute weighted target matrix
 		staticVar('wX', X * weight, init=TRUE)
@@ -49,14 +49,14 @@ nmf.update.lsnmf <- function(i, X, object, weight, eps=10^-9, ...)
 	
 	# euclidean-reducing NMF iterations	
 	# H_au = H_au (W^T V/sigma)_au / (W^T (W H)/sigma)_au
-	h <- R_std.euclidean.update.h(wX, w, h, wh=wh, eps=eps)	
+	h <- nmf_update.euclidean.h_R(wX, w, h, wh=wh, eps=eps)	
 	
 	# update H and recompute the estimate WH
 	coef(object) <- h;
 	wh <- fitted(object) * weight
 	
 	# W_ia = W_ia (V/sigma H^T)_ia / ((W H)/sigma H^T)_ia and columns are rescaled after each iteration	
-	w <- R_std.euclidean.update.w(wX, w, h, wh=wh, eps=eps)	
+	w <- nmf_update.euclidean.w_R(wX, w, h, wh=wh, eps=eps)	
 	
 	#return the modified data
 	basis(object) <- w	
@@ -72,7 +72,7 @@ wrss <- function(object, X, weight){
 
 # Registration of LS-NMF
 setNMFMethod('ls-nmf', objective=wrss
-			, Update=nmf.update.lsnmf
+			, Update=nmf_update.lsnmf
 			, Stop='stationary')
 	
 # Unit test for the LS-NMF algorithm

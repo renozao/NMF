@@ -9,12 +9,10 @@
 \alias{coefmap,NMFfitX-method}
 \alias{coefmap,NMF-method}
 \alias{consensusmap}
-\alias{consensusmap,list-method}
 \alias{consensusmap,matrix-method}
 \alias{consensusmap-methods}
 \alias{consensusmap,NMFfitX-method}
 \alias{consensusmap,NMF-method}
-\alias{consensusmap,NMF.rank-method}
 \alias{heatmap-NMF}
 \title{Heatmaps of NMF Factors}
 \usage{
@@ -43,9 +41,6 @@
     hclustfun = "average", Rowv = TRUE, Colv = "Rowv",
     main = if (is.null(nr) || nr > 1) "Consensus matrix" else "Connectiviy matrix",
     info = FALSE)
-
-  \S4method{consensusmap}{list}(object, layout, ...,
-    Rowv = FALSE, main = names(object))
 
   \S4method{coefmap}{NMFfitX}(object, ...,
     annCol = c("basis", "consensus"))
@@ -82,13 +77,6 @@
   that fitted the NMF model is displayed at the bottom of
   the plot, if available. Other wise it is passed as is to
   \code{aheatmap}.}
-
-  \item{layout}{specification of the layout. It may be a
-  single numeric or a numeric couple, to indicate a square
-  or rectangular layout respectively, that is filled row by
-  row. It may also be a matrix that is directly passed to
-  the function \code{\link[graphics]{layout}} from the
-  package \code{graphics}.}
 
   \item{color}{colour specification for the heatmap.
   Default to palette '-RdYlBu2:100', i.e. reversed palette
@@ -330,15 +318,6 @@
   \item{consensusmap}{\code{signature(object = "matrix")}:
   Main method that redefines default values for arguments
   of \code{\link{aheatmap}}. }
-
-  \item{consensusmap}{\code{signature(object =
-  "NMF.rank")}: Draw a single plot with a heatmap of the
-  consensus matrix obtained for each value of the rank, in
-  the range tested with \code{\link{nmfEstimateRank}}. }
-
-  \item{consensusmap}{\code{signature(object = "list")}:
-  Draw a single plot with a heatmap of the consensus matrix
-  of each element in the list \code{object}. }
 
   }
 }

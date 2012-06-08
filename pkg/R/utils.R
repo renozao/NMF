@@ -94,6 +94,8 @@ syntheticNMF <- function(n, r, p, offset=NULL, noise=TRUE, factors=FALSE, seed=N
 	mu.W <- 1; sd.W <- 1
 	if( isTRUE(noise) ){
 		noise <- list(mean=0, sd=1)
+	}else if( isNumber(noise) ){
+		noise <- list(mean=0, sd=noise)
 	}else if( is.list(noise) ){
 		stopifnot( length(noise) == 2L )
 		noise <- setNames(noise, c('mean', 'sd'))

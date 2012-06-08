@@ -59,18 +59,11 @@
 
   \item{object}{an R object from which RNG settings can be
   extracted, e.g. an integer vector containing a suitable
-  value for \code{.Random.seed} or an object returned by
-  the function \code{\link{nmf}}.}
+  value for \code{.Random.seed} or embedded RNG data such
+  objects returned by the function \code{\link{nmf}}.}
 
-  \item{...}{extra arguments passed to a suitable method
-  \code{.getRNG}.}
-
-  \item{object}{an R object from which RNG settings can be
-  extracted, e.g. an integer vector containing a suitable
-  value for \code{.Random.seed} or an object returned by
-  the function \code{\link{nmf}}.}
-
-  \item{...}{extra arguments to allow extension}
+  \item{...}{extra arguments to allow extension and passed
+  to a suitable method \code{.getRNG}.}
 
   \item{verbose}{a logical that indicates if the new RNG
   settings should be displayed.}
@@ -80,13 +73,9 @@
   \item{y}{object from which RNG settings are extracted}
 }
 \value{
-  the RNG settings as a single integer vector as
-  \code{\link{.Random.seed}} or \code{NULL} if no RNG data
-  was found.
-
-  the RNG settings as a single integer vector as
-  \code{\link{.Random.seed}} or \code{NULL} if no RNG data
-  was found.
+  \code{getRNG} returns the RNG settings as a single
+  integer vector as \code{\link{.Random.seed}} or
+  \code{NULL} if no RNG data was found.
 
   \code{getRNG}, \code{getRNG1}, \code{nextRNG} and
   \code{setRNG} return an integer vector of length greater
@@ -118,11 +107,9 @@
   The functions documented here provide a unified interface
   to work with RNG settings.
 
-  \code{getRNG} is an S4 generic that returns the Random
-  Number Generator (RNG) settings used for computing an
-  object. For example, in the case of results from multiple
-  NMF runs, it returns the RNG settings used to compute the
-  best fit.
+  \code{.getRNG} is an S4 generic that extract RNG settings
+  from a variety of object types. Its methods define the
+  workhorse functions that are called by \code{getRNG}.
 
   \code{getRNG1} is defined to provide separate access to
   the RNG settings as they were at the very beginning of a
@@ -134,13 +121,14 @@
   after seeding with \code{seed}.
 
   \code{setRNG} tries to extract RNG settings from
-  \code{object} and use a suitable \code{.setRNG} method to
+  \code{object}, using a suitable \code{.setRNG} method to
   set these settings. All arguments are passed to the next
   call to \code{.setRNG}.
 
   \code{.setRNG} is an S4 generic that sets the current RNG
-  settings, from a variety of format. Its methods define
-  the workhorse functions that are called by \code{setRNG}.
+  settings, from a variety of specifications. Its methods
+  define the workhorse functions that are called by
+  \code{setRNG}.
 
   \code{RNGdigest} computes a hash from the RNG settings
   associated with an object.
@@ -154,11 +142,11 @@
   have identical \strong{initial} RNG settings.
 }
 \details{
-  \code{getRNG} is an S4 generic that returns the Random
-  Number Generator (RNG) settings used for computing an
-  object. For example, in the case of results from multiple
-  NMF runs, it returns the RNG settings used to compute the
-  best fit.
+  \code{getRNG} returns the Random Number Generator (RNG)
+  settings used for computing an object, using a suitable
+  \code{.getRNG} method to extract these settings. For
+  example, in the case of results from multiple NMF runs,
+  it returns the RNG settings used to compute the best fit.
 
   Think of a sequence of separate computations, from which
   only one result is used for the result (e.g. the one that
@@ -192,7 +180,7 @@
   \code{'rng'}. }
 
   \item{.getRNG}{\code{signature(object = "numeric")}:
-  Methods for numeric object, which returns the object
+  Methods for numeric vectors, which returns the object
   itself, if it has more than one element, coerced into an
   integer vector if necessary, as it is assumed to already
   represent a value for \code{\link{.Random.seed}}.

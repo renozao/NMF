@@ -59,11 +59,14 @@ isNMFfit <- function(object, recursive=TRUE){
 		res
 }
 
-###% NMFlist class definition
-###% 
-###% The class wraps a list of results of NMF runs.
-###% These can be either from a single run (NMFfit) or multiple runs (NMFfitX).
-###% It original aim is to hold NMF results from different methods  
+#' Class for Storing Heterogeneous NMF fits
+#' 
+#' @description
+#' This class wraps a list of NMF fit objects, which may come from different 
+#' runs of the function \code{\link{nmf}}, using different parameters, methods, etc..
+#' These can be either from a single run (NMFfit) or multiple runs (NMFfitX).
+#' 
+#' Note that its definition/interface is very likely to change in the future.  
 setClass('NMFList'
 		, representation(
 			runtime='proc_time'
@@ -197,8 +200,8 @@ as.NMFList <- function(..., unlist=FALSE){
 #' 
 #' See \code{\link{nmf}} for more details on the method arguments.
 #' 
-#' @slot runtime.all Object of class \code{proc_time} that contains CPU times 
-#' required to perform all the runs.
+#' @slot runtime.all Object of class \code{\link[=proc.time]{proc_time}} that 
+#' contains CPU times required to perform all the runs.
 #' 
 #' @family multipleNMF
 #' @examples

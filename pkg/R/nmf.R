@@ -1991,49 +1991,127 @@ function(x, rank, method
 	exitSuccess(res)
 })
 
-###% Common interface for seeding methods for Nonnegative Matrix Factorization (NMF) algorithms.
-###% 
-###% This function calls the different seeding methods that define a starting point for NMF methods.
-###% These methods at least set the slots \code{W} and \code{H} of \code{object} to valid nonnegative matrices.
-###% They will be used as a starting point by any NMF algorithm that accept initialization.
-###%
-###% @param x The target matrix one wants to approximate with NMF
-###% @param rank The rank of the factorization to seed
-###% @param method Name of the seeding method to call
-###% @param object Either an instance (resp. the name) of a NMF (sub)class, that will be seeded (resp. instanciated and seeded).
-###% @param ... Parameters to be passed to the seeding method
-###%  
-###% @return \code{object} initialized using method \code{name}.
-###%  
+#' Interface for NMF Seeding Methods
+#' 
+#' @description
+#' The function \code{seed} provides a single interface for calling all seeding 
+#' methods used to initialise NMF computations.
+#' These methods at least set the basis and coefficient matrices of the initial 
+#' \code{object} to valid nonnegative matrices.
+#' They will be used as a starting point by any NMF algorithm that accept 
+#' initialisation.
+#' 
+#' IMPORTANT: this interface is still considered experimental and is subject 
+#' to changes in future release. 
+#' 
+#' @param x target matrix one wants to approximate with NMF
+#' @param model specification of the NMF model, e.g., the factorization rank.
+#' @param method specification of a seeding method.
+#' See each method for details on the supported formats. 
+#' @param ... extra to allow extensions and passed down to the actual seeding method.
+#'  
+#' @return an \code{\linkS4class{NMFfit}} object.
+#' 
+#' @inline
+#'  
 setGeneric('seed', function(x, model, method, ...) standardGeneric('seed') )
+
+#' This is the workhorse method that seeds an NMF model object using a given 
+#' seeding strategy defined by an \code{NMFSeed} object, to fit a given 
+#' target matrix.
+#' 
+#' @param rng rng setting to use. 
+#' If not missing the RNG settings are set and restored on exit using 
+#' \code{\link{setRNG}}. 
+#' 
+#' All arguments in \code{...} are passed to teh seeding strategy.
+#' 
+setMethod('seed', signature(x='matrix', model='NMF', method='NMFSeed'), 
+	function(x, model, method, rng, ...){	
+		
+		# debug message
+		nmf.debug('seed', "use seeding method: '", name(method), "'")
+		
+		# temporarly set the RNG if provided 
+		if( !missing(rng) ){
+			orng <- setRNG(rng)
+			on.exit(setRNG(orng))
+		}
+		
+		# save the current RNG numerical seed
+		rng.s <- getRNG()
+		# create the result NMFfit object, storing the RNG numerical seed
+		res <- NMFfit()
+		# call the seeding function passing the extra parameters, and store the result into slot 'fit'
+		fit(res) <- do.call(algorithm(method), c(list(model, x), ...))				
+		# ASSERT: check that the RNG seed is correctly set
+		stopifnot( rng.equal(res,rng.s) )
+		
+		# if not already set: store the seeding method's name in the resulting object
+		if( seeding(res) == '' ) seeding(res) <- name(method)
+		# set the dimnames from the target matrix
+		dimnames(res) <- dimnames(x)
+		
+		# return the seeded object
+		res
+	}
+)
+#' Seeds an NMF model using a custom seeding strategy, defined by a function.
+#' 
+#' \code{method} must have signature \code{(x='NMFfit', y='matrix', ...)}, where 
+#' \code{x} is the unseeded NMF model and \code{y} is the target matrix to fit.
+#' It must return an \code{\linkS4class{NMF}} object, that contains the seeded 
+#' NMF model.
+#' 
+#' @param name optional name of the seeding method for custom seeding strategies.   
+#'  
+setMethod('seed', signature(x='ANY', model='ANY', method='function'),
+	function(x, model, method, name, ...){
+		
+		# generate runtime name if necessary
+		if( missing(name) ) name <- basename(tempfile("NMF.seed."))
+		# check that the name is not a registered name		
+		if( existsNMFSeed(name) )
+			stop("Invalid name for custom seeding method: '",name,"' is already a registered seeding method")
+		
+		# wrap function method into a new NMFSeed object		 						
+		seedObj <- new('NMFSeed', name=name, method=method)
+		# call version with NMFSeed 
+		seed(x, model, seedObj, ...)
+	}
+)
+#' Seeds the model with the default seeding method given by 
+#' \code{nmf.getOption('default.seed')} 
 setMethod('seed', signature(x='ANY', model='ANY', method='missing'),
 	function(x, model, method, ...){
-					
 		seed(x, model, nmf.getOption('default.seed'), ...)
-		
 	}
 )
+#' Use NMF method \code{'none'}.
 setMethod('seed', signature(x='ANY', model='ANY', method='NULL'),
 	function(x, model, method, ...){
-		
-		print(model)
 		seed(x, model, 'none', ...)
-
 	}
 )
+#' Use \code{method} to set the RNG with \code{\link{setRNG}} and use method 
+#' \dQuote{random} to seed the NMF model.
+#' 
+#' Note that in this case the RNG settings are not restored.
+#' This is due to some internal technical reasons, and might change in future 
+#' releases. 
 setMethod('seed', signature(x='ANY', model='ANY', method='numeric'),
-		function(x, model, method, ...){
-			
-			# set the seed using the numerical value by argument 'method'
-			orng <- setRNG(method)
-			#TODO: restore the RNG state?
-			
-			# call seeding method 'random'
-			res <- seed(x, model, 'random', ...)
-			
-			# return result
-			return(res)
-		}
+	function(x, model, method, ...){
+		
+		# set the seed using the numerical value by argument 'method'
+		orng <- setRNG(method)
+		#TODO: restore the RNG state?
+		
+		# call seeding method 'random'
+		res <- seed(x, model, 'random', ...)
+		
+		# return result
+		return(res)
+	}
 )
 #setMethod('seed', signature(x='ANY', model='ANY', method='rstream'),
 #		function(x, model, method, ...){
@@ -2049,6 +2127,7 @@ setMethod('seed', signature(x='ANY', model='ANY', method='numeric'),
 #			return(res)
 #		}
 #)
+#' Use the registered seeding method whose access key is \code{method}. 
 setMethod('seed', signature(x='ANY', model='ANY', method='character'),
 		function(x, model, method, ...){
 			
@@ -2061,6 +2140,8 @@ setMethod('seed', signature(x='ANY', model='ANY', method='character'),
 			
 		}
 )
+#' Seed a model using the elements in \code{model} to instantiate it with 
+#' \code{\link{nmfModel}}. 
 setMethod('seed', signature(x='ANY', model='list', method='NMFSeed'), 
 	function(x, model, method, ...){	
 		
@@ -2096,8 +2177,7 @@ setMethod('seed', signature(x='ANY', model='list', method='NMFSeed'),
 			else stop(err.msg)
 		}
 					
-		s.init <- capture.output(print(model))
-		nmf.debug('seed', "using model parameters:\n", s.init)			
+		nmf.debug('seed', "using model parameters:\n", capture.output(print(model)) )
 		# instantiate the object using the factory method		
 		model <- do.call('nmfModel', model)
 		nmf.debug('seed', "using NMF model '", class(model), "'")
@@ -2108,7 +2188,8 @@ setMethod('seed', signature(x='ANY', model='list', method='NMFSeed'),
 		seed(x, model, method, ...)
 	}
 )
-
+#' Seeds a standard NMF model (i.e. of class \code{\linkS4class{NMFstd}}) of rank 
+#' \code{model}. 
 setMethod('seed', signature(x='ANY', model='numeric', method='NMFSeed'), 
 	function(x, model, method, ...){	
 
@@ -2116,52 +2197,6 @@ setMethod('seed', signature(x='ANY', model='numeric', method='NMFSeed'),
 	}
 )
 
-setMethod('seed', signature(x='ANY', model='ANY', method='function'),
-	function(x, model, method, name, ...){
-		
-		# generate runtime name if necessary
-		if( missing(name) ) name <- basename(tempfile("NMF.seed."))
-		# check that the name is not a registered name		
-		if( existsNMFSeed(name) )
-			stop("Invalid name for custom seeding method: '",name,"' is already a registered seeding method")
-		
-		# wrap function method into a new NMFSeed object		 						
-		seedObj <- new('NMFSeed', name=name, method=method)
-		# call version with NMFSeed 
-		seed(x, model, seedObj, ...)
-	}
-)
-
-setMethod('seed', signature(x='matrix', model='NMF', method='NMFSeed'), 
-	function(x, model, method, rng, ...){	
-				
-		# debug message
-		nmf.debug('seed', "use seeding method: '", name(method), "'")
-				
-		# temporarly set the RNG if provided 
-		if( !missing(rng) ){
-			orng <- setRNG(rng)
-			on.exit(setRNG(orng))
-		}
-		
-		# save the current RNG numerical seed
-		rng.s <- getRNG()
-		# create the result NMFfit object, storing the RNG numerical seed
-		res <- NMFfit()
-		# call the seeding function passing the extra parameters, and store the result into slot 'fit'
-		fit(res) <- do.call(algorithm(method), c(list(model, x), ...))				
-		# ASSERT: check that the RNG seed is correctly set
-		stopifnot( rng.equal(res,rng.s) )
-		
-		# if not already set: store the seeding method's name in the resulting object
-		if( seeding(res) == '' ) seeding(res) <- name(method)
-		# set the dimnames from the target matrix
-		dimnames(res) <- dimnames(x)
-		
-		# return the seeded object
-		res
-	}
-)
 
 ###% Extract from a list the elements that can be used to initialize the slot of a class.
 ###% 

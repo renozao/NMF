@@ -26,7 +26,7 @@
   they do not call \code{'L_gridDirty'}. This is to enable
   mixing base and grid graphics in \code{\link{aheatmap}}.
 
-  \code{tryViewport}It uses \code{\link[grid]{gird.ls}} and
+  \code{tryViewport}It uses \code{\link[grid]{grid.ls}} and
   not \code{\link{seekViewport}} as the latter would reset
   the graphic device.
 }

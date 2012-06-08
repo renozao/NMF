@@ -9,7 +9,6 @@
 \alias{name,NMFSeed-method}
 \alias{name<-,NMFStrategy,character-method}
 \alias{name,NMFStrategy-method}
-\alias{NMFStrategy}
 \alias{NMFStrategy-class}
 \alias{objective<-,NMFStrategy,character-method}
 \alias{objective<-,NMFStrategy,function-method}

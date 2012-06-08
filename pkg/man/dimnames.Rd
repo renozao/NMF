@@ -2,12 +2,12 @@
 \name{basisnames}
 \alias{basisnames}
 \alias{basisnames<-}
-\alias{basisnames<-,ANY,ANY-method}
+\alias{basisnames<-,ANY-method}
 \alias{basisnames,ANY-method}
 \alias{basisnames<--methods}
 \alias{basisnames-methods}
 \alias{dimnames-NMF}
-\alias{dimnames<-,NMF,ANY-method}
+\alias{dimnames<-,NMF-method}
 \alias{dimnames,NMF-method}
 \title{Dimension names for NMF objects}
 \usage{
@@ -17,7 +17,7 @@
 
   \S4method{dimnames}{NMF}(x)
 
-  \S4method{dimnames}{NMF,ANY}(x) <- value
+  \S4method{dimnames}{NMF}(x) <- value
 }
 \arguments{
   \item{x}{an object with suitable \code{basis} and
@@ -84,12 +84,12 @@
   For NMF objects these also correspond to the row names of
   the coefficient matrix. }
 
-  \item{basisnames<-}{\code{signature(x = "ANY", value =
-  "ANY")}: Default method which sets, respectively, the row
-  and the column names of the basis matrix and coefficient
-  matrix of \code{x} to \code{value}. }
+  \item{basisnames<-}{\code{signature(x = "ANY")}: Default
+  method which sets, respectively, the row and the column
+  names of the basis matrix and coefficient matrix of
+  \code{x} to \code{value}. }
 
-  \item{dimnames}{\code{signature( = "NMF")}: Returns the
+  \item{dimnames}{\code{signature(x = "NMF")}: Returns the
   dimension names of the NMF model \code{x}.
 
   It returns either NULL if no dimnames are set on the
@@ -98,8 +98,9 @@
   coefficient matrix, and the column names of the basis
   matrix (i.e. the names of the basis components). }
 
-  \item{dimnames<-}{\code{signature( = "NMF", = "ANY")}:
-  sets the dimension names of the NMF model \code{x}.
+  \item{dimnames<-}{\code{signature(x = "NMF", value =
+  "ANY")}: sets the dimension names of the NMF model
+  \code{x}.
 
   \code{value} can be \code{NULL} which resets all
   dimension names, or a 1, 2 or 3-length list providing

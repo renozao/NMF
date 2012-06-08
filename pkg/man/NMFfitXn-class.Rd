@@ -1,6 +1,5 @@
 \docType{class}
 \name{NMFfitXn-class}
-\alias{NMFfitXn}
 \alias{NMFfitXn-class}
 \title{Structure for Storing All Fits from Multiple NMF Runs}
 \description{
@@ -64,7 +63,7 @@
   are used by plotting functions such as
   \code{\link{consensusmap}} to annotate the plots. }
 
-  \item{dim}{\code{signature( = "NMFfitXn")}: Returns the
+  \item{dim}{\code{signature(x = "NMFfitXn")}: Returns the
   dimension common to all fits.
 
   Since all fits have the same dimensions, it returns the
@@ -146,8 +145,8 @@
   and sum up the results. It returns \code{NULL} on an
   empty object. }
 
-  \item{show}{\code{signature( = "NMFfitXn")}: Show method
-  for objects of class \code{NMFfitXn} }
+  \item{show}{\code{signature(object = "NMFfitXn")}: Show
+  method for objects of class \code{NMFfitXn} }
 
   }
 }

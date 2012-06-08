@@ -25,7 +25,7 @@ NULL
 ###% , S.Z. Li, X.W. Hou, and H.J. Zhang.
 ###% , In Proceedings of IEEE International Conference on Computer Vision and Pattern Recognition
 ###% , December 2001
-R_nmf.update.lnmf <- function(i, v, data, ...){
+nmf_update_R.lnmf <- function(i, v, data, ...){
 	
 	# retrieve each factor
 	w <- basis(data); h <- coef(data);
@@ -52,7 +52,7 @@ R_nmf.update.lnmf <- function(i, v, data, ...){
 	return(data)
 }
 
-nmf.update.lnmf <- function(i, v, data, ...){
+nmf_update.lnmf <- function(i, v, data, ...){
 	
 	# retrieve each factor
 	w <- basis(data); h <- coef(data);
@@ -81,8 +81,8 @@ nmf.update.lnmf <- function(i, v, data, ...){
 
 # register the LNMF algorithm
 #setNMFMethod('.R#lnmf', objective='KL'
-#		, Update=R_nmf.update.lnmf
+#		, Update=nmf_update_R.lnmf
 #		, Stop='connectivity')
 #
-#setNMFMethod('lnmf', '.R#lnmf', Update=nmf.update.lnmf)
+#setNMFMethod('lnmf', '.R#lnmf', Update=nmf_update.lnmf)
 				

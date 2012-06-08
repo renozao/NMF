@@ -1408,6 +1408,7 @@ setReplaceMethod('dimnames', 'NMF',
 #' \code{x[i,j,k, drop=TRUE]}) is identical to \code{x[i,j, drop=FALSE]} (resp.
 #' \code{x[i,j,k, drop=FALSE]}).
 #' 
+#' @rdname subset-NMF
 #' @export
 #' @examples
 #' # create a dummy NMF object that highlight the different way of subsetting
@@ -2796,7 +2797,7 @@ setMethod('extractFeatures', 'NMF',
 	}
 )
 
-f <- unit.test(extractFeatures, {
+unit.test(extractFeatures, {
 	
 	.check <- function(x){
 		msg <- function(...) paste(class(x), ':', ...)

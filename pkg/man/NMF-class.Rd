@@ -1,17 +1,16 @@
 \docType{class}
 \name{NMF-class}
 \alias{misc}
-\alias{NMF}
-\alias{$<-,NMF,ANY,ANY-method}
-\alias{$,NMF,ANY-method}
 \alias{NMF-class}
+\alias{$<-,NMF-method}
+\alias{$,NMF-method}
 \title{Generic Interface for Nonnegative Matrix Factorisation Models}
 \usage{
   misc(object, ...)
 
-  \S4method{$}{NMF,ANY}(x, name)
+  \S4method{$}{NMF}(x, name)
 
-  \S4method{$}{NMF,ANY,ANY}(x, name) <- value
+  \S4method{$}{NMF}(x, name) <- value
 }
 \arguments{
   \item{object}{an object that inherit from class
@@ -76,30 +75,27 @@
   sub-setting objects of class \code{NMF}, using a
   matrix-like syntax.
 
-  See \code{\link{[,NMF,ANY,ANY,ANY-method}} for more
-  details. }
+  See \code{\link{[,NMF-method}} for more details. }
 
-  \item{$}{\code{signature(x = "NMF", name = "ANY")}:
-  shortcut for \code{x@misc[[name, exact=TRUE]]}
-  respectively. }
+  \item{$}{\code{signature(x = "NMF")}: shortcut for
+  \code{x@misc[[name, exact=TRUE]]} respectively. }
 
-  \item{$}{\code{signature(x = "NMF", name = "ANY")}:
-  shortcut for \code{x@misc[[name, exact=TRUE]]}
-  respectively. }
+  \item{$}{\code{signature(x = "NMF")}: shortcut for
+  \code{x@misc[[name, exact=TRUE]]} respectively. }
 
-  \item{$<-}{\code{signature(x = "NMF", name = "ANY", value
-  = "ANY")}: shortcut for \code{x@misc[[name]] <- value} }
+  \item{$<-}{\code{signature(x = "NMF")}: shortcut for
+  \code{x@misc[[name]] <- value} }
 
-  \item{$<-}{\code{signature(x = "NMF", name = "ANY", value
-  = "ANY")}: shortcut for \code{x@misc[[name]] <- value} }
+  \item{$<-}{\code{signature(x = "NMF")}: shortcut for
+  \code{x@misc[[name]] <- value} }
 
   \item{basis}{\code{signature(object = "NMF")}: Pure
   virtual method for objects of class
   \code{\linkS4class{NMF}}, that should be overloaded by
   sub-classes, and throws an error if called. }
 
-  \item{basis<-}{\code{signature( = "NMF", = "matrix")}:
-  Pure virtual method for objects of class
+  \item{basis<-}{\code{signature(object = "NMF", value =
+  "matrix")}: Pure virtual method for objects of class
   \code{\linkS4class{NMF}}, that should be overloaded by
   sub-classes, and throws an error if called. }
 
@@ -125,8 +121,8 @@
   \code{\linkS4class{NMF}}, that should be overloaded by
   sub-classes, and throws an error if called. }
 
-  \item{coef<-}{\code{signature( = "NMF", = "matrix")}:
-  Pure virtual method for objects of class
+  \item{coef<-}{\code{signature(object = "NMF", value =
+  "matrix")}: Pure virtual method for objects of class
   \code{\linkS4class{NMF}}, that should be overloaded by
   sub-classes, and throws an error if called. }
 
@@ -157,14 +153,14 @@
   Computes the distance between a matrix and the estimate
   of an \code{NMF} model. }
 
-  \item{dim}{\code{signature( = "NMF")}: method for NMF
+  \item{dim}{\code{signature(x = "NMF")}: method for NMF
   objects for the base generic \code{\link{dim}}. It
   returns all dimensions in a length-3 integer vector: the
   number of row and columns of the estimated target matrix,
   as well as the factorization rank (i.e. the number of
   basis components). }
 
-  \item{dimnames}{\code{signature( = "NMF")}: Returns the
+  \item{dimnames}{\code{signature(x = "NMF")}: Returns the
   dimension names of the NMF model \code{x}.
 
   It returns either NULL if no dimnames are set on the
@@ -173,15 +169,16 @@
   coefficient matrix, and the column names of the basis
   matrix (i.e. the names of the basis components). }
 
-  \item{dimnames<-}{\code{signature( = "NMF", = "ANY")}:
-  sets the dimension names of the NMF model \code{x}.
+  \item{dimnames<-}{\code{signature(x = "NMF", value =
+  "ANY")}: sets the dimension names of the NMF model
+  \code{x}.
 
   \code{value} can be \code{NULL} which resets all
   dimension names, or a 1, 2 or 3-length list providing
   names at least for the rows of the basis matrix.
 
-  See \code{\link{dimnames<-,NMF,ANY-method}} for more
-  details. }
+  See \code{\link{dimnames<-,NMF-method}} for more details.
+  }
 
   \item{extractFeatures}{\code{signature(object = "NMF")}:
   Select basis-specific features from an NMF model, by
@@ -197,7 +194,7 @@
   \code{\linkS4class{NMF}}, that should be overloaded by
   sub-classes, and throws an error if called. }
 
-  \item{loadings}{\code{signature( = "NMF")}: Method
+  \item{loadings}{\code{signature(x = "NMF")}: Method
   loadings for NMF Models
 
   The method \code{loadings} is identical to \code{basis},
@@ -284,8 +281,8 @@
   \code{rposneg} to the basis matrix of an
   \code{\link{NMF}} object. }
 
-  \item{show}{\code{signature( = "NMF")}: Show method for
-  objects of class \code{NMF} }
+  \item{show}{\code{signature(object = "NMF")}: Show method
+  for objects of class \code{NMF} }
 
   \item{sparseness}{\code{signature(x = "NMF")}: Compute
   the sparseness of an object of class \code{NMF}, as the

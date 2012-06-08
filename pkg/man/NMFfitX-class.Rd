@@ -1,6 +1,5 @@
 \docType{class}
 \name{NMFfitX-class}
-\alias{NMFfitX}
 \alias{NMFfitX-class}
 \title{Virtual Class to Handle Results from Multiple Runs of NMF Algorithms}
 \description{
@@ -15,14 +14,15 @@
   the case where only the best fit is kept, and the case
   where the list of all the fits is returned.
 
-  See \code{\link{nmf-multiple}} for more details on the
-  method arguments.
+  See \code{\link{nmf}} for more details on the method
+  arguments.
 }
 \section{Slots}{
   \describe{
 
-  \item{runtime.all}{Object of class \code{proc_time} that
-  contains CPU times required to perform all the runs.}
+  \item{runtime.all}{Object of class
+  \code{\link[=proc.time]{proc_time}} that contains CPU
+  times required to perform all the runs.}
 
   }
 }
@@ -129,8 +129,8 @@
   runs. It returns \code{NULL} if no CPU data is available.
   }
 
-  \item{show}{\code{signature( = "NMFfitX")}: Show method
-  for objects of class \code{NMFfitX} }
+  \item{show}{\code{signature(object = "NMFfitX")}: Show
+  method for objects of class \code{NMFfitX} }
 
   \item{summary}{\code{signature(object = "NMFfitX")}:
   Computes a set of measures to help evaluate the quality

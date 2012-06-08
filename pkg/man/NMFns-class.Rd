@@ -1,6 +1,5 @@
 \docType{class}
 \name{NMFns-class}
-\alias{NMFns}
 \alias{NMFns-class}
 \title{NMF Model - Nonsmooth Nonnegative Matrix Factorization}
 \description{
@@ -63,8 +62,8 @@
   for \code{theta}, which is used to compute the smoothing
   matrix instead of the one stored in \code{object}. }
 
-  \item{show}{\code{signature( = "NMFns")}: Show method for
-  objects of class \code{NMFns} }
+  \item{show}{\code{signature(object = "NMFns")}: Show
+  method for objects of class \code{NMFns} }
 
   }
 }

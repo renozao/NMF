@@ -34,7 +34,7 @@ penmf.objective <- function(fit, x, alpha, beta, ...)
 		+ beta * sum(coef(fit))
 }
 
-nmf.update.penmf <- function(i, x, data, alpha, beta, ...){
+nmf_update.penmf <- function(i, x, data, alpha, beta, ...){
 	
 	# retrieve each factor
 	w <- basis(data); h <- coef(data);
@@ -64,5 +64,5 @@ nmf.update.penmf <- function(i, x, data, alpha, beta, ...){
 # register PE-NMF
 setNMFMethod('pe-nmf', objective = penmf.objective
 		, model='NMFstd'
-		, Update= nmf.update.penmf
+		, Update= nmf_update.penmf
 		, Stop='stationary')

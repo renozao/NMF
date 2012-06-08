@@ -1,7 +1,6 @@
 \docType{class}
 \name{NMFOffset-class}
 \alias{initialize,NMFOffset-method}
-\alias{NMFOffset}
 \alias{NMFOffset-class}
 \title{NMF Model - Nonnegative Matrix Factorization with Offset}
 \usage{
@@ -41,7 +40,7 @@
 
   The estimate is computed as: \deqn{ W H + offset } }
 
-  \item{offset}{\code{signature( = "NMFOffset")}: The
+  \item{offset}{\code{signature(object = "NMFOffset")}: The
   function \code{offset} returns the offset vector from an
   NMF model that has an offset, e.g. an \code{NMFOffset}
   model. }
@@ -56,8 +55,8 @@
   suitable \code{\link{rnmf}} method, which is the
   workhorse method \code{rnmf,NMF,numeric}. }
 
-  \item{show}{\code{signature( = "NMFOffset")}: Show method
-  for objects of class \code{NMFOffset} }
+  \item{show}{\code{signature(object = "NMFOffset")}: Show
+  method for objects of class \code{NMFOffset} }
 
   }
 }

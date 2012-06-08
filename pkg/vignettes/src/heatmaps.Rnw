@@ -13,6 +13,8 @@
 
 
 \usepackage{Sweave}
+\SweaveOpts{keep.source=TRUE}
+
 \usepackage{framed}
 \usepackage{array}
 \usepackage{tabularx}
@@ -25,24 +27,14 @@
 \usepackage{todonotes}
 \newcommand{\nbnote}[1]{\ \bigskip\todo[inline, backgroundcolor=blue!20!white]{\scriptsize\textsf{\textbf{NB:} #1}}\ \\}
 
-\definecolor{midnightblue}{rgb}{0.098,0.098,0.439}
-
-\makeatletter
-\@ifundefined{Houtput}{}{%
-\renewenvironment{Houtput}%
-{\vspace{5pt}\hspace{1em}
-\begin{minipage}[b]{.95\textwidth}%
-\color{midnightblue}\bfseries}%
-{\end{minipage}%
-\vspace{5pt}}%
-}
-\makeatother
-
 % put table of contents on two columns
 \usepackage[toc]{multitoc}
 
-\SweaveOpts{keep.source=TRUE}
-<<options, echo=FALSE>>=
+\setkeys{Gin}{width=0.95\textwidth}
+
+\begin{document}
+
+<<options, include=FALSE>>=
 options(prompt=' ')
 options(continue=' ')
 set.seed(123456)
@@ -50,16 +42,13 @@ if( Sys.info()['user'] == 'renaud' ) .libPaths(c('./loclib', .libPaths()))
 library(NMF)
 @
 
-\setkeys{Gin}{width=0.95\textwidth}
-
-\begin{document}
-% \VignetteIndexEntry{NMF: generating heatmaps}
-% \VignetteDepends{NMF}
-% \VignetteKeyword{aplot}
-
 \title{Generating heatmaps for Nonnegative Matrix Factorization\\
 \small Package \nmfpack\ - Version \Sexpr{NMF:::nmfInfo()}}
 \author{Renaud Gaujoux}
+% \VignetteIndexEntry{NMF: generating heatmaps}
+% \VignetteDepends{NMF}
+% \VignetteKeyword{aplot}
+% \VignetteDriver{knitr}
 
 \maketitle
 
@@ -152,14 +141,15 @@ For the purpose of illustrating the use of each heatmap function, we generate a
 random target matrix, as well as some annotations or covariates:
 
 <<data>>=
-# random data matrix
-X <- rmatrix(100,20)
+# random data that follow an 3-rank NMF model (with quite some noise: sd=2)
+X <- syntheticNMF(100, 3, 20, noise=2)
 
 # row annotations and covariates
 n <- nrow(X)
 d <- rnorm(n)
-e <- unlist(mapply(rep, c('Brain', 'Muscle', 'Skin'), 10))
+e <- unlist(mapply(rep, c('X', 'Y', 'Z'), 10))
 e <- c(e, rep(NA, n-length(e)))
+rdata <- data.frame(Var=d, Type=e)
 
 # column annotations and covariates
 p <- ncol(X)
@@ -174,8 +164,8 @@ covariates <- data.frame(a, b, c)
 Then, we fit an NMF model using multiple runs:
 
 <<model, cache=TRUE>>=
-	res <- nmf(X, 3, nrun=10)
-	res
+res <- nmf(X, 3, nrun=10)
+res
 @
 
 \nbnote{To keep the vignette simple, we always use the default NMF method 
@@ -194,7 +184,7 @@ For single NMF run or NMF model objects, no consensus data are available, and
 only the clusters from the fit are displayed.
 
 \SweaveOpts{width=14,height=7}
-<<coefmap_res, fig=TRUE>>=
+<<coefmap_res, fig.keep='last'>>=
 opar <- par(mfrow=c(1,2))
 # coefmap from multiple run fit: includes a consensus track
 coefmap(res)
@@ -223,10 +213,10 @@ In term of arguments passed to the heatmap engine \Rcode{aheatmap}, these defaul
 settings translate as:
 
 <<coefmap_default, eval=FALSE>>=
-	Rowv = NA
-	Colv = order(as.numeric(predict(object)))
-	scale = 'c1'
-	color = 'YlOrRd'
+Rowv = NA
+Colv = order(as.numeric(predict(object)))
+scale = 'c1'
+color = 'YlOrRd'
 @
 
 Since the ordering does not come from hierarchical clustering, no dendrogram is displayed.
@@ -235,21 +225,22 @@ The default behaviour of \Rcode{aheatmap} can be obtained by setting arguments
 
 \medskip
 The automatic annotation tracks can be hidden all together by setting argument 
-\Rcode{tracks=NA}, displayed separately by passing only one of the given names 
-(e.g. \Rcode{tracks='basis'}), and their legend names may be changed by specifying e.g. 
-\Rcode{tracks=c(Metagene='basis', 'consensus')}.
+\Rcode{annRow=NA}, displayed separately by passing only one of the given names 
+(e.g. \Rcode{annRow='basis'}), and their legend names may be changed by
+specifying e.g.
+\Rcode{annRow=c(Metagene='basis', 'consensus')}.
 Beside this, they are handled by the heatmap engine function \Rcode{aheatmap} 
 and can be customised as any other annotation tracks -- that can be added via 
 argument \Rcode{annCol} (see \ref{sec:aheatmap} or \Rcode{?aheatmap} for more details).
 
-<<coefmap_custom, fig=TRUE>>=
+<<coefmap_custom, fig.keep='last'>>=
 opar <- par(mfrow=c(1,2))
 # removing all automatic annotation tracks
-coefmap(res, tracks=NA)
+coefmap(res, annRow=NA)
 # customized plot
 coefmap(res, Colv = 'euclidean'
 	, main = "Metagene contributions in each sample", labCol = NULL
-	, tracks = c(Metagene='basis'), annCol = list(Class=a, Index=c)
+	, annRow = c(Metagene='basis'), annCol = list(Class=a, Index=c)
 	, annColors = list(Metagene='Set2')
 	, info = TRUE)
 par(opar)
@@ -268,10 +259,10 @@ the dominant basis component.
 That is, for each row, the index of the basis component with the highest 
 loading.
 
-Again, the track can be disabled by setting \Rcode{tracks=NA}, and extra 
+Again, the track can be disabled by setting \Rcode{annRow=NA}, and extra 
 row annotations can be added using argument \Rcode{annRow}.
 
-<<basismap_res, fig=TRUE>>=
+<<basismap_res, fig.keep='last'>>=
 opar <- par(mfrow=c(1,2))
 # default plot
 basismap(res)
@@ -294,9 +285,9 @@ In term of arguments passed to the heatmap engine \Rcode{aheatmap}, these defaul
 settings translate as:
 
 <<basismap_default, eval=FALSE>>=
-	Colv = NA
-	scale = 'r1'
-	color = 'YlOrRd'
+Colv = NA
+scale = 'r1'
+color = 'YlOrRd'
 @
 
 \section{Consensus matrix: \Rcode{consensusmap}}
@@ -332,7 +323,7 @@ The downstream hanlding of the result would remain identical.}.
 This can be ploted using the function \Rcode{consensusmap}, which allows for the 
 same kind of customization as the other NMF heatmap functions:
 
-<<consensusmap_res, fig=TRUE>>=
+<<consensusmap_res, fig.keep='last'>>=
 opar <- par(mfrow=c(1,2))
 # default plot
 consensusmap(res)
@@ -356,11 +347,11 @@ In term of arguments passed to the heatmap engine \Rcode{aheatmap}, these defaul
 settings translate as:
 
 <<cmap_default, eval=FALSE>>=
-	distfun = function(x) as.dist(1-x) # x being the consensus matrix
-	hclustfun = 'average'
-	Rowv = TRUE
-	Colv = "Rowv"
-	color = '-RdYlBu'
+distfun = function(x) as.dist(1-x) # x being the consensus matrix
+hclustfun = 'average'
+Rowv = TRUE
+Colv = "Rowv"
+color = '-RdYlBu'
 @
 
 \subsection{Single method over a range of ranks}
@@ -384,7 +375,7 @@ value of the rank in range $\ldbrack 2, 7\rdbrack]$.
 The method of \Rcode{consensusmap} defined for class \Rcode{'NMF.rank'}, 
 which plots all the consensus matrices on the same plot: 
 
-<<consensusmap_estimate, fig=TRUE>>=
+<<consensusmap_estimate>>=
 consensusmap(res2_7)
 @
 
@@ -414,7 +405,7 @@ by the whole computation.
 As previously, the sequence of consensus matrices is plotted with \Rcode{consensusmap}:
 
 \SweaveOpts{width=10,height=7}
-<<consensusmap_methods, fig=TRUE>>=
+<<consensusmap_methods>>=
 consensusmap(res_methods)	
 @
 

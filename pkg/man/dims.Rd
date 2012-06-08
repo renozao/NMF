@@ -60,14 +60,14 @@
 \section{Methods}{
   \describe{
 
-  \item{dim}{\code{signature( = "NMF")}: method for NMF
+  \item{dim}{\code{signature(x = "NMF")}: method for NMF
   objects for the base generic \code{\link{dim}}. It
   returns all dimensions in a length-3 integer vector: the
   number of row and columns of the estimated target matrix,
   as well as the factorization rank (i.e. the number of
   basis components). }
 
-  \item{dim}{\code{signature( = "NMFfitXn")}: Returns the
+  \item{dim}{\code{signature(x = "NMFfitXn")}: Returns the
   dimension common to all fits.
 
   Since all fits have the same dimensions, it returns the

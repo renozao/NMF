@@ -1,9 +1,9 @@
 \docType{methods}
-\name{[,NMF,ANY,ANY,ANY-method}
-\alias{[,NMF,ANY,ANY,ANY-method}
+\name{[,NMF-method}
+\alias{[,NMF-method}
 \title{Sub-setting NMF Objects}
 \usage{
-  \S4method{[}{NMF,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
+  \S4method{[}{NMF}(x, i, j, ..., drop = FALSE)
 }
 \arguments{
   \item{i}{index used to subset on the \strong{rows} of the

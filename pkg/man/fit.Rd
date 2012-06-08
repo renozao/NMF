@@ -85,9 +85,9 @@
   \code{object}, i.e. the fit that achieves the lowest
   estimation residuals. }
 
-  \item{fit<-}{\code{signature( = "NMFfit", = "NMF")}:
-  Updates the NMF model object stored in slot \code{'fit'}
-  with a new value. }
+  \item{fit<-}{\code{signature(object = "NMFfit", value =
+  "NMF")}: Updates the NMF model object stored in slot
+  \code{'fit'} with a new value. }
 
   \item{minfit}{\code{signature(object = "NMFfit")}:
   Returns the object its self, since there it is the result

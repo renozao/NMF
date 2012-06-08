@@ -1,6 +1,5 @@
 \docType{class}
 \name{NMFstd-class}
-\alias{NMFstd}
 \alias{NMFstd-class}
 \title{NMF Model - Standard model}
 \description{
@@ -73,8 +72,8 @@
 
   This function returns slot \code{W} of \code{object}. }
 
-  \item{basis<-}{\code{signature( = "NMFstd", = "matrix")}:
-  Set the basis matrix in standard NMF models
+  \item{basis<-}{\code{signature(object = "NMFstd", value =
+  "matrix")}: Set the basis matrix in standard NMF models
 
   This function sets slot \code{W} of \code{object}. }
 
@@ -83,8 +82,9 @@
 
   This function returns slot \code{H} of \code{object}. }
 
-  \item{coef<-}{\code{signature( = "NMFstd", = "matrix")}:
-  Set the mixture coefficient matrix in standard NMF models
+  \item{coef<-}{\code{signature(object = "NMFstd", value =
+  "matrix")}: Set the mixture coefficient matrix in
+  standard NMF models
 
   This function sets slot \code{H} of \code{object}. }
 

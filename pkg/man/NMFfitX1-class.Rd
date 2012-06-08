@@ -1,6 +1,5 @@
 \docType{class}
 \name{NMFfitX1-class}
-\alias{NMFfitX1}
 \alias{NMFfitX1-class}
 \title{Structure for Storing the Best Fit Amongst Multiple NMF Runs}
 \description{
@@ -76,8 +75,8 @@
   Returns the number of NMF runs performed, amongst which
   \code{object} was selected as the best fit. }
 
-  \item{show}{\code{signature( = "NMFfitX1")}: Show method
-  for objects of class \code{NMFfitX1} }
+  \item{show}{\code{signature(object = "NMFfitX1")}: Show
+  method for objects of class \code{NMFfitX1} }
 
   }
 }

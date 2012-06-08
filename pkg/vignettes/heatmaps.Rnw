@@ -1,0 +1,6 @@
+\documentclass[10pt]{article}
+\usepackage{url}
+\usepackage[colorlinks]{hyperref}
+
+\begin{document}
+\end{document}

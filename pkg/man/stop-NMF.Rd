@@ -1,4 +1,5 @@
-\name{nmf.stop.iteration}
+\name{NMFStop}
+\alias{NMFStop}
 \alias{nmf.stop.connectivity}
 \alias{nmf.stop.iteration}
 \alias{nmf.stop.stationary}
@@ -6,6 +7,8 @@
 \alias{stop-NMF}
 \title{Stopping Criteria for NMF Iterative Strategies}
 \usage{
+  NMFStop(val)
+
   nmf.stop.iteration(n)
 
   nmf.stop.threshold(threshold)
@@ -17,6 +20,9 @@
     check.interval = 10, ...)
 }
 \arguments{
+  \item{val}{access key that can be a character string, a
+  single integer or numeric, or a function.}
+
   \item{n}{maximum number of iteration to perform.}
 
   \item{threshold}{default stationarity threshold}
@@ -44,6 +50,9 @@
   to be achieved.}
 }
 \value{
+  a function that can be passed to argument \code{.stop} of
+  function \code{\link{nmf}}.
+
   a function that can be used as a stopping criterion for
   NMF algorithms defined as
   \code{\linkS4class{NMFStrategyIterative}} objects. That
@@ -54,8 +63,14 @@
 }
 \description{
   The function documented here implement
-  stopping/convergence criterion commonly used in NMF
+  stopping/convergence criteria commonly used in NMF
   algorithms.
+
+  \code{nmf.stop.iteration} generates a function that
+  implements the stopping criterion that limits the number
+  of iterations to a maximum of \code{n}), i.e. that
+  returns \code{TRUE} if \code{i>=n}, \code{FALSE}
+  otherwise.
 
   \code{nmf.stop.threshold} generates a function that
   implements the stopping criterion that stops when a given
@@ -75,10 +90,19 @@
   connectivity matrix.
 }
 \details{
-  \code{nmf.stop.iteration} generates a function that
-  implements the stopping criterion that limits the number
-  of iterations to a maximum of \code{n}), i.e. that
-  returns \code{TRUE} if \code{i>=n}, \code{FALSE}
-  otherwise.
+  \code{NMFStop} acts as a factory method that create
+  stopping criterion functions to be used with
+  \code{\link{nmf}}, from different types of values.
+
+  \code{NMFStop} returns functions unchanged, integer
+  values are used to create a stopping criterion of that
+  number of iterations via \code{nmf.stop.iteration},
+  numeric values are used to create a stopping criterion of
+  that stationary threshold via \code{nmf.stop.threshold}.
+  Character strings are assumed to be access keys for
+  registered criteria (currently available:
+  \dQuote{connectivity} and \dQuote{stationary}), or a
+  function name in the global environment or the namespace
+  of the loading package.
 }
 

@@ -58,13 +58,6 @@
 
   The following measures are computed:
 
-  See \code{\link{summary,NMF-method}} for more details. }
-
-  \item{summary}{\code{signature(object = "NMF")}: Computes
-  summary measures for a single NMF model.
-
-  The following measures are computed:
-
   \describe{ \item{sparseness}{Sparseness of the
   factorization computed by the function
   \code{\link{sparseness}}.} \item{entropy}{Purity of the

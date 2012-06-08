@@ -44,7 +44,8 @@ Suggests:
     corpcor,
     xtable,
     devtools,
-    knitr
+    knitr,
+    RUnit
 Enhances: Biobase
 Collate:
     'utils.R'

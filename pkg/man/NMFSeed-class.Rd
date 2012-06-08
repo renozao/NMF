@@ -1,6 +1,5 @@
 \docType{class}
 \name{NMFSeed-class}
-\alias{NMFSeed}
 \alias{NMFSeed-class}
 \title{Base class that defines the interface for NMF seeding methods.}
 \description{
@@ -44,8 +43,8 @@
 
   This method is not meant to be called directly }
 
-  \item{show}{\code{signature( = "NMFSeed")}: Show method
-  for objects of class \code{NMFSeed} }
+  \item{show}{\code{signature(object = "NMFSeed")}: Show
+  method for objects of class \code{NMFSeed} }
 
   }
 }

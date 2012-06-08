@@ -104,7 +104,7 @@ setGeneric('objective<-', function(object, ..., value) standardGeneric('objectiv
 
 #' @details
 #' \code{runtime} returns the CPU time required to compute an object.
-#' This would generally be an object of class \code{\link{proc_time}}.
+#' This would generally be an object of class \code{\link[=proc.time]{proc_time}}.
 #' 
 #' @export
 #' @rdname algorithmic

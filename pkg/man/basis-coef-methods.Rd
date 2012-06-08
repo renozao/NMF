@@ -127,19 +127,19 @@
   fits stored in \code{object}. It is a shortcut for
   \code{basis(fit(object))}. }
 
-  \item{basis<-}{\code{signature( = "NMF", = "matrix")}:
-  Pure virtual method for objects of class
+  \item{basis<-}{\code{signature(object = "NMF", value =
+  "matrix")}: Pure virtual method for objects of class
   \code{\linkS4class{NMF}}, that should be overloaded by
   sub-classes, and throws an error if called. }
 
-  \item{basis<-}{\code{signature( = "NMFstd", = "matrix")}:
-  Set the basis matrix in standard NMF models
+  \item{basis<-}{\code{signature(object = "NMFstd", value =
+  "matrix")}: Set the basis matrix in standard NMF models
 
   This function sets slot \code{W} of \code{object}. }
 
-  \item{basis<-}{\code{signature( = "NMFfit", = "matrix")}:
-  Sets the the basis matrix of an NMF model fitted with
-  function \code{\link{nmf}}.
+  \item{basis<-}{\code{signature(object = "NMFfit", value =
+  "matrix")}: Sets the the basis matrix of an NMF model
+  fitted with function \code{\link{nmf}}.
 
   It is a shortcut for \code{basis(fit(object)) <- value},
   dispatching the call to the \code{basis<-} method of the
@@ -170,19 +170,20 @@
   all the fits stored in \code{object}. It is a shortcut
   for \code{coef(fit(object))}. }
 
-  \item{coef<-}{\code{signature( = "NMF", = "matrix")}:
-  Pure virtual method for objects of class
+  \item{coef<-}{\code{signature(object = "NMF", value =
+  "matrix")}: Pure virtual method for objects of class
   \code{\linkS4class{NMF}}, that should be overloaded by
   sub-classes, and throws an error if called. }
 
-  \item{coef<-}{\code{signature( = "NMFstd", = "matrix")}:
-  Set the mixture coefficient matrix in standard NMF models
+  \item{coef<-}{\code{signature(object = "NMFstd", value =
+  "matrix")}: Set the mixture coefficient matrix in
+  standard NMF models
 
   This function sets slot \code{H} of \code{object}. }
 
-  \item{coef<-}{\code{signature( = "NMFfit", = "matrix")}:
-  Sets the the coefficient matrix of an NMF model fitted
-  with function \code{\link{nmf}}.
+  \item{coef<-}{\code{signature(object = "NMFfit", value =
+  "matrix")}: Sets the the coefficient matrix of an NMF
+  model fitted with function \code{\link{nmf}}.
 
   It is a shortcut for \code{coef(fit(object)) <- value},
   dispatching the call to the \code{coef<-} method of the
@@ -194,7 +195,7 @@
   \item{coefficients}{\code{signature(object = "NMF")}:
   Alias to \code{coef,NMF}, therefore also pure virtual. }
 
-  \item{loadings}{\code{signature( = "NMF")}: Method
+  \item{loadings}{\code{signature(x = "NMF")}: Method
   loadings for NMF Models
 
   The method \code{loadings} is identical to \code{basis},
@@ -224,10 +225,9 @@ coef(x) <- matrix(1:2, nrow(x), nbasis(x))
 }
 \seealso{
   Other NMF-interface: \code{\link{misc}},
-  \code{\link{$<-,NMF,ANY,ANY-method}},
-  \code{\link{$,NMF,ANY-method}}, \code{\link{NMF-class}},
-  \code{\link{nmfModel}}, \code{\link{nmfModels}},
-  \code{\link{rnmf}}
+  \code{\link{NMF-class}}, \code{\link{$<-,NMF-method}},
+  \code{\link{$,NMF-method}}, \code{\link{nmfModel}},
+  \code{\link{nmfModels}}, \code{\link{rnmf}}
 }
 \keyword{methods}
 

@@ -10,6 +10,8 @@
 
   \item{FUN}{the function that computes the quantitative
   measure.}
+
+  \item{...}{extra arguments passed to \code{FUN}.}
 }
 \description{
   The functions documented here provide advanced

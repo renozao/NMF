@@ -1,6 +1,5 @@
 \docType{class}
 \name{NMFStrategyIterative-class}
-\alias{NMFStrategyIterative}
 \alias{NMFStrategyIterative-class}
 \title{Interface for Algorithms: Implementation for Iterative NMF Algorithms}
 \description{
@@ -49,9 +48,9 @@
   Runs an NMF iterative algorithm on a target matrix
   \code{y}. }
 
-  \item{show}{\code{signature( = "NMFStrategyIterative")}:
-  Show method for objects of class
-  \code{NMFStrategyIterative} }
+  \item{show}{\code{signature(object =
+  "NMFStrategyIterative")}: Show method for objects of
+  class \code{NMFStrategyIterative} }
 
   }
 }
