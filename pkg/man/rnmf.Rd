@@ -1,6 +1,7 @@
 \docType{methods}
 \name{rnmf}
 \alias{rnmf}
+\alias{rnmf,ANY,data.frame-method}
 \alias{rnmf,ANY,matrix-method}
 \alias{rnmf-methods}
 \alias{rnmf,missing,missing-method}
@@ -87,9 +88,13 @@
   dimnames of the target matrix should be set on the
   returned NMF model.}
 
-  \item{W}{value for the basis matrix}
+  \item{W}{value for the basis matrix. \code{data.frame}
+  objects are converted into matrices with
+  \code{\link{as.matrix}}.}
 
-  \item{H}{value for the mixture coefficient matrix}
+  \item{H}{value for the mixture coefficient matrix
+  \code{data.frame} objects are converted into matrices
+  with \code{\link{as.matrix}}.}
 }
 \value{
   An NMF model, i.e. an object that inherits from class
@@ -117,6 +122,15 @@
   defined for \code{\linkS4class{NMFOffset}} models:
   \code{showMethods(rnmf, class='NMFOffset',
   include=TRUE))}.
+
+  For convenience, shortcut methods for working on
+  \code{data.frame} objects directly are implemented.
+  However, note that conversion of a \code{data.frame} into
+  a \code{matrix} object may take some non-negligible time,
+  for large datasets. If using this method or other
+  NMF-related methods several times, consider converting
+  your data \code{data.frame} object into a matrix once for
+  good, when first loaded.
 }
 \section{Methods}{
   \describe{
@@ -155,6 +169,10 @@
   \samp{ rnmf(x, dim(target), max=max(target), ...)}
 
   It returns an NMF model of the same class as \code{x}. }
+
+  \item{rnmf}{\code{signature(x = "ANY", target =
+  "data.frame")}: Shortcut for \code{rnmf(x,
+  as.matrix(target))}. }
 
   \item{rnmf}{\code{signature(x = "NMF", target =
   "missing")}: Generates a random NMF model of the same

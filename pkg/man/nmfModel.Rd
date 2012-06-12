@@ -1,6 +1,7 @@
 \docType{methods}
 \name{nmfModel}
 \alias{nmfModel}
+\alias{nmfModel,data.frame,data.frame-method}
 \alias{nmfModel,matrix,ANY-method}
 \alias{nmfModel,matrix,matrix-method}
 \alias{nmfModel-methods}
@@ -47,9 +48,13 @@
   \code{NMF}. Default is the standard NMF model
   \code{\linkS4class{NMFstd}}.}
 
-  \item{W}{value for the basis matrix}
+  \item{W}{value for the basis matrix. \code{data.frame}
+  objects are converted into matrices with
+  \code{\link{as.matrix}}.}
 
-  \item{H}{value for the mixture coefficient matrix}
+  \item{H}{value for the mixture coefficient matrix
+  \code{data.frame} objects are converted into matrices
+  with \code{\link{as.matrix}}.}
 
   \item{force.dim}{logical that indicates whether the
   method should try lowering the rank or shrinking
@@ -96,6 +101,15 @@
   case the factorisation rank is implicitly set by the
   number of basis components in the seeding model (see
   \code{\link{nmf}}).
+
+  For convenience, shortcut methods and internal
+  conversions for working on \code{data.frame} objects
+  directly are implemented. However, note that conversion
+  of a \code{data.frame} into a \code{matrix} object may
+  take some non-negligible time, for large datasets. If
+  using this method or other NMF-related methods several
+  times, consider converting your data \code{data.frame}
+  object into a matrix once for good, when first loaded.
 }
 \section{Methods}{
   \describe{
@@ -181,6 +195,15 @@
 
   Note that an error is thrown if their dimensions are not
   compatible. }
+
+  \item{nmfModel}{\code{signature(rank = "data.frame",
+  target = "data.frame")}: Same as \code{nmfModel('matrix',
+  'matrix')} but for \code{data.frame} objects, which are
+  generally produced by \code{\link{read.delim}}-like
+  functions.
+
+  The input \code{data.frame} objects are converted into
+  matrices with \code{\link{as.matrix}}. }
 
   \item{nmfModel}{\code{signature(rank = "matrix", target =
   "ANY")}: Creates an NMF model with arguments \code{rank}

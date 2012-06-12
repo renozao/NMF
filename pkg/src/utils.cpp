@@ -124,32 +124,38 @@ SEXP ptr_neq_constraints(SEXP x, SEXP constraints, SEXP ratio, SEXP value){
 	if( nc != ncol )
 		error("There must be as many elements in list `constraints` as columns in `x`.");
 
-	// apply each set of constraints
-	for(int j=nc-1; j>=0; --j){
+	// apply each set of constraints (from first to last)
+	double* _xj = p_x; // pointer to marked column
+	double* _x_last = p_x + (ncol - 1) * nrow; // pointer to last column
+	for(int j=0; j<nc; ++j){
 		SEXP c_j = VECTOR_ELT(constraints, j);
 		int n = length(c_j);
 		int* p_i = INTEGER_POINTER(c_j);
 
 		// apply the constraint on each row in the set
 		for(int k=n-1; k>=0; --k){
-			double lim = d_ratio != 0 ? p_x[j * nrow + p_i[k]-1] / d_ratio - eps : 0;
+			double lim = d_ratio != 0.0 ? _xj[p_i[k]-1] / d_ratio - eps : 0.0;
 			if( lim < 0 )
 				lim = 0;
 
-			// move to the last column
-			double* _xi = p_x + ncol * nrow + p_i[k]-1;
+			// apply constraints on each column
+			// pointer to current row in last column
+			double* _xi = _x_last + p_i[k]-1;
 			for(int l=ncol-1; l>=0; --l){
-				_xi -= nrow;
-				//Rprintf("lim=%f, xi=%f", lim, *_xi);
+				//Rprintf("Before: xi=%f > lim=%f ? => ", lim, *_xi);
 				if( l != j && *_xi > lim ){ // constrain column to 'lim'
 					*_xi = lim;
 				}else if( l == j && p_value != NULL ){ // constrain column to 'value'
 					*_xi = *p_value;
 				}
-				//Rprintf(" | After: xi=%f\\n", *_xi);
+				//Rprintf("xi=%f\n", *_xi);
+				// move to previous column
+				_xi -= nrow;
 			}
+			_xi = NULL;
 		}
-
+		// move to next marked column
+		_xj += nrow;
 	}
 
 	// return modified x

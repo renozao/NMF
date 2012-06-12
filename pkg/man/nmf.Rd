@@ -259,9 +259,10 @@
   (\code{nrun} > 1) (default: \code{TRUE}). If \code{TRUE},
   the runs are performed using the parallel foreach backend
   defined in argument \code{.pbackend}. If this is set to
-  \code{'mc'} then \code{nmf} tries to perform the runs
-  using multiple cores with package \code{link[doMC]{doMC}}
-  -- which therefore needs to be installed.
+  \code{'mc'} or \code{'par'} then \code{nmf} tries to
+  perform the runs using multiple cores with package
+  \code{link[doParallel]{doParallel}} -- which therefore
+  needs to be installed.
 
   If equal to an integer, then \code{nmf} tries to perform
   the computation on the specified number of processors.

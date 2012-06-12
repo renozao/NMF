@@ -465,6 +465,14 @@ unit.test("scale", {
 #' defined for \code{\linkS4class{NMFOffset}} models:
 #' \code{showMethods(rnmf, class='NMFOffset', include=TRUE))}.
 #' 
+#' For convenience, shortcut methods for working on \code{data.frame} objects 
+#' directly are implemented.
+#' However, note that conversion of a \code{data.frame} into a \code{matrix} 
+#' object may take some non-negligible time, for large datasets. 
+#' If using this method or other NMF-related methods several times, consider 
+#' converting your data \code{data.frame} object into a matrix once for good, 
+#' when first loaded.
+#' 
 #' @param x an object that determines the rank, dimension and/or class of the 
 #' generated NMF model, e.g. a numeric value or an object that inherits from class 
 #' \code{\linkS4class{NMF}}.
@@ -569,6 +577,14 @@ isNMFclass <- function(x){
 #' rank is implicitly set by the number of basis components in the seeding 
 #' model (see \code{\link{nmf}}).
 #' 
+#' For convenience, shortcut methods and internal conversions for working on 
+#' \code{data.frame} objects directly are implemented.
+#' However, note that conversion of a \code{data.frame} into a \code{matrix} 
+#' object may take some non-negligible time, for large datasets. 
+#' If using this method or other NMF-related methods several times, consider 
+#' converting your data \code{data.frame} object into a matrix once for good, 
+#' when first loaded.
+#' 
 #' @param rank specification of the target factorization rank 
 #' (i.e. the number of components). 
 #' @param target an object that specifies the dimension of the estimated target matrix.
@@ -594,8 +610,10 @@ setGeneric('nmfModel', function(rank, target=0L, ...) standardGeneric('nmfModel'
 #' @param model the class of the object to be created. 
 #' It must be a valid class name that inherits from class \code{NMF}. 
 #' Default is the standard NMF model \code{\linkS4class{NMFstd}}.
-#' @param W value for the basis matrix 
+#' @param W value for the basis matrix. 
+#' \code{data.frame} objects are converted into matrices with \code{\link{as.matrix}}.
 #' @param H value for the mixture coefficient matrix
+#' \code{data.frame} objects are converted into matrices with \code{\link{as.matrix}}.
 #' @param force.dim logical that indicates whether the method should try 
 #' lowering the rank or shrinking dimensions of the input matrices to 
 #' make them compatible 
@@ -718,9 +736,10 @@ setMethod('nmfModel', signature(rank='numeric', target='numeric'),
 			W.was.missing <- TRUE
 		}
 		else{
-			# convert numerical vectors into a matrix
-			if( is.vector(W) )
+			if( is.vector(W) ) # convert numerical vectors into a matrix
 				W <- matrix(W, n, r)
+			else if( is.data.frame(W) ) # convert data.frame into matrix
+				W <- as.matrix(W) 
 			
 			if( r == 0 ) r <- ncol(W)
 			else if( r < ncol(W) ){
@@ -759,6 +778,8 @@ setMethod('nmfModel', signature(rank='numeric', target='numeric'),
 			# convert numerical vectors into a matrix
 			if( is.vector(H) )
 				H <- matrix(H, r, m)
+			else if( is.data.frame(H) ) # convert data.frame into matrix
+				H <- as.matrix(H)
 			
 			if( r == 0 ) r <- nrow(H)
 			else if( r < nrow(H) ){
@@ -997,6 +1018,17 @@ setMethod('nmfModel', signature(rank='matrix', target='matrix'),
 			nmfModel(0L, 0L, W=rank, H=target, ..., force.dim=FALSE)
 			
 		}	
+)
+
+#' Same as \code{nmfModel('matrix', 'matrix')} but for \code{data.frame} objects,
+#' which are generally produced by \code{\link{read.delim}}-like functions.
+#' 
+#' The input \code{data.frame} objects are converted into matrices with 
+#' \code{\link{as.matrix}}.
+setMethod('nmfModel', signature(rank='data.frame', target='data.frame'),
+	function(rank, target, ...){
+		nmfModel(as.matrix(rank), as.matrix(target), ...)
+	}
 )
 
 #' Creates an NMF model with arguments \code{rank} and \code{target} swapped.
@@ -1836,6 +1868,12 @@ setMethod('rnmf', signature(x='ANY', target='matrix'),
 		
 		# return result
 		res
+	}
+)
+#' Shortcut for \code{rnmf(x, as.matrix(target))}.
+setMethod('rnmf', signature(x='ANY', target='data.frame'),
+	function(x, target, ...){
+		rnmf(x, as.matrix(target), ...)
 	}
 )
 #' Generates a random NMF model of the same dimension as another NMF model.
