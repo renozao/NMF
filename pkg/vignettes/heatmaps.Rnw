@@ -1,4 +1,8 @@
 \documentclass[10pt]{article}
+% \VignetteIndexEntry{NMF: generating heatmaps}
+% \VignetteDepends{NMF,RColorBrewer}
+% \VignetteKeyword{aplot}
+% \VignetteCompiler{knitr}
 \usepackage{url}
 \usepackage[colorlinks]{hyperref}
 

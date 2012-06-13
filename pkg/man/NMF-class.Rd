@@ -75,7 +75,8 @@
   sub-setting objects of class \code{NMF}, using a
   matrix-like syntax.
 
-  See \code{\link{[,NMF-method}} for more details. }
+  See \code{\link{[,NMF,ANY,ANY,ANY-method}} for more
+  details. }
 
   \item{$}{\code{signature(x = "NMF")}: shortcut for
   \code{x@misc[[name, exact=TRUE]]} respectively. }
@@ -177,8 +178,8 @@
   dimension names, or a 1, 2 or 3-length list providing
   names at least for the rows of the basis matrix.
 
-  See \code{\link{dimnames<-,NMF-method}} for more details.
-  }
+  See \code{\link{dimnames<-,NMF,ANY-method}} for more
+  details. }
 
   \item{extractFeatures}{\code{signature(object = "NMF")}:
   Select basis-specific features from an NMF model, by

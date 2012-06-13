@@ -329,18 +329,17 @@ atrack <- function(..., order = NULL, enforceNames=FALSE, .DATA = NULL){
 						return()
 					
 					n <- names(object)
-					# convert into a track
+					# convert into a list
 					if( !is.list(xa) )
 						xa <- setNames(list(xa), names(l)[i])
 					
 					# remove NA and NULL elements
 					if( is.null(xa) || isNA(xa) ) return()
-					
 					# cbind with previous tracks
 					if( is.null(object) ) object <<- xa
 					else object <<- c(object, xa)
 					
-				})		
+				})
 	}	
 	
 	# exit now if object is NULL

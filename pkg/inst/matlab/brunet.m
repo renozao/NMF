@@ -128,7 +128,9 @@ j=0;
 % initialize random w and h (only if one of the factor is missing)
 %
 if nargin<5,
- fprintf('Use random W and H\n'), 
+ if( verbose )
+ fprintf('Use random W and H\n');
+ end
  w=rand(n,r); 
  h=rand(r,m);
 end

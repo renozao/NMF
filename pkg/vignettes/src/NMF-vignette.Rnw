@@ -1,14 +1,13 @@
 % 
 \documentclass[a4paper]{article}
 \usepackage{Sweave}
+\SweaveOpts{keep.source=TRUE}
 
+\usepackage[OT1]{fontenc}
+\usepackage[colorlinks]{hyperref} % for hyperlinks
 \usepackage{a4wide}
 \usepackage{xspace}
-\usepackage[colorlinks]{hyperref} % for hyperlinks
 \usepackage[all]{hypcap} % for linking to the top of the figures or tables
-\usepackage{a4wide}
-
-\usepackage[minnames=1,maxnames=2]{biblatex}
 
 % add preamble from pkgmaker
 <<pkgmaker_preamble, echo=FALSE, results='asis'>>=
@@ -26,12 +25,14 @@ pkgmaker::latex_preamble()
 \newcommand{\graphwidth}{0.9\columnwidth}
 \newcommand{\refeqn}[1]{(\ref{#1})}
 
+% REFERENCES
 \usepackage[minnames=1,maxnames=2]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 <<bibliofile, echo=FALSE, results='asis'>>=
 pkgmaker::latex_bibliography('NMF')	
 @
 \bibliography{Rpackages}
+%%
 
 % boxed figures
 \usepackage{float}
@@ -45,7 +46,6 @@ pkgmaker::latex_bibliography('NMF')
 \usepackage{url}
 \urlstyle{rm}
 
-\SweaveOpts{keep.source=TRUE}
 <<options, echo=FALSE>>=
 options(prompt=' ', width = 60)
 options(continue=' ')
@@ -68,8 +68,9 @@ if( Sys.info()['user'] == 'renaud' ) .libPaths(c('./loclib', .libPaths()))
 
 \begin{document}
 %\VignetteIndexEntry{Using the package NMF}
-%\VignetteDepends{NMF,Biobase,bigmemory,xtable}
+%\VignetteDepends{NMF,Biobase,bigmemory,xtable,RColorBrewer}
 %\VignetteKeyword{math}
+%\VignetteCompiler{knitr}
 
 <<load_library, echo=FALSE, include=FALSE>>=
 # Load
@@ -1250,6 +1251,6 @@ write.bib(c('gridBase', 'doMC', 'multicore',
 'RcppOctave', 'doRNG' , 'foreach', 'hgu133plus2.db', 'genefilter'
 		, 'GEOquery', 'ArrayExpress', 'annotate', 'illuminaHumanv2.db'
 		, 'registry', 'limSolve', 'biomaRt', 'R.matlab', 'Rcpp', 'pheatmap', 'RColorBrewer', 'Matrix')
-		, file='Rpackages.bib')
+		)
 @
 

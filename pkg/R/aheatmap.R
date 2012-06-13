@@ -1013,7 +1013,7 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 	}
 	
 	count = 0
-	annotation2 <- list()
+	annotationLevels <- list()	
 	anames <- names(annotation)
 	sapply(seq_along(annotation), function(i){
 		a <- annotation[[i]]
@@ -1023,14 +1023,14 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 			count <<- count + nlevels(a)
 			# merge if possible
 			if( !is.null(anames) && anames[i]!='' )	
-				annotation2[[anames[i]]] <<- unique(c(annotation2[[anames[i]]], a))
+				annotationLevels[[anames[i]]] <<- unique(c(annotationLevels[[anames[i]]], a))
 			else 
-				annotation2 <<- c(annotation2, list(a))			
+				annotationLevels <<- c(annotationLevels, list(a))			
 		}else
-			annotation2 <<- a
+			annotationLevels <<- c(annotationLevels, annotation[i])
 	})
-	annotation <- annotation2
-	#str(annotation2)
+	annotation <- annotationLevels
+	#str(annotationLevels)
 
 	factor_colors = hcl(h = seq(1, 360, length.out = max(count+1,20)), 100, 70)	
 		
@@ -1170,7 +1170,7 @@ renderAnnotations <- function(annCol, annRow, annotation_colors, verbose=getOpti
 		
 	if( length(annotation) == 0 ) return( list(annCol=NA, annRow=NA, colors=NA) )
 	
-	# generate the missing names
+	# generate the missing name
 	n <- names(annotation)
 	xnames <- paste('X', 1:length(annotation), sep='')
 	if( is.null(n) ) names(annotation) <- xnames

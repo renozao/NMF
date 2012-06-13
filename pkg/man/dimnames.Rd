@@ -7,7 +7,7 @@
 \alias{basisnames<--methods}
 \alias{basisnames-methods}
 \alias{dimnames-NMF}
-\alias{dimnames<-,NMF-method}
+\alias{dimnames<-,NMF,ANY-method}
 \alias{dimnames,NMF-method}
 \title{Dimension names for NMF objects}
 \usage{
@@ -17,7 +17,7 @@
 
   \S4method{dimnames}{NMF}(x)
 
-  \S4method{dimnames}{NMF}(x) <- value
+  \S4method{dimnames}{NMF,ANY}(x) <- value
 }
 \arguments{
   \item{x}{an object with suitable \code{basis} and

@@ -62,14 +62,14 @@ test.synchronicity <- function(){
 		on.exit( registerDoSEQ() )
 			
 		# no mutex
-		wtime <- .test(mess(), FALSE, libs, seq)
-		checkEquals( wtime[1], 2 , mess("No mutex: Thread 1 waits 2 second"))
-		checkEquals( wtime[2], 0 , mess("No mutex: Thread 2 does not wait at all"))
+		wtime <- .test(mess(), mutex=FALSE, libs, seq)
+		checkEquals( wtime[1], 2 , mess("No mutex: Thread 1 waits 2 second (", wtime[1], ')'))
+		checkEquals( wtime[2], 0 , mess("No mutex: Thread 2 does not wait at all (", wtime[2], ')'))
 		
 		# check mutex lock
-		wtime <- .test(mess(), TRUE, libs, seq)
-		checkEquals( wtime[1], 2 , mess("With mutex : Thread 1 waits 2 seconds"))
-		if( !seq ) checkTrue( wtime[2] >= 2 , mess("With mutex: Thread 2 also waits at least 2 seconds"))
+		wtime <- .test(mess(), mutex=TRUE, libs, seq)
+		checkEquals( wtime[1], 2 , mess("With mutex : Thread 1 waits 2 seconds (", wtime[1], ')'))
+		checkTrue( wtime[2] >= 2 , mess("With mutex: Thread 2 also waits at least 2 seconds (", wtime[2], ')'))
 	}
 	
 	# restore backend on.exit

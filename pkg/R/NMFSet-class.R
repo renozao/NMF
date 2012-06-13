@@ -1743,7 +1743,7 @@ setMethod('basismap', signature(object='NMFfitX'),
 
 #' Plots a heatmap of the coefficient matrix of the best fit in \code{object}.
 setMethod('coefmap', signature(object='NMFfitX'),
-	function(object, ..., annCol=c('basis', 'consensus')){
+	function(object, ..., Colv=TRUE, annCol=c('basis', 'consensus')){
 		
 		x <- minfit(object)
 		
@@ -1765,13 +1765,21 @@ setMethod('coefmap', signature(object='NMFfitX'),
 					)
 				}, simplify=FALSE)
 			}
+			
 			# convert into annotation tracks now
 			annCol <- atrack(tr, annCol, .DATA=amargin(x,2L))
 		}
 		##
 		
+		## process ordering
+		if( isString(Colv) ){
+			if( Colv %in% c('consensus','cmap') )
+				Colv <- consensushc(object, 'consensus')
+		}
+		##
+		
 		# call the method on the best fit
-		coefmap(x, ..., annCol=annCol)	
+		coefmap(x, ..., Colv=Colv, annCol=annCol)	
 	}
 )
 

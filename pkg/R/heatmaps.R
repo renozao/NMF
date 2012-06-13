@@ -165,20 +165,20 @@ setMethod('metaHeatmap', signature(object='NMF'),
 )
 
 # match an annotation track against list of supported tracks
-match_named_track <- function(annRow, tracks, msg, optional=FALSE){
+match_named_track <- function(annotation, tracks, msg, optional=FALSE){
 	
 	idx <- 
-	if( is.character(annRow) ){
-		i <- match(annRow, tracks, nomatch=if(optional) 0L else NA )
+	if( is.character(annotation) ){
+		i <- match(annotation, tracks, nomatch=if(optional) 0L else NA )
 		if( any(!is.na(i)) ){
 			if( !optional && any(is.na(i)) ){
-				stop(msg, " - Invalid annotation track(s) [", str_out(annRow[is.na(i)])
+				stop(msg, " - Invalid annotation track(s) [", str_out(annotation[is.na(i)])
 						, "]: should be one of ", str_out(tracks))
 			}
 		}
 		i
-	}else if( is.list(annRow) ){ 
-		sapply(annRow, function(x){
+	}else if( is.list(annotation) ){ 
+		sapply(annotation, function(x){
 					if( isString(x) ) match(x, tracks, nomatch=if(optional) 0L else NA )
 					else NA
 				})
@@ -188,12 +188,12 @@ match_named_track <- function(annRow, tracks, msg, optional=FALSE){
 	ok <- !is.na(idx)
 	# result
 	# remaining annotations
-	ann <- annRow[!ok]
+	ann <- annotation[!ok]
 	if( length(ann) == 0L ) ann <- NULL
 	# track annotations
-	tr <- unlist(annRow[which(ok)])
+	tr <- unlist(annotation[which(ok)])
 	idx <- idx[which(ok)] 
-	if( is.null(names(annRow)) ) names(tr) <- tr
+	if( is.null(names(annotation)) ) names(tr) <- tr
 	else{
 		mn <- names(tr) == ''
 		names(tr)[mn] <- tr[mn]
@@ -201,7 +201,7 @@ match_named_track <- function(annRow, tracks, msg, optional=FALSE){
 	others <- tr[idx==0L]
 	#
 #	list(ann=ann, tracks=tr[idx>0L], others=if(length(others)) others else NULL)
-	list(ann=ann, tracks=tr)
+	list(ann=as.list(ann), tracks=tr)
 }
 
 #' Heatmaps of NMF Factors
@@ -370,6 +370,7 @@ setMethod('basismap', signature(object='NMF'),
 #' 
 #' This track is specified in argument \code{annCol}, which behaves like 
 #' argument \code{annRow} in \code{basismap} (see above).
+#' A matching row annotation track may be displayed using \code{annRow='basis'}.
 #' \item a suitable title and extra information like the fitting algorithm, 
 #' when \code{object} is a fitted NMF model. 
 #' }  
@@ -390,8 +391,9 @@ setMethod('basismap', signature(object='NMF'),
 setGeneric('coefmap', function(object, ...) standardGeneric('coefmap') )
 setMethod('coefmap', signature(object='NMF'),
 		function(object, color = 'YlOrRd:50', ...
-				, scale = 'c1', Rowv = NA
-				, annCol = 'basis'
+				, scale = 'c1'
+				, Rowv = NA, Colv=TRUE
+				, annRow=NA, annCol = 'basis'
 				, main="Mixture coefficients", info = FALSE){
 						
 			# use the mixture coefficient matrix
@@ -403,33 +405,79 @@ setMethod('coefmap', signature(object='NMF'),
 					else if( isFALSE(info) ) NULL
 					else info
 			
-			# process annotation tracks
+			# process column annotation tracks
+			has_basis_col_track <- FALSE
 			if( length(annCol) > 0L && !isNA(annCol) ){
 				
 				# match against supported tracks
-				itr <- match_named_track(annCol, 'basis', "NMF::coefmap")
+				itrCol <- match_named_track(annCol, 'basis', "NMF::coefmap")
 				# create extra annotation tracks
-				tr <- 
-				if( length(itr$tracks) ){
+				if( length(itrCol$tracks) ){
 					# remove track from annotation specification
-					annCol <- itr$ann
+					annCol <- itrCol$ann
 					# compute track
-					sapply( itr$tracks, function(t){
+					trCol <- sapply( itrCol$tracks, function(t){
 						switch(t
 						, basis = predict(object)					
-						, stop("NMF::coefmap - Invalid annotation track: ", t)
+						, stop("NMF::coefmap - Invalid column annotation track: ", t)
 						)
 					}, simplify=FALSE)
+					
+					has_basis_col_track <- TRUE
+					# convert into annotation tracks now
+					annCol <- atrack(trCol, annCol, .DATA=amargin(x,2L))
 				}
-				# convert into annotation tracks now
-				annCol <- atrack(tr, annCol, .DATA=amargin(x,2L))
+			}	
+			
+			# process row annotation tracks
+			if( length(annRow) > 0L && !isNA(annRow) ){
+				itrRow <- match_named_track(annRow, 'basis', "NMF::coefmap")
+				# create extra annotation tracks
+				if( length(itrRow$tracks) ){
+					# remove track from annotation specification
+					annRow <- itrRow$ann
+					# compute track
+					tr <- sapply( itrRow$tracks, function(t){
+						switch(t
+						, basis = as.factor(1:nbasis(object))					
+						, stop("NMF::coefmap - Invalid row annotation track: ", t)
+						)
+					}, simplify=FALSE)
+			
+					# link to the previous track with the name if necessary
+					if( has_basis_col_track ){
+						ib <- which(itrRow$tracks=='basis')
+						if( length(ib) ){ 
+							if( names(tr[ib]) == 'basis' ){
+								names(tr)[ib] <- names(trCol)[itrCol$tracks == 'basis']
+							}else{
+								ibCol <- which(itrCol$tracks=='basis')
+								# update column annotation name if necessary
+								if( names(trCol[ibCol]) == 'basis' ){
+									names(annCol)[names(annCol) == 'basis'] <- names(tr)[ib]
+								}
+							}
+						}
+					}
+					# convert into annotation tracks now
+					annRow <- atrack(tr, annRow, .DATA=amargin(x,1L))
+				}
+				
+			}
+			##
+			
+			## process ordering
+			if( isString(Colv) ){
+				if( Colv == 'basis' ) Colv <- 'samples'
+				if( Colv == 'samples' )
+					Colv <- order(as.numeric(predict(object, Colv)))
 			}
 			##
 			
 			# call aheatmap on matrix
 			aheatmap(x, color = color, ...
-					, scale = scale, Rowv = Rowv
-					, annCol = annCol
+					, scale = scale, Rowv = Rowv, Colv=Colv
+					, annRow=annRow, annCol = annCol
 					, main=main, info = info)
 		}
 )

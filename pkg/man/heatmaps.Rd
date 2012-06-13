@@ -26,8 +26,9 @@
   coefmap(object, ...)
 
   \S4method{coefmap}{NMF}(object, color = "YlOrRd:50", ...,
-    scale = "c1", Rowv = NA, annCol = "basis",
-    main = "Mixture coefficients", info = FALSE)
+    scale = "c1", Rowv = NA, Colv = TRUE, annRow = NA,
+    annCol = "basis", main = "Mixture coefficients",
+    info = FALSE)
 
   consensusmap(object, ...)
 
@@ -42,7 +43,7 @@
     main = if (is.null(nr) || nr > 1) "Consensus matrix" else "Connectiviy matrix",
     info = FALSE)
 
-  \S4method{coefmap}{NMFfitX}(object, ...,
+  \S4method{coefmap}{NMFfitX}(object, ..., Colv = TRUE,
     annCol = c("basis", "consensus"))
 }
 \arguments{
@@ -266,9 +267,10 @@
 
   This track is specified in argument \code{annCol}, which
   behaves like argument \code{annRow} in \code{basismap}
-  (see above). \item a suitable title and extra information
-  like the fitting algorithm, when \code{object} is a
-  fitted NMF model. }
+  (see above). A matching row annotation track may be
+  displayed using \code{annRow='basis'}. \item a suitable
+  title and extra information like the fitting algorithm,
+  when \code{object} is a fitted NMF model. }
 
   \code{consensusmap} redefines default values for the
   following arguments of \code{\link{aheatmap}}: \itemize{

@@ -12,7 +12,7 @@
 ## reportedly has been squashed upstream but I am still bitten by it
 ## on Ubuntu so for now Dirk will insist on pdflatex and this helps.
 AUTHOR_USER=renaud
-R_PACKAGE=NMF
+MAKE_R_PACKAGE=NMF
 MAKEPDF=1
 
 ##---------------------------------------------------------------------
@@ -43,6 +43,7 @@ ifeq (${R_HOME},)
 NOT_CHECKING=1
 TMP_INSTALL_DIR := $(shell mktemp -d)
 export R_LIBS=$(shell pwd)/../../../lib
+export MAKE_R_PACKAGE
 endif
 
 # Define command for temporary installation (used when make is directly called,
@@ -112,15 +113,15 @@ do_clean:
 	$(do_install)
 	# Generating vignette $@ from ${SRC_DIR}/$*.Rnw
 	# Using R_LIBS: $(R_LIBS)
-	$(RSCRIPT) --vanilla -e "require(knitr); knit('${SRC_DIR}/$*.Rnw', '$*.tex');"
+	$(RSCRIPT) --vanilla -e "pkgmaker::rnw('${SRC_DIR}/$*.Rnw', '$*.tex');"
 	# Generating pdf $@ from $*.tex
 ifdef MAKEPDF
 ifdef LOCAL_MODE
 	# Using pdflatex
-	@pdflatex $(VIGNETTE_BASENAME) >> pdflatex.log
+	@pdflatex $(VIGNETTE_BASENAME) >> $(VIGNETTE_BASENAME)-pdflatex.log
 	-bibtex $(VIGNETTE_BASENAME)
-	@pdflatex $(VIGNETTE_BASENAME) >> pdflatex.log
-	@pdflatex $(VIGNETTE_BASENAME) >> pdflatex.log
+	@pdflatex $(VIGNETTE_BASENAME) >> $(VIGNETTE_BASENAME)-pdflatex.log
+	@pdflatex $(VIGNETTE_BASENAME) >> $(VIGNETTE_BASENAME)-pdflatex.log
 	# Compact vignettes
 	$(RSCRIPT) -e "tools::compactPDF('$(VIGNETTE_BASENAME).pdf')"
 else

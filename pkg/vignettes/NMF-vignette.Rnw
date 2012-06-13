@@ -1,7 +1,8 @@
 \documentclass[10pt]{article}
 %\VignetteIndexEntry{Using the package NMF}
-%\VignetteDepends{NMF,Biobase,bigmemory,xtable}
+%\VignetteDepends{NMF,Biobase,bigmemory,xtable,RColorBrewer}
 %\VignetteKeyword{math}
+%\VignetteCompiler{knitr}
 \usepackage{url}
 \usepackage[colorlinks]{hyperref}
 
