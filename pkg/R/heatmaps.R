@@ -172,7 +172,7 @@ match_named_track <- function(annotation, tracks, msg, optional=FALSE){
 		i <- match(annotation, tracks, nomatch=if(optional) 0L else NA )
 		if( any(!is.na(i)) ){
 			if( !optional && any(is.na(i)) ){
-				stop(msg, " - Invalid annotation track(s) [", str_out(annotation[is.na(i)])
+				stop(msg, "invalid track(s) [", str_out(annotation[is.na(i)])
 						, "]: should be one of ", str_out(tracks))
 			}
 		}
@@ -410,29 +410,30 @@ setMethod('coefmap', signature(object='NMF'),
 			if( length(annCol) > 0L && !isNA(annCol) ){
 				
 				# match against supported tracks
-				itrCol <- match_named_track(annCol, 'basis', "NMF::coefmap")
+				itrCol <- match_named_track(annCol, 'basis', "NMF::coefmap [annCol] - ")
 				# create extra annotation tracks
+				trCol <- 
 				if( length(itrCol$tracks) ){
+					has_basis_col_track <- TRUE
 					# remove track from annotation specification
 					annCol <- itrCol$ann
 					# compute track
-					trCol <- sapply( itrCol$tracks, function(t){
+					sapply( itrCol$tracks, function(t){
 						switch(t
 						, basis = predict(object)					
-						, stop("NMF::coefmap - Invalid column annotation track: ", t)
+						, stop("NMF::coefmap - Unexpected error: unsupported column annotation track: ", t)
 						)
 					}, simplify=FALSE)
-					
-					has_basis_col_track <- TRUE
-					# convert into annotation tracks now
-					annCol <- atrack(trCol, annCol, .DATA=amargin(x,2L))
 				}
+				# convert into annotation tracks now
+				annCol <- atrack(trCol, annCol, .DATA=amargin(x,2L))
 			}	
 			
 			# process row annotation tracks
 			if( length(annRow) > 0L && !isNA(annRow) ){
-				itrRow <- match_named_track(annRow, 'basis', "NMF::coefmap")
+				itrRow <- match_named_track(annRow, 'basis', "NMF::coefmap [annRow] - ")
 				# create extra annotation tracks
+				tr <- NULL
 				if( length(itrRow$tracks) ){
 					# remove track from annotation specification
 					annRow <- itrRow$ann
@@ -440,7 +441,7 @@ setMethod('coefmap', signature(object='NMF'),
 					tr <- sapply( itrRow$tracks, function(t){
 						switch(t
 						, basis = as.factor(1:nbasis(object))					
-						, stop("NMF::coefmap - Invalid row annotation track: ", t)
+						, stop("NMF::coefmap - Unexpected error: unsupported row annotation track: ", t)
 						)
 					}, simplify=FALSE)
 			
@@ -459,9 +460,9 @@ setMethod('coefmap', signature(object='NMF'),
 							}
 						}
 					}
-					# convert into annotation tracks now
-					annRow <- atrack(tr, annRow, .DATA=amargin(x,1L))
 				}
+				# convert into annotation tracks now
+				annRow <- atrack(tr, annRow, .DATA=amargin(x,1L))
 				
 			}
 			##

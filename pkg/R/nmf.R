@@ -1348,6 +1348,7 @@ function(x, rank, method
 				hosts <- getDoParHosts()
 				if( verbose > 2 ) message("# Running on host(s): ", str_out(hosts))
 				SINGLE_HOST <- length(hosts) > 1L
+				MODE_SHARED <- MODE_SHARED && SINGLE_HOST
 				
 				# setup mutex evaluation function
 				mutex_eval <- if( MODE_SHARED ) ts_eval(verbose = verbose > 4) else force

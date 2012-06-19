@@ -956,6 +956,25 @@ setMethod('nmf.equal', signature(x='list', y='list'),
 	}
 )
 
+#' Compare all elements in \code{x} to \code{x[[1]]}.
+setMethod('nmf.equal', signature(x='list', y='missing'), 
+	function(x, y, ...){
+		
+		if( length(x) == 0L ){
+			warning("Empty list argument `x`: returning NA")
+			return(NA)
+		}
+		if( length(x) == 1L ){
+			warning("Only one element in list argument `x`: returning TRUE")
+			return(TRUE)
+		}
+		for( a in x ){
+			if( !nmf.equal(x[[1]], a, ...) ) return(FALSE)
+		}
+		return(TRUE)
+	}
+)
+
 #' Computes the consensus matrix of the set of fits stored in \code{object}, as
 #' the mean connectivity matrix across runs.
 #' 
@@ -1016,7 +1035,7 @@ plot.NMF.consensus <- function(x, ...){
 #' consensus matrix, where all entries 0 or 1. 
 #' A perfect consensus matrix is obtained only when all the connectivity matrices 
 #' are the same, meaning that the algorithm gave the same clusters at each run.  
-#' See \emph{KimH2007}
+#' See \cite{KimH2007}.
 #' 
 #' @param object an object from which the dispersion is computed
 #' @param ... extra arguments to allow extension  

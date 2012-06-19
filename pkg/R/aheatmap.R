@@ -1540,6 +1540,7 @@ subset_index <- function(x, margin, subset){
 #' 
 #' Enhancement into \code{aheatmap}: Renaud Gaujoux
 #' 
+#' @importFrom pkgmaker isNA
 #' @examples
 #' 
 #' # Generate random data
@@ -1623,6 +1624,7 @@ aheatmap = function(x
 	# convert ExpressionSet into 
 	if( is(x, 'ExpressionSet') ){
 		library(Biobase)
+		if( isTRUE(annCol) ) annCol <- atrack(x, .DATA=exprs(x))
 		x <- exprs(x)
 	}
 

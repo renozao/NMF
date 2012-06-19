@@ -1,7 +1,7 @@
 Package: NMF
 Type: Package
 Title: Algorithms and framework for Nonnegative Matrix Factorization (NMF).
-Version: 0.8.2
+Version: 0.8.5
 Date: 2010-08-20
 Author: Renaud Gaujoux
 Maintainer: Renaud Gaujoux <renaud@cbio.uct.ac.za>
@@ -14,7 +14,8 @@ Description: This package provides a framework to perform Non-negative Matrix
 License: GPL (>=2)
 URL: http://nmf.r-forge.r-project.org
 LazyLoad: yes
-Depends: R (>= 2.14.0), methods, stats, pkgmaker, registry, graphics, foreach, doParallel, bigmemory (>= 4.0), doRNG, digest, gridBase, stringr, colorspace
+Depends: R (>= 2.14.0), methods, stats, pkgmaker (>= 0.6), registry, graphics, foreach, doParallel, bigmemory (>= 4.0), doRNG, digest, gridBase, stringr,
+                  colorspace
 Imports: methods, stats, graphics, pkgmaker, stringr
 Suggests: Biobase, RColorBrewer, fastICA, doMPI, synchronicity, corpcor, xtable, devtools, knitr, RUnit
 Enhances: Biobase
@@ -22,4 +23,4 @@ Collate: 'utils.R' 'colorcode.R' 'options.R' 'RNG.R' 'algorithmic.R' 'atracks.R'
                   'NMFns-class.R' 'heatmaps.R' 'NMFfit-class.R' 'NMFSet-class.R' 'registry.R' 'NMFStrategy-class.R' 'NMFStrategyFunction-class.R'
                   'NMFStrategyIterative-class.R' 'algorithms-base.R' 'seed.R' 'parallel.R' 'nmf.R' 'Bioc-layer.R' 'transforms.R' 'NMFplots.R' 'nmf-package.R'
                   'algorithms-lnmf.R' 'algorithms-lsnmf.R' 'algorithms-pe-nmf.R' 'algorithms-snmf.R' 'seed-ica.R' 'seed-nndsvd.R' 'data.R'
-Packaged: 2012-06-13 17:03:59 UTC; renaud
+Packaged: 2012-06-19 08:40:31 UTC; renaud

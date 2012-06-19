@@ -590,8 +590,8 @@
   available: \describe{
 
   \item{\sQuote{brunet}}{ Standard NMF, based on the
-  Kullback-Leibler divergence, from \cite{Brunet2004}. It
-  uses simple multiplicative updates from \cite{Lee2001},
+  Kullback-Leibler divergence, from \cite{Brunet et al. (2004)}. It
+  uses simple multiplicative updates from \cite{Lee et al. (2001)},
   enhanced to avoid numerical underflow.
 
   Default stopping criterion: invariance of the
@@ -599,14 +599,14 @@
   \code{\link{nmf.stop.connectivity}}). }
 
   \item{\sQuote{lee}}{ Standard NMF based on the Euclidean
-  distance from \cite{Lee2001}. It uses simple
+  distance from \cite{Lee et al. (2001)}. It uses simple
   multiplicative updates.
 
   Default stopping criterion: invariance of the
   connectivity matrix (see
   \code{\link{nmf.stop.connectivity}}). }
 
-  \item{ls-nmf}{ Least-Square NMF from \cite{Wang2006}. It
+  \item{ls-nmf}{ Least-Square NMF from \cite{Wang et al. (2006)}. It
   uses modified versions of Lee and Seung's multiplicative
   updates for the Euclidean distance, which incorporates
   weights on each entry of the target matrix, e.g. to
@@ -616,9 +616,9 @@
   function (see \code{\link{nmf.stop.stationary}}). }
 
   \item{\sQuote{nsNMF}}{ Nonsmooth NMF from
-  \cite{Pascual-Montano2006}. It uses a modified version of
+  \cite{Pascual-Montano et al. (2006)}. It uses a modified version of
   Lee and Seung's multiplicative updates for the
-  Kullback-Leibler divergence \cite{Lee2001}, to fit a
+  Kullback-Leibler divergence \cite{Lee et al. (2001)}, to fit a
   extension of the standard NMF model, that includes an
   intermediate smoothing matrix, meant meant to produce
   sparser factors.
@@ -628,9 +628,9 @@
   \code{\link{nmf.stop.connectivity}}). }
 
   \item{\sQuote{offset}}{ NMF with offset from
-  \cite{Badea2008}. It uses a modified version of Lee and
+  \cite{Badea (2008)}. It uses a modified version of Lee and
   Seung's multiplicative updates for Euclidean distance
-  \cite{Lee2001}, to fit an NMF model that includes an
+  \cite{Lee et al. (2001)}, to fit an NMF model that includes an
   intercept, meant to capture a common baseline and shared
   patterns, in order to produce cleaner basis components.
 
@@ -648,9 +648,9 @@
   function (see \code{\link{nmf.stop.stationary}}). }
 
   \item{\sQuote{snmf/r}, \sQuote{snmf/l}}{ Alternating
-  Least Square (ALS) approach from \cite{KimH2007}. It
+  Least Square (ALS) approach from \cite{Kim et al. (2007)}. It
   applies the nonnegative least-squares algorithm from
-  \cite{VanBenthem2004} (i.e. fast combinatorial
+  \cite{Van Benthem et al. (2004)} (i.e. fast combinatorial
   nonnegative least-squares for multiple right-hand), to
   estimate the basis and coefficient matrices alternatively
   (see \code{\link{fcnnls}}). It minimises an

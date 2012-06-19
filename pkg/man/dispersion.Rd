@@ -34,7 +34,7 @@
   0 or 1. A perfect consensus matrix is obtained only when
   all the connectivity matrices are the same, meaning that
   the algorithm gave the same clusters at each run. See
-  \emph{KimH2007}
+  \cite{Kim et al. (2007)}.
 }
 \section{Methods}{
   \describe{

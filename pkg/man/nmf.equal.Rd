@@ -2,6 +2,7 @@
 \name{nmf.equal}
 \alias{nmf.equal}
 \alias{nmf.equal,list,list-method}
+\alias{nmf.equal,list,missing-method}
 \alias{nmf.equal-methods}
 \alias{nmf.equal,NMFfit,NMFfit-method}
 \alias{nmf.equal,NMFfit,NMF-method}
@@ -109,6 +110,10 @@
   This method either compare the two best fit, or all fits
   separately. All extra arguments in \code{...} are passed
   to each internal call to \code{nmf.equal}. }
+
+  \item{nmf.equal}{\code{signature(x = "list", y =
+  "missing")}: Compare all elements in \code{x} to
+  \code{x[[1]]}. }
 
   }
 }
