@@ -67,7 +67,7 @@ if( Sys.info()['user'] == 'renaud' ) .libPaths(c('./loclib', .libPaths()))
 \setkeys{Gin}{width=0.95\textwidth}
 
 \begin{document}
-%\VignetteIndexEntry{Using the package NMF}
+%\VignetteIndexEntry{An introduction to the package NMF}
 %\VignetteDepends{NMF,Biobase,bigmemory,xtable,RColorBrewer}
 %\VignetteKeyword{math}
 %\VignetteCompiler{knitr}
@@ -77,32 +77,33 @@ if( Sys.info()['user'] == 'renaud' ) .libPaths(c('./loclib', .libPaths()))
 library(NMF)
 @
 
-\title{Using the Package NMF\\\small Version \Sexpr{utils::packageVersion('NMF')}}
+\title{An introduction to NMF package\\\small Version
+\Sexpr{utils::packageVersion('NMF')}}
 \author{Renaud Gaujoux, \url{renaud@cbio.uct.ac.za}}
 % \\Address Computational Biology - University of Cape Town, South Africa,
 
 \maketitle
 
-This vignette presents the package NMF \cite{Gaujoux2010}, which implements a framework for Nonnegative Matrix Factorization (NMF) algorithms in R \cite{R}. 
-The objective is to provide an implementation of some standard algorithms, while allowing the user to easily implement new methods that integrate into the package's framework.
+This vignette presents the \citeCRANpkg{NMF}, which implements a framework
+for Nonnegative Matrix Factorization (NMF) algorithms in R \cite{R}.
+The objective is to provide an implementation of some standard algorithms, while
+allowing the user to easily implement new methods that integrate into a
+common framework, which facilitates analysis, result visualisation or
+performance benchmarking.
+If you use the package \nmfpack in your analysis and publications please cite:
 
 \bigskip
-To cite the package \nmfpack in publications please use:
+\todo[inline, backgroundcolor=blue!10!white]{\fullcite{NMF}}
 
-\noindent\fullcite{Gaujoux2010}
-
-\begin{multicols}{2}
-The latest stable version of the \nmfpack package can be installed from any
-\href{http://cran.r-project.org}{CRAN} repository mirror, and loaded with the 
-standard calls to \code{library}.
-\columnbreak
+The latest stable version of the package can be installed from any
+\href{http://cran.r-project.org}{CRAN} repository mirror, and loaded with the
+standard calls:
 <<load_library_fake, eval=FALSE>>=
 # Install
 install.packages('NMF')
 # Load
 library(NMF)
 @
-\end{multicols}
 
 \pagebreak
 \tableofcontents
@@ -161,7 +162,9 @@ Common loss functions are based on either the Frobenius distance
 $$D: A,B\mapsto \frac{Tr(AB^t)}{2} = \frac{1}{2} \sum_{ij} (a_{ij} - b_{ij})^2,$$
 or the Kullback-Leibler divergence.
 $$D: A,B\mapsto KL(A||B) = \sum_{i,j} a_{ij} \log \frac{a_{ij}}{b_{ij}} - a_{ij} + b_{ij}.$$
-\item $R$ is an optional regularization function, defined to enforce desirable properties on matrices $W$ and $H$, such as smoothness or sparsity \cite{Cichocki04}.
+\item $R$ is an optional regularization function, defined to enforce desirable
+properties on matrices $W$ and $H$, such as smoothness or sparsity
+\cite{Cichocki2004}.
 \end{itemize}
 
 \subsection{Algorithms}
@@ -279,7 +282,8 @@ identical(nmfSeed('nn'), nmfSeed('nndsvd'))
 \hline
 Key & Description\\
 \hline
-\code{ica} & Uses the result of an Independent Component Analysis (ICA) (from the \code{fastICA} package).
+\code{ica} & Uses the result of an Independent Component Analysis (ICA) (from
+the \citeCRANpkg{fastICA}).
 Only the positive part of the result are used to initialize the factors.\\
 \hline
 %
@@ -304,7 +308,9 @@ The first column gives the key to use in the call to the \texttt{nmf} function.\
 \subsection{How to run NMF algorithms}
 
 Method \code{nmf} provides a single interface to run NMF algorithms. 
-It can directly perform NMF on object of class \code{matrix} or \code{data.frame} and \code{ExpressionSet} -- if the \code{Biobase} package is installed. 
+It can directly perform NMF on object of class \code{matrix} or
+\code{data.frame} and \code{ExpressionSet} -- if the \citeBioCpkg{Biobase} is
+installed.
 The interface has four main parameters:
 
 \medskip
@@ -312,7 +318,8 @@ The interface has four main parameters:
 
 \begin{description}
 \item[\code{x}] is the target \code{matrix}, \code{data.frame} or \code{ExpressionSet}
-\footnote{\code{ExpressionSet} is the base class for handling microarray data in BioConductor, and is defined in the \code{Biobase} package.}
+\footnote{\code{ExpressionSet} is the base class for handling microarray data in
+BioConductor, and is defined in the \pkgname{Biobase} package.}
 \item[\code{rank}] is the factorization rank, i.e. the number of columns in matrix $W$.
 \item[\code{method}] is the algorithm used to estimate the factorization. 
 The default algorithm is given by the package specific option \code{'default.algorithm'}, which defaults to \code{'brunet'} on installation \cite{Brunet04}.
@@ -662,31 +669,56 @@ In this case, the result is an object of class \code{NMFfitXn} that also inherit
 Note that keeping all the results may be memory consuming. 
 For example, a 3-rank \code{NMF} fit\footnote{i.e. the result of a single NMF run with rank equal 3.} for the Golub gene expression matrix ($5000 \times 38$) takes about \Sexpr{round(object.size(fit(res.multirun))/1000)}Kb\footnote{This size might change depending on the architecture (32 or 64 bits)}.
 
-\subsubsection{Parallel computing on multi-core machines (non-Windows)}\label{multicore}
+\subsection{Parallel computations}\label{multicore}
 
 To speed-up the analysis whenever possible, the \nmfpack package implements transparent parallel computations when run on multi-core machines.
-It uses the \code{foreach} framework developed by REvolution Computing \cite{foreach}, together with the related \code{doMC} parallel backend \cite{doMC} -- based on the \code{multicore} package -- to make use of all the CPUs available on the system.
-Each core will simultaneously perform part of the runs. 
-Therefore, the required memory increases linearly with the number of cores used.
-When only the best run is of interest, the memory usage is optimized by using shared memory and mutex objects from the packages \code{bigmemory} and \code{synchronicity}, to only keep the current best factorization.
+It uses the \code{foreach} framework developed by REvolution Computing
+\citeCRANpkg{foreach}, together with the related \code{doParallel} parallel
+backend from the \citeCRANpkg{doParallel} -- based on the
+\pkgname{parallel} package -- to make use of all the CPUs available on the
+system, with each core simultaneously performing part of the runs. 
+
+\subsubsection{Memory considerations}
+Running multicore computations increases the required memory linearly
+with the number of cores used.
+When only the best run is of interest, memory usage is
+optimized to only keep the current best factorization.
+On non-Windows machine, further speed improvement are achieved by using shared
+memory and mutex objects from the \citeCRANpkg{bigmemory} and the 
+\citeCRANpkg{synchronicity}.
+
+\subsubsection{Parallel foreach backends}
+The default parallel backend used by the \code{nmf} function is defined by the
+package specific option \code{'backend'}, which defaults to \code{'par'} -- for
+\code{doParallel}.
+The backend can also be set on runtime via argument \code{.pbackend}.
 
 \medskip
-\paragraph{IMPORTANT NOTE:} because it uses the \code{multicore} package, parallel computation over multi-cores is available only for Unix and Mac machines.
-The parallel computation is based on the \code{doMC} and \code{multicore} packages, so the same care should be taken as stated in the vignette of \code{doMC}:
+\paragraph{IMPORTANT NOTE:} 
+The parallel computation is based on the \pkgname{doParallel} and
+\pkgname{parallel} packages, and the same care should be taken as stated in the
+vignette of the \citeCRANpkg{doMC}:
 \begin{quote}
 \emph{... it usually isn't safe to run doMC and multicore from a GUI environment. 
 In particular, it is not safe to use doMC from R.app on Mac OS X. 
 Instead, you should use doMC from a terminal session, starting R from the command line.}
 \end{quote}
 Therefore, the \code{nmf} function does not allow to run multicore computation from the 
-MacOS X GUI. 
+MacOS X GUI.
 
-\bigskip
-The default parallel backend used by the \code{nmf} function is defined by the package specific option \code{'backend'}, which defaults to \code{'mc'} 
--- for \code{doMC}.
-The backend can also be set on runtime via argument \code{'.pbackend'}.
+From version 0.8, other parallel backends such as those provided by the
+\citeCRANpkg{doSNOW} and \citeCRANpkg{doMPI} are supported, and may be specified
+as \code{.pbackend='snow'} and \code{.pbackend='mpi'} respectively.
 
-There are two other runtime options, \code{parallel} and \code{parallel.required}, that can be passed via argument \code{.options}, to control the behaviour of the parallel computation (see below).
+It is possible to specify that the currently registered backend should be
+used, by setting argument \code{.pbackend=NULL}.
+This allow to perform parallel computations with ``permanent'' backends that are
+configured externally of the \code{nmf} call.
+
+\subsubsection{Runtime options}
+There are two other runtime options, \code{parallel} and
+\code{parallel.required}, that can be passed via argument \code{.options}, to
+control the behaviour of the parallel computation (see below).
 
 \medskip
 A call for multiple runs will be computed in parallel if one of the following condition is satisfied:
@@ -727,22 +759,12 @@ nmf(esGolub, 3, nrun=5, .opt='vP200')
 \subsubsection{High Performance Computing on a cluster}
 
 To achieve further speed-up, the computation can be run on an HPC cluster.
-In our tests we used the \code{doMPI} package to perform 100 factorizations using hybrid parallel computation on 4 quadri-core machines -- making use of all the cores computation on each machine.
-
-The scripts used to launch and run the factorizations can be found in file \emph{mpi.R} in the package's \emph{examples} directory:
-
-<<mpi_file,eval=FALSE>>=
-file.show(system.file('examples/mpi.R', package='NMF'))
-
-# and
-file.show(system.file('examples/mpi_run.sh', package='NMF'))
-
-@
-
-The script file \emph{mpi.R} contains some extra code to log and trace the computation. 
-Reducing it to the essential gives the following piece of code:
+In our tests we used the \citeCRANpkg{doMPI} to perform 100
+factorizations using hybrid parallel computation on 4 quadri-core machines -- making use of all
+the cores computation on each machine.
 
 <<mpi, eval=FALSE>>=
+# file: mpi.R
 
 ## 0. Create and register an MPI cluster
 library(doMPI)
@@ -750,27 +772,11 @@ cl <- startMPIcluster()
 registerDoMPI(cl)
 library(NMF)
 
-## 1. Schedule the runs accross the workers
-nrun <- 100;
-nworker <- getDoParWorkers();
-ntasks <- rep(round(nrun/nworker), nworker)
-# allocate remainder runs
-if( (remain <- nrun %% nworker) > 0 ) 
-	ntasks[1:remain] <- ntasks[1:remain] + 1
+# run on all workers using the current parallel backend
+data(esGolub)
+res <- nmf(esGolub, 3, 'brunet', nrun=n, .opt='p', .pbackend=NULL)
 
-## 2. Send the jobs to the workers using a foreach loop
-t <- system.time({
-	res <- foreach(i=1:getDoParWorkers(), n=ntasks, 
-		.packages = c('NMF', 'doMC', 'Biobase')) %dopar% {
-
-		# each worker run its factorizations in parallel
-		#Note: only the best result is kept
-		data(esGolub)
-		nmf(esGolub, 3, 'brunet', nrun=n, .opt='p')
-	}
-})
-## 3. reduce the result and save it in a file
-res <- NMFfitX(res, runtime.all=t)
+# save result
 save(res, file='result.RData')
 
 ## 4. Shutdown the cluster and quit MPI
@@ -780,7 +786,7 @@ mpi.quit()
 @
 
 Passing the following shell script to \emph{qsub} should launch the execution on a Sun Grid Engine HPC cluster, with OpenMPI.
-Some adaptation might be necessary for other queueing systems.
+Some adaptation might be necessary for other queueing systems/installations.
 
 \begin{shaded}
 \small
@@ -788,7 +794,7 @@ Some adaptation might be necessary for other queueing systems.
 #!/bin/bash
 #$ -cwd 
 #$ -q opteron.q
-#$ -pe mpich 5
+#$ -pe mpich_4cpu 16
 echo "Got $NSLOTS slots. $TMP/machines"
 
 orterun -v -n $NSLOTS -hostfile $TMP/machines R --slave -f mpi.R
@@ -801,17 +807,20 @@ This is done via the \code{sapply} function.
 
 On multi-core machine, one usually wants to perform the runs in parallel, as it speeds up the computation (cf. \cref{multicore}).
 However in some situation (e.g. while debugging), it might be useful to force the sequential execution of the runs. 
-This can be done via the option \code{'-p'} or \code{'p1'} by setting the parallel backend to \code{NULL}, \code{'seq'} or \code{{'}{'}}:
+This can be done via the option \code{'p1'} to run on a single core , or with
+\code{.pbackend='seq'} to use the foreach backend \code{doSEQ} or to \code{NA} to use a standard \code{sapply} call:
 
-<<force_seq, eval=FALSE>>=
-# force sequential computation by sapply: use option '-p' or .pbackend=''
-nmf(esGolub, 3, nrun=5, .opt='v-p')
-nmf(esGolub, 3, nrun=5, .opt='v', .pbackend='')
+<<force_seq, cache=TRUE>>=
+# force sequential computation by sapply: use option '-p'
+res1 <- nmf(esGolub, 3, nrun=5, .opt='v-p', seed=123)
 
-# or use the SEQ backend of foreach: .pbackend=NULL or 'seq'
-nmf(esGolub, 3, nrun=5, .opt='v', .pbackend=NULL)
-nmf(esGolub, 3, nrun=5, .opt='v', .pbackend='seq')
-nmf(esGolub, 3, nrun=5, .opt='vp1')
+# or use the SEQ backend of foreach: .pbackend=NA or 'seq'
+res2 <- nmf(esGolub, 3, nrun=5, .opt='vp1', seed=123)
+res3 <- nmf(esGolub, 3, nrun=5, .opt='v', .pbackend='seq', seed=123)
+res4 <- nmf(esGolub, 3, nrun=5, .opt='v', .pbackend=NA, seed=123)
+
+# all results are all identical
+nmf.equal(list(res1, res2, res3, res4))
 @
 
 
@@ -867,89 +876,17 @@ The \nmfpack package provides a function that shuffles the original data, by per
 The rank estimation procedure can then be applied to the randomized data, and the ``random'' measures added to the plot for comparison (\cref{fig:estim_all_rd}).
 
 \begin{figure}\label{fig:estim_all_rd}
-<<estimate_rank_random, include=FALSE, cache=TRUE>>=
+<<estimate_rank_random, cache=TRUE, fig.width=10, fig.height=6, fig.keep='last'>>=
 # shuffle original data
 V.random <- randomize(esGolub)
 # estimate quality measures from the shuffled data (use default NMF algorithm)
 estim.r.random <- nmfEstimateRank(V.random, range=2:6, nrun=10, seed=123456)
-@
-<<estimate_rank_random_include, fig.width=10, fig.height=6>>=
 # plot measures on same graph
 plot(estim.r, ref=estim.r.random)
 @
 \caption{Estimation of the rank: Comparison of the quality measures with those obtained from randomized data. 
 The curves for the actual data are in blue and green, those for the randomized data are in red and pink. The estimation is based on Brunet's algorithm.}
 \end{figure}
-
-\subsection{Visualization methods}
-
-\subsubsection*{Error track}
-
-If the NMF computation is performed with error tracking enabled -- using argument \code{.options} -- the trajectory of the objective value is computed during the fit.
-This computation is not enabled by default as it induces some overhead. 
-
-<<errorplot_compute, cache=TRUE>>=
-# run nmf with .option='t'
-res <- nmf(esGolub, 3, .options='t')
-# or with .options=list(track=TRUE)
-@
-
-The trajectory can be plot with the method \code{plot} (\cref{fig:error}):
-\begin{figure}
-\setkeys{Gin}{width=0.5\textwidth}
-\centering
-<<errorplot_include>>=
-plot(res)
-@
-\caption{Error track for a single NMF run}
-\label{fig:error}
-\end{figure}
-
-\subsubsection*{Heatmaps}
-
-The methods \code{basismap}, \code{coefmap} and \code{consensusmap} provide an easy way to visualize respectively the resulting basis matrix (i.e. metagenes), mixture coefficient matrix (i.e. metaprofiles) and the consensus matrix, in the case of multiple runs. 
-It produces pre-configured heatmaps based on the function \code{aheatmap}. 
-The default heatmaps produced by these functions are shown in \cref{fig:heatmap_coef_basis,fig:heatmap_consensus}.
-They can be customized in many different ways (colours, annotations, labels).
-See the dedicated vignette \emph{``NMF: generating heatmaps"} or the help pages \code{?coefmap} and \code{?aheatmap} for more information.
-
-The rows of the basis matrix often carry the high dimensionality of the data: genes, loci, pixels, features, etc\ldots 
-The function \code{basismap} extends the use of argument \code{subsetRow} (from \code{aheatmap}) to the specification of a feature selection method.
-In \cref{fig:heatmap_coef_basis} we simply used \code{subsetRow=TRUE}, which subsets the rows using the method described in \cite{KimH2007}, to only keep the basis-specific features (e.g. the metagene-specific genes). 
-We refer to the relevant help pages \code{?basismap} and \code{?aheatmap} for more details about other possible values for this argument.
-
-\begin{figure}[ht]
-\centering
-<<heatmap_coef_basis_inc, fig.width=14, fig.height=7, fig.keep='last'>>=
-layout(cbind(1,2))
-# basis components
-basismap(res, subsetRow=TRUE)
-# mixture coefficients
-coefmap(res)
-@
-\caption{Heatmap of the basis and the mixture coefficient matrices. The rows of the basis matrix were selected using the default feature selection method -- described in \cite{KimH2007}.}
-\label{fig:heatmap_coef_basis}
-\end{figure}
-
-\nbnote{Note how the function \texttt{aheatmap}, the underlying heatmap engine provided with the package NMF, makes it is possible to combine several heatmaps on the same plot, using the standard layout call \texttt{par(mfrow=...)}.
-It is also directly compatible with both \texttt{layout(...)} and viewports from \texttt{grid} graphics.
-The plotting context is automatically detected behind the scene, and a correct
-behaviour is achieved thanks to the package \texttt{gridBase} \cite{gridBase}.}
-
-In the case of multiple runs the function \code{consensusmap} plots the consensus matrix, i.e. the average connectivity matrix across the runs (see results in \cref{fig:heatmap_consensus} for a consensus matrix obtained with 100 runs of Brunet's algorithm on the complete 
-Golub dataset):
-\begin{figure}[ht]
-\setkeys{Gin}{width=0.49\textwidth}
-\centering
-<<heatmap_consensus_inc, fig.keep='last'>>=
-# The cell type is used to label rows and columns 
-consensusmap(res.multirun, annCol=esGolub, tracks=NA)
-@
-\includegraphics{consensus}
-\caption{Heatmap of consensus matrices from 10 runs on the limited dataset (left) and from 100 runs on the complete Golub dataset (right).}
-\label{fig:heatmap_consensus}
-\end{figure}
-    
 
 \subsection{Comparing algorithms}
 To compare the results from different algorithms, one can pass a list of methods in argument \code{method}. 
@@ -970,17 +907,90 @@ compare(res.multi.method)
 compare(res.multi.method, class=esGolub$Cell)
 @
 
-Because the computation was performed with error tracking enabled, an error plot can be produced by method \code{plot} (\cref{fig:multi_error}).
+Because the computation was performed with error tracking enabled, an error plot
+can be produced by method \code{plot} (\cref{fig:errorplot}).
 Each track is normalized so that its first value equals one, and stops at the iteration where the method's convergence criterion was fulfilled.
 
+\subsection{Visualization methods}
+
+\subsubsection*{Error track}
+
+If the NMF computation is performed with error tracking enabled -- using argument \code{.options} -- the trajectory of the objective value is computed during the fit.
+This computation is not enabled by default as it induces some overhead. 
+
+<<errorplot_compute, cache=TRUE>>=
+# run nmf with .option='t'
+res <- nmf(esGolub, 3, .options='t')
+# or with .options=list(track=TRUE)
+@
+
+The trajectory can be plot with the method \code{plot} (\cref{fig:errorplot}):
 \begin{figure}
-\setkeys{Gin}{width=0.5\textwidth}
-\centering
-<<multiple_errorplot_plot>>=
+<<errorplot, out.width="0.5\\textwidth", fig.show='hold'>>=
+plot(res)
 plot(res.multi.method)
 @
-\caption{Error tracks comparing methods \texttt{'brunet', 'lee', 'nsNMF'}}
-\label{fig:multi_error}
+\caption{Error track for a single NMF run (left) and multiple method
+runs (right)}
+\label{fig:errorplot}
+\end{figure}
+
+\subsubsection*{Heatmaps}
+
+The methods \code{basismap}, \code{coefmap} and \code{consensusmap} provide an
+easy way to visualize respectively the resulting basis matrix (i.e. metagenes),
+mixture coefficient matrix (i.e. metaprofiles) and the consensus matrix, in the
+case of multiple runs.
+It produces pre-configured heatmaps based on the function \code{aheatmap}, the
+underlying heatmap engine provided with the package NMF. 
+The default heatmaps produced by these functions are shown in
+\cref{fig:heatmap_coef_basis,fig:heatmap_consensus}.
+They can be customized in many different ways (colours, annotations, labels).
+See the dedicated vignette \emph{``NMF: generating heatmaps"} or the help pages
+\code{?coefmap} and \code{?aheatmap} for more information.
+
+An important and unique feature of the function \code{aheatmap}, is that it
+makes it possible to combine several heatmaps on the same plot, using the both
+standard layout calls \texttt{par(mfrow=...)} and \texttt{layout(...)}, or grid
+viewports from \texttt{grid} graphics.
+The plotting context is automatically internally detected, and a correct
+behaviour is achieved thanks to the \citeCRANpkg{gridBase}.
+Examples are provided in the dedicated vignette mentioned above.
+
+The rows of the basis matrix often carry the high dimensionality of the data: genes, loci, pixels, features, etc\ldots 
+The function \code{basismap} extends the use of argument \code{subsetRow} (from \code{aheatmap}) to the specification of a feature selection method.
+In \cref{fig:heatmap_coef_basis} we simply used \code{subsetRow=TRUE}, which subsets the rows using the method described in \cite{KimH2007}, to only keep the basis-specific features (e.g. the metagene-specific genes). 
+We refer to the relevant help pages \code{?basismap} and \code{?aheatmap} for more details about other possible values for this argument.
+
+\begin{figure}[ht]
+\centering
+<<heatmap_coef_basis_inc, fig.width=14, fig.height=7, fig.keep='last'>>=
+layout(cbind(1,2))
+# basis components
+basismap(res, subsetRow=TRUE)
+# mixture coefficients
+coefmap(res)
+@
+\caption{Heatmap of the basis and the mixture coefficient matrices. The rows of the basis matrix were selected using the default feature selection method -- described in \cite{KimH2007}.}
+\label{fig:heatmap_coef_basis}
+\end{figure}
+
+In the case of multiple runs the function \code{consensusmap} plots the consensus matrix, i.e. the average connectivity matrix across the runs (see results in \cref{fig:heatmap_consensus} for a consensus matrix obtained with 100 runs of Brunet's algorithm on the complete 
+Golub dataset):
+
+\begin{figure}[ht]
+<<heatmap_consensus_inc, out.width="0.49\\textwidth", crop=TRUE, echo=1:2>>=
+# The cell type is used to label rows and columns 
+consensusmap(res.multirun, annCol=esGolub, tracks=NA)
+plot(1:10)
+f2 <- fig_path("2.pdf")
+@
+<<hack_consensus, include=FALSE>>=
+file.copy('consensus.pdf', f2, overwrite=TRUE)
+@
+\caption{Heatmap of consensus matrices from 10 runs on the reduced dataset
+(left) and from 100 runs on the complete Golub dataset (right).}
+\label{fig:heatmap_consensus}
 \end{figure}
  
 \section{Extending the package}
@@ -1067,7 +1077,7 @@ If the algorithm is based on another distance measure, this one can be specified
 nmf(V, 3, my.algorithm, scale.factor=10, objective='KL')
 # based on custom distance metric
 nmf(V, 3, my.algorithm, scale.factor=10
-	, objective=function(target, x){ 
+	, objective=function(target, x, ...){ 
 			( sum( (target-fitted(x))^4 ) )^{1/4} 
 		}
 )
@@ -1234,7 +1244,7 @@ debug & FALSE & Toggle debug mode, which is an extended verbose mode.\\
 \caption{}
 \end{table}
 
- 
+\pagebreak 
 \section{Session Info}
 <<sessionInfo, echo=FALSE, results='asis'>>=
 toLatex(sessionInfo())
@@ -1243,14 +1253,4 @@ toLatex(sessionInfo())
 \printbibliography[heading=bibintoc]
 
 \end{document}
-
-
-<<bibtex_entries, echo=FALSE, include=FALSE>>=
-
-write.bib(c('gridBase', 'doMC', 'multicore',
-'RcppOctave', 'doRNG' , 'foreach', 'hgu133plus2.db', 'genefilter'
-		, 'GEOquery', 'ArrayExpress', 'annotate', 'illuminaHumanv2.db'
-		, 'registry', 'limSolve', 'biomaRt', 'R.matlab', 'Rcpp', 'pheatmap', 'RColorBrewer', 'Matrix')
-		)
-@
 

@@ -1,5 +1,5 @@
 \documentclass[10pt]{article}
-%\VignetteIndexEntry{Using the package NMF}
+%\VignetteIndexEntry{An introduction to the package NMF}
 %\VignetteDepends{NMF,Biobase,bigmemory,xtable,RColorBrewer}
 %\VignetteKeyword{math}
 %\VignetteCompiler{knitr}

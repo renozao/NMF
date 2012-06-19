@@ -39,6 +39,9 @@ pkgmaker::latex_bibliography('NMF')
 \usepackage{url}
 \urlstyle{rm}
 
+% use cleveref for automatic reference label formatting
+\usepackage[capitalise, noabbrev]{cleveref}
+
 % define commands for notes
 \usepackage{todonotes}
 \newcommand{\nbnote}[1]{\ \bigskip\todo[inline, backgroundcolor=blue!20!white]{\scriptsize\textsf{\textbf{NB:} #1}}\ \\}
@@ -72,9 +75,8 @@ library(NMF)
 This vignette describes how to produce different informative heatmaps from NMF objects, 
 such as returned by the function \code{nmf} in the \citeCRANpkg{NMF}.
 The main drawing engine is implemented by the function \code{aheatmap}, which is 
-a modification of the function \code{pheatmap} from the package \code{pheatmap} 
-\cite{pheatmap}, and provides convenient and quick ways of producing high quality
-and customizable annotated heatmaps.
+a modification of the function \code{pheatmap} from the \citeCRANpkg{pheatmap},
+and provides convenient and quick ways of producing high quality and customizable annotated heatmaps.
 Currently this function is part of the package \nmfpack, but may eventually 
 compose a separate package on its own.
 \end{abstract}
@@ -121,7 +123,7 @@ All the above functions eventually call a common heatmap engine, with
 different default parameters, chosen to be relevant for the given underlying data.
 The engine is implemented by the function \code{aheatmap}. 
 Its development started as modification of the function \code{pheatmap} from 
-the \citeCRANpkg{pheatmap}. 
+the \pkgname{pheatmap} package. 
 The initial objective was to improve and increase its capabilities, as well as 
 a defining a simplified interface, more consistent with the R core function \code{heatmap}.
 We eventually aim at providing a general, flexible, powerful and easy to use engine 
@@ -144,7 +146,8 @@ impossible with base heatmaps.
 be customised, even separately for rows and columns;
 \item Convenient interface: many arguments provide multiple ways of 
 specifying their value(s), which speeds up developping/writing and reduce the 
-amount of code required to generate customised plots (e.g. see \ref{sec:colour_spec}).
+amount of code required to generate customised plots (e.g. see
+\cref{sec:colour_spec}).
 \item Aesthetics: the heatmaps look globally cleaner, the image and text components 
 are by default well proportioned relatively to each other, and all fit within 
 the graphic device.
@@ -214,7 +217,7 @@ par(opar)
 \nbnote{Note how both heatmaps were drawn on the same plot, simply using the standard 
 call to \code{par(mfrow=c(1,2)}.
 This is impossible to achieve with the R core function \code{heatmap}.
-See section \ref{sec:aheatmap} for more details about compatibility with base 
+See \cref{sec:aheatmap} for more details about compatibility with base 
 and grid graphics.}
 
 By default:
@@ -253,7 +256,7 @@ specifying e.g.
 \code{annCol=c(Metagene='basis', 'consensus')}.
 Beside this, they are handled by the heatmap engine function \code{aheatmap} 
 and can be customised as any other annotation tracks -- that can be added via 
-the same argument \code{annCol} (see \ref{sec:aheatmap} or \code{?aheatmap} for
+the same argument \code{annCol} (see \cref{sec:aheatmap} or \code{?aheatmap} for
 more details).
 
 An annotation track highlighting the basis component, that matches the column
@@ -294,7 +297,7 @@ opar <- par(mfrow=c(1,2))
 # default plot
 basismap(res)
 # customized plot
-basismap(res, main="Metagenes", annRow=list('basis', Var=d, Category=e))
+basismap(res, main="Metagenes", annRow=list('basis', d, e))
 par(opar)
 @
 
@@ -341,7 +344,7 @@ This is a binary matrix (i.e. entries are either 0 or 1), that will always produ
 a bi-colour heatmap, and by default clear blocks for each cluster.}
 
 \subsection{Single fit}
-In section \ref{sec:data}, the NMF fit \code{res} was computed with argument 
+In section \cref{sec:data}, the NMF fit \code{res} was computed with argument 
 \code{nrun=10}, and therefore contains the best fit over 10 runs, as well as 
 the consensus matrix computed over all the runs
 \footnote{If one were interested in keeping the fits from all the runs, the 
@@ -438,6 +441,7 @@ consensusmap(res_methods)
 \section{Generic heatmap engine: \texttt{aheatmap}}
 \label{sec:aheatmap}
 
+TODO
 
 \section{Session Info}
 <<sessionInfo, echo=FALSE, results='asis'>>=

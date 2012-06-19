@@ -89,10 +89,13 @@ else
 endif
 
 clean:
-	rm -fr *.tex *.bbl *.blg *.aux *.out *.log *.err *-blx.bib unitTests-results
+	rm -fr *.bbl *.run.xml *.blg *.aux *.out *.log *.err *-blx.bib unitTests-results
+ifndef LOCAL_MODE
+	rm *.tex
+endif
 
 clean-all: clean
-	rm -fr *.pdf ../inst/doc/*.pdf *.Rnw
+	rm -fr $(PDF_OBJS) $(RNW_SRCS)
 
 setvars:
 ifeq (${R_HOME},)
