@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Annotated Heatmaps. NMF 0.8</title>
+    <title>Annotated Heatmaps. NMF </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="
@@ -33,7 +33,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class = "container">
-          <a class="brand" href="index.html">NMF 0.8</a>
+          <a class="brand" href="index.html">NMF </a>
           <div class="nav">
             <ul class="nav">
               <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -396,65 +396,6 @@
         
           </div>
       
-          <h2 id="examples">Examples</h2>
-          <pre class="examples"><div class='input'><span class="comment"># Generate random data</span>
-<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>abs</a></span><span class="keyword">(</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">,</span> <span class="symbol">rnorm</span><span class="keyword">,</span> <span class="argument">mean</span><span class="argument">=</span><span class="number">4</span><span class="keyword">,</span> <span class="argument">sd</span><span class="argument">=</span><span class="number">1</span><span class="keyword">)</span><span class="keyword">)</span>
-<span class="symbol">x</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">:</span><span class="number">10</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>seq</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span><span class="keyword">]</span> <span class="assignement">&lt;-</span> <span class="symbol">x</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">:</span><span class="number">10</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>seq</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span><span class="keyword">]</span> <span class="keyword">+</span> <span class="number">3</span>
-<span class="symbol">x</span><span class="keyword">[</span><span class="number">11</span><span class="keyword">:</span><span class="number">20</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>seq</a></span><span class="keyword">(</span><span class="number">2</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span><span class="keyword">]</span> <span class="assignement">&lt;-</span> <span class="symbol">x</span><span class="keyword">[</span><span class="number">11</span><span class="keyword">:</span><span class="number">20</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>seq</a></span><span class="keyword">(</span><span class="number">2</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span><span class="keyword">]</span> <span class="keyword">+</span> <span class="number">2</span>
-<span class="functioncall"><a href='NA'>rownames</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>paste</a></span><span class="keyword">(</span><span class="string">"ROW"</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="symbol">n</span><span class="keyword">)</span>
-<span class="functioncall"><a href='NA'>colnames</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>paste</a></span><span class="keyword">(</span><span class="string">"COL"</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="symbol">p</span><span class="keyword">)</span>
-
-<span class="comment">## Default heatmap</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span>
-
-<span class="comment">## Distance methods</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="string">"correlation"</span><span class="keyword">)</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="string">"man"</span><span class="keyword">)</span> <span class="comment"># partially matched to 'manhattan'</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="string">"man"</span><span class="keyword">,</span> <span class="argument">Colv</span><span class="argument">=</span><span class="string">"binary"</span><span class="keyword">)</span>
-
-<span class="comment">## Scaling</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="string">"row"</span><span class="keyword">)</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="string">"col"</span><span class="keyword">)</span> <span class="comment"># partially matched to 'column'</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="string">"r1"</span><span class="keyword">)</span> <span class="comment"># each row sum up to 1</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="string">"c1"</span><span class="keyword">)</span> <span class="comment"># each colum sum up to 1</span>
-
-<span class="comment">## Heatmap colors</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>colorRampPalette</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"navy"</span><span class="keyword">,</span> <span class="string">"white"</span><span class="keyword">,</span> <span class="string">"firebrick3"</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">(</span><span class="number">50</span><span class="keyword">)</span><span class="keyword">)</span>
-<span class="comment"># color specification as an integer: use R basic colors</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="number">1L</span><span class="keyword">)</span>
-<span class="comment"># color specification as a negative integer: use reverse basic palette</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="keyword">-</span><span class="number">1L</span><span class="keyword">)</span>
-<span class="comment"># color specification as a numeric: use HCL color</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="number">1</span><span class="keyword">)</span>
-<span class="comment"># do not cluster the rows</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">)</span>
-<span class="comment"># no heatmap legend</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">legend</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
-<span class="comment"># cell and font size</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">cellwidth</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">,</span> <span class="argument">cellheight</span> <span class="argument">=</span> <span class="number">5</span><span class="keyword">)</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">cellwidth</span> <span class="argument">=</span> <span class="number">15</span><span class="keyword">,</span> <span class="argument">cellheight</span> <span class="argument">=</span> <span class="number">12</span><span class="keyword">,</span> <span class="argument">fontsize</span> <span class="argument">=</span> <span class="number">8</span><span class="keyword">,</span> <span class="argument">filename</span> <span class="argument">=</span> <span class="string">"aheatmap.pdf"</span><span class="keyword">)</span>
-
-<span class="comment"># Generate column annotations</span>
-<span class="symbol">annotation</span> <span class="assignement">=</span> <span class="functioncall"><a href='NA'>data.frame</a></span><span class="keyword">(</span><span class="argument">Var1</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>factor</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">:</span><span class="number">10</span> <span class="keyword">%%</span> <span class="number">2</span> == <span class="number">0</span><span class="keyword">,</span> <span class="argument">labels</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"Class1"</span><span class="keyword">,</span> <span class="string">"Class2"</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">Var2</span> <span class="argument">=</span> <span class="number">1</span><span class="keyword">:</span><span class="number">10</span><span class="keyword">)</span>
-
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="symbol">annotation</span><span class="keyword">)</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="symbol">annotation</span><span class="keyword">,</span> <span class="argument">annLegend</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
-
-
-<span class="comment"># Specify colors</span>
-<span class="symbol">Var1</span> <span class="assignement">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"navy"</span><span class="keyword">,</span> <span class="string">"darkgreen"</span><span class="keyword">)</span>
-<span class="functioncall"><a href='NA'>names</a></span><span class="keyword">(</span><span class="symbol">Var1</span><span class="keyword">)</span> <span class="assignement">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"Class1"</span><span class="keyword">,</span> <span class="string">"Class2"</span><span class="keyword">)</span>
-<span class="symbol">Var2</span> <span class="assignement">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"lightgreen"</span><span class="keyword">,</span> <span class="string">"navy"</span><span class="keyword">)</span>
-
-<span class="symbol">ann_colors</span> <span class="assignement">=</span> <span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="argument">Var1</span> <span class="argument">=</span> <span class="symbol">Var1</span><span class="keyword">,</span> <span class="argument">Var2</span> <span class="argument">=</span> <span class="symbol">Var2</span><span class="keyword">)</span>
-
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="symbol">annotation</span><span class="keyword">,</span> <span class="argument">annColors</span> <span class="argument">=</span> <span class="symbol">ann_colors</span><span class="keyword">)</span>
-
-<span class="comment"># Specifying clustering from distance matrix</span>
-<span class="symbol">drows</span> <span class="assignement">=</span> <span class="functioncall"><a href='NA'>dist</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">method</span> <span class="argument">=</span> <span class="string">"minkowski"</span><span class="keyword">)</span>
-<span class="symbol">dcols</span> <span class="assignement">=</span> <span class="functioncall"><a href='NA'>dist</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>t</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">method</span> <span class="argument">=</span> <span class="string">"minkowski"</span><span class="keyword">)</span>
-<span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="symbol">drows</span><span class="keyword">,</span> <span class="argument">Colv</span> <span class="argument">=</span> <span class="symbol">dcols</span><span class="keyword">)</span></div></pre>
         </div>
         <div class="span4">
           <!-- <ul>

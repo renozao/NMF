@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Generating Random NMF Models. NMF 0.8</title>
+    <title>Generating Random NMF Models. NMF </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -28,7 +28,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class = "container">
-          <a class="brand" href="index.html">NMF 0.8</a>
+          <a class="brand" href="index.html">NMF </a>
           <div class="nav">
             <ul class="nav">
               <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -123,9 +123,13 @@
   dimnames of the target matrix should be set on the
   returned NMF model.</dd>
             <dt>W</dt>
-            <dd>value for the basis matrix</dd>
+            <dd>value for the basis matrix. <code>data.frame</code>
+  objects are converted into matrices with
+  <code><a href='NA'>as.matrix</a></code>.</dd>
             <dt>H</dt>
-            <dd>value for the mixture coefficient matrix</dd>
+            <dd>value for the mixture coefficient matrix
+  <code>data.frame</code> objects are converted into matrices
+  with <code><a href='NA'>as.matrix</a></code>.</dd>
           </dl>
           
           <div class="Value">
@@ -164,6 +168,15 @@
   defined for <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code> models:
   <code>showMethods(rnmf, class='NMFOffset',
   include=TRUE))</code>.</p>
+        
+            <p>For convenience, shortcut methods for working on
+  <code>data.frame</code> objects directly are implemented.
+  However, note that conversion of a <code>data.frame</code> into
+  a <code>matrix</code> object may take some non-negligible time,
+  for large datasets. If using this method or other
+  NMF-related methods several times, consider converting
+  your data <code>data.frame</code> object into a matrix once for
+  good, when first loaded.</p>
         
           </div>
 
@@ -206,6 +219,10 @@
   <span class = "samp"> rnmf(x, dim(target), max=max(target), ...)</span></p>
         
             <p>It returns an NMF model of the same class as <code>x</code>.</p>
+        
+            <p>rnmf<code>signature(x = "ANY", target =
+  "data.frame")</code>: Shortcut for <code>rnmf(x,
+  as.matrix(target))</code>.</p>
         
             <p>rnmf<code>signature(x = "NMF", target =
   "missing")</code>: Generates a random NMF model of the same
@@ -315,187 +332,10 @@
         
           </div>
       
-          <h2 id="examples">Examples</h2>
-          <pre class="examples"><div class='input'><span class="comment">## random NMF of same class and rank as another model</span>
-
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span>
-<span class="symbol">x</span></div>
-<div class='output'><Object of class: NMFstd >
-features: 10 
-basis/rank: 3 
-samples: 5 
-</div>
-<div class='input'><span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">20</span><span class="keyword">)</span> <span class="comment"># square</span></div>
-<div class='output'><Object of class: NMFstd >
-features: 20 
-basis/rank: 3 
-samples: 20 
-</div>
-<div class='input'><span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">20</span><span class="keyword">,</span> <span class="number">13</span><span class="keyword">)</span></div>
-<div class='output'><Object of class: NMFstd >
-features: 20 
-basis/rank: 3 
-samples: 13 
-</div>
-<div class='input'><span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span> <span class="number">13</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'><Object of class: NMFstd >
-features: 20 
-basis/rank: 3 
-samples: 13 
-</div>
-<div class='input'>
-<span class="comment"># using another distribution</span>
-<span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">20</span><span class="keyword">,</span> <span class="argument">dist</span><span class="argument">=</span><span class="symbol">rnorm</span><span class="keyword">)</span></div>
-<div class='output'><Object of class: NMFstd >
-features: 20 
-basis/rank: 3 
-samples: 20 
-</div>
-<div class='input'>
-<span class="comment"># other than standard model</span>
-<span class="symbol">y</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">50</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFns'</span><span class="keyword">)</span>
-<span class="symbol">y</span></div>
-<div class='output'><Object of class: NMFns >
-features: 50 
-basis/rank: 3 
-samples: 10 
-theta: 0.5 
-</div>
-<div class='input'>
-
-<span class="comment"># random NMF compatible with a target matrix</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span>
-<span class="symbol">y</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span> <span class="number">13</span><span class="keyword">)</span>
-<span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span> <span class="comment"># rank of x</span></div>
-<div class='output'><Object of class: NMFstd >
-features: 20 
-basis/rank: 3 
-samples: 13 
-</div>
-<div class='input'><span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">2</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span> <span class="comment"># rank 2</span></div>
-<div class='output'><Object of class: NMFstd >
-features: 20 
-basis/rank: 2 
-samples: 13 
-</div>
-<div class='input'><span class="comment">## random NMF from another model</span>
-
-<span class="symbol">a</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">100</span><span class="keyword">,</span> <span class="number">20</span><span class="keyword">)</span>
-<span class="symbol">b</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span>
-
-<span class="comment"># random NMF model with known basis matrix</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="functioncall"><a href='NA'>matrix</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">:</span><span class="number">18</span><span class="keyword">,</span> <span class="number">6</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># 6 x 5 model with rank=3</span>
-<span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="comment"># fixed</span></div>
-<div class='output'>     [,1] [,2] [,3]
-[1,]    1    7   13
-[2,]    2    8   14
-[3,]    3    9   15
-[4,]    4   10   16
-[5,]    5   11   17
-[6,]    6   12   18
-</div>
-<div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="comment"># random</span></div>
-<div class='output'>           [,1]      [,2]       [,3]      [,4]      [,5]
-[1,] 0.08234288 0.6555855 0.99466042 0.9370166 0.2990155
-[2,] 0.77993754 0.4351471 0.44674287 0.8709840 0.8093463
-[3,] 0.19323473 0.1971483 0.03142666 0.6012463 0.9521424
-</div>
-<div class='input'>
-<span class="comment"># random NMF model with known coefficient matrix</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="functioncall"><a href='NA'>matrix</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">:</span><span class="number">18</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># 5 x 6 model with rank=3</span>
-<span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="comment"># random</span></div>
-<div class='output'>            [,1]        [,2]      [,3]
-[1,] 0.852053971 0.135763920 0.3686899
-[2,] 0.127309736 0.005847102 0.9744549
-[3,] 0.968882350 0.816874062 0.8237437
-[4,] 0.557101009 0.782163588 0.7874489
-[5,] 0.005364447 0.931066286 0.6228258
-</div>
-<div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="comment"># fixed</span></div>
-<div class='output'>     [,1] [,2] [,3] [,4] [,5] [,6]
-[1,]    1    4    7   10   13   16
-[2,]    2    5    8   11   14   17
-[3,]    3    6    9   12   15   18
-</div>
-<div class='input'>
-<span class="comment"># random model other than standard NMF</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="functioncall"><a href='NA'>matrix</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">:</span><span class="number">18</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFOffset'</span><span class="keyword">)</span>
-<span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="comment"># random</span></div>
-<div class='output'>          [,1]       [,2]      [,3]
-[1,] 0.9673549 0.93577908 0.4265352
-[2,] 0.4999185 0.68333220 0.9920531
-[3,] 0.8936956 0.01816313 0.8889501
-[4,] 0.4010432 0.16552672 0.3457554
-[5,] 0.4475416 0.49583450 0.7058441
-</div>
-<div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="comment"># fixed</span></div>
-<div class='output'>     [,1] [,2] [,3] [,4] [,5] [,6]
-[1,]    1    4    7   10   13   16
-[2,]    2    5    8   11   14   17
-[3,]    3    6    9   12   15   18
-</div>
-<div class='input'><span class="functioncall"><a href='NA'>offset</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="comment"># random</span></div>
-<div class='output'>[1] 16.357044 12.173272 11.503805  2.692881 10.820257
-</div>
-<div class='input'><span class="comment"># random model other than standard NMF</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="argument">W</span><span class="argument">=</span><span class="functioncall"><a href='NA'>matrix</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">:</span><span class="number">18</span><span class="keyword">,</span> <span class="number">6</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="functioncall"><a href='NA'>matrix</a></span><span class="keyword">(</span><span class="number">21</span><span class="keyword">:</span><span class="number">38</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFOffset'</span><span class="keyword">)</span>
-<span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="comment"># fixed</span></div>
-<div class='output'>     [,1] [,2] [,3]
-[1,]    1    7   13
-[2,]    2    8   14
-[3,]    3    9   15
-[4,]    4   10   16
-[5,]    5   11   17
-[6,]    6   12   18
-</div>
-<div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="comment"># fixed</span></div>
-<div class='output'>     [,1] [,2] [,3] [,4] [,5] [,6]
-[1,]   21   24   27   30   33   36
-[2,]   22   25   28   31   34   37
-[3,]   23   26   29   32   35   38
-</div>
-<div class='input'><span class="functioncall"><a href='NA'>offset</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="comment"># random</span></div>
-<div class='output'>[1] 10.364547 17.398428  8.445618  9.687018 24.840134 17.935740
-</div>
-<div class='input'><span class="comment">## random standard NMF of given dimensions</span>
-
-<span class="comment"># generate a random NMF model with rank 3 that fits a 100x20 matrix</span>
-<span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">100</span><span class="keyword">,</span> <span class="number">20</span><span class="keyword">)</span></div>
-<div class='output'><Object of class: NMFstd >
-features: 100 
-basis/rank: 3 
-samples: 20 
-</div>
-<div class='input'>
-<span class="comment"># generate a random NMF model with rank 3 that fits a 100x100 matrix</span>
-<span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">100</span><span class="keyword">)</span></div>
-<div class='output'><Object of class: NMFstd >
-features: 100 
-basis/rank: 3 
-samples: 100 
-</div>
-<div class='input'>
-<span class="comment"># random NMF model with offset</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">2</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFOffset'</span><span class="keyword">)</span>
-<span class="symbol">x</span></div>
-<div class='output'><Object of class: NMFOffset >
-features: 3 
-basis/rank: 2 
-samples: 3 
-offset: [ 0.09334508 0.4983699 0.2621678 ]
-</div>
-<div class='input'><span class="functioncall"><a href='NA'>offset</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>[1] 0.09334508 0.49836990 0.26216782
-</div>
-<div class='input'><span class="comment"># from a matrix</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">2</span><span class="keyword">,</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">max</span><span class="argument">=</span><span class="number">10</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFOffset'</span><span class="keyword">)</span>
-<span class="functioncall"><a href='NA'>offset</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>[1] 8.10462133 0.08418963 7.06846461 8.17883457 0.99805008
-</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>
-            <li>rnmf</li><li>rnmf,ANY,matrix-method</li><li>rnmf-methods</li><li>rnmf,missing,missing-method</li><li>rnmf,NMF,missing-method</li><li>rnmf,NMF,numeric-method</li><li>rnmf,NMFOffset,numeric-method</li><li>rnmf,numeric,missing-method</li><li>rnmf,numeric,numeric-method</li>
+            <li>rnmf</li><li>rnmf,ANY,data.frame-method</li><li>rnmf,ANY,matrix-method</li><li>rnmf-methods</li><li>rnmf,missing,missing-method</li><li>rnmf,NMF,missing-method</li><li>rnmf,NMF,numeric-method</li><li>rnmf,NMFOffset,numeric-method</li><li>rnmf,numeric,missing-method</li><li>rnmf,numeric,numeric-method</li>
           </ul>
           <ul>
             <li>methods</li>

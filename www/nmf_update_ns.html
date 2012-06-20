@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>NMF Multiplicative Update for Nonsmooth Nonnegative Matrix Factorization (nsNMF).. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>NMF Multiplicative Update for Nonsmooth Nonnegative Matrix Factorization (nsNMF).</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='nmf_update_ns.html'>nmf_update.ns</a></span><span class="keyword">(</span><span class="symbol">i</span><span class="keyword">,</span> <span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">data</span><span class="keyword">,</span> <span class="argument">copy</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='nmf_update_ns.html'>nmf_update.ns_R</a></span><span class="keyword">(</span><span class="symbol">i</span><span class="keyword">,</span> <span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">data</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>i</dt>
+            <dd>current iteration</dd>
+            <dt>v</dt>
+            <dd>target matrix</dd>
+            <dt>data</dt>
+            <dd>current NMF model</dd>
+            <dt>copy</dt>
+            <dd>logical that indicates if the update should
+  be made in place (<code>FALSE</code>) or on a copy of the
+  current NMF model (<code>TRUE</code> - default).</dd>
+            <dt>...</dt>
+            <dd>extra arguments to cope with arguments that
+  are not aimed at this function</dd>
+          </dl>
+          
+          <div class="Value">
+            <h2>Value</h2>
+            
+            <p>an <code><a href='NMFns-class.html'>NMFns-class</a></code> model object.</p>
+        
+          </div>
+
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>These update rules, defined for the <code>nsNMF</code> model
+  <code class = 'eq'>V \approx W S H</code> from <cite>Pascual-Montano et al.
+  (2006)</cite>, that introduces an intermediate smoothing matrix
+  to enhance sparsity of the factors.</p>
+        
+            <p><code>nmf_update.ns_R</code> implements the same updates in
+  <em>plain R</em>.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p><code>nmf_update.ns</code> computes the updated nsNMF model. It
+  uses the optimized <em>C++</em> implementations
+  <code><a href='nmf_update_KL.html'>nmf_update.KL.w</a></code> and
+  <code><a href='nmf_update_KL.html'>nmf_update.KL.h</a></code> to update <code class = 'eq'>W</code> and
+  <code class = 'eq'>H</code> respectively.</p>
+        
+            <p>The multiplicative updates are based on the updates
+  proposed by <cite>Brunet et al. (2004)</cite>, except that the
+  NMF estimate <code class = 'eq'>W H</code> is replaced by <code class = 'eq'>W S H</code> and
+  <code class = 'eq'>W</code> (resp. <code class = 'eq'>H</code>) is replaced by <code class = 'eq'>W S</code> (resp.
+  <code class = 'eq'>S H</code>) in the update of <code class = 'eq'>H</code> (resp. <code class = 'eq'>W</code>).</p>
+        
+            <p>See <code><a href='nmf_update_KL.html'>nmf_update.KL</a></code> for more details on the
+  update formula.</p>
+        
+          </div>
+
+          <div class="References">
+            <h2>References</h2>
+            
+            <p>Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and
+  Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix
+  factorization (nsNMF)." _IEEE Trans. Pattern Anal. Mach.
+  Intell_, *28*, pp. 403-415.</p>
+        
+            <p>Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).
+  "Metagenes and molecular pattern discovery using matrix
+  factorization." _Proceedings of the National Academy of
+  Sciences of the United States of America_, *101*(12), pp.
+  4164-9. ISSN 0027-8424, <URL:
+  http://dx.doi.org/10.1073/pnas.0308531101>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/15016911>.</p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>nmf_update.ns</li><li>nmf_update.ns_R</li>
+          </ul>
+          <ul>
+            
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

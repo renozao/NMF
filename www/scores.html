@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Feature Selection in NMF Models. NMF 0.8</title>
+    <title>Feature Selection in NMF Models. NMF </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -28,7 +28,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class = "container">
-          <a class="brand" href="index.html">NMF 0.8</a>
+          <a class="brand" href="index.html">NMF </a>
           <div class="nav">
             <ul class="nav">
               <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -287,79 +287,6 @@
         
           </div>
       
-          <h2 id="examples">Examples</h2>
-          <pre class="examples"><div class='input'><span class="comment"># random NMF model</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">50</span><span class="keyword">,</span><span class="number">20</span><span class="keyword">)</span>
-
-<span class="comment"># probably no feature is selected</span>
-<span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>[[1]]
-[1] 2
-
-[[2]]
-[1] NA
-
-[[3]]
-[1] 28 12
-
-attr(,"method")
-[1] "kim"
-</div>
-<div class='input'><span class="comment"># extract top 5 for each basis</span>
-<span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">5L</span><span class="keyword">)</span></div>
-<div class='output'>[[1]]
-[1] 14 46 42 17 13
-
-[[2]]
-[1] 38 30 22 19 23
-
-[[3]]
-[1]  6 39 11  4 10
-
-attr(,"method")
-[1] 5 5 5
-</div>
-<div class='input'><span class="comment"># extract features that have a relative basis contribution above a threshold</span>
-<span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">0.5</span><span class="keyword">)</span></div>
-<div class='output'>[[1]]
-[1]  2  9 14 40 42 45
-
-[[2]]
-[1]  7  8 18 23 29 38 48
-
-[[3]]
- [1]  1  4 10 11 12 28 32 33 36 37 44 49 50
-
-attr(,"method")
-[1] 0.5 0.5 0.5
-</div>
-<div class='input'><span class="comment"># ambiguity?</span>
-<span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">)</span> <span class="comment"># means relative contribution above 100%</span></div>
-<div class='output'>[[1]]
-[1] NA
-
-[[2]]
-[1] NA
-
-[[3]]
-[1] NA
-
-attr(,"method")
-[1] 1 1 1
-</div>
-<div class='input'><span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">1L</span><span class="keyword">)</span> <span class="comment"># means top contributing feature in each component</span></div>
-<div class='output'>[[1]]
-[1] 14
-
-[[2]]
-[1] 38
-
-[[3]]
-[1] 6
-
-attr(,"method")
-[1] 1 1 1
-</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>

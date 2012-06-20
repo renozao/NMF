@@ -2,8 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Returns the consensus matrix computed while performing all NMF runs,
-amongst which &lt;code&gt;object&lt;/code&gt; was selected as the best fit.. NMF </title>
+    <title>Class for Storing Heterogeneous NMF fits. NMF </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -40,42 +39,63 @@ amongst which &lt;code&gt;object&lt;/code&gt; was selected as the best fit.. NMF
     </div>
 
     <div class="container">
-      <h1>Returns the consensus matrix computed while performing all NMF runs,
-amongst which <code>object</code> was selected as the best fit.</h1>
+      <h1>Class for Storing Heterogeneous NMF fits</h1>
 
       <div class="row">
         <div class="span8">
-          <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='connectivity.html'>consensus</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">no.attrib</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span></pre>
-          
-          <h2>Arguments</h2>
-          <dl>
-            <dt>object</dt>
-            <dd>an object with a suitable
-  <code><a href='predict.html'>predict</a></code> method.</dd>
-            <dt>no.attrib</dt>
-            <dd>a logical that indicates if attributes
-  containing information about the NMF model should be
-  attached to the result (<code>TRUE</code>) or not
-  (<code>FALSE</code>).</dd>
-          </dl>
-          
+                    
           <div class="Description">
             <h2>Description</h2>
             
-            <p>The result is the matrix stored in slot
-  &#145;consensus&#146;. This method returns <code>NULL</code> if
-  the consensus matrix is empty.</p>
+            <p>This class wraps a list of NMF fit objects, which may
+  come from different runs of the function
+  <code><a href='nmf.html'>nmf</a></code>, using different parameters, methods,
+  etc.. These can be either from a single run (NMFfit) or
+  multiple runs (NMFfitX).</p>
+        
+            <p>Note that its definition/interface is very likely to
+  change in the future.</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>algorithm<code>signature(object = "NMFList")</code>:
+  Returns the method names used to compute the NMF fits in
+  the list. It returns <code>NULL</code> if the list is empty.</p>
+        
+            <p>runtime<code>signature(object = "NMFList")</code>:
+  Returns the CPU time required to compute all NMF fits in
+  the list. It returns <code>NULL</code> if the list is empty. If
+  no timing data are available, the sequential time is
+  returned.</p>
+        
+            <p>seqtime<code>signature(object = "NMFList")</code>:
+  Returns the CPU time that would be required to
+  sequentially compute all NMF fits stored in
+  <code>object</code>.</p>
+        
+            <p>This method calls the function <code>runtime</code> on each fit
+  and sum up the results. It returns <code>NULL</code> on an
+  empty object.</p>
+        
+            <p>show<code>signature(object = "NMFList")</code>: Show
+  method for objects of class <code>NMFList</code></p>
+        
+            <p></span></p>
         
           </div>
       
         </div>
         <div class="span4">
           <!-- <ul>
-            <li>consensus,NMFfitX1-method</li>
+            <li>NMFList-class</li>
           </ul>
           <ul>
-            <li>methods</li>
+            
           </ul> -->
             
                     

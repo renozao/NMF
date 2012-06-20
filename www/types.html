@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Testing NMF Objects. NMF 0.8</title>
+    <title>Testing NMF Objects. NMF </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -28,7 +28,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class = "container">
-          <a class="brand" href="index.html">NMF 0.8</a>
+          <a class="brand" href="index.html">NMF </a>
           <div class="nav">
             <ul class="nav">
               <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -149,80 +149,6 @@
         
           </div>
       
-          <h2 id="examples">Examples</h2>
-          <pre class="examples"><div class='input'><span class="comment"># test if an object is an NMF model, i.e. that it implements the NMF interface</span>
-<span class="functioncall"><a href='types.html'>is.nmf</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">:</span><span class="number">4</span><span class="keyword">)</span></div>
-<div class='output'>[1] FALSE
-</div>
-<div class='input'><span class="functioncall"><a href='types.html'>is.nmf</a></span><span class="keyword">(</span><span class="string">'NMFstd'</span><span class="keyword">)</span></div>
-<div class='output'>[1] FALSE
-</div>
-<div class='input'><span class="functioncall"><a href='types.html'>is.nmf</a></span><span class="keyword">(</span><span class="string">'NMFblah'</span><span class="keyword">)</span></div>
-<div class='output'>[1] FALSE
-</div>
-<div class='input'><span class="functioncall"><a href='types.html'>is.nmf</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">)</span> <span class="keyword">)</span></div>
-<div class='output'>[1] TRUE
-</div>
-<div class='input'><span class="functioncall"><a href='types.html'>is.nmf</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">)</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span> <span class="keyword">)</span></div>
-<div class='output'>[1] TRUE
-</div>
-<div class='input'><span class="comment"># empty model</span>
-<span class="functioncall"><a href='types.html'>is.empty.nmf</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">)</span> <span class="keyword">)</span></div>
-<div class='output'>[1] TRUE
-</div>
-<div class='input'><span class="comment"># non empty models</span>
-<span class="functioncall"><a href='types.html'>is.empty.nmf</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">0</span><span class="keyword">)</span> <span class="keyword">)</span></div>
-<div class='output'>[1] FALSE
-</div>
-<div class='input'><span class="functioncall"><a href='types.html'>is.empty.nmf</a></span><span class="keyword">(</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span> <span class="keyword">)</span></div>
-<div class='output'>[1] FALSE
-</div>
-<div class='input'><span class="comment">## Testing results of fits</span>
-        <span class="comment"># generate a random 50 x 10 matrix</span>
-        <span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">50</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span>
-
-        <span class="comment"># single run</span>
-        <span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
-        <span class="functioncall"><a href='types.html'>isNMFfit</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
-<div class='output'>[1] TRUE
-</div>
-<div class='input'>
-        <span class="comment"># multiple runs - keeping single fit</span>
-        <span class="symbol">resm</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">3</span><span class="keyword">)</span></div>
-<strong class='warning'>Warning message:
-error 'Interrupted system call' in select</strong>
-<strong class='warning'>Warning message:
-error 'Interrupted system call' in select</strong>
-<div class='input'>        <span class="functioncall"><a href='types.html'>isNMFfit</a></span><span class="keyword">(</span><span class="symbol">resm</span><span class="keyword">)</span></div>
-<div class='output'>[1] TRUE
-</div>
-<div class='input'>
-        <span class="comment"># multiple runs - keeping all fits</span>
-        <span class="symbol">resM</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">.opt</span><span class="argument">=</span><span class="string">'k'</span><span class="keyword">)</span></div>
-<strong class='warning'>Warning message:
-error 'Interrupted system call' in select</strong>
-<div class='input'>        <span class="functioncall"><a href='types.html'>isNMFfit</a></span><span class="keyword">(</span><span class="symbol">resM</span><span class="keyword">)</span></div>
-<div class='output'>[1] TRUE
-</div>
-<div class='input'>
-        <span class="comment"># with a list of results</span>
-        <span class="functioncall"><a href='types.html'>isNMFfit</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">resm</span><span class="keyword">,</span> <span class="symbol">resM</span><span class="keyword">,</span> <span class="string">'not a result'</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1]  TRUE  TRUE  TRUE FALSE
-</div>
-<div class='input'>        <span class="functioncall"><a href='types.html'>isNMFfit</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="symbol">resm</span><span class="keyword">,</span> <span class="symbol">resM</span><span class="keyword">)</span><span class="keyword">,</span> <span class="string">'not a result'</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># list of list</span></div>
-<div class='output'>[[1]]
-[1] TRUE
-
-[[2]]
-[1] TRUE TRUE
-
-[[3]]
-[1] FALSE
-
-</div>
-<div class='input'>        <span class="functioncall"><a href='types.html'>isNMFfit</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">resm</span><span class="keyword">,</span> <span class="symbol">resM</span><span class="keyword">,</span> <span class="string">'not a result'</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">recursive</span><span class="argument">=</span><span class="number">FALSE</span><span class="keyword">)</span></div>
-<div class='output'>[1] FALSE
-</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>

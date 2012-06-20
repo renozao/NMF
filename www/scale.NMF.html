@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Rescaling NMF Models. NMF 0.8</title>
+    <title>Rescaling NMF Models. NMF </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -28,7 +28,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class = "container">
-          <a class="brand" href="index.html">NMF 0.8</a>
+          <a class="brand" href="index.html">NMF </a>
           <div class="nav">
             <ul class="nav">
               <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -99,49 +99,6 @@
         
           </div>
       
-          <h2 id="examples">Examples</h2>
-          <pre class="examples"><div class='input'><span class="comment"># random 3-rank 10x5 NMF model</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span>
-
-<span class="comment"># rescale based on basis</span>
-<span class="functioncall"><a href='NA'>colSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1] 6.141366 4.997982 4.900920
-</div>
-<div class='input'><span class="functioncall"><a href='NA'>colSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>scale</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1] 1 1 1
-</div>
-<div class='input'>
-<span class="symbol">rx</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>scale</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="string">'basis'</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span>
-<span class="functioncall"><a href='NA'>colSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1] 10 10 10
-</div>
-<div class='input'><span class="functioncall"><a href='NA'>rowSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1] 1.1655658 1.1776945 0.8215657
-</div>
-<div class='input'>
-<span class="comment"># rescale based on coef</span>
-<span class="functioncall"><a href='NA'>rowSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1] 1.897893 2.356340 1.676350
-</div>
-<div class='input'><span class="functioncall"><a href='NA'>rowSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>scale</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="string">'coef'</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1] 1 1 1
-</div>
-<div class='input'><span class="symbol">rx</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>scale</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="string">'coef'</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span>
-<span class="functioncall"><a href='NA'>rowSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1] 10 10 10
-</div>
-<div class='input'><span class="functioncall"><a href='NA'>colSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1] 1.1655658 1.1776945 0.8215657
-</div>
-<div class='input'>
-<span class="comment"># fitted target matrix is identical but the factors have been rescaled</span>
-<span class="symbol">rx</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>scale</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="string">'basis'</span><span class="keyword">)</span>
-<span class="functioncall"><a href='NA'>all.equal</a></span><span class="keyword">(</span><span class="functioncall"><a href='fitted.html'>fitted</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='fitted.html'>fitted</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1] TRUE
-</div>
-<div class='input'><span class="functioncall"><a href='NA'>all.equal</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1] "Mean relative difference: 0.8129707"
-</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>

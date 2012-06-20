@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Interface for NMF Seeding Methods. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Interface for NMF Seeding Methods</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='seed.html'>seed</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">model</span><span class="keyword">,</span> <span class="symbol">method</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='seed.html'>seed</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">model</span><span class="keyword">,</span> <span class="symbol">method</span><span class="keyword">,</span> <span class="symbol">rng</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='seed.html'>seed</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">model</span><span class="keyword">,</span> <span class="symbol">method</span><span class="keyword">,</span> <span class="symbol">name</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>x</dt>
+            <dd>target matrix one wants to approximate with NMF</dd>
+            <dt>model</dt>
+            <dd>specification of the NMF model, e.g., the
+  factorization rank.</dd>
+            <dt>method</dt>
+            <dd>specification of a seeding method. See each
+  method for details on the supported formats.</dd>
+            <dt>...</dt>
+            <dd>extra to allow extensions and passed down to
+  the actual seeding method.</dd>
+            <dt>rng</dt>
+            <dd>rng setting to use. If not missing the RNG
+  settings are set and restored on exit using
+  <code><a href='rng.html'>setRNG</a></code>.
+
+  All arguments in <code>...</code> are passed to teh seeding
+  strategy.</dd>
+            <dt>name</dt>
+            <dd>optional name of the seeding method for
+  custom seeding strategies.</dd>
+          </dl>
+          
+          <div class="Value">
+            <h2>Value</h2>
+            
+            <p>an <code><a href='NMFfit-class.html'>NMFfit-class</a></code> object.</p>
+        
+          </div>
+
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>The function <code>seed</code> provides a single interface for
+  calling all seeding methods used to initialise NMF
+  computations. These methods at least set the basis and
+  coefficient matrices of the initial <code>object</code> to
+  valid nonnegative matrices. They will be used as a
+  starting point by any NMF algorithm that accept
+  initialisation.</p>
+        
+            <p>IMPORTANT: this interface is still considered
+  experimental and is subject to changes in future release.</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>seed<code>signature(x = "matrix", model = "NMF",
+  method = "NMFSeed")</code>: This is the workhorse method that
+  seeds an NMF model object using a given seeding strategy
+  defined by an <code>NMFSeed</code> object, to fit a given
+  target matrix.</p>
+        
+            <p>seed<code>signature(x = "ANY", model = "ANY",
+  method = "function")</code>: Seeds an NMF model using a custom
+  seeding strategy, defined by a function.</p>
+        
+            <p><code>method</code> must have signature <code>(x='NMFfit',
+  y='matrix', ...)</code>, where <code>x</code> is the unseeded NMF
+  model and <code>y</code> is the target matrix to fit. It must
+  return an <code><a href='NMF-class.html'>NMF-class</a></code> object, that contains
+  the seeded NMF model.</p>
+        
+            <p>seed<code>signature(x = "ANY", model = "ANY",
+  method = "missing")</code>: Seeds the model with the default
+  seeding method given by
+  <code>nmf.getOption('default.seed')</code></p>
+        
+            <p>seed<code>signature(x = "ANY", model = "ANY",
+  method = "NULL")</code>: Use NMF method <code>'none'</code>.</p>
+        
+            <p>seed<code>signature(x = "ANY", model = "ANY",
+  method = "numeric")</code>: Use <code>method</code> to set the RNG
+  with <code><a href='rng.html'>setRNG</a></code> and use method &#147;random&#148;
+  to seed the NMF model.</p>
+        
+            <p>Note that in this case the RNG settings are not restored.
+  This is due to some internal technical reasons, and might
+  change in future releases.</p>
+        
+            <p>seed<code>signature(x = "ANY", model = "ANY",
+  method = "character")</code>: Use the registered seeding method
+  whose access key is <code>method</code>.</p>
+        
+            <p>seed<code>signature(x = "ANY", model = "list",
+  method = "NMFSeed")</code>: Seed a model using the elements in
+  <code>model</code> to instantiate it with
+  <code><a href='nmfModel.html'>nmfModel</a></code>.</p>
+        
+            <p>seed<code>signature(x = "ANY", model = "numeric",
+  method = "NMFSeed")</code>: Seeds a standard NMF model (i.e. of
+  class <code><a href='NMFstd-class.html'>NMFstd-class</a></code>) of rank <code>model</code>.</p>
+        
+            <p></span></p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>seed</li><li>seed,ANY,ANY,character-method</li><li>seed,ANY,ANY,function-method</li><li>seed,ANY,ANY,missing-method</li><li>seed,ANY,ANY,NULL-method</li><li>seed,ANY,ANY,numeric-method</li><li>seed,ANY,list,NMFSeed-method</li><li>seed,ANY,numeric,NMFSeed-method</li><li>seed,matrix,NMF,NMFSeed-method</li><li>seed-methods</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Generic Interface for Nonnegative Matrix Factorisation Models. NMF 0.8</title>
+    <title>Generic Interface for Nonnegative Matrix Factorisation Models. NMF </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -28,7 +28,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class = "container">
-          <a class="brand" href="index.html">NMF 0.8</a>
+          <a class="brand" href="index.html">NMF </a>
           <div class="nav">
             <ul class="nav">
               <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -130,7 +130,7 @@
   sub-setting objects of class <code>NMF</code>, using a
   matrix-like syntax.</p>
         
-            <p>See <code><a href='open-brace-commaNMF-commaANY-commaANY-commaANY-method.html'>[,NMF,ANY,ANY,ANY-method</a></code> for more
+            <p>See <code><a href='subset-NMF.html'>[,NMF,ANY,ANY,ANY-method</a></code> for more
   details.</p>
         
             <p>$<code>signature(x = "NMF")</code>: shortcut for
@@ -150,8 +150,8 @@
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
         
-            <p>basis<-<code>signature( = "NMF", = "matrix")</code>:
-  Pure virtual method for objects of class
+            <p>basis<-<code>signature(object = "NMF", value =
+  "matrix")</code>: Pure virtual method for objects of class
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
         
@@ -177,8 +177,8 @@
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
         
-            <p>coef<-<code>signature( = "NMF", = "matrix")</code>:
-  Pure virtual method for objects of class
+            <p>coef<-<code>signature(object = "NMF", value =
+  "matrix")</code>: Pure virtual method for objects of class
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
         
@@ -209,14 +209,14 @@
   Computes the distance between a matrix and the estimate
   of an <code>NMF</code> model.</p>
         
-            <p>dim<code>signature( = "NMF")</code>: method for NMF
+            <p>dim<code>signature(x = "NMF")</code>: method for NMF
   objects for the base generic <code><a href='NA'>dim</a></code>. It
   returns all dimensions in a length-3 integer vector: the
   number of row and columns of the estimated target matrix,
   as well as the factorization rank (i.e. the number of
   basis components).</p>
         
-            <p>dimnames<code>signature( = "NMF")</code>: Returns the
+            <p>dimnames<code>signature(x = "NMF")</code>: Returns the
   dimension names of the NMF model <code>x</code>.</p>
         
             <p>It returns either NULL if no dimnames are set on the
@@ -225,8 +225,9 @@
   coefficient matrix, and the column names of the basis
   matrix (i.e. the names of the basis components).</p>
         
-            <p>dimnames<-<code>signature( = "NMF", = "ANY")</code>:
-  sets the dimension names of the NMF model <code>x</code>.</p>
+            <p>dimnames<-<code>signature(x = "NMF", value =
+  "ANY")</code>: sets the dimension names of the NMF model
+  <code>x</code>.</p>
         
             <p><code>value</code> can be <code>NULL</code> which resets all
   dimension names, or a 1, 2 or 3-length list providing
@@ -249,7 +250,7 @@
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
         
-            <p>loadings<code>signature( = "NMF")</code>: Method
+            <p>loadings<code>signature(x = "NMF")</code>: Method
   loadings for NMF Models</p>
         
             <p>The method <code>loadings</code> is identical to <code>basis</code>,
@@ -336,8 +337,8 @@
   <code>rposneg</code> to the basis matrix of an
   <code><a href='NMF-package.html'>NMF</a></code> object.</p>
         
-            <p>show<code>signature( = "NMF")</code>: Show method for
-  objects of class <code>NMF</code></p>
+            <p>show<code>signature(object = "NMF")</code>: Show method
+  for objects of class <code>NMF</code></p>
         
             <p>sparseness<code>signature(x = "NMF")</code>: Compute
   the sparseness of an object of class <code>NMF</code>, as the
@@ -466,39 +467,6 @@
         
           </div>
       
-          <h2 id="examples">Examples</h2>
-          <pre class="examples"><div class='input'><span class="comment"># show all the NMF models available (i.e. the classes that inherit from class NMF)</span>
-<span class="functioncall"><a href='nmfModel.html'>nmfModels</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
-<div class='output'>[1] "NMFstd"    "NMFOffset" "NMFns"    
-</div>
-<div class='input'><span class="comment"># show all the built-in NMF models available</span>
-<span class="functioncall"><a href='nmfModel.html'>nmfModels</a></span><span class="keyword">(</span><span class="argument">builtin.only</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span></div>
-<div class='output'>[1] "NMFstd"    "NMFOffset" "NMFns"    
-</div>
-<div class='input'>
-<span class="comment"># class NMF is a virtual class so cannot be instantiated:</span>
-<span class="functioncall"><a href='NA'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='NA'>new</a></span><span class="keyword">(</span><span class="string">'NMF'</span><span class="keyword">)</span> <span class="keyword">)</span>
-
-<span class="comment"># To instantiate an NMF model, use the factory method nmfModel. see ?nmfModel</span>
-<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
-<div class='output'><Object of class: NMFstd >
-features: 0 
-basis/rank: 0 
-samples: 0 
-</div>
-<div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">)</span></div>
-<div class='output'><Object of class: NMFstd >
-features: 0 
-basis/rank: 3 
-samples: 0 
-</div>
-<div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFns'</span><span class="keyword">)</span></div>
-<div class='output'><Object of class: NMFns >
-features: 0 
-basis/rank: 3 
-samples: 0 
-theta: 0.5 
-</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>
@@ -516,7 +484,7 @@ theta: 0.5
   Built-in NMF models and factory method in
   <code><a href='nmfModel.html'>nmfModel</a></code>.
 
-  Method <code><a href='NA'>seed</a></code> to set NMF objects with values
+  Method <code><a href='seed.html'>seed</a></code> to set NMF objects with values
   suitable to start algorithms with.
 
   Other NMF-interface: <code><a href='basis-coef-methods.html'>basis</a></code>,

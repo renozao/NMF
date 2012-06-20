@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Stopping Criteria for NMF Iterative Strategies. NMF 0.8</title>
+    <title>Stopping Criteria for NMF Iterative Strategies. NMF </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -28,7 +28,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class = "container">
-          <a class="brand" href="index.html">NMF 0.8</a>
+          <a class="brand" href="index.html">NMF </a>
           <div class="nav">
             <ul class="nav">
               <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -44,7 +44,9 @@
       <div class="row">
         <div class="span8">
           <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='stop-NMF.html'>nmf.stop.iteration</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">)</span>
+          <pre><span class="functioncall"><a href='stop-NMF.html'>NMFStop</a></span><span class="keyword">(</span><span class="symbol">val</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='stop-NMF.html'>nmf.stop.iteration</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='stop-NMF.html'>nmf.stop.threshold</a></span><span class="keyword">(</span><span class="symbol">threshold</span><span class="keyword">)</span>
 
@@ -55,6 +57,9 @@
           
           <h2>Arguments</h2>
           <dl>
+            <dt>val</dt>
+            <dd>access key that can be a character string, a
+  single integer or numeric, or a function.</dd>
             <dt>n</dt>
             <dd>maximum number of iteration to perform.</dd>
             <dt>threshold</dt>
@@ -86,6 +91,9 @@
           <div class="Value">
             <h2>Value</h2>
             
+            <p>a function that can be passed to argument <code>.stop</code> of
+  function <code><a href='nmf.html'>nmf</a></code>.</p>
+        
             <p>a function that can be used as a stopping criterion for
   NMF algorithms defined as
   <code><a href='NMFStrategyIterative-class.html'>NMFStrategyIterative-class</a></code> objects. That
@@ -100,8 +108,14 @@
             <h2>Description</h2>
             
             <p>The function documented here implement
-  stopping/convergence criterion commonly used in NMF
+  stopping/convergence criteria commonly used in NMF
   algorithms.</p>
+        
+            <p><code>nmf.stop.iteration</code> generates a function that
+  implements the stopping criterion that limits the number
+  of iterations to a maximum of <code>n</code>), i.e. that
+  returns <code>TRUE</code> if <code>i>=n</code>, <code>FALSE</code>
+  otherwise.</p>
         
             <p><code>nmf.stop.threshold</code> generates a function that
   implements the stopping criterion that stops when a given
@@ -125,18 +139,27 @@
           <div class="Details">
             <h2>Details</h2>
             
-            <p><code>nmf.stop.iteration</code> generates a function that
-  implements the stopping criterion that limits the number
-  of iterations to a maximum of <code>n</code>), i.e. that
-  returns <code>TRUE</code> if <code>i>=n</code>, <code>FALSE</code>
-  otherwise.</p>
+            <p><code>NMFStop</code> acts as a factory method that create
+  stopping criterion functions to be used with
+  <code><a href='nmf.html'>nmf</a></code>, from different types of values.</p>
+        
+            <p><code>NMFStop</code> returns functions unchanged, integer
+  values are used to create a stopping criterion of that
+  number of iterations via <code>nmf.stop.iteration</code>,
+  numeric values are used to create a stopping criterion of
+  that stationary threshold via <code>nmf.stop.threshold</code>.
+  Character strings are assumed to be access keys for
+  registered criteria (currently available:
+  &#147;connectivity&#148; and &#147;stationary&#148;), or a
+  function name in the global environment or the namespace
+  of the loading package.</p>
         
           </div>
       
         </div>
         <div class="span4">
           <!-- <ul>
-            <li>nmf.stop.connectivity</li><li>nmf.stop.iteration</li><li>nmf.stop.stationary</li><li>nmf.stop.threshold</li><li>stop-NMF</li>
+            <li>NMFStop</li><li>nmf.stop.connectivity</li><li>nmf.stop.iteration</li><li>nmf.stop.stationary</li><li>nmf.stop.threshold</li><li>stop-NMF</li>
           </ul>
           <ul>
             

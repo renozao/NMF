@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Structure for Storing All Fits from Multiple NMF Runs. NMF 0.8</title>
+    <title>Structure for Storing All Fits from Multiple NMF Runs. NMF </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -28,7 +28,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class = "container">
-          <a class="brand" href="index.html">NMF 0.8</a>
+          <a class="brand" href="index.html">NMF </a>
           <div class="nav">
             <ul class="nav">
               <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -118,7 +118,7 @@
   are used by plotting functions such as
   <code><a href='heatmaps.html'>consensusmap</a></code> to annotate the plots.</p>
         
-            <p>dim<code>signature( = "NMFfitXn")</code>: Returns the
+            <p>dim<code>signature(x = "NMFfitXn")</code>: Returns the
   dimension common to all fits.</p>
         
             <p>Since all fits have the same dimensions, it returns the
@@ -198,64 +198,13 @@
   and sum up the results. It returns <code>NULL</code> on an
   empty object.</p>
         
-            <p>show<code>signature( = "NMFfitXn")</code>: Show method
-  for objects of class <code>NMFfitXn</code></p>
+            <p>show<code>signature(object = "NMFfitXn")</code>: Show
+  method for objects of class <code>NMFfitXn</code></p>
         
             <p></span></p>
         
           </div>
       
-          <h2 id="examples">Examples</h2>
-          <pre class="examples"><div class='input'><span class="comment"># generate a synthetic dataset with known classes</span>
-<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">)</span><span class="keyword">;</span>
-<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span>
-
-<span class="comment"># build the class factor</span>
-<span class="symbol">groups</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>as.factor</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>do.call</a></span><span class="keyword">(</span><span class="string">'c'</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>lapply</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>seq</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">)</span><span class="keyword">,</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">x</span><span class="keyword">)</span> <span class="functioncall"><a href='NA'>rep</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">[</span><span class="symbol">x</span><span class="keyword">]</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span>
-
-<span class="comment"># perform multiple runs of one algorithm, keeping all the fits</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">5</span><span class="keyword">,</span> <span class="argument">.options</span><span class="argument">=</span><span class="string">'k'</span><span class="keyword">)</span> <span class="comment"># .options=list(keep.all=TRUE) also works</span></div>
-<strong class='warning'>Warning message:
-error 'Interrupted system call' in select</strong>
-<div class='input'><span class="symbol">res</span></div>
-<div class='output'><Object of class: NMFfitXn >
-  Method: brunet 
-  Runs:  5 
-  RNG:
-   407, 9243, 638404768, 1844660257, -1365545106, 646893847, -233661844 
-  Total timing:
-   user  system elapsed 
-  2.610   0.470   1.987 
-  Sequential timing:
-   user  system elapsed 
-  1.200   0.020   1.324 
-</div>
-<div class='input'>
-<span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
-<div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun       cophenetic       dispersion 
-       3.0000000        0.4210780        0.7219242      251.6773731      430.0000000        0.2300000        2.6100000        5.0000000        1.0000000        0.8380247 
-</div>
-<div class='input'><span class="comment"># get more info</span>
-<span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="symbol">V</span><span class="keyword">,</span> <span class="argument">class</span><span class="argument">=</span><span class="symbol">groups</span><span class="keyword">)</span></div>
-<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals            niter              cpu 
-       3.0000000        0.4210780        0.7219242        1.0000000        0.0000000      308.9893519        0.7093112      251.6773731      430.0000000        0.2300000 
-         cpu.all             nrun       cophenetic       dispersion 
-       2.6100000        5.0000000        1.0000000        0.8380247 
-</div>
-<div class='input'>
-<span class="comment"># compute/show computational times</span>
-<span class="functioncall"><a href='algorithmic.html'>runtime.all</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
-<div class='output'>   user  system elapsed 
-  2.610   0.470   1.987 
-</div>
-<div class='input'><span class="functioncall"><a href='algorithmic.html'>seqtime</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
-<div class='output'>   user  system elapsed 
-  1.200   0.020   1.324 
-</div>
-<div class='input'>
-# plot the consensus matrix, computed on the fly
-## <strong>Not run</strong>:  consensusmap(res, annCol=groups) 
-</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>

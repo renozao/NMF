@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Comparing Results from Different NMF Runs. NMF 0.8</title>
+    <title>Comparing Results from Different NMF Runs. NMF </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -28,7 +28,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class = "container">
-          <a class="brand" href="index.html">NMF 0.8</a>
+          <a class="brand" href="index.html">NMF </a>
           <div class="nav">
             <ul class="nav">
               <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -222,23 +222,6 @@
         
           </div>
       
-          <h2 id="examples">Examples</h2>
-          <pre class="examples"><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">)</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
-<span class="symbol">res2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="string">'lee'</span><span class="keyword">)</span>
-
-<span class="comment"># compare arguments</span>
-<span class="functioncall"><a href='algorithmic.html'>compare</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">res2</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef       rss      evar residuals niter  cpu cpu.all nrun
-1 brunet random   1        KL    3        0.2347272       0.4947914  8.161254 0.8782451  9.683435   660 0.32    0.32    1
-2    lee random   2 euclidean    2        0.1352266       0.4651332 10.335377 0.8458101  5.167688   440 0.30    0.30    1
-</div>
-<div class='input'><span class="comment"># compare elements of a list</span>
-<span class="functioncall"><a href='algorithmic.html'>compare</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">res2</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef       rss      evar residuals niter  cpu cpu.all nrun
-1 brunet random   1        KL    3        0.2347272       0.4947914  8.161254 0.8782451  9.683435   660 0.32    0.32    1
-2    lee random   2 euclidean    2        0.1352266       0.4651332 10.335377 0.8458101  5.167688   440 0.30    0.30    1
-</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>

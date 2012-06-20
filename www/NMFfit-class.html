@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Base Class for to store Nonnegative Matrix Factorisation results. NMF 0.8</title>
+    <title>Base Class for to store Nonnegative Matrix Factorisation results. NMF </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -28,7 +28,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class = "container">
-          <a class="brand" href="index.html">NMF 0.8</a>
+          <a class="brand" href="index.html">NMF </a>
           <div class="nav">
             <ul class="nav">
               <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -192,9 +192,9 @@
   dispatching the call to the <code>basis</code> method of the
   actual NMF model.</p>
         
-            <p>basis<-<code>signature( = "NMFfit", = "matrix")</code>:
-  Sets the the basis matrix of an NMF model fitted with
-  function <code><a href='nmf.html'>nmf</a></code>.</p>
+            <p>basis<-<code>signature(object = "NMFfit", value =
+  "matrix")</code>: Sets the the basis matrix of an NMF model
+  fitted with function <code><a href='nmf.html'>nmf</a></code>.</p>
         
             <p>It is a shortcut for <code>basis(fit(object)) <- value</code>,
   dispatching the call to the <code>basis<-</code> method of the
@@ -210,9 +210,9 @@
   dispatching the call to the <code>coef</code> method of the
   actual NMF model.</p>
         
-            <p>coef<-<code>signature( = "NMFfit", = "matrix")</code>:
-  Sets the the coefficient matrix of an NMF model fitted
-  with function <code><a href='nmf.html'>nmf</a></code>.</p>
+            <p>coef<-<code>signature(object = "NMFfit", value =
+  "matrix")</code>: Sets the the coefficient matrix of an NMF
+  model fitted with function <code><a href='nmf.html'>nmf</a></code>.</p>
         
             <p>It is a shortcut for <code>coef(fit(object)) <- value</code>,
   dispatching the call to the <code>coef<-</code> method of the
@@ -242,9 +242,9 @@
             <p>fit<code>signature(object = "NMFfit")</code>: Returns
   the NMF model object stored in slot <code>'fit'</code>.</p>
         
-            <p>fit<-<code>signature( = "NMFfit", = "NMF")</code>:
-  Updates the NMF model object stored in slot <code>'fit'</code>
-  with a new value.</p>
+            <p>fit<-<code>signature(object = "NMFfit", value =
+  "NMF")</code>: Updates the NMF model object stored in slot
+  <code>'fit'</code> with a new value.</p>
         
             <p>fitted<code>signature(object = "NMFfit")</code>:
   Computes and return the estimated target matrix from an
@@ -325,8 +325,8 @@
   starting point for the NMF algorithm that fitted the NMF
   model <code>object</code>.</p>
         
-            <p>show<code>signature( = "NMFfit")</code>: Show method
-  for objects of class <code>NMFfit</code></p>
+            <p>show<code>signature(object = "NMFfit")</code>: Show
+  method for objects of class <code>NMFfit</code></p>
         
             <p>summary<code>signature(object = "NMFfit")</code>:
   Computes summary measures for a single fit from
@@ -341,47 +341,6 @@
         
           </div>
       
-          <h2 id="examples">Examples</h2>
-          <pre class="examples"><div class='input'><span class="comment"># run default NMF algorithm on a random matrix</span>
-<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span> <span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span>
-<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">)</span>
-
-<span class="comment"># result class is NMFfit</span>
-<span class="functioncall"><a href='NA'>class</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
-<div class='output'>[1] "NMFfit"
-attr(,"package")
-[1] "NMF"
-</div>
-<div class='input'><span class="functioncall"><a href='types.html'>isNMFfit</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
-<div class='output'>[1] TRUE
-</div>
-<div class='input'>
-<span class="comment"># show result</span>
-<span class="symbol">res</span></div>
-<div class='output'><Object of class: NMFfit >
- # Model:
-  <Object of class: NMFstd >
-  features: 50 
-  basis/rank: 3 
-  samples: 20 
- # Details:
-  algorithm:  brunet 
-  seed:  random 
-  RNG: 403, 608, -1643107813, ... [584f399267938b24e0f78425adc6521a]
-  distance metric:  'KL' 
-  residuals:  73.64819 
-  Iterations: 670 
-  Timing:
-     user  system elapsed 
-    0.360   0.000   0.365 
-</div>
-<div class='input'>
-<span class="comment"># compute summary measures</span>
-<span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="symbol">V</span><span class="keyword">)</span></div>
-<div class='output'>            rank sparseness.basis  sparseness.coef              rss             evar        residuals            niter              cpu          cpu.all             nrun 
-       3.0000000        0.1518974        0.4116923       64.1684436        0.8019828       73.6481924      670.0000000        0.3600000        0.3600000        1.0000000 
-</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>

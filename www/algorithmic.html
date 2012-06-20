@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Generic Interface for Algorithms. NMF 0.8</title>
+    <title>Generic Interface for Algorithms. NMF </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -28,7 +28,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class = "container">
-          <a class="brand" href="index.html">NMF 0.8</a>
+          <a class="brand" href="index.html">NMF </a>
           <div class="nav">
             <ul class="nav">
               <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -103,8 +103,7 @@
   auxiliary objects such as an underlying model or an
   objective function that measures the adequation of the
   model with observed data. It aims at complementing the
-  interface provided by the package
-  <code>stats</code>.</p>
+  interface provided by the <code><a href='NA'>stats</a></code> package.</p>
         
           </div>
 
@@ -385,27 +384,6 @@
         
           </div>
       
-          <h2 id="examples">Examples</h2>
-          <pre class="examples"><div class='input'><span class="comment"># get the type of an NMF model</span>
-<span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1] "NMFstd"
-</div>
-<div class='input'><span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFns'</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1] "NMFns"
-</div>
-<div class='input'><span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFOffset'</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1] "NMFOffset"
-</div>
-<div class='input'><span class="comment"># get the type of model(s) associated with an NMF algorithm</span>
-<span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfAlgorithm.html'>nmfAlgorithm</a></span><span class="keyword">(</span><span class="string">'brunet'</span><span class="keyword">)</span> <span class="keyword">)</span></div>
-<div class='output'>[1] "NMFstd"
-</div>
-<div class='input'><span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfAlgorithm.html'>nmfAlgorithm</a></span><span class="keyword">(</span><span class="string">'nsNMF'</span><span class="keyword">)</span> <span class="keyword">)</span></div>
-<div class='output'>[1] "NMFns"
-</div>
-<div class='input'><span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfAlgorithm.html'>nmfAlgorithm</a></span><span class="keyword">(</span><span class="string">'offset'</span><span class="keyword">)</span> <span class="keyword">)</span></div>
-<div class='output'>[1] "NMFOffset"
-</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>

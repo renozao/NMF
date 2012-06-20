@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Plotting Basis Profiles. NMF 0.8</title>
+    <title>Plotting Basis Profiles. NMF </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -28,7 +28,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class = "container">
-          <a class="brand" href="index.html">NMF 0.8</a>
+          <a class="brand" href="index.html">NMF </a>
           <div class="nav">
             <ul class="nav">
               <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -136,32 +136,6 @@
         
           </div>
       
-          <h2 id="examples">Examples</h2>
-          <pre class="examples"><div class='input'><span class="keyword">if</span><span class="keyword">(</span> <span class="functioncall"><a href='NA'>interactive</a></span><span class="keyword">(</span><span class="keyword">)</span> <span class="keyword">)</span><span class="keyword">{</span>
-
-<span class="comment"># create a random target matrix</span>
-<span class="symbol">v</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">50</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span>
-
-<span class="comment"># fit a single NMF model</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
-<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span>
-
-<span class="comment"># ordering according to first profile</span>
-<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">Colv</span><span class="argument">=</span><span class="number">1</span><span class="keyword">)</span> <span class="comment"># increasing</span>
-<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">Colv</span><span class="argument">=</span><span class="keyword">-</span><span class="number">1</span><span class="keyword">)</span> <span class="comment"># decreasing</span>
-
-<span class="comment"># fit a multi-run NMF model</span>
-<span class="symbol">res2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span>
-<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res2</span><span class="keyword">)</span>
-
-<span class="comment"># draw a profile correlation plot: this show how the basis components are</span>
-<span class="comment"># returned in an unpredictable order</span>
-<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">res2</span><span class="keyword">)</span>
-
-<span class="comment"># looking at all the correlations allow to order the components in a "common" order</span>
-<span class="functioncall"><a href='basiscor.html'>profcor</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">res2</span><span class="keyword">)</span>
-
-<span class="keyword">}</span></div></pre>
         </div>
         <div class="span4">
           <!-- <ul>

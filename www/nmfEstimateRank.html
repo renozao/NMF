@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Estimate Rank for NMF Models. NMF 0.8</title>
+    <title>Estimate Rank for NMF Models. NMF </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -28,7 +28,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class = "container">
-          <a class="brand" href="index.html">NMF 0.8</a>
+          <a class="brand" href="index.html">NMF </a>
           <div class="nav">
             <ul class="nav">
               <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -196,29 +196,6 @@
         
           </div>
       
-          <h2 id="examples">Examples</h2>
-          <pre class="examples"><div class='input'><span class="functioncall"><a href='NA'>set.seed</a></span><span class="keyword">(</span><span class="number">123456</span><span class="keyword">)</span>
-<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span> <span class="symbol">m</span> <span class="assignement">&lt;-</span> <span class="number">20</span>
-<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">,</span> <span class="symbol">m</span><span class="keyword">)</span>
-
-<span class="comment"># Use a seed that will be set before each first run</span>
-<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: </span>
-<span class="comment"># res &lt;- nmfEstimateRank(V, seq(2,5), method='brunet', nrun=10, seed=123456)</span>
-<span class="comment"># # or equivalently</span>
-<span class="comment"># res &lt;- nmf(V, seq(2,5), method='brunet', nrun=10, seed=123456)</span>
-<span class="comment"># ## &lt;strong&gt;End(Not run)&lt;/strong&gt;</span>
-
-<span class="comment"># plot all the measures</span>
-<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: plot(res)</span>
-<span class="comment"># or only one: e.g. the cophenetic correlation coefficient</span>
-<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: plot(res, 'cophenetic')</span>
-
-<span class="comment"># run same estimation on randomized data</span>
-<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: </span>
-<span class="comment"># rV &lt;- randomize(V)</span>
-<span class="comment"># rand &lt;- nmfEstimateRank(rV, seq(2,5), method='brunet', nrun=10, seed=123456)</span>
-<span class="comment"># plot(res, rand)</span>
-<span class="comment"># ## &lt;strong&gt;End(Not run)&lt;/strong&gt;</span></div></pre>
         </div>
         <div class="span4">
           <!-- <ul>
