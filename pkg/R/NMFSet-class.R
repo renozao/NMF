@@ -753,18 +753,18 @@ setMethod('dim', signature(x='NMFfitXn'),
 #' Returns the coefficient matrix of the best fit amongst all the fits stored in 
 #' \code{object}.
 #' It is a shortcut for \code{coef(fit(object))}.  
-setMethod('coef', signature(object='NMFfitXn'), 
+setMethod('.coef', signature(object='NMFfitXn'), 
 		function(object){
-			coef(fit(object))
+			.coef(fit(object))
 		}
 )
 
 #' Returns the basis matrix of the best fit amongst all the fits stored in 
 #' \code{object}.
 #' It is a shortcut for \code{basis(fit(object))}.
-setMethod('basis', signature(object='NMFfitXn'), 
+setMethod('.basis', signature(object='NMFfitXn'), 
 	function(object){
-			basis(fit(object))
+		.basis(fit(object))
 	}
 )
 

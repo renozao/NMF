@@ -26,6 +26,10 @@
 \section{Slots}{
   \describe{
 
+  \item{onInit}{function that performs some initialisation
+  or pre-processing on the model, before starting the
+  iteration loop.}
+
   \item{Update}{function that implement the update step,
   which computes new values for the model, based on its
   previous value. It is called at each iteration, until the
@@ -35,7 +39,7 @@
   \item{Stop}{function that implements the stopping
   criterion. It is called \emph{before} each Update step.}
 
-  \item{WrapNMF}{function that wraps up the result into an
+  \item{onReturn}{function that wraps up the result into an
   NMF object. It is called just before returning the}
 
   }

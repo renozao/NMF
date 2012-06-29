@@ -4,5 +4,6 @@
 ^ressources/$
 vignettes/figure$
 vignettes/cache$
-vignettes/Rpackages.bib
+vignettes/Rpackages\.bib
+vignettes/.*\.tex
 ^makefile$

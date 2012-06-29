@@ -28,16 +28,16 @@ NULL
 
 penmf.objective <- function(fit, x, alpha, beta, ...)
 {
-	w <- basis(fit)
+	w <- .basis(fit)
 	1/2 * sum( (x - fitted(fit))^2 )
 		+ alpha * ( crossprod(w) - sum(w^2) )
-		+ beta * sum(coef(fit))
+		+ beta * sum(.coef(fit))
 }
 
 nmf_update.penmf <- function(i, x, data, alpha, beta, ...){
 	
 	# retrieve each factor
-	w <- basis(data); h <- coef(data);
+	w <- .basis(data); h <- .coef(data);
 	
 	# At the first iteration initialise matrix M
 	if( TRUE || i == 1 ){
@@ -57,7 +57,7 @@ nmf_update.penmf <- function(i, x, data, alpha, beta, ...){
 	w <- w * tcrossprod(x, h) / ( w %*% tcrossprod(h) + alpha * w %*% M )
 	
 	#return the modified data
-	basis(data) <- w; coef(data) <- h;
+	.basis(data) <- w; .coef(data) <- h;
 	data
 }
 

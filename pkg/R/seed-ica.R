@@ -27,8 +27,8 @@ posICA <- function(object, x, ica.method=c('C', 'R'), ...){
 	res <- fastICA(x, nbasis(object), method=ica.method, ...)
 	
 	# update the 'NMF' object
-	object@W <- pmax(res$S, .Machine$double.eps ); 
-	object@H <- pmax(res$A, .Machine$double.eps );	
+	.basis(object) <- pmax(res$S, .Machine$double.eps ); 
+	.coef(object) <- pmax(res$A, .Machine$double.eps );	
 	
 	# return the updated object
 	invisible(object)

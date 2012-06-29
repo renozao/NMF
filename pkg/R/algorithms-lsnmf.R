@@ -42,7 +42,7 @@ nmf_update.lsnmf <- function(i, X, object, weight, eps=10^-9, ...)
 	wX <- staticVar('wX')
 	
 	# retrieve each factor
-	w <- basis(object); h <- coef(object);	
+	w <- .basis(object); h <- .coef(object);	
 	
 	# compute the estimate WH
 	wh <- fitted(object) * weight
@@ -52,14 +52,14 @@ nmf_update.lsnmf <- function(i, X, object, weight, eps=10^-9, ...)
 	h <- nmf_update.euclidean.h_R(wX, w, h, wh=wh, eps=eps)	
 	
 	# update H and recompute the estimate WH
-	coef(object) <- h;
+	.coef(object) <- h;
 	wh <- fitted(object) * weight
 	
 	# W_ia = W_ia (V/sigma H^T)_ia / ((W H)/sigma H^T)_ia and columns are rescaled after each iteration	
 	w <- nmf_update.euclidean.w_R(wX, w, h, wh=wh, eps=eps)	
 	
 	#return the modified data
-	basis(object) <- w	
+	.basis(object) <- w	
 	return(object)
 }
 

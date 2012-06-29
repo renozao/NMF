@@ -35,7 +35,7 @@ test.synchronicity <- function(){
 		}
 		
 		pids <- sapply(res, '[[', 2)
-		wtime <- sapply(res, function(x) floor(as.numeric(x[[4]] - x[[3]])))
+		wtime <- sapply(res, function(x) round(as.numeric(x[[4]] - x[[3]]), 2))
 		pid <- unique(pids)
 		stopifnot( length(pid) == if( seq ) 1L else 2L )
 		
@@ -63,13 +63,14 @@ test.synchronicity <- function(){
 			
 		# no mutex
 		wtime <- .test(mess(), mutex=FALSE, libs, seq)
-		checkEquals( wtime[1], 2 , mess("No mutex: Thread 1 waits 2 second (", wtime[1], ')'))
-		checkEquals( wtime[2], 0 , mess("No mutex: Thread 2 does not wait at all (", wtime[2], ')'))
+		checkTrue( wtime[1] >= 2 , mess("No mutex: Thread 1 waits 2 second (", wtime[1], ')'))
+		checkTrue( wtime[2] <  1 , mess("No mutex: Thread 2 does not wait at all (", wtime[2], ')'))
 		
 		# check mutex lock
 		wtime <- .test(mess(), mutex=TRUE, libs, seq)
-		checkEquals( wtime[1], 2 , mess("With mutex : Thread 1 waits 2 seconds (", wtime[1], ')'))
-		checkTrue( wtime[2] >= 2 , mess("With mutex: Thread 2 also waits at least 2 seconds (", wtime[2], ')'))
+		checkTrue( wtime[1] >= 2 , mess("With mutex : Thread 1 waits 2 seconds (", wtime[1], ')'))
+		if( !seq )
+			checkTrue( wtime[2] >= 2 , mess("With mutex: Thread 2 also waits at least 2 seconds (", wtime[2], ')'))
 	}
 	
 	# restore backend on.exit

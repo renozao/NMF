@@ -699,7 +699,15 @@ ts_eval <- function(mutex = synchronicity::boost.mutex(), verbose=FALSE){
 			if( is(mutex, 'boost.mutex') ) bigmemory::describe(mutex)
 			else mutex
 	
+	loadpkg <- TRUE
 	function(expr, envir=parent.frame()){
+		
+		# load packages once
+		if( loadpkg ){
+			library(bigmemory)
+			library(synchronicity)
+			loadpkg <<- FALSE
+		}
 		MUTEX <- synchronicity::attach.mutex(.MUTEX_DESC)
 		synchronicity::lock(MUTEX)
 		if( verbose )
@@ -767,16 +775,26 @@ gVariable <- function(init, shared=FALSE){
 	if( shared ){ # use bigmemory shared matrices
 		if( !is.matrix(init) )
 			init <- as.matrix(init)
+		library(bigmemory)
 		DATA <- bigmemory::as.big.matrix(init, type='double', shared=TRUE)
 		DATA_DESC <- bigmemory::describe(DATA)
 	}else{ # use variables assigned to .GlobalEnv
 		DATA_DESC <- basename(tempfile('.gVariable_'))
 	}
 	
+	loadpkg <- TRUE
 	function(value){
 		
+		# load packages once
+		if( loadpkg ){
+			library(bigmemory)
+			loadpkg <<- FALSE	
+		}
+		
 		# if shared: attach bigmemory matrix from its descriptor object
-		if( shared ) DATA <- bigmemory::attach.big.matrix(DATA_DESC)
+		if( shared ){
+			DATA <- bigmemory::attach.big.matrix(DATA_DESC)
+		}
 		
 		if( missing(value) ){# READ ACCESS
 			

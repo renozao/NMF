@@ -52,7 +52,7 @@ NULL
 nmf_update.brunet_R <- function(i, v, data, eps=.Machine$double.eps, ...)
 {
 	# retrieve each factor
-	w <- basis(data); h <- coef(data);
+	w <- .basis(data); h <- .coef(data);
 	
 	# standard divergence-reducing NMF update for H
 	h <- R_std.divergence.update.h(v, w, h)
@@ -69,7 +69,7 @@ nmf_update.brunet_R <- function(i, v, data, eps=.Machine$double.eps, ...)
 	}
 	
 	#return the modified data
-	basis(data) <- w; coef(data) <- h;	
+	.basis(data) <- w; .coef(data) <- h;	
 	return(data)
 	
 }
@@ -83,7 +83,7 @@ setNMFMethod('.R#brunet'
 nmf_update.brunet <- function(i, v, data, copy=FALSE, eps=.Machine$double.eps, ...)
 {
 	# retrieve each factor
-	w <- basis(data); h <- coef(data);	
+	w <- .basis(data); h <- .coef(data);	
 	
 	# standard divergence-reducing NMF update for H	
 	h <- std.divergence.update.h(v, w, h, copy=copy)
@@ -102,8 +102,8 @@ nmf_update.brunet <- function(i, v, data, copy=FALSE, eps=.Machine$double.eps, .
 	# update object if the updates duplicated the data
 	if( copy ){		
 		#return the modified data	
-		basis(data) <- w; 
-		coef(data) <- h;
+		.basis(data) <- w; 
+		.coef(data) <- h;
 	}
 	return(data)
 	
@@ -122,7 +122,7 @@ setNMFMethod('brunet', '.R#brunet', Update=nmf_update.brunet)
 nmf_update.lee_R <- function(i, v, data, rescale=TRUE, eps=10^-9, ...)
 {
 	# retrieve each factor
-	w <- basis(data); h <- coef(data);	
+	w <- .basis(data); h <- .coef(data);	
 	
 	#precision threshold for numerical stability
 	#eps <- 10^-9
@@ -146,7 +146,7 @@ nmf_update.lee_R <- function(i, v, data, rescale=TRUE, eps=10^-9, ...)
 	if( rescale ) w <- sweep(w, 2L, colSums(w), "/", check.margin=FALSE)
 	
 	#return the modified data
-	basis(data) <- w; coef(data) <- h;	
+	.basis(data) <- w; .coef(data) <- h;	
 	return(data)
 }
 
@@ -158,7 +158,7 @@ setNMFMethod('.R#lee', objective='euclidean'
 nmf_update.lee <- function(i, v, data, rescale=TRUE, copy=FALSE, eps=10^-9, ...)
 {
 	# retrieve each factor
-	w <- basis(data); h <- coef(data);	
+	w <- .basis(data); h <- .coef(data);	
 	
 	#precision threshold for numerical stability
 	#eps <- 10^-9
@@ -170,15 +170,17 @@ nmf_update.lee <- function(i, v, data, rescale=TRUE, copy=FALSE, eps=10^-9, ...)
 	# H_au = H_au (W^T V)_au / (W^T W H)_au
 	h <- std.euclidean.update.h(v, w, h, eps=eps, copy=copy)
 	# update original object if not modified in place
-	if( copy ) coef(data) <- h
+	if( copy ) .coef(data) <- h
 	
 	# W_ia = W_ia (V H^T)_ia / (W H H^T)_ia and columns are rescaled after each iteration	
 	w <- std.euclidean.update.w(v, w, h, eps=eps, copy=copy)
 	#rescale columns TODO: effect of rescaling? the rescaling makes the update with offset fail
-	if( rescale ) w <- sweep(w, 2L, colSums(w), "/", check.margin=FALSE)
+	if( rescale ){
+		w <- sweep(w, 2L, colSums(w), "/", check.margin=FALSE)
+    }
 	
 	#return the modified data
-	basis(data) <- w; 	
+	.basis(data) <- w; 	
 	return(data)
 }
 
@@ -208,7 +210,7 @@ nmf_update.euclidean_offset.w <- function(v, w, h, offset, eps=10^-9, copy=TRUE)
 nmf_update.offset_R <- function(i, v, data, eps=10^-9, ...)
 {	
 	# retrieve each factor
-	w <- basis(data); h <- coef(data);
+	w <- .basis(data); h <- .coef(data);
 	# retrieve offset and fill it if necessary (with mean of rows)
 	off <- offset(data)
 	if( i == 1 && length(off) == 0 )
@@ -228,7 +230,7 @@ nmf_update.offset_R <- function(i, v, data, eps=10^-9, ...)
 	data@offset <- off * pmax(rowSums(v), eps) / (rowSums(w%*%h + off) + eps)
 	
 	#return the modified data
-	basis(data) <- w; coef(data) <- h;
+	.basis(data) <- w; .coef(data) <- h;
 	return(data)
 }
 
@@ -241,7 +243,7 @@ setNMFMethod('.R#offset', objective='euclidean'
 nmf_update.offset <- function(i, v, data, copy=FALSE, eps=10^-9, ...)
 {	
 	# retrieve each factor
-	w <- basis(data); h <- coef(data);
+	w <- .basis(data); h <- .coef(data);
 	# retrieve offset and fill it if necessary (with mean of rows)
 	off <- offset(data)
 	if( i == 1 && length(off) == 0 )
@@ -260,8 +262,8 @@ nmf_update.offset <- function(i, v, data, copy=FALSE, eps=10^-9, ...)
 	
 	# update the original object if not modified in place
 	if( copy ){ 
-		basis(data) <- w; 
-		coef(data) <- h;
+		.basis(data) <- w; 
+		.coef(data) <- h;
 	}
 	return(data)
 }
@@ -307,14 +309,14 @@ nmf_update.ns <- function(i, v, data, copy=FALSE, ...)
 {
 	# retrieve and alter the factors for updating H
 	S <- smoothing(data)
-	w <- basis(data)
-	h <- coef(data);
+	w <- .basis(data)
+	h <- .coef(data);
 	
 	# standard divergence-reducing update for H with modified W
 	h <- std.divergence.update.h(v, w %*% S, h, copy=copy)
 	
 	# update H if not modified in place
-	if( copy ) coef(data) <- h
+	if( copy ) .coef(data) <- h
 	
 	# standard divergence-reducing update for W with modified H
 	w <- std.divergence.update.w(v, w, S %*% h, copy=copy)
@@ -323,7 +325,7 @@ nmf_update.ns <- function(i, v, data, copy=FALSE, ...)
 	w <- sweep(w, 2L, colSums(w), '/', check.margin=FALSE)
 	
 	#return the modified data
-	basis(data) <- w;
+	.basis(data) <- w;
 	return(data)
 }
 #' \code{nmf_update.ns_R} implements the same updates in \emph{plain R}.
@@ -334,9 +336,9 @@ nmf_update.ns_R <- function(i, v, data, ...)
 {
 	# retrieve and alter the factors for updating H
 	S <- smoothing(data)
-	w <- basis(data)
+	w <- .basis(data)
 	#w <- metagenes(data) %*% smoothing(fit(data)); # W <- WS
-	h <- coef(data);
+	h <- .coef(data);
 	
 	# compute the estimate WH
 	#wh <- estimate(data, W=w.init, H=h, S=S)
@@ -345,7 +347,7 @@ nmf_update.ns_R <- function(i, v, data, ...)
 	h <- R_std.divergence.update.h(v, w %*% S, h)
 	
 	# update H and recompute the estimate WH
-	coef(data) <- h
+	.coef(data) <- h
 	# retrieve and alter the factors for updating W
 	#w <- tmp;
 	#h <- smoothing(fit(data)) %*% metaprofiles(data); # H <- SH
@@ -358,7 +360,7 @@ nmf_update.ns_R <- function(i, v, data, ...)
 	w <- sweep(w, 2L, colSums(w), '/', check.margin=FALSE)
 	
 	#return the modified data
-	basis(data) <- w; #metaprofiles(data) <- h;
+	.basis(data) <- w; #metaprofiles(data) <- h;
 	return(data)
 }
 

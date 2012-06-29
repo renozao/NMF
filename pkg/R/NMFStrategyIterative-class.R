@@ -23,25 +23,29 @@ NULL
 #' In particular, many NMF algorithms are based on multiplicative updates, following the approach from  
 #' \cite{Lee2001}, which are specially suitable to be cast into this simple schema. 
 #'  
+#' @slot onInit function that performs some initialisation or pre-processing on 
+#' the model, before starting the iteration loop.
 #' @slot Update function that implement the update step, which computes new values for the model, based on its
 #' previous value.
 #' It is called at each iteration, until the stopping criterion is met or the maximum number of iteration is 
 #' achieved.
 #' @slot Stop function that implements the stopping criterion.
 #' It is called \emph{before} each Update step.
-#' @slot WrapNMF function that wraps up the result into an NMF object.
+#' @slot onReturn function that wraps up the result into an NMF object.
 #' It is called just before returning the 
 #'  
 setClass('NMFStrategyIterative'
 	, representation(
+                onInit = '.functionSlot.null',
 				Update = '.functionSlot', # update method	
 				Stop = '.functionSlot.null', # method called just after the update
-				WrapNMF = '.functionSlot.null' # method called just before returning the resulting NMF object
+				onReturn = '.functionSlot.null' # method called just before returning the resulting NMF object
 				)	
   , prototype=prototype(
-				Update = ''
+          		onInit = NULL
+				, Update = ''
 				, Stop = NULL
-				, WrapNMF = NULL
+				, onReturn = NULL
 			)
 	, contains = 'NMFStrategy'
 	, validity = function(object){
@@ -96,19 +100,27 @@ setMethod('show', 'NMFStrategyIterative',
 		
 		#cat('<object of class: NMFStrategyIterative>')
 		callNextMethod()
-		cat("<Iterative schema:>\n")
+		cat(" <Iterative schema>\n")
 		# go through the slots
-		#s.list <- getSlots('NMFStrategyIterative')
+		s.list <- names(getSlots('NMFStrategyIterative'))
+		s.list <- setdiff(s.list, names(getSlots('NMFStrategy')))
 		#s.list <- s.list[s.list=='ANY']
-		s.list <- c('Update', 'Stop', 'WrapNMF')
-		names(s.list) <- s.list
-		sapply(names(s.list), function(sname){
+#		s.list <- c('Update', 'Stop', 'WrapNMF')
+		out <-
+		sapply(s.list, function(sname){
 					svalue <- slot(object,sname)
-					cat(sname, ": "
-						, if( is.function(svalue) ) capture.output(print(args(svalue)))[1] else paste("'", svalue,"'", sep='')
-						, "\n")
+					svalue <- 
+					if( is.function(svalue) ) {
+						svalue <- capture.output(print(args(svalue)))
+    					paste(str_trim(svalue[-length(svalue)]), collapse=' ')
+					} else if( is.null(svalue) ){
+						'none'
+					} else { 
+						paste("'", svalue,"'", sep='')
+					}
+					str_c(sname, ": ", svalue)
 				})
-		
+		cat(str_c('  ', out, collapse='\n'), "\n", sep='')
 		return(invisible())
 	}
 )
@@ -156,7 +168,7 @@ xifyStrategy <- function(strategy, workspace){
 	# preload the function slots
 	slot(strategyX, 'Update') <- preload.slot(strategyX, 'Update')
 	slot(strategyX, 'Stop') <- preload.slot(strategyX, 'Stop', function(strategy, i, target, data, ...){FALSE})
-	slot(strategyX, 'WrapNMF') <- preload.slot(strategyX, 'WrapNMF', identity)
+	slot(strategyX, 'onReturn') <- preload.slot(strategyX, 'onReturn', identity)
 	
 	# load the objective function
 	objective(strategyX) <- nmfDistance(objective(strategy))
@@ -371,8 +383,10 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 	
 	#Vc# wrap up
 	# let the strategy build the result
-	nmfData <- strategy@WrapNMF(nmfData)
-	if( !inherits(nmfData, 'NMFfit') ) stop('NMFStrategyIterative[', name(strategy), ']::WrapNMF did not return a "NMF" instance [returned: "', class(nmfData), '"]')
+	nmfData <- strategy@onReturn(nmfData)
+	if( !inherits(nmfData, 'NMFfit') ){
+		stop('NMFStrategyIterative[', name(strategy), ']::onReturn did not return a "NMF" instance [returned: "', class(nmfData), '"]')
+	}
 	
 	# set the number of iterations performed
 	niter(nmfData) <- i

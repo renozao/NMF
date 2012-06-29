@@ -178,9 +178,9 @@ setMethod('fitted', signature(object='NMFfit'),
 #' 
 #' It is a shortcut for \code{basis(fit(object), ...)}, dispatching the call to 
 #' the \code{basis} method of the actual NMF model.
-setMethod('basis', signature(object='NMFfit'),
+setMethod('.basis', signature(object='NMFfit'),
 	function(object, ...){
-		basis(fit(object), ...)
+		.basis(fit(object), ...)
 	}
 )
 #' Sets the the basis matrix of an NMF model fitted with 
@@ -192,9 +192,9 @@ setMethod('basis', signature(object='NMFfit'),
 #' new NMF algorithms, to update the basis matrix of the seed object before 
 #' returning it.
 #' 
-setReplaceMethod('basis', signature(object='NMFfit', value='matrix'), 
+setReplaceMethod('.basis', signature(object='NMFfit', value='matrix'), 
 	function(object, value){ 
-		basis(fit(object)) <- value
+		.basis(fit(object)) <- value
 		object
 	} 
 )
@@ -204,9 +204,9 @@ setReplaceMethod('basis', signature(object='NMFfit', value='matrix'),
 #' 
 #' It is a shortcut for \code{coef(fit(object), ...)}, dispatching the call to 
 #' the \code{coef} method of the actual NMF model.
-setMethod('coef', signature(object='NMFfit'),
+setMethod('.coef', signature(object='NMFfit'),
 	function(object, ...){
-		coef(fit(object), ...)
+		.coef(fit(object), ...)
 	}
 )
 #' Sets the the coefficient matrix of an NMF model fitted with 
@@ -218,11 +218,18 @@ setMethod('coef', signature(object='NMFfit'),
 #' new NMF algorithms, to update the coefficient matrix in the seed object before
 #' returning it.
 #' 
-setReplaceMethod('coef', signature(object='NMFfit', value='matrix'), 
+setReplaceMethod('.coef', signature(object='NMFfit', value='matrix'), 
 	function(object, value){ 
-		coef(fit(object)) <- value
+		.coef(fit(object)) <- value
 		object
 	} 
+)
+
+#' Returns the offset from the fitted model. 
+setMethod('offset', signature(object='NMFfit'), 
+	function(object){
+		offset(fit(object))
+	}
 )
 
 #' Returns the number of iteration performed to fit an NMF model, typically 

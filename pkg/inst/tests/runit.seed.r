@@ -385,8 +385,8 @@ test.nndsvd <- function(){
 	# perform NMF with seed 'nndsvd'
 	check.seed.change('seeding with "nndsvd"', obj <- seed(V, r, 'nndsvd'), FALSE)
 	check.seed('With matrix', obj, V, r, 'nndsvd', 'NMF')
-	# redo: should be the same
+	# redo: should be the same (one needs identical=FALSE because svd() may return slightly different values) 
 	obj.bis <- seed(V, r, 'nndsvd')
-	checkTrue( nmf.equal(obj.bis, obj), 'Seeded NMF models are identical for every run')
+	checkTrue( nmf.equal(obj.bis, obj, identical=FALSE), 'Seeded NMF models are identical for every run')
 	
 }

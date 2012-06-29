@@ -389,7 +389,7 @@ print.fcnnls <- function(x, ...){
 	} else {
 		
 		# seed the method (depends on the version to run)
-		start <- if( version == 'R' ) basis(nmf.fit) else t(coef(nmf.fit))
+		start <- if( version == 'R' ) .basis(nmf.fit) else t(.coef(nmf.fit))
 		# check compatibility of the starting point with the target matrix
 		if( any(dim(start) != c(m,k)) ) 
 			stop("SNMF/", version, "::Invalid initialization - incompatible dimensions [expected: ", paste(c(m,k), collapse=' x '),", got: ", paste(dim(start), collapse=' x '), " ]")	
@@ -477,10 +477,10 @@ print.fcnnls <- function(x, ...){
 	# transpose and reswap the roles
 	if( !is.null(nmf.fit) ){ 
 		if( version == 'L' ){
-			basis(nmf.fit) <- t(H)
-			coef(nmf.fit) <- t(W)
+			.basis(nmf.fit) <- t(H)
+			.coef(nmf.fit) <- t(W)
 		}
-		else{ basis(nmf.fit) <- W; coef(nmf.fit) <- H}
+		else{ .basis(nmf.fit) <- W; .coef(nmf.fit) <- H}
 		# set number of iterations performed
 		niter(nmf.fit) <- i
 		
@@ -506,7 +506,7 @@ print.fcnnls <- function(x, ...){
 }
 
 snmf.objective <- function(fit, y, eta=-1, beta=0.01){
-	.snmf.objective(y, basis(fit), coef(fit), eta, beta)
+	.snmf.objective(y, .basis(fit), .coef(fit), eta, beta)
 }
 
 ###% Wrapper function to use the SNMF/R algorithm with the NMF package.

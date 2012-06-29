@@ -28,7 +28,7 @@ NULL
 nmf_update_R.lnmf <- function(i, v, data, ...){
 	
 	# retrieve each factor
-	w <- basis(data); h <- coef(data);
+	w <- .basis(data); h <- .coef(data);
 	
 	# update H 
 	h <- sqrt( h * crossprod(w, v / (w %*% h)) )
@@ -48,14 +48,14 @@ nmf_update_R.lnmf <- function(i, v, data, ...){
 	}
 		
 	# return updated data	
-	basis(data) <- w; coef(data) <- h
+	.basis(data) <- w; .coef(data) <- h
 	return(data)
 }
 
 nmf_update.lnmf <- function(i, v, data, ...){
 	
 	# retrieve each factor
-	w <- basis(data); h <- coef(data);
+	w <- .basis(data); h <- .coef(data);
 	
 	# update H 
 	h <- sqrt( h * crossprod(w, v / (w %*% h)) )
@@ -75,7 +75,7 @@ nmf_update.lnmf <- function(i, v, data, ...){
 	}
 	
 	# return updated data	
-	basis(data) <- w; coef(data) <- h
+	.basis(data) <- w; .coef(data) <- h
 	return(data)
 }
 

@@ -126,7 +126,7 @@ setClass('NMFstd'
 #' basis(x) <- matrix(1:2, nrow(x), nbasis(x))
 #' coef(x) <- matrix(1:2, nrow(x), nbasis(x))
 #' 
-setMethod('basis', 'NMFstd',
+setMethod('.basis', 'NMFstd',
 	function(object){ 
 		object@W 
 	}
@@ -134,25 +134,30 @@ setMethod('basis', 'NMFstd',
 #' Set the basis matrix in standard NMF models 
 #' 
 #' This function sets slot \code{W} of \code{object}.
-setReplaceMethod('basis', signature(object='NMFstd', value='matrix'), 
+setReplaceMethod('.basis', signature(object='NMFstd', value='matrix'), 
 	function(object, value){ 
 		object@W <- value		
-		object # TODO: valid object before returning it (+param check=TRUE or FALSE)
+		object
 	} 
 )
 
 #' Get the mixture coefficient matrix in standard NMF models 
 #' 
 #' This function returns slot \code{H} of \code{object}.
-setMethod('coef', 'NMFstd',
-	function(object){
-		object@H
+setMethod('.coef', 'NMFstd',
+	function(object, fixed=TRUE){
+		if( fixed || (nc <- nfcoef(object) == 0L) ) object@H
+		else{
+			h <- object@H
+			nf <- nrow(h)-nfbasis()
+			h[-seq(nrow(h)-nc,nrow(h)),,drop=FALSE]
+		}
 	}
 )
 #' Set the mixture coefficient matrix in standard NMF models 
 #' 
 #' This function sets slot \code{H} of \code{object}.
-setReplaceMethod('coef', signature(object='NMFstd', value='matrix'), 
+setReplaceMethod('.coef', signature(object='NMFstd', value='matrix'), 
 		function(object, value){ 
 			object@H <- value # TODO: valid object before returning it (+param check=TRUE or FALSE)			
 			object

@@ -39,14 +39,14 @@ NULL
 	res <- .nndsvd.internal(x, nbasis(object), flag)
 	
 	# update 'NMF' object
-	basis(object) <- res$W; coef(object) <- res$H	
+	.basis(object) <- res$W; .coef(object) <- res$H	
 	
 	# return updated object
 	object
 }
 
 ###% Port to R of the MATLAB code from Boutsidis
-.nndsvd.internal <- function(A, k, flag=0){
+.nndsvd.internal <- function(A, k, flag=0, LINPACK=FALSE){
 	
 	#check the input matrix
 	if( any(A<0) ) stop('The input matrix contains negative elements !')
@@ -60,7 +60,7 @@ NULL
 	H = matrix(0, k, n);
 	
 	#1st SVD --> partial SVD rank-k to the input matrix A.	
-	s = svd(A, k, k);
+	s = svd(A, k, k, LINPACK=LINPACK);
 	U <- s$u; S <- s$d; V <- s$v
 	
 	#-------------------------------------------------------

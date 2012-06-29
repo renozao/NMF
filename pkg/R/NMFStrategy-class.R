@@ -122,12 +122,12 @@ setClass('NMFStrategy'
 #' @rdname NMFStrategy-class
 setMethod('show', 'NMFStrategy',
 		function(object){			
-			cat('<object of class: ', class(object), ">\n")
-			cat("name:\t", name(object), "\n")
+			cat('<object of class: ', class(object), ">\n", sep='')
+			cat(" name:", name(object), "\n")
 			svalue <- objective(object)
 			svalue <- if( is.function(svalue) ) '<function>' else paste("'", svalue,"'", sep='')
-			cat("objective:\t", svalue, "\n")
-			cat("NMF model:\t", modelname(object), "\n")
+			cat(" objective:", svalue, "\n")
+			cat(" model:", modelname(object), "\n")
 			return(invisible())
 		}
 )

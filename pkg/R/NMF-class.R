@@ -63,6 +63,10 @@ setOldClass('proc_time', prototype=numeric())
 #' 
 #' @slot misc A list that is used internally to temporarily store algorithm 
 #' parameters during the computation.
+#' @slot fbasis a \code{data.frame} that contains primary data for fixed 
+#' basis terms. See \code{\link{fbasis}}.
+#' @slot fcoef  a \code{data.frame} that contains primary data for fixed 
+#' coefficient terms. See \code{\link{fcoef}}.
 #' 
 #' @family NMF-interface 
 #' 
@@ -167,6 +171,8 @@ setOldClass('proc_time', prototype=numeric())
 setClass('NMF'
 		, representation(
 			misc = 'list' # misceleneaous data used during fitting
+			, fbasis = 'data.frame' # fixed basis terms: nrow(fbasis) = nrow(x)
+			, fcoef = 'data.frame' # fixed coef terms: ncol(fcoef) = ncol(x)
 		)
 		, contains = 'VIRTUAL')
 
@@ -209,13 +215,13 @@ setMethod('fitted', signature(object='NMF'),
 #' For example, in the case of the standard NMF model \eqn{V \equiv W H}{V ~ W H}, 
 #' the method \code{basis} will return the matrix \eqn{W}.
 #' 
-#' The methods \code{basis}, \code{coef} and their replacement versions
-#' are implemented as pure virtual methods for the interface class 
-#' \code{NMF}, meaning that concrete NMF models must provide a 
-#' definition for their corresponding class (i.e. sub-classes of 
-#' class \code{NMF}).
-#' See \code{\linkS4class{NMF}} for more details.
-#'
+#' \code{basis} and \code{basis<-} are defined for the top 
+#' virtual class \code{\linkS4class{NMF}} only, and rely internally on the low-level 
+#' S4 generics \code{.basis} and \code{.basis<-} respectively that effectively 
+#' extract/set the coefficient data.
+#' These data are post/pre-processed, e.g., to extract/set only their 
+#' non-fixed terms or check dimension compatibility.
+#' 
 #' @param object an object from which to extract the factor matrices, typically an 
 #' object of class \code{\linkS4class{NMF}}.
 #' @param ... extra arguments to allow extension
@@ -225,22 +231,88 @@ setMethod('fitted', signature(object='NMF'),
 #' @export
 #'  
 setGeneric('basis', function(object, ...) standardGeneric('basis') )
-#' @template VirtualNMF
+#'
+#' @param all logical that indicates if all coefficient/basis should be returned 
+#' (\code{TRUE}) or only non-fixed ones.
+#' @inline
 setMethod('basis', signature(object='NMF'),
-		function(object, ...){
-			stop("NMF::basis is a pure virtual method of interface 'NMF'. It should be overloaded in class '", class(object),"'.")
+	function(object, all=TRUE, ...){
+		if( all || !(nf <- nfixedBasis(object)) ){
+			# return all coefficients
+			.basis(object, ...)
+		} else {
+			# return only variable coefficients
+			res <- .basis(object, ...)
+			n <- ncol(res)
+			# remove fixed basis which are stacked at the end
+			res[, -((n-nf+1):n)]
 		}
+	}
+)
+
+#' \code{.basis} and \code{.basis<-} are the low-level S4 generics that simply 
+#' return/set basis component data in an object.
+#' They are defined so that some common processing may be implemented in 
+#' \code{basis} and \code{basis<-}.
+#' 
+#' The methods \code{.basis}, \code{.coef} and their replacement versions
+#' are implemented as pure virtual methods for the interface class 
+#' \code{NMF}, meaning that concrete NMF models must provide a 
+#' definition for their corresponding class (i.e. sub-classes of 
+#' class \code{NMF}).
+#' See \code{\linkS4class{NMF}} for more details.
+#' 
+#' @rdname basis-coef-methods
+#' @export
+setGeneric('.basis', function(object, ...) standardGeneric('.basis') )
+#' @template VirtualNMF
+setMethod('.basis', signature(object='NMF'),
+	function(object, ...){
+		stop("NMF::.basis is a pure virtual method of interface 'NMF'. It should be overloaded in class '", class(object),"'.")
+	}
+)
+
+#' @export
+#' @rdname basis-coef-methods
+setGeneric('basis<-', function(object, value) standardGeneric('basis<-') )
+#' Default methods that calls \code{.basis<-} and check the validity of the 
+#' updated object. 
+setReplaceMethod('basis', signature(object='ANY', value='ANY'), 
+	function(object, value){
+		.basis(object) <- value
+		# check object validity
+		validObject(object)
+		object
+	}	
 )
 #' @param value replacement value 
 #' @rdname basis-coef-methods
 #' @export
-setGeneric('basis<-', function(object, value) standardGeneric('basis<-') )
+setGeneric('.basis<-', function(object, value) standardGeneric('.basis<-') )
 #' @template VirtualNMF
-setReplaceMethod('basis', signature(object='NMF', value='matrix'), 
-		function(object, value){ 
-			stop("NMF::basis<- is a pure virtual method of interface 'NMF'. It should be overloaded in class '", class(object),"'.")
-		} 
+setReplaceMethod('.basis', signature(object='NMF', value='matrix'), 
+	function(object, value){ 
+		stop("NMF::.basis<- is a pure virtual method of interface 'NMF'. It should be overloaded in class '", class(object),"'.")
+	} 
 )
+
+#' \code{fbasis} returns the primary data for fixed basis terms 
+#' in an NMF model -- as stored in slot \code{fbasis}.
+#' These are factors or numeric vectors which define fixed basis components, 
+#' e.g., used to incorporate external covariate measurements.
+#' 
+#' @export
+#' @rdname basis-coef-methods
+fbasis <- function(object, ...){
+	object@fbasis
+}
+
+#' \code{nfbasis} returns the number of fixed basis terms in an NMF model.
+#' @export
+#' @rdname basis-coef-methods
+nfbasis <- function(object, ...){
+	length(fbasis(object, ...))
+}
 
 #' @export
 setGeneric('loadings', package='stats')
@@ -264,29 +336,88 @@ setMethod('loadings', 'NMF', function(x) basis(x) )
 #' For example, in the case of the standard NMF model \eqn{V \equiv WH}{V ~ W H}, 
 #' the method \code{coef} will return the matrix \eqn{H}.
 #' 
-#' \code{coef} and \code{coef<-} are S4 methods defined for the 
-#' corresponding generic functions from package \code{stats} (See \link[stats]{coef}).  
+#' \code{coef} and \code{coef<-} are S4 methods defined for the corresponding 
+#' generic functions from package \code{stats} (See \link[stats]{coef}).
+#' Similarly to \code{basis} and \code{basis<-}, they are defined for the top 
+#' virtual class \code{\linkS4class{NMF}} only, and rely internally on the S4 
+#' generics \code{.coef} and \code{.coef<-} respectively that effectively 
+#' extract/set the coefficient data.
+#' These data are post/pre-processed, e.g., to extract/set only their 
+#' non-fixed terms or check dimension compatibility.
 #' 
 #' @rdname basis-coef-methods
-#' @family NMF-interface
 #' @export
 setGeneric('coef', package='stats')
-#' @template VirtualNMF
-setMethod('coef', signature(object='NMF'),
-		function(object, ...){
-			stop("NMF::coef is a pure virtual method of interface 'NMF'. It should be overloaded in class '", class(object),"'.")
+#' @inline
+setMethod('coef', 'NMF',
+	function(object, all=TRUE, ...){
+		
+		if( all || !(nc <- nfixedCoef(object)) ){
+			# return all coefficients
+			.coef(object, ...)
+		} else {
+			# return only variable coefficients
+			res <- .coef(object, ...)
+			nf <- nfixed(object)
+			nv <- nrow(res) - nf
+			# remove fixed coefficients which are stored before the coefficients 
+			# for fixed basis components
+			res[-((nv+1):(nv+nc)), ]
 		}
+		
+	}
+)
+
+#' \code{.coef} and \code{.coef<-} are low-level S4 generics that simply 
+#' return/set coefficient data in an object, leaving some common processing 
+#' to be performed in \code{coef} and \code{coef<-}. 
+#'    
+#' @rdname basis-coef-methods
+#' @export
+setGeneric('.coef', function(object, ...) standardGeneric('.coef'))
+#' @template VirtualNMF
+setMethod('.coef', signature(object='NMF'),
+	function(object, ...){
+		stop("NMF::.coef is a pure virtual method of interface 'NMF'. It should be overloaded in class '", class(object),"'.")
+	}
 )
 
 #' @export
 #' @rdname basis-coef-methods
 setGeneric('coef<-', function(object, value) standardGeneric('coef<-') )
-#' @template VirtualNMF
-setReplaceMethod('coef', signature(object='NMF', value='matrix'), 
-		function(object, value){ 
-			stop("NMF::coef<- is a pure virtual method of interface 'NMF'. It should be overloaded in class '", class(object),"'.")
-		} 
+#' Default methods that calls \code{.coef<-} and check the validity of the 
+#' updated object. 
+setReplaceMethod('coef', signature(object='ANY', value='ANY'), 
+	function(object, value){
+		.coef(object) <- value
+		# check object validity
+		validObject(object)
+		object
+	}	
 )
+
+#' @export
+#' @rdname basis-coef-methods
+setGeneric('.coef<-', function(object, value) standardGeneric('.coef<-') )
+#' @template VirtualNMF
+setReplaceMethod('.coef', signature(object='NMF', value='matrix'), 
+	function(object, value){ 
+		stop("NMF::.coef<- is a pure virtual method of interface 'NMF'. It should be overloaded in class '", class(object),"'.")
+	} 
+)
+
+
+#' \code{fcoef} returns the primary data for fixed basis terms 
+#' in an NMF model -- as stored in slot \code{fcoef}.
+#' These are factors or numeric vectors which define fixed coefficients,
+#' e.g., used for defining separate offsets for different groups of samples, 
+#' or to correct for some known covariate.
+#' 
+#' @export
+#' @rdname basis-coef-methods
+fcoef <- function(object, ...){
+	
+}
 
 #' @description Methods \code{coefficients} and \code{coefficients<-} are 
 #' simple aliases for methods \code{coef} and \code{coef<-} respectively.
@@ -845,7 +976,10 @@ setMethod('nmfModel', signature(rank='numeric', target='numeric'),
 			
 		}
 		# set the basis and coef matrices
-		basis(res) <- W; coef(res) <- H
+		.basis(res) <- W; .coef(res) <- H
+		
+		# check validity
+		validObject(res)
 		
 		# return the model
 		res
@@ -1158,9 +1292,9 @@ setGeneric('nbasis', function(x, ...) standardGeneric('nbasis') )
 #' matrix.
 #'    
 setMethod('nbasis', signature(x='ANY'), 
-	function(x)
+	function(x, ...)
 	{
-		ncol(basis(x))
+		ncol(basis(x, ...))
 	}
 )
 #' For a matrix, the attribute 'nbasis' is returned, e.g. as attached 
@@ -1527,8 +1661,8 @@ setMethod('[', 'NMF',
 		if( single.arg )# return the selected metagenes (as a matrix)
 			return(basis(x)[, k, drop = if( mdrop ) TRUE else drop])			
 		else if( k.notmissing ){
-			basis(x) <- basis(x)[, k, drop = FALSE]
-			coef(x) <- coef(x)[k, , drop = FALSE]
+			.basis(x) <- basis(x)[, k, drop = FALSE]
+			.coef(x) <- coef(x)[k, , drop = FALSE]
 		}
 		
 		# if drop is TRUE and only one dimension is missing then return affected matrix
