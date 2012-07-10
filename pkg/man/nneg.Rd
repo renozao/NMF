@@ -1,20 +1,21 @@
 \docType{methods}
 \name{nneg}
 \alias{nneg}
+\alias{nneg,NMF-method}
 \alias{nneg,matrix-method}
 \alias{nneg-methods}
-\alias{nneg,NMF-method}
 \alias{posneg}
 \alias{rposneg}
+\alias{rposneg,NMF-method}
 \alias{rposneg,matrix-method}
 \alias{rposneg-methods}
-\alias{rposneg,NMF-method}
 \title{Transforming from Mixed-sign to Nonnegative Data}
 \usage{
   nneg(object, ...)
 
-  \S4method{nneg}{matrix}(object, threshold = 0,
-    shift = TRUE, method = c("pmax", "posneg", "absolute"))
+  \S4method{nneg}{matrix}(object,
+    method = c("pmax", "posneg", "absolute", "min"),
+    threshold = 0, shift = TRUE)
 
   posneg(...)
 
@@ -28,10 +29,6 @@
   \item{...}{extra arguments to allow extension or passed
   down to \code{nneg,matrix} or \code{rposneg,matrix} in
   subsequent calls.}
-
-  \item{threshold}{Nonnegative lower threshold value
-  (single numeric). See argument \code{shit} for details on
-  how the threshold is used and affects the result.}
 
   \item{method}{Name of the transformation method to use,
   that is partially matched against the following possible
@@ -47,7 +44,17 @@
   \code{object}.}
 
   \item{absolute}{The absolute value of each entry is
-  constrained to be above threshold \code{threshold}.} }}
+  constrained to be above threshold \code{threshold}.}
+
+  \item{min}{Global shift by adding the minimum entry to
+  each entry, only if it is negative, and then apply
+  threshold. }
+
+  }}
+
+  \item{threshold}{Nonnegative lower threshold value
+  (single numeric). See argument \code{shit} for details on
+  how the threshold is used and affects the result.}
 
   \item{shift}{a logical indicating whether the entries
   below the threshold value \code{threshold} should be

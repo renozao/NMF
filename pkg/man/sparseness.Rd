@@ -1,10 +1,10 @@
 \docType{methods}
 \name{sparseness}
 \alias{sparseness}
-\alias{sparseness,matrix-method}
-\alias{sparseness-methods}
 \alias{sparseness,NMF-method}
+\alias{sparseness,matrix-method}
 \alias{sparseness,numeric-method}
+\alias{sparseness-methods}
 \title{Sparseness}
 \usage{
   sparseness(x, ...)

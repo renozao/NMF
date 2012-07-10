@@ -1,11 +1,11 @@
 \docType{methods}
 \name{summary}
 \alias{summary}
-\alias{summary-methods}
-\alias{summary-NMF}
+\alias{summary,NMF-method}
 \alias{summary,NMFfit-method}
 \alias{summary,NMFfitX-method}
-\alias{summary,NMF-method}
+\alias{summary-NMF}
+\alias{summary-methods}
 \title{Assessing and Comparing NMF Models}
 \usage{
   summary(object, ...)

@@ -2,17 +2,18 @@
 \name{nmf}
 \alias{nmf}
 \alias{nmf,data.frame,ANY,ANY-method}
+\alias{nmf,formula,ANY,ANY-method}
+\alias{nmf,matrix,NMF,ANY-method}
+\alias{nmf,matrix,NULL,ANY-method}
 \alias{nmf,matrix,data.frame,ANY-method}
 \alias{nmf,matrix,matrix,ANY-method}
 \alias{nmf,matrix,missing,ANY-method}
-\alias{nmf,matrix,NMF,ANY-method}
-\alias{nmf,matrix,NULL,ANY-method}
+\alias{nmf,matrix,numeric,NMFStrategy-method}
+\alias{nmf,matrix,numeric,NULL-method}
 \alias{nmf,matrix,numeric,character-method}
 \alias{nmf,matrix,numeric,function-method}
 \alias{nmf,matrix,numeric,list-method}
 \alias{nmf,matrix,numeric,missing-method}
-\alias{nmf,matrix,numeric,NMFStrategy-method}
-\alias{nmf,matrix,numeric,NULL-method}
 \alias{nmf-methods}
 \title{Running NMF algorithms}
 \usage{
@@ -34,6 +35,9 @@
 
   \S4method{nmf}{matrix,matrix,ANY}(x, rank, method, seed,
     model = list(), ...)
+
+  \S4method{nmf}{formula,ANY,ANY}(x, rank, method, ...,
+    model = NULL)
 
   \S4method{nmf}{matrix,numeric,NMFStrategy}(x, rank,
     method, seed = nmf.getOption("default.seed"),
@@ -564,6 +568,16 @@
   \item{nmf}{\code{signature(x = "matrix", rank =
   "data.frame", method = "ANY")}: Shortcut for \code{nmf(x,
   as.matrix(rank), method, ...)}. }
+
+  \item{nmf}{\code{signature(x = "formula", rank = "ANY",
+  method = "ANY")}: This method implements the interface
+  for fitting formula-based NMF models. See
+  \code{\link{nmfModel}}.
+
+  Argument \code{rank} target matrix or formula
+  environment. If not missing, \code{model} must be a
+  \code{list}, a \code{data.frame} or an \code{environment}
+  in which formula variables are searched for. }
 
   }
 }

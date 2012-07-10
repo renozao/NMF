@@ -5,7 +5,7 @@
 \usage{
   nmfEstimateRank(x, range,
     method = nmf.getOption("default.algorithm"), nrun = 30,
-    verbose = FALSE, stop = FALSE, ...)
+    model = NULL, ..., verbose = FALSE, stop = FALSE)
 
   \method{plot}{NMF.rank} (x, y = NULL,
     what = c("all", "cophenetic", "rss", "residuals", "dispersion", "evar", "sparseness", "sparseness.basis", "sparseness.coef"),

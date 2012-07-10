@@ -1,18 +1,18 @@
 \docType{methods}
 \name{NMFStrategy}
 \alias{NMFStrategy}
+\alias{NMFStrategy,NMFStrategy,missing-method}
+\alias{NMFStrategy,character,NMFStrategy-method}
 \alias{NMFStrategy,character,character-method}
 \alias{NMFStrategy,character,function-method}
 \alias{NMFStrategy,character,missing-method}
-\alias{NMFStrategy,character,NMFStrategy-method}
-\alias{NMFStrategy-methods}
 \alias{NMFStrategy,missing,character-method}
-\alias{NMFStrategy,NMFStrategy,missing-method}
+\alias{NMFStrategy-methods}
+\alias{run,NMFStrategy,matrix,NMF-method}
+\alias{run,NMFStrategy,matrix,NMFfit-method}
 \alias{run,NMFStrategyFunction,matrix,NMFfit-method}
 \alias{run,NMFStrategyIterative,matrix,NMFfit-method}
 \alias{run,NMFStrategyIterativeX,matrix,NMFfit-method}
-\alias{run,NMFStrategy,matrix,NMFfit-method}
-\alias{run,NMFStrategy,matrix,NMF-method}
 \title{Factory Method for NMFStrategy Objects}
 \usage{
   NMFStrategy(name, method, ...)

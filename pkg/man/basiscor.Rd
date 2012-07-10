@@ -1,17 +1,17 @@
 \docType{methods}
 \name{basiscor}
 \alias{basiscor}
-\alias{basiscor,matrix,NMF-method}
-\alias{basiscor-methods}
+\alias{basiscor,NMF,NMF-method}
 \alias{basiscor,NMF,matrix-method}
 \alias{basiscor,NMF,missing-method}
-\alias{basiscor,NMF,NMF-method}
+\alias{basiscor,matrix,NMF-method}
+\alias{basiscor-methods}
 \alias{profcor}
-\alias{profcor,matrix,NMF-method}
-\alias{profcor-methods}
+\alias{profcor,NMF,NMF-method}
 \alias{profcor,NMF,matrix-method}
 \alias{profcor,NMF,missing-method}
-\alias{profcor,NMF,NMF-method}
+\alias{profcor,matrix,NMF-method}
+\alias{profcor-methods}
 \title{Correlations in NMF Models}
 \usage{
   basiscor(x, y, ...)

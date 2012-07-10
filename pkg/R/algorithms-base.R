@@ -83,20 +83,22 @@ setNMFMethod('.R#brunet'
 nmf_update.brunet <- function(i, v, data, copy=FALSE, eps=.Machine$double.eps, ...)
 {
 	# retrieve each factor
-	w <- .basis(data); h <- .coef(data);	
+	w <- .basis(data); h <- .coef(data);
+	# fixed terms
+	nb <- nbterms(data); nc <- ncterms(data)
 	
 	# standard divergence-reducing NMF update for H	
-	h <- std.divergence.update.h(v, w, h, copy=copy)
+	h <- std.divergence.update.h(v, w, h, nbterms=nb, ncterms=nc, copy=copy)
 	
 	# standard divergence-reducing NMF update for W
-	w <- std.divergence.update.w(v, w, h, copy=copy)
+	w <- std.divergence.update.w(v, w, h, nbterms=nb, ncterms=nc, copy=copy)
 	
 	#every 10 iterations: adjust small values to avoid underflow
 	# NB: one adjusts in place even when copy=TRUE, as 'h' and 'w' are local variables
 	if( i %% 10 == 0 ){
 		#eps <- .Machine$double.eps
-		h <- pmin.inplace(h, eps)
-		w <- pmin.inplace(w, eps)
+		h <- pmax.inplace(h, eps, icterms(data))
+		w <- pmax.inplace(w, eps, ibterms(data))
 	}
 	
 	# update object if the updates duplicated the data
@@ -155,10 +157,12 @@ setNMFMethod('.R#lee', objective='euclidean'
 			, Update=nmf_update.lee_R
 			, Stop='connectivity')	
 
-nmf_update.lee <- function(i, v, data, rescale=TRUE, copy=FALSE, eps=10^-9, ...)
+nmf_update.lee <- function(i, v, data, rescale=TRUE, copy=FALSE, eps=10^-9, weight=NULL, ...)
 {
 	# retrieve each factor
-	w <- .basis(data); h <- .coef(data);	
+	w <- .basis(data); h <- .coef(data);
+	# fixed terms
+	nb <- nbterms(data); nc <- ncterms(data)
 	
 	#precision threshold for numerical stability
 	#eps <- 10^-9
@@ -168,12 +172,12 @@ nmf_update.lee <- function(i, v, data, rescale=TRUE, copy=FALSE, eps=10^-9, ...)
 	
 	# euclidean-reducing NMF iterations	
 	# H_au = H_au (W^T V)_au / (W^T W H)_au
-	h <- std.euclidean.update.h(v, w, h, eps=eps, copy=copy)
+	h <- std.euclidean.update.h(v, w, h, eps=eps, nbterms=nb, ncterms=nc, copy=copy)
 	# update original object if not modified in place
 	if( copy ) .coef(data) <- h
 	
 	# W_ia = W_ia (V H^T)_ia / (W H H^T)_ia and columns are rescaled after each iteration	
-	w <- std.euclidean.update.w(v, w, h, eps=eps, copy=copy)
+	w <- std.euclidean.update.w(v, w, h, eps=eps, weight=weight, nbterms=nb, ncterms=nc, copy=copy)
 	#rescale columns TODO: effect of rescaling? the rescaling makes the update with offset fail
 	if( rescale ){
 		w <- sweep(w, 2L, colSums(w), "/", check.margin=FALSE)

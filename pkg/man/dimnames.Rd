@@ -1,14 +1,14 @@
 \docType{methods}
 \name{basisnames}
 \alias{basisnames}
+\alias{basisnames,ANY-method}
+\alias{basisnames-methods}
 \alias{basisnames<-}
 \alias{basisnames<-,ANY-method}
-\alias{basisnames,ANY-method}
 \alias{basisnames<--methods}
-\alias{basisnames-methods}
+\alias{dimnames,NMF-method}
 \alias{dimnames-NMF}
 \alias{dimnames<-,NMF,ANY-method}
-\alias{dimnames,NMF-method}
 \title{Dimension names for NMF objects}
 \usage{
   basisnames(x, ...)

@@ -164,7 +164,7 @@ or the Kullback-Leibler divergence.
 $$D: A,B\mapsto KL(A||B) = \sum_{i,j} a_{ij} \log \frac{a_{ij}}{b_{ij}} - a_{ij} + b_{ij}.$$
 \item $R$ is an optional regularization function, defined to enforce desirable
 properties on matrices $W$ and $H$, such as smoothness or sparsity
-\cite{Cichocki2004}.
+\cite{Cichocki2008}.
 \end{itemize}
 
 \subsection{Algorithms}
@@ -201,7 +201,7 @@ H_{kj} & \leftarrow & H_{kj}  \frac{\left( \sum_l \frac{W_{lk} V_{lj}}{(WH)_{lj}
 W_{ik} & \leftarrow & W_{ik} \frac{ \sum_l [H_{kl} A_{il} / (WH)_{il} ] }{\sum_l H_{kl} }
 \end{eqnarray}
 
-\textbf{Reference:} \cite{Brunet04}\\
+\textbf{Reference:} \cite{Brunet2004}\\
 \hline
 %
 \code{lee} & Standard NMF. Based on euclidean distance, it uses simple multiplicative updates
@@ -224,7 +224,7 @@ W_{ik} & \leftarrow & W_{ik} \frac{(V H^T)_{ik}}{(W H H^T)_{ik}}
 \code{nsNMF} & Non-smooth NMF. Uses a modified version of Lee and Seung's multiplicative updates for Kullback-Leibler divergence to fit a extension of the standard NMF model. 
 It is meant to give sparser results.
 
-\textbf{Reference:} \cite{nsNMF2006}\\
+\textbf{Reference:} \cite{Pascual-Montano2006}\\
 \hline
 %
 \code{offset} & Uses a modified version of Lee and Seung's multiplicative updates for euclidean distance, to fit a NMF model that includes an intercept. 
@@ -322,7 +322,7 @@ The interface has four main parameters:
 BioConductor, and is defined in the \pkgname{Biobase} package.}
 \item[\code{rank}] is the factorization rank, i.e. the number of columns in matrix $W$.
 \item[\code{method}] is the algorithm used to estimate the factorization. 
-The default algorithm is given by the package specific option \code{'default.algorithm'}, which defaults to \code{'brunet'} on installation \cite{Brunet04}.
+The default algorithm is given by the package specific option \code{'default.algorithm'}, which defaults to \code{'brunet'} on installation \cite{Brunet2004}.
 \item[\code{seed}] is the seeding method used to compute the starting point. 
 The default method is given by the package specific option \code{'default.seed'}, which defaults to \code{'random'} on initialization (see method \code{?rnmf} for details on its implementation).
 \end{description}
@@ -392,7 +392,7 @@ toBibtex(citation('NMF'))
 
 \section{Use case: Golub dataset}\label{sec:usecase}
 We illustrate the functionalities and the usage of the \nmfpack package on the -- now standard -- Golub dataset on leukemia.
-It was used in several papers on NMF \cite{Brunet04, Gao2005} and is included in the \nmfpack package's data, wrapped into an \code{ExpressionSet} object.
+It was used in several papers on NMF \cite{Brunet2004, Gao2005} and is included in the \nmfpack package's data, wrapped into an \code{ExpressionSet} object.
  For performance reason we use here only the first 200 genes. 
  Therefore the results shown in the following are not meant to be biologically meaningful, but only illustrative:
 
@@ -532,7 +532,7 @@ res <- nmf(esGolub, 3, 'lee')
 algorithm(res)
 @
 
-To use the Nonsmooth NMF algorithm from \cite{nsNMF2006}: 
+To use the Nonsmooth NMF algorithm from \cite{Pascual-Montano2006}: 
 <<algo_ns, cache=TRUE>>=
 # using the Nonsmooth NMF algorithm with parameter theta=0.7
 res <- nmf(esGolub, 3, 'ns', theta=0.7)
@@ -830,11 +830,11 @@ It defines the number of metagenes used to approximate the target matrix.
 Given a NMF method and the target matrix, a common way of deciding on $r$ is to try different values, compute some quality measure of the results, and choose the best value according to this quality criteria.
 
 Several approaches have then been proposed to choose the optimal value of $r$.
-For example, \cite{Brunet04} proposed to take the first value of $r$ for which the cophenetic coefficient starts decreasing, \cite{Hutchins2008} suggested to choose the first value where the RSS curve presents an inflection point, and \cite{Frigyesi2008} considered the smallest value at which the decrease in the RSS is lower than the decrease of the RSS obtained from random data.
+For example, \cite{Brunet2004} proposed to take the first value of $r$ for which the cophenetic coefficient starts decreasing, \cite{Hutchins2008} suggested to choose the first value where the RSS curve presents an inflection point, and \cite{Frigyesi2008} considered the smallest value at which the decrease in the RSS is lower than the decrease of the RSS obtained from random data.
 
 The \nmfpack package provides functions to help implement such procedures and plot the relevant quality measures.
 Note that this can be a lengthy computation, depending on the data size.
-Whereas the standard NMF procedure usually involves several hundreds of random initialization, performing 30-50 runs is considered sufficient to get a robust estimate of the factorization rank \cite{Brunet04, Hutchins2008}.
+Whereas the standard NMF procedure usually involves several hundreds of random initialization, performing 30-50 runs is considered sufficient to get a robust estimate of the factorization rank \cite{Brunet2004, Hutchins2008}.
 For performance reason, we perform here only 10 runs for each value of the rank.
 
 <<estimate_rank, cache=TRUE>>=
@@ -861,7 +861,7 @@ plot(estim.r)
 
 \begin{figure}\label{fig:estim_all_hm}
 <<estimate_rank_hm_include, fig.width=14, fig.height=7, fig.keep='last'>>=
-consensusmap(estim.r, annCol=esGolub)
+consensusmap(estim.r, annCol=esGolub, labCol=NA, labRow=NA)
 @
 \caption{Estimation of the rank: Consensus matrices computed from 10 runs for each value of $r$.}
 \end{figure}
@@ -1119,7 +1119,7 @@ nmf(V.neg, 3, my.algorithm, mixed=TRUE, scale.factor=10)
 
 \subsubsection{Specifying the NMF model}
 If not specified in the call, the NMF model that is used is the standard one, as defined in \cref{NMFstd}. 
-However, some NMF algorithms have different underlying models, such as non-smooth NMF \cite{nsNMF2006} which uses an extra matrix factor that introduces an extra parameter, and change the way the target matrix is approximated.
+However, some NMF algorithms have different underlying models, such as non-smooth NMF \cite{Pascual-Montano2006} which uses an extra matrix factor that introduces an extra parameter, and change the way the target matrix is approximated.
 
 The NMF models are defined as S4 classes that extends class \code{NMF}. All the available models can be retreived calling the \code{nmfModel()} function with no 
 argument:

@@ -629,6 +629,32 @@ setMethod('nmf', signature(x='matrix', rank='data.frame', method='ANY'),
 	}
 )
 
+#' This method implements the interface for fitting formula-based NMF models.
+#' See \code{\link{nmfModel}}.
+#' 
+#' Argument \code{rank} target matrix or formula environment.
+#' If not missing, \code{model} must be a \code{list}, a \code{data.frame} or 
+#' an \code{environment} in which formula variables are searched for.    
+#' 
+setMethod('nmf', signature(x='formula', rank='ANY', method='ANY'),
+	function(x, rank, method, ..., model=NULL){
+		# replace missing values by NULL values for correct dispatch
+		if( missing(method) ) method <- NULL
+		if( missing(rank) ) rank <- NULL
+		
+		# if multiple numeric rank: use nmfRestimateRank
+		if( is.vector(rank) && is.numeric(rank)  ){
+			if( length(rank) > 1L ){
+				return( nmfEstimateRank(x, rank, method, ..., model=model) )
+			}
+		}
+		
+		# build formula based model
+		model <- nmfModel(x, rank, data=model)
+		nmf(attr(model, 'target'), nbasis(model), method, ..., model=model)
+	}
+)
+
 .as.numeric <- function(x){
 	suppressWarnings( as.numeric(x) )
 }
@@ -1369,8 +1395,13 @@ function(x, rank, method
 					if( debug || (.MODE_SEQ && verbose > 1) )
 						.options$verbose <- verbose
 					
-					if( !.MODE_SEQ && !debug || (.MODE_SEQ && verbose == 1) )
-						cat("Runs:")
+					if( !.MODE_SEQ && !debug || (.MODE_SEQ && verbose == 1) ){
+						if( verbose == 1 ){
+							pbar <- txtProgressBar(0, nrun, width=50, style=3, title='Runs:')
+						}else{
+							cat("Runs: ")
+						}
+					}
 				}
 				
 				# get options from master process to pass to workers
@@ -1413,11 +1444,12 @@ function(x, rank, method
 															
 					# limited verbosity in simple mode
 					if( verbose && !(MODE_SEQ && verbose > 1)){
-						mutex_eval( cat('', n) )		
+						if( verbose >= 2 ) mutex_eval( cat('', n) )		
+						else mutex_eval( setTxtProgressBar(pbar, n) )
 					}
 					
 					# fit a single NMF model
-					res <- nmf(x, rank, method, nrun=1, seed=seed, .options=.options, ...)
+					res <- nmf(x, rank, method, nrun=1, seed=seed, model=model, .options=.options, ...)
 					
 					# if only the best fit must be kept then update the shared objects
 					if( !keep.all ){
@@ -1438,7 +1470,7 @@ function(x, rank, method
 								
 								if( n>1 && verbose ){
 									if( MODE_SEQ && verbose > 1 ) cat("## Better fit found [err=", err, "]\n")
-									else cat('*')
+									else if( verbose >= 2 ) cat('*')
 								}
 								
 								# update residuals
@@ -1500,7 +1532,13 @@ function(x, rank, method
 					res
 				}				
 				## END_FOREACH_LOOP
-				if( verbose && !debug ) cat(" ... DONE\n")
+				if( verbose && !debug ){
+					if( verbose >= 2 ) cat(" ... DONE\n")
+					else{
+						setTxtProgressBar(pbar, nrun)
+						cat("\n")
+					}
+				}
 				
 				## 3. CHECK FIT ERRORS
 				errors <- checkErrors(res.runs)
@@ -1611,7 +1649,7 @@ function(x, rank, method
 					if( verbose > 2 ) message("OK")
 									
 					# fit a single NMF model
-					res <- nmf(x, rank, method, nrun=1, seed=seed, .options=.options, ...)
+					res <- nmf(x, rank, method, nrun=1, seed=seed, model=model, .options=.options, ...)
 					
 					if( !keep.all ){
 						
@@ -1958,8 +1996,9 @@ function(x, rank, method
 	
 	## CHECK RESULT
 	# check the result is of the right type
-	if( !inherits(res, 'NMFfit') ) 
-		fstop("NMF algorithms should return an instance of class 'NMFfit' [returned class:", class(res), "]")			
+	if( !isTRUE(err <- checkResult(res, seed)) ){ 
+		fstop(err)			
+	}
 
 	## ENSURE SOME SLOTS ARE STILL CORRECTLY SET
 	# slot 'method'
@@ -1991,6 +2030,25 @@ function(x, rank, method
 	# return the result
 	exitSuccess(res)
 })
+
+# check result
+checkResult <- function(fit, seed){
+	# check the result is of the right type
+	if( !inherits(fit, 'NMFfit') ){ 
+		return(str_c("NMF algorithms should return an instance of class 'NMFfit' [returned class:", class(fit), "]"))
+	}
+	
+	# check that the fit conserved all fixed terms (only warning)
+	if( nterms(seed) ){
+		if( length(i <- icterms(seed)) && !identical(coef(fit)[i,], coef(seed)[i,]) ){
+			warning("Fixed coefficient terms were not all conserved in the fit: the method might not support them.")
+		}
+		if( length(i <- ibterms(seed)) && !identical(basis(fit)[,i], basis(seed)[,i]) ){
+			warning("Fixed basis terms were not all conserved in the fit: the method might not support them.")
+		}
+	}
+	TRUE
+}
 
 #' Interface for NMF Seeding Methods
 #' 
@@ -2043,15 +2101,20 @@ setMethod('seed', signature(x='matrix', model='NMF', method='NMFSeed'),
 		rng.s <- getRNG()
 		# create the result NMFfit object, storing the RNG numerical seed
 		res <- NMFfit()
-		# call the seeding function passing the extra parameters, and store the result into slot 'fit'
-		fit(res) <- do.call(algorithm(method), c(list(model, x), ...))				
 		# ASSERT: check that the RNG seed is correctly set
 		stopifnot( rng.equal(res,rng.s) )
+		# call the seeding function passing the extra parameters
+		f <- do.call(algorithm(method), c(list(model, x), ...))
+		# set the dimnames from the target matrix
+		dimnames(f) <- dimnames(x)
+		# set the basis names from the model if any
+		if( !is.null(basisnames(model)) )
+			basisnames(f) <- basisnames(model)
+		# store the result into the NMFfit object
+		fit(res) <- f
 		
 		# if not already set: store the seeding method's name in the resulting object
 		if( seeding(res) == '' ) seeding(res) <- name(method)
-		# set the dimnames from the target matrix
-		dimnames(res) <- dimnames(x)
 		
 		# return the seeded object
 		res
@@ -2341,7 +2404,21 @@ setMethod('seed', signature(x='ANY', model='numeric', method='NMFSeed'),
 #' }
 #' 
 nmfEstimateRank <- function(x, range, method=nmf.getOption('default.algorithm')
-					, nrun=30, verbose=FALSE, stop=FALSE, ...){
+					, nrun=30, model=NULL, ..., verbose=FALSE, stop=FALSE){
+	
+	# fix method if passed NULL (e.g., from nmf('formula', 'numeric'))
+	if( is.null(method) )
+		method <- nmf.getOption('default.algorithm')
+	
+	# special handling of formula: get target data from the formula 
+	if( is(x, 'formula') ){
+		# dummy model to resolve formula
+		dummy <- nmfModel(x, 0L, data=model)
+		# retrieve target data
+		V <- attr(dummy, 'target')
+	}else{
+		V <- x
+	}
 	
 	# remove duplicates and sort
 	range <- sort(unique(range))
@@ -2400,7 +2477,7 @@ nmfEstimateRank <- function(x, range, method=nmf.getOption('default.algorithm')
 			
 			res <- tryCatch({ #START_TRY
 				
-				res <- nmf(x, r, method, nrun=nrun, ...)					
+				res <- nmf(x, r, method, nrun=nrun, model=model, ...)					
 				# directly return the result if a valid NMF result
 				if( !isNMFfit(res, recursive = FALSE) )
 					return(res)
@@ -2423,7 +2500,7 @@ nmfEstimateRank <- function(x, range, method=nmf.getOption('default.algorithm')
 				
 				# compute quality measures
 				if( verbose ) cat('+ measures ... ')
-				measures <- summary(res, target=x)
+				measures <- summary(res, target=V)
 				
 				if( verbose ) cat("OK\n")
 				

@@ -294,8 +294,60 @@ setMethod('.atrack', signature(object='ANY'),
 	}
 )
 
+setMethod('.atrack', 'character', 
+	function(object, ...){
+		
+		# check for special escaped track code
+    	if( length(i <- atrack_code(object)) ){
+			if( length(i) == length(object) ) as.list(object)
+			else{
+				spe <- object[i]
+				object <- sub("^\\\\:", ":", object[-i])
+				t <- callNextMethod() 
+				c(list(t), spe)
+			}
+		}else{
+			object <- sub("^\\\\:", ":", object)
+			callNextMethod()
+		}
+	}
+)
 setMethod('.atrack', 'matrix', function(object, ...) .atrack(as.data.frame(object), ...) )
 setMethod('.atrack', 'data.frame', function(object, ...) .atrack(as.list(object), ...) )
+
+# tells if an object is a special annotation track code
+is_track_code <- function(x) isString(x) && grepl("^[:$]", x)
+
+atrack_code <- function(x, value=FALSE){
+	
+	# check each track item
+	ac <- sapply(x, is_track_code)
+	i <- which(ac)
+	
+	if( !value ) i # return indexes
+	else if( length(i) ) unlist(x[i]) # return values
+	
+}
+
+match_atrack_code <- function(x, table, ...){
+	# pre-pend ':'
+	table.plain <- sub("^:", '', table)	
+	table <- str_c(':', table)
+	
+	# convert into an annotation track
+	if( !is.atrack(x) ) x <- atrack(x, ...)
+	
+	m <- sapply(x, function(x){
+		if( isString(x) ) charmatch(x, table, nomatch=0L)
+		else 0L
+	})
+	
+	if( length(i <- which(m!=0L)) ){
+		if( is.null(names(m)) ) names(m) <- rep('', length(m))
+		names(m)[i] <- table.plain[m[i]]
+	}
+	m
+}
 
 #' \code{atrack} creates/concatenates \code{annotationTrack} objects
 #' 
@@ -303,13 +355,26 @@ setMethod('.atrack', 'data.frame', function(object, ...) .atrack(as.list(object)
 #' tracks in the result list
 #' @param enforceNames logical that indicates if missing track names should 
 #' be generated as \code{X<i>}
+#' @param .SPECIAL an optional list of functions (with no arguments) that are 
+#' called to generate special annotation tracks defined by codes of the form 
+#' \code{':NAME'}.
+#' e.g., the function \code{link{consensusmap}} defines special tracks 
+#' \code{':basis'} and \code{':consensus'}.
+#' 
+#' If \code{.SPECIAL=FALSE}, then any special tracks is discarded and a warning
+#' is thrown. 
+#'    
 #' @param .DATA data used to match and extend annotation specifications.
 #' It is passed to argument \code{data} of the \code{.atrack} methods, which 
 #' in turn use pass it to \code{\link{match_atrack}}.
 #' 
+#' @return \code{atrack} returns a list, decorated with class 
+#' \code{'annotationTrack'}, where each element contains the description 
+#' of an annotation track.
+#'  
 #' @rdname atrack
 #' @export 
-atrack <- function(..., order = NULL, enforceNames=FALSE, .DATA = NULL){
+atrack <- function(..., order = NULL, enforceNames=FALSE, .SPECIAL=NULL, .DATA = NULL){
 	
 	# cbind object with the other arguments
 	l <- list(...)
@@ -344,6 +409,17 @@ atrack <- function(..., order = NULL, enforceNames=FALSE, .DATA = NULL){
 	
 	# exit now if object is NULL
 	if( is.null(object) ) return()
+	if( !length(object) ) return( annotationTrack() )
+	
+	# remove special tracks if necessary (before ordering as this changes 
+	# the type of object
+	if( isFALSE(.SPECIAL) && length(i <- atrack_code(object)) ){
+		warning("Discarding unresolved special annotation tracks: "
+				, str_out(unlist(object[i]), use.names=TRUE))
+		object <- object[-i] 
+	}
+	
+	if( !length(object) ) return(object)
 	
 	# reorder if necessary
 	if( !is.null(order) ){
@@ -351,16 +427,31 @@ atrack <- function(..., order = NULL, enforceNames=FALSE, .DATA = NULL){
 		#lapply(seq_along(object), function(i) object[[i]] <<- object[[i]][order])
 	}
 	
+	# add class 'annotationTrack' if not already there 
+	# (needed before calling match_atrack_code
+	object <- annotationTrack(object)
+	
+	# substitute special tracks
+	if( is.list(.SPECIAL) ){
+		m <- match_atrack_code(object, names(.SPECIAL))
+		i_spe <- which(m!=0L)
+		if( length(i_spe) ){
+			a <- sapply(m[i_spe], function(i) .SPECIAL[[i]](), simplify=FALSE)
+			object[i_spe] <- a
+			# add names where needed
+			if( is.null(names(object)) ) names(object) <- rep('', length(object))
+			nm <- names(object)[i_spe]
+			names(object)[i_spe] <- ifelse(nm!='', nm, names(a))
+		}
+	}
+	
+	# generate names
 	if( enforceNames ){
 		n <- names(object)
 		xnames <- paste('X', 1:length(object), sep='')
 		if( is.null(n) ) names(object) <- xnames
 		else names(object)[n==''] <- xnames[n==''] 
 	}
-	
-	# add class 'annotationTrack' if not already there
-	if( !is.atrack(object) )
-		class(object) <- c('annotationTrack', class(object))
 	
 	#print(object)
 	# return object
@@ -370,11 +461,11 @@ atrack <- function(..., order = NULL, enforceNames=FALSE, .DATA = NULL){
 #' \code{annotationTrack} is constructor function for \code{annotationTrack} object
 #' 
 #' @rdname atrack
-annotationTrack <- function(x){
+annotationTrack <- function(x = list()){
 	if( !is.atrack(x) )
-		class(x) <- c('annotationTrack', class(x))
+		class(x) <- c('annotationTrack', if( nargs() ) class(x))
 	x
-}
+} 
 
 #setGeneric('atrack<-', function(object, value) standardGeneric('atrack<-'))
 #setReplaceMethod('atrack', signature(object='ANY', value='ANY'),

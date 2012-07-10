@@ -1,7 +1,7 @@
 \docType{class}
 \name{NMFOffset-class}
-\alias{initialize,NMFOffset-method}
 \alias{NMFOffset-class}
+\alias{initialize,NMFOffset-method}
 \title{NMF Model - Nonnegative Matrix Factorization with Offset}
 \usage{
   \S4method{initialize}{NMFOffset}(.Object, ..., offset)

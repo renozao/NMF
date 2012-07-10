@@ -1,18 +1,18 @@
 \docType{class}
 \name{NMFStrategy-class}
+\alias{NMFStrategy-class}
 \alias{is.mixed}
 \alias{name}
-\alias{name<-}
-\alias{name<--methods}
-\alias{name-methods}
-\alias{name<-,NMFSeed,character-method}
 \alias{name,NMFSeed-method}
-\alias{name<-,NMFStrategy,character-method}
 \alias{name,NMFStrategy-method}
-\alias{NMFStrategy-class}
+\alias{name-methods}
+\alias{name<-}
+\alias{name<-,NMFSeed,character-method}
+\alias{name<-,NMFStrategy,character-method}
+\alias{name<--methods}
+\alias{objective,NMFStrategy-method}
 \alias{objective<-,NMFStrategy,character-method}
 \alias{objective<-,NMFStrategy,function-method}
-\alias{objective,NMFStrategy-method}
 \alias{show,NMFStrategy-method}
 \title{Virtual Interface for NMF Algorithms}
 \usage{
@@ -90,6 +90,11 @@
 \section{Methods}{
   \describe{
 
+  \item{NMFStrategy}{\code{signature(name = "NMFStrategy",
+  method = "missing")}: Creates an \code{NMFStrategy} based
+  on a template object (Constructor-Copy) using a randomly
+  generated name. }
+
   \item{canFit}{\code{signature(x = "NMFStrategy", y =
   "character")}: Tells if an NMF algorithm can fit a given
   class of NMF models }
@@ -125,11 +130,6 @@
   described by \code{object}.
 
   This method is not meant to be called directly }
-
-  \item{NMFStrategy}{\code{signature(name = "NMFStrategy",
-  method = "missing")}: Creates an \code{NMFStrategy} based
-  on a template object (Constructor-Copy) using a randomly
-  generated name. }
 
   \item{objective}{\code{signature(object =
   "NMFStrategy")}: Gets the objective function associated

@@ -1,10 +1,10 @@
 \docType{methods}
 \name{canFit}
 \alias{canFit}
+\alias{canFit,NMFStrategy,NMF-method}
+\alias{canFit,NMFStrategy,character-method}
 \alias{canFit,character,ANY-method}
 \alias{canFit-methods}
-\alias{canFit,NMFStrategy,character-method}
-\alias{canFit,NMFStrategy,NMF-method}
 \title{Testing Compatibility of Algorithm and Models}
 \usage{
   canFit(x, y, ...)

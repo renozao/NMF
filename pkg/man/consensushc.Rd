@@ -1,10 +1,10 @@
 \docType{methods}
 \name{consensushc}
 \alias{consensushc}
+\alias{consensushc,NMF-method}
+\alias{consensushc,NMFfitX-method}
 \alias{consensushc,matrix-method}
 \alias{consensushc-methods}
-\alias{consensushc,NMFfitX-method}
-\alias{consensushc,NMF-method}
 \title{Hierarchical Clustering of a Consensus Matrix}
 \usage{
   consensushc(object, ...)

@@ -1,18 +1,18 @@
 \docType{methods}
 \name{heatmap-NMF}
 \alias{basismap}
-\alias{basismap-methods}
-\alias{basismap,NMFfitX-method}
 \alias{basismap,NMF-method}
+\alias{basismap,NMFfitX-method}
+\alias{basismap-methods}
 \alias{coefmap}
-\alias{coefmap-methods}
-\alias{coefmap,NMFfitX-method}
 \alias{coefmap,NMF-method}
+\alias{coefmap,NMFfitX-method}
+\alias{coefmap-methods}
 \alias{consensusmap}
+\alias{consensusmap,NMF-method}
+\alias{consensusmap,NMFfitX-method}
 \alias{consensusmap,matrix-method}
 \alias{consensusmap-methods}
-\alias{consensusmap,NMFfitX-method}
-\alias{consensusmap,NMF-method}
 \alias{heatmap-NMF}
 \title{Heatmaps of NMF Factors}
 \usage{
@@ -20,20 +20,20 @@
 
   \S4method{basismap}{NMF}(object, color = "YlOrRd:50",
     ..., scale = "r1", Colv = NA, subsetRow = FALSE,
-    annRow = "basis", main = "Basis components",
+    annRow = ":basis", main = "Basis components",
     info = FALSE)
 
   coefmap(object, ...)
 
   \S4method{coefmap}{NMF}(object, color = "YlOrRd:50", ...,
     scale = "c1", Rowv = NA, Colv = TRUE, annRow = NA,
-    annCol = "basis", main = "Mixture coefficients",
+    annCol = ":basis", main = "Mixture coefficients",
     info = FALSE)
 
   consensusmap(object, ...)
 
   \S4method{consensusmap}{NMFfitX}(object, ...,
-    annCol = c("basis", "consensus"),
+    annCol = c(":basis", ":consensus"),
     main = "Consensus matrix", info = FALSE)
 
   \S4method{consensusmap}{matrix}(object,
@@ -44,7 +44,7 @@
     info = FALSE)
 
   \S4method{coefmap}{NMFfitX}(object, ..., Colv = TRUE,
-    annCol = c("basis", "consensus"))
+    annCol = c(":basis", ":consensus"))
 }
 \arguments{
   \item{object}{an object from which is extracted NMF
@@ -246,15 +246,16 @@
   default named annotation track, that shows the dominant
   basis component for each row (i.e. each feature).
 
-  This track, named \code{'basis'}, is specified as a
+  This track, named \code{':basis'}, is specified as a
   single character string, that is looked-up in argument
   \code{annRow}, which may be of any type supported by
-  \code{\link{aheatmap}}. The only difference is that
-  character annotation vectors that have elements other
-  than \code{'basis'}, are not are not allowed as-is, and
-  must be encapsulated in a list (see examples). \item a
-  suitable title and extra information like the fitting
-  algorithm, when \code{object} is a fitted NMF model. }
+  \code{\link{aheatmap}}. Note that if \code{annRow} is a
+  character vector, that contains special track names ,
+  e.g., \code{":basis"}, then these are extracted and
+  displayed separately, after the character track -- which
+  is interpreted as a factor. \item a suitable title and
+  extra information like the fitting algorithm, when
+  \code{object} is a fitted NMF model. }
 
   \code{coefmap} redefines default values for the following
   arguments of \code{\link{aheatmap}}: \itemize{ \item the
@@ -274,24 +275,26 @@
 
   \code{consensusmap} redefines default values for the
   following arguments of \code{\link{aheatmap}}: \itemize{
-  \item the color palette; \item the column ordering which
+  \item the colour palette; \item the column ordering which
   is set equal to the row ordering, since a consensus
-  matrix is symetric; \item the distance and linkage
+  matrix is symmetric; \item the distance and linkage
   methods used to order the rows (and columns). The default
   is to use 1 minus the consensus matrix itself as
   distance, and average linkage. \item the addition of two
-  default named annotation tracks, \code{'basis'} and
-  \code{'consensus'}, that show, for each column (i.e. each
-  sample), the dominant basis component in the best fit and
-  the hierarchical clustering of the consensus matrix
-  respectively (using 1-consensus as distance and average
-  linkage).
+  special named annotation tracks, \code{':basis'} and
+  \code{':consensus'}, that show, for each column (i.e.
+  each sample), the dominant basis component in the best
+  fit and the hierarchical clustering of the consensus
+  matrix respectively (using 1-consensus as distance and
+  average linkage).
 
-  This track is specified in argument \code{annCol}, which
-  behaves like argument \code{annRow} in
-  \code{\link{basismap}}. \item a suitable title and extra
-  information like the type of NMF model or the fitting
-  algorithm, when \code{object} is a fitted NMF model. }
+  These tracks are specified in argument \code{annCol},
+  which behaves like argument \code{annRow} in
+  \code{\link{basismap}}.
+
+  \item a suitable title and extra information like the
+  type of NMF model or the fitting algorithm, when
+  \code{object} is a fitted NMF model. }
 }
 \section{Methods}{
   \describe{

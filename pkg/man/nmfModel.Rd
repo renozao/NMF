@@ -1,16 +1,17 @@
 \docType{methods}
 \name{nmfModel}
 \alias{nmfModel}
+\alias{nmfModel,NULL,ANY-method}
 \alias{nmfModel,data.frame,data.frame-method}
+\alias{nmfModel,formula,ANY-method}
 \alias{nmfModel,matrix,ANY-method}
 \alias{nmfModel,matrix,matrix-method}
-\alias{nmfModel-methods}
 \alias{nmfModel,missing,ANY-method}
 \alias{nmfModel,missing,missing-method}
-\alias{nmfModel,NULL,ANY-method}
 \alias{nmfModel,numeric,matrix-method}
 \alias{nmfModel,numeric,missing-method}
 \alias{nmfModel,numeric,numeric-method}
+\alias{nmfModel-methods}
 \alias{nmfModels}
 \title{Factory Methods NMF Models}
 \usage{
@@ -22,6 +23,9 @@
 
   \S4method{nmfModel}{numeric,matrix}(rank, target, ...,
     use.names = TRUE)
+
+  \S4method{nmfModel}{formula,ANY}(rank, target, ...,
+    data = NULL, no.attrib = FALSE)
 
   nmfModels(builtin.only = FALSE)
 }
@@ -70,6 +74,16 @@
   \item{use.names}{a logical that indicates whether the
   dimension names of the target matrix should be set on the
   returned NMF model.}
+
+  \item{data}{Optional argument where to look for the
+  variables used in the formula.}
+
+  \item{no.attrib}{logical that indicate if attributes
+  containing data related to the formula should be attached
+  as attributes. If \code{FALSE} attributes \code{'target'}
+  and \code{'formula'} contain the target matrix, and a
+  list describing each formula part (response, regressors,
+  etc.).}
 
   \item{builtin.only}{logical that indicates whether only
   built-in NMF models, i.e. defined within the NMF package,
@@ -220,6 +234,10 @@
   arguments in any order (the one that comes to the user's
   mind first) and it still works as expected. } }
 
+  \item{nmfModel}{\code{signature(rank = "formula", target
+  = "ANY")}: Build a formula-based NMF model, that can
+  incorporate fixed basis or coefficient terms. }
+
   }
 }
 \section{Main factory method}{
@@ -349,6 +367,24 @@ nmf.equal(res, nmf(V, mod))
 V <- rmatrix(20, 10)
 nmfModel(V) # equivalent to nmfModel(target=V)
 nmfModel(V, 3) # equivalent to nmfModel(3, V)
+# empty 3-rank model
+nmfModel(~ 3)
+
+# 3-rank model that fits a given data matrix
+x <- rmatrix(20,10)
+nmfModel(x ~ 3)
+
+# add fixed coefficient term defined by a factor
+gr <- gl(2, 5)
+nmfModel(x ~ 3 + gr)
+
+# add fixed coefficient term defined by a numeric covariate
+nmfModel(x ~ 3 + gr + b, data=list(b=runif(10)))
+
+# 3-rank model that fits a given ExpressionSet (with fixed coef terms)
+e <- ExpressionSet(x)
+pData(e) <- data.frame(a=runif(10))
+nmfModel(e ~ 3 + gr + a) # `a` is looked up in the phenotypic data of x pData(x)
 # show all the NMF models available (i.e. the classes that inherit from class NMF)
 nmfModels()
 # show all the built-in NMF models available
@@ -364,13 +400,15 @@ nmfModels(builtin.only=TRUE)
 \seealso{
   \code{\link{is.empty.nmf}}
 
-  Other NMF-interface: \code{\link{basis}},
-  \code{\link{basis<-}}, \code{\link{coef}},
-  \code{\link{coef<-}}, \code{\link{coefficients}},
+  Other NMF-interface: \code{\link{$,NMF-method}},
+  \code{\link{$<-,NMF-method}}, \code{\link{.basis}},
+  \code{\link{.basis<-}}, \code{\link{.coef}},
+  \code{\link{.coef<-}}, \code{\link{NMF-class}},
+  \code{\link{basis}}, \code{\link{basis<-}},
+  \code{\link{coef}}, \code{\link{coef<-}},
+  \code{\link{coefficients}},
   \code{\link{loadings,NMF-method}}, \code{\link{misc}},
-  \code{\link{NMF-class}}, \code{\link{$<-,NMF-method}},
-  \code{\link{$,NMF-method}}, \code{\link{rnmf}},
-  \code{\link{scoef}}
+  \code{\link{rnmf}}, \code{\link{scoef}}
 }
 \keyword{methods}
 

@@ -1011,6 +1011,12 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 	if( isNA(annotation_colors) ){
 		annotation_colors = list()
 	}
+	# use names from annotations if necessary/possible
+	if( length(annotation_colors) > 0L 
+		&& length(annotation_colors) <=  length(annotation) 
+		&& is.null(names(annotation_colors)) ){
+		names(annotation_colors) <- head(names(annotation), length(annotation_colors))
+	}
 	
 	count = 0
 	annotationLevels <- list()	
@@ -1624,7 +1630,7 @@ aheatmap = function(x
 	# convert ExpressionSet into 
 	if( is(x, 'ExpressionSet') ){
 		library(Biobase)
-		if( isTRUE(annCol) ) annCol <- atrack(x, .DATA=exprs(x))
+		if( isTRUE(annCol) ) annCol <- atrack(x)
 		x <- exprs(x)
 	}
 
@@ -1840,8 +1846,8 @@ aheatmap = function(x
 	annotation_colors <- annColors
 	
 	# render annotation tracks for both rows and columns
-	annTracks <- renderAnnotations(atrack(annCol, order=res$colInd, .DATA=amargin(x,2L))
-								, atrack(annRow, order=res$rowInd, .DATA=amargin(x,1L))
+	annTracks <- renderAnnotations(atrack(annCol, order=res$colInd, .SPECIAL=FALSE, .DATA=amargin(x,2L))
+								, atrack(annRow, order=res$rowInd, .SPECIAL=FALSE, .DATA=amargin(x,1L))
 								, annotation_colors = annotation_colors, verbose=verbose)
 	
 	# retrieve dimension for computing cexRow and cexCol (evaluated from the arguments)

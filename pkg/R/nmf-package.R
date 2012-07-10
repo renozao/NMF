@@ -64,7 +64,7 @@ devnmf <- function(){
 	}
 	
 	## LOAD compiled library if one is loading the package
-#	pkgmaker::onLoad(libname, pkgname)
+	# TODO: pkgmaker::onLoad(libname, pkgname)
 	if( !missing(libname) ) library.dynam('NMF', pkgname, libname)
 	else compile_src('NMF')	
 	
@@ -80,7 +80,7 @@ devnmf <- function(){
 
 .onUnload <- function(libpath) {
 	
-#	pkgmaker:::onLoad(libpath)
+	# TODO: pkgmaker::onUnload(libpath)
 	# unload compiled library
 	dlls <- names(base::getLoadedDLLs())
 	if ( 'NMF' %in%  dlls )

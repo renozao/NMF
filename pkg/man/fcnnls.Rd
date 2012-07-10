@@ -3,8 +3,8 @@
 \alias{fcnnls}
 \alias{fcnnls,ANY,numeric-method}
 \alias{fcnnls,matrix,matrix-method}
-\alias{fcnnls-methods}
 \alias{fcnnls,numeric,matrix-method}
+\alias{fcnnls-methods}
 \title{Fast Combinatorial Non-Negative Least-Square}
 \usage{
   fcnnls(x, y, ...)

@@ -1,16 +1,17 @@
 \docType{methods}
 \name{.atrack}
+\alias{.atrack}
+\alias{.atrack,ANY-method}
+\alias{.atrack,character-method}
+\alias{.atrack,data.frame-method}
+\alias{.atrack,matrix-method}
+\alias{.atrack-methods}
 \alias{adata}
 \alias{alength}
 \alias{amargin}
 \alias{anames}
 \alias{annotationTrack}
 \alias{atrack}
-\alias{.atrack}
-\alias{.atrack,ANY-method}
-\alias{.atrack,data.frame-method}
-\alias{.atrack,matrix-method}
-\alias{.atrack-methods}
 \alias{is.atrack}
 \title{Annotation Tracks}
 \usage{
@@ -29,9 +30,9 @@
   \S4method{.atrack}{ANY}(object, data = NULL, ...)
 
   atrack(..., order = NULL, enforceNames = FALSE,
-    .DATA = NULL)
+    .SPECIAL = NULL, .DATA = NULL)
 
-  annotationTrack(x)
+  annotationTrack(x = list())
 }
 \arguments{
   \item{object}{an object from which is extracted
@@ -62,10 +63,24 @@
   \item{enforceNames}{logical that indicates if missing
   track names should be generated as \code{X<i>}}
 
+  \item{.SPECIAL}{an optional list of functions (with no
+  arguments) that are called to generate special annotation
+  tracks defined by codes of the form \code{':NAME'}. e.g.,
+  the function \code{link{consensusmap}} defines special
+  tracks \code{':basis'} and \code{':consensus'}.
+
+  If \code{.SPECIAL=FALSE}, then any special tracks is
+  discarded and a warning is thrown.}
+
   \item{.DATA}{data used to match and extend annotation
   specifications. It is passed to argument \code{data} of
   the \code{.atrack} methods, which in turn use pass it to
   \code{\link{match_atrack}}.}
+}
+\value{
+  \code{atrack} returns a list, decorated with class
+  \code{'annotationTrack'}, where each element contains the
+  description of an annotation track.
 }
 \description{
   \code{.atrack} is an S4 generic method that converts an

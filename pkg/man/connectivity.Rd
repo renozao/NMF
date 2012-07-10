@@ -2,14 +2,14 @@
 \name{connectivity}
 \alias{connectivity}
 \alias{connectivity,ANY-method}
-\alias{connectivity,factor-method}
-\alias{connectivity-methods}
 \alias{connectivity,NMF-method}
+\alias{connectivity,factor-method}
 \alias{connectivity,numeric-method}
+\alias{connectivity-methods}
 \alias{consensus}
-\alias{consensus-methods}
-\alias{consensus,NMFfitX-method}
 \alias{consensus,NMF-method}
+\alias{consensus,NMFfitX-method}
+\alias{consensus-methods}
 \title{Clustering Connectivity and Consensus Matrices}
 \usage{
   connectivity(object, ...)

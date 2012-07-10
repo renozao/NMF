@@ -1,9 +1,9 @@
 \docType{methods}
 \name{dispersion}
 \alias{dispersion}
+\alias{dispersion,NMFfitX-method}
 \alias{dispersion,matrix-method}
 \alias{dispersion-methods}
-\alias{dispersion,NMFfitX-method}
 \title{Dispersion of a Matrix}
 \usage{
   dispersion(object, ...)

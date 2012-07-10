@@ -7,8 +7,8 @@
 
 extern "C" {
 
-	SEXP divergence_update_H ( SEXP v, SEXP w, SEXP h, SEXP dup);
-	SEXP divergence_update_W ( SEXP v, SEXP w, SEXP h, SEXP dup);
+	SEXP divergence_update_H ( SEXP v, SEXP w, SEXP h, SEXP nbterms, SEXP ncterms, SEXP dup);
+	SEXP divergence_update_W ( SEXP v, SEXP w, SEXP h, SEXP nbterms, SEXP ncterms, SEXP dup);
 
 }
 
@@ -16,23 +16,32 @@ extern "C" {
 #include "divergence.cpp"
 
 // define the exported versions (for SEXP)
-SEXP divergence_update_H ( SEXP v, SEXP w, SEXP h, SEXP dup=ScalarLogical(1)) {
+SEXP divergence_update_H ( SEXP v, SEXP w, SEXP h
+			, SEXP nbterms=ScalarInteger(0), SEXP ncterms=ScalarInteger(0)
+			, SEXP dup=ScalarLogical(1)) {
 
-	if( TYPEOF(v) == REALSXP )
+	if( TYPEOF(v) == REALSXP ){
 		return divergence_update_H(NUMERIC_POINTER(v), w, h
+				, *INTEGER(nbterms), *INTEGER(ncterms)
 				, *LOGICAL(dup));
-	else
+	}else{
 		return divergence_update_H(INTEGER_POINTER(v), w, h
+				, *INTEGER(nbterms), *INTEGER(ncterms)
 				, *LOGICAL(dup));
+	}
 }
 
-SEXP divergence_update_W ( SEXP v, SEXP w, SEXP h, SEXP dup=ScalarLogical(1)) {
+SEXP divergence_update_W ( SEXP v, SEXP w, SEXP h
+				, SEXP nbterms=ScalarInteger(0), SEXP ncterms=ScalarInteger(0)
+				, SEXP dup=ScalarLogical(1)) {
 
 	if( TYPEOF(v) == REALSXP )
 		return divergence_update_W(NUMERIC_POINTER(v), w, h
+				, *INTEGER(nbterms), *INTEGER(ncterms)
 				, *LOGICAL(dup));
 	else
 		return divergence_update_W(INTEGER_POINTER(v), w, h
+				, *INTEGER(nbterms), *INTEGER(ncterms)
 				, *LOGICAL(dup));
 }
 
@@ -47,7 +56,8 @@ SEXP divergence_update_W ( SEXP v, SEXP w, SEXP h, SEXP dup=ScalarLogical(1)) {
  * @param pV target matrix
  * @param w basis vector matrix
  * @param h mixture coefficient matrix to be updated
- * @param limInf limit inf for the updated entries. Applied only if limInf > 0
+ * @param nbterms number of fixed basis terms
+ * @param ncterms number of fixed coefficient terms
  * @param dup boolean (flag) that specifies if the update must be perform directly on w or
  * on a duplicated version of w
  *
@@ -56,7 +66,7 @@ SEXP divergence_update_W ( SEXP v, SEXP w, SEXP h, SEXP dup=ScalarLogical(1)) {
 
   */
 template <typename T_Rnumeric>
-static SEXP divergence_update_H ( T_Rnumeric* pV, SEXP w, SEXP h, int dup=1)
+static SEXP divergence_update_H ( T_Rnumeric* pV, SEXP w, SEXP h, int nbterms=0, int ncterms=0, int dup=1)
 {
 	SEXP res;
 	int nprotect = 0;
@@ -65,6 +75,8 @@ static SEXP divergence_update_H ( T_Rnumeric* pV, SEXP w, SEXP h, int dup=1)
 	int n = INTEGER(GET_DIM(w))[0];
 	int r = INTEGER(GET_DIM(w))[1];
 	int p = INTEGER(GET_DIM(h))[1];
+	// get number of non-fixed terms
+	int vr = r - ncterms;
 
 	// duplicate H (keeping attributes) or modify in place
 	PROTECT(res = (dup != 0 ? duplicate(h) : h) ); nprotect++;
@@ -79,9 +91,9 @@ static SEXP divergence_update_H ( T_Rnumeric* pV, SEXP w, SEXP h, int dup=1)
 	double* pWH = (double*) R_alloc(n, sizeof(double)); // will store the currently used column of WH
 
 	// Compute update of H column by column
-	for(int jH=0; jH < p; jH++){
+	for(int jH=0; jH < p; ++jH){
 
-		for (int iH=0; iH < r; iH++){ // compute value for H_ij
+		for (int iH=0; iH < vr; ++iH){ // compute value for H_ij (non-fixed terms only)
 
 			// initialise values
 			double tmp_res = 0.0;
@@ -128,7 +140,8 @@ static SEXP divergence_update_H ( T_Rnumeric* pV, SEXP w, SEXP h, int dup=1)
  * @param pV target matrix
  * @param w basis vector matrix to be updated
  * @param h mixture coefficient matrix
- * @param limInf limit inf for the updated entries. Applied only if limInf > 0
+ * @param nbterms number of fixed basis terms
+ * @param ncterms number of fixed coefficient terms
  * @param dup boolean (flag) that specifies if the update must be perform directly on h or
  * on a duplicated version of h
  *
@@ -137,7 +150,7 @@ static SEXP divergence_update_H ( T_Rnumeric* pV, SEXP w, SEXP h, int dup=1)
  */
 
 template <typename T_Rnumeric>
-static SEXP divergence_update_W ( T_Rnumeric* pV, SEXP w, SEXP h, int dup=1)
+static SEXP divergence_update_W ( T_Rnumeric* pV, SEXP w, SEXP h, int nbterms=0, int ncterms=0, int dup=1)
 {
 
 	SEXP res;

@@ -34,6 +34,11 @@
 \section{Methods}{
   \describe{
 
+  \item{.getRNG}{\code{signature(object = "NMFfitXn")}:
+  Returns the RNG settings used for the best fit.
+
+  This method throws an error if the object is empty. }
+
   \item{algorithm}{\code{signature(object = "NMFfitXn")}:
   Returns the name of the common NMF algorithm used to
   compute all fits stored in \code{object}
@@ -78,11 +83,6 @@
   the best NMF fit object amongst all the fits stored in
   \code{object}, i.e. the fit that achieves the lowest
   estimation residuals. }
-
-  \item{.getRNG}{\code{signature(object = "NMFfitXn")}:
-  Returns the RNG settings used for the best fit.
-
-  This method throws an error if the object is empty. }
 
   \item{getRNG1}{\code{signature(object = "NMFfitXn")}:
   Returns the RNG settings used for the first run.
@@ -174,7 +174,7 @@ seqtime(res)
 \dontrun{ consensusmap(res, annCol=groups) }
 }
 \seealso{
-  Other multipleNMF: \code{\link{NMFfitX1-class}},
-  \code{\link{NMFfitX-class}}
+  Other multipleNMF: \code{\link{NMFfitX-class}},
+  \code{\link{NMFfitX1-class}}
 }
 

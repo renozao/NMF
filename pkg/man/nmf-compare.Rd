@@ -1,10 +1,10 @@
 \docType{methods}
 \name{compare-NMF}
+\alias{compare,NMFfit-method}
 \alias{compare,list-method}
 \alias{compare-NMF}
-\alias{compare,NMFfit-method}
-\alias{consensusmap,list-method}
 \alias{consensusmap,NMF.rank-method}
+\alias{consensusmap,list-method}
 \alias{plot,NMFList,missing-method}
 \alias{summary,NMFList-method}
 \title{Comparing Results from Different NMF Runs}

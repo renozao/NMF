@@ -51,7 +51,7 @@ NULL
 #' 	isNMFfit(list(res, resm, resM, 'not a result'), recursive=FALSE)
 #' 	 
 isNMFfit <- function(object, recursive=TRUE){
-	res <- is(object, 'NMFfitX') || is(object, 'NMFfit')
+	res <- is(object, 'NMFfit') || is(object, 'NMFfitX')
 	# if the object is not a NMF result: apply to each element if a list (only in recursive mode)
 	if( !res  && recursive && is.list(object) )
 		sapply(object, isNMFfit)
@@ -746,27 +746,43 @@ setMethod('nbasis', signature(x='NMFfitXn'),
 setMethod('dim', signature(x='NMFfitXn'), 
 	function(x){
 		if( length(x) == 0 ) return(NULL)
-		return( dim(x[[1]]) )
+		return( dim(x[[1L]]) )
 	}
 )
 
 #' Returns the coefficient matrix of the best fit amongst all the fits stored in 
 #' \code{object}.
 #' It is a shortcut for \code{coef(fit(object))}.  
-setMethod('.coef', signature(object='NMFfitXn'), 
-		function(object){
-			.coef(fit(object))
-		}
+setMethod('coef', signature(object='NMFfitXn'), 
+	function(object, ...){
+		coef(fit(object), ...)
+	}
 )
 
 #' Returns the basis matrix of the best fit amongst all the fits stored in 
 #' \code{object}.
 #' It is a shortcut for \code{basis(fit(object))}.
-setMethod('.basis', signature(object='NMFfitXn'), 
-	function(object){
-		.basis(fit(object))
+setMethod('basis', signature(object='NMFfitXn'), 
+	function(object, ...){
+		basis(fit(object), ...)
 	}
 )
+
+#' Method for multiple NMF fit objects, which returns the indexes of fixed basis 
+#' terms from the best fitted model.
+setMethod('ibterms', 'NMFfitX', 
+	function(object){
+		ibterms(fit(object))
+	}
+)
+#' Method for multiple NMF fit objects, which returns the indexes of fixed 
+#' coefficient terms from the best fitted model.
+setMethod('icterms', 'NMFfit', 
+	function(object){
+		icterms(fit(object))
+	}
+)
+
 
 #' Returns the number of runs performed to compute the fits stored in the list 
 #' (i.e. the length of the list itself).
@@ -1591,20 +1607,21 @@ setMethod('metaHeatmap', signature(object='NMFfitX'),
 #' \code{consensusmap} redefines default values for the following arguments of
 #' \code{\link{aheatmap}}:
 #' \itemize{
-#' \item the color palette;
+#' \item the colour palette;
 #' \item the column ordering which is set equal to the row ordering, since
-#' a consensus matrix is symetric;
+#' a consensus matrix is symmetric;
 #' \item the distance and linkage methods used to order the rows (and columns).
 #' The default is to use 1 minus the consensus matrix itself as distance, and 
 #' average linkage. 
-#' \item the addition of two default named annotation tracks, \code{'basis'} and 
-#' \code{'consensus'}, that show, for each column (i.e. each sample), 
+#' \item the addition of two special named annotation tracks, \code{':basis'} and 
+#' \code{':consensus'}, that show, for each column (i.e. each sample), 
 #' the dominant basis component in the best fit and the hierarchical clustering
 #' of the consensus matrix respectively (using 1-consensus as distance and average 
 #' linkage). 
 #' 
-#' This track is specified in argument \code{annCol}, which behaves like 
-#' argument \code{annRow} in \code{\link{basismap}}. 
+#' These tracks are specified in argument \code{annCol}, which behaves like 
+#' argument \code{annRow} in \code{\link{basismap}}.
+#' 
 #' \item a suitable title and extra information like the type of NMF model or the 
 #' fitting algorithm, when \code{object} is a fitted NMF model. 
 #' }  
@@ -1615,7 +1632,7 @@ setMethod('metaHeatmap', signature(object='NMFfitX'),
 setGeneric('consensusmap', function(object, ...) standardGeneric('consensusmap') )
 #' Plots a heatmap of the consensus matrix obtained when fitting an NMF model with multiple runs. 
 setMethod('consensusmap', 'NMFfitX', 
-	function(object, ..., annCol=c('basis', 'consensus'), main = 'Consensus matrix', info = FALSE){
+	function(object, ..., annCol=c(':basis', ':consensus'), main = 'Consensus matrix', info = FALSE){
 			
 		# add side information if requested
 		info <- if( isTRUE(info) ){
@@ -1630,25 +1647,11 @@ setMethod('consensusmap', 'NMFfitX',
 		
 		# process annotation tracks
 		if( length(annCol) > 0L && !isNA(annCol) ){
-			
-			# match against supported tracks
-			itr <- match_named_track(annCol, c('basis', 'consensus'), "NMF::consensusmap")
-			# create extra annotation tracks
-			tr <- 
-			if( length(itr$tracks) ){
-				# remove track from annotation specification
-				annCol <- itr$ann
-				# compute track
-				sapply( itr$tracks, function(t){
-					switch(t
-					, consensus = predict(object, 'cmap')
-					, basis = predict(object)
-					, stop("NMF::consensusmap - invalid annotation track: '", t, "'")
-					)
-				}, simplify=FALSE)
-			}
-			# convert into annotation tracks now
-			annCol <- atrack(tr, annCol, .DATA=amargin(x,2L))
+			annCol <- atrack(annCol, .DATA=amargin(x,2L)
+						, .SPECIAL = list(
+							basis = function() predict(object)
+							, consensus = function() predict(object, what='cmap')
+						))
 		}
 		##
 					
@@ -1762,31 +1765,18 @@ setMethod('basismap', signature(object='NMFfitX'),
 
 #' Plots a heatmap of the coefficient matrix of the best fit in \code{object}.
 setMethod('coefmap', signature(object='NMFfitX'),
-	function(object, ..., Colv=TRUE, annCol=c('basis', 'consensus')){
+	function(object, ..., Colv=TRUE, annCol=c(':basis', ':consensus')){
 		
 		x <- minfit(object)
 		
 		# process annotation tracks
 		if( length(annCol) > 0L && !isNA(annCol) ){
 			
-			# match against supported tracks
-			itr <- match_named_track(annCol, c('basis', 'consensus'), "NMF::coefmap")
-			# create extra annotation tracks
-			tr <- 
-			if( length(itr$tracks) ){
-				# remove track from annotation specification
-				annCol <- itr$ann
-				# compute track
-				sapply( itr$tracks, function(t){
-					switch(t
-					, consensus = predict(object, 'cmap')
-					, annotationTrack(t)
+			annCol <- atrack(annCol, .DATA=amargin(x,2L)
+					, .SPECIAL = list(
+						consensus = function() predict(object, what='cmap')
 					)
-				}, simplify=FALSE)
-			}
-			
-			# convert into annotation tracks now
-			annCol <- atrack(tr, annCol, .DATA=amargin(x,2L))
+			)
 		}
 		##
 		

@@ -205,29 +205,35 @@ test.zzz.all <- function(){
 	set.seed(123)
 	# create a random target matrix
 	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m, noise=TRUE)
+	V <- syntheticNMF(n, r, m)
 	
 	# list the available algorithms
 	algorithms <- nmfAlgorithm()
-	algorithms <- algorithms[!algorithms %in% c('ls-nmf', 'pe-nmf')]
+	algorithms <- algorithms[!algorithms %in% c('ls-nmf', 'pe-nmf', 'siNMF')]
 	# list the available seeding methods
 	seed.methods <- nmfSeed()
 	seed.methods <- seed.methods[which(seed.methods != 'none')]
 	
-	test_algo <- function(name.algo, ...){
+	test_algo <- function(name.algo, ..., target_rank=r){
 		sapply(seed.methods,
 				function(name.seed, ...){
 					message("\n###########\n# ", name.algo, " + ", name.seed, "\n#############")
-					err <- try(obj <- nmf(V, r, name.algo, seed=name.seed, ...))
+					err <- try(obj <- nmf(..., method=name.algo, seed=name.seed))
 					checkTrue( !is(err, 'try-error'), paste('Run OK - Algo:', name.algo, '+ Seed:', name.seed, if( is(err, 'try-error') ) paste('[Error: ', err, ']') else NULL) )
-					check.seed(paste('Algo:', name.algo, '+ Seed:', name.seed), obj, V, r, name.seed, 'NMF', exact.class=FALSE)							
+					check.seed(paste('Algo:', name.algo, '+ Seed:', name.seed), obj, V, target_rank, name.seed, 'NMF', exact.class=FALSE)							
 				}
 		, ...)
 	}
 	
-	sapply(algorithms, test_algo)
-	test_algo('pe-nmf', alpha=1, beta=0.1)
-	test_algo('ls-nmf', weight=rmatrix(V))
+	# all algorithms
+	sapply(algorithms, test_algo, V, r)
+	# PE-NMF
+	test_algo('pe-nmf', V, r, alpha=1, beta=0.1)
+	# LS-NMF
+	test_algo('ls-nmf', V, r, weight=rmatrix(V))
+	# siNMF
+	g <- gl(2, m/2)
+	test_algo('siNMF', V ~ g, r, target_rank=r+2)
 }
 
 

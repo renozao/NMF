@@ -63,10 +63,10 @@ setOldClass('proc_time', prototype=numeric())
 #' 
 #' @slot misc A list that is used internally to temporarily store algorithm 
 #' parameters during the computation.
-#' @slot fbasis a \code{data.frame} that contains primary data for fixed 
-#' basis terms. See \code{\link{fbasis}}.
-#' @slot fcoef  a \code{data.frame} that contains primary data for fixed 
-#' coefficient terms. See \code{\link{fcoef}}.
+#' @slot bterms a \code{data.frame} that contains primary data for fixed 
+#' basis terms. See \code{\link{bterms}}.
+#' @slot cterms  a \code{data.frame} that contains primary data for fixed 
+#' coefficient terms. See \code{\link{cterms}}.
 #' 
 #' @family NMF-interface 
 #' 
@@ -171,8 +171,6 @@ setOldClass('proc_time', prototype=numeric())
 setClass('NMF'
 		, representation(
 			misc = 'list' # misceleneaous data used during fitting
-			, fbasis = 'data.frame' # fixed basis terms: nrow(fbasis) = nrow(x)
-			, fcoef = 'data.frame' # fixed coef terms: ncol(fcoef) = ncol(x)
 		)
 		, contains = 'VIRTUAL')
 
@@ -224,28 +222,28 @@ setMethod('fitted', signature(object='NMF'),
 #' 
 #' @param object an object from which to extract the factor matrices, typically an 
 #' object of class \code{\linkS4class{NMF}}.
-#' @param ... extra arguments to allow extension
+#' @param all a logical that indicates whether the complete matrix should be 
+#' returned (\code{TRUE}) or only the non-fixed part, which is relevant only for 
+#' formula-based NMF models that include fixed basis or coefficient terms. 
+#' @param ... extra arguments to allow extension and passed to the low-level 
+#' access functions \code{.coef} and \code{.basis}. 
 #'   
 #' @rdname basis-coef-methods
 #' @family NMF-interface
 #' @export
 #'  
 setGeneric('basis', function(object, ...) standardGeneric('basis') )
-#'
 #' @param all logical that indicates if all coefficient/basis should be returned 
 #' (\code{TRUE}) or only non-fixed ones.
 #' @inline
 setMethod('basis', signature(object='NMF'),
 	function(object, all=TRUE, ...){
-		if( all || !(nf <- nfixedBasis(object)) ){
+		if( all || !length(i <- ibterms(object)) ){
 			# return all coefficients
 			.basis(object, ...)
 		} else {
-			# return only variable coefficients
-			res <- .basis(object, ...)
-			n <- ncol(res)
-			# remove fixed basis which are stacked at the end
-			res[, -((n-nf+1):n)]
+			# remove fixed basis
+			.basis(object, ...)[, -i]
 		}
 	}
 )
@@ -279,7 +277,13 @@ setGeneric('basis<-', function(object, value) standardGeneric('basis<-') )
 #' updated object. 
 setReplaceMethod('basis', signature(object='ANY', value='ANY'), 
 	function(object, value){
-		.basis(object) <- value
+		
+		# only set non-fixed terms
+		if( !nbterms(object) ) .basis(object) <- value
+		else{
+			i <- ibasis(object)
+			.basis(object)[,i] <- value[, i]
+		}
 		# check object validity
 		validObject(object)
 		object
@@ -295,24 +299,6 @@ setReplaceMethod('.basis', signature(object='NMF', value='matrix'),
 		stop("NMF::.basis<- is a pure virtual method of interface 'NMF'. It should be overloaded in class '", class(object),"'.")
 	} 
 )
-
-#' \code{fbasis} returns the primary data for fixed basis terms 
-#' in an NMF model -- as stored in slot \code{fbasis}.
-#' These are factors or numeric vectors which define fixed basis components, 
-#' e.g., used to incorporate external covariate measurements.
-#' 
-#' @export
-#' @rdname basis-coef-methods
-fbasis <- function(object, ...){
-	object@fbasis
-}
-
-#' \code{nfbasis} returns the number of fixed basis terms in an NMF model.
-#' @export
-#' @rdname basis-coef-methods
-nfbasis <- function(object, ...){
-	length(fbasis(object, ...))
-}
 
 #' @export
 setGeneric('loadings', package='stats')
@@ -352,17 +338,12 @@ setGeneric('coef', package='stats')
 setMethod('coef', 'NMF',
 	function(object, all=TRUE, ...){
 		
-		if( all || !(nc <- nfixedCoef(object)) ){
+		if( all || !length(i <- icterms(object)) ){
 			# return all coefficients
 			.coef(object, ...)
 		} else {
-			# return only variable coefficients
-			res <- .coef(object, ...)
-			nf <- nfixed(object)
-			nv <- nrow(res) - nf
-			# remove fixed coefficients which are stored before the coefficients 
-			# for fixed basis components
-			res[-((nv+1):(nv+nc)), ]
+			# remove fixed coefficients
+			.coef(object, ...)[-i, ]
 		}
 		
 	}
@@ -389,7 +370,13 @@ setGeneric('coef<-', function(object, value) standardGeneric('coef<-') )
 #' updated object. 
 setReplaceMethod('coef', signature(object='ANY', value='ANY'), 
 	function(object, value){
-		.coef(object) <- value
+		
+		# only set non-fixed terms
+		if( !ncterms(object) ) .coef(object) <- value
+		else{
+			i <- icoef(object)
+			.coef(object)[i, ] <- value[i, ]
+		}
 		# check object validity
 		validObject(object)
 		object
@@ -406,19 +393,6 @@ setReplaceMethod('.coef', signature(object='NMF', value='matrix'),
 	} 
 )
 
-
-#' \code{fcoef} returns the primary data for fixed basis terms 
-#' in an NMF model -- as stored in slot \code{fcoef}.
-#' These are factors or numeric vectors which define fixed coefficients,
-#' e.g., used for defining separate offsets for different groups of samples, 
-#' or to correct for some known covariate.
-#' 
-#' @export
-#' @rdname basis-coef-methods
-fcoef <- function(object, ...){
-	
-}
-
 #' @description Methods \code{coefficients} and \code{coefficients<-} are 
 #' simple aliases for methods \code{coef} and \code{coef<-} respectively.
 #' 
@@ -426,6 +400,7 @@ fcoef <- function(object, ...){
 #' @rdname basis-coef-methods
 setGeneric('coefficients', package='stats')
 #' Alias to \code{coef,NMF}, therefore also pure virtual.
+#' @inline
 setMethod('coefficients', signature(object='NMF'), selectMethod('coef', 'NMF'))
 
 #' @description \code{scoef} is similar to \code{coef}, but returns the mixture 
@@ -694,541 +669,38 @@ isNMFclass <- function(x){
 
 ################################
 
-
-#' Factory Methods NMF Models
-#'
-#' \code{nmfModel} is a S4 generic function which provides a convenient way to 
-#' build NMF models. 
-#' It implements a unified interface for creating \code{NMF} objects from any 
-#' NMF models, which is designed to resolve potential dimensions inconsistencies.
-#' 
-#' All \code{nmfModel} methods return an object that inherits from class \code{NMF}, 
-#' that is suitable for seeding NMF algorithms via arguments \code{rank} or 
-#' \code{seed} of the \code{\link{nmf}} method, in which case the factorisation 
-#' rank is implicitly set by the number of basis components in the seeding 
-#' model (see \code{\link{nmf}}).
-#' 
-#' For convenience, shortcut methods and internal conversions for working on 
-#' \code{data.frame} objects directly are implemented.
-#' However, note that conversion of a \code{data.frame} into a \code{matrix} 
-#' object may take some non-negligible time, for large datasets. 
-#' If using this method or other NMF-related methods several times, consider 
-#' converting your data \code{data.frame} object into a matrix once for good, 
-#' when first loaded.
-#' 
-#' @param rank specification of the target factorization rank 
-#' (i.e. the number of components). 
-#' @param target an object that specifies the dimension of the estimated target matrix.
-#' @param ... extra arguments to allow extension, that are passed down to the 
-#' workhorse method \code{nmfModel,numeric.numeric}, where they are used to 
-#' initialise slots specific to the instantiating NMF model class.
-#'
-#' @return an object that inherits from class \code{\linkS4class{NMF}}. 
-#' @family NMF-interface
-#' @export
-#' @inline
-setGeneric('nmfModel', function(rank, target=0L, ...) standardGeneric('nmfModel'))
-
-#' Main factory method for NMF models
-#' 
-#' This method is the workhorse method that is eventually called by all other methods.
-#' See section \emph{Main factory method} for more details.
-#' 
-#' @param ncol a numeric value that specifies the number 
-#' of columns of the target matrix, fitted the NMF model.
-#' It is used only if not missing and when argument \code{target} is a single 
-#' numeric value.
-#' @param model the class of the object to be created. 
-#' It must be a valid class name that inherits from class \code{NMF}. 
-#' Default is the standard NMF model \code{\linkS4class{NMFstd}}.
-#' @param W value for the basis matrix. 
-#' \code{data.frame} objects are converted into matrices with \code{\link{as.matrix}}.
-#' @param H value for the mixture coefficient matrix
-#' \code{data.frame} objects are converted into matrices with \code{\link{as.matrix}}.
-#' @param force.dim logical that indicates whether the method should try 
-#' lowering the rank or shrinking dimensions of the input matrices to 
-#' make them compatible 
-#' @param order.basis logical that indicates whether the basis components should
-#' reorder the rows of the mixture coefficient matrix to match the order of the 
-#' basis components, based on their respective names. It is only used if the 
-#' basis and coefficient matrices have common unique column and row names 
-#' respectively.
-#' 
-#' @section Main factory method:
-#' The main factory engine of NMF models is implemented by the method with 
-#' signature \code{numeric, numeric}.
-#' Other factory methods provide convenient ways of creating NMF models from e.g. a 
-#' given target matrix or known basis/coef matrices (see section \emph{Other Factory Methods}). 
-#' 
-#' This method creates an object of class \code{model}, using the extra 
-#' arguments in \code{...} to initialise slots that are specific to the given model.
-#' 
-#' All NMF models implement get/set methods to access the matrix factors 
-#' (see \code{\link{basis}}), which are called to initialise them from arguments 
-#' \code{W} and \code{H}.
-#' These argument names derive from the definition of all built-in models that 
-#' inherit derive from class \code{\linkS4class{NMFstd}}, which has two slots, 
-#' \var{W} and \var{H}, to hold the two factors -- following the notations used 
-#' in \cite{Lee1999}.
-#' 
-#' If argument \code{target} is missing, the method creates a standard NMF 
-#' model of dimension 0x\code{rank}x0.
-#' That is that the basis and mixture coefficient matrices, \var{W} and \var{H}, 
-#' have dimension 0x\code{rank} and \code{rank}x0 respectively.
-#' 
-#' If target dimensions are also provided in argument \code{target} as a 
-#' 2-length vector, then the method creates an \code{NMF} object compatible to 
-#' fit a target matrix of dimension \code{target[1]}x\code{target[2]}.
-#' That is that the basis and mixture coefficient matrices, \var{W} and \var{H}, 
-#' have dimension \code{target[1]}x\code{rank} and \code{rank}x\code{target[2]} 
-#' respectively.
-#' The target dimensions can also be specified using both arguments \code{target} 
-#' and \code{ncol} to define the number of rows and the number of columns of the 
-#' target matrix respectively.
-#' If no other argument is provided, these matrices are filled with NAs.
-#' 
-#' If arguments \code{W} and/or \code{H} are provided, the method creates a NMF 
-#' model where the basis and mixture coefficient matrices, \var{W} and \var{H}, 
-#' are initialised using the values of \code{W} and/or \code{H}.
-#' 
-#' The dimensions given by \code{target}, \code{W} and \code{H}, must be compatible.
-#' However if \code{force.dim=TRUE}, the method will reduce the dimensions to the achieve 
-#' dimension compatibility whenever possible.
-#' 
-#' When \code{W} and \code{H} are both provided, the \code{NMF} object created is 
-#' suitable to seed a NMF algorithm in a call to the \code{\link{nmf}} method.
-#' Note that in this case the factorisation rank is implicitly set by the number 
-#' of basis components in the seed.
-#' 
-#' @examples 
-#'
-#' # data
-#' n <- 20; r <- 3; p <- 10  
-#' V <- rmatrix(n, p) # some target matrix
-#' 
-#' # create a r-ranked NMF model with a given target dimensions n x p as a 2-length vector
-#' nmfModel(r, c(n,p)) # directly
-#' nmfModel(r, dim(V)) # or from an existing matrix <=> nmfModel(r, V)
-#' # or alternatively passing each dimension separately
-#' nmfModel(r, n, p)
-#' 
-#' # trying to create a NMF object based on incompatible matrices generates an error
-#' w <- rmatrix(n, r) 
-#' h <- rmatrix(r+1, p)
-#' try( new('NMFstd', W=w, H=h) )
-#' try( nmfModel(w, h) )
-#' try( nmfModel(r+1, W=w, H=h) )
-#' # The factory method can be force the model to match some target dimensions
-#' # but warnings are thrown
-#' nmfModel(r, W=w, H=h)
-#' nmfModel(r, n-1, W=w, H=h)
-#' 
-setMethod('nmfModel', signature(rank='numeric', target='numeric'),
-	function(rank, target, ncol=NULL, model='NMFstd', W, H, ..., force.dim=TRUE, order.basis=TRUE){
-		
-		# check validity of the provided class
-		if( !isClass(model) ) stop("nmfModel - Invalid model name: class '", model,"' is not defined.")
-		if( !extends(model, 'NMF') ) stop("nmfModel - Invalid model name: class '", model,"' does not extend class 'NMF'.")
-		
-		# check the validity of the target
-		if( length(target) == 0 ) stop('nmfModel - Invalid dimensions: `target` must be at least of length 1')
-		if( length(target) > 2 ) stop('nmfModel - Invalid dimensions: `target` must be at most of length 2')
-		if( !missing(ncol) && !is.null(ncol) && (!is.vector(ncol) || length(ncol) > 1 || !is.numeric(ncol) || ncol<0 ) )
-			stop('nmfModel - Invalid dimensions: `ncol` must be a single nonnegative integer')
-				
-		# compute the target dimension
-		target <- as.integer(target)
-		n <- target[1]
-		m <- if( length(target) == 2 ) target[2] 
-			 else if( !missing(ncol) && !is.null(ncol) ) ncol
-			 else if( !missing(H) ) ncol(H)
-	 		 else n 
-	 	if( n < 0 )
-			stop("nmfModel - Invalid target number of rows: nonnegative value expected")
-		if( m < 0 )
-			stop("nmfModel - Invalid target number of columns: nonnegative value expected")
-		# force rank to be an integer
-		r <- as.integer(rank)
-		
-		# check the validity of the rank
-		if( length(r) != 1 ) stop("Invalid argument 'rank': single numeric expected")
-		if( r < 0 ) stop("nmfModel - Invalid argument 'rank': nonnegative value expected")
-		
-		# do not allow dimension incompatibility if required
-		if( !force.dim && !missing(W) && !missing(H) && ncol(W) != nrow(H) ){
-			stop('nmfModel - Invalid number of columns in the basis matrix [', ncol(W), ']: '
-						, 'it should match the number of rows in the mixture coefficient matrix [', nrow(H), ']')
-		}
-				
-		# build dummy compatible W and H if necessary
-		W.was.missing <- FALSE
-		if( missing(W) ){
-			W <- matrix(NA, n, r)
-			W.was.missing <- TRUE
-		}
-		else{
-			if( is.vector(W) ) # convert numerical vectors into a matrix
-				W <- matrix(W, n, r)
-			else if( is.data.frame(W) ) # convert data.frame into matrix
-				W <- as.matrix(W) 
-			
-			if( r == 0 ) r <- ncol(W)
-			else if( r < ncol(W) ){
-				if( !force.dim ){
-					stop('nmfModel - Invalid number of columns in the basis matrix [', ncol(W), ']: ',
-							'it should match the factorization rank [', r, ']')
-				}
-				warning("Objective rank is [",r,"] lower than the number of columns in W [",ncol(W),"]: "
-						, "only the first ", r," columns of W will be used")
-				W <- W[,1:r, drop=FALSE]				
-			}
-			else if( r > ncol(W) ){
-				stop("nmfModel - Objective rank [",r,"] is greater than the number of columns in W [",ncol(W),"]")
-			}
-			
-			# resolve consistency with target
-			if( n == 0 ) n <- nrow(W)
-			else if( n < nrow(W) ){
-				if( !force.dim ){
-					stop('nmfModel - Invalid number of rows in the basis matrix [', nrow(W), ']: '
-							, 'it should match the target number of rows [', n, ']')
-				}
-				
-				warning("nmfModel - Number of rows in target is lower than the number of rows in W [",nrow(W),"]: ",
-							"only the first ", n," rows of W will be used")
-				W <- W[1:n, , drop=FALSE]				
-			}
-			else if( n > nrow(W) ){
-				stop("nmfModel - Number of rows in target [",n,"] is greater than the number of rows in W [",nrow(W),"]")
-			}
-		}
-		
-		if( missing(H) ) 
-			H <- matrix(NA, ncol(W), m)
-		else{
-			# convert numerical vectors into a matrix
-			if( is.vector(H) )
-				H <- matrix(H, r, m)
-			else if( is.data.frame(H) ) # convert data.frame into matrix
-				H <- as.matrix(H)
-			
-			if( r == 0 ) r <- nrow(H)
-			else if( r < nrow(H) ){
-				if( !force.dim ){
-					stop('nmfModel - Invalid number of rows in the mixture coefficient matrix [', nrow(H), ']: '
-						, 'it should match the factorization rank [', r, ']')
-				}
-				warning("nmfModel - Objective rank [",r,"] is lower than the number of rows in H [",nrow(H),"]: "
-								, "only the first ", r," rows of H  will be used")
-				H <- H[1:r,, drop=FALSE]				
-			}
-			else if( r > nrow(H) ) stop("nmfModel - Objective rank [",r,"] is greater than the number of rows in H [",nrow(H),"]")
-			# force dummy W to be at least compatible with H
-			if( W.was.missing ) W <- matrix(NA, n, r)
-
-			# resolve consistency with target
-			if( m == 0 ) m <- ncol(H)
-			else if( m < ncol(H) ){
-				if( !force.dim ){
-					stop('nmfModel - Invalid number of columns in the mixture coefficient matrix [', ncol(H), ']:'
-						, ' it should match the target number of columns [', m, ']')
-				}
-				
-				warning("nmfModel - Number of columns in target is lower than the number of columns in H [",ncol(H),"]:"
-								, " only the first ", m," columns of H will be used")
-				H <- H[, 1:m, drop=FALSE]				
-			}
-			else if( m > ncol(H) ){ 
-				stop("nmfModel - Number of columns in target [",m,"]"
-						," is greater than the number of columns in H [",ncol(H),"]")
-			}
-		}
-		
-		# check validity of matrices W and H (only if one of the target dimension is not null)
-		if( n + m > 0 ){
-			if( nrow(W) != n ) stop('nmfModel - Invalid number of rows for W: should match number of rows in target [', n, ']')
-			if( ncol(W) != r ) stop('nmfModel - Invalid number of columns for W: should match factorization rank [', r, ']')
-			if( nrow(H) != r ) stop('nmfModel - Invalid number of rows for H: should match factorization rank [', r, ']')
-			if( ncol(H) != m ) stop('nmfModel - Invalid number of columns for H: should match number of columns in target [', m, ']')
-		}
-		
-		# build and return a dummy NMF object
-		nmf.debug('nmfModel', "Instantiate NMF model:", model)
-		res <- new(model, ...)
-		nmf.debug('nmfModel', "Set factors in model:", model)
-		# set the dimnames if possible
-		cW <- !is.null(colnames(W))
-		rH <- !is.null(rownames(H))
-		if( cW && !rH )# use colnames of W as basisnames
-			rownames(H) <- colnames(W)
-		else if( !cW && rH )# use rownames of H as basisnames
-			colnames(W) <- rownames(H)
-		else if( cW && rH ){# try to match names or use colnames of W (with a warning)
-			
-			# reorder as in the basis matrix if it makes sense, i.e. if the names are the same
-			if( order.basis && !anyDuplicated(rownames(H)) && length(setdiff(rownames(H), colnames(W)))==0 ){ 
-				H <- H[match(rownames(H), colnames(W)),]
-			}
-			else{
-				rownames(H) <- colnames(W)
-				warning("nmfModel - The rownames of the mixture matrix were set to match the colnames of the basis matrix")
-			}
-			
-		}
-		# set the basis and coef matrices
-		.basis(res) <- W; .coef(res) <- H
-		
-		# check validity
-		validObject(res)
-		
-		# return the model
-		res
-	}
-)
-
-#' Creates an empty NMF model of a given rank.
-#' 
-#' This call is equivalent to \code{nmfModel(rank, 0L, ...)}, which 
-#' creates \emph{empty} \code{NMF} object with a basis and mixture coefficient matrix  
-#' of dimension 0 x \code{rank} and \code{rank} x 0 respectively.
-#' 
-#' @seealso \code{\link{is.empty.nmf}}
-#' @examples 
-#' ## Empty model of given rank
-#' nmfModel(3)
-#'  
-setMethod('nmfModel', signature(rank='numeric', target='missing'),
-		function(rank, target, ...){
-			nmfModel(rank, 0L, ...)
-		}
-)
-
-#' Creates an empty NMF model of null rank and a given dimension. 
-#' 
-#' This call is equivalent to \code{nmfModel(0, target, ...)}.
-#' 
-#' @examples 
-#' nmfModel(target=10) #square
-#' nmfModel(target=c(10, 5))
-#' 
-setMethod('nmfModel', signature(rank='missing', target='ANY'),
-		function(rank, target, ...){
-			nmfModel(0L, target, ...)
-		}
-)
-
-#' Creates an empty NMF model of null rank and given dimension. 
-#' 
-#' This call is equivalent to \code{nmfModel(0, target, ...)}, and is meant for 
-#' internal usage only.
-setMethod('nmfModel', signature(rank='NULL', target='ANY'),
-		function(rank, target, ...){
-			nmfModel(0L, target, ...)
-		}
-)
-
-#' Creates an empty NMF model or from existing factors
-#' 
-#' This method is equivalent to \code{nmfModel(0, 0, ..., force.dim=FALSE)}.	
-#' This means that the dimensions of the NMF model will be taken from the optional 
-#' basis and mixture coefficient arguments \code{W} and \code{H}.
-#' An error is thrown if their dimensions are not compatible.
-#' 
-#' Hence, this method may be used to generate an NMF model from existing factor 
-#' matrices, by providing the named arguments \code{W} and/or \code{H}: 
-#' 
-#' \code{nmfModel(W=w)} or \code{nmfModel(H=h)} or \code{nmfModel(W=w, H=h)} 
-#' 
-#' Note that this may be achieved using the more convenient interface is 
-#' provided by the method \code{nmfModel,matrix,matrix} (see its dedicated description).
-#' 
-#' See the description of the appropriate method below.
-#' 
-#' @examples 
-#' 
-#' # Build an empty NMF model 
-#' nmfModel()
-#' 
-#' # create a NMF object based on one random matrix: the missing matrix is deduced
-#' # Note this only works when using factory method NMF 
-#' n <- 50; r <- 3; 
-#' w <- rmatrix(n, r) 
-#' nmfModel(W=w)
-#' 
-#' # create a NMF object based on random (compatible) matrices
-#' p <- 20
-#' h <- rmatrix(r, p)
-#' nmfModel(H=h)
-#' 
-#' # specifies two compatible matrices
-#' nmfModel(W=w, H=h)
-#' # error if not compatible
-#' try( nmfModel(W=w, H=h[-1,]) ) 
-#' 
-setMethod('nmfModel', signature(rank='missing', target='missing'),
-		function(rank, target, ...){
-			# build an a priori empty model (extra args may provide the true dimension)
-			# NB: do not allow dimension incompatibilities
-			nmfModel(0L, 0L, ..., force.dim=FALSE)
-		}
-)
-
-#' Creates an NMF model compatible with a target matrix.
-#' 
-#' This call is equivalent to \code{nmfModel(rank, dim(target), ...)}.
-#' That is that the returned NMF object fits a target matrix of the same 
-#' dimension as \code{target}.
-#' 
-#' Only the dimensions of \code{target} are used to construct the \code{NMF} object. 
-#' The matrix slots are filled with \code{NA} values if these are not specified 
-#' in arguments \code{W} and/or \code{H}.
-#' However, dimension names are set on the return NMF model if present in 
-#' \code{target} and argument \code{use.names=TRUE}.
-#' 
-#' @param  use.names a logical that indicates whether the dimension names of the 
-#' target matrix should be set on the returned NMF model. 
-#' 
-#' @inline
-#' @examples
-#'  
-#' # create a r-ranked NMF model compatible with a given target matrix
-#' obj <- nmfModel(r, V)
-#' all(is.na(basis(obj)))
-#' 
-setMethod('nmfModel', signature(rank='numeric', target='matrix'),
-		function(rank, target, ..., use.names=TRUE){
-			# build an object compatible with the target's dimensions
-			res <- nmfModel(rank, dim(target), ...)
-			
-			# try to set dimnames if it makes sense: 
-			# set on target and not somehow already set on the result
-			if( use.names && !is.null(dimnames(target)) ){
-				dn <- dimnames(res)
-				if( is.null(dn) )
-					dn <- list(NULL, NULL, NULL)
-				if( is.null(rownames(res)) && !is.null(rownames(target)) )
-					dimnames(res) <- c(dimnames(target)[1], dn[2:3])
-				if( is.null(colnames(res)) && !is.null(colnames(target)) )					
-					dimnames(res) <- c(dimnames(res)[1], dimnames(target)[2], dimnames(res)[3])				
-			}
-			res
-		}	
-)
-
-#' Creates an NMF model based on two existing factors.
-#' 
-#' This method is equivalent to \code{nmfModel(0, 0, W=rank, H=target..., force.dim=FALSE)}.
-#' This allows for a natural shortcut for wrapping existing \strong{compatible} 
-#' matrices into NMF models:
-#' \samp{nmfModel(w, h)}
-#' 
-#' Note that an error is thrown if their dimensions are not compatible.
-#' 
-#' @examples 
-#' ## From two existing factors
-#' 
-#' # allows a convenient call without argument names
-#' w <- rmatrix(n, 3); h <- rmatrix(3, p)
-#' nmfModel(w, h)
-#' 
-#' # Specify the type of NMF model (e.g. 'NMFns' for non-smooth NMF)
-#' mod <- nmfModel(w, h, model='NMFns')
-#' mod
-#' 
-#' # One can use such an NMF model as a seed when fitting a target matrix with nmf()
-#' V <- rmatrix(mod)
-#' res <- nmf(V, mod)
-#' nmf.equal(res, nmf(V, mod))
-#' 
-#' # NB: when called only with such a seed, the rank and the NMF algorithm 
-#' # are selected based on the input NMF model. 
-#' # e.g. here rank was 3 and the algorithm "nsNMF" is used, because it is the default 
-#' # algorithm to fit "NMFns" models (See ?nmf). 
-#' 
-setMethod('nmfModel', signature(rank='matrix', target='matrix'),
-		function(rank, target, ...){
-			# use rank and target as W and H respectively
-			# NB: do not allow dimension incompatibilities
-			nmfModel(0L, 0L, W=rank, H=target, ..., force.dim=FALSE)
-			
-		}	
-)
-
-#' Same as \code{nmfModel('matrix', 'matrix')} but for \code{data.frame} objects,
-#' which are generally produced by \code{\link{read.delim}}-like functions.
-#' 
-#' The input \code{data.frame} objects are converted into matrices with 
-#' \code{\link{as.matrix}}.
-setMethod('nmfModel', signature(rank='data.frame', target='data.frame'),
-	function(rank, target, ...){
-		nmfModel(as.matrix(rank), as.matrix(target), ...)
-	}
-)
-
-#' Creates an NMF model with arguments \code{rank} and \code{target} swapped.
-#' 
-#' This call is equivalent to \code{nmfModel(rank=target, target=rank, ...)}.
-#' This allows to call the \code{nmfModel} function with arguments \code{rank} 
-#' and \code{target} swapped. 
-#' It exists for convenience: 
-#' \itemize{
-#'  \item allows typing \code{nmfModel(V)} instead of \code{nmfModel(target=V)} to create 
-#' a model compatible with a given matrix \code{V} (i.e. of dimension \code{nrow(V), 0, ncol(V)})
-#' \item one can pass the arguments in any order (the one that comes to the user's mind first) 
-#' 	and it still works as expected.
-#' }
-#' 
-#' @examples
-#' ## swapped arguments `rank` and `target`
-#' V <- rmatrix(20, 10)
-#' nmfModel(V) # equivalent to nmfModel(target=V)
-#' nmfModel(V, 3) # equivalent to nmfModel(3, V) 
-#' 
-setMethod('nmfModel', signature(rank='matrix', target='ANY'),
-		function(rank, target, ...){
-			if( missing(target) ) target <- NULL
-			# call nmfModel with swapping the arguments
-			nmfModel(target, rank, ...)
-			
-		}	
-)
-
-#' Listing NMF Models
-#' 
-#' \code{nmfModels} lists all available NMF models currently defined that can be 
-#' used to create NMF objects, i.e. -- more or less -- all S4 classes that 
-#' inherit from class \code{\linkS4class{NMF}}.
-#' 
-#' @param builtin.only logical that indicates whether only built-in NMF models, 
-#' i.e. defined within the NMF package, should be listed.
-#' 
-#' @return a list
-#' 
-#' @export
-#' @family NMF-interface
-#' @rdname nmfModel
-#' @examples
-#' 
-#' # show all the NMF models available (i.e. the classes that inherit from class NMF)
-#' nmfModels()
-#' # show all the built-in NMF models available
-#' nmfModels(builtin.only=TRUE)
-#' 
-nmfModels <- function(builtin.only=FALSE){
-	
-	if( builtin.only ) return( .nmf.Models.Builtin )
-	
-	# return all subclasses of class 'NMF' (minus class 'NMFfit' and its subclasses)
-	models <- names(methods::getClass('NMF')@subclasses)
-	models.wraps <- c('NMFfit', names(methods::getClass('NMFfit')@subclasses))
-	return( models[!is.element(models, models.wraps)] )
-	
+# Taken from Biobase
+selectSome <- function (obj, maxToShow = 5) 
+{
+    len <- length(obj)
+    if (maxToShow < 3) 
+        maxToShow <- 3
+    if (len > maxToShow) {
+        maxToShow <- maxToShow - 1
+        bot <- ceiling(maxToShow/2)
+        top <- len - (maxToShow - bot - 1)
+        nms <- obj[c(1:bot, top:len)]
+        c(as.character(nms[1:bot]), "...", as.character(nms[-c(1:bot)]))
+    }
+    else if (is.factor(obj)) 
+        as.character(obj)
+    else obj
 }
 
-###% Initialization function for NMF models
-.nmf.Models.Builtin <- NULL
-.init.nmf.models <- function(){	
-	.nmf.Models.Builtin <<- nmfModels()
+
+.showFixedTerms <- function(x, ...){
+	
+	s <- 
+	sapply(x, function(t){
+		s <- 
+		if( is.factor(t) ) selectSome(levels(t), ...)
+		else selectSome(t, ...)
+		s <- str_out(s, Inf, quote=FALSE)
+		if( is.factor(t) )
+    		s <- str_c('<', s, ">")
+		s
+	})
+	paste(names(s), '=', s)
 }
 
 #' Show method for objects of class \code{NMF}
@@ -1240,6 +712,17 @@ setMethod('show', 'NMF',
 			cat("features:", nrow(object), "\n")
 			cat("basis/rank:", nbasis(object), "\n")
 			cat("samples:", ncol(object), "\n")
+			# show fixed terms
+			if( (n <- ncterms(object)) ){
+				cat("fixed coef [", n, "]:\n" 
+					, str_c('  ', .showFixedTerms(cterms(object), 4), collapse="\n")
+					, "\n", sep='')
+			}
+			if( (n <- nbterms(object)) ){
+				cat("fixed basis [", n, "]:\n" 
+						, str_c('  ', .showFixedTerms(bterms(object), 4), collapse="\n")
+						, "\n", sep='')
+			}
 			# show the miscellaneous model parameters
 			if( length(object@misc) > 0L ){
 				cat("miscellaneous:", str_desc(object@misc, exdent=12L), ". (use 'misc(object)')\n")
@@ -1436,8 +919,8 @@ setGeneric('basisnames<-', function(x, ..., value) standardGeneric('basisnames<-
 setReplaceMethod('basisnames', 'ANY', 
 	function(x, ..., value)
 	{
-		rownames(coef(x)) <- value
-		colnames(basis(x)) <- value
+		rownames(.coef(x)) <- value
+		colnames(.basis(x)) <- value
 		x
 	}
 )
@@ -1494,8 +977,8 @@ setReplaceMethod('dimnames', 'NMF',
 		else if( length(value)!=3 ) # check length of value
 			stop("NMF::dimnames - invalid argument 'value' [a 2 or 3-length list is expected]")
 		
-		dimnames(basis(x)) <- value[c(1,3)]		
-		dimnames(coef(x)) <- value[c(3,2)]		
+		dimnames(.basis(x)) <- value[c(1,3)]		
+		dimnames(.coef(x)) <- value[c(3,2)]		
 		x	
 	}
 )
@@ -1516,11 +999,14 @@ setReplaceMethod('dimnames', 'NMF',
 #' \itemize{ \item No index as in \code{x[]} or \code{x[,]}: the value is the
 #' object \code{x} unchanged.
 #' 
-#' \item One single index as in \code{x[i]}: the value is the basis matrix
-#' subset by \code{i}.  Precisely the call \code{x[i]} is equivalent to
-#' \code{basis(x)[, i, drop=TRUE]}. If argument \code{drop} is present then it
-#' is used: \code{x[i, drop=TRUE.or.FALSE]} <=> \code{basis(x)[, i,
-#' drop=TRUE.or.FALSE]}.
+#' \item One single index as in \code{x[i]}: the value is the complete NMF 
+#' model composed of the selected basis components, subset by \code{i}.
+#' If argument \code{drop} is not missing then only the basis matrix is returned 
+#' and \code{drop} is used:
+#' \code{x[i, drop=TRUE.or.FALSE]} <=> \code{basis(x)[, i, drop=TRUE.or.FALSE]}.
+#' 
+#' Note that in version <= 0.8.7, the call \code{x[i]} was equivalent to
+#' \code{basis(x)[, i, drop=TRUE.or.FALSE]}.
 #' 
 #' \item More than one index with \code{drop=FALSE} (default) as in
 #' \code{x[i,j]}, \code{x[i,]}, \code{x[,j]}, \code{x[i,j,k]}, \code{x[i,,k]},
@@ -1651,17 +1137,17 @@ setMethod('[', 'NMF',
 		
 		# subset the rows of the basis matrix		
 		if ( !missing(i) && !single.arg )			
-			basis(x) <- basis(x)[i, , drop = FALSE]
+			.basis(x) <- basis(x)[i, , drop = FALSE]
 		
 		# subset the columns of mixture coefficient matrix		
 		if (!missing(j)) 
-			coef(x) <- coef(x)[, j, drop = FALSE]
+			.coef(x) <- coef(x)[, j, drop = FALSE]
 		
 		# subset the basis: columns of basis matrix and row of mixture coefficient matrix		
-		if( single.arg )# return the selected metagenes (as a matrix)
-			return(basis(x)[, k, drop = if( mdrop ) TRUE else drop])			
-		else if( k.notmissing ){
+		if( single.arg || k.notmissing ){
 			.basis(x) <- basis(x)[, k, drop = FALSE]
+			# return basis only single arg and drop=TRUE 
+			if( single.arg && !mdrop ) return( basis(x)[,,drop=drop] )
 			.coef(x) <- coef(x)[k, , drop = FALSE]
 		}
 		
@@ -1824,353 +1310,6 @@ unit.test('rmatrix,NMF',{
 			, "call with arg max=10: max difference is >= 5")
 	
 })
-
-
-.rnmf_fixed <- oneoffVariable('none')
-
-#' Generates a random NMF model of the same class and rank as another NMF model.
-#' 
-#' This is the workhorse method that is eventually called by all other methods.
-#' It generates an NMF model of the same class and rank as \code{x}, compatible with the 
-#' dimensions specified in \code{target}, that can be a single or 2-length 
-#' numeric vector, to specify a square or rectangular target matrix respectively.
-#' 
-#' The second dimension can also be passed via argument \code{ncol}, so that 
-#' calling \code{rnmf(x, 20, 10, ...)} is equivalent to \code{rnmf(x, c(20, 10), ...)}, 
-#' but easier to write.
-#' 
-#' The entries are uniformly drawn between \code{0} and \code{max} 
-#' (optionally specified in \code{...}) that defaults to 1.
-#' 
-#' By default the dimnames of \code{x} are set on the returned NMF model. 
-#' This behaviour is disabled with argument \code{keep.names=FALSE}. 
-#' See \code{\link{nmfModel}}.
-#' 
-#' @param ncol single numeric value that specifies the number of columns of the
-#' coefficient matrix. Only used when \code{target} is a single numeric value.
-#' @param keep.names a logical that indicates if the dimension names of the 
-#' original NMF object \code{x} should be conserved (\code{TRUE}) or discarded
-#' (\code{FALSE}).
-#' @param dist specification of the random distribution to use to draw the entries 
-#' of the basis and coefficient matrices.
-#' It may be specified as:
-#' \itemize{
-#' 
-#' \item a \code{function} which must be a distribution function such as e.g. 
-#' \code{\link{runif}} that is used to draw the entries of both the basis and 
-#' coefficient matrices. It is passed in the \code{dist} argument of 
-#' \code{\link{rmatrix}}.
-#' 
-#' \item a \code{list} of arguments that are passed internally to \code{\link{rmatrix}}, 
-#' via \code{do.call('rmatrix', dist)}.   
-#' 
-#' \item a \code{character} string that is partially matched to \sQuote{basis} or 
-#' \sQuote{coef}, that specifies which matrix in should be drawn randomly, the 
-#' other remaining as in \code{x} -- unchanged.
-#' 
-#' \item a \code{list} with elements \sQuote{basis} and/or \sQuote{coef}, which 
-#' specify the \code{dist} argument separately for the basis and coefficient 
-#' matrix respectively.
-#' 
-#' These elements may be either a distribution function, or a list of arguments that  
-#' are passed internally to \code{\link{rmatrix}}, via 
-#' \code{do.call('rmatrix', dist$basis)} 
-#' or \code{do.call('rmatrix', dist$coef)}.   
-#' }
-#' 
-#' @inline
-#' @examples 
-#' 
-#' ## random NMF of same class and rank as another model
-#' 
-#' x <- nmfModel(3, 10, 5)
-#' x
-#' rnmf(x, 20) # square
-#' rnmf(x, 20, 13)
-#' rnmf(x, c(20, 13))
-#' 
-#' # using another distribution
-#' rnmf(x, 20, dist=rnorm) 
-#' 
-#' # other than standard model
-#' y <- rnmf(3, 50, 10, model='NMFns')
-#' y
-#' \dontshow{ stopifnot( identical(dim(y), c(50L,10L,3L)) ) }
-#' \dontshow{ stopifnot( is(y, 'NMFns') ) }
-#' 
-setMethod('rnmf', signature(x='NMF', target='numeric'), 
-	function(x, target, ncol=NULL, keep.names=TRUE, dist=runif){
-		
-		# store original dimnames
-		if( keep.names ) dn <- dimnames(x)
-		
-		# valid parameter 'target'
-		if( length(target) != 1 && length(target) != 2 )
-			stop('NMF::rnmf - invalid target dimensions [length must be 1 or 2. Here length = ', length(target) ,']')
-		if( any(is.na(target)) ) 
-			stop('NMF::rnmf - invalid target dimensions [NA values in element(s): ', paste(which(is.na(target)), collapse=' and '), ']')		
-		# shortcut for symetric case: provide only one dimension
-		if( length(target) == 1L ){
-			ncol <- if( !is.null(ncol) ){
-				if( !is.numeric(ncol) || length(ncol) != 1 || is.na(ncol) )
-					stop("NMF::rnmf - invalid argument `ncol`: must be a single numeric value")
-				ncol
-			}else target
-			target <- c(target, ncol)
-		}
-		
-		# retrieve dimension of the target matrix
-		n <- target[1]; m <- target[2];
-		# retrieve the factorization rank					
-		r <- nbasis(x)
-		
-		## draw basis and coef matrices
-		# interpret argument dist
-		if( length(dist) == 0L ) dist <- runif
-		if( is.character(dist) ){
-			dist <- match.arg(dist, c('basis', 'coef'))
-			dist <- setNames(list(runif), dist)
-		}
-		if( is.function(dist) ){
-			dist <- list(basis = list(x=n, y=r, dist=dist)
-					, coef = list(x=r, y=m, dist=dist))
-		}else if( is.list(dist) ){
-			if( !all(names(dist) %in% c('basis', 'coef')) ){
-				dist <- list(basis=c(list(x=n, y=r), dist)
-							, coef=c(list(x=r, y=m), dist))
-			}else{
-				if( !is.null(dist$basis) )
-					dist$basis <- c(list(x=n, y=r), dist$basis)
-				if( !is.null(dist$coef) )
-					dist$coef <- c(list(x=r, y=m), dist$coef)
-			}
-		}
-		
-		fixed <- .rnmf_fixed()
-		#Vc# Initialize random matrix: W
-		if( !is.null(dist$basis) && !('basis' %in% fixed) )
-			basis(x) <- do.call('rmatrix', dist$basis);
-		#Vc# Initialize random matrix: H
-		if( !is.null(dist$coef) && !('coef' %in% fixed) )
-			coef(x) <- do.call('rmatrix', dist$coef);
-		
-		# if one needs to keep the names (possibly or reducing/increasing) 
-		if( keep.names && !is.null(dn) )
-			dimnames(x) <- list(dn[[1]][1:n], dn[[2]][1:m], dn[[3]][1:r])
-		
-		# return the modified object
-		x
-	}
-)
-
-#' Generates a random NMF model compatible and consistent with a target matrix.
-#' 
-#' The entries are uniformly drawn between \code{0} and \code{max(target)}.
-#' It is more or less a shortcut for:
-#' \samp{ rnmf(x, dim(target), max=max(target), ...)} 
-#' 
-#' It returns an NMF model of the same class as \code{x}.
-#' 
-#' @param use.dimnames a logical that indicates whether the dimnames of the 
-#' target matrix should be set on the returned NMF model. 
-#' 
-#' @inline
-#' 
-#' @examples
-#' # random NMF compatible with a target matrix
-#' x <- nmfModel(3, 10, 5)
-#' y <- rmatrix(20, 13)
-#' rnmf(x, y) # rank of x
-#' rnmf(2, y) # rank 2
-#' 
-setMethod('rnmf', signature(x='ANY', target='matrix'), 
-	function(x, target, ..., dist=list(max=max(max(target, na.rm=TRUE), 1)), use.dimnames=TRUE){	
-				
-		# build a random NMF with the dimensions of the target matrix upper-bounded by the target's maximum entry.
-		res <- rnmf(x, dim(target), ..., dist=dist)
-		# compute the upper-bound of the random entries and enforce it if possible
-		no.na <- abs(target[!is.na(target)])
-		if( length(no.na) > 0 ){
-			m <- max(no.na)
-			basis(res) <- pmin(basis(res), m)
-			coef(res) <- pmin(coef(res), m)
-		}
-		
-		# set the dimnames from the target matrix if necessary
-		if( use.dimnames )
-			dimnames(res) <- dimnames(target)
-		
-		# return result
-		res
-	}
-)
-#' Shortcut for \code{rnmf(x, as.matrix(target))}.
-setMethod('rnmf', signature(x='ANY', target='data.frame'),
-	function(x, target, ...){
-		rnmf(x, as.matrix(target), ...)
-	}
-)
-#' Generates a random NMF model of the same dimension as another NMF model.
-#' 
-#' It is a shortcut for \code{rnmf(x, nrow(x), ncol(x), ...)}, which returns
-#' a random NMF model of the same class and dimensions as \code{x}.
-#' 
-#' @examples
-#' ## random NMF from another model
-#' 
-#' a <- nmfModel(3, 100, 20)
-#' b <- rnmf(a)
-#' \dontshow{ stopifnot( !nmf.equal(a,b) ) }
-#' 
-setMethod('rnmf', signature(x='NMF', target='missing'), 
-	function(x, target, ...){
-		rnmf(x, c(nrow(x),ncol(x)), ...)
-	}
-)
-#' Generates a random NMF model of a given rank, with known basis and/or 
-#' coefficient matrices.  
-#'
-#' This methods allow to easily generate partially random NMF model, where one 
-#' or both factors are known.
-#' Although the later case might seems strange, it makes sense for NMF models that 
-#' have fit extra data, other than the basis and coefficient matrices, that 
-#' are drawn by an \code{rnmf} method defined for their own class, which should 
-#' internally call \code{rnmf,NMF,numeric} and let it draw the basis and 
-#' coefficient matrices.
-#' (e.g. see \code{\linkS4class{NMFOffset}} and \code{\link{rnmf,NMFOffset,numeric-method}}).  
-#' 
-#' Depending on whether arguments \code{W} and/or \code{H} are missing, 
-#' this method interprets \code{x} differently:
-#' \itemize{
-#' 
-#' \item \code{W} provided, \code{H} missing: \code{x} is taken as the number of 
-#' columns that must be drawn to build a random coefficient matrix 
-#' (i.e. the number of columns in the target matrix).
-#' 
-#' \item \code{W} is missing, \code{H} is provided: \code{x} is taken as the number of 
-#' rows that must be drawn to build a random basis matrix 
-#' (i.e. the number of rows in the target matrix).
-#' 
-#' \item both \code{W} and \code{H} are provided: \code{x} is taken as the target 
-#' rank of the model to generate.
-
-#' \item Having both \code{W} and \code{H} missing produces an error, as the 
-#' dimension of the model cannot be determined in this case. 
-#' }
-#'
-#' The matrices \code{W} and \code{H} are reduced if necessary and possible 
-#' to be consistent with this value of the rank, by the internal call to 
-#' \code{\link{nmfModel}}.
-#'  
-#' All arguments in \code{...} are passed to the function \code{\link{nmfModel}} 
-#' which is used to build an initial NMF model, that is in turn passed to 
-#' \code{rnmf,NMF,numeric} with \code{dist=list(coef=dist)} or 
-#' \code{dist=list(basis=dist)} when suitable.
-#' The type of NMF model to generate can therefore be specified in argument 
-#' \code{model} (see \code{\link{nmfModel}} for other possible arguments). 
-#' 
-#' The returned NMF model, has a basis matrix equal to \code{W} (if not missing) 
-#' and a coefficient matrix equal to \code{H} (if not missing), or drawn 
-#' according to the specification provided in argument \code{dist} 
-#' (see method \code{rnmf,NMF,numeric} for details on the supported values for \code{dist}).
-#' 
-#' @examples
-#' # random NMF model with known basis matrix
-#' x <- rnmf(5, W=matrix(1:18, 6)) # 6 x 5 model with rank=3
-#' basis(x) # fixed 
-#' coef(x) # random
-#' 
-#' # random NMF model with known coefficient matrix
-#' x <- rnmf(5, H=matrix(1:18, 3)) # 5 x 6 model with rank=3 
-#' basis(x) # random
-#' coef(x) # fixed
-#' 
-#' # random model other than standard NMF
-#' x <- rnmf(5, H=matrix(1:18, 3), model='NMFOffset')
-#' basis(x) # random
-#' coef(x) # fixed
-#' offset(x) # random
-#' 
-setMethod('rnmf', signature(x='numeric', target='missing'),
-	function(x, target, ..., W, H, dist=runif){
-		
-		# get fixed matrices to restore on exit:
-		# one must enforce honouring the fixed matrices to prevent the call to 
-		# rnmf from a sub-class method to change them.  
-		of <- .rnmf_fixed()
-		on.exit( .rnmf_fixed(of) )
-		
-		if( !missing(W) && missing(H) ){ # fixed basis matrix: x = n samples
-			# one must not change the values H
-			.rnmf_fixed('basis')
-			x <- nmfModel(ncol(W), nrow(W), x, W=W, ...)
-			dist <- list(coef=dist)
-		}else if( missing(W) && !missing(H) ){ # fixed coef matrix: x = n features
-			# one must not change the values H
-			.rnmf_fixed('coef')
-			x <- nmfModel(nrow(H), x, ncol(H), H=H, ...)
-			dist <- list(basis=dist)
-		}else if( !missing(W) && !missing(H) ){ # fixed basis and coef: x = rank
-			# one must not change the values of W and H
-			.rnmf_fixed(c('basis', 'coef'))
-			x <- nmfModel(x, nrow(W), ncol(H), W=W, H=H, ...)
-		}else
-			stop("NMF::rnmf - Missing both arguments `W` and/or `H`: at least one of them must be specified.")
-		
-		rnmf(x, dist=dist) 
-	}
-)
-#' Generates a random NMF model with known basis and coefficient matrices.
-#' 
-#' This method is a shortcut for calling \code{rnmf,numeric,missing} with a 
-#' suitable value for \code{x} (the rank), when both factors are known:
-#' code{rnmf(min(ncol(W), nrow(H)), ..., W=W, H=H)}.
-#' 
-#' Arguments \code{W} and \code{H} are required.
-#' Note that calling this method only makes sense for NMF models that contains 
-#' data to fit other than the basis and coefficient matrices, 
-#' e.g. \code{\linkS4class{NMFOffset}}. 
-#' 
-#' @examples
-#' 
-#' # random model other than standard NMF
-#' x <- rnmf(W=matrix(1:18, 6), H=matrix(21:38, 3), model='NMFOffset')
-#' basis(x) # fixed
-#' coef(x) # fixed
-#' offset(x) # random
-#' 
-setMethod('rnmf', signature(x='missing', target='missing'),
-	function(x, target, ..., W, H){
-		rnmf(min(ncol(W), nrow(H)), ..., W=W, H=H)
-	}
-)
-
-#' Generates a random standard NMF model of given dimensions.
-#' 
-#' This is a shortcut for \code{rnmf(nmfModel(x, target, ncol, ...)), dist=dist)}.
-#' It generates a standard NMF model compatible with the dimensions passed in 
-#' \code{target}, that can be a single or 2-length numeric vector, to specify 
-#' a square or rectangular target matrix respectively. 
-#' See \code{\link{nmfModel}}.
-#' 
-#' @inheritParams nmfModel,numeric,numeric-method
-#' 
-#' @examples
-#' 
-#' ## random standard NMF of given dimensions
-#' 
-#' # generate a random NMF model with rank 3 that fits a 100x20 matrix  
-#' rnmf(3, 100, 20)
-#' \dontshow{ stopifnot( identical(dim(rnmf(3, 100, 20)), c(100L,20L,3L)) ) }
-#' # generate a random NMF model with rank 3 that fits a 100x100 matrix
-#' rnmf(3, 100)
-#' \dontshow{ stopifnot( identical(dim(rnmf(3, 100)), c(100L,100L,3L)) ) }
-#' 
-setMethod('rnmf', signature(x='numeric', target='numeric'), 
-		function(x, target, ncol=NULL, ..., dist=runif){		
-			rnmf(nmfModel(x, target, ncol, ...), dist=dist)
-		}
-)
 
 ###% Produces different kind of plots.
 #setGeneric('plot', package='graphics')
@@ -3153,7 +2292,7 @@ setMethod('predict', 'NMF',
 		function(object, what=c('columns', 'rows', 'samples', 'features'), prob=FALSE){
 			# determine which matrix to use for the prediction
 			what <- match.arg(what)
-			x <- if( what %in% c('features', 'rows') ) basis(object) else t(coef(object))
+			x <- if( what %in% c('features', 'rows') ) basis(object, all=FALSE) else t(coef(object, all=FALSE))
 			
 			# compute the indice of the dominant row for each column
 			return( .predict.nmf(x, prob) )

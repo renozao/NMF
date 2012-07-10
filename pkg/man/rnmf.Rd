@@ -3,13 +3,14 @@
 \alias{rnmf}
 \alias{rnmf,ANY,data.frame-method}
 \alias{rnmf,ANY,matrix-method}
-\alias{rnmf-methods}
-\alias{rnmf,missing,missing-method}
 \alias{rnmf,NMF,missing-method}
 \alias{rnmf,NMF,numeric-method}
 \alias{rnmf,NMFOffset,numeric-method}
+\alias{rnmf,formula,ANY-method}
+\alias{rnmf,missing,missing-method}
 \alias{rnmf,numeric,missing-method}
 \alias{rnmf,numeric,numeric-method}
+\alias{rnmf-methods}
 \title{Generating Random NMF Models}
 \usage{
   rnmf(x, target, ...)
@@ -28,6 +29,9 @@
 
   \S4method{rnmf}{numeric,numeric}(x, target, ncol = NULL,
     ..., dist = runif)
+
+  \S4method{rnmf}{formula,ANY}(x, target, ...,
+    dist = runif)
 }
 \arguments{
   \item{x}{an object that determines the rank, dimension
@@ -134,6 +138,16 @@
 }
 \section{Methods}{
   \describe{
+
+  \item{rnmf}{\code{signature(x = "NMFOffset", target =
+  "numeric")}: Generates a random NMF model with offset,
+  from class \code{NMFOffset}.
+
+  The offset values are drawn from a uniform distribution
+  between 0 and the maximum entry of the basis and
+  coefficient matrices, which are drawn by the next
+  suitable \code{\link{rnmf}} method, which is the
+  workhorse method \code{rnmf,NMF,numeric}. }
 
   \item{rnmf}{\code{signature(x = "NMF", target =
   "numeric")}: Generates a random NMF model of the same
@@ -263,19 +277,20 @@
   vector, to specify a square or rectangular target matrix
   respectively. See \code{\link{nmfModel}}. }
 
-  \item{rnmf}{\code{signature(x = "NMFOffset", target =
-  "numeric")}: Generates a random NMF model with offset,
-  from class \code{NMFOffset}.
-
-  The offset values are drawn from a uniform distribution
-  between 0 and the maximum entry of the basis and
-  coefficient matrices, which are drawn by the next
-  suitable \code{\link{rnmf}} method, which is the
-  workhorse method \code{rnmf,NMF,numeric}. }
+  \item{rnmf}{\code{signature(x = "formula", target =
+  "ANY")}: Generate a random formula-based NMF model, using
+  the method \code{\link{nmfModel,formula,ANY-method}}. }
 
   }
 }
 \examples{
+# random NMF model with offset
+x <- rnmf(2, 3, model='NMFOffset')
+x
+offset(x)
+# from a matrix
+x <- rnmf(2, rmatrix(5,3, max=10), model='NMFOffset')
+offset(x)
 ## random NMF of same class and rank as another model
 
 x <- nmfModel(3, 10, 5)
@@ -330,24 +345,20 @@ rnmf(3, 100, 20)
 # generate a random NMF model with rank 3 that fits a 100x100 matrix
 rnmf(3, 100)
 \dontshow{ stopifnot( identical(dim(rnmf(3, 100)), c(100L,100L,3L)) ) }
-# random NMF model with offset
-x <- rnmf(2, 3, model='NMFOffset')
-x
-offset(x)
-# from a matrix
-x <- rnmf(2, rmatrix(5,3, max=10), model='NMFOffset')
-offset(x)
 }
 \seealso{
   \code{\link{rmatrix}}
 
-  Other NMF-interface: \code{\link{basis}},
-  \code{\link{basis<-}}, \code{\link{coef}},
-  \code{\link{coef<-}}, \code{\link{coefficients}},
+  Other NMF-interface: \code{\link{$,NMF-method}},
+  \code{\link{$<-,NMF-method}}, \code{\link{.basis}},
+  \code{\link{.basis<-}}, \code{\link{.coef}},
+  \code{\link{.coef<-}}, \code{\link{NMF-class}},
+  \code{\link{basis}}, \code{\link{basis<-}},
+  \code{\link{coef}}, \code{\link{coef<-}},
+  \code{\link{coefficients}},
   \code{\link{loadings,NMF-method}}, \code{\link{misc}},
-  \code{\link{NMF-class}}, \code{\link{$<-,NMF-method}},
-  \code{\link{$,NMF-method}}, \code{\link{nmfModel}},
-  \code{\link{nmfModels}}, \code{\link{scoef}}
+  \code{\link{nmfModel}}, \code{\link{nmfModels}},
+  \code{\link{scoef}}
 }
 \keyword{methods}
 

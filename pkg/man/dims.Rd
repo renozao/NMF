@@ -1,13 +1,13 @@
 \docType{methods}
 \name{nbasis}
-\alias{dim-NMF}
-\alias{dim,NMFfitXn-method}
 \alias{dim,NMF-method}
+\alias{dim,NMFfitXn-method}
+\alias{dim-NMF}
 \alias{nbasis}
 \alias{nbasis,ANY-method}
+\alias{nbasis,NMFfitXn-method}
 \alias{nbasis,matrix-method}
 \alias{nbasis-methods}
-\alias{nbasis,NMFfitXn-method}
 \title{Dimension of NMF Objects}
 \usage{
   nbasis(x, ...)

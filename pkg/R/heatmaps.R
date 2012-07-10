@@ -231,12 +231,12 @@ NULL
 #' \item the addition of a default named annotation track, that shows 
 #' the dominant basis component for each row (i.e. each feature).
 #' 
-#' This track, named \code{'basis'}, is specified as a single character string, 
+#' This track, named \code{':basis'}, is specified as a single character string, 
 #' that is looked-up in argument \code{annRow}, which may be of any type 
 #' supported by \code{\link{aheatmap}}.
-#' The only difference is that character annotation vectors that have elements 
-#' other than \code{'basis'}, are not are not allowed as-is, and must be 
-#' encapsulated in a list (see examples). 
+#' Note that if \code{annRow} is a character vector, that contains special 
+#' track names , e.g., \code{":basis"}, then these are extracted and displayed
+#' separately, after the character track -- which is interpreted as a factor.
 #' \item a suitable title and extra information like the fitting algorithm, 
 #' when \code{object} is a fitted NMF model. 
 #' }
@@ -300,7 +300,7 @@ setGeneric('basismap', function(object, ...) standardGeneric('basismap') )
 setMethod('basismap', signature(object='NMF'),
 	function(object, color = 'YlOrRd:50', ...
 			, scale = 'r1', Colv=NA, subsetRow=FALSE
-			, annRow = 'basis'
+			, annRow = ':basis'
 			, main="Basis components", info = FALSE){
 		
 		# resolve subsetRow if its a single value
@@ -327,23 +327,12 @@ setMethod('basismap', signature(object='NMF'),
 		# process annotation tracks
 		if( length(annRow) > 0L && !isNA(annRow) ){
 			
-			# match against supported tracks
-			itr <- match_named_track(annRow, 'basis', "NMF::basismap")
-			# create extra annotation tracks
-			tr <- 
-			if( length(itr$tracks) ){
-				# remove track from annotation specification
-				annRow <- itr$ann
-				# compute track
-				sapply( itr$tracks, function(t){
-					switch(t
-					, basis = predict(object, 'features')					
-					, stop("NMF::basismap - Invalid annotation track: ", t)
-					)
-				}, simplify=FALSE)
-			}
-			# convert into annotation tracks now
-			annRow <- atrack(tr, annRow, .DATA=amargin(x,1L))
+			annRow <- atrack(annRow, .DATA=amargin(x,1L)
+				, .SPECIAL = list(
+					basis = function() predict(object, what='features')
+				)
+			)
+			
 		}
 		##
 		
@@ -393,7 +382,7 @@ setMethod('coefmap', signature(object='NMF'),
 		function(object, color = 'YlOrRd:50', ...
 				, scale = 'c1'
 				, Rowv = NA, Colv=TRUE
-				, annRow=NA, annCol = 'basis'
+				, annRow=NA, annCol = ':basis'
 				, main="Mixture coefficients", info = FALSE){
 						
 			# use the mixture coefficient matrix
@@ -409,24 +398,12 @@ setMethod('coefmap', signature(object='NMF'),
 			has_basis_col_track <- FALSE
 			if( length(annCol) > 0L && !isNA(annCol) ){
 				
-				# match against supported tracks
-				itrCol <- match_named_track(annCol, 'basis', "NMF::coefmap [annCol] - ")
-				# create extra annotation tracks
-				trCol <- 
-				if( length(itrCol$tracks) ){
-					has_basis_col_track <- TRUE
-					# remove track from annotation specification
-					annCol <- itrCol$ann
-					# compute track
-					sapply( itrCol$tracks, function(t){
-						switch(t
-						, basis = predict(object)					
-						, stop("NMF::coefmap - Unexpected error: unsupported column annotation track: ", t)
+				annCol <- atrack(annCol, .DATA=amargin(x,2L)
+						, .SPECIAL = list(
+							basis = function() predict(object)
 						)
-					}, simplify=FALSE)
-				}
-				# convert into annotation tracks now
-				annCol <- atrack(trCol, annCol, .DATA=amargin(x,2L))
+				)
+				
 			}	
 			
 			# process row annotation tracks

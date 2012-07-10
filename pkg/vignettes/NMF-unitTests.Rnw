@@ -1,0 +1,46 @@
+
+\documentclass[10pt]{article}
+%\VignetteIndexEntry{NMF-unitTests}
+\usepackage{vmargin}
+\setmargrb{0.75in}{0.75in}{0.75in}{0.75in}
+
+\RequirePackage{ae,mathpple}    % ae as a default font pkg works with Sweave
+\RequirePackage[T1]{fontenc}
+
+<<echo=FALSE,print=FALSE>>=
+pkg <- 'NMF'
+require( pkg, character.only=TRUE )
+prettyVersion <- packageDescription(pkg)$Version
+prettyDate <- format(Sys.Date(), '%B %e, %Y')
+authors <- packageDescription(pkg)$Author
+@
+
+\usepackage[colorlinks]{hyperref}
+\author{\Sexpr{authors}}
+\title{\texttt{\Sexpr{pkg}}: Unit testing results}
+\date{\texttt{\Sexpr{pkg}} version \Sexpr{prettyVersion} as of \Sexpr{prettyDate}}
+\begin{document}
+\maketitle
+
+\begin{verbatim}
+unit test results not available
+\end{verbatim}
+
+\section*{Session Information}
+\begin{itemize}\raggedright
+  \item R version 2.15.1 (2012-06-22), \verb|i686-pc-linux-gnu|
+  \item Locale: \verb|LC_CTYPE=en_ZA.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_ZA.UTF-8|, \verb|LC_COLLATE=en_ZA.UTF-8|, \verb|LC_MONETARY=en_ZA.UTF-8|, \verb|LC_MESSAGES=en_ZA.UTF-8|, \verb|LC_PAPER=C|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_ZA.UTF-8|, \verb|LC_IDENTIFICATION=C|
+  \item Base packages: base, datasets, graphics, grDevices, grid,
+    methods, parallel, stats, utils
+  \item Other packages: bigmemory~4.2.11, Biobase~2.16.0,
+    BiocGenerics~0.2.0, codetools~0.2-8, colorspace~1.1-1,
+    digest~0.5.2, doMPI~0.1-5, doParallel~1.0.1, doRNG~1.4.2,
+    fastICA~1.1-16, foreach~1.4.0, gridBase~0.4-5, iterators~1.0.6,
+    NMF~0.8.7, pkgmaker~0.6.8, RColorBrewer~1.0-5, registry~0.2,
+    Rmpi~0.5-9, RUnit~0.4.26, stringr~0.6, synchronicity~1.0.13
+  \item Loaded via a namespace (and not attached): compiler~2.15.1,
+    plyr~1.7.1, tools~2.15.1, xtable~1.7-0
+\end{itemize}
+
+\end{document}
+

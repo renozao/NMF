@@ -1,4 +1,18 @@
 *************************************************************************
+*                       Changes in version 0.8.6                        *
+*************************************************************************
+
+NEW FEATURES
+
+    o Formula based NMF models that can incorporate fixed terms, which may 
+    be used to correct for covariates or define group specific offsets.
+
+CHANGES
+   
+   o Subsetting an NMF object with a single index now returns an NMF object, 
+   except if argument drop is not missing (i.e. either TRUE or FALSE). 
+
+*************************************************************************
 *                       Changes in version 0.6.03                       *
 *************************************************************************
 

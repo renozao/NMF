@@ -6,6 +6,7 @@
 ###############################################################################
 
 #' @include RNG.R
+#' @include fixed-terms.R
 NULL
 
 #' Base Class for to store Nonnegative Matrix Factorisation results
@@ -176,8 +177,8 @@ setMethod('fitted', signature(object='NMFfit'),
 #' Returns the basis matrix from an NMF model fitted with 
 #' function \code{\link{nmf}}.
 #' 
-#' It is a shortcut for \code{basis(fit(object), ...)}, dispatching the call to 
-#' the \code{basis} method of the actual NMF model.
+#' It is a shortcut for \code{.basis(fit(object), ...)}, dispatching the call to 
+#' the \code{.basis} method of the actual NMF model.
 setMethod('.basis', signature(object='NMFfit'),
 	function(object, ...){
 		.basis(fit(object), ...)
@@ -186,10 +187,10 @@ setMethod('.basis', signature(object='NMFfit'),
 #' Sets the the basis matrix of an NMF model fitted with 
 #' function \code{\link{nmf}}.
 #' 
-#' It is a shortcut for \code{basis(fit(object)) <- value}, dispatching the call to 
-#' the \code{basis<-} method of the actual NMF model.
+#' It is a shortcut for \code{.basis(fit(object)) <- value}, dispatching the call to 
+#' the \code{.basis<-} method of the actual NMF model.
 #' It is not meant to be used by the user, except when developing 
-#' new NMF algorithms, to update the basis matrix of the seed object before 
+#' NMF algorithms, to update the basis matrix of the seed object before 
 #' returning it.
 #' 
 setReplaceMethod('.basis', signature(object='NMFfit', value='matrix'), 
@@ -202,8 +203,8 @@ setReplaceMethod('.basis', signature(object='NMFfit', value='matrix'),
 #' Returns the the coefficient matrix from an NMF model fitted with 
 #' function \code{\link{nmf}}.
 #' 
-#' It is a shortcut for \code{coef(fit(object), ...)}, dispatching the call to 
-#' the \code{coef} method of the actual NMF model.
+#' It is a shortcut for \code{.coef(fit(object), ...)}, dispatching the call to 
+#' the \code{.coef} method of the actual NMF model.
 setMethod('.coef', signature(object='NMFfit'),
 	function(object, ...){
 		.coef(fit(object), ...)
@@ -212,10 +213,10 @@ setMethod('.coef', signature(object='NMFfit'),
 #' Sets the the coefficient matrix of an NMF model fitted with 
 #' function \code{\link{nmf}}.
 #' 
-#' It is a shortcut for \code{coef(fit(object)) <- value}, dispatching the call to 
-#' the \code{coef<-} method of the actual NMF model.
+#' It is a shortcut for \code{.coef(fit(object)) <- value}, dispatching the call to 
+#' the \code{.coef<-} method of the actual NMF model.
 #' It is not meant to be used by the user, except when developing 
-#' new NMF algorithms, to update the coefficient matrix in the seed object before
+#' NMF algorithms, to update the coefficient matrix in the seed object before
 #' returning it.
 #' 
 setReplaceMethod('.coef', signature(object='NMFfit', value='matrix'), 
@@ -224,6 +225,22 @@ setReplaceMethod('.coef', signature(object='NMFfit', value='matrix'),
 		object
 	} 
 )
+
+#' Method for single NMF fit objects, which returns the indexes of fixed
+#' basis terms from the fitted model.  
+setMethod('ibterms', 'NMFfit', 
+	function(object){
+		ibterms(fit(object))
+	}
+)
+#' Method for single NMF fit objects, which returns the indexes of fixed 
+#' coefficient terms from the fitted model.
+setMethod('icterms', 'NMFfit', 
+	function(object){
+		icterms(fit(object))
+	}
+)
+
 
 #' Returns the offset from the fitted model. 
 setMethod('offset', signature(object='NMFfit'), 

@@ -4,7 +4,7 @@
 ###############################################################################
 
 #' @include NMF-class.R
-NA
+NULL
 
 #' NMF Model - Standard model 
 #' 
@@ -89,8 +89,12 @@ NA
 #'  
 setClass('NMFstd'
 		, representation(
-				W = 'matrix', # basis matrix
-				H = 'matrix' # mixture coefficients matrix	
+			W = 'matrix' # basis matrix
+			, H = 'matrix' # mixture coefficients matrix
+			, bterms = 'data.frame' # fixed basis terms: nrow(bterms) = nrow(x)
+			, ibterms = 'integer' # index of the fixed basis terms
+			, cterms = 'data.frame' # fixed coef terms: ncol(cterms) = ncol(x)
+			, icterms = 'integer' # index of the fixed coefficient terms
 		)
 		
 		, prototype = prototype(
@@ -101,9 +105,13 @@ setClass('NMFstd'
 		, validity = function(object){
 			
 			# dimension compatibility: W and H must be compatible for matrix multiplication
-			if( ncol(object@W) != nrow(object@H) ) return(paste('Dimensions of W and H are not compatible [ncol(W)=', ncol(object@W) , '!= nrow(H)=', nrow(object@H), ']'))
+			if( ncol(object@W) != nrow(object@H) ){
+				return(paste('Dimensions of W and H are not compatible [ncol(W)=', ncol(object@W) , '!= nrow(H)=', nrow(object@H), ']'))
+			}
 			# give a warning if the dimensions look strange: rank greater than the number of samples
-			if( !is.empty.nmf(object) && ncol(object@W) > ncol(object@H) ) warning(paste('Dimensions of W and H look strange [ncol(W)=', ncol(object@W) , '> ncol(H)=', ncol(object@H), ']'))
+			if( !is.empty.nmf(object) && ncol(object@H) && ncol(object@W) > ncol(object@H) ){
+				warning(paste('Dimensions of W and H look strange [ncol(W)=', ncol(object@W) , '> ncol(H)=', ncol(object@H), ']'))
+			}
 			
 			# everything went fine: return TRUE
 			return(TRUE)
@@ -128,7 +136,7 @@ setClass('NMFstd'
 #' 
 setMethod('.basis', 'NMFstd',
 	function(object){ 
-		object@W 
+		object@W
 	}
 )
 #' Set the basis matrix in standard NMF models 
@@ -145,23 +153,18 @@ setReplaceMethod('.basis', signature(object='NMFstd', value='matrix'),
 #' 
 #' This function returns slot \code{H} of \code{object}.
 setMethod('.coef', 'NMFstd',
-	function(object, fixed=TRUE){
-		if( fixed || (nc <- nfcoef(object) == 0L) ) object@H
-		else{
-			h <- object@H
-			nf <- nrow(h)-nfbasis()
-			h[-seq(nrow(h)-nc,nrow(h)),,drop=FALSE]
-		}
+	function(object){
+		object@H
 	}
 )
 #' Set the mixture coefficient matrix in standard NMF models 
 #' 
 #' This function sets slot \code{H} of \code{object}.
 setReplaceMethod('.coef', signature(object='NMFstd', value='matrix'), 
-		function(object, value){ 
-			object@H <- value # TODO: valid object before returning it (+param check=TRUE or FALSE)			
-			object
-		} 
+	function(object, value){ 
+		object@H <- value			
+		object
+	}
 )
 
 #' Compute the target matrix estimate in \emph{standard NMF models}.

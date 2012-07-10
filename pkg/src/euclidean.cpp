@@ -8,8 +8,8 @@
 extern "C" {
 
 	// NMF from Lee and Seung (based on Euclidean norm)
-	SEXP euclidean_update_H ( SEXP v, SEXP w, SEXP h, SEXP eps, SEXP dup);
-	SEXP euclidean_update_W ( SEXP v, SEXP w, SEXP h, SEXP eps, SEXP dup);
+	SEXP euclidean_update_H ( SEXP v, SEXP w, SEXP h, SEXP eps, SEXP nbterms, SEXP ncterms, SEXP dup);
+	SEXP euclidean_update_W ( SEXP v, SEXP w, SEXP h, SEXP eps, SEXP weight, SEXP nbterms, SEXP ncterms, SEXP dup);
 
 	// NMF with offset
 	SEXP offset_euclidean_update_H ( SEXP v, SEXP w, SEXP h, SEXP offset, SEXP eps, SEXP dup);
@@ -25,20 +25,48 @@ extern "C" {
 #include "euclidean.cpp"
 
 // define the exported versions (for SEXP)
-SEXP euclidean_update_H ( SEXP v, SEXP w, SEXP h, SEXP eps, SEXP dup=ScalarLogical(1)){
+SEXP euclidean_update_H ( SEXP v, SEXP w, SEXP h, SEXP eps
+		, SEXP nbterms=ScalarInteger(0), SEXP ncterms=ScalarInteger(0)
+		, SEXP dup=ScalarLogical(1)){
 
-	if( TYPEOF(v) == REALSXP )
-		return euclidean_update_H(NUMERIC_POINTER(v), w, h, eps, *LOGICAL(dup));
-	else
-		return euclidean_update_H(INTEGER_POINTER(v), w, h, eps, *LOGICAL(dup));
+	if( TYPEOF(v) == REALSXP ){
+		return euclidean_update_H(NUMERIC_POINTER(v), w, h, eps
+				, *INTEGER(nbterms), *INTEGER(ncterms)
+				, *LOGICAL(dup));
+	}else{
+		return euclidean_update_H(INTEGER_POINTER(v), w, h, eps
+				, *INTEGER(nbterms), *INTEGER(ncterms)
+				, *LOGICAL(dup));
+	}
 }
 
-SEXP euclidean_update_W ( SEXP v, SEXP w, SEXP h, SEXP eps, SEXP dup=ScalarLogical(1)){
+//////////////////////////////////
+// NMF WITH WEIGHT
+//////////////////////////////////
+#define NMF_WITH_WEIGHT
+#include "euclidean.cpp"
+#undef NMF_WITH_WEIGHT
 
-	if( TYPEOF(v) == REALSXP )
-		return euclidean_update_W(NUMERIC_POINTER(v), w, h, eps, *LOGICAL(dup));
-	else
-		return euclidean_update_W(INTEGER_POINTER(v), w, h, eps, *LOGICAL(dup));
+SEXP euclidean_update_W ( SEXP v, SEXP w, SEXP h, SEXP eps
+		, SEXP weight = R_NilValue
+		, SEXP nbterms=ScalarInteger(0), SEXP ncterms=ScalarInteger(0)
+		, SEXP dup=ScalarLogical(1)){
+
+	int nb = *INTEGER(nbterms), nc = *INTEGER(ncterms);
+	bool copy = *LOGICAL(dup);
+	if( TYPEOF(v) == REALSXP ){
+		if( isNull(weight) ){
+			return euclidean_update_W(NUMERIC_POINTER(v), w, h, eps, nb, nc, copy);
+		}else{
+			return weuclidean_update_W(NUMERIC_POINTER(v), w, h, eps, weight, nb, nc, copy);
+		}
+	}else{
+		if( isNull(weight) ){
+			return euclidean_update_W(INTEGER_POINTER(v), w, h, eps, nb, nc, copy);
+		}else{
+			return weuclidean_update_W(INTEGER_POINTER(v), w, h, eps, weight, nb, nc, copy);
+		}
+	}
 }
 
 //////////////////////////////////
@@ -79,6 +107,8 @@ SEXP offset_euclidean_update_W ( SEXP v, SEXP w, SEXP h, SEXP offset, SEXP eps, 
  *
  * Note: for performance reason the dimension names are NOT conserved.
  */
+#ifndef NMF_WITH_WEIGHT
+
 template <typename T_Rnumeric>
 static
 #ifdef NMF_WITH_OFFSET
@@ -90,7 +120,11 @@ SEXP euclidean_update_H (
 #ifdef NMF_WITH_OFFSET
 		, SEXP offset
 #endif
-		, SEXP eps, int dup=1)
+		, SEXP eps
+#ifndef NMF_WITH_OFFSET
+		, int nbterms=0, int ncterms=0
+#endif
+		, int dup=1)
 {
 	SEXP res;
 	int nprotect = 0;
@@ -101,6 +135,13 @@ SEXP euclidean_update_H (
 	int n = INTEGER(GET_DIM(w))[0];
 	int r = INTEGER(GET_DIM(w))[1];
 	int p = INTEGER(GET_DIM(h))[1];
+	// get number of non-fixed terms
+	int vr =
+#ifdef NMF_WITH_OFFSET
+	r;
+#else
+	r - ncterms;
+#endif
 
 	// duplicate H (keeping attributes)
 	PROTECT( res = (dup != 0 ? duplicate(h) : h) ); nprotect++;
@@ -155,7 +196,7 @@ SEXP euclidean_update_H (
 	// Compute update of H column by column
 	for (int j=p-1; j>=0; --j){
 
-		for(int i=r-1; i>=0; --i){ // compute value for H_ij
+		for(int i=vr-1; i>=0; --i){ // compute value for H_ij (only non-fixed entries)
 
 			// numerator
 			double numerator = 0.0;
@@ -163,9 +204,9 @@ SEXP euclidean_update_H (
 				numerator += pW[u + i*n] * pV[u + j*n];
 
 			double den = 0.0;
-			for( int l=r-1; l>=0; --l){
+			for( int l=r-1; l>=0; --l){ // use all entries (fixed and non-fixed)
 				// bufferize jth-column of H, as it can be changed at the end of the current i-loop
-				if( i==r-1 )
+				if( i==vr-1 )
 					pH_buffer[l] = pH[l + j*r];
 				den += p_tWW[i > l ? ((i+1)*i)/2 + l : ((l+1)*l)/2 + i] * pH_buffer[l];
 			}
@@ -185,6 +226,7 @@ SEXP euclidean_update_H (
 	UNPROTECT(nprotect);
 	return res;
 }
+#endif
 
 /**
  * Euclidean norm based multiplicative update for the basis matrix W
@@ -194,17 +236,28 @@ SEXP euclidean_update_H (
  * Note: for performance reason the dimension names are NOT conserved.
  */
 template <typename T_Rnumeric>
-static
+static SEXP
 #ifdef NMF_WITH_OFFSET
-SEXP offset_euclidean_update_W (
+	offset_euclidean_update_W
 #else
-SEXP euclidean_update_W (
+#ifdef NMF_WITH_WEIGHT
+	weuclidean_update_W
+#else
+	euclidean_update_W
 #endif
-		T_Rnumeric* pV, SEXP w, SEXP h
+#endif
+	(T_Rnumeric* pV, SEXP w, SEXP h
 #ifdef NMF_WITH_OFFSET
 		, SEXP offset
 #endif
-		, SEXP eps, int dup=1)
+		, SEXP eps
+#ifdef NMF_WITH_WEIGHT
+		, SEXP weight
+#endif
+#ifndef NMF_WITH_OFFSET
+		, int nbterms=0, int ncterms=0
+#endif
+		, int dup=1)
 {
 	SEXP res;
 	int nprotect = 0;
@@ -245,6 +298,27 @@ SEXP euclidean_update_W (
 	}
 	#endif
 
+#ifdef NMF_WITH_WEIGHT
+	// take sample weights into account
+	double* p_weight = !isNull(weight) ? NUMERIC_POINTER(weight) : NULL;
+	double beta = -1.0;
+	if( p_weight == NULL ){// <=> no weights
+		beta = 1.0;
+	}
+	else if( length(weight) == 1 ){// all weighted are the same
+		// NB: theoretically this is equivalent to weight=1, but may be used
+		// to test it in practice (with the numerical adjustments via eps)
+		beta = *p_weight;
+	}
+	// fill weight vector with single value
+	if( beta > 0 ){
+		double* pw = p_weight = (double*) R_alloc(p, sizeof(double));
+		for(int i=0; i<p; ++i, ++pw){
+			*pw = beta;
+		}
+	}
+#endif
+
 	// auxiliary temporary variable
 	double temp = 0.0;
 
@@ -255,7 +329,11 @@ SEXP euclidean_update_W (
 		for( int i=j; i<r; ++i){
 			temp = 0.0;
 			for( int u=p-1; u>=0; --u){
-				temp += pH[j + u*r] * pH[i + u*r];
+				temp += pH[j + u*r] * pH[i + u*r]
+#ifdef NMF_WITH_WEIGHT
+				                    * p_weight[u]
+#endif
+				;
 			}
 
 			p_HtH[((i+1)*i)/2 + j] = temp;
@@ -272,8 +350,13 @@ SEXP euclidean_update_W (
 
 			// numerator
 			numerator = 0.0;
-			for( int u=p-1; u>=0; --u)
-				numerator += pV[i + u*n] * pH[j + u*r];
+			for( int u=p-1; u>=0; --u){
+				numerator += pV[i + u*n] * pH[j + u*r]
+#ifdef NMF_WITH_WEIGHT
+				                         * p_weight[u]
+#endif
+				;
+			}
 
 			den = 0.0;
 			for( int l=r-1; l>=0; --l){

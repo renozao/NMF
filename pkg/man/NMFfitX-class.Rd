@@ -29,6 +29,10 @@
 \section{Methods}{
   \describe{
 
+  \item{NMFfitX}{\code{signature(object = "NMFfitX")}:
+  Provides a way to aggregate \code{NMFfitXn} objects into
+  an \code{NMFfitX1} object. }
+
   \item{basismap}{\code{signature(object = "NMFfitX")}:
   Plots a heatmap of the basis matrix of the best fit in
   \code{object}. }
@@ -77,6 +81,11 @@
   Returns the RNG settings used for the first NMF run of
   multiple NMF runs. }
 
+  \item{ibterms}{\code{signature(object = "NMFfitX")}:
+  Method for multiple NMF fit objects, which returns the
+  indexes of fixed basis terms from the best fitted model.
+  }
+
   \item{metaHeatmap}{\code{signature(object = "NMFfitX")}:
   Deprecated method subsituted by
   \code{\link{consensusmap}}. }
@@ -92,10 +101,6 @@
   \item{nmf.equal}{\code{signature(x = "NMFfitX", y =
   "NMF")}: Compares two NMF models when at least one comes
   from multiple NMF runs. }
-
-  \item{NMFfitX}{\code{signature(object = "NMFfitX")}:
-  Provides a way to aggregate \code{NMFfitXn} objects into
-  an \code{NMFfitX1} object. }
 
   \item{nrun}{\code{signature(object = "NMFfitX")}: Returns
   the number of NMF runs performed to create \code{object}.

@@ -1,12 +1,12 @@
 \docType{methods}
 \name{NMF-deprecated}
+\alias{NMF-deprecated}
 \alias{join}
 \alias{metaHeatmap}
+\alias{metaHeatmap,NMF-method}
+\alias{metaHeatmap,NMFfitX-method}
 \alias{metaHeatmap,matrix-method}
 \alias{metaHeatmap-methods}
-\alias{metaHeatmap,NMFfitX-method}
-\alias{metaHeatmap,NMF-method}
-\alias{NMF-deprecated}
 \title{Deprecated Functions in the Package NMF}
 \usage{
   metaHeatmap(object, ...)

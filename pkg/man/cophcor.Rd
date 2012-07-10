@@ -1,9 +1,9 @@
 \docType{methods}
 \name{cophcor}
 \alias{cophcor}
+\alias{cophcor,NMFfitX-method}
 \alias{cophcor,matrix-method}
 \alias{cophcor-methods}
-\alias{cophcor,NMFfitX-method}
 \title{Cophenetic Correlation Coefficient}
 \usage{
   cophcor(object, ...)

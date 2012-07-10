@@ -69,11 +69,14 @@
   the value is the object \code{x} unchanged.
 
   \item One single index as in \code{x[i]}: the value is
-  the basis matrix subset by \code{i}.  Precisely the call
-  \code{x[i]} is equivalent to \code{basis(x)[, i,
-  drop=TRUE]}. If argument \code{drop} is present then it
-  is used: \code{x[i, drop=TRUE.or.FALSE]} <=>
+  the complete NMF model composed of the selected basis
+  components, subset by \code{i}. If argument \code{drop}
+  is not missing then only the basis matrix is returned and
+  \code{drop} is used: \code{x[i, drop=TRUE.or.FALSE]} <=>
   \code{basis(x)[, i, drop=TRUE.or.FALSE]}.
+
+  Note that in version <= 0.8.7, the call \code{x[i]} was
+  equivalent to \code{basis(x)[, i, drop=TRUE.or.FALSE]}.
 
   \item More than one index with \code{drop=FALSE}
   (default) as in \code{x[i,j]}, \code{x[i,]},

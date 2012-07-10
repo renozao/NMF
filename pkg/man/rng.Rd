@@ -1,32 +1,32 @@
 \docType{methods}
 \name{RNG-NMF}
-\alias{getRNG}
 \alias{.getRNG}
-\alias{getRNG1}
-\alias{getRNG1,ANY-method}
-\alias{getRNG1-methods}
-\alias{getRNG1,NMFfitX1-method}
-\alias{getRNG1,NMFfitX-method}
-\alias{getRNG1,NMFfitXn-method}
 \alias{.getRNG,ANY-method}
-\alias{.getRNG,list-method}
-\alias{.getRNG-methods}
-\alias{.getRNG,missing-method}
 \alias{.getRNG,NMFfitXn-method}
+\alias{.getRNG,list-method}
+\alias{.getRNG,missing-method}
 \alias{.getRNG,numeric-method}
-\alias{nextRNG}
-\alias{rng1.equal}
-\alias{RNGdigest}
-\alias{rng.equal}
-\alias{RNGinfo}
-\alias{RNG-NMF}
-\alias{RNGrecovery}
-\alias{RNGtype}
-\alias{setRNG}
+\alias{.getRNG-methods}
 \alias{.setRNG}
 \alias{.setRNG,character-method}
-\alias{.setRNG-methods}
 \alias{.setRNG,numeric-method}
+\alias{.setRNG-methods}
+\alias{RNG-NMF}
+\alias{RNGdigest}
+\alias{RNGinfo}
+\alias{RNGrecovery}
+\alias{RNGtype}
+\alias{getRNG}
+\alias{getRNG1}
+\alias{getRNG1,ANY-method}
+\alias{getRNG1,NMFfitX-method}
+\alias{getRNG1,NMFfitX1-method}
+\alias{getRNG1,NMFfitXn-method}
+\alias{getRNG1-methods}
+\alias{nextRNG}
+\alias{rng.equal}
+\alias{rng1.equal}
+\alias{setRNG}
 \title{RNG Settings}
 \usage{
   RNGrecovery()
@@ -195,6 +195,17 @@
 
   This method throws an error if the object is empty. }
 
+  \item{.setRNG}{\code{signature(object = "character")}:
+  Sets the RNG to kind \code{object}, assuming is a valid
+  RNG kind: it is equivalent to \code{RNGkind(object, ...}.
+  All arguments in \code{...} are passed to
+  \code{\link{RNGkind}}. }
+
+  \item{.setRNG}{\code{signature(object = "numeric")}: Sets
+  the RNG settings using \code{object} directly the new
+  value for \code{.Random.seed} or to initialise it with
+  \code{\link{set.seed}}. }
+
   \item{getRNG1}{\code{signature(object = "ANY")}: Default
   method that is identical to \code{getRNG(object, ...)}. }
 
@@ -211,17 +222,6 @@
   Returns the RNG settings used for the first run.
 
   This method throws an error if the object is empty. }
-
-  \item{.setRNG}{\code{signature(object = "character")}:
-  Sets the RNG to kind \code{object}, assuming is a valid
-  RNG kind: it is equivalent to \code{RNGkind(object, ...}.
-  All arguments in \code{...} are passed to
-  \code{\link{RNGkind}}. }
-
-  \item{.setRNG}{\code{signature(object = "numeric")}: Sets
-  the RNG settings using \code{object} directly the new
-  value for \code{.Random.seed} or to initialise it with
-  \code{\link{set.seed}}. }
 
   }
 }

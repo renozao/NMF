@@ -151,7 +151,46 @@ if( pkgmaker::require.quiet('Biobase') ){
 	
 	###% The method for an \code{ExpressionSet} object returns the data.frame that 
 	###% contains the phenotypic data (i.e. \code{pData(object)})
-	setMethod('.atrack', 'ExpressionSet', function(object, ...) .atrack(pData(object), ...) )
+	setMethod('.atrack', 'ExpressionSet', 
+		function(object, data=NULL, ...){
+			if( is.null(data) ) data <- exprs(object)
+			.atrack(pData(object), data=data, ...)	
+		}
+	)
+	
+	#' Apply \code{nneg} to the expression matrix of an \code{\link{ExpressionSet}} 
+	#' object (i.e. \code{exprs(object)}). 
+	#' All extra arguments in \code{...} are passed to the method \code{nneg,matrix}.
+	#' 
+	#' @examples
+	#' 
+	#' E <- ExpressionSet(x)
+	#' nnE <- nneg(e)
+	#' exprs(nnE)
+	#' 
+	setMethod('nneg', 'ExpressionSet'
+			, function(object, ...){
+				exprs(object) <- nneg(exprs(object), ...)
+				object
+			}
+	)
+	
+	#' Apply \code{rposneg} to the expression matrix of an \code{\link{ExpressionSet}} 
+	#' object (i.e. \code{exprs(object)}). 
+	#' 
+	#' @examples
+	#' 
+	#' E <- ExpressionSet(x)
+	#' nnE <- posneg(E)
+	#' E2 <- rposneg(nnE)
+	#' all.equal(E, E2)
+	#' 
+	setMethod('rposneg', 'ExpressionSet'
+			, function(object, ...){
+				exprs(object) <- rposneg(exprs(object), ...)
+				object
+			}
+	)
 	
 	###% Annotate the genes specific to each cluster.
 	###%

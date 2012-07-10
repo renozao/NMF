@@ -67,26 +67,34 @@
 \section{Methods}{
   \describe{
 
-  \item{basis}{\code{signature(object = "NMFstd")}: Get the
-  basis matrix in standard NMF models
+  \item{.basis}{\code{signature(object = "NMFstd")}: Get
+  the basis matrix in standard NMF models
 
   This function returns slot \code{W} of \code{object}. }
 
-  \item{basis<-}{\code{signature(object = "NMFstd", value =
-  "matrix")}: Set the basis matrix in standard NMF models
+  \item{.basis<-}{\code{signature(object = "NMFstd", value
+  = "matrix")}: Set the basis matrix in standard NMF models
 
   This function sets slot \code{W} of \code{object}. }
 
-  \item{coef}{\code{signature(object = "NMFstd")}: Get the
+  \item{.coef}{\code{signature(object = "NMFstd")}: Get the
   mixture coefficient matrix in standard NMF models
 
   This function returns slot \code{H} of \code{object}. }
 
-  \item{coef<-}{\code{signature(object = "NMFstd", value =
+  \item{.coef<-}{\code{signature(object = "NMFstd", value =
   "matrix")}: Set the mixture coefficient matrix in
   standard NMF models
 
   This function sets slot \code{H} of \code{object}. }
+
+  \item{bterms<-}{\code{signature(object = "NMFstd")}:
+  Default method tries to coerce \code{value} into a
+  \code{data.frame} with \code{\link{as.data.frame}}. }
+
+  \item{cterms<-}{\code{signature(object = "NMFstd")}:
+  Default method tries to coerce \code{value} into a
+  \code{data.frame} with \code{\link{as.data.frame}}. }
 
   \item{fitted}{\code{signature(object = "NMFstd")}:
   Compute the target matrix estimate in \emph{standard NMF
@@ -95,6 +103,16 @@
   The estimate matrix is computed as the product of the two
   matrix slots \code{W} and \code{H}: \deqn{\hat{V} = W
   H}{V ~ W H} }
+
+  \item{ibterms}{\code{signature(object = "NMFstd")}:
+  Method for standard NMF models, which returns the integer
+  vector that is stored in slot \code{ibterms} when a
+  formula-based NMF model is instantiated. }
+
+  \item{icterms}{\code{signature(object = "NMFstd")}:
+  Method for standard NMF models, which returns the integer
+  vector that is stored in slot \code{icterms} when a
+  formula-based NMF model is instantiated. }
 
   }
 }
@@ -129,8 +147,8 @@ nmfModel(r, W=w, H=h)
   http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
 }
 \seealso{
-  Other NMF-model:
-  \code{\link{initialize,NMFOffset-method}},
-  \code{\link{NMFns-class}}, \code{\link{NMFOffset-class}}
+  Other NMF-model: \code{\link{NMFOffset-class}},
+  \code{\link{NMFns-class}},
+  \code{\link{initialize,NMFOffset-method}}
 }
 

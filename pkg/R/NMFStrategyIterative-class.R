@@ -425,6 +425,8 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 #' @param v target matrix
 #' @param w current basis matrix
 #' @param h current coefficient matrix
+#' @param nbterms number of fixed basis terms
+#' @param ncterms number of fixed coefficient terms
 #' @param copy logical that indicates if the update should be made on the original
 #' matrix directly (\code{FALSE}) or on a copy (\code{TRUE} - default).
 #' With \code{copy=FALSE} the memory footprint is very small, and some speed-up may be 
@@ -442,9 +444,9 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 #' @rdname nmf_update_KL
 #' @aliases nmf_update.KL
 #' @export
-nmf_update.KL.h <- std.divergence.update.h <- function(v, w, h, copy=TRUE)
+nmf_update.KL.h <- std.divergence.update.h <- function(v, w, h, nbterms=0L, ncterms=0L, copy=TRUE)
 {	
-	.Call("divergence_update_H", v, w, h, copy, PACKAGE='NMF')
+	.Call("divergence_update_H", v, w, h, nbterms, ncterms, copy, PACKAGE='NMF')
 }
 #' \code{nmf_update.KL.w_R} and \code{nmf_update.KL.h_R} implement the same updates 
 #' in \emph{plain R}.
@@ -472,9 +474,9 @@ nmf_update.KL.h_R <- R_std.divergence.update.h <- function(v, w, h, wh=NULL)
 #' }
 #' @rdname nmf_update_KL
 #' @export
-nmf_update.KL.w <- std.divergence.update.w <- function(v, w, h, copy=TRUE)
+nmf_update.KL.w <- std.divergence.update.w <- function(v, w, h, nbterms=0L, ncterms=0L, copy=TRUE)
 {	
-	.Call("divergence_update_W", v, w, h, copy, PACKAGE='NMF')
+	.Call("divergence_update_W", v, w, h, nbterms, ncterms, copy, PACKAGE='NMF')
 }
 #' @rdname nmf_update_KL
 #' @export
@@ -531,8 +533,9 @@ nmf_update.KL.w_R <- R_std.divergence.update.w <- function(v, w, h, wh=NULL)
 #' @rdname nmf_update_euclidean
 #' @aliases nmf_update.euclidean
 #' @export
-nmf_update.euclidean.h <- std.euclidean.update.h <- function(v, w, h, eps=10^-9, copy=TRUE){
-	.Call("euclidean_update_H", v, w, h, eps, copy, PACKAGE='NMF')
+nmf_update.euclidean.h <- std.euclidean.update.h <- 
+function(v, w, h, eps=10^-9, nbterms=0L, ncterms=0L, copy=TRUE){
+	.Call("euclidean_update_H", v, w, h, eps, nbterms, ncterms, copy, PACKAGE='NMF')
 }
 #' \code{nmf_update.euclidean.w_R} and \code{nmf_update.euclidean.h_R} implement the same updates 
 #' in \emph{plain R}.
@@ -559,8 +562,9 @@ nmf_update.euclidean.h_R <- R_std.euclidean.update.h <- function(v, w, h, wh=NUL
 #' }
 #' @rdname nmf_update_euclidean
 #' @export
-nmf_update.euclidean.w <- std.euclidean.update.w <- function(v, w, h, eps=10^-9, copy=TRUE){
-	.Call("euclidean_update_W", v, w, h, eps, copy, PACKAGE='NMF')
+nmf_update.euclidean.w <- std.euclidean.update.w <-
+function(v, w, h, eps=10^-9, nbterms=0L, ncterms=0L, weight=NULL, copy=TRUE){
+	.Call("euclidean_update_W", v, w, h, eps, weight, nbterms, ncterms, copy, PACKAGE='NMF')
 }
 #' @rdname nmf_update_euclidean
 #' @export
@@ -750,7 +754,7 @@ nmf.stop.connectivity <- function(object, i, y, x, stopconv=40, check.interval=1
 		if( i %% check.interval != 0 ) return( FALSE );
 		
 		# retrieve metaprofiles
-		h <- coef(x)
+		h <- coef(x, all=FALSE)
 		
 		# retrieve the last values of the consensus variables
 		consold <- staticVar('consold')

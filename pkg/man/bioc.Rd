@@ -1,8 +1,8 @@
 \name{bioc-NMF}
 \alias{.atrack,ExpressionSet-method}
 \alias{bioc-NMF}
-\alias{featureNames,NMFfitX-method}
 \alias{featureNames,NMF-method}
+\alias{featureNames,NMFfitX-method}
 \alias{metagenes}
 \alias{metagenes<-}
 \alias{metaprofiles}
@@ -14,8 +14,8 @@
 \alias{nmfModel,ExpressionSet,ANY-method}
 \alias{rnmf,ANY,ExpressionSet-method}
 \alias{run,NMFStrategy,ExpressionSet,ANY-method}
-\alias{sampleNames,NMFfitX-method}
 \alias{sampleNames,NMF-method}
+\alias{sampleNames,NMFfitX-method}
 \alias{seed,ExpressionSet,ANY,ANY-method}
 \title{Specific NMF Layer for Bioconductor}
 \description{

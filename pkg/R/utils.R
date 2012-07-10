@@ -33,6 +33,101 @@ rmAttributes <- function(x){
 	x
 }
 
+
+#' Simple Progress Bar
+#' 
+#' Creates a simple progress bar with title.
+#' This function is identical to \code{utils::txtProgressBar} but allow adding 
+#' a title to the progress bar.
+#' 
+#' @inheritParams utils::txtProgressBar
+#' @author R Core Team
+#' @keywords internal
+txtProgressBar <- function (min = 0, max = 1, initial = 0, char = "=", width = NA, 
+    	title= if( style == 3 ) ' ', label, style = 1, file = "") 
+{
+    if (!identical(file, "") && !(inherits(file, "connection") && 
+        		isOpen(file))) 
+        stop("'file' must be \"\" or an open connection object")
+    if (!style %in% 1L:3L) 
+        style <- 1
+    .val <- initial
+    .killed <- FALSE
+    .nb <- 0L
+    .pc <- -1L
+    nw <- nchar(char, "w")
+    if (is.na(width)) {
+        width <- getOption("width")
+        if (style == 3L) 
+            width <- width - 10L
+        width <- trunc(width/nw)
+    }
+    if (max <= min) 
+        stop("must have max > min")
+    up1 <- function(value) {
+        if (!is.finite(value) || value < min || value > max) 
+            return()
+        .val <<- value
+        nb <- round(width * (value - min)/(max - min))
+        if (.nb < nb) {
+            cat(paste(rep.int(char, nb - .nb), collapse = ""), 
+                	file = file)
+            flush.console()
+        }
+        else if (.nb > nb) {
+            cat("\r", title, paste(rep.int(" ", .nb * nw), collapse = ""), 
+                	"\r", title, paste(rep.int(char, nb), collapse = ""), 
+                	sep = "", file = file)
+            flush.console()
+        }
+        .nb <<- nb
+    }
+    up2 <- function(value) {
+        if (!is.finite(value) || value < min || value > max) 
+            return()
+        .val <<- value
+        nb <- round(width * (value - min)/(max - min))
+        if (.nb <= nb) {
+            cat("\r", title, paste(rep.int(char, nb), collapse = ""), 
+                	sep = "", file = file)
+            flush.console()
+        }
+        else {
+            cat("\r", title, paste(rep.int(" ", .nb * nw), collapse = ""), 
+                	"\r", paste(rep.int(char, nb), collapse = ""), 
+                	sep = "", file = file)
+            flush.console()
+        }
+        .nb <<- nb
+    }
+    up3 <- function(value) {
+        if (!is.finite(value) || value < min || value > max) 
+            return()
+        .val <<- value
+        nb <- round(width * (value - min)/(max - min))
+        pc <- round(100 * (value - min)/(max - min))
+        if (nb == .nb && pc == .pc) 
+            return()
+        cat(paste(c("\r",title," |", rep.int(" ", nw * width + 6)), collapse = ""), 
+            	file = file)
+        cat(paste(c("\r",title," |", rep.int(char, nb), rep.int(" ", 
+            							nw * (width - nb)), sprintf("| %3d%%", pc)), collapse = ""), 
+            	file = file)
+        flush.console()
+        .nb <<- nb
+        .pc <<- pc
+    }
+    getVal <- function() .val
+    kill <- function() if (!.killed) {
+        	cat("\n", file = file)
+        	flush.console()
+        	.killed <<- TRUE
+    	}
+    up <- switch(style, up1, up2, up3)
+    up(initial)
+    structure(list(getVal = getVal, up = up, kill = kill), class = "txtProgressBar")
+}
+
 #' Simulating Datasets
 #' 
 #' The function \code{syntheticNMF} generates random target matrices that follow
@@ -540,6 +635,8 @@ is.same <- function(x, y){
 	C.ptr(x) == C.ptr(y)
 }
 
+is.eset <- function(x) is(x, 'ExpressionSet')
+
 # clone an object
 clone <- function(x){
 	.Call('clone_object', x, PACKAGE='NMF')
@@ -587,10 +684,25 @@ clone2 <- function(x){
 	.Call("KL_divergence", x, y, PACKAGE='NMF')
 }
 
-# pmin in place
-pmin.inplace <- function(x, lim, skip=NULL){
+#' Updating Objects In Place
+#' 
+#' These functions modify objects (mainly matrix objects) in place, i.e. they 
+#' act directly on the C pointer.
+#' Due to their side-effect, they are not meant to be called by the end-user.
+#' 
+#' \code{pmax.inplace} is a version of \code{\link{pmax}} that updates its first
+#' argument.    
+#' 
+#' @param x an object to update in place.
+#' @param lim lower threshold value
+#' @param skip indexes to skip
+#' 
+#' @export
+#' @rdname inplace
+#' @keywords internal
+pmax.inplace <- function(x, lim, skip=NULL){
 	
-	.Call('ptr_pmin', x, lim, as.integer(skip), PACKAGE='NMF')
+	.Call('ptr_pmax', x, lim, as.integer(skip), PACKAGE='NMF')
 	
 }
 
@@ -604,7 +716,16 @@ colMax <- function(x){
 	.Call('colMax', x, PACKAGE='NMF')
 }
 
-# apply unequality constraints in place in place
+#' \code{neq.constraints.inplace} apply unequality constraints in place.
+#' 
+#' @param constraints constraint specification.
+#' @param ratio fixed ratio on which the constraint applies.
+#' @param value fixed value to enforce.
+#' @param copy a logical that indicates if \code{x} should be updated in place 
+#' or not.
+#' 
+#' @export
+#' @rdname inplace
 neq.constraints.inplace <- function(x, constraints, ratio=NULL, value=NULL, copy=FALSE){
 	
 	# if requested: clone data as neq.constrains.inplace modify the input data in place

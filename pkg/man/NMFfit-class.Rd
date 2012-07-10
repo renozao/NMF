@@ -123,46 +123,51 @@
 \section{Methods}{
   \describe{
 
-  \item{algorithm}{\code{signature(object = "NMFfit")}:
-  Returns the name of the algorithm that fitted the NMF
-  model \code{object}. }
+  \item{.basis}{\code{signature(object = "NMFfit")}:
+  Returns the basis matrix from an NMF model fitted with
+  function \code{\link{nmf}}.
 
-  \item{basis}{\code{signature(object = "NMFfit")}: Returns
-  the basis matrix from an NMF model fitted with function
-  \code{\link{nmf}}.
-
-  It is a shortcut for \code{basis(fit(object), ...)},
-  dispatching the call to the \code{basis} method of the
+  It is a shortcut for \code{.basis(fit(object), ...)},
+  dispatching the call to the \code{.basis} method of the
   actual NMF model. }
 
-  \item{basis<-}{\code{signature(object = "NMFfit", value =
-  "matrix")}: Sets the the basis matrix of an NMF model
+  \item{.basis<-}{\code{signature(object = "NMFfit", value
+  = "matrix")}: Sets the the basis matrix of an NMF model
   fitted with function \code{\link{nmf}}.
 
-  It is a shortcut for \code{basis(fit(object)) <- value},
-  dispatching the call to the \code{basis<-} method of the
+  It is a shortcut for \code{.basis(fit(object)) <- value},
+  dispatching the call to the \code{.basis<-} method of the
   actual NMF model. It is not meant to be used by the user,
-  except when developing new NMF algorithms, to update the
+  except when developing NMF algorithms, to update the
   basis matrix of the seed object before returning it. }
 
-  \item{coef}{\code{signature(object = "NMFfit")}: Returns
+  \item{.coef}{\code{signature(object = "NMFfit")}: Returns
   the the coefficient matrix from an NMF model fitted with
   function \code{\link{nmf}}.
 
-  It is a shortcut for \code{coef(fit(object), ...)},
-  dispatching the call to the \code{coef} method of the
+  It is a shortcut for \code{.coef(fit(object), ...)},
+  dispatching the call to the \code{.coef} method of the
   actual NMF model. }
 
-  \item{coef<-}{\code{signature(object = "NMFfit", value =
+  \item{.coef<-}{\code{signature(object = "NMFfit", value =
   "matrix")}: Sets the the coefficient matrix of an NMF
   model fitted with function \code{\link{nmf}}.
 
-  It is a shortcut for \code{coef(fit(object)) <- value},
-  dispatching the call to the \code{coef<-} method of the
+  It is a shortcut for \code{.coef(fit(object)) <- value},
+  dispatching the call to the \code{.coef<-} method of the
   actual NMF model. It is not meant to be used by the user,
-  except when developing new NMF algorithms, to update the
+  except when developing NMF algorithms, to update the
   coefficient matrix in the seed object before returning
   it. }
+
+  \item{NMFfitX}{\code{signature(object = "NMFfit")}:
+  Creates an \code{NMFfitX1} object from a single fit. This
+  is used in \code{\link{nmf}} when only the best fit is
+  kept in memory or on disk. }
+
+  \item{algorithm}{\code{signature(object = "NMFfit")}:
+  Returns the name of the algorithm that fitted the NMF
+  model \code{object}. }
 
   \item{compare}{\code{signature(object = "NMFfit")}:
   Compare multiple NMF fits passed as arguments. }
@@ -196,6 +201,20 @@
   It is a shortcut for \code{fitted(fit(object), ...)},
   dispatching the call to the \code{fitted} method of the
   actual NMF model. }
+
+  \item{ibterms}{\code{signature(object = "NMFfit")}:
+  Method for single NMF fit objects, which returns the
+  indexes of fixed basis terms from the fitted model. }
+
+  \item{icterms}{\code{signature(object = "NMFfit")}:
+  Method for single NMF fit objects, which returns the
+  indexes of fixed coefficient terms from the fitted model.
+  }
+
+  \item{icterms}{\code{signature(object = "NMFfit")}:
+  Method for multiple NMF fit objects, which returns the
+  indexes of fixed coefficient terms from the best fitted
+  model. }
 
   \item{minfit}{\code{signature(object = "NMFfit")}:
   Returns the object its self, since there it is the result
@@ -233,11 +252,6 @@
   "NMFfit")}: Compares two fitted NMF models, i.e. objects
   returned by single runs of \code{\link{nmf}}. }
 
-  \item{NMFfitX}{\code{signature(object = "NMFfit")}:
-  Creates an \code{NMFfitX1} object from a single fit. This
-  is used in \code{\link{nmf}} when only the best fit is
-  kept in memory or on disk. }
-
   \item{nrun}{\code{signature(object = "NMFfit")}: This
   method always returns 1, since an \code{NMFfit} object is
   obtained from a single NMF run. }
@@ -247,6 +261,9 @@
   algorithm that computed the fitted NMF model
   \code{object}, or the objective value with respect to a
   given target matrix \code{y} if it is supplied. }
+
+  \item{offset}{\code{signature(object = "NMFfit")}:
+  Returns the offset from the fitted model. }
 
   \item{plot}{\code{signature(x = "NMFfit", y =
   "missing")}: Plots the residual track computed at regular

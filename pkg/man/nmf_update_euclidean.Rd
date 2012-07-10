@@ -6,11 +6,13 @@
 \alias{nmf_update.euclidean.w_R}
 \title{NMF Multiplicative Updates for Euclidean Distance}
 \usage{
-  nmf_update.euclidean.h(v, w, h, eps = 10^-9, copy = TRUE)
+  nmf_update.euclidean.h(v, w, h, eps = 10^-9,
+    nbterms = 0L, ncterms = 0L, copy = TRUE)
 
   nmf_update.euclidean.h_R(v, w, h, wh = NULL, eps = 10^-9)
 
-  nmf_update.euclidean.w(v, w, h, eps = 10^-9, copy = TRUE)
+  nmf_update.euclidean.w(v, w, h, eps = 10^-9,
+    nbterms = 0L, ncterms = 0L, weight = NULL, copy = TRUE)
 
   nmf_update.euclidean.w_R(v, w, h, wh = NULL, eps = 10^-9)
 }

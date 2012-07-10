@@ -2,9 +2,9 @@
 \name{rmatrix}
 \alias{rmatrix}
 \alias{rmatrix,ANY-method}
-\alias{rmatrix-methods}
 \alias{rmatrix,NMF-method}
 \alias{rmatrix,numeric-method}
+\alias{rmatrix-methods}
 \title{Generating Random Matrices}
 \usage{
   rmatrix(x, ...)

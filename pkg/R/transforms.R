@@ -28,9 +28,6 @@ setGeneric('nneg', function(object, ...) standardGeneric('nneg'))
 #' This is the workhorse method, that is eventually called by all other 
 #' methods defined in the \code{\link{NMF}} package.
 #' 
-#' @param threshold Nonnegative lower threshold value (single numeric). 
-#' See argument \code{shit} for details on how the threshold is used and affects
-#' the result. 
 #' @param method Name of the transformation method to use, that is partially 
 #' matched against the following possible methods:
 #' \describe{
@@ -44,8 +41,16 @@ setGeneric('nneg', function(object, ...) standardGeneric('nneg'))
 #' 
 #' \item{absolute}{The absolute value of each entry is constrained to be above 
 #' threshold \code{threshold}.}
+#' 
+#' \item{min}{Global shift by adding the minimum entry to each entry, only if 
+#' it is negative, and then apply threshold.
 #' }
 #' 
+#' }
+#' 
+#' @param threshold Nonnegative lower threshold value (single numeric). 
+#' See argument \code{shit} for details on how the threshold is used and affects
+#' the result.
 #' @param shift a logical indicating whether the entries below the threshold 
 #' value \code{threshold} should be forced (shifted) to 0 (default) or to 
 #' the threshold value itself. 
@@ -77,7 +82,7 @@ setGeneric('nneg', function(object, ...) standardGeneric('nneg'))
 #' nneg(x, 2, method='abs')
 #' 
 setMethod('nneg', 'matrix'
-, function(object, threshold=0, shift=TRUE, method=c('pmax', 'posneg', 'absolute')){
+, function(object, method=c('pmax', 'posneg', 'absolute', 'min'), threshold=0, shift=TRUE){
 	# match argument
 	method <- match.arg(method)
 	if( !is.numeric(threshold) || length(threshold) != 1L )
@@ -85,43 +90,32 @@ setMethod('nneg', 'matrix'
 	if( threshold < 0 )
 		stop("nneg - Invalid threshold value in argument `threshold` [",threshold,"]: must be nonnegative.")
 	
-	# define threshold to use: 1-step transform if no shift is required
-	th <- if( !shift ) threshold else 0
-		
-	object <- 
-	switch(method
-	, pmax = pmax(object, th)
-	, posneg = rbind(pmax(object, th), pmax(-object, th))
-	, absolute = pmax(abs(object), th)
-	, stop("nneg - Unexpected error: unimplemented transformation method '", method, "'.")
-	)
+	# 1. Transform if there is any negative entry
+	m <- min(object)			
+	if( m < 0 ){
+		object <- 
+		switch(method
+		, pmax = pmax(object, 0)
+		, posneg = rbind(pmax(object, 0), pmax(-object, 0))
+		, absolute = pmax(abs(object), 0)
+		, min = object - m
+		, stop("NMF::nneg - Unexpected error: unimplemented transformation method '", method, "'.")
+		)
+	}
 
-	# 2nd-step if shifting: entries under threshold
-	if( shift ) object[object<=threshold] <- 0
+	if( threshold > 0 ){
+		# 2. Apply threshold if any
+		object <- pmax(object, threshold)
+		
+		# 3. Shifting: entries under threshold
+		if( shift ) object[object<=threshold] <- 0
+	}
 	
 	# return modified object
 	object
 }
 )
 
-if( isClass('ExpressionSet') ){
-	#' Apply \code{nneg} to the expression matrix of an \code{\link{ExpressionSet}} 
-	#' object (i.e. \code{exprs(object)}). 
-	#' All extra arguments in \code{...} are passed to the method \code{nneg,matrix}.
-	#' 
-	#' @examples
-	#' 
-	#' E <- ExpressionSet(x)
-	#' nnE <- nneg(e)
-	#' exprs(nnE)
-	#' 
-	setMethod('nneg', 'ExpressionSet'
-	, function(object, ...){
-		exprs(object) <- nneg(exprs(object), ...)
-		object
-	}
-	)
-}
 #' Apply \code{nneg} to the basis matrix of an \code{\link{NMF}} 
 #' object (i.e. \code{basis(object)}).
 #' All extra arguments in \code{...} are passed to the method \code{nneg,matrix}.
@@ -135,11 +129,11 @@ if( isClass('ExpressionSet') ){
 #' # mixture coefficients are not affected
 #' identical( coef(M), coef(nnM) )
 #' 
-setMethod('nneg', 'NMF'
-, function(object, ...){
-	basis(object) <- nneg(basis(object), ...)
-	object
-}
+setMethod('nneg', 'NMF', 
+	function(object, ...){
+		basis(object) <- nneg(basis(object), ...)
+		object
+	}
 )
 
 #' \code{posneg} is a shortcut for \code{nneg(..., method='posneg')}, to split 
@@ -204,25 +198,6 @@ setMethod('rposneg', 'matrix'
 	object
 }
 )
-
-if( isClass('ExpressionSet') ){
-	#' Apply \code{rposneg} to the expression matrix of an \code{\link{ExpressionSet}} 
-	#' object (i.e. \code{exprs(object)}). 
-	#' 
-	#' @examples
-	#' 
-	#' E <- ExpressionSet(x)
-	#' nnE <- posneg(E)
-	#' E2 <- rposneg(nnE)
-	#' all.equal(E, E2)
-	#' 
-	setMethod('rposneg', 'ExpressionSet'
-	, function(object, ...){
-		exprs(object) <- rposneg(exprs(object), ...)
-		object
-	}
-	)
-}
 
 #' Apply \code{rposneg} to the basis matrix of an \code{\link{NMF}} object.
 #' 

@@ -14,7 +14,7 @@ extern "C" {
 	SEXP clone_object (SEXP x);
 
 	/** pmin in place with 'y' being a single numeric value*/
-	SEXP ptr_pmin (SEXP x, SEXP y, SEXP skip);
+	SEXP ptr_pmax (SEXP x, SEXP y, SEXP skip);
 
 	/** Apply inequality constraints in place. */
 	SEXP ptr_neq_constraints(SEXP x, SEXP constraints, SEXP ratio=R_NilValue, SEXP value=R_NilValue);
@@ -58,7 +58,7 @@ SEXP clone_object (SEXP x){
 
 }
 
-SEXP ptr_pmin(SEXP x, SEXP y, SEXP skip=R_NilValue){
+SEXP ptr_pmax(SEXP x, SEXP y, SEXP skip=R_NilValue){
 
 	int n = length(x);
 	double* p_x = ( isNull(x) ? NULL : NUMERIC_POINTER(x) );
@@ -71,7 +71,7 @@ SEXP ptr_pmin(SEXP x, SEXP y, SEXP skip=R_NilValue){
 	double* old_value = NULL;
 	int* p_skip = NULL;
 
-	if( !isNull(skip) ){
+	if( !isNull(skip) && n_skip > 0 ){
 		old_value = (double*) R_alloc(n_skip*ncol, sizeof(double));
 		p_skip = INTEGER_POINTER(skip);
 		for(int k=ncol-1; k>=0; --k){
@@ -94,7 +94,7 @@ SEXP ptr_pmin(SEXP x, SEXP y, SEXP skip=R_NilValue){
 	p_x2 = NULL;
 
 	// restore skipped values
-	if( !isNull(skip) ){
+	if( !isNull(skip) && n_skip > 0 ){
 		for(int k=ncol-1; k>=0; --k){
 			for(int i=n_skip-1; i>=0; --i){
 				//Rprintf("restore %i x %i\n", i, k);

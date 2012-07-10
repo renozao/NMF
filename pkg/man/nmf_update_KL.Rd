@@ -6,11 +6,13 @@
 \alias{nmf_update.KL.w_R}
 \title{NMF Multiplicative Updates for Kullback-Leibler Divergence}
 \usage{
-  nmf_update.KL.h(v, w, h, copy = TRUE)
+  nmf_update.KL.h(v, w, h, nbterms = 0L, ncterms = 0L,
+    copy = TRUE)
 
   nmf_update.KL.h_R(v, w, h, wh = NULL)
 
-  nmf_update.KL.w(v, w, h, copy = TRUE)
+  nmf_update.KL.w(v, w, h, nbterms = 0L, ncterms = 0L,
+    copy = TRUE)
 
   nmf_update.KL.w_R(v, w, h, wh = NULL)
 }
@@ -20,6 +22,10 @@
   \item{w}{current basis matrix}
 
   \item{h}{current coefficient matrix}
+
+  \item{nbterms}{number of fixed basis terms}
+
+  \item{ncterms}{number of fixed coefficient terms}
 
   \item{copy}{logical that indicates if the update should
   be made on the original matrix directly (\code{FALSE}) or
