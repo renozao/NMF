@@ -6,7 +6,7 @@
 \alias{cterms<-}
 \alias{cterms<-,NMFstd-method}
 \alias{cterms<--methods}
-\title{Annotations in NMF Models}
+\title{Fixed Terms in NMF Models}
 \usage{
   bterms(object) <- value
 
@@ -19,10 +19,8 @@
   fixed-terms.}
 }
 \description{
-  NMF models may contain annotations for columns/rows
-  and/or rows/features, in a similar way gene expression
-  data are annotated \code{\linkS4class{ExpressionSet}}
-  objects in Bioconductor.
+  These functions are for internal use and should not be
+  called by the end-user.
 
   \code{cterms<-} sets fixed coefficient terms or indexes
   and should only be called on a newly created NMF object,
@@ -30,12 +28,7 @@
   \code{\link{nmfModel}}.
 }
 \details{
-  Fixed Terms in NMF Models
-
-  These functions are for internal use and should not be
-  called by the end-user.
-
-  They use \code{\link{molde.matrix}(~ -1 + ., data=value)}
+  They use \code{\link{model.matrix}(~ -1 + ., data=value)}
   to generate suitable term matrices.
 }
 \section{Methods}{

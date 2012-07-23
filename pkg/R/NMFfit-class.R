@@ -7,6 +7,7 @@
 
 #' @include RNG.R
 #' @include fixed-terms.R
+#' @include nmfModel.R
 NULL
 
 #' Base Class for to store Nonnegative Matrix Factorisation results
@@ -280,7 +281,7 @@ setReplaceMethod('niter', signature(object='NMFfit', value='numeric'),
 setMethod('show', 'NMFfit', 
 	function(object)
 	{		
-		cat("<Object of class:", class(object), ">\n")
+		cat("<Object of class: ", class(object), ">\n", sep='')
 		cat(" # Model:\n  ")
 		s <- capture.output(show(fit(object)))
 		cat(s, sep="\n  ")
@@ -644,7 +645,7 @@ setMethod('plot', signature(x='NMFfit', y='missing'),
 
 #' Computes summary measures for a single fit from \code{\link{nmf}}. 
 #' 
-#' This method adds the folowing measures to the measures computed by the method 
+#' This method adds the following measures to the measures computed by the method 
 #' \code{summary,NMF}:
 #' 
 #' \describe{

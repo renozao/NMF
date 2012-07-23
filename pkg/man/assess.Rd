@@ -74,7 +74,7 @@
   Computes summary measures for a single fit from
   \code{\link{nmf}}.
 
-  This method adds the folowing measures to the measures
+  This method adds the following measures to the measures
   computed by the method \code{summary,NMF}:
 
   \describe{ \item{residuals}{Residual error as measured by

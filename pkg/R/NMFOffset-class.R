@@ -1,5 +1,4 @@
 #' @include NMFstd-class.R
-#' @include NMFfit-class.R
 NULL
 
 #' NMF Model - Nonnegative Matrix Factorization with Offset

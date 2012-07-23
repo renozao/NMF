@@ -406,6 +406,8 @@
 % add preamble from pkgmaker
 
 %%%% PKGMAKER COMMANDS %%%%%%
+\usepackage{xspace}
+
 % R
 \let\proglang=\textit
 \let\code=\texttt 
@@ -464,7 +466,7 @@
 \usepackage[minnames=1,maxnames=2]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 
-\bibliography{/tmp/tmp.BBunPS9tzr/NMF/REFERENCES}
+\bibliography{/tmp/tmp.BLb4Xgsova/NMF/REFERENCES}
 
 
 
@@ -509,7 +511,7 @@
 
 
 \title{An introduction to NMF package\\\small Version
-0.8.7}
+0.8.9}
 \author{Renaud Gaujoux, \url{renaud@cbio.uct.ac.za}}
 % \\Address Computational Biology - University of Cape Town, South Africa,
 
@@ -927,17 +929,17 @@ The column \emph{Speed.up} contains the ratio $R/C$.
 
 
 % latex table generated in R 2.15.1 by xtable 1.7-0 package
-% Tue Jul 10 16:09:40 2012
+% Mon Jul 23 17:50:17 2012
 \begin{table}[ht]
 \begin{center}
 \begin{tabular}{rrrr}
   \hline
  & C & R & Speed.up \\ 
   \hline
-brunet & 5.05 & 10.59 & 2.10 \\ 
-  lee & 4.61 & 13.08 & 2.84 \\ 
-  offset & 5.41 & 20.21 & 3.74 \\ 
-  nsNMF & 8.82 & 16.97 & 1.92 \\ 
+brunet & 5.30 & 10.93 & 2.06 \\ 
+  lee & 4.87 & 13.12 & 2.69 \\ 
+  offset & 5.53 & 18.59 & 3.36 \\ 
+  nsNMF & 8.99 & 17.11 & 1.90 \\ 
    \hline
 \end{tabular}
 \caption{Performance speed up achieved by the optimized C++ implementation for some of the NMF algorithms.}
@@ -1054,9 +1056,9 @@ The result of a single NMF run is an object of class \code{NMFfit}, that holds b
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-## <Object of class: NMFfit >
+## <Object of class: NMFfit>
 ##  # Model:
-##   <Object of class: NMFstd >
+##   <Object of class:NMFstd>
 ##   features: 200 
 ##   basis/rank: 3 
 ##   samples: 38 
@@ -1069,7 +1071,7 @@ The result of a single NMF run is an object of class \code{NMFfit}, that holds b
 ##   Iterations: 510 
 ##   Timing:
 ##      user  system elapsed 
-##     0.480   0.000   0.491 
+##     0.476   0.000   0.478 
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1085,7 +1087,7 @@ The fitted model can be retrieved via method \code{fit}, which returns an object
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-## <Object of class: NMFstd >
+## <Object of class:NMFstd>
 ## features: 200 
 ## basis/rank: 3 
 ## samples: 38 
@@ -1346,7 +1348,7 @@ To use the Nonsmooth NMF algorithm from \cite{Pascual-Montano2006}:
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-## <Object of class: NMFns >
+## <Object of class:NMFns>
 ## features: 200 
 ## basis/rank: 3 
 ## samples: 38 
@@ -1368,9 +1370,9 @@ Or to use the PE-NMF algorithm from \cite{Zhang2008}:
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-## <Object of class: NMFfit >
+## <Object of class: NMFfit>
 ##  # Model:
-##   <Object of class: NMFstd >
+##   <Object of class:NMFstd>
 ##   features: 200 
 ##   basis/rank: 3 
 ##   samples: 38 
@@ -1384,7 +1386,7 @@ Or to use the PE-NMF algorithm from \cite{Zhang2008}:
 ##   Iterations: 2000 
 ##   Timing:
 ##      user  system elapsed 
-##     1.816   0.224   2.114 
+##     2.044   0.192   2.174 
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1444,9 +1446,9 @@ To use a specific method to seed the computation of a factorization, one simply 
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-## <Object of class: NMFfit >
+## <Object of class: NMFfit>
 ##  # Model:
-##   <Object of class: NMFstd >
+##   <Object of class:NMFstd>
 ##   features: 200 
 ##   basis/rank: 3 
 ##   samples: 38 
@@ -1459,7 +1461,7 @@ To use a specific method to seed the computation of a factorization, one simply 
 ##   Iterations: 1090 
 ##   Timing:
 ##      user  system elapsed 
-##     0.988   0.000   0.995 
+##     1.036   0.000   1.039 
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1487,7 +1489,7 @@ Moreover, single runs can also use RNGstream by passing a 6-length seed.
 \end{flushleft}
 \begin{verbatim}
 ##  RNG kind:  Mersenne-Twister / Inversion 
-##  RNG state: NMFfit [3087fd5be997ceb76b619d905bc53c8c] 
+##  RNG state: NMFfit [097ea0d584abe64c0b0985aef0989ca1] 
 \end{verbatim}
 \begin{flushleft}
 \ttfamily\noindent
@@ -1499,7 +1501,7 @@ Moreover, single runs can also use RNGstream by passing a 6-length seed.
 \end{flushleft}
 \begin{verbatim}
 ##  RNG kind:  L'Ecuyer-CMRG / Inversion 
-##  RNG state: NMFfitX1 [525341b65f2395ae56b6eb9ab7387b59] 
+##  RNG state: NMFfitX1 [8b77c4a200ee0e50119003b22c429298] 
 \end{verbatim}
 \begin{flushleft}
 \ttfamily\noindent
@@ -1511,7 +1513,7 @@ Moreover, single runs can also use RNGstream by passing a 6-length seed.
 \end{flushleft}
 \begin{verbatim}
 ##  RNG kind:  L'Ecuyer-CMRG / Inversion 
-##  RNG state: NMFfit [7acffd05ecce710170c9e1724b242374] 
+##  RNG state: NMFfit [012475a208ed8b182c2b4842238f716d] 
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1579,7 +1581,7 @@ For performance reason we use \code{nrun=5} here, but a typical choice would lie
 ##    407, 2060366693, -1979266846, -1467721989, 23029248, 1469230593, 1095525326 
 ##   Total timing:
 ##    user  system elapsed 
-##   1.628   0.128   2.283 
+##   1.728   0.116   2.367 
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1613,10 +1615,10 @@ If one is interested in keeping the results from all the runs, one can set the o
 ##    407, 1997333926, -492612625, 469522788, -1828607723, 1996453586, -1167273941 
 ##   Total timing:
 ##    user  system elapsed 
-##   3.268   0.188   2.816 
+##   3.364   0.200   2.479 
 ##   Sequential timing:
 ##    user  system elapsed 
-##   2.928   0.008   3.800 
+##   2.928   0.036   2.971 
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1637,7 +1639,7 @@ If one is interested in keeping the results from all the runs, one can set the o
 In this case, the result is an object of class \code{NMFfitXn} that also inherits from class \code{list}.
 
 Note that keeping all the results may be memory consuming. 
-For example, a 3-rank \code{NMF} fit\footnote{i.e. the result of a single NMF run with rank equal 3.} for the Golub gene expression matrix ($5000 \times 38$) takes about 19Kb\footnote{This size might change depending on the architecture (32 or 64 bits)}.
+For example, a 3-rank \code{NMF} fit\footnote{i.e. the result of a single NMF run with rank equal 3.} for the Golub gene expression matrix ($5000 \times 38$) takes about 20Kb\footnote{This size might change depending on the architecture (32 or 64 bits)}.
 
 \subsection{Parallel computations}\label{multicore}
 
@@ -1726,7 +1728,7 @@ The user is therefore encouraged to run these commands on his machine to see the
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   1.564   0.100   2.950 
+##   1.624   0.116   2.545 
 ## <Object of class: NMFfitX1 >
 ##   Method: brunet 
 ##   Runs:  5 
@@ -1734,7 +1736,7 @@ The user is therefore encouraged to run these commands on his machine to see the
 ##    407, 479565376, 313168193, 758619662, -1499576521, -1114385908, 588631965 
 ##   Total timing:
 ##    user  system elapsed 
-##   1.564   0.100   2.950 
+##   1.624   0.116   2.545 
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1838,7 +1840,7 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 ## Runs: 1 2* 3* 4 5 ... DONE
 ## System time:
 ##    user  system elapsed 
-##   3.032   0.000   3.110 
+##   3.085   0.008   3.095 
 \end{verbatim}
 \begin{flushleft}
 \ttfamily\noindent
@@ -1854,7 +1856,7 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |==========                                        |  20%Runs: |                                                        Runs: |====================                              |  40%Runs: |                                                        Runs: |==============================                    |  60%Runs: |                                                        Runs: |========================================          |  80%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   3.109   0.000   3.109 
+##   3.192   0.008   3.206 
 \end{verbatim}
 \begin{flushleft}
 \ttfamily\noindent
@@ -1869,7 +1871,7 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |==========                                        |  20%Runs: |                                                        Runs: |====================                              |  40%Runs: |                                                        Runs: |==============================                    |  60%Runs: |                                                        Runs: |========================================          |  80%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   3.136   0.024   3.194 
+##   3.300   0.000   3.305 
 \end{verbatim}
 \begin{flushleft}
 \ttfamily\noindent
@@ -1887,7 +1889,7 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 ## Runs: 1 2* 3* 4 5 ... DONE
 ## System time:
 ##    user  system elapsed 
-##   3.056   0.000   3.063 
+##   3.104   0.008   3.113 
 \end{verbatim}
 \begin{flushleft}
 \ttfamily\noindent
@@ -2040,9 +2042,9 @@ Passing the result to method \code{compare} produces a \code{data.frame} that co
 ## lee       lee random   1 euclidean    3           0.7269
 ## nsNMF   nsNMF random   1        KL    3           0.6777
 ##        sparseness.coef residuals niter   cpu cpu.all nrun
-## brunet          0.6218    543536   510 0.496   0.496    1
-## lee             0.4466 673513121  1780 1.556   1.556    1
-## nsNMF           0.7350    585106   970 1.308   1.308    1
+## brunet          0.6218    543536   510 0.508   0.508    1
+## lee             0.4466 673513121  1780 1.512   1.512    1
+## nsNMF           0.7350    585106   970 1.344   1.344    1
 \end{verbatim}
 \begin{flushleft}
 \ttfamily\noindent
@@ -2057,13 +2059,13 @@ Passing the result to method \code{compare} produces a \code{data.frame} that co
 ## lee       lee random   1 euclidean    3           0.7269
 ## nsNMF   nsNMF random   1        KL    3           0.6777
 ##        sparseness.coef purity entropy residuals niter   cpu
-## brunet          0.6218 0.8158  0.3927    543536   510 0.496
-## lee             0.4466 0.5789  0.7231 673513121  1780 1.556
-## nsNMF           0.7350 0.7895  0.4691    585106   970 1.308
+## brunet          0.6218 0.8158  0.3927    543536   510 0.508
+## lee             0.4466 0.5789  0.7231 673513121  1780 1.512
+## nsNMF           0.7350 0.7895  0.4691    585106   970 1.344
 ##        cpu.all nrun
-## brunet   0.496    1
-## lee      1.556    1
-## nsNMF    1.308    1
+## brunet   0.508    1
+## lee      1.512    1
+## nsNMF    1.344    1
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2281,22 +2283,22 @@ Here we apply the algorithm to some matrix \code{V} randomly generated:
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-## <Object of class: NMFfit >
+## <Object of class: NMFfit>
 ##  # Model:
-##   <Object of class: NMFstd >
+##   <Object of class:NMFstd>
 ##   features: 50 
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_52c81a7dffb7 
+##   algorithm:  nmf_5d1b2605adf6 
 ##   seed:  random 
-##   RNG: 403, 232, 726613627, ... [81ea4b2e19489ec75fff0c7dac9e2ca3]
+##   RNG: 403, 173, 1191562961, ... [0d87fde5bf092083bd059bcc33d58a3e]
 ##   distance metric:  'euclidean' 
-##   residuals:  595.5 
+##   residuals:  554.9 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.008   0.000   0.007 
+##     0.008   0.000   0.006 
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2315,18 +2317,18 @@ If the algorithm is based on another distance measure, this one can be specified
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-## <Object of class: NMFfit >
+## <Object of class: NMFfit>
 ##  # Model:
-##   <Object of class: NMFstd >
+##   <Object of class:NMFstd>
 ##   features: 50 
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_52c82e712eca 
+##   algorithm:  nmf_5d1b1ad7fd00 
 ##   seed:  random 
-##   RNG: 403, 442, 726613627, ... [6d194210949d7e65b33eaa9bc49a5a59]
+##   RNG: 403, 383, 1191562961, ... [2f2572f5c6b643d37859d97079951964]
 ##   distance metric:  'KL' 
-##   residuals:  1592 
+##   residuals:  1539 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
@@ -2400,22 +2402,22 @@ As an example, we reuse the previously defined custom algorithm\footnote{As it i
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-## <Object of class: NMFfit >
+## <Object of class: NMFfit>
 ##  # Model:
-##   <Object of class: NMFstd >
+##   <Object of class:NMFstd>
 ##   features: 50 
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_52c8185709c6 
+##   algorithm:  nmf_5d1bbd8fba1 
 ##   seed:  random 
-##   RNG: 403, 28, -1643107813, ... [f7a34ef7332a54aa3e88914d4f8885f3]
+##   RNG: 403, 593, 1191562961, ... [7ed64fa772a4b1e68cebc0bfed3cb018]
 ##   distance metric:  'euclidean' 
-##   residuals:  599 
+##   residuals:  561.4 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.005 
+##     0.008   0.000   0.005 
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2436,7 +2438,7 @@ argument:
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-## <Object of class: NMFstd >
+## <Object of class:NMFstd>
 ## features: 0 
 ## basis/rank: 0 
 ## samples: 0 
@@ -2494,19 +2496,19 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-## <Object of class: NMFfit >
+## <Object of class: NMFfit>
 ##  # Model:
-##   <Object of class: NMFOffset >
+##   <Object of class:NMFOffset>
 ##   features: 50 
 ##   basis/rank: 3 
 ##   samples: 20 
-##   offset: [ 0.5869 0.7208 1.544 1.1 1.035 ... ]
+##   offset: [ 0.3677 0.9383 1.347 1.019 0.6695 ... ]
 ##  # Details:
-##   algorithm:  nmf_52c84a13c68e 
+##   algorithm:  nmf_5d1b1e11dd6a 
 ##   seed:  random 
-##   RNG: 403, 238, -1643107813, ... [ea56b6d6148c575d16324e8569a2e0e6]
+##   RNG: 403, 179, -963168695, ... [850b670d66e22c6d00f5d79570d1ce8a]
 ##   distance metric:  'euclidean' 
-##   residuals:  359.1 
+##   residuals:  334.3 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
@@ -2556,22 +2558,22 @@ To use the new seeding method:
 \normalfont
 \end{flushleft}
 \begin{verbatim}
-## <Object of class: NMFfit >
+## <Object of class: NMFfit>
 ##  # Model:
-##   <Object of class: NMFstd >
+##   <Object of class:NMFstd>
 ##   features: 50 
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
 ##   algorithm:  snmf/r 
-##   seed:  NMF.seed.52c86fc0bcfc 
-##   RNG: 403, 498, -1643107813, ... [6b057c9f31321f168115661191019650]
+##   seed:  NMF.seed.5d1b51f9cc58 
+##   RNG: 403, 439, -963168695, ... [49267d84a430d6788491e4513dd6c28c]
 ##   distance metric:  <function> 
-##   residuals:  213.4 
-##   Iterations: 65 
+##   residuals:  195.6 
+##   Iterations: 105 
 ##   Timing:
 ##      user  system elapsed 
-##     0.268   0.000   0.268 
+##     0.460   0.000   0.459 
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2644,9 +2646,9 @@ debug & FALSE & Toggle debug mode, which is an extended verbose mode.\\
   \item Other packages: bigmemory~4.2.11,
     Biobase~2.16.0, BiocGenerics~0.2.0,
     codetools~0.2-8, colorspace~1.1-1, digest~0.5.2,
-    doParallel~1.0.1, doRNG~1.4.2, foreach~1.4.0,
-    gridBase~0.4-5, iterators~1.0.6, knitr~0.6.1,
-    NMF~0.8.7, pkgmaker~0.6.8, RColorBrewer~1.0-5,
+    doParallel~1.0.1, doRNG~1.4.1, foreach~1.4.0,
+    gridBase~0.4-5, iterators~1.0.6, knitr~0.6,
+    NMF~0.8.9, pkgmaker~0.8, RColorBrewer~1.0-5,
     registry~0.2, stringr~0.6, synchronicity~1.0.13,
     xtable~1.7-0
   \item Loaded via a namespace (and not attached):

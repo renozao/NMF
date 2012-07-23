@@ -87,7 +87,7 @@ NULL
 #' # incompatibilty (a warning is thrown in such case) 
 #' nmfModel(r, W=w, H=h)
 #'  
-setClass('NMFstd'
+setClass('NMFstd' 
 		, representation(
 			W = 'matrix' # basis matrix
 			, H = 'matrix' # mixture coefficients matrix
@@ -130,9 +130,18 @@ setClass('NMFstd'
 #' basis(x)
 #' coef(x)
 #' 
-#' # set the values of the matrix factors
-#' basis(x) <- matrix(1:2, nrow(x), nbasis(x))
-#' coef(x) <- matrix(1:2, nrow(x), nbasis(x))
+#' # set matrix factors
+#' basis(x) <- matrix(1, nrow(x), nbasis(x))
+#' coef(x) <- matrix(1, nbasis(x), ncol(x))
+#' # set random factors
+#' basis(x) <- rmatrix(basis(x))
+#' coef(x) <- rmatrix(coef(x))
+#' 
+#' # incompatible matrices generate an error:
+#' try( coef(x) <- matrix(1, nbasis(x)-1, nrow(x)) )
+#' # but the low-level method allow it
+#' .coef(x) <- matrix(1, nbasis(x)-1, nrow(x))
+#' try( validObject(x) )
 #' 
 setMethod('.basis', 'NMFstd',
 	function(object){ 

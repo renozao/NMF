@@ -31,6 +31,12 @@
   \item{nrun}{a \code{numeric} giving the number of run to
   perform for each value in \code{range}.}
 
+  \item{model}{model specification passed to each
+  \code{nmf} call. In particular, when \code{x} is a
+  formula, it is passed to argument \code{data} of
+  \code{\link{nmfModel}} to determine the target matrix --
+  and fixed terms.}
+
   \item{verbose}{toggle verbosity.  This parameter only
   affects the verbosity of the outer loop over the values
   in \code{range}. To print verbose (resp. debug) messages

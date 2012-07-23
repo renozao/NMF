@@ -1359,7 +1359,7 @@ function(x, rank, method
 				}
 			}
 			
-			run.all <- function(x, rank, method, seed, .options, ...){
+			run.all <- function(x, rank, method, seed, model, .options, ...){
 								
 				## 1. SETUP
 				# load some variables from parent environment to ensure they 
@@ -1604,7 +1604,7 @@ function(x, rank, method
 		}####END_FOREACH_NMF
 		else{####SAPPLY_NMF
 			
-			run.all <- function(x, rank, method, seed, .options, ...){
+			run.all <- function(x, rank, method, seed, model, .options, ...){
 				
 				# by default force no verbosity from the runs
 				.options$verbose <- FALSE
@@ -1725,7 +1725,7 @@ function(x, rank, method
 		####END_DEFINE_RUN		
 		
 		# perform all the NMF runs
-		t <- system.time({res <- run.all(x, rank, method, seed, .options, ...)})
+		t <- system.time({res <- run.all(x=x, rank=rank, method=method, seed=seed, model=model, .options, ...)})
 		if( verbose && !debug ){
 			cat("System time:\n")
 			print(t)
@@ -2072,7 +2072,7 @@ checkResult <- function(fit, seed){
 #' @return an \code{\linkS4class{NMFfit}} object.
 #' 
 #' @inline
-#'  
+#' @export 
 setGeneric('seed', function(x, model, method, ...) standardGeneric('seed') )
 
 #' This is the workhorse method that seeds an NMF model object using a given 
@@ -2344,6 +2344,11 @@ setMethod('seed', signature(x='ANY', model='numeric', method='NMFSeed'),
 #' 
 #' @param nrun a \code{numeric} giving the number of run to perform for each
 #' value in \code{range}.
+#' 
+#' @param model model specification passed to each \code{nmf} call.
+#' In particular, when \code{x} is a formula, it is passed to argument 
+#' \code{data} of \code{\link{nmfModel}} to determine the target matrix -- and 
+#' fixed terms.
 #' 
 #' @param verbose toggle verbosity.  This parameter only affects the verbosity
 #' of the outer loop over the values in \code{range}. 

@@ -148,19 +148,19 @@ fterms <- function(value){
 	res
 }
 
-##' Annotations in NMF Models
-##' 
-##' NMF models may contain annotations for columns/rows and/or rows/features, in 
-##' a similar way gene expression data are annotated 
-##' \code{\linkS4class{ExpressionSet}} objects in Bioconductor.
-##'
-#NULL
+## #' Annotations in NMF Models
+## #' 
+## #' NMF models may contain annotations for columns/rows and/or rows/features, in 
+## #' a similar way gene expression data are annotated 
+## #' \code{\linkS4class{ExpressionSet}} objects in Bioconductor.
+## #'
+## NULL
 
 #' Fixed Terms in NMF Models
 #' 
 #' These functions are for internal use and should not be called by the end-user.
 #' 
-#' They use \code{\link{molde.matrix}(~ -1 + ., data=value)} to generate suitable
+#' They use \code{\link{model.matrix}(~ -1 + ., data=value)} to generate suitable
 #' term matrices.
 #' 
 #' @param object NMF object to be updated.

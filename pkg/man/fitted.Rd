@@ -82,14 +82,6 @@
   matrix slots \code{W} and \code{H}: \deqn{\hat{V} = W
   H}{V ~ W H} }
 
-  \item{fitted}{\code{signature(object = "NMFfit")}:
-  Computes and return the estimated target matrix from an
-  NMF model fitted with function \code{\link{nmf}}.
-
-  It is a shortcut for \code{fitted(fit(object), ...)},
-  dispatching the call to the \code{fitted} method of the
-  actual NMF model. }
-
   \item{fitted}{\code{signature(object = "NMFOffset")}:
   Computes the target matrix estimate for an NMFOffset
   object.
@@ -104,6 +96,14 @@
   \code{smoothing}, and are typically used to pass a value
   for \code{theta}, which is used to compute the smoothing
   matrix instead of the one stored in \code{object}. }
+
+  \item{fitted}{\code{signature(object = "NMFfit")}:
+  Computes and return the estimated target matrix from an
+  NMF model fitted with function \code{\link{nmf}}.
+
+  It is a shortcut for \code{fitted(fit(object), ...)},
+  dispatching the call to the \code{fitted} method of the
+  actual NMF model. }
 
   }
 }

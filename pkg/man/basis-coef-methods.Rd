@@ -78,19 +78,15 @@
   matrices, typically an object of class
   \code{\linkS4class{NMF}}.}
 
-  \item{all}{a logical that indicates whether the complete
-  matrix should be returned (\code{TRUE}) or only the
-  non-fixed part, which is relevant only for formula-based
-  NMF models that include fixed basis or coefficient
-  terms.}
-
   \item{...}{extra arguments to allow extension and passed
   to the low-level access functions \code{.coef} and
   \code{.basis}.}
 
-  \item{all}{logical that indicates if all
-  coefficient/basis should be returned (\code{TRUE}) or
-  only non-fixed ones.}
+  \item{all}{a logical that indicates whether the complete
+  matrix factor should be returned (\code{TRUE}) or only
+  the non-fixed part. This is relevant only for
+  formula-based NMF models that include fixed basis or
+  coefficient terms.}
 
   \item{value}{replacement value}
 
@@ -285,9 +281,18 @@ x <- rnmf(3, 10, 5)
 basis(x)
 coef(x)
 
-# set the values of the matrix factors
-basis(x) <- matrix(1:2, nrow(x), nbasis(x))
-coef(x) <- matrix(1:2, nrow(x), nbasis(x))
+# set matrix factors
+basis(x) <- matrix(1, nrow(x), nbasis(x))
+coef(x) <- matrix(1, nbasis(x), ncol(x))
+# set random factors
+basis(x) <- rmatrix(basis(x))
+coef(x) <- rmatrix(coef(x))
+
+# incompatible matrices generate an error:
+try( coef(x) <- matrix(1, nbasis(x)-1, nrow(x)) )
+# but the low-level method allow it
+.coef(x) <- matrix(1, nbasis(x)-1, nrow(x))
+try( validObject(x) )
 }
 \seealso{
   Other NMF-interface: \code{\link{$,NMF-method}},

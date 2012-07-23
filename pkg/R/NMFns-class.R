@@ -107,7 +107,6 @@ setClass('NMFns'
 			return(paste("Invalid value for theta (",object@theta,"): must be between 0 and 1", sep=''))
 		TRUE
 	}
-	
 )
 
 #' Show method for objects of class \code{NMFns}

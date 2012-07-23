@@ -515,7 +515,9 @@ nmf_update.KL.w_R <- R_std.divergence.update.w <- function(v, w, h, wh=NULL)
 #' @param v target matrix
 #' @param w current basis matrix
 #' @param h current coefficient matrix
-#' @param eps small numeric value used to ensure numeric stability 
+#' @param eps small numeric value used to ensure numeric stability
+#' @param nbterms number of fixed basis terms (see \code{\link{bterms}}).
+#' @param ncterms number of fixed coefficient terms (see \code{\link{cterms}})
 #' @param copy logical that indicates if the update should be made on the original
 #' matrix directly (\code{FALSE}) or on a copy (\code{TRUE} - default).
 #' With \code{copy=FALSE} the memory footprint is very small, and some speed-up may be 
@@ -560,6 +562,12 @@ nmf_update.euclidean.h_R <- R_std.euclidean.update.h <- function(v, w, h, wh=NUL
 #' }{
 #' W_ik <- max(W_ik (V H^T)_ik, eps) / ( (W H H^T)_ik + eps )
 #' }
+#' 
+#' @param weight numeric vector of sample weights, e.g., used to normalise samples 
+#' coming from multiple datasets.
+#' It must be of the same length as the number of samples/columns in \code{v} 
+#' -- and \code{h}. 
+#' 
 #' @rdname nmf_update_euclidean
 #' @export
 nmf_update.euclidean.w <- std.euclidean.update.w <-

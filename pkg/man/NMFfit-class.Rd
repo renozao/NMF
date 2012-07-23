@@ -293,7 +293,7 @@
   Computes summary measures for a single fit from
   \code{\link{nmf}}.
 
-  This method adds the folowing measures to the measures
+  This method adds the following measures to the measures
   computed by the method \code{summary,NMF}:
 
   See \code{\link{summary,NMFfit-method}} for more details.

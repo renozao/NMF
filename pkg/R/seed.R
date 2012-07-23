@@ -82,52 +82,6 @@ setReplaceMethod('algorithm', signature(object='NMFSeed', value='function'),
 # REGISTRY METHODS FOR SEEDING METHODS
 ###########################################################################
 
-###% Register a new seeding method into the NMF registry.
-###%
-setGeneric('NMFSeed', function(key, method, ...) standardGeneric('NMFSeed') )
-setMethod('NMFSeed', signature(key='character', method='ANY'), 
-	function(key, method, ...){
-		# wrap function method into a new NMFSeed object
-		new('NMFSeed', name=key, method=method, ...)
-	}
-)
-
-setNMFSeed <- function(..., overwrite=FALSE, verbose=nmf.getOption('verbose')){
-		
-	# development/tracking trick 
-	if( !isNamespaceLoaded('NMF') ) overwrite <- TRUE 
-	lverbose <- # if not specified: always when loading or in dev mode
-			if( missing(verbose) ) isLoadingNamespace() || !isNamespaceLoaded('NMF')
-			else verbose 
-	
-	# wrap function method into a new NMFSeed object
-	method <- NMFSeed(...)
-	parent.method <- attr(method, 'parent')
-	key <- name(method)[1]
-	
-	if( lverbose ){
-		tmpl <- if( !is.null(parent.method) && parent.method != key )
-					stringr::str_c(" based on template '", parent.method, "'")
-		
-		message("Registering NMF seeding method '", key,"'", tmpl,"... ", appendLF=FALSE)
-	}
-	
-	# register the newly created object
-	res <- nmfRegister(method, key, registry.name='seed'
-					, overwrite=overwrite, verbose=verbose)
-	
-	if( !is.null(res) && res > 0L ){
-		if( lverbose ) message( if(res == 1L) "OK" else "UPDATED" )
-		method
-	}else{
-		if( lverbose ) message( "ERROR" )
-		NULL
-	}
-	
-}
-
-nmfRegisterSeed <- setNMFSeed
-
 #' Seeding Strategies for NMF Algorithms
 #' 
 #' \code{nmfSeed} lists and retrieves NMF seeding methods.
@@ -191,6 +145,79 @@ existsNMFSeed <- function(name, exact=TRUE){
 	return(res)
 	
 }
+
+#' Registering NMF Seeding Methods
+#' 
+#' NMF seeding methods are registered via the function \code{setNMFSeed}, which
+#' stores them as \code{\linkS4class{NMFSeed}} objects in a dedicated registry.
+#' 
+#' @param ... arguments passed to \code{NMFSeed} and used to initialise slots
+#' in the \code{\linkS4class{NMFSeed}} object.
+#' @inheritParams setNMFMethod
+#' 
+#' @export
+setNMFSeed <- function(..., overwrite=FALSE, verbose=nmf.getOption('verbose')){
+	
+	# development/tracking trick 
+	if( !isNamespaceLoaded('NMF') ) overwrite <- TRUE 
+	lverbose <- # if not specified: always when loading or in dev mode
+			if( missing(verbose) ) isLoadingNamespace() || !isNamespaceLoaded('NMF')
+			else verbose 
+	
+	# wrap function method into a new NMFSeed object
+	method <- NMFSeed(...)
+	parent.method <- attr(method, 'parent')
+	key <- name(method)[1]
+	
+	if( lverbose ){
+		tmpl <- if( !is.null(parent.method) && parent.method != key )
+			stringr::str_c(" based on template '", parent.method, "'")
+		
+		message("Registering NMF seeding method '", key,"'", tmpl,"... ", appendLF=FALSE)
+	}
+	
+	# register the newly created object
+	res <- nmfRegister(method, key, registry.name='seed'
+			, overwrite=overwrite, verbose=verbose)
+	
+	if( !is.null(res) && res > 0L ){
+		if( lverbose ) message( if(res == 1L) "OK" else "UPDATED" )
+		method
+	}else{
+		if( lverbose ) message( "ERROR" )
+		NULL
+	}
+	
+}
+
+nmfRegisterSeed <- setNMFSeed
+
+#' \code{NMFSeed} is a constructor method that instantiate 
+#' \code{\linkS4class{NMFSeed}} objects. 
+#'
+#' @param key access key as a single character string
+#' @param method specification of the seeding method, as a function that takes 
+#' at least the following arguments:
+#' \describe{
+#' \item{object}{uninitialised/empty NMF model, i.e. that it has 0 rows and 
+#' columns, but has already the rank requested in the call to \code{\link{nmf}} 
+#' or \code{\link{seed}}.}
+#' \item{x}{target matrix}
+#' \item{...}{extra arguments}
+#' }
+#'  
+#' @export
+#' @rdname setNMFSeed
+#' @inline
+setGeneric('NMFSeed', function(key, method, ...) standardGeneric('NMFSeed') )
+#' Default method simply calls \code{\link{new}} with the same arguments. 
+setMethod('NMFSeed', signature(key='character', method='ANY'), 
+	function(key, method, ...){
+		# wrap function method into a new NMFSeed object
+		new('NMFSeed', name=key, method=method, ...)
+	}
+)
+
 
 ###########################################################################
 # REGISTRATION

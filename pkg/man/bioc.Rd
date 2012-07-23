@@ -12,7 +12,9 @@
 \alias{nmf,matrix,ExpressionSet,ANY-method}
 \alias{nmfModel,ANY,ExpressionSet-method}
 \alias{nmfModel,ExpressionSet,ANY-method}
+\alias{nneg,ExpressionSet-method}
 \alias{rnmf,ANY,ExpressionSet-method}
+\alias{rposneg,ExpressionSet-method}
 \alias{run,NMFStrategy,ExpressionSet,ANY-method}
 \alias{sampleNames,NMF-method}
 \alias{sampleNames,NMFfitX-method}

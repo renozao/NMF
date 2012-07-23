@@ -4,7 +4,9 @@
 # Creation: 03 Jul 2012
 ###############################################################################
 
-#' @include NMF-class.R
+#' @include NMFstd-class.R
+#' @include NMFns-class.R
+#' @include NMFOffset-class.R
 NULL
 
 #' Factory Methods NMF Models
@@ -138,6 +140,7 @@ setGeneric('nmfModel', function(rank, target=0L, ...) standardGeneric('nmfModel'
 setMethod('nmfModel', signature(rank='numeric', target='numeric'),
 	function(rank, target, ncol=NULL, model='NMFstd', W, H, ..., force.dim=TRUE, order.basis=TRUE){
 		
+		if( is.null(model) ) model <- 'NMFstd'
 		# check validity of the provided class
 		if( !isClass(model) ) stop("nmfModel - Invalid model name: class '", model,"' is not defined.")
 		if( !extends(model, 'NMF') ) stop("nmfModel - Invalid model name: class '", model,"' does not extend class 'NMF'.")
@@ -574,6 +577,12 @@ setMethod('nmfModel', signature(rank='formula', target='ANY'),
 		# missing target is NULL
 		if( missing(target) ) target <- NULL
 		
+		# data is a model class name (passed from nmf)
+		if( is.character(data) ){
+			model <- data
+			data <- NULL
+		}else model <- NULL
+		
 		# parse formula
 		f <- parse_formula(rank)
 		enclos <- environment(rank)
@@ -608,7 +617,8 @@ setMethod('nmfModel', signature(rank='formula', target='ANY'),
 		}
 		
 		# determine target matrix:
-		# if no response term is present, lookup target data in other arguments
+		X <- 0L
+		# if a response term is present, lookup target data in other arguments
 		if( f$response ){
 			X <- eval(parse(text=f$y), enclos)
 			if( is.eset(target) && !identical(X, target) ){
@@ -620,8 +630,6 @@ setMethod('nmfModel', signature(rank='formula', target='ANY'),
 			# no response, no target: try ExpressionSet in data 
 			if( is.eset(data) ){
 				X <- exprs(data)
-			}else{
-				stop("Could not infer target matrix from call: ")
 			}
 		}else{
 			X <- target
@@ -635,6 +643,11 @@ setMethod('nmfModel', signature(rank='formula', target='ANY'),
 		
 		r <- rank
 		cterms <- bterms <- list()
+		
+		# dimensions are also inferred from the formula
+		n <- if( identical(X, 0L) ) 0L else nrow(X)
+		p <- if( identical(X, 0L) ) 0L else ncol(X)
+		
 		for( v in f$x ){
 			if( grepl("^[0-9]+$", v) ){
 				if( rank == 0L ){ # rank not specified in target 
@@ -646,18 +659,23 @@ setMethod('nmfModel', signature(rank='formula', target='ANY'),
 			}else if( grepl("^[+-]$", v) ) next
 			else {
 				val <- eval(parse(text=v), data, enclos)
-				if( length(val) ==  ncol(X) )
+				if( p==0L || length(val) ==  p ){
 					cterms[[v]] <- val
-				else if( length(val) ==  nrow(X) )
+					if( p==0L ) p <- length(val)
+				}else if( n==0L || length(val) ==  n ){
 					bterms[[v]] <- val
-				else
-					stop("Invalid variable '", v, "': length must either be the number of target columns [", ncol(X), "]"
-							, " or rows [", nrows(X), "]")
+					if( n==0L ) n <- length(val)
+				}else
+					stop("Invalid variable '", v, "': length must either be the number of target columns [", p, "]"
+							, " or rows [", n, "]")
 			}
 		}
+		# try to fixup X if possible
+		if( identical(X, 0L) ) X <- c(n, p)
 		
 		# call nmfModel with cterms
-		object <- nmfModel(r, X, ...)
+		if( hasArg(model) || is.null(model) ) object <- nmfModel(r, X, ...)
+		else object <- nmfModel(r, X, ..., model=model)
 		# set fixed basis terms
 		if( length(bterms) ){
 			bterms(object) <- as.data.frame(bterms)	

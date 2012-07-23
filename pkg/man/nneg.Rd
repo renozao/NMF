@@ -119,17 +119,21 @@ x
 # pmax (default)
 nneg(x)
 # using a threshold
-nneg(x, 2)
+nneg(x, threshold=2)
 # without shifting the entries lower than threshold
-nneg(x, 2, shift=FALSE)
+nneg(x, threshold=2, shift=FALSE)
 
 # posneg: split positive and negative part
 nneg(x, method='posneg')
-nneg(x, 2, method='pos')
+nneg(x, method='pos', threshold=2)
 
 # absolute
 nneg(x, method='absolute')
-nneg(x, 2, method='abs')
+nneg(x, method='abs', threshold=2)
+
+# min
+nneg(x, method='min')
+nneg(x, method='min', threshold=2)
 # random
 M <- nmfModel(x, rmatrix(ncol(x), 3))
 nnM <- nneg(M)

@@ -37,6 +37,9 @@
 #' 
 #' @aliases rnmf,ANY,ExpressionSet-method
 #' 
+#' @aliases nneg,ExpressionSet-method
+#' @aliases rposneg,ExpressionSet-method
+#' 
 #' @aliases .atrack,ExpressionSet-method
 #' 
 #' @aliases sampleNames,NMF-method

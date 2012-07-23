@@ -26,6 +26,12 @@
   \item{eps}{small numeric value used to ensure numeric
   stability}
 
+  \item{nbterms}{number of fixed basis terms (see
+  \code{\link{bterms}}).}
+
+  \item{ncterms}{number of fixed coefficient terms (see
+  \code{\link{cterms}})}
+
   \item{copy}{logical that indicates if the update should
   be made on the original matrix directly (\code{FALSE}) or
   on a copy (\code{TRUE} - default). With \code{copy=FALSE}
@@ -34,6 +40,11 @@
 
   \item{wh}{already computed NMF estimate used to compute
   the denominator term.}
+
+  \item{weight}{numeric vector of sample weights, e.g.,
+  used to normalise samples coming from multiple datasets.
+  It must be of the same length as the number of
+  samples/columns in \code{v} -- and \code{h}.}
 }
 \value{
   a matrix of the same dimension as the input matrix to

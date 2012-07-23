@@ -222,9 +222,6 @@ setMethod('fitted', signature(object='NMF'),
 #' 
 #' @param object an object from which to extract the factor matrices, typically an 
 #' object of class \code{\linkS4class{NMF}}.
-#' @param all a logical that indicates whether the complete matrix should be 
-#' returned (\code{TRUE}) or only the non-fixed part, which is relevant only for 
-#' formula-based NMF models that include fixed basis or coefficient terms. 
 #' @param ... extra arguments to allow extension and passed to the low-level 
 #' access functions \code{.coef} and \code{.basis}. 
 #'   
@@ -233,8 +230,11 @@ setMethod('fitted', signature(object='NMF'),
 #' @export
 #'  
 setGeneric('basis', function(object, ...) standardGeneric('basis') )
-#' @param all logical that indicates if all coefficient/basis should be returned 
-#' (\code{TRUE}) or only non-fixed ones.
+#' @param all a logical that indicates whether the complete matrix factor 
+#' should be returned (\code{TRUE}) or only the non-fixed part.
+#' This is relevant only for formula-based NMF models that include fixed basis or 
+#' coefficient terms.
+#' 
 #' @inline
 setMethod('basis', signature(object='NMF'),
 	function(object, all=TRUE, ...){
@@ -708,7 +708,7 @@ selectSome <- function (obj, maxToShow = 5)
 setMethod('show', 'NMF', 
 		function(object)
 		{
-			cat("<Object of class:", class(object), ">\n")
+			cat("<Object of class:", class(object), ">\n", sep='')
 			cat("features:", nrow(object), "\n")
 			cat("basis/rank:", nbasis(object), "\n")
 			cat("samples:", ncol(object), "\n")
