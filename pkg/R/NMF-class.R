@@ -63,11 +63,8 @@ setOldClass('proc_time', prototype=numeric())
 #' 
 #' @slot misc A list that is used internally to temporarily store algorithm 
 #' parameters during the computation.
-#' @slot bterms a \code{data.frame} that contains primary data for fixed 
-#' basis terms. See \code{\link{bterms}}.
-#' @slot cterms  a \code{data.frame} that contains primary data for fixed 
-#' coefficient terms. See \code{\link{cterms}}.
 #' 
+#' @export
 #' @family NMF-interface 
 #' 
 #' @section Implementing NMF models:

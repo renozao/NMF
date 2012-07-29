@@ -25,9 +25,10 @@
 \section{Slots}{
   \describe{
 
-  \item{.Data"}{standard slot that contains the S3
-  \code{list} object data.  See R documentation on S4
-  classes for more details.}
+  \item{.Data}{standard slot that contains the S3
+  \code{list} object data. See R documentation on S3/S4
+  classes for more details (e.g.,
+  \code{\link{setOldClass}}).}
 
   }
 }

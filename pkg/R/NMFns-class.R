@@ -75,6 +75,7 @@ NULL
 #' After the matrix \eqn{W} has been updated, each of its columns is scaled so
 #' that it sums up to 1.
 #' 
+#' @export
 #' @family NMF-model
 #' @examples
 #' 

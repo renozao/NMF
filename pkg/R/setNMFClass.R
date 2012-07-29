@@ -7,6 +7,8 @@
 #' @include NMF-class.R
 NULL
 
+if( FALSE ){ #START_DEACTIVATE
+	
 #' Factory Method for NMF Model Classes
 #' 
 #' Defines two S4 classes for representing NMF models: one to hold data from 
@@ -46,3 +48,5 @@ setNMFClass <- function(Class, ..., where=toppackage(), contains='NMFstd', VERBO
 	# return the name of the two new classes
 	c(NMFClass, NMFfitClass)
 }  
+
+}#END_DEACTIVATE

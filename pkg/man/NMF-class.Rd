@@ -65,13 +65,6 @@
   \item{misc}{A list that is used internally to temporarily
   store algorithm parameters during the computation.}
 
-  \item{bterms}{a \code{data.frame} that contains primary
-  data for fixed basis terms. See \code{\link{bterms}}.}
-
-  \item{cterms}{a \code{data.frame} that contains primary
-  data for fixed coefficient terms. See
-  \code{\link{cterms}}.}
-
   }
 }
 \section{Methods}{

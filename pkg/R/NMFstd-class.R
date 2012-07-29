@@ -38,7 +38,7 @@ NULL
 #' \item{rows of \code{H}}{basis profiles, metagene expression profiles}
 #' }
 #' 
-#' NMF approach has been successfully applied to several fields. 
+#' NMF approaches have been successfully applied to several fields. 
 #' The package NMF was implemented trying to use names as generic as possible 
 #' for objects and methods.  
 #' 
@@ -61,7 +61,24 @@ NULL
 #' matrix factor of the factorisation
 #' @slot H A \code{matrix} that contains the coefficient matrix, i.e. the 
 #' \emph{second} matrix factor of the factorisation
+#' @slot bterms a \code{data.frame} that contains the primary data that 
+#' define fixed basis terms. See \code{\link{bterms}}.
+#' @slot ibterms integer vector that contains the indexes of the basis components
+#' that are fixed, i.e. for which only the coefficient are estimated.
 #' 
+#' IMPORTANT: This slot is set on construction of an NMF model via 
+#' \code{\link[=nmfModel,formula,ANY-method]{nmfModel}} and is not recommended to 
+#' not be subsequently changed by the end-user.
+#' @slot cterms  a \code{data.frame} that contains the primary data that 
+#' define fixed coefficient terms. See \code{\link{cterms}}.
+#' @slot icterms integer vector that contains the indexes of the basis components
+#' that have fixed coefficients, i.e. for which only the basis vectors are estimated.
+#' 
+#' IMPORTANT: This slot is set on construction of an NMF model via 
+#' \code{\link[=nmfModel,formula,ANY-method]{nmfModel}} and is not recommended to 
+#' not be subsequently changed by the end-user. 
+#' 
+#' @export
 #' @family NMF-model 
 #' @examples 
 #' # create a completely empty NMFstd object

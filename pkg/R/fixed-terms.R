@@ -176,8 +176,9 @@ setReplaceMethod('bterms', signature('NMFstd', 'ANY'),
 	function(object, value){
 		
 		if( nterms(object) ){
-			stop("Cannot set fixed coef terms: object already has fixed terms"
-					, " [coef=", ncterms(object), ", basis=", nbterms(object), "].")
+			stop("Cannot set fixed basis terms on an object that already has fixed terms:",
+					" these can be set only once and before setting any fixed coefficient term",
+					" [coef=", ncterms(object), ", basis=", nbterms(object), "].")
 		}
 		# build terms
 		t <- fterms(value)
@@ -215,8 +216,9 @@ setReplaceMethod('cterms', signature('NMFstd', 'ANY'),
 	function(object, value){
 		
 		if( ncterms(object) ){
-			stop("Cannot set fixed coef terms: object already has fixed coef terms"
-				, " [coef=", ncterms(object), ", basis=", nbterms(object), "].")
+			stop("Cannot set fixed coef terms on an object that already has fixed coef terms:",
+				" these can be set only once", 
+				" [coef=", ncterms(object), ", basis=", nbterms(object), "].")
 		}
 		# build terms
 		t <- fterms(value)

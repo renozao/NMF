@@ -66,7 +66,9 @@ isNMFfit <- function(object, recursive=TRUE){
 #' runs of the function \code{\link{nmf}}, using different parameters, methods, etc..
 #' These can be either from a single run (NMFfit) or multiple runs (NMFfitX).
 #' 
-#' Note that its definition/interface is very likely to change in the future.  
+#' Note that its definition/interface is very likely to change in the future.
+#' @export
+#'   
 setClass('NMFList'
 		, representation(
 			runtime='proc_time'
@@ -203,6 +205,7 @@ as.NMFList <- function(..., unlist=FALSE){
 #' @slot runtime.all Object of class \code{\link[=proc.time]{proc_time}} that 
 #' contains CPU times required to perform all the runs.
 #' 
+#' @export
 #' @family multipleNMF
 #' @examples
 #' 
@@ -507,6 +510,7 @@ setMethod('deviance', signature(object='NMFfitX'),
 #' @slot rng1 an object that contains RNG settings used for the first
 #' run. See \code{\link{getRNG1}}.
 #'
+#' @export
 #' @family multipleNMF 
 #' @examples
 #' 
@@ -654,9 +658,10 @@ setMethod('nmf.equal', signature(x='NMFfitX1', y='NMFfitX1'),
 #' the package.
 #' 
 #' 
-#' @slot .Data" standard slot that contains the S3 \code{list} object
-#' data.  See R documentation on S4 classes for more details.
+#' @slot .Data standard slot that contains the S3 \code{list} object data.
+#' See R documentation on S3/S4 classes for more details (e.g., \code{\link{setOldClass}}).
 #' 
+#' @export
 #' @family multipleNMF
 #' @examples
 #' 

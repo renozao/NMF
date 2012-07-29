@@ -31,6 +31,7 @@ NULL
 #' See \code{\link{nmfModel}} for more details on how to use the factory
 #' method.
 #' 
+#' @export
 #' @family NMF-model
 #' @examples
 #'  

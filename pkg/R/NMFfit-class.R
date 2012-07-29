@@ -91,6 +91,7 @@ NULL
 #' using the methods \code{$<-} that sets elements in the \code{list} slot 
 #' \code{misc} -- that is inherited from class \code{\linkS4class{NMF}}.
 #' 
+#' @export
 #' @examples 
 #' # run default NMF algorithm on a random matrix
 #' n <- 50; r <- 3; p <- 20
