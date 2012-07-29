@@ -6,12 +6,20 @@
 
 tests <- try( pkgmaker::utest('package:NMF', quiet=FALSE) )
 
-td <- utestPath('package:NMF')
-resfile <- list.files(td, pattern=".+\\.html", full.names=TRUE)
+td <- pkgmaker:::utestPath(package='package:NMF')
+resfile <- list.files(td, pattern=".+\\.txt", full.names=TRUE)
+cat("Result files:\n")
+print(resfile)
 
-library(mail)
-sendmail('renaud@cbio.uct.ac.za',
-		paste("NMF: unit test results",
-			"[", if( is(tests, 'try-error') ) 'ERROR' else "OK", "]"),
-		paste(readLines(resfile), collapse="\n")
-)
+if( length(resfile) ){
+	# send
+	library(mail)
+	sapply(resfile, function(f){
+		sendmail('renaud@cbio.uct.ac.za',
+				paste("NMF: unit test results",
+					"-", basename(f),
+					"-", if( is(tests, 'try-error') ) 'ERROR' else "OK", "]"),
+				paste(readLines(f), collapse="\n")
+		)
+	})
+}
