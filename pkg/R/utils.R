@@ -159,7 +159,9 @@ txtProgressBar <- function (min = 0, max = 1, initial = 0, char = "=", width = N
 #' before generating the matrix.
 #' The state of the RNG is restored on exit.
 #' 
-#' @return a matrix, or a list if argument \code{factors=TRUE}
+#' @return a matrix, or a list if argument \code{factors=TRUE}.
+#' The result is in fact returned as an \code{\link{ExposeAttribute}} matrix object, 
+#' which provides 
 #' 
 #' @export
 #' @examples
@@ -246,8 +248,91 @@ syntheticNMF <- function(n, r, p, offset=NULL, noise=TRUE, factors=FALSE, seed=N
 	# return the factors if required
 	if( factors ) res <- list(res, W=W, H=H, offset=offset)
 	
+	# add extra information
+	attr(res, 'gcoef') <- factor(unlist(mapply(rep, 1:r, g, SIMPLIFY=FALSE)))
+	attr(res, 'gbasis') <- factor(unlist(mapply(rep, 1:r, b, SIMPLIFY=FALSE)))
 	# return the result	
-	return(res)
+	return( ExposeAttribute(res, 'r') )
+}
+
+#' Exposing Object Attributes
+#' 
+#' The function \code{ExposeAttribute} creates an S3 object that 
+#' exposes all attributes of any R object, by making them accessible via 
+#' methods \code{\link{$}} and/or \code{\link{$<-}}.
+#' 
+#' @param object any R object whose attributes need to be exposed
+#' @param mode access mode: 
+#' \describe{
+#' \item{\dQuote{r}:}{ (read-only) only method \code{$} is defined}
+#' \item{\dQuote{w}:}{ (write-only) only method \code{$<-} is defined}
+#' \item{\dQuote{rw}:}{ (read-write) both methods \code{$} and \code{$<-} 
+#' are defined}
+#' } 
+#' 
+#' @export
+ExposeAttribute <- function(object, mode="rw"){
+	class(object) <- c(class(object), 'ExposeAttribute')
+#	args <- c(...)
+#	if( length(args) ){
+#		stopifnot( is.character(args) )
+#		if( is.null(names) )
+#			args <- setNames(rep(mode, length(args)), args)  
+#	}
+	EAmode(object) <- mode
+	object
+}
+
+#' @importFrom utils .DollarNames
+#' @S3method .DollarNames ExposeAttribute 
+.DollarNames.ExposeAttribute <- function(x, pattern=""){ 
+	grep(pattern, names(attributes(x)), value=TRUE) 
+}
+
+#' @S3method $ ExposeAttribute
+`$.ExposeAttribute` <- function(x, name){
+	mode <- EAmode(x)
+	if( is.null(mode) ){
+		warning("Missing mode in ExposeAttribute object: assuming 'rw'.")
+		mode <- 'rw'
+	}
+	if( !grepl('r', mode) ){
+		stop("Cannot access attribute '", name, "': object not in read mode [", mode,"].")
+	}
+	attr(x, name)
+	
+}
+
+`$<-.ExposeAttribute` <- function(x, name, value){
+	mode <- EAmode(x)
+	if( is.null(mode) ){
+		warning("Missing mode in ExposeAttribute object: assuming 'rw'.")
+		mode <- 'rw'
+	}
+	if( !grepl('w', mode) ){
+		stop("Cannot set attribute '", name, "': object not in write mode [", mode,"].")
+	}
+	attr(x, name) <- value
+	x
+}
+
+
+#' \code{EAmode} and \code{EAmode<-} get and sets the access mode of 
+#' \code{ExposeAttribute} objects.
+#' 
+#' @param x an \code{ExposeAttribute} object
+#' @param value replacement value for mode.
+#' @export
+#' @rdname ExposeAttribute
+EAmode <- function(x){
+	attr(x, '.EAmode')
+}
+#' @export
+#' @rdname ExposeAttribute
+`EAmode<-` <- function(x, value){
+	attr(x, '.EAmode') <- value
+	if( is.null(value) ) class(x) <- class(x)[!class(x) %in% "ExposeAttribute"]
+	x
 }
 
 #' Generating Random Matrices

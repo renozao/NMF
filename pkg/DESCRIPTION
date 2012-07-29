@@ -45,7 +45,8 @@ Suggests:
     xtable,
     devtools,
     knitr,
-    RUnit
+    RUnit,
+    mail
 Enhances: Biobase
 Collate:
     'utils.R'

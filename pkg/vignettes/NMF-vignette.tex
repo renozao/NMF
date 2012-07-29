@@ -466,7 +466,7 @@
 \usepackage[minnames=1,maxnames=2]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 
-\bibliography{/tmp/tmp.BLb4Xgsova/NMF/REFERENCES}
+\bibliography{/tmp/tmp.Fjy74vZO8P/NMF/REFERENCES}
 
 
 
@@ -511,7 +511,7 @@
 
 
 \title{An introduction to NMF package\\\small Version
-0.8.9}
+0.8.11}
 \author{Renaud Gaujoux, \url{renaud@cbio.uct.ac.za}}
 % \\Address Computational Biology - University of Cape Town, South Africa,
 
@@ -929,7 +929,7 @@ The column \emph{Speed.up} contains the ratio $R/C$.
 
 
 % latex table generated in R 2.15.1 by xtable 1.7-0 package
-% Mon Jul 23 17:50:17 2012
+% Sun Jul 29 12:31:37 2012
 \begin{table}[ht]
 \begin{center}
 \begin{tabular}{rrrr}
@@ -1489,7 +1489,7 @@ Moreover, single runs can also use RNGstream by passing a 6-length seed.
 \end{flushleft}
 \begin{verbatim}
 ##  RNG kind:  Mersenne-Twister / Inversion 
-##  RNG state: NMFfit [097ea0d584abe64c0b0985aef0989ca1] 
+##  RNG state: NMFfit [d9b825a005ed9eefe7f5b090b4a1e89a] 
 \end{verbatim}
 \begin{flushleft}
 \ttfamily\noindent
@@ -1501,7 +1501,7 @@ Moreover, single runs can also use RNGstream by passing a 6-length seed.
 \end{flushleft}
 \begin{verbatim}
 ##  RNG kind:  L'Ecuyer-CMRG / Inversion 
-##  RNG state: NMFfitX1 [8b77c4a200ee0e50119003b22c429298] 
+##  RNG state: NMFfitX1 [be0aa4318df24ceac250a3c1d750f3f8] 
 \end{verbatim}
 \begin{flushleft}
 \ttfamily\noindent
@@ -1513,7 +1513,7 @@ Moreover, single runs can also use RNGstream by passing a 6-length seed.
 \end{flushleft}
 \begin{verbatim}
 ##  RNG kind:  L'Ecuyer-CMRG / Inversion 
-##  RNG state: NMFfit [012475a208ed8b182c2b4842238f716d] 
+##  RNG state: NMFfit [4710a922215c97c232893d9891773a2e] 
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1639,7 +1639,7 @@ If one is interested in keeping the results from all the runs, one can set the o
 In this case, the result is an object of class \code{NMFfitXn} that also inherits from class \code{list}.
 
 Note that keeping all the results may be memory consuming. 
-For example, a 3-rank \code{NMF} fit\footnote{i.e. the result of a single NMF run with rank equal 3.} for the Golub gene expression matrix ($5000 \times 38$) takes about 20Kb\footnote{This size might change depending on the architecture (32 or 64 bits)}.
+For example, a 3-rank \code{NMF} fit\footnote{i.e. the result of a single NMF run with rank equal 3.} for the Golub gene expression matrix ($5000 \times 38$) takes about 19Kb\footnote{This size might change depending on the architecture (32 or 64 bits)}.
 
 \subsection{Parallel computations}\label{multicore}
 
@@ -2290,15 +2290,15 @@ Here we apply the algorithm to some matrix \code{V} randomly generated:
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_5d1b2605adf6 
+##   algorithm:  nmf_20e61eff34e8 
 ##   seed:  random 
-##   RNG: 403, 173, 1191562961, ... [0d87fde5bf092083bd059bcc33d58a3e]
+##   RNG: 403, 232, 726613627, ... [81ea4b2e19489ec75fff0c7dac9e2ca3]
 ##   distance metric:  'euclidean' 
-##   residuals:  554.9 
+##   residuals:  595.5 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.008   0.000   0.006 
+##     0.008   0.000   0.036 
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2324,11 +2324,11 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_5d1b1ad7fd00 
+##   algorithm:  nmf_20e61c6d2605 
 ##   seed:  random 
-##   RNG: 403, 383, 1191562961, ... [2f2572f5c6b643d37859d97079951964]
+##   RNG: 403, 442, 726613627, ... [6d194210949d7e65b33eaa9bc49a5a59]
 ##   distance metric:  'KL' 
-##   residuals:  1539 
+##   residuals:  1592 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
@@ -2409,11 +2409,11 @@ As an example, we reuse the previously defined custom algorithm\footnote{As it i
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_5d1bbd8fba1 
+##   algorithm:  nmf_20e66f4d3e4d 
 ##   seed:  random 
-##   RNG: 403, 593, 1191562961, ... [7ed64fa772a4b1e68cebc0bfed3cb018]
+##   RNG: 403, 28, -1643107813, ... [f7a34ef7332a54aa3e88914d4f8885f3]
 ##   distance metric:  'euclidean' 
-##   residuals:  561.4 
+##   residuals:  599 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
@@ -2502,13 +2502,13 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   features: 50 
 ##   basis/rank: 3 
 ##   samples: 20 
-##   offset: [ 0.3677 0.9383 1.347 1.019 0.6695 ... ]
+##   offset: [ 0.5869 0.7208 1.544 1.1 1.035 ... ]
 ##  # Details:
-##   algorithm:  nmf_5d1b1e11dd6a 
+##   algorithm:  nmf_20e66c6846a9 
 ##   seed:  random 
-##   RNG: 403, 179, -963168695, ... [850b670d66e22c6d00f5d79570d1ce8a]
+##   RNG: 403, 238, -1643107813, ... [ea56b6d6148c575d16324e8569a2e0e6]
 ##   distance metric:  'euclidean' 
-##   residuals:  334.3 
+##   residuals:  359.1 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
@@ -2566,14 +2566,14 @@ To use the new seeding method:
 ##   samples: 20 
 ##  # Details:
 ##   algorithm:  snmf/r 
-##   seed:  NMF.seed.5d1b51f9cc58 
-##   RNG: 403, 439, -963168695, ... [49267d84a430d6788491e4513dd6c28c]
+##   seed:  NMF.seed.20e67296c43c 
+##   RNG: 403, 498, -1643107813, ... [6b057c9f31321f168115661191019650]
 ##   distance metric:  <function> 
-##   residuals:  195.6 
-##   Iterations: 105 
+##   residuals:  213.4 
+##   Iterations: 65 
 ##   Timing:
 ##      user  system elapsed 
-##     0.460   0.000   0.459 
+##     0.272   0.000   0.274 
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2648,7 +2648,7 @@ debug & FALSE & Toggle debug mode, which is an extended verbose mode.\\
     codetools~0.2-8, colorspace~1.1-1, digest~0.5.2,
     doParallel~1.0.1, doRNG~1.4.1, foreach~1.4.0,
     gridBase~0.4-5, iterators~1.0.6, knitr~0.6,
-    NMF~0.8.9, pkgmaker~0.8, RColorBrewer~1.0-5,
+    NMF~0.8.11, pkgmaker~0.8.1, RColorBrewer~1.0-5,
     registry~0.2, stringr~0.6, synchronicity~1.0.13,
     xtable~1.7-0
   \item Loaded via a namespace (and not attached):
