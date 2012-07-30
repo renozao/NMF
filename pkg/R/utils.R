@@ -877,7 +877,7 @@ setClassUnion('.functionSlot', c('character', 'function'))
 
 # Define a S4 class to handle function slots given as either a function definition 
 # or a character string that gives the function's name or NULL.
-setClassUnion('.functionSlot.null', c('character', 'function', 'NULL'))
+setClassUnion('.functionSlotNULL', c('character', 'function', 'NULL'))
 .validFunctionSlot <- function(slot, allow.empty=FALSE, allow.null=TRUE){
 	if( is.null(slot) ){
 		if( !allow.null ) return('NULL value is not allowed')

@@ -115,7 +115,7 @@ setClass('NMFfit'
 			method = 'character', # method used to compute the factorization
 			seed = 'character', # seeding method used to compute the factorization
 			rng = 'ANY', # numerical random seed
-			distance = '.functionSlot.null', # method used to compute the distance between the target matrix and its NMF estimate
+			distance = '.functionSlotNULL', # method used to compute the distance between the target matrix and its NMF estimate
 			parameters = 'list', # method used to compute the factorization
 			runtime = 'proc_time', # running time to perform the NMF
 			options = 'list', # run options

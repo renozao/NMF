@@ -505,8 +505,8 @@ print.fcnnls <- function(x, ...){
 				)
 }
 
-snmf.objective <- function(fit, y, eta=-1, beta=0.01){
-	.snmf.objective(y, .basis(fit), .coef(fit), eta, beta)
+snmf.objective <- function(x, y, eta=-1, beta=0.01){
+	.snmf.objective(y, .basis(x), .coef(x), eta, beta)
 }
 
 ###% Wrapper function to use the SNMF/R algorithm with the NMF package.

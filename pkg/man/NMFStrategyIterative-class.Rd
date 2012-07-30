@@ -4,11 +4,12 @@
 \title{Interface for Algorithms: Implementation for Iterative NMF Algorithms}
 \description{
   This class provides a specific implementation for the
-  function \code{run} -- completing the the interface class
-  \code{\linkS4class{NMFStrategy}}, for NMF algorithms that
-  conform to the following iterative schema:
+  generic function \code{run} -- concretising the virtual
+  interface class \code{\linkS4class{NMFStrategy}}, for NMF
+  algorithms that conform to the following iterative schema
+  (starred numbers indicate mandatory steps):
 
-  \itemize{ \item 1. Initialisation \item 2. Update the
+  \itemize{ \item 1. Initialisation \item 2*. Update the
   model at each iteration \item 3. Stop if some criterion
   is satisfied \item 4. Wrap up }
 
@@ -26,21 +27,24 @@
 \section{Slots}{
   \describe{
 
-  \item{onInit}{function that performs some initialisation
-  or pre-processing on the model, before starting the
-  iteration loop.}
+  \item{onInit}{optional function that performs some
+  initialisation or pre-processing on the model, before
+  starting the iteration loop.}
 
-  \item{Update}{function that implement the update step,
-  which computes new values for the model, based on its
-  previous value. It is called at each iteration, until the
-  stopping criterion is met or the maximum number of
-  iteration is achieved.}
+  \item{Update}{mandatory function that implement the
+  update step, which computes new values for the model,
+  based on its previous value. It is called at each
+  iteration, until the stopping criterion is met or the
+  maximum number of iteration is achieved.}
 
-  \item{Stop}{function that implements the stopping
-  criterion. It is called \emph{before} each Update step.}
+  \item{Stop}{optional function that implements the
+  stopping criterion. It is called \strong{before} each
+  Update step. If not provided, the iterations are stopped
+  after a fixed number of updates.}
 
-  \item{onReturn}{function that wraps up the result into an
-  NMF object. It is called just before returning the}
+  \item{onReturn}{optional function that wraps up the
+  result into an NMF object. It is called just before
+  returning the}
 
   }
 }

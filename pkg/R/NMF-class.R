@@ -1192,6 +1192,17 @@ setReplaceMethod('$', 'NMF',
 	}
 )
 
+#' @importFrom utils .DollarNames
+setGeneric('.DollarNames', package='utils')
+
+#' @S3method .DollarNames NMF
+.DollarNames.NMF <- function(x, pattern = "") grep(pattern, names(misc(x)), value=TRUE)
+
+#' Auto-completion for \code{\linkS4class{Octave}} objects
+#' @rdname NMF-class
+#' @export
+setMethod('.DollarNames', 'NMF', .DollarNames.NMF)
+
 #' \code{is.empty.nmf} tests whether an \code{NMF} object describes an empty NMF model, 
 #' i.e. it contains no data.
 #' 

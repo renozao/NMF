@@ -401,12 +401,13 @@ nmfModels(builtin.only=TRUE)
   \code{\link{is.empty.nmf}}
 
   Other NMF-interface: \code{\link{$,NMF-method}},
-  \code{\link{$<-,NMF-method}}, \code{\link{.basis}},
-  \code{\link{.basis<-}}, \code{\link{.coef}},
-  \code{\link{.coef<-}}, \code{\link{NMF-class}},
-  \code{\link{basis}}, \code{\link{basis<-}},
-  \code{\link{coef}}, \code{\link{coef<-}},
-  \code{\link{coefficients}},
+  \code{\link{$<-,NMF-method}},
+  \code{\link{.DollarNames,NMF-method}},
+  \code{\link{.basis}}, \code{\link{.basis<-}},
+  \code{\link{.coef}}, \code{\link{.coef<-}},
+  \code{\link{NMF-class}}, \code{\link{basis}},
+  \code{\link{basis<-}}, \code{\link{coef}},
+  \code{\link{coef<-}}, \code{\link{coefficients}},
   \code{\link{loadings,NMF-method}}, \code{\link{misc}},
   \code{\link{rnmf}}, \code{\link{scoef}}
 }

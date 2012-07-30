@@ -2,6 +2,7 @@
 \name{NMF-class}
 \alias{$,NMF-method}
 \alias{$<-,NMF-method}
+\alias{.DollarNames,NMF-method}
 \alias{NMF-class}
 \alias{misc}
 \title{Generic Interface for Nonnegative Matrix Factorisation Models}
@@ -11,6 +12,8 @@
   \S4method{$}{NMF}(x, name)
 
   \S4method{$}{NMF}(x, name) <- value
+
+  \S4method{.DollarNames}{NMF}(x, pattern = "")
 }
 \arguments{
   \item{object}{an object that inherit from class
@@ -28,6 +31,9 @@
 
   \item{value}{typically an array-like \R object of a
   similar class as \code{x}.}
+
+  \item{pattern}{ A regular expression.  Only matching
+  names are returned.  }
 }
 \description{
   The class \code{NMF} is a \emph{virtual class} that
@@ -81,6 +87,12 @@
 
   \item{$<-}{\code{signature(x = "NMF")}: shortcut for
   \code{x@misc[[name]] <- value} }
+
+  \item{.DollarNames}{\code{signature(x = "NMF")}:
+  Auto-completion for \code{\linkS4class{Octave}} objects }
+
+  \item{.DollarNames}{\code{signature(x = "NMF")}:
+  Auto-completion for \code{\linkS4class{Octave}} objects }
 
   \item{.basis}{\code{signature(object = "NMF")}: Pure
   virtual method for objects of class

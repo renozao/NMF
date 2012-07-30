@@ -7,21 +7,26 @@
 \alias{stop-NMF}
 \title{Stopping Criteria for NMF Iterative Strategies}
 \usage{
-  NMFStop(val)
+  NMFStop(object, check = TRUE)
 
   nmf.stop.iteration(n)
 
   nmf.stop.threshold(threshold)
 
   nmf.stop.stationary(object, i, y, x,
-    stationary.th = 10^-6, check.interval = 10, ...)
+    stationary.th = 10^-6, check.interval = 10L, ...)
 
   nmf.stop.connectivity(object, i, y, x, stopconv = 40,
     check.interval = 10, ...)
 }
 \arguments{
-  \item{val}{access key that can be a character string, a
-  single integer or numeric, or a function.}
+  \item{object}{specification of the stopping criterion.
+  See section \emph{Details} for the supported formats and
+  how they are processed.}
+
+  \item{check}{logical that indicates if the validity of
+  the stopping criterion function should be checked before
+  returning it.}
 
   \item{n}{maximum number of iteration to perform.}
 
@@ -35,8 +40,9 @@
 
   \item{x}{the current NMF model}
 
-  \item{stationary.th}{maximum difference for two objective
-  values to be considered equal.}
+  \item{stationary.th}{maximum absolute value of the
+  gradient, for the objective function to be considered
+  stationary.}
 
   \item{check.interval}{interval (in number of iterations)
   on which stationarity is computed.}
@@ -51,7 +57,8 @@
 }
 \value{
   a function that can be passed to argument \code{.stop} of
-  function \code{\link{nmf}}.
+  function \code{\link{nmf}}, which is typically used when
+  the algorith is implemented as an iterative strategy.
 
   a function that can be used as a stopping criterion for
   NMF algorithms defined as
@@ -79,30 +86,38 @@
   \code{nmf.stop.stationary}, but with the default
   threshold set to \code{threshold}.
 
-  \code{nmf.stop.stationary} implements the stopping
-  criterion of stationarity of the objective value, which
-  stops when the objective value does not change anymore
-  with further iterations. Objective values are compared at
-  given regular intervals and using a given threshold.
+  The gradient is computed by finite differences over an
+  interaval of iterations specified in argument
+  \code{check.interval}. The criterion stops when the
+  absolute value of the gradient is lower than the
+  specified threshold \code{stationary.th}.
 
   \code{nmf.stop.connectivity} implements the stopping
   criterion that is based on the stationarity of the
   connectivity matrix.
 }
 \details{
-  \code{NMFStop} acts as a factory method that create
-  stopping criterion functions to be used with
-  \code{\link{nmf}}, from different types of values.
+  \code{NMFStop} acts as a factory method that creates
+  stopping criterion functions from different types of
+  values, which are subsequently used by
+  \code{\linkS4class{NMFStrategyIterative}} objects to
+  determine when to stop their iterative process.
 
-  \code{NMFStop} returns functions unchanged, integer
-  values are used to create a stopping criterion of that
-  number of iterations via \code{nmf.stop.iteration},
-  numeric values are used to create a stopping criterion of
-  that stationary threshold via \code{nmf.stop.threshold}.
-  Character strings are assumed to be access keys for
+  \code{NMFStop} can take the following values: \describe{
+  \item{function}{ is returned unchanged, except when it
+  has no arguments, in which case it assumed to be a
+  generator, which is immediately called and should return
+  a function that implements the actual stopping
+  criterion;} \item{integer}{ the value is used to create a
+  stopping criterion that stops at that exact number of
+  iterations via \code{nmf.stop.iteration};}
+  \item{numeric}{ the value is used to create a stopping
+  criterion that stops when at that stationary threshold
+  via \code{nmf.stop.threshold};} \item{character}{ must be
+  a single string which must be an access key for
   registered criteria (currently available:
-  \dQuote{connectivity} and \dQuote{stationary}), or a
-  function name in the global environment or the namespace
-  of the loading package.
+  \dQuote{connectivity} and \dQuote{stationary}), or the
+  name of a function in the global environment or the
+  namespace of the loading package.} }
 }
 

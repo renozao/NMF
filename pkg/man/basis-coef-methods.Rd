@@ -296,9 +296,11 @@ try( validObject(x) )
 }
 \seealso{
   Other NMF-interface: \code{\link{$,NMF-method}},
-  \code{\link{$<-,NMF-method}}, \code{\link{NMF-class}},
-  \code{\link{misc}}, \code{\link{nmfModel}},
-  \code{\link{nmfModels}}, \code{\link{rnmf}}
+  \code{\link{$<-,NMF-method}},
+  \code{\link{.DollarNames,NMF-method}},
+  \code{\link{NMF-class}}, \code{\link{misc}},
+  \code{\link{nmfModel}}, \code{\link{nmfModels}},
+  \code{\link{rnmf}}
 }
 \keyword{methods}
 
