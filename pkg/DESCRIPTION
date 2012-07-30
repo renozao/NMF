@@ -36,6 +36,7 @@ Imports:
     pkgmaker,
     stringr
 Suggests:
+    RcppOctave,
     Biobase,
     RColorBrewer,
     fastICA,

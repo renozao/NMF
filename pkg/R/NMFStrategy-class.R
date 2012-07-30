@@ -290,6 +290,8 @@ setReplaceMethod('name', signature(object='NMFStrategy', value='character'),
 #' Computes the value of the objective function between the estimate \code{x}
 #' and the target \code{y}.
 #' 
+#' @param x an NMF model that estimates \code{y}.
+#' 
 #' @inline
 setMethod('deviance', 'NMFStrategy',
 	function(object, x, y, ...){

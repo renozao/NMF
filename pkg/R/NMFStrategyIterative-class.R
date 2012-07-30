@@ -628,7 +628,7 @@ nmf_update.euclidean.w_R <- R_std.euclidean.update.w <- function(v, w, h, wh=NUL
 #' or the name of a function in the global environment or the namespace of the loading package.}
 #' }
 #' 
-#' @param object specification of the stopping criterion.
+#' @param s specification of the stopping criterion.
 #' See section \emph{Details} for the supported formats and how they are processed.
 #' @param check logical that indicates if the validity of the stopping criterion 
 #' function should be checked before returning it.
@@ -640,9 +640,9 @@ nmf_update.euclidean.w_R <- R_std.euclidean.update.w <- function(v, w, h, wh=NUL
 #' @aliases stop-NMF
 #' @rdname stop-NMF
 #' @export
-NMFStop <- function(object, check=TRUE){
+NMFStop <- function(s, check=TRUE){
 	
-	key <- object
+	key <- s
 	
 	fun <- 
 	if( is.integer(key) )	nmf.stop.iteration(key)
@@ -661,7 +661,7 @@ NMFStop <- function(object, check=TRUE){
 		if( is.null(sfun) )
 			stop("Invalid key ['", key,"']: could not find functions '",key2, "' or '", key, "'")
 		sfun
-	}else if( identical(val, FALSE) ) # create a function that does not stop 
+	}else if( identical(key, FALSE) ) # create a function that does not stop 
 		function(strategy, i, target, data, ...){FALSE}
 	else
 		stop("Invalid key: should be a function, a character string or a single integer/numeric value. See ?NMFStop.")

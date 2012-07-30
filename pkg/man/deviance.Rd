@@ -36,6 +36,8 @@
   \item{...}{extra parameters passed to the objective
   function.}
 
+  \item{x}{an NMF model that estimates \code{y}.}
+
   \item{object}{an object for which the deviance is
   desired.}
 }

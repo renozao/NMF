@@ -1198,7 +1198,7 @@ setGeneric('.DollarNames', package='utils')
 #' @S3method .DollarNames NMF
 .DollarNames.NMF <- function(x, pattern = "") grep(pattern, names(misc(x)), value=TRUE)
 
-#' Auto-completion for \code{\linkS4class{Octave}} objects
+#' Auto-completion for \code{\linkS4class{NMF}} objects
 #' @rdname NMF-class
 #' @export
 setMethod('.DollarNames', 'NMF', .DollarNames.NMF)

@@ -89,10 +89,10 @@
   \code{x@misc[[name]] <- value} }
 
   \item{.DollarNames}{\code{signature(x = "NMF")}:
-  Auto-completion for \code{\linkS4class{Octave}} objects }
+  Auto-completion for \code{\linkS4class{NMF}} objects }
 
   \item{.DollarNames}{\code{signature(x = "NMF")}:
-  Auto-completion for \code{\linkS4class{Octave}} objects }
+  Auto-completion for \code{\linkS4class{NMF}} objects }
 
   \item{.basis}{\code{signature(object = "NMF")}: Pure
   virtual method for objects of class

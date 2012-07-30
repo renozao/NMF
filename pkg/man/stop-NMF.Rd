@@ -7,7 +7,7 @@
 \alias{stop-NMF}
 \title{Stopping Criteria for NMF Iterative Strategies}
 \usage{
-  NMFStop(object, check = TRUE)
+  NMFStop(s, check = TRUE)
 
   nmf.stop.iteration(n)
 
@@ -20,9 +20,9 @@
     check.interval = 10, ...)
 }
 \arguments{
-  \item{object}{specification of the stopping criterion.
-  See section \emph{Details} for the supported formats and
-  how they are processed.}
+  \item{s}{specification of the stopping criterion. See
+  section \emph{Details} for the supported formats and how
+  they are processed.}
 
   \item{check}{logical that indicates if the validity of
   the stopping criterion function should be checked before
