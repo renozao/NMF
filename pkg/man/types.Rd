@@ -3,6 +3,7 @@
 \alias{hasCoef}
 \alias{is.empty.nmf}
 \alias{is.nmf}
+\alias{is.partial.nmf}
 \alias{isNMFfit}
 \title{Testing NMF Objects}
 \usage{
@@ -13,6 +14,8 @@
   hasBasis(x)
 
   hasCoef(x)
+
+  is.partial.nmf(x)
 
   isNMFfit(object, recursive = TRUE)
 }
@@ -55,6 +58,10 @@
   \code{hasBasis} tests whether an objects contains a
   coefficient matrix -- returned by a suitable method
   \code{coef} -- with at least one column.
+
+  \code{is.partial.nmf} tests whether an NMF model object
+  contains either an empty basis or coefficient matrix. It
+  is a shorcut for \code{!hasCoef(x) || !hasBasis(x)}.
 
   \code{isNMFfit} tells if an object results from an NMF
   fit.

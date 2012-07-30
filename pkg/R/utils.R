@@ -1,3 +1,9 @@
+#' Utility Function in the NMF Package
+#' 
+#' @name utils-NMF
+#' @rdname utils
+NULL
+
 #' Internal verbosity option
 #' @param val logical that sets the verbosity level.
 #' @return the old verbose level   
@@ -33,6 +39,24 @@ rmAttributes <- function(x){
 	x
 }
 
+#' \code{str_args} formats the arguments of a function using \code{\link{args}}, 
+#' but returns the output as a string.
+#' 
+#' @param x a function
+#' @param exdent indentation for extra lines if the output takes more than one line.  
+#' 
+#' @export
+#' @rdname utils
+#' 
+#' @examples 
+#' 
+#' args(library)
+#' str_args(library)
+#' 
+str_args <- function(x, exdent=0){
+	s <- capture.output(print(args(x)))
+	paste(str_trim(s[-length(s)]), collapse=str_c('\n', paste(rep(' ', exdent), collapse='')))
+}
 
 #' Simple Progress Bar
 #' 

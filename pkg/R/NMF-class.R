@@ -1237,6 +1237,14 @@ hasBasis <- function(x) nrow(basis(x)) != 0L
 #' @export
 hasCoef <- function(x) ncol(coef(x)) != 0L
 
+#' \code{is.partial.nmf} tests whether an NMF model object contains either an empty 
+#' basis or coefficient matrix.
+#' It is a shorcut for \code{!hasCoef(x) || !hasBasis(x)}.
+#' 
+#' @rdname types
+#' @export
+is.partial.nmf <- function(x) !hasCoef(x) || !hasBasis(x)
+
 #' Returns the target matrix estimate of the NMF model \code{x}, perturbated by  
 #' adding a random matrix generated using the default method of \code{rmatrix}: 
 #' it is a equivalent to \code{fitted(x) + rmatrix(fitted(x), ...)}.

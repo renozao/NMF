@@ -41,7 +41,10 @@
   state of the RNG is restored on exit.}
 }
 \value{
-  a matrix, or a list if argument \code{factors=TRUE}
+  a matrix, or a list if argument \code{factors=TRUE}. The
+  result is in fact returned as an
+  \code{\link{ExposeAttribute}} matrix object, which
+  provides
 }
 \description{
   The function \code{syntheticNMF} generates random target

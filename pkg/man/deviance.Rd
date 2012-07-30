@@ -2,6 +2,7 @@
 \name{deviance}
 \alias{deviance}
 \alias{deviance,NMF-method}
+\alias{deviance,NMFStrategy-method}
 \alias{deviance,NMFfit-method}
 \alias{deviance,NMFfitX-method}
 \alias{deviance-methods}
@@ -16,6 +17,8 @@
   nmfDistance(method = c("", "KL", "euclidean"))
 
   \S4method{deviance}{NMFfit}(object, y, method, ...)
+
+  \S4method{deviance}{NMFStrategy}(object, x, y, ...)
 }
 \arguments{
   \item{y}{a matrix compatible with the NMF model
@@ -79,6 +82,10 @@
   \item{deviance}{\code{signature(object = "NMFfitX")}:
   Returns the deviance achieved by the best fit object,
   i.e. the lowest deviance achieved across all NMF runs. }
+
+  \item{deviance}{\code{signature(object = "NMFStrategy")}:
+  Computes the value of the objective function between the
+  estimate \code{x} and the target \code{y}. }
 
   }
 }

@@ -111,8 +111,7 @@ setMethod('show', 'NMFStrategyIterative',
 					svalue <- slot(object,sname)
 					svalue <- 
 					if( is.function(svalue) ) {
-						svalue <- capture.output(print(args(svalue)))
-    					paste(str_trim(svalue[-length(svalue)]), collapse=' ')
+						str_args(svalue, exdent=12)
 					} else if( is.null(svalue) ){
 						'none'
 					} else { 
@@ -370,13 +369,13 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 		nmfFit <- updateFun(i, v, nmfFit, ...)
 		
 		# every now and then track the error if required
-		nmfData <- trackError(nmfData, objective(strategy, v, nmfFit, ...), i)
+		nmfData <- trackError(nmfData, deviance(strategy, nmfFit, v, ...), i)
 				
 	}
 	if( verbose ) cat("\nDONE (stopped at ",i,'/', maxIter," iterations)\n", sep='')
 	
 	# force to compute last error if not already done
-	nmfData <- trackError(nmfData, objective(strategy, v, nmfFit, ...), i, force=TRUE)
+	nmfData <- trackError(nmfData, deviance(strategy, nmfFit, v, ...), i, force=TRUE)
 	
 	# store the fitted model
 	fit(nmfData) <- nmfFit
@@ -713,7 +712,7 @@ nmf.stop.threshold <- function(threshold){
 nmf.stop.stationary <- function(object, i, y, x, stationary.th=10^-6, check.interval=10, ...){
 		
 		if( i == 0L ){ # initialisation call: compute initial objective value
-			current.value <- objective(object, y, x, ...)
+			current.value <- deviance(object, x, y, ...)
 			# check for NaN, i.e. probably infinitely small value (cf. bug reported by Nadine POUKEN SIEWE)
 			if( is.nan(current.value) ) return(TRUE)
 			# store value in workspace for later calls
@@ -726,7 +725,7 @@ nmf.stop.stationary <- function(object, i, y, x, stationary.th=10^-6, check.inte
 		
 		# get last objective value from workspace		
 		last.value <- staticVar('objective.value')
-		current.value <- objective(object, y, x, ...)
+		current.value <- deviance(object, x, y, ...)
 		# check for NaN, i.e. probably infinitely small value (cf. bug reported by Nadine POUKEN SIEWE)
 		if( is.nan(current.value) ) return(TRUE)
 		# if the relative decrease in the objective value is to small then stop

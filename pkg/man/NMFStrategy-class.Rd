@@ -24,7 +24,7 @@
 
   name(object, ...) <- value
 
-  \S4method{objective}{NMFStrategy}(object, y, x, ...)
+  \S4method{objective}{NMFStrategy}(object)
 
   \S4method{objective}{NMFStrategy,character}(object) <-
     value
@@ -45,11 +45,6 @@
   associated with a strategy should be return
   (\code{TRUE}), or only the first (primary) one
   (\code{FALSE}).}
-
-  \item{y}{data object, e.g. a target matrix}
-
-  \item{x}{a model object used as a starting point by the
-  algorithm, e.g. a non-empty NMF model.}
 }
 \description{
   This class partially implements the generic interface
@@ -103,6 +98,10 @@
   "NMF")}: Tells if an NMF algorithm can fit the same class
   of models as \code{y} }
 
+  \item{deviance}{\code{signature(object = "NMFStrategy")}:
+  Computes the value of the objective function between the
+  estimate \code{x} and the target \code{y}. }
+
   \item{modelname}{\code{signature(object =
   "NMFStrategy")}: Returns the model(s) that an NMF
   algorithm can fit. }
@@ -133,13 +132,21 @@
 
   \item{objective}{\code{signature(object =
   "NMFStrategy")}: Gets the objective function associated
-  with an NMF algorithm, or computes the objective value
-  for an NMF model with respect to a given target matrix. }
+  with an NMF algorithm.
+
+  It is used in
+  \code{\link[=deviance,NMFStrategy-method]{deviance}} to
+  compute the objective value for an NMF model with respect
+  to a given target matrix. }
 
   \item{objective}{\code{signature(object =
   "NMFStrategy")}: Gets the objective function associated
-  with an NMF algorithm, or computes the objective value
-  for an NMF model with respect to a given target matrix. }
+  with an NMF algorithm.
+
+  It is used in
+  \code{\link[=deviance,NMFStrategy-method]{deviance}} to
+  compute the objective value for an NMF model with respect
+  to a given target matrix. }
 
   \item{objective<-}{\code{signature(object =
   "NMFStrategy", value = "character")}: Sets the objective

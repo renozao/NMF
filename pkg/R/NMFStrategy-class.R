@@ -125,7 +125,7 @@ setMethod('show', 'NMFStrategy',
 			cat('<object of class: ', class(object), ">\n", sep='')
 			cat(" name:", name(object), "\n")
 			svalue <- objective(object)
-			svalue <- if( is.function(svalue) ) '<function>' else paste("'", svalue,"'", sep='')
+			svalue <- if( is.function(svalue) ) str_args(svalue, exdent=10) else paste("'", svalue,"'", sep='')
 			cat(" objective:", svalue, "\n")
 			cat(" model:", modelname(object), "\n")
 			return(invisible())
@@ -286,19 +286,15 @@ setReplaceMethod('name', signature(object='NMFStrategy', value='character'),
 	}
 )
 
-#' Gets the objective function associated with an NMF algorithm, 
-#' or computes the objective value for an NMF model with respect to 
-#' a given target matrix.
+
+#' Computes the value of the objective function between the estimate \code{x}
+#' and the target \code{y}.
 #' 
-#' @export
-#' @rdname NMFStrategy-class
-setMethod('objective', signature(object='NMFStrategy'),
-	function(object, y, x, ...){
-	
-		obj.fun <- slot(object, 'objective')
+#' @inline
+setMethod('deviance', 'NMFStrategy',
+	function(object, x, y, ...){
 		
-		# when both x and y are missing then returns slot objective
-		if( missing(x) && missing(y) ) return(obj.fun)
+		obj.fun <- slot(object, 'objective')
 		
 		# return the distance computed using the strategy's objective function
 		if( !is.function(obj.fun) )
@@ -306,6 +302,20 @@ setMethod('objective', signature(object='NMFStrategy'),
 		else # directly compute the objective function
 			obj.fun(x, y, ...)
 		
+	}
+)
+		
+#' Gets the objective function associated with an NMF algorithm.
+#'  
+#' It is used in \code{\link[=deviance,NMFStrategy-method]{deviance}} 
+#' to compute the objective value for an NMF model with respect to 
+#' a given target matrix. 
+#' 
+#' @export
+#' @rdname NMFStrategy-class
+setMethod('objective', 'NMFStrategy',
+	function(object){
+		slot(object, 'objective')
 	}
 )
 #' Sets the objective function associated with an NMF algorithm, with a character string

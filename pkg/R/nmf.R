@@ -1981,8 +1981,9 @@ function(x, rank, method
 	}
 	
 	## Compute the initial residuals if tracking is enabled
-	if( .OPTIONS$track )
-		ini.res <- objective(method, x, seed, ...)	
+	if( .OPTIONS$track && !is.partial.nmf(seed) ){
+		ini.res <- deviance(method, seed, x, ...)	
+	}
 	
 	## RUN NMF METHOD:
 	# call the strategy's run method [and time it] using the element of 'parameters.method' as parameters	
@@ -2017,7 +2018,7 @@ function(x, rank, method
 	## CLEAN-UP + EXTRAS:
 	# add extra information to the object
 	# last residuals
-	if( length(residuals(res)) == 0 ) residuals(res) <- setNames(objective(method, x, res, ...), niter(res))
+	if( length(residuals(res)) == 0 ) residuals(res) <- setNames(deviance(method, res, x, ...), niter(res))
 	# first residual if tracking is enabled
 	if( .OPTIONS$track ){
 		otrack <- residuals(res, track=TRUE)
