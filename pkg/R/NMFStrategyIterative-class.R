@@ -2,16 +2,20 @@
 #' @include NMFfit-class.R
 NULL
 
+# Define union class for generalised function slots, e.g., slot 'NMFStrategyIterative::Stop' 
+setClassUnion('.GfunctionSlotNULL', c('character', 'integer', 'numeric', 'function', 'NULL'))
+
 #' Interface for Algorithms: Implementation for Iterative NMF Algorithms
 #' 
 #' @description
-#' This class provides a specific implementation for the function \code{run} -- completing the 
-#' the interface class \code{\linkS4class{NMFStrategy}}, 
-#' for NMF algorithms that conform to the following iterative schema:
+#' This class provides a specific implementation for the generic function \code{run} 
+#' -- concretising the virtual interface class \code{\linkS4class{NMFStrategy}}, 
+#' for NMF algorithms that conform to the following iterative schema (starred numbers
+#' indicate mandatory steps):
 #'  
 #' \itemize{
 #' \item 1. Initialisation
-#' \item 2. Update the model at each iteration
+#' \item 2*. Update the model at each iteration
 #' \item 3. Stop if some criterion is satisfied
 #' \item 4. Wrap up
 #' }
@@ -23,23 +27,24 @@ NULL
 #' In particular, many NMF algorithms are based on multiplicative updates, following the approach from  
 #' \cite{Lee2001}, which are specially suitable to be cast into this simple schema. 
 #'  
-#' @slot onInit function that performs some initialisation or pre-processing on 
+#' @slot onInit optional function that performs some initialisation or pre-processing on 
 #' the model, before starting the iteration loop.
-#' @slot Update function that implement the update step, which computes new values for the model, based on its
+#' @slot Update mandatory function that implement the update step, which computes new values for the model, based on its
 #' previous value.
 #' It is called at each iteration, until the stopping criterion is met or the maximum number of iteration is 
 #' achieved.
-#' @slot Stop function that implements the stopping criterion.
-#' It is called \emph{before} each Update step.
-#' @slot onReturn function that wraps up the result into an NMF object.
+#' @slot Stop optional function that implements the stopping criterion.
+#' It is called \strong{before} each Update step.
+#' If not provided, the iterations are stopped after a fixed number of updates.  
+#' @slot onReturn optional function that wraps up the result into an NMF object.
 #' It is called just before returning the 
 #'  
 setClass('NMFStrategyIterative'
 	, representation(
-                onInit = '.functionSlot.null',
+                onInit = '.functionSlotNULL',
 				Update = '.functionSlot', # update method	
-				Stop = '.functionSlot.null', # method called just after the update
-				onReturn = '.functionSlot.null' # method called just before returning the resulting NMF object
+				Stop = '.GfunctionSlotNULL', # method called just after the update
+				onReturn = '.functionSlotNULL' # method called just before returning the resulting NMF object
 				)	
   , prototype=prototype(
           		onInit = NULL
@@ -58,8 +63,12 @@ setClass('NMFStrategyIterative'
 		n.update <- names(formals(object@Update))
 		
 		# at least 3 arguments for 'Update'
-		if( length(n.update) < 3 )
-			return("Invalid 'Update' method - must have at least 3 arguments: 'i' [iteration number], 'target' [target matrix], 'data' [current NMF model]")
+		if( length(n.update) < 3 ){
+			return(str_c("Invalid 'Update' method - must have at least 3 arguments: ",
+						"current iteration number [i], ",
+						"target matrix [y], ",
+						"current NMF model iterate [x]"))
+		}
 		
 		n.update <- n.update[-seq(3)]
 		# argument '...' must be present in method 'Update'
@@ -69,23 +78,18 @@ setClass('NMFStrategyIterative'
 		# at least 3 arguments for 'Stop'
 		if( !is.null(object@Stop) ){
 			
-			# retrieve the stopping criterion 
-			.stop <- NMFStop(object@Stop)
+			# retrieve the stopping criterion and check its intrinsic validity
+			.stop <- tryCatch( NMFStop(object@Stop, check=TRUE), 
+					error = function(e) return(message(e)))
+			
+			# Update and Stop methods cannot have overlapping arguments
 			n.stop <- names(formals(.stop))
-			
-			if( length(n.stop) < 4 )
-				return("Invalid 'Stop' method - must have at least 4 arguments: 'strategy', 'i', 'target' [target matrix], 'data' [current NMF model]")
-			
-			n.stop <- n.stop[-seq(4)]
-			# argument '...' must be present in method 'Stop'
-			if( !is.element('...', n.stop) )
-				return("Invalid 'Stop' method: must have argument '...' (even if not used)")
-		
-			# Update and Stop methods cannot have overlapping arguments 
 			overlap <- intersect(n.update, n.stop)
 			overlap <- overlap[which(overlap!='...')]
-			if( length(overlap) > 0 )
-				return("Invalid 'Update' and 'Stop' methods - conflicting arguments")
+			if( length(overlap) > 0 ){
+				return(str_c("Invalid 'Update' and 'Stop' methods: conflicting arguments ",
+						str_out(overlap, Inf)))
+			}
 		}
 		
 		TRUE
@@ -339,17 +343,27 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 	verbose <- verbose(nmfData)
 	
 	# clone the object to allow the updates to work in place
-	if( verbose > 1 ) 
-		message("Duplicating the seed NMF object ", appendLF=FALSE)
+	if( verbose > 1L ) 
+		message("# Cloning NMF model seed ... ", appendLF=FALSE)
 	nmfFit <- clone(fit(nmfData))
-	if( verbose > 1 )
+	if( verbose > 1L )
 		message("[", C.ptr(fit(nmfData)), " -> ", C.ptr(nmfFit), "]")		
+	
+	## onInit
+	if( is.function(strategy@onInit) ){
+		if( verbose > 1L )	message("# Step 1 - onInit ... ", appendLF=TRUE)
+		nmfFit <- strategy@onInit(strategy, v, nmfFit, ...)
+		if( verbose > 1L )	message("OK")
+	}
+	##
 	
 	# pre-load slots
 	updateFun <- strategy@Update
 	stopFun <- strategy@Stop
 	
-	if( verbose ) cat('Iterations:')
+	showNIter.step <- 50L
+	showNIter <- verbose && maxIter >= showNIter.step
+	if( showNIter ) cat('Iterations:')
 	i <- 0L
 	while( TRUE ){
 		
@@ -363,7 +377,7 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 		# increment i
 		i <- i+1L
 		
-		if( verbose && (i==1L || i %% 50 == 0) ) cat('', i)
+		if( showNIter && (i==1L || i %% showNIter.step == 0L) ) cat('', i)
 		
 		#Vc# update the matrices
 		nmfFit <- updateFun(i, v, nmfFit, ...)
@@ -372,7 +386,7 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 		nmfData <- trackError(nmfData, deviance(strategy, nmfFit, v, ...), i)
 				
 	}
-	if( verbose ) cat("\nDONE (stopped at ",i,'/', maxIter," iterations)\n", sep='')
+	if( showNIter ) cat("\nDONE (stopped at ",i,'/', maxIter," iterations)\n", sep='')
 	
 	# force to compute last error if not already done
 	nmfData <- trackError(nmfData, deviance(strategy, nmfFit, v, ...), i, force=TRUE)
@@ -594,30 +608,43 @@ nmf_update.euclidean.w_R <- R_std.euclidean.update.w <- function(v, w, h, wh=NUL
 #' The function documented here implement stopping/convergence criteria 
 #' commonly used in NMF algorithms.
 #' 
-#' \code{NMFStop} acts as a factory method that create stopping criterion functions 
-#' to be used with \code{\link{nmf}}, from different types of values.
+#' \code{NMFStop} acts as a factory method that creates stopping criterion functions 
+#' from different types of values, which are subsequently used by 
+#' \code{\linkS4class{NMFStrategyIterative}} objects to determine when to stop their 
+#' iterative process.
 #' 
 #' @details
-#' \code{NMFStop} returns functions unchanged, integer values are used to 
-#' create a stopping criterion of that number of iterations via \code{nmf.stop.iteration}, 
-#' numeric values are used to create a stopping criterion of that stationary threshold 
-#' via \code{nmf.stop.threshold}.
-#' Character strings are assumed to be access keys for registered criteria (currently 
-#' available: \dQuote{connectivity} and \dQuote{stationary}), or a function name in the 
-#' global environment or the namespace of the loading package.
+#' \code{NMFStop} can take the following values:
+#' \describe{
+#' \item{function}{ is returned unchanged, except when it has no arguments, 
+#' in which case it assumed to be a generator, which is immediately called and should return 
+#' a function that implements the actual stopping criterion;}
+#' \item{integer}{ the value is used to create a stopping criterion that stops at 
+#' that exact number of iterations via \code{nmf.stop.iteration};} 
+#' \item{numeric}{ the value is used to create a stopping criterion that stops when 
+#' at that stationary threshold via \code{nmf.stop.threshold};}
+#' \item{character}{ must be a single string which must be an access key 
+#' for registered criteria (currently available: \dQuote{connectivity} and \dQuote{stationary}), 
+#' or the name of a function in the global environment or the namespace of the loading package.}
+#' }
 #' 
-#' @param val access key that can be a character string, a single integer or 
-#' numeric, or a function.
+#' @param object specification of the stopping criterion.
+#' See section \emph{Details} for the supported formats and how they are processed.
+#' @param check logical that indicates if the validity of the stopping criterion 
+#' function should be checked before returning it.
 #' 
 #' @return a function that can be passed to argument \code{.stop} of function 
-#' \code{\link{nmf}}.
+#' \code{\link{nmf}}, which is typically used when the algorith is implemented as 
+#' an iterative strategy.  
 #' 
 #' @aliases stop-NMF
 #' @rdname stop-NMF
 #' @export
-NMFStop <- function(val){
+NMFStop <- function(object, check=TRUE){
 	
-	key <- val
+	key <- object
+	
+	fun <- 
 	if( is.integer(key) )	nmf.stop.iteration(key)
 	else if( is.numeric(key) ) nmf.stop.threshold(key)
 	else if( is.function(key) ) key
@@ -637,7 +664,30 @@ NMFStop <- function(val){
 	}else if( identical(val, FALSE) ) # create a function that does not stop 
 		function(strategy, i, target, data, ...){FALSE}
 	else
-		stop("Invalid key: should be a function, a character string or a single integer/numeric value. See ?NMFStop.")	
+		stop("Invalid key: should be a function, a character string or a single integer/numeric value. See ?NMFStop.")
+
+	# execute if generator (i.e. no arguments)
+	if( length(formals(fun)) == 0L ) fun <- fun() 
+
+	# check validity if requested
+	if( check ){
+		n.stop <- names(formals(fun))
+		if( length(n.stop) < 4 ){
+			stop("Invalid 'Stop' method - must have at least 4 arguments: ",
+					"NMF strategy object [strategy], ",
+					"current iteration number [i], ",
+					"target matrix [y], ",
+					"current NMF model iterate [x]")
+		}
+		
+		n.stop <- n.stop[-seq(4)]
+		# argument '...' must be present in method 'Stop'
+		if( !is.element('...', n.stop) )
+			stop("Invalid 'Stop' method: must have argument '...' (even if not used)")
+	}
+	
+	# return function
+	fun
 }
 
 #' \code{nmf.stop.iteration} generates a function that implements the stopping 
@@ -685,23 +735,27 @@ nmf.stop.threshold <- function(threshold){
 	if( length(threshold) > 1 )
 		warning("NMF::nmf - Argument `threshold` [", deparse(substitute(threshold)), "] has length > 1: only using the first element.")
 	
-	eval(parse(text=paste("function(strategy, i, target, data, stationary.th=", threshold, ", ...)
-		nmf.stop.stationary(strategy, i, target, data, stationary.th=stationary.th, ...)")))
+	eval(parse(text=paste("function(strategy, i, target, data, stationary.th=", threshold, ", ...){
+		nmf.stop.stationary(strategy, i, target, data, stationary.th=stationary.th, ...)
+	}")))
 }
 
 
 #' \code{nmf.stop.stationary} implements the stopping criterion of stationarity 
-#' of the objective value, which stops when the objective value does not change 
-#' anymore with further iterations.
-#' Objective values are compared at given regular intervals and using a given 
-#' threshold.
+#' of the objective value, which stops when the gradient of the objective function 
+#' does not change anymore with further iterations.
+#' 
+#' The gradient is computed by finite differences over an interaval 
+#' of iterations specified in argument \code{check.interval}.
+#' The criterion stops when the absolute value of the gradient is lower than the 
+#' specified threshold \code{stationary.th}.
 #' 
 #' @param object an NMF strategy object
 #' @param i the current iteration
 #' @param y the target matrix
 #' @param x the current NMF model 
-#' @param stationary.th maximum difference for two objective values to be 
-#' considered equal.
+#' @param stationary.th maximum absolute value of the gradient, for the objective 
+#' function to be considered stationary.
 #' @param check.interval interval (in number of iterations) on which stationarity 
 #' is computed. 
 #' @param ... extra arguments passed to the function \code{\link{objective}}, 
@@ -709,14 +763,25 @@ nmf.stop.threshold <- function(threshold){
 #' 
 #' @export
 #' @rdname stop-NMF
-nmf.stop.stationary <- function(object, i, y, x, stationary.th=10^-6, check.interval=10, ...){
+nmf.stop.stationary <- local({
+	
+	# static variable
+	.last.objective.value <- NULL
+	
+	function(object, i, y, x, stationary.th=10^-6, check.interval=10L, ...){
 		
-		if( i == 0L ){ # initialisation call: compute initial objective value
+		# initialisation call: compute initial objective value
+		if( i == 0L || (i == 1L && is.null(.last.objective.value)) ){
+			.last.objective.value <<- NULL
+			
+			# give the chance to update once and estimate from a partial model
+			if( is.partial.nmf(x) ) return( FALSE )
+			# compute initial deviance
 			current.value <- deviance(object, x, y, ...)
 			# check for NaN, i.e. probably infinitely small value (cf. bug reported by Nadine POUKEN SIEWE)
 			if( is.nan(current.value) ) return(TRUE)
 			# store value in workspace for later calls
-			staticVar('objective.value', current.value, init=TRUE)
+			.last.objective.value <<- current.value
 			return(FALSE)
 		}
 		
@@ -724,7 +789,7 @@ nmf.stop.stationary <- function(object, i, y, x, stationary.th=10^-6, check.inte
 		if( i %% check.interval != 0 ) return( FALSE );
 		
 		# get last objective value from workspace		
-		last.value <- staticVar('objective.value')
+		last.value <- .last.objective.value #staticVar('objective.value')
 		current.value <- deviance(object, x, y, ...)
 		# check for NaN, i.e. probably infinitely small value (cf. bug reported by Nadine POUKEN SIEWE)
 		if( is.nan(current.value) ) return(TRUE)
@@ -732,11 +797,13 @@ nmf.stop.stationary <- function(object, i, y, x, stationary.th=10^-6, check.inte
 		if( abs( (last.value - current.value)/check.interval ) <= stationary.th ) return( TRUE )
 		
 		# update the objective value
-		staticVar('objective.value', current.value)
+		.last.objective.value <<- current.value #staticVar('objective.value', current.value)
 		
 		# do NOT stop
 		FALSE
-}
+	}
+})
+
 #' \code{nmf.stop.connectivity} implements the stopping criterion that is based 
 #' on the stationarity of the connectivity matrix.
 #' 
@@ -745,15 +812,21 @@ nmf.stop.stationary <- function(object, i, y, x, stationary.th=10^-6, check.inte
 #'   
 #' @export
 #' @rdname stop-NMF
-nmf.stop.connectivity <- function(object, i, y, x, stopconv=40, check.interval=10, ...){
+nmf.stop.connectivity <- local({
+			
+	# static variables
+	.consold <- NULL
+	.inc <- NULL
+	
+	function(object, i, y, x, stopconv=40, check.interval=10, ...){
 
 		if( i == 0L ){ # initialisation call
 			# Initialize consensus variables 
 			# => they are static variables within the strategy's workspace so that
 			# they are persistent and available throughout across the calls
-			h <- coef(x)
-			staticVar('consold', matrix(0, ncol(h), ncol(h)), init=TRUE)
-			staticVar('inc', 0, init=TRUE)
+			p <- ncol(x)
+			.consold <<- matrix(0, p, p)
+			.inc <<- 0
 			return(FALSE)
 		}
 	
@@ -762,20 +835,16 @@ nmf.stop.connectivity <- function(object, i, y, x, stopconv=40, check.interval=1
 		
 		# retrieve metaprofiles
 		h <- coef(x, all=FALSE)
-		
-		# retrieve the last values of the consensus variables
-		consold <- staticVar('consold')
-		inc <- staticVar('inc')
-						
+			
 		# construct connectivity matrix
 		index <- apply(h, 2, function(x) which.max(x) )
 		cons <- outer(index, index, function(x,y) ifelse(x==y, 1,0));
 
-		changes <- cons!=consold
-		if( !any(changes) ) inc <- inc+1 # connectivity matrix has not changed: increment the count
+		changes <- cons != .consold
+		if( !any(changes) ) .inc <<- .inc + 1 # connectivity matrix has not changed: increment the count
 		else{
-			consold=cons;			
-			inc <- 0;                         # else restart counting
+			.consold <<- cons;
+			.inc <<- 0;                         # else restart counting
 		}
 		
 		# prints number of changing elements 		
@@ -783,15 +852,12 @@ nmf.stop.connectivity <- function(object, i, y, x, stopconv=40, check.interval=1
 		#cat( sprintf('%d ', sum(changes)) )
 										
 		# assume convergence is connectivity stops changing 
-		if(inc>stopconv) return( TRUE );
-		
-		# update the consensus variables in the workspace
-		staticVar('consold', consold)
-		staticVar('inc', inc)
+		if( .inc > stopconv ) return( TRUE );
 		
 		# do NOT stop
 		FALSE
-}
+	}
+})
 
 
 ################################################################################################
