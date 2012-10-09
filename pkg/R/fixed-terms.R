@@ -49,7 +49,7 @@ setMethod('c', 'NMF',
 			
 			if( margin == 1L ){ # extend basis vectors
 				
-				if( nbterms() ){ # cannot extend models with fixed basis terms
+				if( nbterms(x) ){ # cannot extend models with fixed basis terms
 					stop("NMF::`c` - Could not extend basis vectors:"
 							, " NMF model has fixed basis terms [", nbterms(x), "]")
 				}
@@ -63,7 +63,7 @@ setMethod('c', 'NMF',
 				
 			} else if( margin == 2L ){ # extend basis profiles
 				
-				if( ncterms() ){ # cannot extend models with fixed coef terms
+				if( ncterms(x) ){ # cannot extend models with fixed coef terms
 					stop("NMF::`c` - Could not extend basis profiles:"
 							, " NMF model has fixed coefficient terms [", ncterms(x), "]")
 				}
