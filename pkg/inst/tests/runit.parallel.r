@@ -27,7 +27,7 @@ test.synchronicity <- function(){
 		alpha <- 5
 		res <- foreach(i=1:4) %dopar% {
 			t <- Sys.time()
-			if( i==1 ) mtx(Sys.sleep(2))
+			if( i==1 ) mtx(Sys.sleep(3))
 			else if( i== 2) Sys.sleep(0.2)
 			mtx({a <- runif(i); c <- 10 * i; d <- alpha + i})
 			b <- c
@@ -70,7 +70,7 @@ test.synchronicity <- function(){
 		wtime <- .test(mess(), mutex=TRUE, libs, seq)
 		checkTrue( wtime[1] >= 2 , mess("With mutex : Thread 1 waits 2 seconds (", wtime[1], ')'))
 		if( !seq )
-			checkTrue( wtime[2] >= 2 , mess("With mutex: Thread 2 also waits at least 2 seconds (", wtime[2], ')'))
+			checkTrue( wtime[2] > 2 , mess("With mutex: Thread 2 also waits at least 2 seconds (", wtime[2], ')'))
 	}
 	
 	# restore backend on.exit
