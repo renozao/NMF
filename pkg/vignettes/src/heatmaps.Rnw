@@ -3,7 +3,7 @@
 \usepackage{Sweave}
 \SweaveOpts{keep.source=TRUE}
 
-\usepackage[OT1]{fontenc}
+%\usepackage[OT1]{fontenc}
 \usepackage[colorlinks]{hyperref}
 \usepackage{a4wide}
 \usepackage{xspace}

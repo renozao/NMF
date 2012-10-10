@@ -18,7 +18,7 @@ Depends:
     R (>= 2.14.0),
     methods,
     stats,
-    pkgmaker (>= 0.6.8),
+    pkgmaker (>= 0.8.2),
     registry,
     graphics,
     foreach,

@@ -1,5 +1,5 @@
-RColorBrewer
 synchronicity
+RColorBrewer
 NMF
 Biobase
 BiocGenerics
@@ -8,6 +8,7 @@ gridBase
 grid
 doRNG
 bigmemory
+bigmemory.sri
 doParallel
 parallel
 iterators

@@ -1,9 +1,8 @@
 % 
 \documentclass[a4paper]{article}
 \usepackage{Sweave}
-\SweaveOpts{keep.source=TRUE}
 
-\usepackage[OT1]{fontenc}
+%\usepackage[OT1]{fontenc}
 \usepackage[colorlinks]{hyperref} % for hyperlinks
 \usepackage{a4wide}
 \usepackage{xspace}
@@ -29,7 +28,7 @@ pkgmaker::latex_preamble()
 \usepackage[minnames=1,maxnames=2]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 <<bibliofile, echo=FALSE, results='asis'>>=
-pkgmaker::latex_bibliography('NMF')	
+pkgmaker::latex_bibliography('NMF')
 @
 \bibliography{Rpackages}
 %%
@@ -171,7 +170,7 @@ properties on matrices $W$ and $H$, such as smoothness or sparsity
 NMF algorithms generally solve problem \refeqn{nmf_min} iteratively, by building a sequence of matrices $(W_k,H_k)$ that reduces at each step the value of the objective function $F$.
 Beside some variations in the specification of $F$, they also differ in the optimization techniques that are used to compute the updates for $(W_k,H_k)$.
 
-For reviews on NMF algorithms see \cite{Berry06, Chu2004} and references therein.
+For reviews on NMF algorithms see \cite{Berry2007, Chu2004} and references therein.
 
 The \nmfpack package implements a number of published algorithms, and provides a general framework to implement other ones.
 \Cref{tab:algo} gives a short description of each one of the built-in algorithms:
@@ -1094,7 +1093,7 @@ nmf(V, 3, my.algorithm, scale.factor=10
 
 \subsubsection{Defining algorithms for mixed sign data}
 All the algorithms implemented in the \nmfpack package assume that the input data is nonnegative.
-However, some methods exist in the litterature that work with relaxed constraints, where the input data and one of the matrix factors ($W$ or $H$) are allowed to have negative entries (eg. semi-NMF \cite{Ding2008, Roux2008}).
+However, some methods exist in the litterature that work with relaxed constraints, where the input data and one of the matrix factors ($W$ or $H$) are allowed to have negative entries (eg. semi-NMF \cite{Ding2010, Roux2008}).
 Strictly speaking these methods do not fall into the NMF category, but still solve constrained matrix factorization problems, and could be considered as NMF methods when applied to non-negative data.
 Moreover, we received user requests to enable the development of semi-NMF type methods within the package's framework.
 Therefore, we designed the \nmfpack package so that such algorithms -- that handle negative data -- can be integrated. This section documents how to do it.

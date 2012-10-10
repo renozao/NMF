@@ -1981,8 +1981,7 @@ function(x, rank, method
 	}
 	
 	## Compute the initial residuals if tracking is enabled
-	if( .OPTIONS$track && !is.partial.nmf(seed) ){
-		ini.res <- deviance(method, seed, x, ...)	
+	init.resid <- if( .OPTIONS$track && !is.partial.nmf(seed) ) deviance(method, seed, x, ...)	
 	}
 	
 	## RUN NMF METHOD:
@@ -2023,7 +2022,7 @@ function(x, rank, method
 	if( .OPTIONS$track ){
 		otrack <- residuals(res, track=TRUE)
 		if( !is.null(names(otrack)) && names(otrack)[1] != '0' )
-			residuals(res) <- c('0'=ini.res, otrack)
+			residuals(res) <- c('0'=init.resid, otrack)
 	}
 	if( is.na(residuals(res)) ) warning("NMF residuals: final objective value is NA")
 	res@runtime <- t
