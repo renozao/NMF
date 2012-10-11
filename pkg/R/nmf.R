@@ -1981,8 +1981,7 @@ function(x, rank, method
 	}
 	
 	## Compute the initial residuals if tracking is enabled
-	init.resid <- if( .OPTIONS$track && !is.partial.nmf(seed) ) deviance(method, seed, x, ...)	
-	}
+	init.resid <- if( .OPTIONS$track && !is.partial.nmf(seed) ) deviance(method, seed, x, ...)
 	
 	## RUN NMF METHOD:
 	# call the strategy's run method [and time it] using the element of 'parameters.method' as parameters	
