@@ -53,7 +53,7 @@ rmAttributes <- function(x){
 #' args(library)
 #' str_args(library)
 #' 
-str_args <- function(x, exdent=0){
+str_args <- function(x, exdent=10L){
 	s <- capture.output(print(args(x)))
 	paste(str_trim(s[-length(s)]), collapse=str_c('\n', paste(rep(' ', exdent), collapse='')))
 }

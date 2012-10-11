@@ -1,4 +1,20 @@
 *************************************************************************
+*                       Changes in version 0.8.14                       *
+*************************************************************************
+
+NEW FEATURES
+
+    o New function nmfObject() to update old versions of NMF objects, 
+    eg., saved on disk.
+
+CHANGES
+
+    o All vignettes are generated using knitr.
+    o New dependency to pkgmaker which incorporated many general utility 
+    functions
+
+
+*************************************************************************
 *                       Changes in version 0.8.6                        *
 *************************************************************************
 

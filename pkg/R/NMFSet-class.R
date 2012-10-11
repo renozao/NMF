@@ -715,6 +715,15 @@ setClass('NMFfitXn'
 	}
 )
 
+# Updater for slot .Data
+objectUpdater('NMFfitXn', '0.5.06'
+	, vfun=function(object){ !.hasSlot(object, 'rng1') }
+	, function(x, y){
+		y@.Data <- lapply(x@.Data, nmfObject)
+	}
+)
+
+
 #' Show method for objects of class \code{NMFfitXn}
 #' @export
 setMethod('show', 'NMFfitXn', 

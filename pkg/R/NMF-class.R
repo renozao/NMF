@@ -1,6 +1,7 @@
 #library(R.utils)
 
 #' @include utils.R
+#' @include versions.R
 #' @include algorithmic.R
 #' @include aheatmap.R
 NULL
