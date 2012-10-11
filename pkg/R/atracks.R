@@ -299,7 +299,8 @@ setMethod('.atrack', 'character',
 		
 		# check for special escaped track code
     	if( length(i <- atrack_code(object)) ){
-			if( length(i) == length(object) ) as.list(object)
+			if( length(object) == 1L ) object
+			else if( length(i) == length(object) ) as.list(object)
 			else{
 				spe <- object[i]
 				object <- sub("^\\\\:", ":", object[-i])
@@ -368,13 +369,18 @@ match_atrack_code <- function(x, table, ...){
 #' It is passed to argument \code{data} of the \code{.atrack} methods, which 
 #' in turn use pass it to \code{\link{match_atrack}}.
 #' 
+#' @param .CACHE an \code{annotationTrack} object with which the generated
+#' annotation track should be consistent.
+#' This argument is more for internal/advanced usage and should not be used 
+#' by the end-user.  
+#' 
 #' @return \code{atrack} returns a list, decorated with class 
 #' \code{'annotationTrack'}, where each element contains the description 
 #' of an annotation track.
 #'  
 #' @rdname atrack
 #' @export 
-atrack <- function(..., order = NULL, enforceNames=FALSE, .SPECIAL=NULL, .DATA = NULL){
+atrack <- function(..., order = NULL, enforceNames=FALSE, .SPECIAL=NULL, .DATA = NULL, .CACHE = NULL){
 	
 	# cbind object with the other arguments
 	l <- list(...)
@@ -405,7 +411,7 @@ atrack <- function(..., order = NULL, enforceNames=FALSE, .SPECIAL=NULL, .DATA =
 					else object <<- c(object, xa)
 					
 				})
-	}	
+	}
 	
 	# exit now if object is NULL
 	if( is.null(object) ) return()
@@ -418,7 +424,7 @@ atrack <- function(..., order = NULL, enforceNames=FALSE, .SPECIAL=NULL, .DATA =
 				, str_out(unlist(object[i]), use.names=TRUE))
 		object <- object[-i] 
 	}
-	
+		
 	if( !length(object) ) return(object)
 	
 	# reorder if necessary
@@ -433,13 +439,33 @@ atrack <- function(..., order = NULL, enforceNames=FALSE, .SPECIAL=NULL, .DATA =
 	
 	# substitute special tracks
 	if( is.list(.SPECIAL) ){
+		
 		m <- match_atrack_code(object, names(.SPECIAL))
 		i_spe <- which(m!=0L)
 		if( length(i_spe) ){
-			a <- sapply(m[i_spe], function(i) .SPECIAL[[i]](), simplify=FALSE)
-			object[i_spe] <- a
+			
 			# add names where needed
 			if( is.null(names(object)) ) names(object) <- rep('', length(object))
+			
+			# enforce names consistent with the CACHE
+			if( !is.null(.CACHE) ){
+				if( !is.atrack(.CACHE) )
+					stop("Argument .CACHE should be an annotation track object. [", class(.CACHE), ']')
+				cache_spe <- atrack_code(.CACHE)
+				if( length(cache_spe) ){
+					sapply(seq_along(object), function(i){
+						x <- object[[i]]
+						if( names(object)[i] == '' 
+							&& is_track_code(x) && !isNA(j <- match(x, .CACHE)) ){
+							names(object)[i] <<- names(.CACHE)[j]
+						}
+					})
+				}
+			}
+			# compute value
+			a <- sapply(m[i_spe], function(i) .SPECIAL[[i]](), simplify=FALSE)
+			object[i_spe] <- a
+			# set names
 			nm <- names(object)[i_spe]
 			names(object)[i_spe] <- ifelse(nm!='', nm, names(a))
 		}

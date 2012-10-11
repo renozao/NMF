@@ -325,7 +325,7 @@ setMethod('basismap', signature(object='NMF'),
 				else info
 		
 		# process annotation tracks
-		if( length(annRow) > 0L && !isNA(annRow) ){
+		if( anyValue(annRow) ){
 			
 			annRow <- atrack(annRow, .DATA=amargin(x,1L)
 				, .SPECIAL = list(
@@ -343,6 +343,11 @@ setMethod('basismap', signature(object='NMF'),
 				, main = main, info = info)	
 	}
 )
+
+# check if an object contains some value
+anyValue <- function(x){
+	length(x) > 0L && !isNA(x) 
+}
 
 #' \code{coefmap} draws an annotated heatmap of the coefficient matrix.
 #' 
@@ -395,52 +400,29 @@ setMethod('coefmap', signature(object='NMF'),
 					else info
 			
 			# process column annotation tracks
-			has_basis_col_track <- FALSE
-			if( length(annCol) > 0L && !isNA(annCol) ){
-				
-				annCol <- atrack(annCol, .DATA=amargin(x,2L)
+			plainAnnRow <- if( anyValue(annRow) ) atrack(annRow, .DATA=amargin(x,1L)) 
+			plainAnnCol <- if( anyValue(annCol) ) atrack(annCol, .DATA=amargin(x,2L))
+			
+			if( anyValue(annCol) ){
+				annCol <- atrack(plainAnnCol
 						, .SPECIAL = list(
 							basis = function() predict(object)
 						)
+						, .CACHE = plainAnnRow
 				)
-				
 			}	
 			
 			# process row annotation tracks
-			if( length(annRow) > 0L && !isNA(annRow) ){
-				itrRow <- match_named_track(annRow, 'basis', "NMF::coefmap [annRow] - ")
-				# create extra annotation tracks
-				tr <- NULL
-				if( length(itrRow$tracks) ){
-					# remove track from annotation specification
-					annRow <- itrRow$ann
-					# compute track
-					tr <- sapply( itrRow$tracks, function(t){
-						switch(t
-						, basis = as.factor(1:nbasis(object))					
-						, stop("NMF::coefmap - Unexpected error: unsupported row annotation track: ", t)
-						)
-					}, simplify=FALSE)
-			
-					# link to the previous track with the name if necessary
-					if( has_basis_col_track ){
-						ib <- which(itrRow$tracks=='basis')
-						if( length(ib) ){ 
-							if( names(tr[ib]) == 'basis' ){
-								names(tr)[ib] <- names(trCol)[itrCol$tracks == 'basis']
-							}else{
-								ibCol <- which(itrCol$tracks=='basis')
-								# update column annotation name if necessary
-								if( names(trCol[ibCol]) == 'basis' ){
-									names(annCol)[names(annCol) == 'basis'] <- names(tr)[ib]
-								}
-							}
-						}
-					}
-				}
-				# convert into annotation tracks now
-				annRow <- atrack(tr, annRow, .DATA=amargin(x,1L))
+			if( anyValue(annRow) ){
 				
+				# extract special row tracks
+				annRow <- atrack(plainAnnRow
+						, .SPECIAL = list(
+							basis = function() as.factor(1:nbasis(object))
+						)
+						, .CACHE = plainAnnCol
+				)
+								
 			}
 			##
 			

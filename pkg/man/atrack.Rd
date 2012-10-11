@@ -30,7 +30,7 @@
   \S4method{.atrack}{ANY}(object, data = NULL, ...)
 
   atrack(..., order = NULL, enforceNames = FALSE,
-    .SPECIAL = NULL, .DATA = NULL)
+    .SPECIAL = NULL, .DATA = NULL, .CACHE = NULL)
 
   annotationTrack(x = list())
 }
@@ -76,6 +76,11 @@
   specifications. It is passed to argument \code{data} of
   the \code{.atrack} methods, which in turn use pass it to
   \code{\link{match_atrack}}.}
+
+  \item{.CACHE}{an \code{annotationTrack} object with which
+  the generated annotation track should be consistent. This
+  argument is more for internal/advanced usage and should
+  not be used by the end-user.}
 }
 \value{
   \code{atrack} returns a list, decorated with class

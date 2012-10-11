@@ -104,6 +104,16 @@ install.packages('NMF')
 library(NMF)
 @
 
+Note that some of the classes defined in the NMF package have gained new slots.
+If you need to load objects saved in versions prior 0.8.14 please use:
+
+<<updateObject, eval=FALSE>>=
+# eg., load from some RData file
+load('object.RData')
+# update class definition
+object <- nmfObject(object)
+@
+
 \pagebreak
 \tableofcontents
 \pagebreak

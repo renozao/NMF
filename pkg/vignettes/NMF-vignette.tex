@@ -171,7 +171,7 @@
 
 
 \title{An introduction to NMF package\\\small Version
-0.8.13}
+0.8.14}
 \author{Renaud Gaujoux, \url{renaud@cbio.uct.ac.za}}
 % \\Address Computational Biology - University of Cape Town, South Africa,
 
@@ -198,6 +198,21 @@ standard calls:
 \hlfunctioncall{install.packages}(\hlstring{"NMF"})
 \hlcomment{# Load}
 \hlfunctioncall{library}(NMF)
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+Note that some of the classes defined in the NMF package have gained new slots.
+If you need to load objects saved in versions prior 0.8.14 please use:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcomment{# eg., load from some RData file}
+\hlfunctioncall{load}(\hlstring{"object.RData"})
+\hlcomment{# update class definition}
+object <- \hlfunctioncall{nmfObject}(object)
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -580,7 +595,7 @@ t <- \hlfunctioncall{sapply}(res, runtime)[3, ]
 
 
 % latex table generated in R 2.15.1 by xtable 1.7-0 package
-% Wed Oct 10 15:45:53 2012
+% Thu Oct 11 15:26:08 2012
 \begin{table}[ht]
 \begin{center}
 \begin{tabular}{rrrr}
@@ -1087,7 +1102,7 @@ res <- \hlfunctioncall{nmf}(esGolub, 3, seed = 123456)
 \end{alltt}
 \begin{verbatim}
 ##  RNG kind:  Mersenne-Twister / Inversion 
-##  RNG state: NMFfit [cb1279c622b0f9861c2cf11d4ef1ccfa]
+##  RNG state: NMFfit [3743651de793a025c92fbcba341ccdf6]
 \end{verbatim}
 \begin{alltt}
 
@@ -1097,7 +1112,7 @@ res <- \hlfunctioncall{nmf}(esGolub, 3, seed = 123456, nrun = 2)
 \end{alltt}
 \begin{verbatim}
 ##  RNG kind:  L'Ecuyer-CMRG / Inversion 
-##  RNG state: NMFfitX1 [f2f2f2b646478bb294f8ebe575a8420a]
+##  RNG state: NMFfitX1 [8788b0b73deecda5e6791f645638dafd]
 \end{verbatim}
 \begin{alltt}
 
@@ -1107,7 +1122,7 @@ res <- \hlfunctioncall{nmf}(esGolub, 3, seed = \hlfunctioncall{rep}(123456, 6))
 \end{alltt}
 \begin{verbatim}
 ##  RNG kind:  L'Ecuyer-CMRG / Inversion 
-##  RNG state: NMFfit [747ac50d5ced29239e8718d1c064915c]
+##  RNG state: NMFfit [c25c005454c41d0556f8879aefaea5bb]
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1844,7 +1859,7 @@ V <- \hlfunctioncall{syntheticNMF}(n, r, p, noise = TRUE)
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_3c5721676f58 
+##   algorithm:  nmf_66bf51a9557b 
 ##   seed:  random 
 ##   RNG: 403, 173, 1191562961, ... [0d87fde5bf092083bd059bcc33d58a3e]
 ##   distance metric:  'euclidean' 
@@ -1852,7 +1867,7 @@ V <- \hlfunctioncall{syntheticNMF}(n, r, p, noise = TRUE)
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.008   0.000   0.007
+##     0.004   0.004   0.053
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1876,7 +1891,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_3c5773c184dd 
+##   algorithm:  nmf_66bf263a1de 
 ##   seed:  random 
 ##   RNG: 403, 383, 1191562961, ... [2f2572f5c6b643d37859d97079951964]
 ##   distance metric:  'KL' 
@@ -1884,7 +1899,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.006
+##     0.008   0.000   0.005
 \end{verbatim}
 \begin{alltt}
 \hlcomment{# based on custom distance metric}
@@ -1954,7 +1969,7 @@ err
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_3c576b95b6a4 
+##   algorithm:  nmf_66bf16d3e047 
 ##   seed:  random 
 ##   RNG: 403, 593, 1191562961, ... [7ed64fa772a4b1e68cebc0bfed3cb018]
 ##   distance metric:  'euclidean' 
@@ -1962,7 +1977,7 @@ err
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.006
+##     0.008   0.000   0.005
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2042,7 +2057,7 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   samples: 20 
 ##   offset: [ 0.3677 0.9383 1.347 1.019 0.6695 ... ]
 ##  # Details:
-##   algorithm:  nmf_3c576cb64f03 
+##   algorithm:  nmf_66bf56bf2cd8 
 ##   seed:  random 
 ##   RNG: 403, 179, -963168695, ... [850b670d66e22c6d00f5d79570d1ce8a]
 ##   distance metric:  'euclidean' 
@@ -2100,14 +2115,14 @@ To use the new seeding method:
 ##   samples: 20 
 ##  # Details:
 ##   algorithm:  snmf/r 
-##   seed:  NMF.seed.3c5776d825fb 
+##   seed:  NMF.seed.66bf2eafca0 
 ##   RNG: 403, 439, -963168695, ... [49267d84a430d6788491e4513dd6c28c]
 ##   distance metric:  <function> 
 ##   residuals:  195.6 
 ##   Iterations: 105 
 ##   Timing:
 ##      user  system elapsed 
-##     0.464   0.000   0.464
+##     0.456   0.000   0.505
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2178,8 +2193,8 @@ debug & FALSE & Toggle debug mode, which is an extended verbose mode.\\
     BiocGenerics~0.2.0, codetools~0.2-8,
     colorspace~1.1-1, digest~0.5.2, doParallel~1.0.1,
     doRNG~1.4.5, foreach~1.4.0, gridBase~0.4-5,
-    iterators~1.0.6, knitr~0.8, NMF~0.8.13,
-    pkgmaker~0.8.2, RColorBrewer~1.0-5, registry~0.2,
+    iterators~1.0.6, knitr~0.8, NMF~0.8.14,
+    pkgmaker~0.8.3, RColorBrewer~1.0-5, registry~0.2,
     stringr~0.6.1, synchronicity~1.1.0, xtable~1.7-0
   \item Loaded via a namespace (and not attached):
     compiler~2.15.1, evaluate~0.4.2, formatR~0.6,
