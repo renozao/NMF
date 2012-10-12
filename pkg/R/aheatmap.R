@@ -290,7 +290,7 @@ draw_annotations = function(converted_annotations, border_color, horizontal=TRUE
 		x = (1:m)/m - 1/2/m
 		y = cumsum(rep(8, n)) - 4 + cumsum(rep(2, n))
 		for(i in 1:m){
-			grid.rect(x = x[i], unit(y[1:n], "bigpts"), width = 1/m, height = unit(8, "bigpts"), gp = gpar(fill = converted_annotations[i, ], col = border_color))
+			grid.rect(x = x[i], unit(y[n:1], "bigpts"), width = 1/m, height = unit(8, "bigpts"), gp = gpar(fill = converted_annotations[i, ], col = border_color))
 		}
 	}else{
 		x = cumsum(rep(8, n)) - 4 + cumsum(rep(2, n))
