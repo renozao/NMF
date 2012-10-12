@@ -44,22 +44,27 @@
       <div class="row">
         <div class="span8">
           <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='stop-NMF.html'>NMFStop</a></span><span class="keyword">(</span><span class="symbol">val</span><span class="keyword">)</span>
+          <pre><span class="functioncall"><a href='stop-NMF.html'>NMFStop</a></span><span class="keyword">(</span><span class="symbol">s</span><span class="keyword">,</span> <span class="argument">check</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='stop-NMF.html'>nmf.stop.iteration</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='stop-NMF.html'>nmf.stop.threshold</a></span><span class="keyword">(</span><span class="symbol">threshold</span><span class="keyword">)</span>
 
-<span class="functioncall"><a href='stop-NMF.html'>nmf.stop.stationary</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">i</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="argument">stationary.th</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">^</span><span class="keyword">-</span><span class="number">6</span><span class="keyword">,</span> <span class="argument">check.interval</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">,</span>
+<span class="functioncall"><a href='stop-NMF.html'>nmf.stop.stationary</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">i</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="argument">stationary.th</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">^</span><span class="keyword">-</span><span class="number">6</span><span class="keyword">,</span> <span class="argument">check.interval</span> <span class="argument">=</span> <span class="number">10L</span><span class="keyword">,</span>
   <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='stop-NMF.html'>nmf.stop.connectivity</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">i</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="argument">stopconv</span> <span class="argument">=</span> <span class="number">40</span><span class="keyword">,</span> <span class="argument">check.interval</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
           
           <h2>Arguments</h2>
           <dl>
-            <dt>val</dt>
-            <dd>access key that can be a character string, a
-  single integer or numeric, or a function.</dd>
+            <dt>s</dt>
+            <dd>specification of the stopping criterion. See
+  section <em>Details</em> for the supported formats and how
+  they are processed.</dd>
+            <dt>check</dt>
+            <dd>logical that indicates if the validity of
+  the stopping criterion function should be checked before
+  returning it.</dd>
             <dt>n</dt>
             <dd>maximum number of iteration to perform.</dd>
             <dt>threshold</dt>
@@ -73,8 +78,9 @@
             <dt>x</dt>
             <dd>the current NMF model</dd>
             <dt>stationary.th</dt>
-            <dd>maximum difference for two objective
-  values to be considered equal.</dd>
+            <dd>maximum absolute value of the
+  gradient, for the objective function to be considered
+  stationary.</dd>
             <dt>check.interval</dt>
             <dd>interval (in number of iterations)
   on which stationarity is computed.</dd>
@@ -92,7 +98,8 @@
             <h2>Value</h2>
             
             <p>a function that can be passed to argument <code>.stop</code> of
-  function <code><a href='nmf.html'>nmf</a></code>.</p>
+  function <code><a href='nmf.html'>nmf</a></code>, which is typically used when
+  the algorith is implemented as an iterative strategy.</p>
         
             <p>a function that can be used as a stopping criterion for
   NMF algorithms defined as
@@ -124,11 +131,11 @@
   <code>nmf.stop.stationary</code>, but with the default
   threshold set to <code>threshold</code>.</p>
         
-            <p><code>nmf.stop.stationary</code> implements the stopping
-  criterion of stationarity of the objective value, which
-  stops when the objective value does not change anymore
-  with further iterations. Objective values are compared at
-  given regular intervals and using a given threshold.</p>
+            <p>The gradient is computed by finite differences over an
+  interaval of iterations specified in argument
+  <code>check.interval</code>. The criterion stops when the
+  absolute value of the gradient is lower than the
+  specified threshold <code>stationary.th</code>.</p>
         
             <p><code>nmf.stop.connectivity</code> implements the stopping
   criterion that is based on the stationarity of the
@@ -139,20 +146,28 @@
           <div class="Details">
             <h2>Details</h2>
             
-            <p><code>NMFStop</code> acts as a factory method that create
-  stopping criterion functions to be used with
-  <code><a href='nmf.html'>nmf</a></code>, from different types of values.</p>
+            <p><code>NMFStop</code> acts as a factory method that creates
+  stopping criterion functions from different types of
+  values, which are subsequently used by
+  <code><a href='NMFStrategyIterative-class.html'>NMFStrategyIterative-class</a></code> objects to
+  determine when to stop their iterative process.</p>
         
-            <p><code>NMFStop</code> returns functions unchanged, integer
-  values are used to create a stopping criterion of that
-  number of iterations via <code>nmf.stop.iteration</code>,
-  numeric values are used to create a stopping criterion of
-  that stationary threshold via <code>nmf.stop.threshold</code>.
-  Character strings are assumed to be access keys for
+            <p><code>NMFStop</code> can take the following values: <span class='describe'>
+  function is returned unchanged, except when it
+  has no arguments, in which case it assumed to be a
+  generator, which is immediately called and should return
+  a function that implements the actual stopping
+  criterion; integer the value is used to create a
+  stopping criterion that stops at that exact number of
+  iterations via <code>nmf.stop.iteration</code>;
+  numeric the value is used to create a stopping
+  criterion that stops when at that stationary threshold
+  via <code>nmf.stop.threshold</code>; character must be
+  a single string which must be an access key for
   registered criteria (currently available:
-  &#147;connectivity&#148; and &#147;stationary&#148;), or a
-  function name in the global environment or the namespace
-  of the loading package.</p>
+  &#147;connectivity&#148; and &#147;stationary&#148;), or the
+  name of a function in the global environment or the
+  namespace of the loading package. </span></p>
         
           </div>
       

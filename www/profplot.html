@@ -136,6 +136,44 @@
         
           </div>
       
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="keyword">if</span><span class="keyword">(</span> <span class="functioncall"><a href='NA'>interactive</a></span><span class="keyword">(</span><span class="keyword">)</span> <span class="keyword">)</span><span class="keyword">{</span>
+
+<span class="comment"># create a random target matrix</span>
+<span class="symbol">v</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">50</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span>
+
+<span class="comment"># fit a single NMF model</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
+<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span>
+
+<span class="comment"># ordering according to first profile</span>
+<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">Colv</span><span class="argument">=</span><span class="number">1</span><span class="keyword">)</span> <span class="comment"># increasing</span>
+<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">Colv</span><span class="argument">=</span><span class="keyword">-</span><span class="number">1</span><span class="keyword">)</span> <span class="comment"># decreasing</span>
+
+<span class="comment"># fit a multi-run NMF model</span>
+<span class="symbol">res2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span>
+<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res2</span><span class="keyword">)</span>
+
+<span class="comment"># draw a profile correlation plot: this show how the basis components are</span>
+<span class="comment"># returned in an unpredictable order</span>
+<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">res2</span><span class="keyword">)</span>
+
+<span class="comment"># looking at all the correlations allow to order the components in a "common" order</span>
+<span class="functioncall"><a href='basiscor.html'>profcor</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">res2</span><span class="keyword">)</span>
+
+<span class="keyword">}</span></div>
+<p><img src='profplot-2.png' alt='' width='400' height='400' /></p>
+<p><img src='profplot-3.png' alt='' width='400' height='400' /></p>
+<p><img src='profplot-4.png' alt='' width='400' height='400' /></p>
+<strong class='warning'>Warning message:
+error 'Interrupted system call' in select</strong>
+<p><img src='profplot-6.png' alt='' width='400' height='400' /></p>
+<p><img src='profplot-7.png' alt='' width='400' height='400' /></p>
+<div class='output'>           [,1]       [,2]       [,3]
+[1,] -0.6402213 -0.3741793  0.9999281
+[2,]  0.9997822 -0.4509342 -0.6530770
+[3,] -0.4572019  0.9997240 -0.3710160
+</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>

@@ -55,7 +55,7 @@
 <span class="functioncall"><a href='NMFStrategy-class.html'>name</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">value</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMFStrategy)</span>
-<span class="functioncall"><a href='NA'>`objective`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>`objective`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMFStrategy,character)</span>
 <span class="functioncall"><a href='NA'>`objective`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">value</span>
@@ -78,11 +78,6 @@
   associated with a strategy should be return
   (<code>TRUE</code>), or only the first (primary) one
   (<code>FALSE</code>).</dd>
-            <dt>y</dt>
-            <dd>data object, e.g. a target matrix</dd>
-            <dt>x</dt>
-            <dd>a model object used as a starting point by the
-  algorithm, e.g. a non-empty NMF model.</dd>
           </dl>
           
           <div class="Description">
@@ -134,6 +129,11 @@
             
             <p><span class='describe'></p>
         
+            <p>NMFStrategy<code>signature(name = "NMFStrategy",
+  method = "missing")</code>: Creates an <code>NMFStrategy</code> based
+  on a template object (Constructor-Copy) using a randomly
+  generated name.</p>
+        
             <p>canFit<code>signature(x = "NMFStrategy", y =
   "character")</code>: Tells if an NMF algorithm can fit a given
   class of NMF models</p>
@@ -141,6 +141,10 @@
             <p>canFit<code>signature(x = "NMFStrategy", y =
   "NMF")</code>: Tells if an NMF algorithm can fit the same class
   of models as <code>y</code></p>
+        
+            <p>deviance<code>signature(object = "NMFStrategy")</code>:
+  Computes the value of the objective function between the
+  estimate <code>x</code> and the target <code>y</code>.</p>
         
             <p>modelname<code>signature(object =
   "NMFStrategy")</code>: Returns the model(s) that an NMF
@@ -170,20 +174,23 @@
         
             <p>This method is not meant to be called directly</p>
         
-            <p>NMFStrategy<code>signature(name = "NMFStrategy",
-  method = "missing")</code>: Creates an <code>NMFStrategy</code> based
-  on a template object (Constructor-Copy) using a randomly
-  generated name.</p>
+            <p>objective<code>signature(object =
+  "NMFStrategy")</code>: Gets the objective function associated
+  with an NMF algorithm.</p>
+        
+            <p>It is used in
+  <code><a href='deviance.html'>deviance</a></code> to
+  compute the objective value for an NMF model with respect
+  to a given target matrix.</p>
         
             <p>objective<code>signature(object =
   "NMFStrategy")</code>: Gets the objective function associated
-  with an NMF algorithm, or computes the objective value
-  for an NMF model with respect to a given target matrix.</p>
+  with an NMF algorithm.</p>
         
-            <p>objective<code>signature(object =
-  "NMFStrategy")</code>: Gets the objective function associated
-  with an NMF algorithm, or computes the objective value
-  for an NMF model with respect to a given target matrix.</p>
+            <p>It is used in
+  <code><a href='deviance.html'>deviance</a></code> to
+  compute the objective value for an NMF model with respect
+  to a given target matrix.</p>
         
             <p>objective<-<code>signature(object =
   "NMFStrategy", value = "character")</code>: Sets the objective
@@ -227,7 +234,7 @@
         </div>
         <div class="span4">
           <!-- <ul>
-            <li>is.mixed</li><li>name</li><li>name&lt;-</li><li>name&lt;--methods</li><li>name-methods</li><li>name&lt;-,NMFSeed,character-method</li><li>name,NMFSeed-method</li><li>name&lt;-,NMFStrategy,character-method</li><li>name,NMFStrategy-method</li><li>NMFStrategy-class</li><li>objective&lt;-,NMFStrategy,character-method</li><li>objective&lt;-,NMFStrategy,function-method</li><li>objective,NMFStrategy-method</li><li>show,NMFStrategy-method</li>
+            <li>NMFStrategy-class</li><li>is.mixed</li><li>name</li><li>name,NMFSeed-method</li><li>name,NMFStrategy-method</li><li>name-methods</li><li>name&lt;-</li><li>name&lt;-,NMFSeed,character-method</li><li>name&lt;-,NMFStrategy,character-method</li><li>name&lt;--methods</li><li>objective,NMFStrategy-method</li><li>objective&lt;-,NMFStrategy,character-method</li><li>objective&lt;-,NMFStrategy,function-method</li><li>show,NMFStrategy-method</li>
           </ul>
           <ul>
             <li>internal</li><li>methods</li>

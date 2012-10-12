@@ -48,18 +48,18 @@
 
 <span class="comment"><span class="label label-important">S4</span> (NMF)</span>
 <span class="functioncall"><a href='NA'>`basismap`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="string">"YlOrRd:50"</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="string">"r1"</span><span class="keyword">,</span> <span class="argument">Colv</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">subsetRow</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span>
-  <span class="argument">annRow</span> <span class="argument">=</span> <span class="string">"basis"</span><span class="keyword">,</span> <span class="argument">main</span> <span class="argument">=</span> <span class="string">"Basis components"</span><span class="keyword">,</span> <span class="argument">info</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+  <span class="argument">annRow</span> <span class="argument">=</span> <span class="string">":basis"</span><span class="keyword">,</span> <span class="argument">main</span> <span class="argument">=</span> <span class="string">"Basis components"</span><span class="keyword">,</span> <span class="argument">info</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMF)</span>
 <span class="functioncall"><a href='NA'>`coefmap`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="string">"YlOrRd:50"</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="string">"c1"</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">Colv</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span>
-      <span class="argument">annRow</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="string">"basis"</span><span class="keyword">,</span> <span class="argument">main</span> <span class="argument">=</span> <span class="string">"Mixture coefficients"</span><span class="keyword">,</span> <span class="argument">info</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+      <span class="argument">annRow</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="string">":basis"</span><span class="keyword">,</span> <span class="argument">main</span> <span class="argument">=</span> <span class="string">"Mixture coefficients"</span><span class="keyword">,</span> <span class="argument">info</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='heatmaps.html'>consensusmap</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMFfitX)</span>
-<span class="functioncall"><a href='NA'>`consensusmap`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"basis"</span><span class="keyword">,</span> <span class="string">"consensus"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">main</span> <span class="argument">=</span> <span class="string">"Consensus matrix"</span><span class="keyword">,</span>
+<span class="functioncall"><a href='NA'>`consensusmap`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">":basis"</span><span class="keyword">,</span> <span class="string">":consensus"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">main</span> <span class="argument">=</span> <span class="string">"Consensus matrix"</span><span class="keyword">,</span>
       <span class="argument">info</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (matrix)</span>
@@ -68,7 +68,7 @@
       <span class="symbol">nr</span> <span class="keyword">&gt;</span> <span class="number">1</span><span class="keyword">)</span> <span class="string">"Consensus matrix"</span> <span class="keyword">else</span> <span class="string">"Connectiviy matrix"</span><span class="keyword">,</span> <span class="argument">info</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMFfitX)</span>
-<span class="functioncall"><a href='NA'>`coefmap`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">Colv</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"basis"</span><span class="keyword">,</span> <span class="string">"consensus"</span><span class="keyword">)</span><span class="keyword">)</span></pre>
+<span class="functioncall"><a href='NA'>`coefmap`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">Colv</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">":basis"</span><span class="keyword">,</span> <span class="string">":consensus"</span><span class="keyword">)</span><span class="keyword">)</span></pre>
           
           <h2>Arguments</h2>
           <dl>
@@ -319,16 +319,17 @@
   default named annotation track, that shows the dominant
   basis component for each row (i.e. each feature).</p>
         
-            <p>This track, named <code>'basis'</code>, is specified as a
+            <p>This track, named <code>':basis'</code>, is specified as a
   single character string, that is looked-up in argument
   <code>annRow</code>, which may be of any type supported by
-  <code><a href='aheatmap.html'>aheatmap</a></code>. The only difference is that
-  character annotation vectors that have elements other
-  than <code>'basis'</code>, are not are not allowed as-is, and
-  must be encapsulated in a list (see examples). </li>
-<li> a
-  suitable title and extra information like the fitting
-  algorithm, when <code>object</code> is a fitted NMF model. </li>
+  <code><a href='aheatmap.html'>aheatmap</a></code>. Note that if <code>annRow</code> is a
+  character vector, that contains special track names ,
+  e.g., <code>":basis"</code>, then these are extracted and
+  displayed separately, after the character track -- which
+  is interpreted as a factor. </li>
+<li> a suitable title and
+  extra information like the fitting algorithm, when
+  <code>object</code> is a fitted NMF model. </li>
 </ul></p>
         
             <p><code>coefmap</code> redefines default values for the following
@@ -356,28 +357,30 @@
             <p><code>consensusmap</code> redefines default values for the
   following arguments of <code><a href='aheatmap.html'>aheatmap</a></code>: <ul>
 <li>  </li>
-<li> the color palette; </li>
+<li> the colour palette; </li>
 <li> the column ordering which
   is set equal to the row ordering, since a consensus
-  matrix is symetric; </li>
+  matrix is symmetric; </li>
 <li> the distance and linkage
   methods used to order the rows (and columns). The default
   is to use 1 minus the consensus matrix itself as
   distance, and average linkage. </li>
 <li> the addition of two
-  default named annotation tracks, <code>'basis'</code> and
-  <code>'consensus'</code>, that show, for each column (i.e. each
-  sample), the dominant basis component in the best fit and
-  the hierarchical clustering of the consensus matrix
-  respectively (using 1-consensus as distance and average
-  linkage).</p>
+  special named annotation tracks, <code>':basis'</code> and
+  <code>':consensus'</code>, that show, for each column (i.e.
+  each sample), the dominant basis component in the best
+  fit and the hierarchical clustering of the consensus
+  matrix respectively (using 1-consensus as distance and
+  average linkage).</p>
         
-            <p>This track is specified in argument <code>annCol</code>, which
-  behaves like argument <code>annRow</code> in
-  <code><a href='heatmaps.html'>basismap</a></code>. </li>
-<li> a suitable title and extra
-  information like the type of NMF model or the fitting
-  algorithm, when <code>object</code> is a fitted NMF model. </li>
+            <p>These tracks are specified in argument <code>annCol</code>,
+  which behaves like argument <code>annRow</code> in
+  <code><a href='heatmaps.html'>basismap</a></code>.</p>
+        
+            <p></li>
+<li> a suitable title and extra information like the
+  type of NMF model or the fitting algorithm, when
+  <code>object</code> is a fitted NMF model. </li>
 </ul></p>
         
             <p></p>
@@ -418,10 +421,58 @@
         
           </div>
       
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># random data with underlying NMF model</span>
+<span class="symbol">v</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="number">50</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="number">20</span><span class="keyword">)</span>
+<span class="comment"># estimate a model</span>
+<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
+
+<span class="comment"># show basis matrix</span>
+<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
+<p><img src='heatmaps-2.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-3.png' alt='' width='400' height='400' /></p>
+<div class='input'><span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annRow</span><span class="argument">=</span><span class="number">NA</span><span class="keyword">)</span> <span class="comment"># no annotation track</span></div>
+<p><img src='heatmaps-5.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-6.png' alt='' width='400' height='400' /></p>
+<div class='input'>
+<span class="comment"># character annotation vector: ok if it does not contain 'basis'</span>
+<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annRow</span><span class="argument">=</span><span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">'alpha'</span><span class="keyword">,</span> <span class="string">'beta'</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># annotate first and second row</span></div>
+<p><img src='heatmaps-8.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-9.png' alt='' width='400' height='400' /></p>
+<div class='input'><span class="functioncall"><a href='NA'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annRow</span><span class="argument">=</span><span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">'alpha'</span><span class="keyword">,</span> <span class="string">'beta'</span><span class="keyword">,</span> <span class="string">'basis'</span><span class="keyword">)</span><span class="keyword">)</span> <span class="keyword">)</span> <span class="comment"># error</span></div>
+<p><img src='heatmaps-11.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-12.png' alt='' width='400' height='400' /></p>
+<div class='input'><span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annRow</span><span class="argument">=</span><span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">'alpha'</span><span class="keyword">,</span> <span class="string">'beta'</span><span class="keyword">,</span> <span class="string">'basis'</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># ok</span></div>
+<p><img src='heatmaps-14.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-15.png' alt='' width='400' height='400' /></p>
+<div class='input'><span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annRow</span><span class="argument">=</span><span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="string">'basis'</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">'alpha'</span><span class="keyword">,</span> <span class="string">'beta'</span><span class="keyword">,</span> <span class="string">'basis'</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># ok</span></div>
+<p><img src='heatmaps-17.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-18.png' alt='' width='400' height='400' /></p>
+<div class='input'>
+<span class="comment"># changing the name of the basis annotation</span>
+<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annRow</span><span class="argument">=</span><span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="argument">new_name</span><span class="argument">=</span><span class="string">'basis'</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<p><img src='heatmaps-20.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-21.png' alt='' width='400' height='400' /></p>
+<div class='input'><span class="comment"># coefficient matrix</span>
+<span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
+<p><img src='heatmaps-23.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-24.png' alt='' width='400' height='400' /></p>
+<div class='input'><span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span><span class="argument">=</span><span class="number">NA</span><span class="keyword">)</span></div>
+<p><img src='heatmaps-26.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-27.png' alt='' width='400' height='400' /></p>
+<div class='input'><span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span><span class="argument">=</span><span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">'alpha'</span><span class="keyword">,</span> <span class="string">'beta'</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># annotate first and second sample</span></div>
+<p><img src='heatmaps-29.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-30.png' alt='' width='400' height='400' /></p>
+<div class='input'><span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span><span class="argument">=</span><span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="string">'basis'</span><span class="keyword">,</span> <span class="argument">Greek</span><span class="argument">=</span><span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">'alpha'</span><span class="keyword">,</span> <span class="string">'beta'</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># annotate first and second sample + basis annotation</span></div>
+<p><img src='heatmaps-32.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-33.png' alt='' width='400' height='400' /></p>
+<div class='input'><span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span><span class="argument">=</span><span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="argument">new_name</span><span class="argument">=</span><span class="string">'basis'</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<p><img src='heatmaps-35.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-36.png' alt='' width='400' height='400' /></p></pre>
         </div>
         <div class="span4">
           <!-- <ul>
-            <li>basismap</li><li>basismap-methods</li><li>basismap,NMFfitX-method</li><li>basismap,NMF-method</li><li>coefmap</li><li>coefmap-methods</li><li>coefmap,NMFfitX-method</li><li>coefmap,NMF-method</li><li>consensusmap</li><li>consensusmap,matrix-method</li><li>consensusmap-methods</li><li>consensusmap,NMFfitX-method</li><li>consensusmap,NMF-method</li><li>heatmap-NMF</li>
+            <li>basismap</li><li>basismap,NMF-method</li><li>basismap,NMFfitX-method</li><li>basismap-methods</li><li>coefmap</li><li>coefmap,NMF-method</li><li>coefmap,NMFfitX-method</li><li>coefmap-methods</li><li>consensusmap</li><li>consensusmap,NMF-method</li><li>consensusmap,NMFfitX-method</li><li>consensusmap,matrix-method</li><li>consensusmap-methods</li><li>heatmap-NMF</li>
           </ul>
           <ul>
             <li>methods</li>

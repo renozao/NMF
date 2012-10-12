@@ -45,7 +45,7 @@
         <div class="span8">
           <h2>Usage</h2>
           <pre><span class="functioncall"><a href='nmfEstimateRank.html'>nmfEstimateRank</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">range</span><span class="keyword">,</span> <span class="argument">method</span> <span class="argument">=</span> <span class="functioncall"><a href='options.html'>nmf.getOption</a></span><span class="keyword">(</span><span class="string">"default.algorithm"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">nrun</span> <span class="argument">=</span> <span class="number">30</span><span class="keyword">,</span>
-  <span class="argument">verbose</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">stop</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+  <span class="argument">model</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">verbose</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">stop</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-success">S3</span> (NMF.rank)</span>
 <span class="functioncall"><a href='NA'>`plot`</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">y</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">what</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">"all"</span><span class="keyword">,</span> <span class="string">"cophenetic"</span><span class="keyword">,</span> <span class="string">"rss"</span><span class="keyword">,</span> <span class="string">"residuals"</span><span class="keyword">,</span> <span class="string">"dispersion"</span><span class="keyword">,</span>
@@ -73,6 +73,12 @@
             <dt>nrun</dt>
             <dd>a <code>numeric</code> giving the number of run to
   perform for each value in <code>range</code>.</dd>
+            <dt>model</dt>
+            <dd>model specification passed to each
+  <code>nmf</code> call. In particular, when <code>x</code> is a
+  formula, it is passed to argument <code>data</code> of
+  <code><a href='nmfModel.html'>nmfModel</a></code> to determine the target matrix --
+  and fixed terms.</dd>
             <dt>verbose</dt>
             <dd>toggle verbosity.  This parameter only
   affects the verbosity of the outer loop over the values
@@ -197,6 +203,29 @@
         
           </div>
       
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="functioncall"><a href='NA'>set.seed</a></span><span class="keyword">(</span><span class="number">123456</span><span class="keyword">)</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span> <span class="symbol">m</span> <span class="assignement">&lt;-</span> <span class="number">20</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">,</span> <span class="symbol">m</span><span class="keyword">)</span>
+
+<span class="comment"># Use a seed that will be set before each first run</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: </span>
+<span class="comment"># res &lt;- nmfEstimateRank(V, seq(2,5), method='brunet', nrun=10, seed=123456)</span>
+<span class="comment"># # or equivalently</span>
+<span class="comment"># res &lt;- nmf(V, seq(2,5), method='brunet', nrun=10, seed=123456)</span>
+<span class="comment"># ## &lt;strong&gt;End(Not run)&lt;/strong&gt;</span>
+
+<span class="comment"># plot all the measures</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: plot(res)</span>
+<span class="comment"># or only one: e.g. the cophenetic correlation coefficient</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: plot(res, 'cophenetic')</span>
+
+<span class="comment"># run same estimation on randomized data</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: </span>
+<span class="comment"># rV &lt;- randomize(V)</span>
+<span class="comment"># rand &lt;- nmfEstimateRank(rV, seq(2,5), method='brunet', nrun=10, seed=123456)</span>
+<span class="comment"># plot(res, rand)</span>
+<span class="comment"># ## &lt;strong&gt;End(Not run)&lt;/strong&gt;</span></div></pre>
         </div>
         <div class="span4">
           <!-- <ul>

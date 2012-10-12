@@ -124,7 +124,7 @@
   Computes summary measures for a single fit from
   <code><a href='nmf.html'>nmf</a></code>.</p>
         
-            <p>This method adds the folowing measures to the measures
+            <p>This method adds the following measures to the measures
   computed by the method <code>summary,NMF</code>:</p>
         
             <p><span class='describe'> residualsResidual error as measured by
@@ -155,10 +155,50 @@
         
           </div>
       
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># random NMF model</span>
+<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">20</span><span class="keyword">,</span> <span class="number">12</span><span class="keyword">)</span>
+<span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
+<div class='output'>            rank sparseness.basis  sparseness.coef 
+       3.0000000        0.1359311        0.2971661 
+</div>
+<div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>gl</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">4</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy 
+       3.0000000        0.1359311        0.2971661        0.6666667        0.6567045 
+</div>
+<div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='output'>            rank sparseness.basis  sparseness.coef              rss             evar 
+       3.0000000        0.1359311        0.2971661       83.4377426        0.7726781 
+</div>
+<div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>gl</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span><span class="number">4</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar 
+       3.0000000        0.1359311        0.2971661        0.6666667        0.6567045       80.2209255        0.7760048 
+</div>
+<div class='input'><span class="comment"># generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">)</span><span class="keyword">;</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span>
+<span class="symbol">cl</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>unlist</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>mapply</a></span><span class="keyword">(</span><span class="symbol">rep</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span><span class="keyword">)</span>
+
+<span class="comment"># perform default NMF with rank=2</span>
+<span class="symbol">x2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span>
+<span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x2</span><span class="keyword">,</span> <span class="symbol">cl</span><span class="keyword">,</span> <span class="symbol">V</span><span class="keyword">)</span></div>
+<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals            niter              cpu 
+       2.0000000        0.3156386        0.6508678        0.7222222        0.3505165      456.5997072        0.6203819      325.9172254      500.0000000        0.3960000 
+         cpu.all             nrun 
+       0.3960000        1.0000000 
+</div>
+<div class='input'><span class="comment"># perform default NMF with rank=2</span>
+<span class="symbol">x3</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
+<span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x2</span><span class="keyword">,</span> <span class="symbol">cl</span><span class="keyword">,</span> <span class="symbol">V</span><span class="keyword">)</span></div>
+<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals            niter              cpu 
+       2.0000000        0.3156386        0.6508678        0.7222222        0.3505165      456.5997072        0.6203819      325.9172254      500.0000000        0.3960000 
+         cpu.all             nrun 
+       0.3960000        1.0000000 
+</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>
-            <li>summary</li><li>summary-methods</li><li>summary-NMF</li><li>summary,NMFfit-method</li><li>summary,NMFfitX-method</li><li>summary,NMF-method</li>
+            <li>summary</li><li>summary,NMF-method</li><li>summary,NMFfit-method</li><li>summary,NMFfitX-method</li><li>summary-NMF</li><li>summary-methods</li>
           </ul>
           <ul>
             <li>methods</li>

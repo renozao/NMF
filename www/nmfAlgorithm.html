@@ -100,6 +100,22 @@
         
           </div>
       
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># list all main algorithms</span>
+<span class="functioncall"><a href='nmfAlgorithm.html'>nmfAlgorithm</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
+<div class='output'>  brunet      lee   offset    nsNMF   ls-nmf   pe-nmf   snmf/r   snmf/l    siNMF 
+"brunet"    "lee" "offset"  "nsNMF" "ls-nmf" "pe-nmf" "snmf/r" "snmf/l"  "siNMF" 
+</div>
+<div class='input'><span class="comment"># list all versions of algorithms</span>
+<span class="functioncall"><a href='nmfAlgorithm.html'>nmfAlgorithm</a></span><span class="keyword">(</span><span class="argument">all</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span></div>
+<div class='output'>     brunet      brunet         lee         lee      offset      offset       nsNMF       nsNMF      ls-nmf      pe-nmf      snmf/r      snmf/l       siNMF       siNMF 
+".R#brunet"    "brunet"    ".R#lee"       "lee" ".R#offset"    "offset"  ".R#nsNMF"     "nsNMF"    "ls-nmf"    "pe-nmf"    "snmf/r"    "snmf/l"    ".siNMF"     "siNMF" 
+</div>
+<div class='input'><span class="comment"># list all plain R versions</span>
+<span class="functioncall"><a href='nmfAlgorithm.html'>nmfAlgorithm</a></span><span class="keyword">(</span><span class="argument">version</span><span class="argument">=</span><span class="string">'R'</span><span class="keyword">)</span></div>
+<div class='output'>     brunet         lee      offset       nsNMF 
+".R#brunet"    ".R#lee" ".R#offset"  ".R#nsNMF" 
+</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>

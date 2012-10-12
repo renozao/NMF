@@ -59,9 +59,9 @@
 <span class="comment"><span class="label label-important">S4</span> (ANY)</span>
 <span class="functioncall"><a href='NA'>`.atrack`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">data</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
-<span class="functioncall"><a href='atrack.html'>atrack</a></span><span class="keyword">(</span><span class="symbol">...</span><span class="keyword">,</span> <span class="argument">order</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">enforceNames</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">.DATA</span> <span class="argument">=</span> NULL<span class="keyword">)</span>
+<span class="functioncall"><a href='atrack.html'>atrack</a></span><span class="keyword">(</span><span class="symbol">...</span><span class="keyword">,</span> <span class="argument">order</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">enforceNames</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">.SPECIAL</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">.DATA</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">.CACHE</span> <span class="argument">=</span> NULL<span class="keyword">)</span>
 
-<span class="functioncall"><a href='atrack.html'>annotationTrack</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></pre>
+<span class="functioncall"><a href='atrack.html'>annotationTrack</a></span><span class="keyword">(</span><span class="argument">x</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">)</span></pre>
           
           <h2>Arguments</h2>
           <dl>
@@ -93,13 +93,36 @@
             <dt>enforceNames</dt>
             <dd>logical that indicates if missing
   track names should be generated as <code>X<i></code></dd>
+            <dt>.SPECIAL</dt>
+            <dd>an optional list of functions (with no
+  arguments) that are called to generate special annotation
+  tracks defined by codes of the form <code>':NAME'</code>. e.g.,
+  the function <code>link{consensusmap}</code> defines special
+  tracks <code>':basis'</code> and <code>':consensus'</code>.
+
+  If <code>.SPECIAL=FALSE</code>, then any special tracks is
+  discarded and a warning is thrown.</dd>
             <dt>.DATA</dt>
             <dd>data used to match and extend annotation
   specifications. It is passed to argument <code>data</code> of
   the <code>.atrack</code> methods, which in turn use pass it to
   <code><a href='match_atrack.html'>match_atrack</a></code>.</dd>
+            <dt>.CACHE</dt>
+            <dd>an <code>annotationTrack</code> object with which
+  the generated annotation track should be consistent. This
+  argument is more for internal/advanced usage and should
+  not be used by the end-user.</dd>
           </dl>
           
+          <div class="Value">
+            <h2>Value</h2>
+            
+            <p><code>atrack</code> returns a list, decorated with class
+  <code>'annotationTrack'</code>, where each element contains the
+  description of an annotation track.</p>
+        
+          </div>
+
           <div class="Description">
             <h2>Description</h2>
             
@@ -167,7 +190,7 @@
         </div>
         <div class="span4">
           <!-- <ul>
-            <li>adata</li><li>alength</li><li>amargin</li><li>anames</li><li>annotationTrack</li><li>atrack</li><li>.atrack</li><li>.atrack,ANY-method</li><li>.atrack,data.frame-method</li><li>.atrack,matrix-method</li><li>.atrack-methods</li><li>is.atrack</li>
+            <li>.atrack</li><li>.atrack,ANY-method</li><li>.atrack,character-method</li><li>.atrack,data.frame-method</li><li>.atrack,matrix-method</li><li>.atrack-methods</li><li>adata</li><li>alength</li><li>amargin</li><li>anames</li><li>annotationTrack</li><li>atrack</li><li>is.atrack</li>
           </ul>
           <ul>
             <li>internal</li><li>methods</li>

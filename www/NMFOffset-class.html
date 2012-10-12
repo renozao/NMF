@@ -163,10 +163,44 @@
         
           </div>
       
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># create a completely empty NMF object</span>
+<span class="functioncall"><a href='NA'>new</a></span><span class="keyword">(</span><span class="string">'NMFOffset'</span><span class="keyword">)</span></div>
+<div class='output'><Object of class:NMFOffset>
+features: 0 
+basis/rank: 0 
+samples: 0 
+offset: none
+</div>
+<div class='input'>
+<span class="comment"># create a NMF object based on random (compatible) matrices</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span> <span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span>
+<span class="symbol">w</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">)</span>
+<span class="symbol">h</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
+<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">model</span><span class="argument">=</span><span class="string">'NMFOffset'</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">,</span> <span class="argument">offset</span><span class="argument">=</span><span class="functioncall"><a href='NA'>rep</a></span><span class="keyword">(</span><span class="number">0.5</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>nrow</a></span><span class="keyword">(</span><span class="symbol">w</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='output'><Object of class:NMFOffset>
+features: 50 
+basis/rank: 3 
+samples: 20 
+offset: none
+</div>
+<div class='input'>
+<span class="comment"># apply Nonsmooth NMF algorithm to a random target matrix</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: nmf(V, r, 'offset')</span>
+
+<span class="comment"># random NMF model with offset</span>
+<span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFOffset'</span><span class="keyword">)</span></div>
+<div class='output'><Object of class:NMFOffset>
+features: 10 
+basis/rank: 3 
+samples: 5 
+offset: [ 0.9596986 0.2685348 0.9409065 0.8512541 0.08169011 ... ]
+</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>
-            <li>initialize,NMFOffset-method</li><li>NMFOffset-class</li>
+            <li>NMFOffset-class</li><li>initialize,NMFOffset-method</li>
           </ul>
           <ul>
             <li>methods</li>

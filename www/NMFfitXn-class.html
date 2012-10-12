@@ -77,9 +77,10 @@
             
             <p><span class='describe'></p>
         
-            <p>.Data"standard slot that contains the S3
-  <code>list</code> object data.  See R documentation on S4
-  classes for more details.</p>
+            <p>.Datastandard slot that contains the S3
+  <code>list</code> object data. See R documentation on S3/S4
+  classes for more details (e.g.,
+  <code><a href='NA'>setOldClass</a></code>).</p>
         
             <p></span></p>
         
@@ -89,6 +90,11 @@
             <h2>Methods</h2>
             
             <p><span class='describe'></p>
+        
+            <p>.getRNG<code>signature(object = "NMFfitXn")</code>:
+  Returns the RNG settings used for the best fit.</p>
+        
+            <p>This method throws an error if the object is empty.</p>
         
             <p>algorithm<code>signature(object = "NMFfitXn")</code>:
   Returns the name of the common NMF algorithm used to
@@ -133,11 +139,6 @@
   the best NMF fit object amongst all the fits stored in
   <code>object</code>, i.e. the fit that achieves the lowest
   estimation residuals.</p>
-        
-            <p>.getRNG<code>signature(object = "NMFfitXn")</code>:
-  Returns the RNG settings used for the best fit.</p>
-        
-            <p>This method throws an error if the object is empty.</p>
         
             <p>getRNG1<code>signature(object = "NMFfitXn")</code>:
   Returns the RNG settings used for the first run.</p>
@@ -205,6 +206,57 @@
         
           </div>
       
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># generate a synthetic dataset with known classes</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">)</span><span class="keyword">;</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span>
+
+<span class="comment"># build the class factor</span>
+<span class="symbol">groups</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>as.factor</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>do.call</a></span><span class="keyword">(</span><span class="string">'c'</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>lapply</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>seq</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">)</span><span class="keyword">,</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">x</span><span class="keyword">)</span> <span class="functioncall"><a href='NA'>rep</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">[</span><span class="symbol">x</span><span class="keyword">]</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span>
+
+<span class="comment"># perform multiple runs of one algorithm, keeping all the fits</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">5</span><span class="keyword">,</span> <span class="argument">.options</span><span class="argument">=</span><span class="string">'k'</span><span class="keyword">)</span> <span class="comment"># .options=list(keep.all=TRUE) also works</span></div>
+<strong class='warning'>Warning message:
+error 'Interrupted system call' in select</strong>
+<div class='input'><span class="symbol">res</span></div>
+<div class='output'><Object of class: NMFfitXn >
+  Method: brunet 
+  Runs:  5 
+  RNG:
+   407, 9243, 638404768, 1844660257, -1365545106, 646893847, -233661844 
+  Total timing:
+   user  system elapsed 
+  3.116   0.396   2.557 
+  Sequential timing:
+   user  system elapsed 
+  1.776   0.000   2.367 
+</div>
+<div class='input'>
+<span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun       cophenetic       dispersion 
+       3.0000000        0.4210780        0.7219242      251.6773731      430.0000000        0.3680000        3.1160000        5.0000000        1.0000000        0.8380247 
+</div>
+<div class='input'><span class="comment"># get more info</span>
+<span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="symbol">V</span><span class="keyword">,</span> <span class="argument">class</span><span class="argument">=</span><span class="symbol">groups</span><span class="keyword">)</span></div>
+<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals            niter              cpu 
+       3.0000000        0.4210780        0.7219242        1.0000000        0.0000000      308.9893519        0.7093112      251.6773731      430.0000000        0.3680000 
+         cpu.all             nrun       cophenetic       dispersion 
+       3.1160000        5.0000000        1.0000000        0.8380247 
+</div>
+<div class='input'>
+<span class="comment"># compute/show computational times</span>
+<span class="functioncall"><a href='algorithmic.html'>runtime.all</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>   user  system elapsed 
+  3.116   0.396   2.557 
+</div>
+<div class='input'><span class="functioncall"><a href='algorithmic.html'>seqtime</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>   user  system elapsed 
+  1.776   0.000   2.367 
+</div>
+<div class='input'>
+# plot the consensus matrix, computed on the fly
+## <strong>Not run</strong>:  consensusmap(res, annCol=groups) 
+</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>
@@ -216,8 +268,8 @@
             
           <h2>See also</h2>
           
-  Other multipleNMF: <code><a href='NMFfitX1-class.html'>NMFfitX1-class</a></code>,
-  <code><a href='NMFfitX-class.html'>NMFfitX-class</a></code>
+  Other multipleNMF: <code><a href='NMFfitX-class.html'>NMFfitX-class</a></code>,
+  <code><a href='NMFfitX1-class.html'>NMFfitX1-class</a></code>
 
                     
         </div>

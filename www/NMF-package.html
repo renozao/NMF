@@ -74,6 +74,20 @@
         
           </div>
       
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># generate a synthetic dataset with known classes</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">)</span><span class="keyword">;</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span>
+
+<span class="comment"># perform a 3-rank NMF using the default algorithm</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<p><img src='NMF-package-2.png' alt='' width='400' height='400' /></p>
+<p><img src='NMF-package-3.png' alt='' width='400' height='400' /></p>
+<div class='input'><span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<p><img src='NMF-package-5.png' alt='' width='400' height='400' /></p>
+<p><img src='NMF-package-6.png' alt='' width='400' height='400' /></p></pre>
         </div>
         <div class="span4">
           <!-- <ul>

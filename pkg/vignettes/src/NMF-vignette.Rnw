@@ -1079,14 +1079,14 @@ nmf(V, 3, my.algorithm, scale.factor=10)
 
 \subsubsection{Using a custom distance measure}
 The default distance measure is based on the euclidean distance. 
-If the algorithm is based on another distance measure, this one can be specified in argument \code{objective}, either as a \code{character} string corresponding to a built-in objective function, or a custom \code{function} definition:
+If the algorithm is based on another distance measure, this one can be specified in argument \code{objective}, either as a \code{character} string corresponding to a built-in objective function, or a custom \code{function} definition\footnote{Note that from version 0.8, the arguments for custom objective functions have been swapped: (1) the current NMF model, (2) the target matrix}:
 
 <<custom_algo_run_obj>>=
 # based on Kullback-Leibler divergence
 nmf(V, 3, my.algorithm, scale.factor=10, objective='KL')
 # based on custom distance metric
 nmf(V, 3, my.algorithm, scale.factor=10
-	, objective=function(target, x, ...){ 
+	, objective=function(x, target, ...){ 
 			( sum( (target-fitted(x))^4 ) )^{1/4} 
 		}
 )

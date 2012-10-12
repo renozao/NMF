@@ -85,6 +85,10 @@
             
             <p><span class='describe'></p>
         
+            <p>NMFfitX<code>signature(object = "NMFfitX")</code>:
+  Provides a way to aggregate <code>NMFfitXn</code> objects into
+  an <code>NMFfitX1</code> object.</p>
+        
             <p>basismap<code>signature(object = "NMFfitX")</code>:
   Plots a heatmap of the basis matrix of the best fit in
   <code>object</code>.</p>
@@ -133,6 +137,10 @@
   Returns the RNG settings used for the first NMF run of
   multiple NMF runs.</p>
         
+            <p>ibterms<code>signature(object = "NMFfitX")</code>:
+  Method for multiple NMF fit objects, which returns the
+  indexes of fixed basis terms from the best fitted model.</p>
+        
             <p>metaHeatmap<code>signature(object = "NMFfitX")</code>:
   Deprecated method subsituted by
   <code><a href='heatmaps.html'>consensusmap</a></code>.</p>
@@ -148,10 +156,6 @@
             <p>nmf.equal<code>signature(x = "NMFfitX", y =
   "NMF")</code>: Compares two NMF models when at least one comes
   from multiple NMF runs.</p>
-        
-            <p>NMFfitX<code>signature(object = "NMFfitX")</code>:
-  Provides a way to aggregate <code>NMFfitXn</code> objects into
-  an <code>NMFfitX1</code> object.</p>
         
             <p>nrun<code>signature(object = "NMFfitX")</code>: Returns
   the number of NMF runs performed to create <code>object</code>.</p>
@@ -202,6 +206,294 @@
         
           </div>
       
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># generate a synthetic dataset with known classes</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">)</span><span class="keyword">;</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span>
+
+<span class="comment"># perform multiple runs of one algorithm (default is to keep only best fit)</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span></div>
+<strong class='warning'>Warning message:
+error 'Interrupted system call' in select</strong>
+<div class='input'><span class="functioncall"><a href='NA'>str</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>Formal class 'NMFfitX1' [package "NMF"] with 15 slots
+  ..@ consensus  : num [1:18, 1:18] 1 1 1 1 1 0 0 0 0 0 ...
+  ..@ nrun       : int 5
+  ..@ rng1       : int [1:7] 407 -1834564630 -1419262877 1265912392 -1641208919 413016918 -507270689
+  ..@ runtime.all:Class 'proc_time'  Named num [1:5] 0.532 0.024 2.893 1.272 0.22
+  .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
+  ..@ fit        :Formal class 'NMFstd' [package "NMF"] with 7 slots
+  .. .. ..@ W      : num [1:50, 1:3] 2.22e-16 2.22e-16 1.73 1.59 1.37 ...
+  .. .. ..@ H      : num [1:3, 1:18] 3.06e-02 2.22e-16 1.94e-01 1.69e-02 5.93e-02 ...
+  .. .. ..@ bterms :'data.frame':	0 obs. of  0 variables
+Formal class 'data.frame' [package "methods"] with 4 slots
+  .. .. .. .. ..@ .Data    : list()
+  .. .. .. .. ..@ names    : chr(0) 
+  .. .. .. .. ..@ row.names: int(0) 
+  .. .. .. .. ..@ .S3Class : chr "data.frame"
+  .. .. ..@ ibterms: int(0) 
+  .. .. ..@ cterms :'data.frame':	0 obs. of  0 variables
+Formal class 'data.frame' [package "methods"] with 4 slots
+  .. .. .. .. ..@ .Data    : list()
+  .. .. .. .. ..@ names    : chr(0) 
+  .. .. .. .. ..@ row.names: int(0) 
+  .. .. .. .. ..@ .S3Class : chr "data.frame"
+  .. .. ..@ icterms: int(0) 
+  .. .. ..@ misc   : list()
+  ..@ residuals  : Named num 250
+  .. ..- attr(*, "names")= chr "430"
+  ..@ method     : chr "brunet"
+  ..@ seed       : chr "random"
+  ..@ rng        : int [1:7] 407 -1834564630 -1419262877 1265912392 -1641208919 413016918 -507270689
+  ..@ distance   : chr "KL"
+  ..@ parameters : list()
+  ..@ runtime    :Class 'proc_time'  Named num [1:5] 0.364 0.024 0.52 0 0
+  .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
+  ..@ options    :List of 11
+  .. ..$ default.algorithm: chr "brunet"
+  .. ..$ default.seed     : chr "random"
+  .. ..$ error.track      : logi FALSE
+  .. ..$ track.interval   : num 30
+  .. ..$ gc               : num 50
+  .. ..$ parallel.backend :Class 'option_symlink'  chr "backend"
+  .. ..$ backend          : chr "par"
+  .. ..$ reproducible     : logi TRUE
+  .. ..$ verbose          : logi FALSE
+  .. ..$ debug            : logi FALSE
+  .. ..$ shared.memory    : logi TRUE
+  ..@ extra      :List of 1
+  .. ..$ iteration: int 430
+  ..@ misc       : list()
+</div>
+<div class='input'>
+<span class="comment"># plot a heatmap of the consensus matrix</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;:  consensusmap(res) </span>
+
+<span class="comment"># perform multiple runs of one algorithm (keep all the fits)</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">5</span><span class="keyword">,</span> <span class="argument">.options</span><span class="argument">=</span><span class="string">'k'</span><span class="keyword">)</span></div>
+<strong class='warning'>Warning message:
+error 'Interrupted system call' in select</strong>
+<div class='input'><span class="functioncall"><a href='NA'>str</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>Formal class 'NMFfitXn' [package "NMF"] with 2 slots
+  ..@ .Data      :List of 5
+  .. ..$ :Formal class 'NMFfit' [package "NMF"] with 11 slots
+  .. .. .. ..@ fit       :Formal class 'NMFstd' [package "NMF"] with 7 slots
+  .. .. .. .. .. ..@ W      : num [1:50, 1:3] 1.14e-01 6.26 1.66 2.22e-16 2.22e-16 ...
+  .. .. .. .. .. ..@ H      : num [1:3, 1:18] 2.22e-16 1.98e-01 2.75e-02 6.29e-02 1.28e-01 ...
+  .. .. .. .. .. ..@ bterms :'data.frame':	0 obs. of  0 variables
+Formal class 'data.frame' [package "methods"] with 4 slots
+  .. .. .. .. .. .. .. ..@ .Data    : list()
+  .. .. .. .. .. .. .. ..@ names    : chr(0) 
+  .. .. .. .. .. .. .. ..@ row.names: int(0) 
+  .. .. .. .. .. .. .. ..@ .S3Class : chr "data.frame"
+  .. .. .. .. .. ..@ ibterms: int(0) 
+  .. .. .. .. .. ..@ cterms :'data.frame':	0 obs. of  0 variables
+Formal class 'data.frame' [package "methods"] with 4 slots
+  .. .. .. .. .. .. .. ..@ .Data    : list()
+  .. .. .. .. .. .. .. ..@ names    : chr(0) 
+  .. .. .. .. .. .. .. ..@ row.names: int(0) 
+  .. .. .. .. .. .. .. ..@ .S3Class : chr "data.frame"
+  .. .. .. .. .. ..@ icterms: int(0) 
+  .. .. .. .. .. ..@ misc   : list()
+  .. .. .. ..@ residuals : Named num 250
+  .. .. .. .. ..- attr(*, "names")= chr "440"
+  .. .. .. ..@ method    : chr "brunet"
+  .. .. .. ..@ seed      : chr "random"
+  .. .. .. ..@ rng       : int [1:7] 407 -1355721004 582962117 -707940926 1430847067 -21410336 -1321747359
+  .. .. .. ..@ distance  : chr "KL"
+  .. .. .. ..@ parameters: list()
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.368 0.012 0.448 0 0
+  .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
+  .. .. .. ..@ options   :List of 11
+  .. .. .. .. ..$ default.algorithm: chr "brunet"
+  .. .. .. .. ..$ default.seed     : chr "random"
+  .. .. .. .. ..$ error.track      : logi FALSE
+  .. .. .. .. ..$ track.interval   : num 30
+  .. .. .. .. ..$ gc               : num 50
+  .. .. .. .. ..$ parallel.backend :Class 'option_symlink'  chr "backend"
+  .. .. .. .. ..$ backend          : chr "par"
+  .. .. .. .. ..$ reproducible     : logi TRUE
+  .. .. .. .. ..$ verbose          : logi FALSE
+  .. .. .. .. ..$ debug            : logi FALSE
+  .. .. .. .. ..$ shared.memory    : logi TRUE
+  .. .. .. ..@ extra     :List of 1
+  .. .. .. .. ..$ iteration: int 440
+  .. .. .. ..@ misc      : list()
+  .. ..$ :Formal class 'NMFfit' [package "NMF"] with 11 slots
+  .. .. .. ..@ fit       :Formal class 'NMFstd' [package "NMF"] with 7 slots
+  .. .. .. .. .. ..@ W      : num [1:50, 1:3] 2.22e-16 6.22 1.67 7.00e-01 2.22e-16 ...
+  .. .. .. .. .. ..@ H      : num [1:3, 1:18] 2.22e-16 2.68e-02 2.04e-01 5.14e-02 1.49e-02 ...
+  .. .. .. .. .. ..@ bterms :'data.frame':	0 obs. of  0 variables
+Formal class 'data.frame' [package "methods"] with 4 slots
+  .. .. .. .. .. .. .. ..@ .Data    : list()
+  .. .. .. .. .. .. .. ..@ names    : chr(0) 
+  .. .. .. .. .. .. .. ..@ row.names: int(0) 
+  .. .. .. .. .. .. .. ..@ .S3Class : chr "data.frame"
+  .. .. .. .. .. ..@ ibterms: int(0) 
+  .. .. .. .. .. ..@ cterms :'data.frame':	0 obs. of  0 variables
+Formal class 'data.frame' [package "methods"] with 4 slots
+  .. .. .. .. .. .. .. ..@ .Data    : list()
+  .. .. .. .. .. .. .. ..@ names    : chr(0) 
+  .. .. .. .. .. .. .. ..@ row.names: int(0) 
+  .. .. .. .. .. .. .. ..@ .S3Class : chr "data.frame"
+  .. .. .. .. .. ..@ icterms: int(0) 
+  .. .. .. .. .. ..@ misc   : list()
+  .. .. .. ..@ residuals : Named num 250
+  .. .. .. .. ..- attr(*, "names")= chr "440"
+  .. .. .. ..@ method    : chr "brunet"
+  .. .. .. ..@ seed      : chr "random"
+  .. .. .. ..@ rng       : int [1:7] 407 -517354913 -1514777308 -1360749460 -1787334871 -1660615091 1977118747
+  .. .. .. ..@ distance  : chr "KL"
+  .. .. .. ..@ parameters: list()
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.348 0.028 0.387 0 0
+  .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
+  .. .. .. ..@ options   :List of 11
+  .. .. .. .. ..$ default.algorithm: chr "brunet"
+  .. .. .. .. ..$ default.seed     : chr "random"
+  .. .. .. .. ..$ error.track      : logi FALSE
+  .. .. .. .. ..$ track.interval   : num 30
+  .. .. .. .. ..$ gc               : num 50
+  .. .. .. .. ..$ parallel.backend :Class 'option_symlink'  chr "backend"
+  .. .. .. .. ..$ backend          : chr "par"
+  .. .. .. .. ..$ reproducible     : logi TRUE
+  .. .. .. .. ..$ verbose          : logi FALSE
+  .. .. .. .. ..$ debug            : logi FALSE
+  .. .. .. .. ..$ shared.memory    : logi TRUE
+  .. .. .. ..@ extra     :List of 1
+  .. .. .. .. ..$ iteration: int 440
+  .. .. .. ..@ misc      : list()
+  .. ..$ :Formal class 'NMFfit' [package "NMF"] with 11 slots
+  .. .. .. ..@ fit       :Formal class 'NMFstd' [package "NMF"] with 7 slots
+  .. .. .. .. .. ..@ W      : num [1:50, 1:3] 2.22e-16 2.22e-16 1.61 1.31 9.94e-01 ...
+  .. .. .. .. .. ..@ H      : num [1:3, 1:18] 3.36e-02 2.16e-01 2.22e-16 1.87e-02 1.50e-01 ...
+  .. .. .. .. .. ..@ bterms :'data.frame':	0 obs. of  0 variables
+Formal class 'data.frame' [package "methods"] with 4 slots
+  .. .. .. .. .. .. .. ..@ .Data    : list()
+  .. .. .. .. .. .. .. ..@ names    : chr(0) 
+  .. .. .. .. .. .. .. ..@ row.names: int(0) 
+  .. .. .. .. .. .. .. ..@ .S3Class : chr "data.frame"
+  .. .. .. .. .. ..@ ibterms: int(0) 
+  .. .. .. .. .. ..@ cterms :'data.frame':	0 obs. of  0 variables
+Formal class 'data.frame' [package "methods"] with 4 slots
+  .. .. .. .. .. .. .. ..@ .Data    : list()
+  .. .. .. .. .. .. .. ..@ names    : chr(0) 
+  .. .. .. .. .. .. .. ..@ row.names: int(0) 
+  .. .. .. .. .. .. .. ..@ .S3Class : chr "data.frame"
+  .. .. .. .. .. ..@ icterms: int(0) 
+  .. .. .. .. .. ..@ misc   : list()
+  .. .. .. ..@ residuals : Named num 250
+  .. .. .. .. ..- attr(*, "names")= chr "420"
+  .. .. .. ..@ method    : chr "brunet"
+  .. .. .. ..@ seed      : chr "random"
+  .. .. .. ..@ rng       : int [1:7] 407 -1913805653 -367674901 -1633159124 1999390028 -340202606 -1230713693
+  .. .. .. ..@ distance  : chr "KL"
+  .. .. .. ..@ parameters: list()
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.34 0 0.376 0 0
+  .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
+  .. .. .. ..@ options   :List of 11
+  .. .. .. .. ..$ default.algorithm: chr "brunet"
+  .. .. .. .. ..$ default.seed     : chr "random"
+  .. .. .. .. ..$ error.track      : logi FALSE
+  .. .. .. .. ..$ track.interval   : num 30
+  .. .. .. .. ..$ gc               : num 50
+  .. .. .. .. ..$ parallel.backend :Class 'option_symlink'  chr "backend"
+  .. .. .. .. ..$ backend          : chr "par"
+  .. .. .. .. ..$ reproducible     : logi TRUE
+  .. .. .. .. ..$ verbose          : logi FALSE
+  .. .. .. .. ..$ debug            : logi FALSE
+  .. .. .. .. ..$ shared.memory    : logi TRUE
+  .. .. .. ..@ extra     :List of 1
+  .. .. .. .. ..$ iteration: int 420
+  .. .. .. ..@ misc      : list()
+  .. ..$ :Formal class 'NMFfit' [package "NMF"] with 11 slots
+  .. .. .. ..@ fit       :Formal class 'NMFstd' [package "NMF"] with 7 slots
+  .. .. .. .. .. ..@ W      : num [1:50, 1:3] 9.67 6.74 4.22 2.18 11.23 ...
+  .. .. .. .. .. ..@ H      : num [1:3, 1:18] 1.85e-01 2.22e-16 3.11e-02 1.20e-01 6.27e-02 ...
+  .. .. .. .. .. ..@ bterms :'data.frame':	0 obs. of  0 variables
+Formal class 'data.frame' [package "methods"] with 4 slots
+  .. .. .. .. .. .. .. ..@ .Data    : list()
+  .. .. .. .. .. .. .. ..@ names    : chr(0) 
+  .. .. .. .. .. .. .. ..@ row.names: int(0) 
+  .. .. .. .. .. .. .. ..@ .S3Class : chr "data.frame"
+  .. .. .. .. .. ..@ ibterms: int(0) 
+  .. .. .. .. .. ..@ cterms :'data.frame':	0 obs. of  0 variables
+Formal class 'data.frame' [package "methods"] with 4 slots
+  .. .. .. .. .. .. .. ..@ .Data    : list()
+  .. .. .. .. .. .. .. ..@ names    : chr(0) 
+  .. .. .. .. .. .. .. ..@ row.names: int(0) 
+  .. .. .. .. .. .. .. ..@ .S3Class : chr "data.frame"
+  .. .. .. .. .. ..@ icterms: int(0) 
+  .. .. .. .. .. ..@ misc   : list()
+  .. .. .. ..@ residuals : Named num 250
+  .. .. .. .. ..- attr(*, "names")= chr "430"
+  .. .. .. ..@ method    : chr "brunet"
+  .. .. .. ..@ seed      : chr "random"
+  .. .. .. ..@ rng       : int [1:7] 407 2071823022 -1401670214 -1137598863 1636842190 -378016098 252249562
+  .. .. .. ..@ distance  : chr "KL"
+  .. .. .. ..@ parameters: list()
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.368 0 0.372 0 0
+  .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
+  .. .. .. ..@ options   :List of 11
+  .. .. .. .. ..$ default.algorithm: chr "brunet"
+  .. .. .. .. ..$ default.seed     : chr "random"
+  .. .. .. .. ..$ error.track      : logi FALSE
+  .. .. .. .. ..$ track.interval   : num 30
+  .. .. .. .. ..$ gc               : num 50
+  .. .. .. .. ..$ parallel.backend :Class 'option_symlink'  chr "backend"
+  .. .. .. .. ..$ backend          : chr "par"
+  .. .. .. .. ..$ reproducible     : logi TRUE
+  .. .. .. .. ..$ verbose          : logi FALSE
+  .. .. .. .. ..$ debug            : logi FALSE
+  .. .. .. .. ..$ shared.memory    : logi TRUE
+  .. .. .. ..@ extra     :List of 1
+  .. .. .. .. ..$ iteration: int 430
+  .. .. .. ..@ misc      : list()
+  .. ..$ :Formal class 'NMFfit' [package "NMF"] with 11 slots
+  .. .. .. ..@ fit       :Formal class 'NMFstd' [package "NMF"] with 7 slots
+  .. .. .. .. .. ..@ W      : num [1:50, 1:3] 2.22e-16 2.22e-16 1.66 1.35 1.03 ...
+  .. .. .. .. .. ..@ H      : num [1:3, 1:18] 3.26e-02 2.22e-16 2.04e-01 1.82e-02 4.71e-02 ...
+  .. .. .. .. .. ..@ bterms :'data.frame':	0 obs. of  0 variables
+Formal class 'data.frame' [package "methods"] with 4 slots
+  .. .. .. .. .. .. .. ..@ .Data    : list()
+  .. .. .. .. .. .. .. ..@ names    : chr(0) 
+  .. .. .. .. .. .. .. ..@ row.names: int(0) 
+  .. .. .. .. .. .. .. ..@ .S3Class : chr "data.frame"
+  .. .. .. .. .. ..@ ibterms: int(0) 
+  .. .. .. .. .. ..@ cterms :'data.frame':	0 obs. of  0 variables
+Formal class 'data.frame' [package "methods"] with 4 slots
+  .. .. .. .. .. .. .. ..@ .Data    : list()
+  .. .. .. .. .. .. .. ..@ names    : chr(0) 
+  .. .. .. .. .. .. .. ..@ row.names: int(0) 
+  .. .. .. .. .. .. .. ..@ .S3Class : chr "data.frame"
+  .. .. .. .. .. ..@ icterms: int(0) 
+  .. .. .. .. .. ..@ misc   : list()
+  .. .. .. ..@ residuals : Named num 250
+  .. .. .. .. ..- attr(*, "names")= chr "420"
+  .. .. .. ..@ method    : chr "brunet"
+  .. .. .. ..@ seed      : chr "random"
+  .. .. .. ..@ rng       : int [1:7] 407 -574243509 622315560 656642999 -614223016 1552997537 196997062
+  .. .. .. ..@ distance  : chr "KL"
+  .. .. .. ..@ parameters: list()
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.324 0 0.323 0 0
+  .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
+  .. .. .. ..@ options   :List of 11
+  .. .. .. .. ..$ default.algorithm: chr "brunet"
+  .. .. .. .. ..$ default.seed     : chr "random"
+  .. .. .. .. ..$ error.track      : logi FALSE
+  .. .. .. .. ..$ track.interval   : num 30
+  .. .. .. .. ..$ gc               : num 50
+  .. .. .. .. ..$ parallel.backend :Class 'option_symlink'  chr "backend"
+  .. .. .. .. ..$ backend          : chr "par"
+  .. .. .. .. ..$ reproducible     : logi TRUE
+  .. .. .. .. ..$ verbose          : logi FALSE
+  .. .. .. .. ..$ debug            : logi FALSE
+  .. .. .. .. ..$ shared.memory    : logi TRUE
+  .. .. .. ..@ extra     :List of 1
+  .. .. .. .. ..$ iteration: int 420
+  .. .. .. ..@ misc      : list()
+  ..@ runtime.all:Class 'proc_time'  Named num [1:5] 0.16 0.016 2.235 2.984 0.36
+  .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
+</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>

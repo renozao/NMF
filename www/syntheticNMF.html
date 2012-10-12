@@ -87,7 +87,10 @@
           <div class="Value">
             <h2>Value</h2>
             
-            <p>a matrix, or a list if argument <code>factors=TRUE</code></p>
+            <p>a matrix, or a list if argument <code>factors=TRUE</code>. The
+  result is in fact returned as an
+  <code><a href='ExposeAttribute.html'>ExposeAttribute</a></code> matrix object, which
+  provides</p>
         
           </div>
 
@@ -101,6 +104,18 @@
         
           </div>
       
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span>
+<span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">)</span>
+
+<span class="comment"># no noise</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">,</span> <span class="argument">noise</span><span class="argument">=</span><span class="number">FALSE</span><span class="keyword">)</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: aheatmap(V)</span>
+
+<span class="comment"># with noise</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span>
+<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: aheatmap(V)</span></div></pre>
         </div>
         <div class="span4">
           <!-- <ul>

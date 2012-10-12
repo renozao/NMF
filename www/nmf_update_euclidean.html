@@ -48,11 +48,12 @@
       <div class="row">
         <div class="span8">
           <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='nmf_update_euclidean.html'>nmf_update.euclidean.h</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">eps</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">^</span><span class="keyword">-</span><span class="number">9</span><span class="keyword">,</span> <span class="argument">copy</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
+          <pre><span class="functioncall"><a href='nmf_update_euclidean.html'>nmf_update.euclidean.h</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">eps</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">^</span><span class="keyword">-</span><span class="number">9</span><span class="keyword">,</span> <span class="argument">nbterms</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="argument">ncterms</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="argument">copy</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='nmf_update_euclidean.html'>nmf_update.euclidean.h_R</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">wh</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">eps</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">^</span><span class="keyword">-</span><span class="number">9</span><span class="keyword">)</span>
 
-<span class="functioncall"><a href='nmf_update_euclidean.html'>nmf_update.euclidean.w</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">eps</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">^</span><span class="keyword">-</span><span class="number">9</span><span class="keyword">,</span> <span class="argument">copy</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
+<span class="functioncall"><a href='nmf_update_euclidean.html'>nmf_update.euclidean.w</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">eps</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">^</span><span class="keyword">-</span><span class="number">9</span><span class="keyword">,</span> <span class="argument">nbterms</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="argument">ncterms</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="argument">weight</span> <span class="argument">=</span> NULL<span class="keyword">,</span>
+  <span class="argument">copy</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='nmf_update_euclidean.html'>nmf_update.euclidean.w_R</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">wh</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">eps</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">^</span><span class="keyword">-</span><span class="number">9</span><span class="keyword">)</span></pre>
           
@@ -67,6 +68,12 @@
             <dt>eps</dt>
             <dd>small numeric value used to ensure numeric
   stability</dd>
+            <dt>nbterms</dt>
+            <dd>number of fixed basis terms (see
+  <code><a href='terms.html'>bterms</a></code>).</dd>
+            <dt>ncterms</dt>
+            <dd>number of fixed coefficient terms (see
+  <code><a href='terms.html'>cterms</a></code>)</dd>
             <dt>copy</dt>
             <dd>logical that indicates if the update should
   be made on the original matrix directly (<code>FALSE</code>) or
@@ -76,6 +83,11 @@
             <dt>wh</dt>
             <dd>already computed NMF estimate used to compute
   the denominator term.</dd>
+            <dt>weight</dt>
+            <dd>numeric vector of sample weights, e.g.,
+  used to normalise samples coming from multiple datasets.
+  It must be of the same length as the number of
+  samples/columns in <code>v</code> -- and <code>h</code>.</dd>
           </dl>
           
           <div class="Value">

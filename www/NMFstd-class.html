@@ -84,7 +84,7 @@
   expression profiles, weights rows of
   <code>H</code>basis profiles, metagene expression profiles </span></p>
         
-            <p>NMF approach has been successfully applied to several
+            <p>NMF approaches have been successfully applied to several
   fields. The package NMF was implemented trying to use
   names as generic as possible for objects and methods.</p>
         
@@ -117,6 +117,34 @@
   matrix, i.e. the <em>second</em> matrix factor of the
   factorisation</p>
         
+            <p>btermsa <code>data.frame</code> that contains the
+  primary data that define fixed basis terms. See
+  <code><a href='terms.html'>bterms</a></code>.</p>
+        
+            <p>ibtermsinteger vector that contains the indexes
+  of the basis components that are fixed, i.e. for which
+  only the coefficient are estimated.</p>
+        
+            <p>IMPORTANT: This slot is set on construction of an NMF
+  model via
+  <code><a href='nmfModel.html'>nmfModel</a></code> and
+  is not recommended to not be subsequently changed by the
+  end-user.</p>
+        
+            <p>ctermsa <code>data.frame</code> that contains the
+  primary data that define fixed coefficient terms. See
+  <code><a href='terms.html'>cterms</a></code>.</p>
+        
+            <p>ictermsinteger vector that contains the indexes
+  of the basis components that have fixed coefficients,
+  i.e. for which only the basis vectors are estimated.</p>
+        
+            <p>IMPORTANT: This slot is set on construction of an NMF
+  model via
+  <code><a href='nmfModel.html'>nmfModel</a></code> and
+  is not recommended to not be subsequently changed by the
+  end-user.</p>
+        
             <p></span></p>
         
           </div>
@@ -126,26 +154,34 @@
             
             <p><span class='describe'></p>
         
-            <p>basis<code>signature(object = "NMFstd")</code>: Get the
-  basis matrix in standard NMF models</p>
+            <p>.basis<code>signature(object = "NMFstd")</code>: Get
+  the basis matrix in standard NMF models</p>
         
             <p>This function returns slot <code>W</code> of <code>object</code>.</p>
         
-            <p>basis<-<code>signature(object = "NMFstd", value =
-  "matrix")</code>: Set the basis matrix in standard NMF models</p>
+            <p>.basis<-<code>signature(object = "NMFstd", value
+  = "matrix")</code>: Set the basis matrix in standard NMF models</p>
         
             <p>This function sets slot <code>W</code> of <code>object</code>.</p>
         
-            <p>coef<code>signature(object = "NMFstd")</code>: Get the
+            <p>.coef<code>signature(object = "NMFstd")</code>: Get the
   mixture coefficient matrix in standard NMF models</p>
         
             <p>This function returns slot <code>H</code> of <code>object</code>.</p>
         
-            <p>coef<-<code>signature(object = "NMFstd", value =
+            <p>.coef<-<code>signature(object = "NMFstd", value =
   "matrix")</code>: Set the mixture coefficient matrix in
   standard NMF models</p>
         
             <p>This function sets slot <code>H</code> of <code>object</code>.</p>
+        
+            <p>bterms<-<code>signature(object = "NMFstd")</code>:
+  Default method tries to coerce <code>value</code> into a
+  <code>data.frame</code> with <code><a href='NA'>as.data.frame</a></code>.</p>
+        
+            <p>cterms<-<code>signature(object = "NMFstd")</code>:
+  Default method tries to coerce <code>value</code> into a
+  <code>data.frame</code> with <code><a href='NA'>as.data.frame</a></code>.</p>
         
             <p>fitted<code>signature(object = "NMFstd")</code>:
   Compute the target matrix estimate in <em>standard NMF
@@ -153,6 +189,16 @@
         
             <p>The estimate matrix is computed as the product of the two
   matrix slots <code>W</code> and <code>H</code>: <pre class = 'eq'>V ~ W H</code></p>
+        
+            <p>ibterms<code>signature(object = "NMFstd")</code>:
+  Method for standard NMF models, which returns the integer
+  vector that is stored in slot <code>ibterms</code> when a
+  formula-based NMF model is instantiated.</p>
+        
+            <p>icterms<code>signature(object = "NMFstd")</code>:
+  Method for standard NMF models, which returns the integer
+  vector that is stored in slot <code>icterms</code> when a
+  formula-based NMF model is instantiated.</p>
         
             <p></span></p>
         
@@ -168,6 +214,51 @@
         
           </div>
       
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># create a completely empty NMFstd object</span>
+<span class="functioncall"><a href='NA'>new</a></span><span class="keyword">(</span><span class="string">'NMFstd'</span><span class="keyword">)</span></div>
+<div class='output'><Object of class:NMFstd>
+features: 0 
+basis/rank: 0 
+samples: 0 
+</div>
+<div class='input'>
+<span class="comment"># create a NMF object based on one random matrix: the missing matrix is deduced</span>
+<span class="comment"># Note this only works when using factory method NMF</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span>
+<span class="symbol">w</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">)</span>
+<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">)</span></div>
+<div class='output'><Object of class:NMFstd>
+features: 50 
+basis/rank: 3 
+samples: 0 
+</div>
+<div class='input'>
+<span class="comment"># create a NMF object based on random (compatible) matrices</span>
+<span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span>
+<span class="symbol">h</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
+<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span></div>
+<div class='output'><Object of class:NMFstd>
+features: 50 
+basis/rank: 3 
+samples: 20 
+</div>
+<div class='input'>
+<span class="comment"># create a NMF object based on incompatible matrices: generate an error</span>
+<span class="symbol">h</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">+</span><span class="number">1</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='NA'>new</a></span><span class="keyword">(</span><span class="string">'NMFstd'</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span> <span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">)</span> <span class="keyword">)</span>
+
+<span class="comment"># Giving target dimensions to the factory method allow for coping with dimension</span>
+<span class="comment"># incompatibilty (a warning is thrown in such case)</span>
+<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span></div>
+<strong class='warning'>Warning message:
+nmfModel - Objective rank [3] is lower than the number of rows in H [4]: only the first 3 rows of H  will be used</strong>
+<div class='output'><Object of class:NMFstd>
+features: 50 
+basis/rank: 3 
+samples: 20 
+</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>
@@ -179,9 +270,9 @@
             
           <h2>See also</h2>
           
-  Other NMF-model:
-  <code><a href='NMFOffset-class.html'>initialize,NMFOffset-method</a></code>,
-  <code><a href='NMFns-class.html'>NMFns-class</a></code>, <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code>
+  Other NMF-model: <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code>,
+  <code><a href='NMFns-class.html'>NMFns-class</a></code>,
+  <code><a href='NMFOffset-class.html'>initialize,NMFOffset-method</a></code>
 
                     
         </div>

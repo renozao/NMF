@@ -50,7 +50,10 @@
 <span class="functioncall"><a href='NA'>`$`</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">name</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMF)</span>
-<span class="functioncall"><a href='NA'>`$`</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">name</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">value</span></pre>
+<span class="functioncall"><a href='NA'>`$`</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">name</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">value</span>
+
+<span class="comment"><span class="label label-important">S4</span> (NMF)</span>
+<span class="functioncall"><a href='NA'>`.DollarNames`</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">pattern</span> <span class="argument">=</span> <span class="string">""</span><span class="keyword">)</span></pre>
           
           <h2>Arguments</h2>
           <dl>
@@ -70,6 +73,9 @@
             <dt>value</dt>
             <dd>typically an array-like <span style="R">R</span> object of a
   similar class as <code>x</code>.</dd>
+            <dt>pattern</dt>
+            <dd> A regular expression.  Only matching
+  names are returned.  </dd>
           </dl>
           
           <div class="Description">
@@ -127,6 +133,44 @@
             
             <p><span class='describe'></p>
         
+            <p>$<code>signature(x = "NMF")</code>: shortcut for
+  <code>x@misc[[name, exact=TRUE]]</code> respectively.</p>
+        
+            <p>$<code>signature(x = "NMF")</code>: shortcut for
+  <code>x@misc[[name, exact=TRUE]]</code> respectively.</p>
+        
+            <p>$<-<code>signature(x = "NMF")</code>: shortcut for
+  <code>x@misc[[name]] <- value</code></p>
+        
+            <p>$<-<code>signature(x = "NMF")</code>: shortcut for
+  <code>x@misc[[name]] <- value</code></p>
+        
+            <p>.DollarNames<code>signature(x = "NMF")</code>:
+  Auto-completion for <code><a href='NMF-class.html'>NMF-class</a></code> objects</p>
+        
+            <p>.DollarNames<code>signature(x = "NMF")</code>:
+  Auto-completion for <code><a href='NMF-class.html'>NMF-class</a></code> objects</p>
+        
+            <p>.basis<code>signature(object = "NMF")</code>: Pure
+  virtual method for objects of class
+  <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
+  sub-classes, and throws an error if called.</p>
+        
+            <p>.basis<-<code>signature(object = "NMF", value =
+  "matrix")</code>: Pure virtual method for objects of class
+  <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
+  sub-classes, and throws an error if called.</p>
+        
+            <p>.coef<code>signature(object = "NMF")</code>: Pure
+  virtual method for objects of class
+  <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
+  sub-classes, and throws an error if called.</p>
+        
+            <p>.coef<-<code>signature(object = "NMF", value =
+  "matrix")</code>: Pure virtual method for objects of class
+  <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
+  sub-classes, and throws an error if called.</p>
+        
             <p>[<code>signature(x = "NMF", i = "ANY", j = "ANY",
   drop = "ANY")</code>: This method provides a convenient way of
   sub-setting objects of class <code>NMF</code>, using a
@@ -134,28 +178,6 @@
         
             <p>See <code><a href='subset-NMF.html'>[,NMF,ANY,ANY,ANY-method</a></code> for more
   details.</p>
-        
-            <p>$<code>signature(x = "NMF")</code>: shortcut for
-  <code>x@misc[[name, exact=TRUE]]</code> respectively.</p>
-        
-            <p>$<code>signature(x = "NMF")</code>: shortcut for
-  <code>x@misc[[name, exact=TRUE]]</code> respectively.</p>
-        
-            <p>$<-<code>signature(x = "NMF")</code>: shortcut for
-  <code>x@misc[[name]] <- value</code></p>
-        
-            <p>$<-<code>signature(x = "NMF")</code>: shortcut for
-  <code>x@misc[[name]] <- value</code></p>
-        
-            <p>basis<code>signature(object = "NMF")</code>: Pure
-  virtual method for objects of class
-  <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
-  sub-classes, and throws an error if called.</p>
-        
-            <p>basis<-<code>signature(object = "NMF", value =
-  "matrix")</code>: Pure virtual method for objects of class
-  <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
-  sub-classes, and throws an error if called.</p>
         
             <p>basiscor<code>signature(x = "NMF", y =
   "matrix")</code>: Computes the correlations between the basis
@@ -174,15 +196,8 @@
   <code>object</code>. This method also works for fitted NMF
   models (i.e. <code>NMFfit</code> objects).</p>
         
-            <p>coef<code>signature(object = "NMF")</code>: Pure
-  virtual method for objects of class
-  <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
-  sub-classes, and throws an error if called.</p>
-        
-            <p>coef<-<code>signature(object = "NMF", value =
-  "matrix")</code>: Pure virtual method for objects of class
-  <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
-  sub-classes, and throws an error if called.</p>
+            <p>c<code>signature(x = "NMF")</code>: Binds compatible
+  matrices and NMF models together.</p>
         
             <p>coefficients<code>signature(object = "NMF")</code>:
   Alias to <code>coef,NMF</code>, therefore also pure virtual.</p>
@@ -251,6 +266,14 @@
   virtual method for objects of class
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
+        
+            <p>ibterms<code>signature(object = "NMF")</code>: Default
+  pure virtual method that ensure a method is defined for
+  concrete NMF model classes.</p>
+        
+            <p>icterms<code>signature(object = "NMF")</code>: Default
+  pure virtual method that ensure a method is defined for
+  concrete NMF model classes.</p>
         
             <p>loadings<code>signature(x = "NMF")</code>: Method
   loadings for NMF Models</p>
@@ -469,10 +492,43 @@
         
           </div>
       
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># show all the NMF models available (i.e. the classes that inherit from class NMF)</span>
+<span class="functioncall"><a href='nmfModel.html'>nmfModels</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
+<div class='output'>[1] "NMFstd"    "NMFOffset" "NMFns"    
+</div>
+<div class='input'><span class="comment"># show all the built-in NMF models available</span>
+<span class="functioncall"><a href='nmfModel.html'>nmfModels</a></span><span class="keyword">(</span><span class="argument">builtin.only</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span></div>
+<div class='output'>[1] "NMFstd"    "NMFOffset" "NMFns"    
+</div>
+<div class='input'>
+<span class="comment"># class NMF is a virtual class so cannot be instantiated:</span>
+<span class="functioncall"><a href='NA'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='NA'>new</a></span><span class="keyword">(</span><span class="string">'NMF'</span><span class="keyword">)</span> <span class="keyword">)</span>
+
+<span class="comment"># To instantiate an NMF model, use the factory method nmfModel. see ?nmfModel</span>
+<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
+<div class='output'><Object of class:NMFstd>
+features: 0 
+basis/rank: 0 
+samples: 0 
+</div>
+<div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">)</span></div>
+<div class='output'><Object of class:NMFstd>
+features: 0 
+basis/rank: 3 
+samples: 0 
+</div>
+<div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFns'</span><span class="keyword">)</span></div>
+<div class='output'><Object of class:NMFns>
+features: 0 
+basis/rank: 3 
+samples: 0 
+theta: 0.5 
+</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>
-            <li>misc</li><li>NMF-class</li><li>$&lt;-,NMF-method</li><li>$,NMF-method</li>
+            <li>$,NMF-method</li><li>$&lt;-,NMF-method</li><li>.DollarNames,NMF-method</li><li>NMF-class</li><li>misc</li>
           </ul>
           <ul>
             <li>methods</li>
@@ -489,7 +545,9 @@
   Method <code><a href='seed.html'>seed</a></code> to set NMF objects with values
   suitable to start algorithms with.
 
-  Other NMF-interface: <code><a href='basis-coef-methods.html'>basis</a></code>,
+  Other NMF-interface: <code><a href='basis-coef-methods.html'>.basis</a></code>,
+  <code><a href='basis-coef-methods.html'>.basis<-</a></code>, <code><a href='basis-coef-methods.html'>.coef</a></code>,
+  <code><a href='basis-coef-methods.html'>.coef<-</a></code>, <code><a href='basis-coef-methods.html'>basis</a></code>,
   <code><a href='basis-coef-methods.html'>basis<-</a></code>, <code><a href='basis-coef-methods.html'>coef</a></code>,
   <code><a href='basis-coef-methods.html'>coef<-</a></code>, <code><a href='basis-coef-methods.html'>coefficients</a></code>,
   <code><a href='basis-coef-methods.html'>loadings,NMF-method</a></code>,

@@ -52,7 +52,10 @@
 <span class="functioncall"><a href='deviance.html'>nmfDistance</a></span><span class="keyword">(</span><span class="argument">method</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">""</span><span class="keyword">,</span> <span class="string">"KL"</span><span class="keyword">,</span> <span class="string">"euclidean"</span><span class="keyword">)</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMFfit)</span>
-<span class="functioncall"><a href='NA'>`deviance`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">method</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+<span class="functioncall"><a href='NA'>`deviance`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">method</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="comment"><span class="label label-important">S4</span> (NMFStrategy)</span>
+<span class="functioncall"><a href='NA'>`deviance`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
           
           <h2>Arguments</h2>
           <dl>
@@ -71,6 +74,8 @@
             <dt>...</dt>
             <dd>extra parameters passed to the objective
   function.</dd>
+            <dt>x</dt>
+            <dd>an NMF model that estimates <code>y</code>.</dd>
             <dt>object</dt>
             <dd>an object for which the deviance is
   desired.</dd>
@@ -130,6 +135,10 @@
   Returns the deviance achieved by the best fit object,
   i.e. the lowest deviance achieved across all NMF runs.</p>
         
+            <p>deviance<code>signature(object = "NMFStrategy")</code>:
+  Computes the value of the objective function between the
+  estimate <code>x</code> and the target <code>y</code>.</p>
+        
             <p></span></p>
         
           </div>
@@ -137,7 +146,7 @@
         </div>
         <div class="span4">
           <!-- <ul>
-            <li>deviance</li><li>deviance-methods</li><li>deviance,NMFfit-method</li><li>deviance,NMFfitX-method</li><li>deviance,NMF-method</li><li>nmfDistance</li>
+            <li>deviance</li><li>deviance,NMF-method</li><li>deviance,NMFStrategy-method</li><li>deviance,NMFfit-method</li><li>deviance,NMFfitX-method</li><li>deviance-methods</li><li>nmfDistance</li>
           </ul>
           <ul>
             <li>methods</li>

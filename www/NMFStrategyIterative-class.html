@@ -48,13 +48,14 @@
             <h2>Description</h2>
             
             <p>This class provides a specific implementation for the
-  function <code>run</code> -- completing the the interface class
-  <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code>, for NMF algorithms that
-  conform to the following iterative schema:</p>
+  generic function <code>run</code> -- concretising the virtual
+  interface class <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code>, for NMF
+  algorithms that conform to the following iterative schema
+  (starred numbers indicate mandatory steps):</p>
         
             <p><ul>
 <li> 1. Initialisation </li>
-<li> 2. Update the
+<li> 2*. Update the
   model at each iteration </li>
 <li> 3. Stop if some criterion
   is satisfied </li>
@@ -79,17 +80,24 @@
             
             <p><span class='describe'></p>
         
-            <p>Updatefunction that implement the update step,
-  which computes new values for the model, based on its
-  previous value. It is called at each iteration, until the
-  stopping criterion is met or the maximum number of
-  iteration is achieved.</p>
+            <p>onInitoptional function that performs some
+  initialisation or pre-processing on the model, before
+  starting the iteration loop.</p>
         
-            <p>Stopfunction that implements the stopping
-  criterion. It is called <em>before</em> each Update step.</p>
+            <p>Updatemandatory function that implement the
+  update step, which computes new values for the model,
+  based on its previous value. It is called at each
+  iteration, until the stopping criterion is met or the
+  maximum number of iteration is achieved.</p>
         
-            <p>WrapNMFfunction that wraps up the result into an
-  NMF object. It is called just before returning the</p>
+            <p>Stopoptional function that implements the
+  stopping criterion. It is called <strong>before</strong> each
+  Update step. If not provided, the iterations are stopped
+  after a fixed number of updates.</p>
+        
+            <p>onReturnoptional function that wraps up the
+  result into an NMF object. It is called just before
+  returning the</p>
         
             <p></span></p>
         

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Exposing Object Attributes. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Exposing Object Attributes</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='ExposeAttribute.html'>ExposeAttribute</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">mode</span> <span class="argument">=</span> <span class="string">"rw"</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='ExposeAttribute.html'>EAmode</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='ExposeAttribute.html'>EAmode</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">value</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>object</dt>
+            <dd>any R object whose attributes need to be
+  exposed</dd>
+            <dt>mode</dt>
+            <dd>access mode: <span class='describe'> &#147;r&#148;:
+  (read-only) only method <code>$</code> is defined
+  &#147;w&#148;: (write-only) only method <code>$<-</code>
+  is defined &#147;rw&#148;: (read-write) both
+  methods <code>$</code> and <code>$<-</code> are defined </span></dd>
+            <dt>x</dt>
+            <dd>an <code>ExposeAttribute</code> object</dd>
+            <dt>value</dt>
+            <dd>replacement value for mode.</dd>
+          </dl>
+          
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>The function <code>ExposeAttribute</code> creates an S3 object
+  that exposes all attributes of any R object, by making
+  them accessible via methods <code><a href='NA'>$</a></code> and/or
+  <code><a href='NA'>$<-</a></code>.</p>
+        
+            <p><code>EAmode</code> and <code>EAmode<-</code> get and sets the access
+  mode of <code>ExposeAttribute</code> objects.</p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>EAmode</li><li>EAmode&lt;-</li><li>ExposeAttribute</li>
+          </ul>
+          <ul>
+            
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

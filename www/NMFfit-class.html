@@ -180,46 +180,51 @@
             
             <p><span class='describe'></p>
         
-            <p>algorithm<code>signature(object = "NMFfit")</code>:
-  Returns the name of the algorithm that fitted the NMF
-  model <code>object</code>.</p>
+            <p>.basis<code>signature(object = "NMFfit")</code>:
+  Returns the basis matrix from an NMF model fitted with
+  function <code><a href='nmf.html'>nmf</a></code>.</p>
         
-            <p>basis<code>signature(object = "NMFfit")</code>: Returns
-  the basis matrix from an NMF model fitted with function
-  <code><a href='nmf.html'>nmf</a></code>.</p>
-        
-            <p>It is a shortcut for <code>basis(fit(object), ...)</code>,
-  dispatching the call to the <code>basis</code> method of the
+            <p>It is a shortcut for <code>.basis(fit(object), ...)</code>,
+  dispatching the call to the <code>.basis</code> method of the
   actual NMF model.</p>
         
-            <p>basis<-<code>signature(object = "NMFfit", value =
-  "matrix")</code>: Sets the the basis matrix of an NMF model
+            <p>.basis<-<code>signature(object = "NMFfit", value
+  = "matrix")</code>: Sets the the basis matrix of an NMF model
   fitted with function <code><a href='nmf.html'>nmf</a></code>.</p>
         
-            <p>It is a shortcut for <code>basis(fit(object)) <- value</code>,
-  dispatching the call to the <code>basis<-</code> method of the
+            <p>It is a shortcut for <code>.basis(fit(object)) <- value</code>,
+  dispatching the call to the <code>.basis<-</code> method of the
   actual NMF model. It is not meant to be used by the user,
-  except when developing new NMF algorithms, to update the
+  except when developing NMF algorithms, to update the
   basis matrix of the seed object before returning it.</p>
         
-            <p>coef<code>signature(object = "NMFfit")</code>: Returns
+            <p>.coef<code>signature(object = "NMFfit")</code>: Returns
   the the coefficient matrix from an NMF model fitted with
   function <code><a href='nmf.html'>nmf</a></code>.</p>
         
-            <p>It is a shortcut for <code>coef(fit(object), ...)</code>,
-  dispatching the call to the <code>coef</code> method of the
+            <p>It is a shortcut for <code>.coef(fit(object), ...)</code>,
+  dispatching the call to the <code>.coef</code> method of the
   actual NMF model.</p>
         
-            <p>coef<-<code>signature(object = "NMFfit", value =
+            <p>.coef<-<code>signature(object = "NMFfit", value =
   "matrix")</code>: Sets the the coefficient matrix of an NMF
   model fitted with function <code><a href='nmf.html'>nmf</a></code>.</p>
         
-            <p>It is a shortcut for <code>coef(fit(object)) <- value</code>,
-  dispatching the call to the <code>coef<-</code> method of the
+            <p>It is a shortcut for <code>.coef(fit(object)) <- value</code>,
+  dispatching the call to the <code>.coef<-</code> method of the
   actual NMF model. It is not meant to be used by the user,
-  except when developing new NMF algorithms, to update the
+  except when developing NMF algorithms, to update the
   coefficient matrix in the seed object before returning
   it.</p>
+        
+            <p>NMFfitX<code>signature(object = "NMFfit")</code>:
+  Creates an <code>NMFfitX1</code> object from a single fit. This
+  is used in <code><a href='nmf.html'>nmf</a></code> when only the best fit is
+  kept in memory or on disk.</p>
+        
+            <p>algorithm<code>signature(object = "NMFfit")</code>:
+  Returns the name of the algorithm that fitted the NMF
+  model <code>object</code>.</p>
         
             <p>compare<code>signature(object = "NMFfit")</code>:
   Compare multiple NMF fits passed as arguments.</p>
@@ -253,6 +258,19 @@
             <p>It is a shortcut for <code>fitted(fit(object), ...)</code>,
   dispatching the call to the <code>fitted</code> method of the
   actual NMF model.</p>
+        
+            <p>ibterms<code>signature(object = "NMFfit")</code>:
+  Method for single NMF fit objects, which returns the
+  indexes of fixed basis terms from the fitted model.</p>
+        
+            <p>icterms<code>signature(object = "NMFfit")</code>:
+  Method for single NMF fit objects, which returns the
+  indexes of fixed coefficient terms from the fitted model.</p>
+        
+            <p>icterms<code>signature(object = "NMFfit")</code>:
+  Method for multiple NMF fit objects, which returns the
+  indexes of fixed coefficient terms from the best fitted
+  model.</p>
         
             <p>minfit<code>signature(object = "NMFfit")</code>:
   Returns the object its self, since there it is the result
@@ -290,11 +308,6 @@
   "NMFfit")</code>: Compares two fitted NMF models, i.e. objects
   returned by single runs of <code><a href='nmf.html'>nmf</a></code>.</p>
         
-            <p>NMFfitX<code>signature(object = "NMFfit")</code>:
-  Creates an <code>NMFfitX1</code> object from a single fit. This
-  is used in <code><a href='nmf.html'>nmf</a></code> when only the best fit is
-  kept in memory or on disk.</p>
-        
             <p>nrun<code>signature(object = "NMFfit")</code>: This
   method always returns 1, since an <code>NMFfit</code> object is
   obtained from a single NMF run.</p>
@@ -304,6 +317,9 @@
   algorithm that computed the fitted NMF model
   <code>object</code>, or the objective value with respect to a
   given target matrix <code>y</code> if it is supplied.</p>
+        
+            <p>offset<code>signature(object = "NMFfit")</code>:
+  Returns the offset from the fitted model.</p>
         
             <p>plot<code>signature(x = "NMFfit", y =
   "missing")</code>: Plots the residual track computed at regular
@@ -332,7 +348,7 @@
   Computes summary measures for a single fit from
   <code><a href='nmf.html'>nmf</a></code>.</p>
         
-            <p>This method adds the folowing measures to the measures
+            <p>This method adds the following measures to the measures
   computed by the method <code>summary,NMF</code>:</p>
         
             <p>See <code><a href='assess.html'>summary,NMFfit-method</a></code> for more details.</p>
@@ -341,6 +357,47 @@
         
           </div>
       
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># run default NMF algorithm on a random matrix</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span> <span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">)</span>
+
+<span class="comment"># result class is NMFfit</span>
+<span class="functioncall"><a href='NA'>class</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>[1] "NMFfit"
+attr(,"package")
+[1] "NMF"
+</div>
+<div class='input'><span class="functioncall"><a href='types.html'>isNMFfit</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>[1] TRUE
+</div>
+<div class='input'>
+<span class="comment"># show result</span>
+<span class="symbol">res</span></div>
+<div class='output'><Object of class: NMFfit>
+ # Model:
+  <Object of class:NMFstd>
+  features: 50 
+  basis/rank: 3 
+  samples: 20 
+ # Details:
+  algorithm:  brunet 
+  seed:  random 
+  RNG: 403, 608, -1643107813, ... [584f399267938b24e0f78425adc6521a]
+  distance metric:  'KL' 
+  residuals:  73.64819 
+  Iterations: 670 
+  Timing:
+     user  system elapsed 
+    0.524   0.000   0.693 
+</div>
+<div class='input'>
+<span class="comment"># compute summary measures</span>
+<span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="symbol">V</span><span class="keyword">)</span></div>
+<div class='output'>            rank sparseness.basis  sparseness.coef              rss             evar        residuals            niter              cpu          cpu.all             nrun 
+       3.0000000        0.1518974        0.4116923       64.1684436        0.8019828       73.6481924      670.0000000        0.5240000        0.5240000        1.0000000 
+</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>

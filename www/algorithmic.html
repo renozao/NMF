@@ -384,10 +384,31 @@
         
           </div>
       
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># get the type of an NMF model</span>
+<span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='output'>[1] "NMFstd"
+</div>
+<div class='input'><span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFns'</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='output'>[1] "NMFns"
+</div>
+<div class='input'><span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFOffset'</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='output'>[1] "NMFOffset"
+</div>
+<div class='input'><span class="comment"># get the type of model(s) associated with an NMF algorithm</span>
+<span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfAlgorithm.html'>nmfAlgorithm</a></span><span class="keyword">(</span><span class="string">'brunet'</span><span class="keyword">)</span> <span class="keyword">)</span></div>
+<div class='output'>[1] "NMFstd"
+</div>
+<div class='input'><span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfAlgorithm.html'>nmfAlgorithm</a></span><span class="keyword">(</span><span class="string">'nsNMF'</span><span class="keyword">)</span> <span class="keyword">)</span></div>
+<div class='output'>[1] "NMFns"
+</div>
+<div class='input'><span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfAlgorithm.html'>nmfAlgorithm</a></span><span class="keyword">(</span><span class="string">'offset'</span><span class="keyword">)</span> <span class="keyword">)</span></div>
+<div class='output'>[1] "NMFOffset"
+</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>
-            <li>algorithm</li><li>algorithm&lt;-</li><li>algorithmic-NMF</li><li>algorithm&lt;--methods</li><li>algorithm-methods</li><li>algorithm&lt;-,NMFfit,ANY-method</li><li>algorithm,NMFfit-method</li><li>algorithm,NMFfitXn-method</li><li>algorithm&lt;-,NMFSeed,function-method</li><li>algorithm,NMFSeed-method</li><li>algorithm&lt;-,NMFStrategyFunction,function-method</li><li>algorithm,NMFStrategyFunction-method</li><li>compare</li><li>compare-methods</li><li>compare,NMFfitXn-method</li><li>logs</li><li>logs,ANY-method</li><li>logs-methods</li><li>modelname</li><li>modelname,ANY-method</li><li>modelname-methods</li><li>modelname,NMFfit-method</li><li>modelname,NMFfitXn-method</li><li>modelname,NMFStrategy-method</li><li>niter</li><li>niter&lt;-</li><li>niter&lt;--methods</li><li>niter-methods</li><li>niter,NMFfit-method</li><li>niter&lt;-,NMFfit,numeric-method</li><li>nrun</li><li>nrun,ANY-method</li><li>nrun-methods</li><li>nrun,NMFfit-method</li><li>nrun,NMFfitX1-method</li><li>nrun,NMFfitX-method</li><li>nrun,NMFfitXn-method</li><li>objective</li><li>objective&lt;-</li><li>objective&lt;--methods</li><li>objective-methods</li><li>objective&lt;-,NMFfit,ANY-method</li><li>run</li><li>run-methods</li><li>runtime</li><li>runtime.all</li><li>runtime.all-methods</li><li>runtime.all,NMFfit-method</li><li>runtime.all,NMFfitX-method</li><li>runtime-methods</li><li>runtime,NMFfit-method</li><li>seeding</li><li>seeding&lt;-</li><li>seeding&lt;--methods</li><li>seeding-methods</li><li>seeding&lt;-,NMFfit-method</li><li>seeding,NMFfit-method</li><li>seeding,NMFfitXn-method</li><li>seqtime</li><li>seqtime-methods</li><li>seqtime,NMFfitXn-method</li><li>seqtime,NMFList-method</li>
+            <li>algorithm</li><li>algorithm,NMFSeed-method</li><li>algorithm,NMFStrategyFunction-method</li><li>algorithm,NMFfit-method</li><li>algorithm,NMFfitXn-method</li><li>algorithm-methods</li><li>algorithm&lt;-</li><li>algorithm&lt;-,NMFSeed,function-method</li><li>algorithm&lt;-,NMFStrategyFunction,function-method</li><li>algorithm&lt;-,NMFfit,ANY-method</li><li>algorithm&lt;--methods</li><li>algorithmic-NMF</li><li>compare</li><li>compare,NMFfitXn-method</li><li>compare-methods</li><li>logs</li><li>logs,ANY-method</li><li>logs-methods</li><li>modelname</li><li>modelname,ANY-method</li><li>modelname,NMFStrategy-method</li><li>modelname,NMFfit-method</li><li>modelname,NMFfitXn-method</li><li>modelname-methods</li><li>niter</li><li>niter,NMFfit-method</li><li>niter-methods</li><li>niter&lt;-</li><li>niter&lt;-,NMFfit,numeric-method</li><li>niter&lt;--methods</li><li>nrun</li><li>nrun,ANY-method</li><li>nrun,NMFfit-method</li><li>nrun,NMFfitX-method</li><li>nrun,NMFfitX1-method</li><li>nrun,NMFfitXn-method</li><li>nrun-methods</li><li>objective</li><li>objective-methods</li><li>objective&lt;-</li><li>objective&lt;-,NMFfit,ANY-method</li><li>objective&lt;--methods</li><li>run</li><li>run-methods</li><li>runtime</li><li>runtime,NMFfit-method</li><li>runtime-methods</li><li>runtime.all</li><li>runtime.all,NMFfit-method</li><li>runtime.all,NMFfitX-method</li><li>runtime.all-methods</li><li>seeding</li><li>seeding,NMFfit-method</li><li>seeding,NMFfitXn-method</li><li>seeding-methods</li><li>seeding&lt;-</li><li>seeding&lt;-,NMFfit-method</li><li>seeding&lt;--methods</li><li>seqtime</li><li>seqtime,NMFList-method</li><li>seqtime,NMFfitXn-method</li><li>seqtime-methods</li>
           </ul>
           <ul>
             <li>methods</li>

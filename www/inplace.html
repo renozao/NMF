@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Updating Objects In Place. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Updating Objects In Place</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='inplace.html'>pmax.inplace</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">lim</span><span class="keyword">,</span> <span class="argument">skip</span> <span class="argument">=</span> NULL<span class="keyword">)</span>
+
+<span class="functioncall"><a href='inplace.html'>neq.constraints.inplace</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">constraints</span><span class="keyword">,</span> <span class="argument">ratio</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">value</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">copy</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>x</dt>
+            <dd>an object to update in place.</dd>
+            <dt>lim</dt>
+            <dd>lower threshold value</dd>
+            <dt>skip</dt>
+            <dd>indexes to skip</dd>
+            <dt>constraints</dt>
+            <dd>constraint specification.</dd>
+            <dt>ratio</dt>
+            <dd>fixed ratio on which the constraint
+  applies.</dd>
+            <dt>value</dt>
+            <dd>fixed value to enforce.</dd>
+            <dt>copy</dt>
+            <dd>a logical that indicates if <code>x</code> should
+  be updated in place or not.</dd>
+          </dl>
+          
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>These functions modify objects (mainly matrix objects) in
+  place, i.e. they act directly on the C pointer. Due to
+  their side-effect, they are not meant to be called by the
+  end-user.</p>
+        
+            <p><code>neq.constraints.inplace</code> apply unequality
+  constraints in place.</p>
+        
+          </div>
+
+          <div class="Details">
+            <h2>Details</h2>
+            
+            <p><code>pmax.inplace</code> is a version of <code><a href='NA'>pmax</a></code>
+  that updates its first argument.</p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>neq.constraints.inplace</li><li>pmax.inplace</li>
+          </ul>
+          <ul>
+            <li>internal</li>
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

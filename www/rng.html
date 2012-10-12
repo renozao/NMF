@@ -227,6 +227,17 @@
         
             <p>This method throws an error if the object is empty.</p>
         
+            <p>.setRNG<code>signature(object = "character")</code>:
+  Sets the RNG to kind <code>object</code>, assuming is a valid
+  RNG kind: it is equivalent to <code>RNGkind(object, ...</code>.
+  All arguments in <code>...</code> are passed to
+  <code><a href='NA'>RNGkind</a></code>.</p>
+        
+            <p>.setRNG<code>signature(object = "numeric")</code>: Sets
+  the RNG settings using <code>object</code> directly the new
+  value for <code>.Random.seed</code> or to initialise it with
+  <code><a href='NA'>set.seed</a></code>.</p>
+        
             <p>getRNG1<code>signature(object = "ANY")</code>: Default
   method that is identical to <code>getRNG(object, ...)</code>.</p>
         
@@ -244,25 +255,68 @@
         
             <p>This method throws an error if the object is empty.</p>
         
-            <p>.setRNG<code>signature(object = "character")</code>:
-  Sets the RNG to kind <code>object</code>, assuming is a valid
-  RNG kind: it is equivalent to <code>RNGkind(object, ...</code>.
-  All arguments in <code>...</code> are passed to
-  <code><a href='NA'>RNGkind</a></code>.</p>
-        
-            <p>.setRNG<code>signature(object = "numeric")</code>: Sets
-  the RNG settings using <code>object</code> directly the new
-  value for <code>.Random.seed</code> or to initialise it with
-  <code><a href='NA'>set.seed</a></code>.</p>
-        
             <p></span></p>
         
           </div>
       
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># get current RNG settings</span>
+<span class="functioncall"><a href='NA'>head</a></span><span class="keyword">(</span><span class="functioncall"><a href='rng.html'>getRNG</a></span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='output'>[1]         403         560 -1405120449 -2050050634  1419730635 -1440777993
+</div>
+<div class='input'><span class="symbol">obj</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="argument">x</span><span class="argument">=</span><span class="number">10</span><span class="keyword">,</span> <span class="argument">rng</span><span class="argument">=</span><span class="number">123</span><span class="keyword">)</span>
+<span class="functioncall"><a href='rng.html'>setRNG</a></span><span class="keyword">(</span><span class="symbol">obj</span><span class="keyword">)</span>
+<span class="symbol">rng</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rng.html'>getRNG</a></span><span class="keyword">(</span><span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>runif</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">)</span></div>
+<div class='output'> [1] 0.2875775 0.7883051 0.4089769 0.8830174 0.9404673 0.0455565 0.5281055 0.8924190 0.5514350 0.4566147
+</div>
+<div class='input'><span class="functioncall"><a href='NA'>set.seed</a></span><span class="keyword">(</span><span class="number">123</span><span class="keyword">)</span>
+<span class="functioncall"><a href='rng.html'>rng.equal</a></span><span class="keyword">(</span><span class="symbol">rng</span><span class="keyword">)</span></div>
+<div class='output'>[1] TRUE
+</div>
+<div class='input'><span class="comment"># set RNG kind</span>
+<span class="symbol">old</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rng.html'>setRNG</a></span><span class="keyword">(</span><span class="string">'Marsaglia'</span><span class="keyword">)</span>
+<span class="comment"># restore</span>
+<span class="functioncall"><a href='rng.html'>setRNG</a></span><span class="keyword">(</span><span class="symbol">old</span><span class="keyword">)</span>
+<span class="comment"># directly set .Random.seed</span>
+<span class="symbol">rng</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rng.html'>getRNG</a></span><span class="keyword">(</span><span class="keyword">)</span>
+<span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>runif</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">)</span>
+<span class="functioncall"><a href='rng.html'>setRNG</a></span><span class="keyword">(</span><span class="symbol">rng</span><span class="keyword">)</span>
+<span class="functioncall"><a href='rng.html'>rng.equal</a></span><span class="keyword">(</span><span class="symbol">rng</span><span class="keyword">)</span></div>
+<div class='output'>[1] TRUE
+</div>
+<div class='input'>
+<span class="comment"># initialise from a single number (&lt;=&gt; set.seed)</span>
+<span class="functioncall"><a href='rng.html'>setRNG</a></span><span class="keyword">(</span><span class="number">123</span><span class="keyword">)</span>
+<span class="symbol">rng</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rng.html'>getRNG</a></span><span class="keyword">(</span><span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>runif</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">)</span></div>
+<div class='output'> [1] 0.2875775 0.7883051 0.4089769 0.8830174 0.9404673 0.0455565 0.5281055 0.8924190 0.5514350 0.4566147
+</div>
+<div class='input'><span class="functioncall"><a href='NA'>set.seed</a></span><span class="keyword">(</span><span class="number">123</span><span class="keyword">)</span>
+<span class="functioncall"><a href='rng.html'>rng.equal</a></span><span class="keyword">(</span><span class="symbol">rng</span><span class="keyword">)</span></div>
+<div class='output'>[1] TRUE
+</div>
+<div class='input'><span class="comment"># For multiple NMF runs, the RNG settings used for the first run is also stored</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">)</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">4</span><span class="keyword">)</span></div>
+<strong class='warning'>Warning message:
+error 'Interrupted system call' in select</strong>
+<div class='input'><span class="comment"># RNG used for the best fit</span>
+<span class="functioncall"><a href='rng.html'>getRNG</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>[1]         407  1469097512   493688329   813832758 -1917207745 -1485036428 -1867049755
+</div>
+<div class='input'><span class="comment"># RNG used for the first of all fits</span>
+<span class="functioncall"><a href='rng.html'>getRNG1</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>[1]         407  1469097512   493688329   813832758 -1917207745 -1485036428 -1867049755
+</div>
+<div class='input'><span class="comment"># they may differ if the best fit is not the first one</span>
+<span class="functioncall"><a href='rng.html'>rng.equal</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="functioncall"><a href='rng.html'>getRNG1</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='output'>[1] TRUE
+</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>
-            <li>getRNG</li><li>.getRNG</li><li>getRNG1</li><li>getRNG1,ANY-method</li><li>getRNG1-methods</li><li>getRNG1,NMFfitX1-method</li><li>getRNG1,NMFfitX-method</li><li>getRNG1,NMFfitXn-method</li><li>.getRNG,ANY-method</li><li>.getRNG,list-method</li><li>.getRNG-methods</li><li>.getRNG,missing-method</li><li>.getRNG,NMFfitXn-method</li><li>.getRNG,numeric-method</li><li>nextRNG</li><li>rng1.equal</li><li>RNGdigest</li><li>rng.equal</li><li>RNGinfo</li><li>RNG-NMF</li><li>RNGrecovery</li><li>RNGtype</li><li>setRNG</li><li>.setRNG</li><li>.setRNG,character-method</li><li>.setRNG-methods</li><li>.setRNG,numeric-method</li>
+            <li>.getRNG</li><li>.getRNG,ANY-method</li><li>.getRNG,NMFfitXn-method</li><li>.getRNG,list-method</li><li>.getRNG,missing-method</li><li>.getRNG,numeric-method</li><li>.getRNG-methods</li><li>.setRNG</li><li>.setRNG,character-method</li><li>.setRNG,numeric-method</li><li>.setRNG-methods</li><li>RNG-NMF</li><li>RNGdigest</li><li>RNGinfo</li><li>RNGrecovery</li><li>RNGtype</li><li>getRNG</li><li>getRNG1</li><li>getRNG1,ANY-method</li><li>getRNG1,NMFfitX-method</li><li>getRNG1,NMFfitX1-method</li><li>getRNG1,NMFfitXn-method</li><li>getRNG1-methods</li><li>nextRNG</li><li>rng.equal</li><li>rng1.equal</li><li>setRNG</li>
           </ul>
           <ul>
             <li>methods</li>

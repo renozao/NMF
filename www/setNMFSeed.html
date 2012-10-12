@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Registering NMF Seeding Methods. NMF </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {padding-top: 60px;}
+      h2 {padding-top: 20px}
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/highlight.css" rel="stylesheet">
+    <link href="css/staticdocs.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class = "container">
+          <a class="brand" href="index.html">NMF </a>
+          <div class="nav">
+            <ul class="nav">
+              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>Registering NMF Seeding Methods</h1>
+
+      <div class="row">
+        <div class="span8">
+          <h2>Usage</h2>
+          <pre><span class="functioncall"><a href='setNMFSeed.html'>setNMFSeed</a></span><span class="keyword">(</span><span class="symbol">...</span><span class="keyword">,</span> <span class="argument">overwrite</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">verbose</span> <span class="argument">=</span> <span class="functioncall"><a href='options.html'>nmf.getOption</a></span><span class="keyword">(</span><span class="string">"verbose"</span><span class="keyword">)</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='setNMFSeed.html'>NMFSeed</a></span><span class="keyword">(</span><span class="symbol">key</span><span class="keyword">,</span> <span class="symbol">method</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+          
+          <h2>Arguments</h2>
+          <dl>
+            <dt>...</dt>
+            <dd>arguments passed to <code>NMFSeed</code> and used to
+  initialise slots in the <code><a href='NMFSeed-class.html'>NMFSeed-class</a></code>
+  object.</dd>
+            <dt>key</dt>
+            <dd>access key as a single character string</dd>
+            <dt>method</dt>
+            <dd>specification of the seeding method, as a
+  function that takes at least the following arguments:
+  <span class='describe'> objectuninitialised/empty NMF model,
+  i.e. that it has 0 rows and columns, but has already the
+  rank requested in the call to <code><a href='nmf.html'>nmf</a></code> or
+  <code><a href='seed.html'>seed</a></code>. xtarget matrix
+  ...extra arguments </span></dd>
+            <dt>overwrite</dt>
+            <dd>logical that indicates if any existing
+  NMF method with the same name should be overwritten
+  (<code>TRUE</code>) or not (<code>FALSE</code>), in which case an
+  error is thrown.</dd>
+            <dt>verbose</dt>
+            <dd>a logical that indicates if information
+  about the registration should be printed (<code>TRUE</code>) or
+  not (<code>FALSE</code>).</dd>
+          </dl>
+          
+          <div class="Description">
+            <h2>Description</h2>
+            
+            <p>NMF seeding methods are registered via the function
+  <code>setNMFSeed</code>, which stores them as
+  <code><a href='NMFSeed-class.html'>NMFSeed-class</a></code> objects in a dedicated
+  registry.</p>
+        
+            <p><code>NMFSeed</code> is a constructor method that instantiate
+  <code><a href='NMFSeed-class.html'>NMFSeed-class</a></code> objects.</p>
+        
+          </div>
+
+          <div class="Methods">
+            <h2>Methods</h2>
+            
+            <p><span class='describe'></p>
+        
+            <p>NMFSeed<code>signature(key = "character")</code>:
+  Default method simply calls <code><a href='NA'>new</a></code> with the
+  same arguments.</p>
+        
+            <p></span></p>
+        
+          </div>
+      
+        </div>
+        <div class="span4">
+          <!-- <ul>
+            <li>NMFSeed</li><li>NMFSeed,character-method</li><li>NMFSeed-methods</li><li>setNMFSeed</li>
+          </ul>
+          <ul>
+            <li>methods</li>
+          </ul> -->
+            
+                    
+        </div>
+      </div>
+      <footer class="footer">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div> <!-- /container -->
+  </body>
+</html>

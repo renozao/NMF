@@ -48,11 +48,11 @@
       <div class="row">
         <div class="span8">
           <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='nmf_update_KL.html'>nmf_update.KL.h</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">copy</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
+          <pre><span class="functioncall"><a href='nmf_update_KL.html'>nmf_update.KL.h</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">nbterms</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="argument">ncterms</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="argument">copy</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='nmf_update_KL.html'>nmf_update.KL.h_R</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">wh</span> <span class="argument">=</span> NULL<span class="keyword">)</span>
 
-<span class="functioncall"><a href='nmf_update_KL.html'>nmf_update.KL.w</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">copy</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
+<span class="functioncall"><a href='nmf_update_KL.html'>nmf_update.KL.w</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">nbterms</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="argument">ncterms</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="argument">copy</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='nmf_update_KL.html'>nmf_update.KL.w_R</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">wh</span> <span class="argument">=</span> NULL<span class="keyword">)</span></pre>
           
@@ -64,6 +64,10 @@
             <dd>current basis matrix</dd>
             <dt>h</dt>
             <dd>current coefficient matrix</dd>
+            <dt>nbterms</dt>
+            <dd>number of fixed basis terms</dd>
+            <dt>ncterms</dt>
+            <dd>number of fixed coefficient terms</dd>
             <dt>copy</dt>
             <dd>logical that indicates if the update should
   be made on the original matrix directly (<code>FALSE</code>) or

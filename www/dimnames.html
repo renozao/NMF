@@ -165,10 +165,159 @@
         
           </div>
       
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment"># create a random NMF object</span>
+<span class="symbol">a</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">2</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
+
+<span class="comment"># set dimensions</span>
+<span class="symbol">dims</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span> <span class="argument">features</span><span class="argument">=</span><span class="functioncall"><a href='NA'>paste</a></span><span class="keyword">(</span><span class="string">'f'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='NA'>nrow</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">samples</span><span class="argument">=</span><span class="functioncall"><a href='NA'>paste</a></span><span class="keyword">(</span><span class="string">'s'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='NA'>ncol</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">basis</span><span class="argument">=</span><span class="functioncall"><a href='NA'>paste</a></span><span class="keyword">(</span><span class="string">'b'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span> <span class="keyword">)</span>
+<span class="functioncall"><a href='NA'>dimnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">dims</span>
+<span class="functioncall"><a href='NA'>dimnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>$features
+[1] "f1" "f2" "f3" "f4" "f5"
+
+$samples
+[1] "s1" "s2" "s3"
+
+$basis
+[1] "b1" "b2"
+
+</div>
+<div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>        basis
+features        b1        b2
+      f1 0.6224405 0.9814702
+      f2 0.9647864 0.6230110
+      f3 0.9191311 0.7959179
+      f4 0.3596298 0.9393041
+      f5 0.5672936 0.2461949
+</div>
+<div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>     samples
+basis        s1         s2        s3
+   b1 0.2863145 0.06541271 0.3827481
+   b2 0.3923432 0.83910795 0.8514682
+</div>
+<div class='input'>
+<span class="comment"># access the dimensions separately</span>
+<span class="functioncall"><a href='NA'>rownames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>[1] "f1" "f2" "f3" "f4" "f5"
+</div>
+<div class='input'><span class="functioncall"><a href='NA'>colnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>[1] "s1" "s2" "s3"
+</div>
+<div class='input'><span class="functioncall"><a href='dimnames.html'>basisnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>[1] "b1" "b2"
+</div>
+<div class='input'>
+<span class="comment"># set only the first dimension (rows of basis): the other two dimnames are set to NULL</span>
+<span class="functioncall"><a href='NA'>dimnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">dims</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">]</span>
+<span class="functioncall"><a href='NA'>dimnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>$features
+[1] "f1" "f2" "f3" "f4" "f5"
+
+[[2]]
+NULL
+
+[[3]]
+NULL
+
+</div>
+<div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>        
+features      [,1]      [,2]
+      f1 0.6224405 0.9814702
+      f2 0.9647864 0.6230110
+      f3 0.9191311 0.7959179
+      f4 0.3596298 0.9393041
+      f5 0.5672936 0.2461949
+</div>
+<div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>      
+            [,1]       [,2]      [,3]
+  [1,] 0.2863145 0.06541271 0.3827481
+  [2,] 0.3923432 0.83910795 0.8514682
+</div>
+<div class='input'>
+<span class="comment"># set only the two first dimensions (rows and columns of basis and coef respectively):</span>
+<span class="comment"># the basisnames are set to NULL</span>
+<span class="functioncall"><a href='NA'>dimnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">dims</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">:</span><span class="number">2</span><span class="keyword">]</span>
+<span class="functioncall"><a href='NA'>dimnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>$features
+[1] "f1" "f2" "f3" "f4" "f5"
+
+$samples
+[1] "s1" "s2" "s3"
+
+[[3]]
+NULL
+
+</div>
+<div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>        
+features      [,1]      [,2]
+      f1 0.6224405 0.9814702
+      f2 0.9647864 0.6230110
+      f3 0.9191311 0.7959179
+      f4 0.3596298 0.9393041
+      f5 0.5672936 0.2461949
+</div>
+<div class='input'>
+<span class="comment"># reset the dimensions</span>
+<span class="functioncall"><a href='NA'>dimnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> NULL
+<span class="functioncall"><a href='NA'>dimnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>NULL
+</div>
+<div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>          [,1]      [,2]
+[1,] 0.6224405 0.9814702
+[2,] 0.9647864 0.6230110
+[3,] 0.9191311 0.7959179
+[4,] 0.3596298 0.9393041
+[5,] 0.5672936 0.2461949
+</div>
+<div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>          [,1]       [,2]      [,3]
+[1,] 0.2863145 0.06541271 0.3827481
+[2,] 0.3923432 0.83910795 0.8514682
+</div>
+<div class='input'>
+<span class="comment"># set each dimensions separately</span>
+<span class="functioncall"><a href='NA'>rownames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>paste</a></span><span class="keyword">(</span><span class="string">'X'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='NA'>nrow</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span> <span class="comment"># only affect rows of basis</span>
+<span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>        [,1]      [,2]
+X1 0.6224405 0.9814702
+X2 0.9647864 0.6230110
+X3 0.9191311 0.7959179
+X4 0.3596298 0.9393041
+X5 0.5672936 0.2461949
+</div>
+<div class='input'>
+<span class="functioncall"><a href='NA'>colnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>paste</a></span><span class="keyword">(</span><span class="string">'Y'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='NA'>ncol</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span> <span class="comment"># only affect columns of coef</span>
+<span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>            Y1         Y2        Y3
+[1,] 0.2863145 0.06541271 0.3827481
+[2,] 0.3923432 0.83910795 0.8514682
+</div>
+<div class='input'>
+<span class="functioncall"><a href='dimnames.html'>basisnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>paste</a></span><span class="keyword">(</span><span class="string">'Z'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span> <span class="comment"># affect both basis and coef matrices</span>
+<span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>          Z1        Z2
+X1 0.6224405 0.9814702
+X2 0.9647864 0.6230110
+X3 0.9191311 0.7959179
+X4 0.3596298 0.9393041
+X5 0.5672936 0.2461949
+</div>
+<div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>          Y1         Y2        Y3
+Z1 0.2863145 0.06541271 0.3827481
+Z2 0.3923432 0.83910795 0.8514682
+</div></pre>
         </div>
         <div class="span4">
           <!-- <ul>
-            <li>basisnames</li><li>basisnames&lt;-</li><li>basisnames&lt;-,ANY-method</li><li>basisnames,ANY-method</li><li>basisnames&lt;--methods</li><li>basisnames-methods</li><li>dimnames-NMF</li><li>dimnames&lt;-,NMF,ANY-method</li><li>dimnames,NMF-method</li>
+            <li>basisnames</li><li>basisnames,ANY-method</li><li>basisnames-methods</li><li>basisnames&lt;-</li><li>basisnames&lt;-,ANY-method</li><li>basisnames&lt;--methods</li><li>dimnames,NMF-method</li><li>dimnames-NMF</li><li>dimnames&lt;-,NMF,ANY-method</li>
           </ul>
           <ul>
             <li>methods</li>

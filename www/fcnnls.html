@@ -185,10 +185,27 @@
         
           </div>
       
+          <h2 id="examples">Examples</h2>
+          <pre class="examples"><div class='input'><span class="comment">## Define a random non-negative matrix matrix</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">200</span><span class="keyword">;</span> <span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
+
+<span class="comment">## Compute the optimal matrix K for a given X matrix</span>
+<span class="symbol">X</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">)</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">,</span> <span class="symbol">V</span><span class="keyword">)</span>
+
+<span class="comment">## Compute the same thing using the Moore-Penrose generalized pseudoinverse</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">,</span> <span class="symbol">V</span><span class="keyword">,</span> <span class="argument">pseudo</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span>
+
+<span class="comment">## It also works in the case of single vectors</span>
+<span class="symbol">y</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>runif</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">)</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span>
+<span class="comment"># or</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">[</span><span class="keyword">,</span><span class="number">1</span><span class="keyword">]</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span></div></pre>
         </div>
         <div class="span4">
           <!-- <ul>
-            <li>fcnnls</li><li>fcnnls,ANY,numeric-method</li><li>fcnnls,matrix,matrix-method</li><li>fcnnls-methods</li><li>fcnnls,numeric,matrix-method</li>
+            <li>fcnnls</li><li>fcnnls,ANY,numeric-method</li><li>fcnnls,matrix,matrix-method</li><li>fcnnls,numeric,matrix-method</li><li>fcnnls-methods</li>
           </ul>
           <ul>
             <li>methods</li><li>multivariate</li><li>optimize</li><li>regression</li>
