@@ -15,11 +15,21 @@ if( length(resfile) ){
 	# send
 	library(mail)
 	sapply(resfile, function(f){
+				
+		# build message
+		msg <- c("**************\nR.version Info\n**************\n", capture.output(R.version))
+		sys <- Sys.info()
+		msg <- c(msg, "**************\nSystem Info\n**************\n"
+				, sapply(names(sys), function(n){ paste(n, ': ', sys[n], sep='')}))
+		msg <- c(msg, "**************\nRESULTS:\n**************\n", readLines(f))
+		# collapse
+		msg <- paste(msg, collapse="\n")
+		# send email
 		sendmail('renaud@cbio.uct.ac.za',
-				paste("NMF: unit test results",
+				, paste("NMF: unit test results",
 					"-", basename(f),
-					"-", if( is(tests, 'try-error') ) 'ERROR' else "OK", "]"),
-				paste(readLines(f), collapse="\n")
+					"-", if( is(tests, 'try-error') ) 'ERROR' else "OK", "]")
+				, msg 
 		)
 	})
 }
