@@ -2219,7 +2219,7 @@ setMethod('seed', signature(x='ANY', model='list', method='NMFSeed'),
 			unamed <- if( !is.null(names(model)) ) which(names(model) %in% c('', NA)) else 1			
 			if ( length(unamed) > 0 ){ # if not the first unamed element is taken as the class name
 				idx <- unamed[1]
-				val <- unlist(model[idx], rec=FALSE)				
+				val <- unlist(model[idx], recursive=FALSE)				
 				if( is.character(val) && length(val)==1 && extends(val, 'NMF') )
 					names(model)[idx] <- 'model'
 				else stop(err.msg)
@@ -2232,7 +2232,7 @@ setMethod('seed', signature(x='ANY', model='list', method='NMFSeed'),
 			unamed <- if( !is.null(names(model)) ) which(names(model) %in% c('', NA)) else 1
 			if ( length(unamed) > 0 ){ # if not the second element is taken as the factorization rank
 				idx <- unamed[1]
-				val <- unlist(model[idx], rec=FALSE)
+				val <- unlist(model[idx], recursive=FALSE)
 				if( is.numeric(val) && length(val)==1 )
 					names(model)[idx] <- 'rank'
 				else stop(err.msg)
