@@ -174,7 +174,7 @@ packageNMFObject <- function(key, method){
 	#message("Adding local NMF method '", lkey,"' to package '", ns_name, "'")
 	ns[['._NMFmethods']][[lkey]] <- method
 	# defer loading (will be executed in the NMF namespace)
-	expr <- substitute(setNMFObject(packageNMFObject(key), verbose=TRUE), list(key=lkey))
+	expr <- substitute(setNMFObject(packageNMFObject(key), verbose=getOption('verbose')), list(key=lkey))
 	if( !is_onLoad() ) onLoadTask(expr, lkey, envir=packageEnv())
 	#
 	
