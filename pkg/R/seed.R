@@ -1,4 +1,5 @@
 #' @include registry.R
+#' @include NMFStrategy-class.R
 NULL
 
 # create sub-registry for seeding methods
@@ -19,19 +20,9 @@ setPackageRegistry('seed', "NMFSeed"
 #'
 setClass('NMFSeed'
 		, representation(
-				name = 'character' # name of the method (also key)
-				, method = 'function' # the method actual definition
+			method = 'function' # the method actual definition
 		)
-		, prototype=prototype(name='')
-		, validity=function(object){
-			
-			# slot 'name' must be a non-empty character string
-			obj <- name(object)
-			if( !is.character(obj) || length(obj)!=1 || obj=='' )
-				return("Slot 'name' must be a non-empty character string.")
-			
-			return(TRUE)
-		}		
+		, contains = 'Strategy'
 )
 
 #' Show method for objects of class \code{NMFSeed} 
@@ -44,23 +35,6 @@ setMethod('show', 'NMFSeed',
 			cat("method:\t", svalue, "\n")
 			return(invisible())
 		}
-)
-
-#' Returns the name of the seeding method described by \code{object}.
-setMethod('name', signature(object='NMFSeed'),
-		function(object){
-			slot(object, 'name')
-		}
-)
-#' Sets the name of the seeding method described by \code{object}.
-#' 
-#' This method is not meant to be called directly
-setReplaceMethod('name', signature(object='NMFSeed', value='character'),
-	function(object, value){
-		slot(object, 'name') <- value
-		validObject(object)
-		object
-	}
 )
 
 #' Returns the workhorse function of the seeding method described by \code{object}. 
@@ -173,12 +147,13 @@ setNMFSeed <- function(..., overwrite=FALSE, verbose=nmf.getOption('verbose')){
 		tmpl <- if( !is.null(parent.method) && parent.method != key )
 			stringr::str_c(" based on template '", parent.method, "'")
 		
-		message("Registering NMF seeding method '", key,"'", tmpl,"... ", appendLF=FALSE)
+		pkg <- packageSlot(method)
+		message("Registering NMF seeding method '", pkg, '::', key,"'", tmpl,"... ", appendLF=FALSE)
 	}
 	
 	# register the newly created object
 	res <- nmfRegister(method, key, registry.name='seed'
-			, overwrite=overwrite, verbose=verbose)
+			, overwrite=overwrite, verbose=verbose>1L)
 	
 	if( !is.null(res) && res > 0L ){
 		if( lverbose ) message( if(res == 1L) "OK" else "UPDATED" )
@@ -214,10 +189,23 @@ setGeneric('NMFSeed', function(key, method, ...) standardGeneric('NMFSeed') )
 setMethod('NMFSeed', signature(key='character', method='ANY'), 
 	function(key, method, ...){
 		# wrap function method into a new NMFSeed object
-		new('NMFSeed', name=key, method=method, ...)
+		new('NMFSeed', name=key, method=method, ..., package=toppackage_name())
 	}
 )
 
+#' Creates an \code{NMFSeed} based on a template object (Constructor-Copy), 
+#' in particular it uses the \strong{same} name.
+setMethod('NMFSeed', signature(key='NMFSeed', method='ANY'), 
+	function(key, method, ...){
+		
+		# do not change the object if single argument
+		if( nargs() == 1L ) return(key)
+		
+		# build an object based on template object
+		new(class(method), key, method=method, ..., package=toppackage_name())
+		
+	}
+)
 
 ###########################################################################
 # REGISTRATION

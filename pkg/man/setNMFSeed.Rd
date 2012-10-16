@@ -1,6 +1,7 @@
 \docType{methods}
 \name{setNMFSeed}
 \alias{NMFSeed}
+\alias{NMFSeed,NMFSeed-method}
 \alias{NMFSeed,character-method}
 \alias{NMFSeed-methods}
 \alias{setNMFSeed}
@@ -50,6 +51,11 @@
   \item{NMFSeed}{\code{signature(key = "character")}:
   Default method simply calls \code{\link{new}} with the
   same arguments. }
+
+  \item{NMFSeed}{\code{signature(key = "NMFSeed")}: Creates
+  an \code{NMFSeed} based on a template object
+  (Constructor-Copy), in particular it uses the
+  \strong{same} name. }
 
   }
 }

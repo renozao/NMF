@@ -2,73 +2,74 @@
 #' @include algorithmic.R
 NULL
 
-## Base abstract class that defines a strategy.
-#setClass('Strategy'
-#	, representation(
-#			name = 'character' # the strategy name
-#			, package = 'character' # the package that defines the strategy
-#	)
-#	, contains = 'VIRTUAL'
-#	, validity=function(object){
-#		
-#		# slot 'name' must be a non-empty character string
-#		obj <- name(object)
-#		if( length(obj) != 0 && (!is.character(obj) || length(obj)!=1 || obj=='') )
-#			return("Slot 'name' must be a non-empty character string.")
-#		
-#	}
-#)
-#
-#setMethod('initialize', 'Strategy',
-#	function(.Object, ..., name, package){
-#				
-#		print(.Object)
-#		.Object <- callNextMethod(.Object, ...)
-#		print(.Object)
-#		
-#		# set the name of the strategy
-#		if( !missing(name) )
-#			.Object@name <- name
-#		
-#		# set the name to the loading package		
-#		if( missing(package) ){
-#			ns <- topenv()
-#			package <- if( FALSE && isNamespace(ns) )
-#				package <- getNamespaceInfo(ns, 'spec')$name
-#			else
-#				''
-#		}
-#		
-#		.Object@package <- package
-#		print(.Object)
-#		
-#		.Object
-#	}
-#)
-#
-## Accessor methods to slot \code{name}
-#setGeneric('name', function(object, ...) standardGeneric('name'))
-#setMethod('name', signature(object='Strategy'),
-#	function(object){
-#		slot(object, 'name')
-#	}
-#)
-#setGeneric('name<-', function(object, ..., value) standardGeneric('name<-'))
-#setReplaceMethod('name', signature(object='Strategy', value='character'),
-#	function(object, value){
-#		slot(object, 'name') <- value
-#		validObject(object)
-#		object
-#	}
-#)
+#' Generic Strategy Class
+#' 
+#' This class defines a common interface for generic algorithm strategies 
+#' (eg., \code{\linkS4class{NMFStrategy}}).
+#' 
+#' @slot name character string giving the name of the algorithm
+#' @slot package name of the package that defined the strategy.
+#' 
+#' @keywords internal
+setClass('Strategy'
+	, contains = 'VIRTUAL'
+	, representation = representation(
+		name = 'character' # the strategy name
+		, package = 'character' # the package that defines the strategy
+	)
+	, prototype = prototype(
+		package = character()
+	)
+	, validity=function(object){
+		
+		# slot 'name' must be a non-empty character string
+		obj <- name(object)
+		if( length(obj) && (length(obj)>1L || obj=='') )
+			return(str_c("Slot 'name' must be a single non-empty character string [", obj, ']'))
+		TRUE
+	}
+)
+
+#' Accessing Strategy Names 
+#' 
+#' \code{name} and \code{name<-} gets and sets the name associated with an object.
+#' In the case of \code{Strategy} objects it is the the name of the algorithm.
+#' 
+#' @param object an R object with a defined \code{name} method
+#' @param ... extra arguments to allow extension
+#' @param value replacement value 
+#' 
+#' @export
+#' @inline
+#' @rdname Strategy-class
+setGeneric('name', function(object, ...) standardGeneric('name'))
+#' Returns the name of an algorithm
+#' @param all a logical that indicates if all the names associated with a strategy 
+#' should be return (\code{TRUE}), or only the first (primary) one (\code{FALSE}).
+setMethod('name', signature(object='Strategy'),
+	function(object, all=FALSE){
+		n <- slot(object, 'name')
+		if( length(n) && !all ) n[1L] else n
+	}
+)
+#' @export
+#' @inline
+#' @rdname Strategy-class 
+setGeneric('name<-', function(object, ..., value) standardGeneric('name<-'))
+#' Sets the name(s) of an NMF algorithm
+setReplaceMethod('name', signature(object='Strategy', value='character'),
+	function(object, value){
+		slot(object, 'name') <- value
+		validObject(object)
+		object
+	}
+)
 
 #' Virtual Interface for NMF Algorithms
 #' 
 #' This class partially implements the generic interface defined for general 
 #' algorithms defined in the package NMF (see \code{\link{algorithmic-NMF}}).
 #'  
-#' @slot name character string giving the name of the algorithm
-#' 
 #' @slot objective the objective function associated with the algorithm (Frobenius, Kullback-Leibler, etc...). 
 #'  It is either an access key of a registered objective function or a function definition. 
 #'  In the latter case, the given function must have the following signature \code{(x="NMF", y="matrix")}
@@ -82,19 +83,13 @@ NULL
 #' @keywords internal
 setClass('NMFStrategy'
 	, representation(
-				name = 'character' # name of the method (also key)
-				, objective = '.functionSlot' # the objective function used to compute the error (defined by name or function)
+				objective = '.functionSlot' # the objective function used to compute the error (defined by name or function)
 				, model = 'character' # NMF model to use
 				, mixed = 'logical' # can the input data be negative?
 	)
-	, prototype=prototype(name='', objective='euclidean', model='NMFstd', mixed=FALSE)
+	, prototype=prototype(objective='euclidean', model='NMFstd', mixed=FALSE)
 	, validity=function(object){
 		
-		# slot 'name' must be a non-empty character string
-		obj <- name(object)
-		if( !is.character(obj) || length(obj)!=1 || obj=='' )
-			return("Slot 'name' must be a non-empty character string.")
-			
 		# slot 'objective' must either be a non-empty character string or a function
 		obj <- objective(object)
 		if( is.character(obj) && obj == '' )
@@ -115,7 +110,7 @@ setClass('NMFStrategy'
 		if( length(obj) != 1 )
 			return( paste("Slot 'mixed' must be a single logical [length=", length(obj), "]", sep='') )
 	}
-	, contains = 'VIRTUAL'
+	, contains = c('VIRTUAL', 'Strategy')
 )
 
 #' @export
@@ -136,6 +131,10 @@ setMethod('show', 'NMFStrategy',
 setAs('NMFStrategy', 'character'
 	, def = function(from) name(from)	
 ) 
+
+toppackage_name <- function(){
+	packageName(toppackage(), .Global=TRUE)
+}
 
 #' Factory Method for NMFStrategy Objects
 #' 
@@ -158,7 +157,7 @@ setMethod('NMFStrategy', signature(name='character', method='function'),
 		function(name, method, ...){
 			
 			# build a NMFStrategyFunction object on the fly to wrap function 'method'
-			strategy <- new('NMFStrategyFunction', name=name, algorithm=method, ...)
+			strategy <- new('NMFStrategyFunction', name=name, algorithm=method, ..., package=toppackage_name())
 			
 			# valid the new strategy
 			validObject(strategy)
@@ -173,7 +172,7 @@ setMethod('NMFStrategy', signature(name='character', method='NMFStrategy'),
 		function(name, method, ...){
 			
 			# build an NMFStrategy object based on template object
-			strategy <- new(class(method), method, name=name, ...)
+			strategy <- new(class(method), method, name=name, ..., package=toppackage_name())
 			
 			# valid the new strategy
 			validObject(strategy)
@@ -185,22 +184,49 @@ setMethod('NMFStrategy', signature(name='character', method='NMFStrategy'),
 			strategy
 		}
 )
-#' Creates an \code{NMFStrategy} based on a template object (Constructor-Copy) 
-#' using a randomly generated name.
+
+#' Creates an \code{NMFStrategy} based on a template object (Constructor-Copy), 
+#' in particular it uses the \strong{same} name.
 setMethod('NMFStrategy', signature(name='NMFStrategy', method='missing'), 
 		function(name, method, ...){
 			
+			# do not change the object if single argument
+			if( nargs() == 1L ) return(name)
+			
 			# use the name as a key
 			# NB: need special trick to avoid conflict between argument and function 
-			e <- parent.frame()
 			mname <- match.fun('name')(name)
-			mname <- basename(tempfile(str_c(mname, '_')))
-			
+
 			NMFStrategy(name=mname, method=name, ...)
 		}
 )
 
-#' Creates an \code{NMFStrategy} based on a registered NMF algorithm, that is used 
+#' Creates an \code{NMFStrategy} based on a registered NMF algorithm that is used 
+#' as a template (Constructor-Copy), in particular it uses the \strong{same} name.
+#' 
+#' It is a shortcut for \code{NMFStrategy(nmfAlgorithm(method), ...)}.
+setMethod('NMFStrategy', signature(name='missing', method='character'), 
+		function(name, method, ...){
+			NMFStrategy(nmfAlgorithm(method), ...)
+		}
+)
+
+
+#' Creates an \code{NMFStrategy} based on a template object (Constructor-Copy) 
+#' but using a randomly generated name.
+setMethod('NMFStrategy', signature(name='NULL', method='NMFStrategy'), 
+		function(name, method, ...){
+			
+			# use the name as a key
+			# NB: need special trick to avoid conflict between argument and function 
+			mname <- match.fun('name')(method)
+			mname <- basename(tempfile(str_c(mname, '_')))
+			
+			NMFStrategy(name=mname, method=method, ...)
+		}
+)
+
+#' Creates an \code{NMFStrategy} based on a registered NMF algorithm that is used 
 #' as a template.
 setMethod('NMFStrategy', signature(name='character', method='character'), 
 		function(name, method, ...){
@@ -209,9 +235,11 @@ setMethod('NMFStrategy', signature(name='character', method='character'),
 )
 #' Creates an \code{NMFStrategy} based on a registered NMF algorithm (Constructor-Copy) 
 #' using a randomly generated name.
-setMethod('NMFStrategy', signature(name='missing', method='character'), 
+#' 
+#' It is a shortcut for \code{NMFStrategy(NULL, nmfAlgorithm(method), ...)}.
+setMethod('NMFStrategy', signature(name='NULL', method='character'), 
 		function(name, method, ...){
-			NMFStrategy(nmfAlgorithm(method), ...) 
+			NMFStrategy(NULL, method=nmfAlgorithm(method), ...) 
 		}
 )
 #' Creates an NMFStrategy, determining its type from the extra arguments passed 
@@ -225,9 +253,9 @@ setMethod('NMFStrategy', signature(name='character', method='missing'),
 			
 			# check iterative strategy
 			if( hasArg(Update) ){ # create a new NMFStrategyIterative object
-				new('NMFStrategyIterative', name=name, ...)
+				new('NMFStrategyIterative', name=name, ..., package=toppackage_name())
 			}else if( hasArg(algorithm) ){
-				new('NMFStrategyFunction', name=name, ...)
+				new('NMFStrategyFunction', name=name, ..., package=toppackage_name())
 			}else{
 				stop('NMFStrategy - Could not infer the type of NMF strategy to instantiate.')
 			}
@@ -252,40 +280,6 @@ setMethod('run', signature(object='NMFStrategy', y='matrix', x='NMF'),
 		run(object, y, NMFfit(fit=x, seed='none', method=name(object)), ...)
 	}
 )
-
-#' \code{name} and \code{name<-} gets and sets the name associated with an object.
-#' In the case of \code{NMFStrategy} object it is the the name of 
-#' the algorithm.
-#' 
-#' @param object an NMFStrategy object
-#' @param ... extra arguments to allow extension
-#' @param value replacement value 
-#' 
-#' @export
-#' @rdname NMFStrategy-class
-#' @inline 
-setGeneric('name', function(object, ...) standardGeneric('name'))
-#' Returns the name of an algorithm
-#' @param all a logical that indicates if all the names associated with a strategy 
-#' should be return (\code{TRUE}), or only the first (primary) one (\code{FALSE}).
-setMethod('name', signature(object='NMFStrategy'),
-	function(object, all=FALSE){
-		if( !all ) slot(object, 'name')[1] else slot(object, 'name')
-	}
-)
-#' @export
-#' @rdname NMFStrategy-class
-#' @inline 
-setGeneric('name<-', function(object, ..., value) standardGeneric('name<-'))
-#' Sets the name(s) of an NMF algorithm
-setReplaceMethod('name', signature(object='NMFStrategy', value='character'),
-	function(object, value){
-		slot(object, 'name') <- value
-		validObject(object)
-		object
-	}
-)
-
 
 #' Computes the value of the objective function between the estimate \code{x}
 #' and the target \code{y}.
@@ -404,12 +398,13 @@ setNMFMethod <- function(..., overwrite=FALSE, verbose=nmf.getOption('verbose'))
 		if( !is.null(parent.method) && parent.method != key )
 			stringr::str_c(" based on template '", parent.method, "'")
 	
-		message("Registering NMF algorithm '", key,"'", tmpl,"... ", appendLF=FALSE)
+		pkg <- packageSlot(method)
+		message("Registering NMF algorithm '", pkg, '::', key,"'", tmpl,"... ", appendLF=FALSE)
 	}
 	
 	# add to the algorithm registry
 	res <- nmfRegister(method, key, registry.name='algorithm'
-					, overwrite=overwrite, verbose=verbose)
+					, overwrite=overwrite, verbose=verbose>1L)
 	
 	if( !is.null(res) && res > 0L ){
 		if( lverbose ) message( if(res == 1L) "OK" else "UPDATED" )

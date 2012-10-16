@@ -2,14 +2,6 @@
 \name{NMFStrategy-class}
 \alias{NMFStrategy-class}
 \alias{is.mixed}
-\alias{name}
-\alias{name,NMFSeed-method}
-\alias{name,NMFStrategy-method}
-\alias{name-methods}
-\alias{name<-}
-\alias{name<-,NMFSeed,character-method}
-\alias{name<-,NMFStrategy,character-method}
-\alias{name<--methods}
 \alias{objective,NMFStrategy-method}
 \alias{objective<-,NMFStrategy,character-method}
 \alias{objective<-,NMFStrategy,function-method}
@@ -17,12 +9,6 @@
 \title{Virtual Interface for NMF Algorithms}
 \usage{
   \S4method{show}{NMFStrategy}(object)
-
-  name(object, ...)
-
-  \S4method{name}{NMFStrategy}(object, all = FALSE)
-
-  name(object, ...) <- value
 
   \S4method{objective}{NMFStrategy}(object)
 
@@ -35,35 +21,20 @@
   is.mixed(object)
 }
 \arguments{
-  \item{object}{an NMFStrategy object}
-
-  \item{...}{extra arguments to allow extension}
+  \item{object}{Any R object}
 
   \item{value}{replacement value}
-
-  \item{all}{a logical that indicates if all the names
-  associated with a strategy should be return
-  (\code{TRUE}), or only the first (primary) one
-  (\code{FALSE}).}
 }
 \description{
   This class partially implements the generic interface
   defined for general algorithms defined in the package NMF
   (see \code{\link{algorithmic-NMF}}).
 
-  \code{name} and \code{name<-} gets and sets the name
-  associated with an object. In the case of
-  \code{NMFStrategy} object it is the the name of the
-  algorithm.
-
   \code{is.mixed} tells if an NMF algorithm works on
   mixed-sign data.
 }
 \section{Slots}{
   \describe{
-
-  \item{name}{character string giving the name of the
-  algorithm}
 
   \item{objective}{the objective function associated with
   the algorithm (Frobenius, Kullback-Leibler, etc...).  It
@@ -87,8 +58,8 @@
 
   \item{NMFStrategy}{\code{signature(name = "NMFStrategy",
   method = "missing")}: Creates an \code{NMFStrategy} based
-  on a template object (Constructor-Copy) using a randomly
-  generated name. }
+  on a template object (Constructor-Copy), in particular it
+  uses the \strong{same} name. }
 
   \item{canFit}{\code{signature(x = "NMFStrategy", y =
   "character")}: Tells if an NMF algorithm can fit a given
@@ -105,30 +76,6 @@
   \item{modelname}{\code{signature(object =
   "NMFStrategy")}: Returns the model(s) that an NMF
   algorithm can fit. }
-
-  \item{name}{\code{signature(object = "NMFStrategy")}:
-  Returns the name of an algorithm }
-
-  \item{name}{\code{signature(object = "NMFStrategy")}:
-  Returns the name of an algorithm }
-
-  \item{name}{\code{signature(object = "NMFSeed")}: Returns
-  the name of the seeding method described by
-  \code{object}. }
-
-  \item{name<-}{\code{signature(object = "NMFStrategy",
-  value = "character")}: Sets the name(s) of an NMF
-  algorithm }
-
-  \item{name<-}{\code{signature(object = "NMFStrategy",
-  value = "character")}: Sets the name(s) of an NMF
-  algorithm }
-
-  \item{name<-}{\code{signature(object = "NMFSeed", value =
-  "character")}: Sets the name of the seeding method
-  described by \code{object}.
-
-  This method is not meant to be called directly }
 
   \item{objective}{\code{signature(object =
   "NMFStrategy")}: Gets the objective function associated

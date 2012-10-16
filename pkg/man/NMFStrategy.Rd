@@ -2,6 +2,8 @@
 \name{NMFStrategy}
 \alias{NMFStrategy}
 \alias{NMFStrategy,NMFStrategy,missing-method}
+\alias{NMFStrategy,NULL,NMFStrategy-method}
+\alias{NMFStrategy,NULL,character-method}
 \alias{NMFStrategy,character,NMFStrategy-method}
 \alias{NMFStrategy,character,character-method}
 \alias{NMFStrategy,character,function-method}
@@ -88,18 +90,35 @@
 
   \item{NMFStrategy}{\code{signature(name = "NMFStrategy",
   method = "missing")}: Creates an \code{NMFStrategy} based
-  on a template object (Constructor-Copy) using a randomly
+  on a template object (Constructor-Copy), in particular it
+  uses the \strong{same} name. }
+
+  \item{NMFStrategy}{\code{signature(name = "missing",
+  method = "character")}: Creates an \code{NMFStrategy}
+  based on a registered NMF algorithm that is used as a
+  template (Constructor-Copy), in particular it uses the
+  \strong{same} name.
+
+  It is a shortcut for
+  \code{NMFStrategy(nmfAlgorithm(method), ...)}. }
+
+  \item{NMFStrategy}{\code{signature(name = "NULL", method
+  = "NMFStrategy")}: Creates an \code{NMFStrategy} based on
+  a template object (Constructor-Copy) but using a randomly
   generated name. }
 
   \item{NMFStrategy}{\code{signature(name = "character",
   method = "character")}: Creates an \code{NMFStrategy}
-  based on a registered NMF algorithm, that is used as a
+  based on a registered NMF algorithm that is used as a
   template. }
 
-  \item{NMFStrategy}{\code{signature(name = "missing",
-  method = "character")}: Creates an \code{NMFStrategy}
-  based on a registered NMF algorithm (Constructor-Copy)
-  using a randomly generated name. }
+  \item{NMFStrategy}{\code{signature(name = "NULL", method
+  = "character")}: Creates an \code{NMFStrategy} based on a
+  registered NMF algorithm (Constructor-Copy) using a
+  randomly generated name.
+
+  It is a shortcut for \code{NMFStrategy(NULL,
+  nmfAlgorithm(method), ...)}. }
 
   \item{NMFStrategy}{\code{signature(name = "character",
   method = "missing")}: Creates an NMFStrategy, determining

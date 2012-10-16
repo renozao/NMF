@@ -70,7 +70,10 @@ setMethod('nmfRegister', signature(method='ANY', key='character'),
 			
 			# for a method given as a NMFStrategy, if the name is empty then use the key as a name
 			if( inherits(method, 'NMFStrategy') ){
-				if( is.null(method@name) || method@name=='' ) method@name <- key
+				if( is.null(method@name) || method@name=='' ){
+					stop("Unexpected error: nmfRegister(method=NMFStrategy) with no method name")
+					method@name <- key
+				}
 				#else if( method@name != key ) stop("NMFStrategy slot <name> does not match parameter <key> ['", method@name, "' != '", key, "']")
 			}
 			# check if the object is already registered
@@ -91,6 +94,10 @@ setMethod('nmfRegister', signature(method='ANY', key='character'),
 				#assign(key, method, envir=registry)
 			}
 			else stop("Cannot register NMF method '", key, "' [a method with the same key is already registered].")
+			
+			# setup deferred registering: when loading a namespace other than NMF
+			packageNMFObject(key, method)
+			#
 			
 			# return set/update code invisibly
 			invisible( if( !is.null(reg.method) )  2L else 1L )
@@ -113,6 +120,9 @@ nmfUnregister <- function(name, registry.name){
 		message("NMF: Remove method '", name, "' from registry '", registry.name, "'")
 		registry$delete_entry(name)
 		
+		# cancel deferred registering: when loading a namespace other than NMF
+		packageNMFObject(name, NULL)
+		#
 	}
 	
 	# return TRUE invisibly
@@ -120,3 +130,97 @@ nmfUnregister <- function(name, registry.name){
 }
 nmfUnregister <- Vectorize(nmfUnregister, 'name')
 
+packageNMFObject <- function(key, method){
+
+	# do nothing if 
+	# - not loading a namespace
+	# - loading the NMF namespace
+	if( !isLoadingNamespace() || isLoadingNamespace('NMF') ){
+		return()
+	}
+	# do nothing if the namespace is already completely loaded
+	ns <- getLoadingNamespace(env=TRUE)
+	ns_name <- getLoadingNamespace()
+	
+	envname <- '._NMFmethods'
+	nometh <- !exists(envname, envir=ns)
+	# do nothing if no method is defined and one wants to retrieve a method or delete it
+	if( nometh && (missing(method) || is.null(method)) ){
+		return()
+	}
+
+	# retrieve method
+	if( missing(method) ){
+		if( nometh ) return()
+		return(ns[['._NMFmethods']][[key]])
+	}
+
+	# build access key
+	lkey <- str_c(class(method), '::', packageSlot(method), '::', key)
+	
+	# removing method 
+	if( is.null(method) ){
+		if( lkey %in% names(ns[[envname]]) ){
+			#message("Removing local NMF method '", lkey,"' from package '", ns_name, "'")
+			ns[[envname]][[lkey]] <- NULL
+			# cancel deferred loading
+			if( !is_onLoad() ) onLoadTask(NULL, lkey)
+		}
+		return()
+	}
+	# adding a new method
+	if( nometh )
+		assign(envname, list(), envir=ns)
+	#message("Adding local NMF method '", lkey,"' to package '", ns_name, "'")
+	ns[['._NMFmethods']][[lkey]] <- method
+	# defer loading (will be executed in the NMF namespace)
+	expr <- substitute(setNMFObject(packageNMFObject(key), verbose=TRUE), list(key=lkey))
+	if( !is_onLoad() ) onLoadTask(expr, lkey, envir=packageEnv())
+	#
+	
+	return()
+}
+
+setNMFObject <- function(object, ...){
+	
+	# use this as common interface for registering NMF algorithms, seeding methods, etc..
+	if( is(object, 'NMFSeed') ){
+		return( setNMFSeed(object, ...) )
+	}else if( is(object, 'NMFStrategy') ){
+		return( setNMFMethod(object, ...) )
+	}else
+		stop("Unexpected error: objects of class '", class(object), "' are not supported.")
+	
+}
+
+onLoadTask <- function(expr, key=digest(tempfile()), envir=toppackage(), verbose=getOption('verbose')){
+	
+	ns <- toppackage()
+	envname <- '._onLoadTasks'
+	if( !exists(envname, envir=ns) ){
+		if( nargs() == 0L ) return()
+		assign(envname, list(), envir=ns)
+	}
+	if( nargs() > 0L ){
+		qe <- if( !is.language(expr) ) substitute(expr) else expr
+		if( !is.null(qe) ) message("# Deferring loading task '", key, "'")
+		else{
+			if( missing(key) ) stop("Missing key for cancelling deferred load task.")
+			message("# Cancelling deferred loading task '", key, "'")
+		}
+		ns[[envname]][[key]]$expr <- qe
+		ns[[envname]][[key]]$envir <- envir
+	}else{
+		if( verbose ) message("# Executing deferred loading tasks in package '", packageName(ns, .Global=TRUE), "'")
+		is_onLoad(TRUE)
+		on.exit(is_onLoad(FALSE))
+		sapply(ns[[envname]], function(x){
+			if( verbose ) message("* ", x$expr, ' [', packageName(x$envir, .Global=TRUE), ']')
+			eval(x$expr, x$envir)
+		})
+		invisible()
+	}
+}
+
+# Tells if one is executing deferred tasks via \code{onLoad}
+is_onLoad <- pkgmaker:::sVariable(FALSE)
