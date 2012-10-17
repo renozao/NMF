@@ -20,8 +20,7 @@
   nmf(x, rank, method, ...)
 
   \S4method{nmf}{matrix,numeric,NULL}(x, rank, method,
-    seed = nmf.getOption("default.seed"), model = NULL,
-    ...)
+    seed = NULL, model = NULL, ...)
 
   \S4method{nmf}{matrix,numeric,function}(x, rank, method,
     seed, model = "NMFstd", ..., name,

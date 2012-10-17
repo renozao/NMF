@@ -1,17 +1,22 @@
 *************************************************************************
-*                       Changes in version 0.8.14                       *
+*                       Changes in version 0.8.??                       *
 *************************************************************************
 
 NEW FEATURES
 
     o New function nmfObject() to update old versions of NMF objects, 
     eg., saved on disk.
+    o NMF strategies can now define default values for their parameters,
+    eg., `seed` to associate them with a seeding method that is not the 
+    default method, `maxIter` to make default runs with more iterations 
+    (for algorithms defined as NMFStrategyIterative), or any other
+    algorithm-specific parameter.
 
 CHANGES
 
-    o All vignettes are generated using knitr.
-    o New dependency to pkgmaker which incorporated many general utility 
-    functions
+    o All vignettes are now generated using knitr.
+    o New dependency to pkgmaker which incorporated many of the 
+    general utility functions, initially defined for the NMF package.
 
 
 *************************************************************************

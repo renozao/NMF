@@ -1794,7 +1794,9 @@ function(x, rank, method
 	if( min(rowSums(x)) == 0) fstop('Input matrix ', substitute(x),' contains at least one null row.');	
 
 	# a priori the parameters for the run are all the one in '...'
-	parameters.method <- list(...)
+	# => expand with the strategy's defaults
+	parameters.method <- expand_dots(method@defaults)
+	#
 	
 	if( is.nmf(seed) ){
 		
@@ -1836,7 +1838,7 @@ function(x, rank, method
 				
 				# extract the parameters from '...' that correspond to slots in the given class
 				stopifnot( isNMFclass(.modelClass) )
-				parameters <- .extract.slots.parameters(.modelClass, ...)	
+				parameters <- .extract.slots.parameters(.modelClass, parameters.method)	
 				
 				# restrict parameters.method to the ones that won't be used to instantiate the model
 				overriden <- is.element(names(parameters$slots), names(parameters.model.internal))
@@ -1980,12 +1982,16 @@ function(x, rank, method
 		if( length(.options) %% 4 != 0 )cat("\n")
 	}
 	
+	
+	## run parameters: 
+	parameters.run <- c(list(object=method, y=x, x=seed), parameters.method)
 	## Compute the initial residuals if tracking is enabled
-	init.resid <- if( .OPTIONS$track && !is.partial.nmf(seed) ) deviance(method, seed, x, ...)
+	init.resid <- if( .OPTIONS$track && !is.partial.nmf(seed) ){
+		do.call('deviance', parameters.run)
+	}
 	
 	## RUN NMF METHOD:
-	# call the strategy's run method [and time it] using the element of 'parameters.method' as parameters	
-	parameters.run <- c(list(object=method, y=x, x=seed), parameters.method)
+	# call the strategy's run method [and time it]
 	t <- system.time({				
 		res <- if( !dry.run )
 					do.call('run', parameters.run)
@@ -2016,7 +2022,10 @@ function(x, rank, method
 	## CLEAN-UP + EXTRAS:
 	# add extra information to the object
 	# last residuals
-	if( length(residuals(res)) == 0 ) residuals(res) <- setNames(deviance(method, res, x, ...), niter(res))
+	if( length(residuals(res)) == 0 && !is.partial.nmf(seed) ){
+		parameters.run$x <- res
+		residuals(res) <- setNames(do.call('deviance', parameters.run), niter(res))
+	}
 	# first residual if tracking is enabled
 	if( .OPTIONS$track ){
 		otrack <- residuals(res, track=TRUE)
@@ -2279,6 +2288,10 @@ setMethod('seed', signature(x='ANY', model='numeric', method='NMFSeed'),
 	
 	# transform '...' into a list
 	parameters <- list(...)	
+	if( length(parameters) == 1L && is.null(names(parameters)) ){
+		parameters <- parameters[[1L]]
+	}
+
 	# get the slots from the class name
 	slots <- slotNames(class.name)
 	# get the named parameters that correspond to a slot

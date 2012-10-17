@@ -152,6 +152,114 @@ txtProgressBar <- function (min = 0, max = 1, initial = 0, char = "=", width = N
     structure(list(getVal = getVal, up = up, kill = kill), class = "txtProgressBar")
 }
 
+#' Expanding Lists
+#' 
+#' \code{expand_list} expands a named list with a given set of default items,
+#' if these are not already in the list, partially matching their names.  
+#' 
+#' @param x input list
+#' @param ... extra named arguments defining the default items.
+#' A list of default values can also be passed as a a single unnamed argument.
+#' @param .exact logical that indicates if the names in \code{x} should be 
+#' partially matched against the defaults.
+#' @param .names logical that only used when \code{.exact=FALSE} and indicates
+#' that the names of items in \code{x} that partially match some defaults should
+#' be expanded in the returned list.
+#' 
+#' @return a list  
+#' 
+#' @export 
+#' @examples 
+#' 
+#' expand_list(list(a=1, b=2), c=3)
+#' expand_list(list(a=1, b=2, c=4), c=3)
+#' # with a list
+#' expand_list(list(a=1, b=2), list(c=3, d=10))
+#' # no partial match
+#' expand_list(list(a=1, b=2, c=5), cd=3)
+#' # partial match with names expanded
+#' expand_list(list(a=1, b=2, c=5), cd=3, .exact=FALSE)
+#' # partial match without expanding names
+#' expand_list(list(a=1, b=2, c=5), cd=3, .exact=FALSE, .names=FALSE)
+#' 
+expand_list <- function(x, ..., .exact=TRUE, .names=!.exact){
+	
+	# extract defaults from ... arguments
+	defaults <- list(...)
+	if( length(defaults) == 1L && is.null(names(defaults)) ){
+		defaults <- defaults[[1L]]
+	}
+	# early exit if no defaults
+	if( !length(defaults) ) return(x)
+	
+	# match names from x in defaults
+	x_ex <- x
+	if( !.exact ){
+		i <- pmatch(names(x), names(defaults))
+		# first expand names if necessary
+		if( length(w <- which(!is.na(i))) ){
+			names(x_ex)[w] <- names(defaults)[i[w]]
+			# apply to as well if necessary
+			if( .names ) names(x)[w] <- names(defaults)[i[w]]
+		}
+	}
+	
+	# expand list
+	i <- match(names(defaults), names(x_ex))
+	if( length(w <- which(is.na(i))) ){
+		n <- names(defaults)[w]
+		lapply(n, function(m) x[[m]] <<- defaults[[m]])
+	}
+	
+	x
+}
+
+#' \code{expand_dots} expands the \code{...} arguments of the function
+#' in which it is called with default values, using \code{expand_list}.
+#' It can \strong{only} be called from inside a function.
+#' 
+#' @param .exclude optional character vector of argument names to exclude 
+#' from expansion. 
+#'
+#' @export
+#' @rdname expand_list
+#' 
+#' @examples
+#' # expanding dot arguments
+#' 
+#' f <- function(...){ 
+#' 	expand_dots(list(a=2, bcd='a', xxx=20), .exclude='xxx') 
+#' }
+#' 
+#' # add default value for all arguments 
+#' f()
+#' # add default value for `bcd` only
+#' f(a=10)
+#' # expand names
+#' f(a=10, b=4)
+#' 
+expand_dots <- function(..., .exclude=NULL){
+	
+	dotsCall <- as.list(eval(quote(substitute(list(...))), sys.parent()))
+	if( length(dotsCall) >= 1L ) dotsCall <- dotsCall[-1L]
+	
+	# extract defaults from ... arguments
+	defaults <- list(...)
+	if( length(defaults) == 1L && is.null(names(defaults)) ){
+		defaults <- defaults[[1L]]
+	}
+	if( length(defaults) ){
+		excl <- names(allFormals(sys.function(sys.parent())))
+		if( !is.null(.exclude) ) excl <- c(excl, .exclude)
+		defaults <- defaults[!names(defaults) %in% excl]
+		dotsCall <- expand_list(dotsCall, defaults, .exact=FALSE)
+	}
+	#
+	
+	# return expanded dot args
+	dotsCall
+}
+
 #' Simulating Datasets
 #' 
 #' The function \code{syntheticNMF} generates random target matrices that follow

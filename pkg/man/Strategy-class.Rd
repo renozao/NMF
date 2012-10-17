@@ -46,6 +46,9 @@
   \item{package}{name of the package that defined the
   strategy.}
 
+  \item{defaults}{default values for some of the
+  algorithm's arguments.}
+
   }
 }
 \section{Methods}{
