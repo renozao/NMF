@@ -136,16 +136,16 @@ setMethod('nmf', signature(x='data.frame', rank='ANY', method='ANY'),
 #' algorithm(res)
 #' 
 setMethod('nmf', signature(x='matrix', rank='numeric', method='NULL'), 
-		function(x, rank, method, seed=nmf.getOption('default.seed'), model=NULL, ...)
+		function(x, rank, method, seed=NULL, model=NULL, ...)
 		{
 			
 			# a priori the default method will be used
 			method <- nmf.getOption('default.algorithm')
 			
 			# use default seeding method if seed is missing
-			if( is.null(seed) )
-				seed <- nmf.getOption('default.seed')
-			else{
+			if( is.null(seed) ){
+#				seed <- nmf.getOption('default.seed')
+			}else{
 				# get reference object from which to infer model type
 				refobj <- if( is.nmf(seed) ) seed else if( is.nmf(model) ) model
 				
@@ -1099,9 +1099,9 @@ function(x, rank, method
 				, R='RNGstream'))
 	}
 	
-	# 
-	if( is.null(seed) ) seed <- nmf.getOption('default.seed')
-	
+	# get seeding method from the strategy's defaults if needed
+	seed <- defaultArgument(seed, method, nmf.getOption('default.seed'), force=is.null(seed))
+
 	# setup verbosity options
 	debug <- if( !is.null(.options$debug) ) .options$debug else nmf.getOption('debug')
 	verbose <- if( debug ) Inf

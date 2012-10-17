@@ -9,6 +9,7 @@ NULL
 #' 
 #' @slot name character string giving the name of the algorithm
 #' @slot package name of the package that defined the strategy.
+#' @slot defaults default values for some of the algorithm's arguments.
 #' 
 #' @keywords internal
 setClass('Strategy'
@@ -16,6 +17,7 @@ setClass('Strategy'
 	, representation = representation(
 		name = 'character' # the strategy name
 		, package = 'character' # the package that defines the strategy
+		, defaults = 'list'
 	)
 	, prototype = prototype(
 		package = character()
@@ -64,6 +66,18 @@ setReplaceMethod('name', signature(object='Strategy', value='character'),
 		object
 	}
 )
+
+defaultArgument <- function(name, object, value, force=FALSE){
+
+	# taken from methods::hasArg
+	aname <- as.character(substitute(name))
+	miss <- eval(substitute(missing(name)), sys.frame(sys.parent()))
+	defaults <- attr(object, 'defaults')
+
+	if( !miss && !force ) eval(substitute(name), sys.frame(sys.parent()))
+	else if( aname %in% names(defaults) ) defaults[[aname]] 
+	else value
+}
 
 #' Virtual Interface for NMF Algorithms
 #' 
