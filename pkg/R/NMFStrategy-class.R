@@ -171,13 +171,8 @@ setMethod('NMFStrategy', signature(name='character', method='function'),
 		function(name, method, ...){
 			
 			# build a NMFStrategyFunction object on the fly to wrap function 'method'
-			strategy <- new('NMFStrategyFunction', name=name, algorithm=method, ..., package=toppackage_name())
+			NMFStrategy(name=name, algorithm=method, ...)
 			
-			# valid the new strategy
-			validObject(strategy)
-			
-			# return new object
-			strategy
 		}
 )
 
@@ -266,9 +261,9 @@ setMethod('NMFStrategy', signature(name='character', method='missing'),
 		function(name, method, ...){
 			
 			# check iterative strategy
-			if( hasArg(Update) ){ # create a new NMFStrategyIterative object
+			if( hasArg2('Update') ){ # create a new NMFStrategyIterative object
 				new('NMFStrategyIterative', name=name, ..., package=toppackage_name())
-			}else if( hasArg(algorithm) ){
+			}else if( hasArg2('algorithm') ){
 				new('NMFStrategyFunction', name=name, ..., package=toppackage_name())
 			}else{
 				stop('NMFStrategy - Could not infer the type of NMF strategy to instantiate.')

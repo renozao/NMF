@@ -23,7 +23,7 @@ test.constructor <- function(){
 	on.exit(removeClass('A'), add=TRUE)
 	
 	# with just name
-		checkException( new('A', name=character()), 'Error if slot name is a null character string')
+		#checkException( new('A', name=character()), 'Error if slot name is a null character string')
 		checkException( new('A', name=''), 'Error if slot name is an empty character string')
 		
 		checkTrue( validObject(new('A', name='toto')), 'No error if object with non empty name')
@@ -99,4 +99,16 @@ test.accessors <- function(){
 	objective(a) <- function(...){}
 	checkEquals( a@objective, function(...){}, "Method objective<-: set slot 'objective' correctly")
 	check.slots.methods(a, 'Object after name set by objective<-')
+}
+
+checkClass <- function(x, cl, msg){
+	checkEquals(class(x)[1L], cl, paste(msg, "[object of class '", class(x)[1L],"']"))
+}
+
+test.constructorMethod <- function(){
+	
+	checkClass(NMFStrategy('a', Update=function(i, y, x, ...){}), 'NMFStrategyIterative', 'With argument `Update`')
+	checkClass(NMFStrategy('a', function(i, y, x, ...){}), 'NMFStrategyFunction', 'With method=function')
+	checkClass(NMFStrategy('a', algorithm=function(i, y, x, ...){}), 'NMFStrategyFunction', 'With argument `algorithm`')
+	
 }

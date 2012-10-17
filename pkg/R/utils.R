@@ -260,6 +260,41 @@ expand_dots <- function(..., .exclude=NULL){
 	dotsCall
 }
 
+#' Checking for Missing Arguments
+#' 
+#' This function is identical to \code{\link{hasArg}}, except that 
+#' it accepts the argument name as a character string.
+#' This avoids to have a check NOTE about invisible binding variable.  
+#' 
+#' @param name a character string.
+#' 
+#' @export
+#' @examples
+#' 
+#' f <- function(...){ hasArg2('abc') }
+#' f(a=1)
+#' f(abc=1)
+#' f(b=1)
+#' 
+hasArg2 <- function (name) 
+{
+	name <- as.name(name)
+	## apply methods::hasArg
+	aname <- as.character(substitute(name))
+	fnames <- names(formals(sys.function(sys.parent())))
+	if (is.na(match(aname, fnames))) {
+		if (is.na(match("...", fnames))) 
+			FALSE
+		else {
+			dotsCall <- eval(quote(substitute(list(...))), sys.parent())
+			!is.na(match(aname, names(dotsCall)))
+		}
+	}
+	else eval(substitute(!missing(name)), sys.frame(sys.parent()))
+	##
+}
+
+
 #' Simulating Datasets
 #' 
 #' The function \code{syntheticNMF} generates random target matrices that follow
