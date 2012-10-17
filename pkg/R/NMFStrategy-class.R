@@ -132,11 +132,14 @@ setClass('NMFStrategy'
 setMethod('show', 'NMFStrategy',
 		function(object){			
 			cat('<object of class: ', class(object), ">\n", sep='')
-			cat(" name:", name(object), "\n")
+			cat(" name: ", name(object), " [", packageSlot(object), "]\n", sep='')
 			svalue <- objective(object)
 			svalue <- if( is.function(svalue) ) str_args(svalue, exdent=10) else paste("'", svalue,"'", sep='')
 			cat(" objective:", svalue, "\n")
 			cat(" model:", modelname(object), "\n")
+			if( length(object@defaults) > 0L ){
+				cat(" defaults:", str_desc(object@defaults, exdent=10L), "\n")
+			}
 			return(invisible())
 		}
 )
@@ -155,7 +158,7 @@ toppackage_name <- function(){
 #' Creates NMFStrategy objects that wraps implementation of NMF algorithms into 
 #' a unified interface.
 #' 
-#' @param name name of an NMF algorithm.
+#' @param name name/key of an NMF algorithm.
 #' @param method definition of the algorithm
 #' @param ... extra arguments passed to \code{\link{new}}.
 #' 
@@ -213,10 +216,10 @@ setMethod('NMFStrategy', signature(name='NMFStrategy', method='missing'),
 #' Creates an \code{NMFStrategy} based on a registered NMF algorithm that is used 
 #' as a template (Constructor-Copy), in particular it uses the \strong{same} name.
 #' 
-#' It is a shortcut for \code{NMFStrategy(nmfAlgorithm(method), ...)}.
+#' It is a shortcut for \code{NMFStrategy(nmfAlgorithm(method, exact=TRUE), ...)}.
 setMethod('NMFStrategy', signature(name='missing', method='character'), 
 		function(name, method, ...){
-			NMFStrategy(nmfAlgorithm(method), ...)
+			NMFStrategy(nmfAlgorithm(method, exact=TRUE), ...)
 		}
 )
 
@@ -239,7 +242,7 @@ setMethod('NMFStrategy', signature(name='NULL', method='NMFStrategy'),
 #' as a template.
 setMethod('NMFStrategy', signature(name='character', method='character'), 
 		function(name, method, ...){
-			NMFStrategy(name=name, method=nmfAlgorithm(method), ...) 
+			NMFStrategy(name=name, method=nmfAlgorithm(method, exact=TRUE), ...) 
 		}
 )
 #' Creates an \code{NMFStrategy} based on a registered NMF algorithm (Constructor-Copy) 
@@ -248,7 +251,7 @@ setMethod('NMFStrategy', signature(name='character', method='character'),
 #' It is a shortcut for \code{NMFStrategy(NULL, nmfAlgorithm(method), ...)}.
 setMethod('NMFStrategy', signature(name='NULL', method='character'), 
 		function(name, method, ...){
-			NMFStrategy(NULL, method=nmfAlgorithm(method), ...) 
+			NMFStrategy(NULL, method=nmfAlgorithm(method, exact=TRUE), ...) 
 		}
 )
 #' Creates an NMFStrategy, determining its type from the extra arguments passed 
@@ -378,7 +381,8 @@ setPackageRegistry('algorithm', "NMFStrategy", description="NMF algorithms")
 #' 
 #' Adds a new algorithm to the registry of algorithms that perform 
 #' Nonnegative Matrix Factorization.
-#'   
+#'  
+#' @inheritParams NMFStrategy
 #' @param overwrite logical that indicates if any existing NMF method with the 
 #' same name should be overwritten (\code{TRUE}) or not (\code{FALSE}), 
 #' in which case an error is thrown.
@@ -389,7 +393,7 @@ setPackageRegistry('algorithm', "NMFStrategy", description="NMF algorithms")
 #' in registry. 
 #' 
 #' @export
-setNMFMethod <- function(..., overwrite=FALSE, verbose=nmf.getOption('verbose')){
+setNMFMethod <- function(name, method, ..., overwrite=FALSE, verbose=nmf.getOption('verbose')){
 	
 	# development/tracking trick 
 	if( !isNamespaceLoaded('NMF') ) overwrite <- TRUE 
@@ -397,10 +401,22 @@ setNMFMethod <- function(..., overwrite=FALSE, verbose=nmf.getOption('verbose'))
 			if( missing(verbose) ) isLoadingNamespace() || !isNamespaceLoaded('NMF')
 			else verbose
 	
-	# build the NMFStrategy object
-	method <- NMFStrategy(...)
+	# build call to constructor
+	call_const <- match.call(NMFStrategy)
+	call_const[[1]] <- as.name('NMFStrategy')
+	call_const$verbose <- NULL
+	call_const$overwrite <- NULL
+	# swap name and method if method is missing and name is a registered method
+	if( missing(method) && !missing(name) && is.character(name) && existsNMFMethod(name) ){
+		call_const$method <- name
+		call_const$name <- NULL
+	}
+	# build the NMFStrategy object (in the parent frame to get the package slot right)
+	e <- parent.frame()
+	method <- eval(call_const, envir=e)
+
 	parent.method <- attr(method, 'parent')
-	key <- name(method)[1]
+	key <- match.fun('name')(method)[1]
 
 	if( lverbose ){
 		tmpl <- 
@@ -417,10 +433,10 @@ setNMFMethod <- function(..., overwrite=FALSE, verbose=nmf.getOption('verbose'))
 	
 	if( !is.null(res) && res > 0L ){
 		if( lverbose ) message( if(res == 1L) "OK" else "UPDATED" )
-		method
+		invisible(method)
 	}else{
 		if( lverbose ) message( "ERROR" )
-		NULL
+		invisible(NULL)
 	}
 }
 
@@ -486,7 +502,7 @@ setMethod('canFit', signature(x='character', y='ANY'),
 		}
 )
 
-#' \code{selectMethodNMF} tries to select an appropriate NMF algorithm that is 
+#' \code{selectNMFMethod} tries to select an appropriate NMF algorithm that is 
 #' able to fit a given the NMF model.
 #' 
 #' @param name name of a registered NMF algorithm
@@ -499,12 +515,12 @@ setMethod('canFit', signature(x='character', y='ANY'),
 #' @param quiet a logical that indicates if warnings or errors should be thrown 
 #' in case of the selected algorithm is not the default algorithm.
 #' 
-#' @return \code{selectMethodNMF} returns a character vector or \code{NMFStrategy} objects, 
+#' @return \code{selectNMFMethod} returns a character vector or \code{NMFStrategy} objects, 
 #' or NULL if no suitable algorithm was found.
 #' 
 #' @rdname registry-algorithm
 #' 
-selectMethodNMF <- function(name, model, load=FALSE, exact=FALSE, all=FALSE, quiet=FALSE){
+selectNMFMethod <- function(name, model, load=FALSE, exact=FALSE, all=FALSE, quiet=FALSE){
 	
 	# lookup for an algorithm suitable for the given NMF model
 	if( !isNMFclass(model) )

@@ -34,7 +34,7 @@
     y, x, maxIter, ...)
 }
 \arguments{
-  \item{name}{name of an NMF algorithm.}
+  \item{name}{name/key of an NMF algorithm.}
 
   \item{method}{definition of the algorithm}
 
@@ -100,7 +100,8 @@
   \strong{same} name.
 
   It is a shortcut for
-  \code{NMFStrategy(nmfAlgorithm(method), ...)}. }
+  \code{NMFStrategy(nmfAlgorithm(method, exact=TRUE),
+  ...)}. }
 
   \item{NMFStrategy}{\code{signature(name = "NULL", method
   = "NMFStrategy")}: Creates an \code{NMFStrategy} based on

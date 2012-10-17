@@ -11,12 +11,18 @@ NEW FEATURES
     default method, `maxIter` to make default runs with more iterations 
     (for algorithms defined as NMFStrategyIterative), or any other
     algorithm-specific parameter.
+    o new general utility function hasArg2 that is identical to hasArg
+    but takes the argument name as a character string, so that no 
+    check NOTE is thrown.
 
 CHANGES
 
     o All vignettes are now generated using knitr.
     o New dependency to pkgmaker which incorporated many of the 
     general utility functions, initially defined for the NMF package.
+    o example check is faster (as requested by CRAN)
+    o the function selectMethodNMF was renamed into selectNMFMethod to 
+    be consistent with the other related *NMFMethod functions (get, set, etc..)
 
 
 *************************************************************************

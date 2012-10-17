@@ -3,11 +3,11 @@
 \alias{setNMFMethod}
 \title{Registering NMF Algorithms}
 \usage{
-  setNMFMethod(..., overwrite = FALSE,
+  setNMFMethod(name, method, ..., overwrite = FALSE,
     verbose = nmf.getOption("verbose"))
 
-  nmfRegisterAlgorithm(..., overwrite = FALSE,
-    verbose = nmf.getOption("verbose"))
+  nmfRegisterAlgorithm(name, method, ...,
+    overwrite = FALSE, verbose = nmf.getOption("verbose"))
 }
 \arguments{
   \item{overwrite}{logical that indicates if any existing
@@ -23,6 +23,10 @@
   \code{\link{NMFStrategy}}, which instantiate the
   \code{\linkS4class{NMFStrategy}} object that is stored in
   registry.}
+
+  \item{name}{name/key of an NMF algorithm.}
+
+  \item{method}{definition of the algorithm}
 }
 \description{
   Adds a new algorithm to the registry of algorithms that

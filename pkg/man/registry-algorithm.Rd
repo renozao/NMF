@@ -2,10 +2,10 @@
 \alias{existsNMFMethod}
 \alias{getNMFMethod}
 \alias{methods-NMF}
-\alias{selectMethodNMF}
+\alias{selectNMFMethod}
 \title{Registry for NMF Algorithms}
 \usage{
-  selectMethodNMF(name, model, load = FALSE, exact = FALSE,
+  selectNMFMethod(name, model, load = FALSE, exact = FALSE,
     all = FALSE, quiet = FALSE)
 
   getNMFMethod(...)
@@ -38,14 +38,14 @@
   (\code{FALSE}).}
 }
 \value{
-  \code{selectMethodNMF} returns a character vector or
+  \code{selectNMFMethod} returns a character vector or
   \code{NMFStrategy} objects, or NULL if no suitable
   algorithm was found.
 }
 \description{
   Registry for NMF Algorithms
 
-  \code{selectMethodNMF} tries to select an appropriate NMF
+  \code{selectNMFMethod} tries to select an appropriate NMF
   algorithm that is able to fit a given the NMF model.
 
   \code{getNMFMethod} retrieves NMF algorithm objects from
