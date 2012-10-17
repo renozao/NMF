@@ -11,7 +11,7 @@ resfile <- list.files(td, pattern=".+\\.txt", full.names=TRUE)
 cat("Result files:\n")
 print(resfile)
 
-if( length(resfile) ){
+if( length(resfile) && Sys.info()['user'] != 'renaud'){
 	# send
 	library(mail)
 	sapply(resfile, function(f){
