@@ -86,13 +86,18 @@ NULL
 #' @examples
 #' 
 #' # generate a synthetic dataset with known classes: 50 features, 23 samples (10+5+8)
-#' n <- 50; counts <- c(10, 5, 8);
+#' n <- 20; counts <- c(5, 3, 2);
 #' p <- sum(counts)
 #' x <- syntheticNMF(n, counts)
 #' dim(x)
 #' 
 #' # build the true cluster membership
 #' groups <- unlist(mapply(rep, seq(counts), counts))
+#' 
+#' \dontshow{
+#' # to speed-up the example we redefine some methods to use only 30 iterations:
+#' sapply(c('brunet', 'lee', 'nsNMF'), setNMFMethod, defaults=list(maxIter=30), overwrite=TRUE, verbose=TRUE)
+#' } 
 #' 
 setGeneric('nmf', function(x, rank, method, ...) standardGeneric('nmf') )
 #' Fits an NMF model on a \code{data.frame}.
@@ -152,7 +157,7 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='NULL'),
 				if( !is.null(refobj) ){
 					mtype <- modelname(refobj)
 					# try to find the algorithm suitable for the seed's NMF model
-					method.potential <- selectMethodNMF(model=mtype, exact=TRUE, quiet=TRUE)
+					method.potential <- selectNMFMethod(model=mtype, exact=TRUE, quiet=TRUE)
 					if( is.null(method.potential) )
 						stop("NMF::nmf - Found no algorithm defined for model '", mtype, "'")
 					
@@ -570,12 +575,15 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='missing'),
 #' respectively.
 #' 
 #' @examples
+#' 
+#' \dontrun{
 #' # Fit a 3-rank model providing an initial value for the basis matrix
 #' nmf(x, rmatrix(nrow(x), 3), 'snmf/r')
 #'  
 #' # Fit a 3-rank model providing an initial value for the mixture coefficient matrix
 #' nmf(x, rmatrix(3, ncol(x)), 'snmf/l')
-#'  
+#' }
+#' 
 setMethod('nmf', signature(x='matrix', rank='matrix', method='ANY'), 
 	function(x, rank, method, seed, model=list(), ...)
 	{
@@ -1076,6 +1084,11 @@ checkErrors <- function(object, element=NULL){
 #' # Passs a callback function which throws an error
 #' cb <- function(){ i<-0; function(object){ i <<- i+1; if( i == 1 ) stop('SOME BIG ERROR'); summary(object) }}
 #' res <- nmf(x, 3, nrun=3, .callback=cb())
+#' 
+#' \dontshow{
+#' # reset default method
+#' sapply(c('brunet', 'lee', 'nsNMF'), setNMFMethod, defaults=list(), overwrite=TRUE, verbose=TRUE)
+#' }
 #' 
 setMethod('nmf', signature(x='matrix', rank='numeric', method='NMFStrategy'),
 #function(x, rank, method, seed='random', nrun=1, keep.all=FALSE, optimized=TRUE, init='NMF', track, verbose, ...)

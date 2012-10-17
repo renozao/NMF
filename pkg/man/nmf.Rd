@@ -696,13 +696,18 @@
 }
 \examples{
 # generate a synthetic dataset with known classes: 50 features, 23 samples (10+5+8)
-n <- 50; counts <- c(10, 5, 8);
+n <- 20; counts <- c(5, 3, 2);
 p <- sum(counts)
 x <- syntheticNMF(n, counts)
 dim(x)
 
 # build the true cluster membership
 groups <- unlist(mapply(rep, seq(counts), counts))
+
+\dontshow{
+# to speed-up the example we redefine some methods to use only 30 iterations:
+sapply(c('brunet', 'lee', 'nsNMF'), setNMFMethod, defaults=list(maxIter=30), overwrite=TRUE, verbose=TRUE)
+}
 # run on a data.frame
 res <- nmf(data.frame(x), 3)
 # missing method: use algorithm suitable for seed
@@ -748,11 +753,13 @@ res <- nmf(x, y)
 nmf.equal(nmf(x, y), res)
 # missing method: use default algorithm
 res <- nmf(x, 3)
+\dontrun{
 # Fit a 3-rank model providing an initial value for the basis matrix
 nmf(x, rmatrix(nrow(x), 3), 'snmf/r')
 
 # Fit a 3-rank model providing an initial value for the mixture coefficient matrix
 nmf(x, rmatrix(3, ncol(x)), 'snmf/l')
+}
 # default fit
 res <- nmf(x, 2)
 summary(res, class=groups)
@@ -837,6 +844,11 @@ res$.callback
 # Passs a callback function which throws an error
 cb <- function(){ i<-0; function(object){ i <<- i+1; if( i == 1 ) stop('SOME BIG ERROR'); summary(object) }}
 res <- nmf(x, 3, nrun=3, .callback=cb())
+
+\dontshow{
+# reset default method
+sapply(c('brunet', 'lee', 'nsNMF'), setNMFMethod, defaults=list(), overwrite=TRUE, verbose=TRUE)
+}
 }
 \references{
   Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).
