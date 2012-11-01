@@ -432,7 +432,20 @@ setMethod('show', 'NMFfitX',
 		}
 )
 
+#' Extracting RNG Data from NMF Objects
+#' 
+#' The \code{\link{nmf}} function returns objects that contain embedded RNG data, 
+#' that can be used to exactly reproduce any computation.
+#' These data can be extracted using dedicated methods for the S4 generics 
+#' \code{\link[rngtools]{getRNG}} and \code{\link[rngtools]{getRNG1}}.
+#' 
+#' @inheritParams rngtools::getRNG
+#' @inheritParams rngtools::getRNG1
+#' 
 #' @importMethodsFrom rngtools getRNG1
+#' @inline
+#' @rdname RNG
+#' @export
 setGeneric('getRNG1', package='rngtools')
 
 #' Returns the RNG settings used for the first NMF run of multiple NMF runs. 
@@ -942,6 +955,9 @@ setMethod('getRNG1', signature(object='NMFfitXn'),
 )
 
 #' @importMethodsFrom rngtools .getRNG
+#' @inline
+#' @rdname RNG
+#' @export
 setGeneric('.getRNG', package='rngtools')
 
 #' Returns the RNG settings used for the best fit.

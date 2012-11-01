@@ -81,9 +81,13 @@
   estimation residuals. }
 
   \item{.getRNG}{\code{signature(object = "NMFfitXn")}:
+  Returns the RNG settings used for the best fit.
+
   This method throws an error if the object is empty. }
 
   \item{getRNG1}{\code{signature(object = "NMFfitXn")}:
+  Returns the RNG settings used for the first run.
+
   This method throws an error if the object is empty. }
 
   \item{minfit}{\code{signature(object = "NMFfitXn")}:
