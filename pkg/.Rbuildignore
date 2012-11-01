@@ -1,6 +1,6 @@
 \.project
 \.settings
-^dev$
+^sandbox$
 ^ressources/$
 vignettes/figure$
 vignettes/cache$

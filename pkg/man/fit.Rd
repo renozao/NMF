@@ -1,20 +1,20 @@
 \docType{methods}
 \name{fit}
 \alias{fit}
-\alias{fit,NMFfit-method}
-\alias{fit,NMFfitX-method}
-\alias{fit,NMFfitX1-method}
-\alias{fit,NMFfitXn-method}
-\alias{fit-methods}
 \alias{fit<-}
-\alias{fit<-,NMFfit,NMF-method}
 \alias{fit<--methods}
+\alias{fit-methods}
+\alias{fit,NMFfit-method}
+\alias{fit<-,NMFfit,NMF-method}
+\alias{fit,NMFfitX1-method}
+\alias{fit,NMFfitX-method}
+\alias{fit,NMFfitXn-method}
 \alias{minfit}
-\alias{minfit,NMFfit-method}
-\alias{minfit,NMFfitX-method}
-\alias{minfit,NMFfitX1-method}
-\alias{minfit,NMFfitXn-method}
 \alias{minfit-methods}
+\alias{minfit,NMFfit-method}
+\alias{minfit,NMFfitX1-method}
+\alias{minfit,NMFfitX-method}
+\alias{minfit,NMFfitXn-method}
 \title{Extracting Fitted Models}
 \usage{
   fit(object, ...)

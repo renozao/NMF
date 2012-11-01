@@ -105,6 +105,10 @@
 
   This function sets slot \code{W} of \code{object}. }
 
+  \item{bterms<-}{\code{signature(object = "NMFstd")}:
+  Default method tries to coerce \code{value} into a
+  \code{data.frame} with \code{\link{as.data.frame}}. }
+
   \item{.coef}{\code{signature(object = "NMFstd")}: Get the
   mixture coefficient matrix in standard NMF models
 
@@ -115,10 +119,6 @@
   standard NMF models
 
   This function sets slot \code{H} of \code{object}. }
-
-  \item{bterms<-}{\code{signature(object = "NMFstd")}:
-  Default method tries to coerce \code{value} into a
-  \code{data.frame} with \code{\link{as.data.frame}}. }
 
   \item{cterms<-}{\code{signature(object = "NMFstd")}:
   Default method tries to coerce \code{value} into a
@@ -175,8 +175,8 @@ nmfModel(r, W=w, H=h)
   http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
 }
 \seealso{
-  Other NMF-model: \code{\link{NMFOffset-class}},
-  \code{\link{NMFns-class}},
-  \code{\link{initialize,NMFOffset-method}}
+  Other NMF-model:
+  \code{\link{initialize,NMFOffset-method}},
+  \code{\link{NMFns-class}}, \code{\link{NMFOffset-class}}
 }
 

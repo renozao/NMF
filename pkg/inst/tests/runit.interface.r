@@ -11,10 +11,8 @@ if( isNamespaceLoaded('NMF') ){
 	`name<-` <- NMF:::`name<-`
 }
 
-RNGseed <- getRNG
-
-checkIdenticalRNG <- function(a, b, ...){	
-	checkTrue(rng.equal(a, b), ...)
+.testData <- function(n=20, r=3, m=10, ...){
+	syntheticNMF(n, r, m, ...)
 }
 
 test.registry <- function(){
@@ -103,8 +101,8 @@ check.res <- function(title, obj, V, r, expect.class, algo=NULL, seed=NULL
 test.seed <- function(){
 	
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m, noise=TRUE) 
+	r <- 3; V <- .testData(r=r)
+	n <- nrow(V); m <- ncol(V);
 		
 	# test default call
 	obj <- seed(V, r)
@@ -143,8 +141,7 @@ test.nmf.default <- function(){
 	# set random seed
 	set.seed(123456)	
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m, noise=TRUE) 
+	r <- 3; V <- .testData(r=r)
 	
 	# run nmf with no argument 
 	check.res('Call with rank (only)'
@@ -158,8 +155,7 @@ test.nmf.method <- function(){
 	# set random seed
 	set.seed(123456)	
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m, noise=TRUE) 
+	r <- 3; V <- .testData(r=r)
 	
 	# check errors
 	checkException( nmf(V, r, 'zzz'), "Throw an error when: inexistent algorithm name")
@@ -199,8 +195,7 @@ test.nmf.multirank <- function(){
 	# set random seed
 	set.seed(123456)
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m, noise=TRUE)
+	r <- 3; V <- .testData(r=r)
 	
 	old.rseed <- getRNG()
 	ranks <- 2:4
@@ -233,8 +228,7 @@ test.nmf.seed.fault <- function(){
 	# set random seed
 	set.seed(123456)
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m) 
+	r <- 3; V <- .testData(r=r)
 	
 	# .Random.seed is not changed after an error in the run
 	os <- .Random.seed
@@ -261,8 +255,7 @@ test.nmf.seed.argument <- function(){
 	# set random seed
 	set.seed(123456)
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m, noise=TRUE) 
+	r <- 3; V <- .testData(r=r)
 	
 	## ARGUMENT: seed
 	
@@ -400,8 +393,7 @@ test.nmf.seed.equivalent <- function(){
 	# set random seed
 	set.seed(123456)
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m, noise=TRUE)
+	r <- 3; V <- .testData(r=r)
 	
 	# multiple run nmf with numeric seed is equivalent to set.seed before the call
 	set.seed(1234)
@@ -461,8 +453,7 @@ test.nmf.seed.repro <- function(){
 	# set random seed
 	set.seed(123456)
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m)
+	r <- 3; V <- .testData(r=r)
 	
 	# check reproducibility
 	res <- replicate(2, nmf(V, r, seed=123))
@@ -495,8 +486,7 @@ test.nmf.model <- function(){
 	# set random seed
 	set.seed(123456)	
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m, noise=TRUE) 
+	r <- 3; V <- .testData(r=r)
 	
 	## ARGUMENT: model
 	# run nmf with empty argument'model' 
@@ -531,9 +521,7 @@ test.nmf.dots <- function(){
 	# set random seed
 	set.seed(123456)	
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m, noise=TRUE) 
-	
+	r <- 3; V <- .testData(r=r)
 	
 	## ARGUMENT: ...
 	# run nmf with unused parameter in '...'
@@ -556,8 +544,7 @@ test.nmf.dots <- function(){
 test.nmf.callback <- function(){
 
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m, noise=TRUE)
+	r <- 3; V <- .testData(r=r)
 	
 	# check that the result of the callback are stored in the result object
 	cb <- function(object, i){ 1 }
@@ -651,8 +638,7 @@ test.nmf.options <- function(){
 test.nmf.custom <- function(){
 	
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m, noise=TRUE)
+	r <- 3; V <- .testData(r=r)
 	
 	# define a dummy nmf algorithm with an argument with the same name as a slot	
 	my.algo <- function(x, seed, theta=0){
@@ -764,8 +750,7 @@ test.nmf.parameters <- function(){
 	}
 	
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m, noise=TRUE)
+	r <- 3; V <- .testData(r=r)
 	
 	check.res('Call with custom algo, model NMF', 
 			nmf(V, r, my.algo, name='dummy', model='NMFstd')
@@ -824,8 +809,8 @@ test.nmf.parameters <- function(){
 test.compare <- function(){
 	
 	# create a random target matrix
-	n <- 20; r <- 3; m <- 30
-	V <- syntheticNMF(n, r, m, noise=TRUE) 
+	r <- 3; V <- .testData(r=r)
+	m <- ncol(V)
 	
 	# init a list for the results
 	res <- list()
@@ -872,8 +857,7 @@ test.compare <- function(){
 test.summary <- function(){
 	
 	# create a random target matrix
-	n <- 20; r <- 3; m <- 30
-	V <- syntheticNMF(n, r, m, noise=TRUE)
+	r <- 3; V <- .testData(r=r)
 	
 	# test on a single run
 	checkTrue( is.numeric(summary(nmf(V, r))), 'Single run: result is numeric')
@@ -889,8 +873,7 @@ test.summary <- function(){
 test.parallel <- function(){
 		
 	# create a random target matrix
-	n <- 30; r <- 3; p <- 20
-	V <- syntheticNMF(n, r, p, noise=TRUE)
+	r <- 3; V <- .testData(r=r)
 	# 
 	# run seeded standard sequential run
 	ref <- nmf(V,r, nrun=3, .opt='k-p', seed=123456)
@@ -929,8 +912,7 @@ test.parallel <- function(){
 test.nmf.stop <- function(){
 	
 	# create a random target matrix
-	n <- 30; r <- 3; p <- 20
-	V <- syntheticNMF(n, r, p, noise=TRUE)
+	r <- 3; V <- .testData(r=r)
 	#
 	
 	checkIdentical( niter(nmf(V, r, .stop=37L)), 37L, "Integer stopping criterium: fixed number of iterations")

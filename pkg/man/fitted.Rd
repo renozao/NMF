@@ -1,12 +1,12 @@
 \docType{methods}
 \name{fitted}
 \alias{fitted}
-\alias{fitted,NMF-method}
-\alias{fitted,NMFOffset-method}
-\alias{fitted,NMFfit-method}
-\alias{fitted,NMFns-method}
-\alias{fitted,NMFstd-method}
 \alias{fitted-methods}
+\alias{fitted,NMFfit-method}
+\alias{fitted,NMF-method}
+\alias{fitted,NMFns-method}
+\alias{fitted,NMFOffset-method}
+\alias{fitted,NMFstd-method}
 \title{Fitted Matrix in NMF Models}
 \usage{
   fitted(object, ...)

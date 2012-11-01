@@ -1,46 +1,46 @@
 \docType{methods}
 \name{basis}
-\alias{.basis}
-\alias{.basis,NMF-method}
-\alias{.basis,NMFfit-method}
-\alias{.basis,NMFstd-method}
-\alias{.basis-methods}
-\alias{.basis<-}
-\alias{.basis<-,NMF,matrix-method}
-\alias{.basis<-,NMFfit,matrix-method}
-\alias{.basis<-,NMFstd,matrix-method}
-\alias{.basis<--methods}
-\alias{.coef}
-\alias{.coef,NMF-method}
-\alias{.coef,NMFfit-method}
-\alias{.coef,NMFstd-method}
-\alias{.coef-methods}
-\alias{.coef<-}
-\alias{.coef<-,NMF,matrix-method}
-\alias{.coef<-,NMFfit,matrix-method}
-\alias{.coef<-,NMFstd,matrix-method}
-\alias{.coef<--methods}
 \alias{basis}
-\alias{basis,NMF-method}
-\alias{basis,NMFfitXn-method}
-\alias{basis-methods}
+\alias{.basis}
+\alias{.basis<-}
 \alias{basis<-}
 \alias{basis<-,ANY-method}
+\alias{.basis<--methods}
+\alias{.basis-methods}
 \alias{basis<--methods}
+\alias{basis-methods}
+\alias{.basis<-,NMFfit,matrix-method}
+\alias{.basis,NMFfit-method}
+\alias{basis,NMFfitXn-method}
+\alias{.basis<-,NMF,matrix-method}
+\alias{.basis,NMF-method}
+\alias{basis,NMF-method}
+\alias{.basis<-,NMFstd,matrix-method}
+\alias{.basis,NMFstd-method}
 \alias{coef}
-\alias{coef,NMF-method}
-\alias{coef,NMFfitXn-method}
-\alias{coef-methods}
+\alias{.coef}
+\alias{.coef<-}
 \alias{coef<-}
 \alias{coef<-,ANY-method}
-\alias{coef<--methods}
 \alias{coefficients}
-\alias{coefficients,NMF-method}
 \alias{coefficients-methods}
+\alias{coefficients,NMF-method}
+\alias{.coef<--methods}
+\alias{.coef-methods}
+\alias{coef<--methods}
+\alias{coef-methods}
+\alias{.coef<-,NMFfit,matrix-method}
+\alias{.coef,NMFfit-method}
+\alias{coef,NMFfitXn-method}
+\alias{.coef<-,NMF,matrix-method}
+\alias{.coef,NMF-method}
+\alias{coef,NMF-method}
+\alias{.coef<-,NMFstd,matrix-method}
+\alias{.coef,NMFstd-method}
 \alias{loadings,NMF-method}
 \alias{scoef}
-\alias{scoef,NMF-method}
 \alias{scoef-methods}
+\alias{scoef,NMF-method}
 \title{Accessing NMF Factors}
 \usage{
   basis(object, ...)
@@ -158,6 +158,11 @@
 \section{Methods}{
   \describe{
 
+  \item{basis}{\code{signature(object = "NMFfitXn")}:
+  Returns the basis matrix of the best fit amongst all the
+  fits stored in \code{object}. It is a shortcut for
+  \code{basis(fit(object))}. }
+
   \item{.basis}{\code{signature(object = "NMF")}: Pure
   virtual method for objects of class
   \code{\linkS4class{NMF}}, that should be overloaded by
@@ -195,6 +200,15 @@
   actual NMF model. It is not meant to be used by the user,
   except when developing NMF algorithms, to update the
   basis matrix of the seed object before returning it. }
+
+  \item{basis<-}{\code{signature(object = "ANY")}: Default
+  methods that calls \code{.basis<-} and check the validity
+  of the updated object. }
+
+  \item{coef}{\code{signature(object = "NMFfitXn")}:
+  Returns the coefficient matrix of the best fit amongst
+  all the fits stored in \code{object}. It is a shortcut
+  for \code{coef(fit(object))}. }
 
   \item{.coef}{\code{signature(object = "NMF")}: Pure
   virtual method for objects of class
@@ -235,20 +249,6 @@
   except when developing NMF algorithms, to update the
   coefficient matrix in the seed object before returning
   it. }
-
-  \item{basis}{\code{signature(object = "NMFfitXn")}:
-  Returns the basis matrix of the best fit amongst all the
-  fits stored in \code{object}. It is a shortcut for
-  \code{basis(fit(object))}. }
-
-  \item{basis<-}{\code{signature(object = "ANY")}: Default
-  methods that calls \code{.basis<-} and check the validity
-  of the updated object. }
-
-  \item{coef}{\code{signature(object = "NMFfitXn")}:
-  Returns the coefficient matrix of the best fit amongst
-  all the fits stored in \code{object}. It is a shortcut
-  for \code{coef(fit(object))}. }
 
   \item{coef<-}{\code{signature(object = "ANY")}: Default
   methods that calls \code{.coef<-} and check the validity
@@ -295,10 +295,10 @@ try( coef(x) <- matrix(1, nbasis(x)-1, nrow(x)) )
 try( validObject(x) )
 }
 \seealso{
-  Other NMF-interface: \code{\link{$,NMF-method}},
-  \code{\link{$<-,NMF-method}},
+  Other NMF-interface:
   \code{\link{.DollarNames,NMF-method}},
-  \code{\link{NMF-class}}, \code{\link{misc}},
+  \code{\link{misc}}, \code{\link{NMF-class}},
+  \code{\link{$<-,NMF-method}}, \code{\link{$,NMF-method}},
   \code{\link{nmfModel}}, \code{\link{nmfModels}},
   \code{\link{rnmf}}
 }

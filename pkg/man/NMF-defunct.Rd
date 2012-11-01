@@ -1,6 +1,6 @@
 \name{NMF-defunct}
-\alias{NMF-defunct}
 \alias{errorPlot}
+\alias{NMF-defunct}
 \title{Defunct Functions in the Package NMF}
 \usage{
   errorPlot(x, ...)

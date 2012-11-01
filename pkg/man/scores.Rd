@@ -1,13 +1,13 @@
 \docType{methods}
 \name{featureScore}
 \alias{extractFeatures}
-\alias{extractFeatures,NMF-method}
 \alias{extractFeatures,matrix-method}
 \alias{extractFeatures-methods}
+\alias{extractFeatures,NMF-method}
 \alias{featureScore}
-\alias{featureScore,NMF-method}
 \alias{featureScore,matrix-method}
 \alias{featureScore-methods}
+\alias{featureScore,NMF-method}
 \title{Feature Selection in NMF Models}
 \usage{
   featureScore(object, ...)

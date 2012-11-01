@@ -130,13 +130,10 @@ existsNMFSeed <- function(name, exact=TRUE){
 #' @inheritParams setNMFMethod
 #' 
 #' @export
-setNMFSeed <- function(..., overwrite=FALSE, verbose=nmf.getOption('verbose')){
+setNMFSeed <- function(..., overwrite=isLoadingNamespace(), verbose=TRUE){
 	
-	# development/tracking trick 
-	if( !isNamespaceLoaded('NMF') ) overwrite <- TRUE 
-	lverbose <- # if not specified: always when loading or in dev mode
-			if( missing(verbose) ) isLoadingNamespace() || !isNamespaceLoaded('NMF')
-			else verbose 
+	library(pkgmaker)
+	lverbose <- verbose 
 	
 	# wrap function method into a new NMFSeed object
 	method <- NMFSeed(...)
@@ -189,7 +186,7 @@ setGeneric('NMFSeed', function(key, method, ...) standardGeneric('NMFSeed') )
 setMethod('NMFSeed', signature(key='character', method='ANY'), 
 	function(key, method, ...){
 		# wrap function method into a new NMFSeed object
-		new('NMFSeed', name=key, method=method, ..., package=toppackage_name())
+		new('NMFSeed', name=key, method=method, ..., package=topns_name())
 	}
 )
 
@@ -202,7 +199,7 @@ setMethod('NMFSeed', signature(key='NMFSeed', method='ANY'),
 		if( nargs() == 1L ) return(key)
 		
 		# build an object based on template object
-		new(class(method), key, method=method, ..., package=toppackage_name())
+		new(class(method), key, method=method, ..., package=topns_name())
 		
 	}
 )

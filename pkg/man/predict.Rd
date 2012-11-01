@@ -1,9 +1,9 @@
 \docType{methods}
 \name{predict}
 \alias{predict}
-\alias{predict,NMF-method}
-\alias{predict,NMFfitX-method}
 \alias{predict-methods}
+\alias{predict,NMFfitX-method}
+\alias{predict,NMF-method}
 \title{Clustering and Prediction}
 \usage{
   predict(object, ...)

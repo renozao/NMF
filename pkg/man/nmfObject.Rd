@@ -6,7 +6,7 @@
 }
 \arguments{
   \item{object}{an R object created by the NMF package,
-  eg., an object of class \code{\linkS4class{NMF}} or
+  e.g., an object of class \code{\linkS4class{NMF}} or
   \code{\linkS4class{NMFfit}}.}
 
   \item{verbose}{logical to toggle verbose messages.}

@@ -5,6 +5,10 @@
 
 .TestSeed <- 123456
 
+.testData <- function(n=20, r=3, m=10, ...){
+	syntheticNMF(n, r, m, ...)
+}
+
 checkNMFPlot <- function(V, res, prefix=''){
 	# check heatmaps of the target matrix, the metaprofiles and the metagenes
 	checkPlot( aheatmap(V), paste(prefix, ': Target'))
@@ -17,11 +21,12 @@ checkData <- function(meth, ...){
 	
 	message("\n###############\n#", meth, "\n###############")
 	# On synthetic data	
-		n <- 50; m <- 10; r <- 3
 		
 		#1. with noise		
 		set.seed(.TestSeed)
-		V <- syntheticNMF(n, r, m, noise=TRUE) # add noise for stability
+		r <- 3; V <- .testData(r=r)
+		n <- nrow(V); m <- ncol(V);
+		
 		res <- nmf(V, r, meth, ...)
 		
 		# check the consistency of the result
@@ -92,7 +97,7 @@ test.snmf <- function(){
 	
 	# check errors due to parameter checks
 	set.seed(.TestSeed)
-	V <- syntheticNMF(100, 3, 20, noise=T)	
+	V <- .testData()
 	# beta
 	checkException(nmf(V, 3, 'snmf/r', beta=0), 'beta: 0 is not a valid value')
 	checkException(nmf(V, 3, 'snmf/r', beta=-1), 'beta: <0 is not a valid value')
@@ -130,12 +135,12 @@ test.lnmf <- function(){
 atest.zzz.runs <- function(){
 	
 	# define the number of runs
-	N <- 5
+	N <- 3
 	r <- 3
 	
 	# load data 
 	data(esGolub)
-	eset <- esGolub[1:100, ]
+	eset <- esGolub[1:50, ]
 	
 	# run nmf N times	
 	set.seed(.TestSeed)
@@ -151,9 +156,9 @@ check.cversion <- function(algo){
 		
 	r <- 3
 	data(esGolub)
-	eset <- esGolub[1:100,]
-	resR <- nmf(esGolub, r, paste('.R#', algo, sep=''), seed=.TestSeed)
-	res <- nmf(esGolub, r, algo, seed=.TestSeed)
+	eset <- esGolub[1:50,]
+	resR <- nmf(eset, r, paste('.R#', algo, sep=''), seed=.TestSeed)
+	res <- nmf(eset, r, algo, seed=.TestSeed)
 	checkTrue( nmf.equal(res, resR, identical=FALSE), 'Results are the same for C and R version' )
 	
 }
@@ -197,16 +202,11 @@ test.cversions.lnmf <- function(){
 #' Unit test for the port of `brunet`
 test.port_brunet <- function(){
 	
-	DEACTIVATED("RcppOctave test removed.")
 	# load RcppOctave if possible
-	#if( !require(RcppOctave) ) return()
-	library(devtools)
-	load_all('RcppOctave')
+	if( !require(RcppOctave) ) return()
 	
 	# source
-	#o_source(file.path(system.file('matlab', package='NMF'), 'brunet.m'))
-	on.exit()
-	o_source('/home/renaud/Documents/projects/NMF/Rnmf/pkg/inst/matlab/brunet.m')	
+	o_source(file.path(packagePath('inst/matlab', package='NMF'), 'brunet.m'))
 	
 	# define input data
 	set.seed(1234)
@@ -223,14 +223,17 @@ test.port_brunet <- function(){
 	
 	# run R port
 	tol <- 10^-14
-	checkTrue(nmf.equal(ofit, nmf(x, 3, '.R#brunet', seed=x0), tol=tol)
+	checkTrue(nmf.equal(ofit, res <- nmf(x, 3, '.R#brunet', seed=x0), tol=tol)
 			, paste("Pure R port and MATLAB results are identical at ", tol))
+	checkEquals(niter(res), o$niter, "Pure R and MATLAB use same number of iterations")
 	
 	# C version with copy	
-	checkTrue(nmf.equal(ofit, nmf(x, 3, 'brunet', seed=x0, copy=TRUE))
+	checkTrue(isTRUE(nmf.equal(ofit, res <- nmf(x, 3, 'brunet', seed=x0, copy=TRUE), tolerance=10^-14))
 			, paste("C version with copy and MATLAB results are identical"))
+	checkEquals(niter(res), o$niter, "C version without copy and MATLAB use same number of iterations")
 	# C version without copy
-	checkTrue(nmf.equal(ofit, nmf(x, 3, 'brunet', seed=x0, copy=FALSE))
+	checkTrue(isTRUE(nmf.equal(ofit, res <- nmf(x, 3, 'brunet', seed=x0, copy=FALSE), tolerance=10^-14))
 			, paste("C version without copy and MATLAB results are identical"))
+	checkEquals(niter(res), o$niter, "C version without copy and MATLAB use same number of iterations")
 	
 }

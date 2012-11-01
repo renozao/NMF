@@ -6,6 +6,8 @@
 
 #.nmf.Options.Runtime <- character()
 
+library(pkgmaker)
+
 # define functions nmf.options and nmf.getOptions
 .OPTIONS <- setupPackageOptions(
 	# default algorithm

@@ -3,11 +3,11 @@
 \alias{setNMFMethod}
 \title{Registering NMF Algorithms}
 \usage{
-  setNMFMethod(name, method, ..., overwrite = FALSE,
-    verbose = nmf.getOption("verbose"))
+  setNMFMethod(name, method, ...,
+    overwrite = isLoadingNamespace(), verbose = TRUE)
 
   nmfRegisterAlgorithm(name, method, ...,
-    overwrite = FALSE, verbose = nmf.getOption("verbose"))
+    overwrite = isLoadingNamespace(), verbose = TRUE)
 }
 \arguments{
   \item{overwrite}{logical that indicates if any existing

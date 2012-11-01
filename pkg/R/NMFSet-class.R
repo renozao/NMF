@@ -2,6 +2,8 @@
 #' @include heatmaps.R
 NULL
 
+library(rngtools)
+
 #' \code{isNMFfit} tells if an object results from an NMF fit. 
 #' 
 #' @details  \emph{isNMFfit} checks if \code{object} inherits from class 
@@ -422,13 +424,16 @@ setMethod('show', 'NMFfitX',
 			# number of runs
 			cat("  Runs: ", nrun(object),"\n");
 			# initial state
-			cat("  RNG:\n  ", RNGdesc(getRNG1(object)),"\n");
+			cat("  RNG:\n  ", RNGstr(getRNG1(object)),"\n");
 			if( nrun(object) > 0 ){
 				# show total timing			
 				cat("  Total timing:\n"); show(runtime.all(object));
 			}
 		}
 )
+
+#' @importMethodsFrom rngtools getRNG1
+setGeneric('getRNG1', package='rngtools')
 
 #' Returns the RNG settings used for the first NMF run of multiple NMF runs. 
 #' 
@@ -935,6 +940,9 @@ setMethod('getRNG1', signature(object='NMFfitXn'),
 		getRNG(object[[1]])
 	}
 )
+
+#' @importMethodsFrom rngtools .getRNG
+setGeneric('.getRNG', package='rngtools')
 
 #' Returns the RNG settings used for the best fit.
 #' 

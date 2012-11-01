@@ -1,10 +1,10 @@
 \docType{methods}
 \name{NMFfitX}
 \alias{NMFfitX}
-\alias{NMFfitX,NMFfit-method}
-\alias{NMFfitX,NMFfitX-method}
 \alias{NMFfitX,list-method}
 \alias{NMFfitX-methods}
+\alias{NMFfitX,NMFfit-method}
+\alias{NMFfitX,NMFfitX-method}
 \title{Factory Method for Multiple NMF Run Objects}
 \usage{
   NMFfitX(object, ...)

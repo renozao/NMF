@@ -3,14 +3,14 @@
 \alias{rnmf}
 \alias{rnmf,ANY,data.frame-method}
 \alias{rnmf,ANY,matrix-method}
+\alias{rnmf,formula,ANY-method}
+\alias{rnmf-methods}
+\alias{rnmf,missing,missing-method}
 \alias{rnmf,NMF,missing-method}
 \alias{rnmf,NMF,numeric-method}
 \alias{rnmf,NMFOffset,numeric-method}
-\alias{rnmf,formula,ANY-method}
-\alias{rnmf,missing,missing-method}
 \alias{rnmf,numeric,missing-method}
 \alias{rnmf,numeric,numeric-method}
-\alias{rnmf-methods}
 \title{Generating Random NMF Models}
 \usage{
   rnmf(x, target, ...)
@@ -349,17 +349,16 @@ rnmf(3, 100)
 \seealso{
   \code{\link{rmatrix}}
 
-  Other NMF-interface: \code{\link{$,NMF-method}},
-  \code{\link{$<-,NMF-method}},
-  \code{\link{.DollarNames,NMF-method}},
+  Other NMF-interface: \code{\link{basis}},
   \code{\link{.basis}}, \code{\link{.basis<-}},
-  \code{\link{.coef}}, \code{\link{.coef<-}},
-  \code{\link{NMF-class}}, \code{\link{basis}},
   \code{\link{basis<-}}, \code{\link{coef}},
+  \code{\link{.coef}}, \code{\link{.coef<-}},
   \code{\link{coef<-}}, \code{\link{coefficients}},
+  \code{\link{.DollarNames,NMF-method}},
   \code{\link{loadings,NMF-method}}, \code{\link{misc}},
-  \code{\link{nmfModel}}, \code{\link{nmfModels}},
-  \code{\link{scoef}}
+  \code{\link{NMF-class}}, \code{\link{$<-,NMF-method}},
+  \code{\link{$,NMF-method}}, \code{\link{nmfModel}},
+  \code{\link{nmfModels}}, \code{\link{scoef}}
 }
 \keyword{methods}
 

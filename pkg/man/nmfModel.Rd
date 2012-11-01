@@ -1,17 +1,17 @@
 \docType{methods}
 \name{nmfModel}
 \alias{nmfModel}
-\alias{nmfModel,NULL,ANY-method}
 \alias{nmfModel,data.frame,data.frame-method}
 \alias{nmfModel,formula,ANY-method}
 \alias{nmfModel,matrix,ANY-method}
 \alias{nmfModel,matrix,matrix-method}
+\alias{nmfModel-methods}
 \alias{nmfModel,missing,ANY-method}
 \alias{nmfModel,missing,missing-method}
+\alias{nmfModel,NULL,ANY-method}
 \alias{nmfModel,numeric,matrix-method}
 \alias{nmfModel,numeric,missing-method}
 \alias{nmfModel,numeric,numeric-method}
-\alias{nmfModel-methods}
 \alias{nmfModels}
 \title{Factory Methods NMF Models}
 \usage{
@@ -400,16 +400,16 @@ nmfModels(builtin.only=TRUE)
 \seealso{
   \code{\link{is.empty.nmf}}
 
-  Other NMF-interface: \code{\link{$,NMF-method}},
-  \code{\link{$<-,NMF-method}},
-  \code{\link{.DollarNames,NMF-method}},
+  Other NMF-interface: \code{\link{basis}},
   \code{\link{.basis}}, \code{\link{.basis<-}},
-  \code{\link{.coef}}, \code{\link{.coef<-}},
-  \code{\link{NMF-class}}, \code{\link{basis}},
   \code{\link{basis<-}}, \code{\link{coef}},
+  \code{\link{.coef}}, \code{\link{.coef<-}},
   \code{\link{coef<-}}, \code{\link{coefficients}},
+  \code{\link{.DollarNames,NMF-method}},
   \code{\link{loadings,NMF-method}}, \code{\link{misc}},
-  \code{\link{rnmf}}, \code{\link{scoef}}
+  \code{\link{NMF-class}}, \code{\link{$<-,NMF-method}},
+  \code{\link{$,NMF-method}}, \code{\link{rnmf}},
+  \code{\link{scoef}}
 }
 \keyword{methods}
 

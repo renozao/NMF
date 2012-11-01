@@ -3,8 +3,8 @@
 \alias{hasCoef}
 \alias{is.empty.nmf}
 \alias{is.nmf}
-\alias{is.partial.nmf}
 \alias{isNMFfit}
+\alias{is.partial.nmf}
 \title{Testing NMF Objects}
 \usage{
   is.nmf(x)

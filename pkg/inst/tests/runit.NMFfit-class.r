@@ -10,14 +10,18 @@ if( isNamespaceLoaded('NMF') ){
 
 .TestSeed <- 123456
 
+.testData <- function(n=20, r=3, m=10, ...){
+	syntheticNMF(n, r, m, ...)
+}
+
+
 #' Unit test for the number of iterations
 test.niter <- function(){
 	
 	# set random seed
 	set.seed(.TestSeed)
 	# generate random target matrix
-	n <- 50; p <- 10; r <- 3
-	V <- syntheticNMF(n, r, p, noise=TRUE)
+	r <- 3; V <- .testData(r=r)
 	
 	# fit an iterative model
 	res <- nmf(V,r)
@@ -39,8 +43,7 @@ test.isNMFfit <- function(){
 	# set random seed
 	set.seed(.TestSeed)
 	# generate random target matrix
-	n <- 50; p <- 10; r <- 2
-	V <- syntheticNMF(n, r, p, noise=TRUE)
+	r <- 3; V <- .testData(r=r)
 	
 	# single run
 	res <- nmf(V, 2)

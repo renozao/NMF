@@ -342,7 +342,7 @@ aheatmap(x, cellwidth = 10, cellheight = 5)
 aheatmap(x, cellwidth = 15, cellheight = 12, fontsize = 8, filename = "aheatmap.pdf")
 
 # Generate column annotations
-annotation = data.frame(Var1 = factor(1:10 \\\%\\\% 2 == 0, labels = c("Class1", "Class2")), Var2 = 1:10)
+annotation = data.frame(Var1 = factor(1:p \%\% 2 == 0, labels = c("Class1", "Class2")), Var2 = 1:10)
 
 aheatmap(x, annCol = annotation)
 aheatmap(x, annCol = annotation, annLegend = FALSE)

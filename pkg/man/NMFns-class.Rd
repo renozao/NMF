@@ -124,8 +124,8 @@ rnmf(3, 10, 5, model='NMFns', theta=0.3)
   Intell_, *28*, pp. 403-415.
 }
 \seealso{
-  Other NMF-model: \code{\link{NMFOffset-class}},
-  \code{\link{NMFstd-class}},
-  \code{\link{initialize,NMFOffset-method}}
+  Other NMF-model:
+  \code{\link{initialize,NMFOffset-method}},
+  \code{\link{NMFOffset-class}}, \code{\link{NMFstd-class}}
 }
 

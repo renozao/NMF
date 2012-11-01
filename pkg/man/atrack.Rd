@@ -1,17 +1,17 @@
 \docType{methods}
 \name{.atrack}
-\alias{.atrack}
-\alias{.atrack,ANY-method}
-\alias{.atrack,character-method}
-\alias{.atrack,data.frame-method}
-\alias{.atrack,matrix-method}
-\alias{.atrack-methods}
 \alias{adata}
 \alias{alength}
 \alias{amargin}
 \alias{anames}
 \alias{annotationTrack}
 \alias{atrack}
+\alias{.atrack}
+\alias{.atrack,ANY-method}
+\alias{.atrack,character-method}
+\alias{.atrack,data.frame-method}
+\alias{.atrack,matrix-method}
+\alias{.atrack-methods}
 \alias{is.atrack}
 \title{Annotation Tracks}
 \usage{

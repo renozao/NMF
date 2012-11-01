@@ -12,7 +12,7 @@
 
   setupTempDirectory(verbose)
 
-  setupLibPaths(pkg = "NMF")
+  setupLibPaths(pkg = "NMF", verbose = FALSE)
 
   setupRNG(seed, n, verbose = FALSE)
 }

@@ -12,6 +12,7 @@
 #' @name NMF-package
 #' @aliases NMF
 #' @docType package
+#' @useDynLib NMF
 #' 
 #' @bibliography ~/Documents/articles/library.bib
 #' @references
@@ -66,7 +67,6 @@ devnmf <- function(){
 	## LOAD compiled library if one is loading the package
 	# TODO: pkgmaker::onLoad(libname, pkgname)
 	if( !missing(libname) ) library.dynam('NMF', pkgname, libname)
-	else compile_src('NMF')	
 	
 	# run intialization sequence suppressing messages or not depending on verbosity options
 	if( getOption('verbose') ) .init.sequence()

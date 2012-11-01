@@ -14,7 +14,9 @@
   nmf.stop.threshold(threshold)
 
   nmf.stop.stationary(object, i, y, x,
-    stationary.th = 10^-6, check.interval = 10L, ...)
+    stationary.th = .Machine$double.eps,
+    check.interval = 5 * check.niter, check.niter = 10L,
+    ...)
 
   nmf.stop.connectivity(object, i, y, x, stopconv = 40,
     check.interval = 10, ...)
@@ -46,6 +48,9 @@
 
   \item{check.interval}{interval (in number of iterations)
   on which stationarity is computed.}
+
+  \item{check.niter}{number of successive iteration used to
+  compute the stationnary criterion.}
 
   \item{...}{extra arguments passed to the function
   \code{\link{objective}}, which computes the objective
@@ -86,11 +91,14 @@
   \code{nmf.stop.stationary}, but with the default
   threshold set to \code{threshold}.
 
-  The gradient is computed by finite differences over an
-  interaval of iterations specified in argument
-  \code{check.interval}. The criterion stops when the
-  absolute value of the gradient is lower than the
-  specified threshold \code{stationary.th}.
+  More precisely, the objective function is computed over
+  \eqn{n} successive iterations (specified in argument
+  \code{check.niter}), every \code{check.interval}
+  iterations. The criterion stops when the absolute
+  difference between the maximum and the minimum objective
+  values over these iterations is lower than a given
+  threshold \eqn{\alpha} (specified in
+  \code{stationary.th}):
 
   \code{nmf.stop.connectivity} implements the stopping
   criterion that is based on the stationarity of the
@@ -119,5 +127,10 @@
   \dQuote{connectivity} and \dQuote{stationary}), or the
   name of a function in the global environment or the
   namespace of the loading package.} }
+
+  \deqn{ \left| \frac{\max_{i- N_s + 1 \leq k \leq i} D_k -
+  \min_{i - N_s +1 \leq k \leq i} D_k}{n} \right| \leq
+  \alpha, }{ | [max( D(i- N_s + 1), ..., D(i) ) - min( D(i-
+  N_s + 1), ..., D(i) )] / n | <= alpha }
 }
 

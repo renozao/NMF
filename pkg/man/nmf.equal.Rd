@@ -1,16 +1,16 @@
 \docType{methods}
 \name{nmf.equal}
 \alias{nmf.equal}
-\alias{nmf.equal,NMF,NMF-method}
-\alias{nmf.equal,NMF,NMFfit-method}
-\alias{nmf.equal,NMF,NMFfitX-method}
-\alias{nmf.equal,NMFfit,NMF-method}
-\alias{nmf.equal,NMFfit,NMFfit-method}
-\alias{nmf.equal,NMFfitX,NMF-method}
-\alias{nmf.equal,NMFfitX1,NMFfitX1-method}
 \alias{nmf.equal,list,list-method}
 \alias{nmf.equal,list,missing-method}
 \alias{nmf.equal-methods}
+\alias{nmf.equal,NMFfit,NMFfit-method}
+\alias{nmf.equal,NMFfit,NMF-method}
+\alias{nmf.equal,NMFfitX1,NMFfitX1-method}
+\alias{nmf.equal,NMFfitX,NMF-method}
+\alias{nmf.equal,NMF,NMFfit-method}
+\alias{nmf.equal,NMF,NMFfitX-method}
+\alias{nmf.equal,NMF,NMF-method}
 \title{Testing Equality of NMF Models}
 \usage{
   nmf.equal(x, y, ...)

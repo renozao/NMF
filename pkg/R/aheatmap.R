@@ -4,6 +4,7 @@
 NULL
 
 library(grid)
+library(gridBase)
 library(colorspace)
 library(stringr)
 
@@ -403,11 +404,11 @@ gfile <- function(filename, width, height, ...){
 	if( !missing(width) ){
 		args$width <- as.numeric(width)
 		args$height <- as.numeric(height)
-		if( !ending %in% c('pdf','svg') ){
+		if( !ending %in% c('pdf','svg') && is.null(args[['res']]) ){
 			args$units <- "in"
 			args$res <- 300
 		}
-	}	
+	}
 	do.call('f', args)	
 }
 
@@ -1041,12 +1042,12 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 	factor_colors = hcl(h = seq(1, 360, length.out = max(count+1,20)), 100, 70)	
 		
 	# get random seeds to restore/update on exit
-	rs <- RNGscope()
+	rs <- RNGseed()
 	on.exit({
 		# update local random seed on exit
 		.Rd.seed$.Random.seed <- getRNG()
 		# restore global random seed
-		RNGscope(rs)
+		RNGseed(rs)
 	})
 	# restore local random seed if it exists 
 	if( !is.null(.Rd.seed$.Random.seed) )
@@ -1588,7 +1589,7 @@ subset_index <- function(x, margin, subset){
 #' aheatmap(x, cellwidth = 15, cellheight = 12, fontsize = 8, filename = "aheatmap.pdf")
 #'
 #' # Generate column annotations
-#' annotation = data.frame(Var1 = factor(1:10 \%\% 2 == 0, labels = c("Class1", "Class2")), Var2 = 1:10)
+#' annotation = data.frame(Var1 = factor(1:p %% 2 == 0, labels = c("Class1", "Class2")), Var2 = 1:10)
 #'
 #' aheatmap(x, annCol = annotation)
 #' aheatmap(x, annCol = annotation, annLegend = FALSE)

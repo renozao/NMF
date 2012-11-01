@@ -821,14 +821,22 @@ gVariable <- function(init, shared=FALSE){
 #' @param pkg package name whose path should be exported the workers.
 #' 
 #' @rdname setup
-setupLibPaths <- function(pkg='NMF'){
+setupLibPaths <- function(pkg='NMF', verbose=FALSE){
+	if( verbose ){
+		message("# Setting up libpath on workers for package(s) "
+			, str_out(pkg, Inf), ' ... ', appendLF=FALSE)
+	}
 	p <- path.package(pkg)
 	if( is.null(p) ) return()
 	plibs <- dirname(p)
 	libs <- times(getDoParWorkers()) %dopar% {
 		.libPaths(c(.libPaths(), plibs))
 	}
-	unique(unlist(libs))
+	libs <- unique(unlist(libs))
+	if( verbose ){
+		message("OK\n# libPaths:\n", paste('  ', libs, collapse="\n"))
+	}
+	libs
 }
 
 #StaticWorkspace <- function(..., .SHARED=FALSE){
@@ -892,7 +900,7 @@ setupRNG <- function(seed, n, verbose=FALSE){
 	
 	if( verbose > 3 ){
 		message("# ** Original RNG settings:")
-		.showRNG()
+		showRNG()
 	}
 	
 	# for multiple runs one always uses RNGstreams
@@ -910,7 +918,7 @@ setupRNG <- function(seed, n, verbose=FALSE){
 			
 			if( verbose > 2 ){
 				message("# Generate RNGStream sequence using seed ("
-						, RNGdesc(seed), ") ... "
+						, RNGstr(seed), ") ... "
 						, appendLF=FALSE)
 			}
 			res <- RNGseq(n, seed)
@@ -951,7 +959,7 @@ setupRNG <- function(seed, n, verbose=FALSE){
 			if( verbose > 2 ){
 				message("# RNG setup: reproducible [using RNGstream]")
 				message("# Generate RNGStream sequence using seed ("
-						, RNGdesc(seed), ") ... "
+						, RNGstr(seed), ") ... "
 						, appendLF=FALSE)
 			}
 			res <- RNGseq(1, seed)
@@ -962,7 +970,7 @@ setupRNG <- function(seed, n, verbose=FALSE){
 			if( verbose > 2 ){
 				message("# RNG setup: directly setting RNG")
 				message("# Setting RNG with .Random.seed= ("
-						, RNGdesc(seed), ") ... "
+						, RNGstr(seed), ") ... "
 						, appendLF=FALSE)
 			}
 			setRNG(seed, verbose > 2)

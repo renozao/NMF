@@ -1,11 +1,11 @@
 \docType{methods}
 \name{bterms<-}
 \alias{bterms<-}
-\alias{bterms<-,NMFstd-method}
 \alias{bterms<--methods}
+\alias{bterms<-,NMFstd-method}
 \alias{cterms<-}
-\alias{cterms<-,NMFstd-method}
 \alias{cterms<--methods}
+\alias{cterms<-,NMFstd-method}
 \title{Fixed Terms in NMF Models}
 \usage{
   bterms(object) <- value

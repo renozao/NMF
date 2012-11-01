@@ -1,12 +1,12 @@
 \docType{class}
 \name{Strategy-class}
-\alias{Strategy-class}
 \alias{name}
-\alias{name,Strategy-method}
-\alias{name-methods}
 \alias{name<-}
-\alias{name<-,Strategy,character-method}
 \alias{name<--methods}
+\alias{name-methods}
+\alias{name<-,Strategy,character-method}
+\alias{name,Strategy-method}
+\alias{Strategy-class}
 \title{Generic Strategy Class}
 \usage{
   name(object, ...)
@@ -30,7 +30,7 @@
 }
 \description{
   This class defines a common interface for generic
-  algorithm strategies (eg.,
+  algorithm strategies (e.g.,
   \code{\linkS4class{NMFStrategy}}).
 
   \code{name} and \code{name<-} gets and sets the name

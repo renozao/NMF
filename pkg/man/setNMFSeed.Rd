@@ -1,14 +1,14 @@
 \docType{methods}
 \name{setNMFSeed}
 \alias{NMFSeed}
-\alias{NMFSeed,NMFSeed-method}
 \alias{NMFSeed,character-method}
 \alias{NMFSeed-methods}
+\alias{NMFSeed,NMFSeed-method}
 \alias{setNMFSeed}
 \title{Registering NMF Seeding Methods}
 \usage{
-  setNMFSeed(..., overwrite = FALSE,
-    verbose = nmf.getOption("verbose"))
+  setNMFSeed(..., overwrite = isLoadingNamespace(),
+    verbose = TRUE)
 
   NMFSeed(key, method, ...)
 }

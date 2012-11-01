@@ -5,7 +5,7 @@ NULL
 #' Generic Strategy Class
 #' 
 #' This class defines a common interface for generic algorithm strategies 
-#' (eg., \code{\linkS4class{NMFStrategy}}).
+#' (e.g., \code{\linkS4class{NMFStrategy}}).
 #' 
 #' @slot name character string giving the name of the algorithm
 #' @slot package name of the package that defined the strategy.
@@ -21,12 +21,13 @@ setClass('Strategy'
 	)
 	, prototype = prototype(
 		package = character()
+		, name = character()
 	)
 	, validity=function(object){
 		
 		# slot 'name' must be a non-empty character string
 		obj <- name(object)
-		if( length(obj) && (length(obj)>1L || obj=='') )
+		if( !length(obj) || (length(obj)>1L || obj=='') )
 			return(str_c("Slot 'name' must be a single non-empty character string [", obj, ']'))
 		TRUE
 	}
@@ -149,10 +150,6 @@ setAs('NMFStrategy', 'character'
 	, def = function(from) name(from)	
 ) 
 
-toppackage_name <- function(){
-	packageName(toppackage(), .Global=TRUE)
-}
-
 #' Factory Method for NMFStrategy Objects
 #' 
 #' Creates NMFStrategy objects that wraps implementation of NMF algorithms into 
@@ -184,7 +181,7 @@ setMethod('NMFStrategy', signature(name='character', method='NMFStrategy'),
 		function(name, method, ...){
 			
 			# build an NMFStrategy object based on template object
-			strategy <- new(class(method), method, name=name, ..., package=toppackage_name())
+			strategy <- new(class(method), method, name=name, ..., package=topns_name())
 			
 			# valid the new strategy
 			validObject(strategy)
@@ -265,9 +262,9 @@ setMethod('NMFStrategy', signature(name='character', method='missing'),
 			
 			# check iterative strategy
 			if( hasArg2('Update') ){ # create a new NMFStrategyIterative object
-				new('NMFStrategyIterative', name=name, ..., package=toppackage_name())
+				new('NMFStrategyIterative', name=name, ..., package=topns_name())
 			}else if( hasArg2('algorithm') ){
-				new('NMFStrategyFunction', name=name, ..., package=toppackage_name())
+				new('NMFStrategyFunction', name=name, ..., package=topns_name())
 			}else{
 				stop('NMFStrategy - Could not infer the type of NMF strategy to instantiate.')
 			}
@@ -393,13 +390,9 @@ setPackageRegistry('algorithm', "NMFStrategy", description="NMF algorithms")
 #' in registry. 
 #' 
 #' @export
-setNMFMethod <- function(name, method, ..., overwrite=FALSE, verbose=nmf.getOption('verbose')){
+setNMFMethod <- function(name, method, ..., overwrite=isLoadingNamespace(), verbose=TRUE){
 	
-	# development/tracking trick 
-	if( !isNamespaceLoaded('NMF') ) overwrite <- TRUE 
-	lverbose <- # if not specified: always when loading or in dev mode
-			if( missing(verbose) ) isLoadingNamespace() || !isNamespaceLoaded('NMF')
-			else verbose
+	library(pkgmaker)
 	
 	# build call to constructor
 	call_const <- match.call(NMFStrategy)
@@ -418,7 +411,7 @@ setNMFMethod <- function(name, method, ..., overwrite=FALSE, verbose=nmf.getOpti
 	parent.method <- attr(method, 'parent')
 	key <- match.fun('name')(method)[1]
 
-	if( lverbose ){
+	if( verbose ){
 		tmpl <- 
 		if( !is.null(parent.method) && parent.method != key )
 			stringr::str_c(" based on template '", parent.method, "'")
@@ -432,10 +425,10 @@ setNMFMethod <- function(name, method, ..., overwrite=FALSE, verbose=nmf.getOpti
 					, overwrite=overwrite, verbose=verbose>1L)
 	
 	if( !is.null(res) && res > 0L ){
-		if( lverbose ) message( if(res == 1L) "OK" else "UPDATED" )
+		if( verbose ) message( if(res == 1L) "OK" else "UPDATED" )
 		invisible(method)
 	}else{
-		if( lverbose ) message( "ERROR" )
+		if( verbose ) message( "ERROR" )
 		invisible(NULL)
 	}
 }
@@ -670,5 +663,83 @@ nmfAlgorithm <- function(name=NULL, version=NULL, all=FALSE, ...){
 existsNMFMethod <- function(name, exact=TRUE){	
 	
 	!is.null( getNMFMethod(name, error=FALSE, exact=exact) )
+	
+}
+
+#' Wrapping NMF Algorithms
+#' 
+#' This function creates a wrapper function for calling the function \code{\link{nmf}} 
+#' with a given NMF algorithm.
+#' 
+#' @param method Name of the NMF algorithm to be wrapped. 
+#' It should be the name of a registered algorithm as returned by \code{\link{nmfAlgorithm}}, 
+#' or an NMF algorithm object (i.e. an instance of \code{\linkS4class{NMFStrategy}}). 
+#' @param ... extra named arguments that define default values for any arguments 
+#' of \code{\link{nmf}} or the algorithm itself. 
+#' @return a function with attribute \code{'algorithm'} set to the value of
+#' \code{key}.
+#' 
+#' @seealso \code{\link{nmfAlgorithm}}, \code{\link{nmf}}
+#' @keywords internal
+#' @export
+#' 
+#' @examples 
+#' 
+#' # wrap Lee & Seung algorithm into a function
+#' lee <- nmfWrapper('lee')
+#' lee
+#' 
+#' # test on random data
+#' x <- rmatrix(100,20)
+#' res <- nmf(x, 3, 'lee', seed=12345)
+#' res2 <- lee(x, 3, seed=12345)
+#' nmf.equal(res, res2)
+#' 
+#' \dontshow{ stopifnot(nmf.equal(res, res2)) }
+#' 
+nmfWrapper <- function(method, ...){
+	
+	# store key and call
+	.call <- match.call()
+#	print(.call)
+	
+	# check that all arguments are named
+	if( nargs() > 1L && any(names(.call)[-(1:2)]=='') )
+		stop("Invalid call: all arguments must be named.")
+	
+	# modify the call to call `nmf` instead
+	.call[[1]] <- as.name('nmf')
+	
+	# store fixed arguments from default arguments
+	.fixedargs <- grep("^\\.\\.", names(.call))
+	.fixedargs <- c(2L, .fixedargs)
+	e <- parent.frame()
+	for(n in names(.call)[.fixedargs] ){
+		.call[[n]] <- eval(.call[[n]], envir=e)
+	}
+	names(.call) <- sub("^\\.\\.", "", names(.call))
+	.fixedargs <- names(.call)[.fixedargs]
+	
+	# define wrapper function
+	f <- function(...){
+		
+		# set non fixed arguments from current call
+		ca <- match.call(nmf)
+		nm <- names(ca)[-1L]
+		if( any(fnm <- nm %in% .fixedargs) ){
+			warning("Discarding fixed arguments from wrapped call to ", .call[1L]
+					, " [", str_out(nm[fnm], Inf), '].', immediate.=TRUE)
+			nm <- nm[!fnm]
+		}
+		sapply(nm, function(x)	.call[[x]] <<- ca[[x]])
+		print(.call)
+		# eval
+		e <- parent.frame()
+		eval(.call, envir=e)
+	}
+	attr(f, "algorithm") <- method
+	attr(f, "call") <- .call
+	
+	return( ExposeAttribute(f) )
 	
 }

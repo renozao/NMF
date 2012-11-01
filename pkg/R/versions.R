@@ -184,7 +184,7 @@ updateObjectFromSlots <- function (object, objclass = class(object), ..., verbos
 #' which have been borrowed from the BiocGenerics package, the function 
 #' \code{updateObjectFromSlots} in particular. 
 #'
-#' @param object an R object created by the NMF package, eg., an object of class 
+#' @param object an R object created by the NMF package, e.g., an object of class 
 #' \code{\linkS4class{NMF}} or \code{\linkS4class{NMFfit}}.
 #' @param verbose logical to toggle verbose messages.
 #' 

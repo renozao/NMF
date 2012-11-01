@@ -185,5 +185,5 @@ end
 elapsed = total2 - total;
 user = user2 - user;
 sys = sys2 - sys;
-niter = i;
+niter = i
 % [RG_END]

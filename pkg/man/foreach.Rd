@@ -2,15 +2,15 @@
 \name{registerDoBackend}
 \alias{ForeachBackend}
 \alias{ForeachBackend,ANY-method}
-\alias{ForeachBackend,NULL-method}
 \alias{ForeachBackend,character-method}
 \alias{ForeachBackend,cluster-method}
 \alias{ForeachBackend,doMPI_backend-method}
 \alias{ForeachBackend,doParallel_backend-method}
+\alias{ForeachBackend-methods}
 \alias{ForeachBackend,missing-method}
 \alias{ForeachBackend,mpicluster-method}
+\alias{ForeachBackend,NULL-method}
 \alias{ForeachBackend,numeric-method}
-\alias{ForeachBackend-methods}
 \alias{getDoBackend}
 \alias{getDoParHosts}
 \alias{register}

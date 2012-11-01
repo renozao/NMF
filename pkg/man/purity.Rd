@@ -2,16 +2,16 @@
 \name{purity}
 \alias{entropy}
 \alias{entropy,ANY,ANY-method}
-\alias{entropy,NMFfitXn,ANY-method}
 \alias{entropy,factor,ANY-method}
-\alias{entropy,table,missing-method}
 \alias{entropy-methods}
+\alias{entropy,NMFfitXn,ANY-method}
+\alias{entropy,table,missing-method}
 \alias{purity}
 \alias{purity,ANY,ANY-method}
-\alias{purity,NMFfitXn,ANY-method}
 \alias{purity,factor,ANY-method}
-\alias{purity,table,missing-method}
 \alias{purity-methods}
+\alias{purity,NMFfitXn,ANY-method}
+\alias{purity,table,missing-method}
 \title{Purity and Entropy of a Clustering}
 \usage{
   purity(x, y, ...)

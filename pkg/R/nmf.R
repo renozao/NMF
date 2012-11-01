@@ -3,7 +3,6 @@
 #' @include NMFStrategy-class.R
 #' @include seed.R
 #' @include parallel.R
-#' @include RNG.R
 NULL
 
 #' Running NMF algorithms
@@ -209,8 +208,8 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='list'),
 					message("Compute NMF method ", k, " ... ", appendLF=FALSE)
 					# restore RNG on exit (except after last method)
 					# => this ensures the methods use the same stochastic environment
-					orng <- RNGscope()
-					if( k < n ) on.exit( RNGscope(orng), add = TRUE)
+					orng <- RNGseed()
+					if( k < n ) on.exit( RNGseed(orng), add = TRUE)
 					
 					#o <- capture.output( 
 							res <- try( nmf(x, rank, meth, ...) , silent=TRUE) 
@@ -1208,7 +1207,7 @@ function(x, rank, method
 			if( verbose > 2 ) message("# Restoring RNG settings ... ", appendLF=FALSE)
 			setRNG(.RNG_ORIGIN)
 			if( verbose > 2 ) message("OK")
-			if( verbose > 3 ) RNGshow()
+			if( verbose > 3 ) showRNG()
 		}
 	}, add=TRUE)
 
@@ -1338,7 +1337,7 @@ function(x, rank, method
 					if( verbose > 2 ) message("# Updating RNG settings ... ", appendLF=FALSE)							
 					setRNG(resetRNG)
 					if( verbose > 2 ) message("OK")
-					if( verbose > 3 ) .showRNG()
+					if( verbose > 3 ) showRNG()
 				}
 			}, add=TRUE)
 		}
@@ -1402,6 +1401,12 @@ function(x, rank, method
 				}
 				
 				## 2. RUN
+				# ensure that the package NMF is in each worker's search path
+				.packages <- if( !isDevNamespace('NMF') ){ 
+					setupLibPaths('NMF', verbose>3)
+					'NMF'
+				}
+				
 				# in parallel mode: verbose message from each run are only shown in debug mode
 				.options$verbose <- FALSE 
 				if( verbose ){
@@ -1420,17 +1425,12 @@ function(x, rank, method
 				# get options from master process to pass to workers
 				nmf.opts <- nmf.options()
 				
-				# ensure that the package NMF is in each worker's search path
-				.packages <- if( isNamespaceLoaded('NMF') ){ 
-					setupLibPaths('NMF')
-					'NMF'
-				}
 				# load extra required packages for shared mode 
 				if( MODE_SHARED ) 
 					.packages <- c(.packages, 'bigmemory', 'synchronicity')
 				
 				# export dev environment if in dev mode 
-				.export <- if( !isNamespaceLoaded('NMF') ) ls(as.environment('package:NMF'))
+				.export <- if( isDevNamespace('NMF') ) ls(asNamespace('NMF'))
 					
 				res.runs <- foreach(n=1:nrun
 								, RNGobj = .RNG.seed
@@ -1649,7 +1649,7 @@ function(x, rank, method
 						}else{
 						# otherwise only some details for the first run
 							if(n == 1 ){
-								.showRNG()								
+								showRNG()								
 								cat("Runs:")
 							}
 							cat('', n)
@@ -1777,7 +1777,7 @@ function(x, rank, method
 	# show original RNG settings in verbose > 2
 	if( verbose > 3 ){
 		message("# ** Current RNG settings:")
-		RNGshow()
+		showRNG()
 	}
 	
 	# do something if the RNG was actually changed
@@ -1788,14 +1788,14 @@ function(x, rank, method
 	if( isRNGseed(seed) ){
 		seed <- 'random'
 		
-		if( verbose > 3 ) RNGshow()
+		if( verbose > 3 ) showRNG()
 		
 		# restore RNG settings
 		on.exit({
 			if( verbose > 2 ) message("# Restoring RNG settings ... ", appendLF=FALSE)							
 			setRNG(newRNG)					
 			if( verbose > 2 ) message("OK")
-			if( verbose > 3 ) RNGshow()
+			if( verbose > 3 ) showRNG()
 		}, add=TRUE)
 	}
 	#end_RNG
@@ -1808,7 +1808,7 @@ function(x, rank, method
 
 	# a priori the parameters for the run are all the one in '...'
 	# => expand with the strategy's defaults
-	parameters.method <- expand_dots(method@defaults)
+	parameters.method <- expand_list(list(...), method@defaults)
 	#
 	
 	if( is.nmf(seed) ){
@@ -1890,13 +1890,17 @@ function(x, rank, method
 				fstop("Invalid argument 'model' [expected NULL, a character string, or a list to set slots in the NMF model class '",.modelClass,"']. See ?nmf.")
 			}	
 				
-				
+			
 			#- force the value of the internally set arguments for the instantiation of the model
 			parameters.model <- .merge.override(parameters.model, parameters.model.internal)		
 			
 			# at this point 'init' should be the list of the initialization parameters
-			if( !is.list(parameters.model) ) fstop("Unexpected error: object 'parameters.model' must be a list")
-			if( !is.element('model', names(parameters.model)) ) fstop("Unexpected error: object 'parameters.model' must contain an element named 'model'")
+			if( !is.list(parameters.model) ){
+				fstop("Unexpected error: object 'parameters.model' must be a list")
+			}
+			if( !is.element('model', names(parameters.model)) ){
+				fstop("Unexpected error: object 'parameters.model' must contain an element named 'model'")
+			}
 			
 			parameters.model
 		}
@@ -1982,6 +1986,9 @@ function(x, rank, method
 	if( is.numeric(.OPTIONS$track) )
 		run.options(seed, 'track.interval') <- .OPTIONS$track
 	run.options(seed, 'verbose') <- verbose
+	# store ultimate nmf() call
+	seed@call <- match.call()
+	##
 
 	## print options if in verbose > 3
 	if( verbose > 3 ){
@@ -2040,12 +2047,13 @@ function(x, rank, method
 		residuals(res) <- setNames(do.call('deviance', parameters.run), niter(res))
 	}
 	# first residual if tracking is enabled
-	if( .OPTIONS$track ){
+	if( .OPTIONS$track && !is.null(init.resid) ){
 		otrack <- residuals(res, track=TRUE)
 		if( !is.null(names(otrack)) && names(otrack)[1] != '0' )
 			residuals(res) <- c('0'=init.resid, otrack)
 	}
-	if( is.na(residuals(res)) ) warning("NMF residuals: final objective value is NA")
+	
+	if( length(residuals(res)) && is.na(residuals(res)) ) warning("NMF residuals: final objective value is NA")
 	res@runtime <- t
 	
 	# return the result
@@ -2059,13 +2067,17 @@ checkResult <- function(fit, seed){
 		return(str_c("NMF algorithms should return an instance of class 'NMFfit' [returned class:", class(fit), "]"))
 	}
 	
+	# check that the model has been fully estimated
+	if( is.partial.nmf(fit) ){
+		warning("nmf - The NMF model was only partially estimated [dim = (", str_out(dim(fit), Inf),")].")
+	}
 	# check that the fit conserved all fixed terms (only warning)
 	if( nterms(seed) ){
 		if( length(i <- icterms(seed)) && !identical(coef(fit)[i,], coef(seed)[i,]) ){
-			warning("Fixed coefficient terms were not all conserved in the fit: the method might not support them.")
+			warning("nmf - Fixed coefficient terms were not all conserved in the fit: the method might not support them.")
 		}
 		if( length(i <- ibterms(seed)) && !identical(basis(fit)[,i], basis(seed)[,i]) ){
-			warning("Fixed basis terms were not all conserved in the fit: the method might not support them.")
+			warning("nmf - Fixed basis terms were not all conserved in the fit: the method might not support them.")
 		}
 	}
 	TRUE
@@ -2301,6 +2313,7 @@ setMethod('seed', signature(x='ANY', model='numeric', method='NMFSeed'),
 	
 	# transform '...' into a list
 	parameters <- list(...)	
+	
 	if( length(parameters) == 1L && is.null(names(parameters)) ){
 		parameters <- parameters[[1L]]
 	}
@@ -2502,8 +2515,8 @@ nmfEstimateRank <- function(x, range, method=nmf.getOption('default.algorithm')
 			
 			# restore RNG on exit (except after last rank)
 			# => this ensures the methods use the same stochastic environment
-			orng <- RNGscope()
-			if( k.rank < length(range) ) on.exit( RNGscope(orng), add = TRUE)
+			orng <- RNGseed()
+			if( k.rank < length(range) ) on.exit( RNGseed(orng), add = TRUE)
 			
 			res <- tryCatch({ #START_TRY
 				

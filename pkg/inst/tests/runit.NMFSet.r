@@ -8,8 +8,11 @@ if( isNamespaceLoaded('NMF') ){
 	join <- NMF:::join
 }
 
+.testData <- function(n=20, r=3, m=10, ...){
+	syntheticNMF(n, r, m, ...)
+}
 
-check.result <- function(obj, n, m, r, size, msg=NULL){
+check.result <- function(obj, V, r, size, msg=NULL){
 	checkTrue( is(obj, 'NMFfitX'), paste(msg, ' -> result is an object of class NMFfitX', sep=''))
 	checkEquals( nrun(obj), size, paste(msg, ' -> number of run is correctly set', sep=''))
 }
@@ -20,8 +23,7 @@ test.join.singleRuns <- function(){
 	set.seed(123456)
 	
 	# create a random target matrix
-	n <- 20; r <- 3; m <- 30
-	V <- syntheticNMF(n, r, m, noise=TRUE)
+	r <- 3; V <- .testData(r=r)
 	
 	# init a list for the results
 	resL <- list()
@@ -31,15 +33,15 @@ test.join.singleRuns <- function(){
 		
 	# simple join 
 	res <- join(resL)
-	check.result(res, n, m, r, length(resL), 'Simple join')
+	check.result(res, V, r, length(resL), 'Simple join')
 	
 	res <- join(resL, runtime.all={tt<-runif(5)})
-	check.result(res, n, m, r, length(resL), 'Simple join + set time')
+	check.result(res, V, r, length(resL), 'Simple join + set time')
 	checkTrue(all.equal(tt, as.numeric(runtime.all(res))), 'Simple join + set time: time is correctly set')
 	
 	# merging join 
 	res <- join(resL, .merge=TRUE)
-	check.result(res, n, m, r, length(resL), 'Merging join')
+	check.result(res, V, r, length(resL), 'Merging join')
 	
 }
 
@@ -49,8 +51,7 @@ test.join.multipleRuns <- function(){
 	set.seed(123456)
 	
 	# create a random target matrix
-	n <- 20; r <- 3; m <- 30
-	V <- syntheticNMF(n, r, m, noise=TRUE) 
+	r <- 3; V <- .testData(r=r)
 		
 	# init a list for the results
 	resL <- list()
@@ -59,7 +60,7 @@ test.join.multipleRuns <- function(){
 	resL$brunet2 <- nmf(V, r, nrun=nruns[2])
 	resL$brunet3 <- nmf(V, r, nrun=nruns[3])
 	res <- join(resL)
-	check.result(res, n, m, r, sum(nruns), 'Join multiple runs')
+	check.result(res, V, r, sum(nruns), 'Join multiple runs')
 
 }
 
@@ -70,8 +71,7 @@ test.join.multipleAndSingleRunsMethods <- function(){
 	set.seed(123456)
 	
 	# create a random target matrix
-	n <- 20; r <- 3; m <- 30
-	V <- syntheticNMF(n, r, m, noise=TRUE) 
+	r <- 3; V <- .testData(r=r)
 		
 	# init a list for the results
 	resL <- list()
@@ -81,7 +81,7 @@ test.join.multipleAndSingleRunsMethods <- function(){
 	resL$c <- nmf(V, r, nrun=nruns[3])
 	resL$d <- nmf(V, r)
 	res <- join(resL)
-	check.result(res, n, m, r, sum(nruns), 'Join multiple runs + single runs')
+	check.result(res, V, r, sum(nruns), 'Join multiple runs + single runs')
 	
 }
 
@@ -91,12 +91,11 @@ test.multipleruns <- function(){
 	set.seed(123456)
 	
 	# create a random target matrix
-	n <- 20; r <- 3; m <- 30
-	V <- syntheticNMF(n, r, m, noise=TRUE) 
+	r <- 3; V <- .testData(r=r)
 	
 	# multiple runs
 	res <- nmf(V, r, nrun=5)
-	check.result(res, n, m, r, 5, 'Multiple runs')
+	check.result(res, V, r, 5, 'Multiple runs')
 	
 }
 
@@ -106,8 +105,7 @@ test.interface <- function(){
 	set.seed(123456)
 	
 	# create a random target matrix
-	n <- 20; r <- 3; m <- 30
-	V <- syntheticNMF(n, r, m, noise=TRUE)
+	r <- 3; V <- .testData(r=r)
 	rownames(V) <- seq(nrow(V))
 	colnames(V) <- seq(ncol(V))
 	

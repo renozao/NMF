@@ -1,10 +1,10 @@
 \docType{class}
 \name{NMF-class}
-\alias{$,NMF-method}
-\alias{$<-,NMF-method}
 \alias{.DollarNames,NMF-method}
-\alias{NMF-class}
 \alias{misc}
+\alias{NMF-class}
+\alias{$<-,NMF-method}
+\alias{$,NMF-method}
 \title{Generic Interface for Nonnegative Matrix Factorisation Models}
 \usage{
   misc(object, ...)
@@ -76,6 +76,14 @@
 \section{Methods}{
   \describe{
 
+  \item{[}{\code{signature(x = "NMF", i = "ANY", j = "ANY",
+  drop = "ANY")}: This method provides a convenient way of
+  sub-setting objects of class \code{NMF}, using a
+  matrix-like syntax.
+
+  See \code{\link{[,NMF,ANY,ANY,ANY-method}} for more
+  details. }
+
   \item{$}{\code{signature(x = "NMF")}: shortcut for
   \code{x@misc[[name, exact=TRUE]]} respectively. }
 
@@ -87,12 +95,6 @@
 
   \item{$<-}{\code{signature(x = "NMF")}: shortcut for
   \code{x@misc[[name]] <- value} }
-
-  \item{.DollarNames}{\code{signature(x = "NMF")}:
-  Auto-completion for \code{\linkS4class{NMF}} objects }
-
-  \item{.DollarNames}{\code{signature(x = "NMF")}:
-  Auto-completion for \code{\linkS4class{NMF}} objects }
 
   \item{.basis}{\code{signature(object = "NMF")}: Pure
   virtual method for objects of class
@@ -103,24 +105,6 @@
   "matrix")}: Pure virtual method for objects of class
   \code{\linkS4class{NMF}}, that should be overloaded by
   sub-classes, and throws an error if called. }
-
-  \item{.coef}{\code{signature(object = "NMF")}: Pure
-  virtual method for objects of class
-  \code{\linkS4class{NMF}}, that should be overloaded by
-  sub-classes, and throws an error if called. }
-
-  \item{.coef<-}{\code{signature(object = "NMF", value =
-  "matrix")}: Pure virtual method for objects of class
-  \code{\linkS4class{NMF}}, that should be overloaded by
-  sub-classes, and throws an error if called. }
-
-  \item{[}{\code{signature(x = "NMF", i = "ANY", j = "ANY",
-  drop = "ANY")}: This method provides a convenient way of
-  sub-setting objects of class \code{NMF}, using a
-  matrix-like syntax.
-
-  See \code{\link{[,NMF,ANY,ANY,ANY-method}} for more
-  details. }
 
   \item{basiscor}{\code{signature(x = "NMF", y =
   "matrix")}: Computes the correlations between the basis
@@ -141,6 +125,16 @@
 
   \item{c}{\code{signature(x = "NMF")}: Binds compatible
   matrices and NMF models together. }
+
+  \item{.coef}{\code{signature(object = "NMF")}: Pure
+  virtual method for objects of class
+  \code{\linkS4class{NMF}}, that should be overloaded by
+  sub-classes, and throws an error if called. }
+
+  \item{.coef<-}{\code{signature(object = "NMF", value =
+  "matrix")}: Pure virtual method for objects of class
+  \code{\linkS4class{NMF}}, that should be overloaded by
+  sub-classes, and throws an error if called. }
 
   \item{coefficients}{\code{signature(object = "NMF")}:
   Alias to \code{coef,NMF}, therefore also pure virtual. }
@@ -195,6 +189,12 @@
 
   See \code{\link{dimnames<-,NMF,ANY-method}} for more
   details. }
+
+  \item{.DollarNames}{\code{signature(x = "NMF")}:
+  Auto-completion for \code{\linkS4class{NMF}} objects }
+
+  \item{.DollarNames}{\code{signature(x = "NMF")}:
+  Auto-completion for \code{\linkS4class{NMF}} objects }
 
   \item{extractFeatures}{\code{signature(object = "NMF")}:
   Select basis-specific features from an NMF model, by
@@ -442,10 +442,10 @@ nmfModel(3, model='NMFns')
   Method \code{\link{seed}} to set NMF objects with values
   suitable to start algorithms with.
 
-  Other NMF-interface: \code{\link{.basis}},
-  \code{\link{.basis<-}}, \code{\link{.coef}},
-  \code{\link{.coef<-}}, \code{\link{basis}},
+  Other NMF-interface: \code{\link{basis}},
+  \code{\link{.basis}}, \code{\link{.basis<-}},
   \code{\link{basis<-}}, \code{\link{coef}},
+  \code{\link{.coef}}, \code{\link{.coef<-}},
   \code{\link{coef<-}}, \code{\link{coefficients}},
   \code{\link{loadings,NMF-method}},
   \code{\link{nmfModel}}, \code{\link{nmfModels}},

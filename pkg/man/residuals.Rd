@@ -2,9 +2,9 @@
 \name{residuals}
 \alias{hasTrack}
 \alias{residuals}
+\alias{residuals-methods}
 \alias{residuals,NMFfit-method}
 \alias{residuals,NMFfitX-method}
-\alias{residuals-methods}
 \alias{trackError}
 \title{Residuals in NMF Models}
 \usage{

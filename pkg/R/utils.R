@@ -1,3 +1,8 @@
+#' @include rmatrix.R
+NULL
+
+library(pkgmaker)
+
 #' Utility Function in the NMF Package
 #' 
 #' @name utils-NMF
@@ -260,40 +265,6 @@ expand_dots <- function(..., .exclude=NULL){
 	dotsCall
 }
 
-#' Checking for Missing Arguments
-#' 
-#' This function is identical to \code{\link{hasArg}}, except that 
-#' it accepts the argument name as a character string.
-#' This avoids to have a check NOTE about invisible binding variable.  
-#' 
-#' @param name a character string.
-#' 
-#' @export
-#' @examples
-#' 
-#' f <- function(...){ hasArg2('abc') }
-#' f(a=1)
-#' f(abc=1)
-#' f(b=1)
-#' 
-hasArg2 <- function (name) 
-{
-	name <- as.name(name)
-	## apply methods::hasArg
-	aname <- as.character(substitute(name))
-	fnames <- names(formals(sys.function(sys.parent())))
-	if (is.na(match(aname, fnames))) {
-		if (is.na(match("...", fnames))) 
-			FALSE
-		else {
-			dotsCall <- eval(quote(substitute(list(...))), sys.parent())
-			!is.na(match(aname, names(dotsCall)))
-		}
-	}
-	else eval(substitute(!missing(name)), sys.frame(sys.parent()))
-	##
-}
-
 
 #' Simulating Datasets
 #' 
@@ -349,9 +320,9 @@ syntheticNMF <- function(n, r, p, offset=NULL, noise=TRUE, factors=FALSE, seed=N
 	
 	# set seed if necessary
 	if( !is.null(seed) ){
-		os <- RNGscope()
+		os <- RNGseed()
+		on.exit( RNGseed(os) )
 		set.seed(seed)
-		on.exit( RNGscope(os) )
 	}
 	
 	# internal parameters
@@ -421,208 +392,6 @@ syntheticNMF <- function(n, r, p, offset=NULL, noise=TRUE, factors=FALSE, seed=N
 	# return the result	
 	return( ExposeAttribute(res, 'r') )
 }
-
-#' Exposing Object Attributes
-#' 
-#' The function \code{ExposeAttribute} creates an S3 object that 
-#' exposes all attributes of any R object, by making them accessible via 
-#' methods \code{\link{$}} and/or \code{\link{$<-}}.
-#' 
-#' @param object any R object whose attributes need to be exposed
-#' @param mode access mode: 
-#' \describe{
-#' \item{\dQuote{r}:}{ (read-only) only method \code{$} is defined}
-#' \item{\dQuote{w}:}{ (write-only) only method \code{$<-} is defined}
-#' \item{\dQuote{rw}:}{ (read-write) both methods \code{$} and \code{$<-} 
-#' are defined}
-#' } 
-#' 
-#' @export
-ExposeAttribute <- function(object, mode="rw"){
-	class(object) <- c(class(object), 'ExposeAttribute')
-#	args <- c(...)
-#	if( length(args) ){
-#		stopifnot( is.character(args) )
-#		if( is.null(names) )
-#			args <- setNames(rep(mode, length(args)), args)  
-#	}
-	EAmode(object) <- mode
-	object
-}
-
-#' @importFrom utils .DollarNames
-#' @S3method .DollarNames ExposeAttribute 
-.DollarNames.ExposeAttribute <- function(x, pattern=""){ 
-	grep(pattern, names(attributes(x)), value=TRUE) 
-}
-
-#' @S3method $ ExposeAttribute
-`$.ExposeAttribute` <- function(x, name){
-	mode <- EAmode(x)
-	if( is.null(mode) ){
-		warning("Missing mode in ExposeAttribute object: assuming 'rw'.")
-		mode <- 'rw'
-	}
-	if( !grepl('r', mode) ){
-		stop("Cannot access attribute '", name, "': object not in read mode [", mode,"].")
-	}
-	attr(x, name)
-	
-}
-
-`$<-.ExposeAttribute` <- function(x, name, value){
-	mode <- EAmode(x)
-	if( is.null(mode) ){
-		warning("Missing mode in ExposeAttribute object: assuming 'rw'.")
-		mode <- 'rw'
-	}
-	if( !grepl('w', mode) ){
-		stop("Cannot set attribute '", name, "': object not in write mode [", mode,"].")
-	}
-	attr(x, name) <- value
-	x
-}
-
-
-#' \code{EAmode} and \code{EAmode<-} get and sets the access mode of 
-#' \code{ExposeAttribute} objects.
-#' 
-#' @param x an \code{ExposeAttribute} object
-#' @param value replacement value for mode.
-#' @export
-#' @rdname ExposeAttribute
-EAmode <- function(x){
-	attr(x, '.EAmode')
-}
-#' @export
-#' @rdname ExposeAttribute
-`EAmode<-` <- function(x, value){
-	attr(x, '.EAmode') <- value
-	if( is.null(value) ) class(x) <- class(x)[!class(x) %in% "ExposeAttribute"]
-	x
-}
-
-#' Generating Random Matrices
-#' 
-#' The S4 generic \code{rmatrix} generates a random matrix from a given object.  
-#' Methods are provided to generate matrices with entries drawn from any 
-#' given random distribution function, e.g. \code{\link{runif}} or 
-#' \code{\link{rnorm}}.
-#' 
-#' @param x object from which to generate a random matrix 
-#' 
-#' @export
-setGeneric('rmatrix', function(x, ...) standardGeneric('rmatrix'))
-#' Generates a random matrix of given dimensions, whose entries 
-#' are drawn using the distribution function \code{dist}.
-#' 
-#' This is the workhorse method that is eventually called by all other methods.
-#' It returns a matrix with:
-#' \itemize{
-#' \item \code{x} rows and \code{y} columns if \code{y} is not missing and 
-#' not \code{NULL};
-#' \item dimension \code{x[1]} x \code{x[2]} if \code{x} has at least two elements;
-#' \item dimension \code{x} (i.e. a square matrix) otherwise.
-#' }
-#' 
-#' The default is to draw its entries from the standard uniform distribution using
-#' the base function \code{\link{runif}}, but any other function that generates 
-#' random numeric vectors of a given length may be specified in argument \code{dist}.
-#' All arguments in \code{...} are passed to the function specified in \code{dist}.
-#' 
-#' The only requirement is that the function in \code{dist} is of the following form:
-#' 
-#' \samp{
-#' function(n, ...){
-#' # return vector of length n
-#' ...
-#' }}
-#' 
-#' This is the case of all base random draw function such as \code{\link{rnorm}}, 
-#' \code{\link{rgamma}}, etc\ldots
-#'  
-#' 
-#' @param y optional specification of number of columns
-#' @param dist a random distribution function (see details of method 
-#' \code{rmatrix,numeric})
-#' @param byrow a logical passed in the internal call to the function 
-#' \code{\link{matrix}}
-#' @param dimnames \code{NULL} or a \code{list} passed in the internal call to 
-#' the function \code{\link{matrix}}
-#' @param ... extra arguments passed to the distribution function \code{dist}.
-#' 
-#' @inline
-#' 
-#' @examples
-#' ## Generate a random matrix of a given size
-#' rmatrix(5, 3)
-#' \dontshow{ stopifnot( identical(dim(rmatrix(5, 3)), c(5L,3L)) ) }
-#' 
-#' ## Generate a random matrix of the same dimension of a template matrix
-#' a <- matrix(1, 3, 4)
-#' rmatrix(a)
-#' \dontshow{ stopifnot( identical(dim(rmatrix(a)), c(3L,4L)) ) }
-#' 
-#' ## Specificy the distribution to use
-#' 
-#' # the default is uniform
-#' a <- rmatrix(1000, 50)
-#' \dontrun{ hist(a) }
-#' 
-#' # use normal ditribution
-#' a <- rmatrix(1000, 50, rnorm)
-#' \dontrun{ hist(a) }
-#' 
-#' # extra arguments can be passed to the random variate generation function 
-#' a <- rmatrix(1000, 50, rnorm, mean=2, sd=0.5)
-#' \dontrun{ hist(a) }
-#' 
-setMethod('rmatrix', 'numeric', 
-	function(x, y=NULL, dist=runif, byrow = FALSE, dimnames = NULL, ...){
-		
-		x <- as.integer(x)
-		# early exit if x has length 0
-		if( length(x) == 0L )
-			stop("NMF::rmatrix - invalid empty vector in argument `x`.")
-		
-		# check that 'dist' is a function.
-		if( !is.function(dist) )
-			stop("NMF::rmatrix - invalid value for argument 'dist': must be a function [class(dist)='", class(dist), "'].")
-		
-		# if 'y' is not specified:
-		if( is.null(y) ){
-			
-			if( length(x) == 1L ) y <- x # create a square matrix 
-			else{ # assume x contains all dimensions (e.g. returned by dim())
-				y <- x[2L]
-				x <- x[1L]
-			}
-			
-		}else{
-			y <- as.integer(y)
-			y <- y[1L] # only use first element
-		}
-		
-		# build the random matrix using the distribution function
-		matrix(dist(x*y, ...), x, y, byrow=byrow, dimnames=dimnames)	
-	}
-)
-
-#' Default method which calls \code{rmatrix,vector} on the dimensions of \code{x}
-#' that is assumed to be returned by a suitable \code{dim} method:
-#' it is equivalent to \code{rmatrix(dim(x), y=NULL, ...)}.
-#' 
-#' @examples
-#' 
-#' # random matrix of the same dimension as another matrix
-#' x <- matrix(3,4)
-#' dim(rmatrix(x))
-#' 
-setMethod('rmatrix', 'ANY', 
-	function(x, ...){
-		rmatrix(x=dim(x), y=NULL, ...)
-	}
-)
 
 ###% apply a function to each entry in a matrix
 matapply <- function(x, FUN, ...){

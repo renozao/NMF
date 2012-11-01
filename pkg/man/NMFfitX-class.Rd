@@ -29,10 +29,6 @@
 \section{Methods}{
   \describe{
 
-  \item{NMFfitX}{\code{signature(object = "NMFfitX")}:
-  Provides a way to aggregate \code{NMFfitXn} objects into
-  an \code{NMFfitX1} object. }
-
   \item{basismap}{\code{signature(object = "NMFfitX")}:
   Plots a heatmap of the basis matrix of the best fit in
   \code{object}. }
@@ -101,6 +97,10 @@
   \item{nmf.equal}{\code{signature(x = "NMFfitX", y =
   "NMF")}: Compares two NMF models when at least one comes
   from multiple NMF runs. }
+
+  \item{NMFfitX}{\code{signature(object = "NMFfitX")}:
+  Provides a way to aggregate \code{NMFfitXn} objects into
+  an \code{NMFfitX1} object. }
 
   \item{nrun}{\code{signature(object = "NMFfitX")}: Returns
   the number of NMF runs performed to create \code{object}.

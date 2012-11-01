@@ -118,10 +118,17 @@
   sets elements in the \code{list} slot \code{misc} -- that
   is inherited from class \code{\linkS4class{NMF}}.}
 
+  \item{call}{stored call to the last \code{nmf} method
+  that generated the object.}
+
   }
 }
 \section{Methods}{
   \describe{
+
+  \item{algorithm}{\code{signature(object = "NMFfit")}:
+  Returns the name of the algorithm that fitted the NMF
+  model \code{object}. }
 
   \item{.basis}{\code{signature(object = "NMFfit")}:
   Returns the basis matrix from an NMF model fitted with
@@ -159,15 +166,6 @@
   except when developing NMF algorithms, to update the
   coefficient matrix in the seed object before returning
   it. }
-
-  \item{NMFfitX}{\code{signature(object = "NMFfit")}:
-  Creates an \code{NMFfitX1} object from a single fit. This
-  is used in \code{\link{nmf}} when only the best fit is
-  kept in memory or on disk. }
-
-  \item{algorithm}{\code{signature(object = "NMFfit")}:
-  Returns the name of the algorithm that fitted the NMF
-  model \code{object}. }
 
   \item{compare}{\code{signature(object = "NMFfit")}:
   Compare multiple NMF fits passed as arguments. }
@@ -251,6 +249,11 @@
   \item{nmf.equal}{\code{signature(x = "NMFfit", y =
   "NMFfit")}: Compares two fitted NMF models, i.e. objects
   returned by single runs of \code{\link{nmf}}. }
+
+  \item{NMFfitX}{\code{signature(object = "NMFfit")}:
+  Creates an \code{NMFfitX1} object from a single fit. This
+  is used in \code{\link{nmf}} when only the best fit is
+  kept in memory or on disk. }
 
   \item{nrun}{\code{signature(object = "NMFfit")}: This
   method always returns 1, since an \code{NMFfit} object is

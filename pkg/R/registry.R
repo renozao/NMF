@@ -10,6 +10,7 @@
 ###########################################################################
 # COMMON REGISTRY
 ###########################################################################
+library(registry)
 
 nmfRegistry <- function(...) pkgmaker::packageRegistry(...)
 
@@ -135,12 +136,15 @@ packageNMFObject <- function(key, method){
 	# do nothing if 
 	# - not loading a namespace
 	# - loading the NMF namespace
-	if( !isLoadingNamespace() || isLoadingNamespace('NMF') ){
+	if( !isLoadingNamespace(nodev=TRUE) || isLoadingNamespace('NMF') ){
 		return()
 	}
 	# do nothing if the namespace is already completely loaded
 	ns <- getLoadingNamespace(env=TRUE)
 	ns_name <- getLoadingNamespace()
+#	ca <- match.call()
+#	message('Call: ', capture.output(print(ca)), ' - ', ns_name , ' - ', capture.output(ns)
+#			, paste(pkgmaker:::pkg_calls(), collapse=', '))
 	
 	envname <- '._NMFmethods'
 	nometh <- !exists(envname, envir=ns)
@@ -175,7 +179,8 @@ packageNMFObject <- function(key, method){
 	ns[['._NMFmethods']][[lkey]] <- method
 	# defer loading (will be executed in the NMF namespace)
 	expr <- substitute(setNMFObject(packageNMFObject(key), verbose=getOption('verbose')), list(key=lkey))
-	if( !is_onLoad() ) onLoadTask(expr, lkey, envir=packageEnv())
+	e <- topenv()
+	if( !is_onLoad() ) onLoadTask(expr, lkey, envir=e)
 	#
 	
 	return()
@@ -193,15 +198,15 @@ setNMFObject <- function(object, ...){
 	
 }
 
-onLoadTask <- function(expr, key=digest(tempfile()), envir=toppackage(), verbose=getOption('verbose')){
+onLoadTask <- function(expr, key=digest(tempfile()), envir=topns(), verbose=getOption('verbose')){
 	
-	ns <- toppackage()
+	ns <- topns()
 	envname <- '._onLoadTasks'
 	if( !exists(envname, envir=ns) ){
 		if( nargs() == 0L ) return()
 		assign(envname, list(), envir=ns)
 	}
-	if( nargs() > 0L ){
+	if( !missing(expr) ){
 		qe <- if( !is.language(expr) ) substitute(expr) else expr
 		if( !is.null(qe) ) message("# Deferring loading task '", key, "'")
 		else{

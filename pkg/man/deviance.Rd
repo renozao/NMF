@@ -1,11 +1,11 @@
 \docType{methods}
 \name{deviance}
 \alias{deviance}
-\alias{deviance,NMF-method}
-\alias{deviance,NMFStrategy-method}
+\alias{deviance-methods}
 \alias{deviance,NMFfit-method}
 \alias{deviance,NMFfitX-method}
-\alias{deviance-methods}
+\alias{deviance,NMF-method}
+\alias{deviance,NMFStrategy-method}
 \alias{nmfDistance}
 \title{Distances and Objective Functions}
 \usage{

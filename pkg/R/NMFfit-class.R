@@ -5,7 +5,6 @@
 # Author: Renaud Gaujoux
 ###############################################################################
 
-#' @include RNG.R
 #' @include fixed-terms.R
 #' @include nmfModel.R
 NULL
@@ -91,6 +90,9 @@ NULL
 #' using the methods \code{$<-} that sets elements in the \code{list} slot 
 #' \code{misc} -- that is inherited from class \code{\linkS4class{NMF}}.
 #' 
+#' @slot call stored call to the last \code{nmf} method that generated the
+#' object. 
+#' 
 #' @export
 #' @examples 
 #' # run default NMF algorithm on a random matrix
@@ -119,7 +121,8 @@ setClass('NMFfit'
 			parameters = 'list', # method used to compute the factorization
 			runtime = 'proc_time', # running time to perform the NMF
 			options = 'list', # run options
-			extra = 'list' # extra list of results output by the method				
+			extra = 'list' # extra list of results output by the method
+			, call = 'call' # store last call to nmf()
 	)
 	
 	, prototype = prototype(
@@ -292,8 +295,7 @@ setMethod('show', 'NMFfit',
 			if( seeding(object) != '' ) cat("seed: ",  seeding(object), "\n")
 			
 			# initial RNG stream			
-			se <- getRNG(object)
-			cat("RNG: ", RNGdesc(se), "\n", sep='')
+			cat("RNG: ", RNGstr(object), "\n", sep='')
 	
 			# distance/objective function
 			svalue <- objective(object)

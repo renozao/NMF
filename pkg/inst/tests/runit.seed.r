@@ -8,157 +8,16 @@ if( isNamespaceLoaded('NMF') ){
 	seed <- NMF:::seed
 }
 
-RNGseed <- getRNG
-
-checkIdenticalRNG <- function(a, b, ...){	
-	checkTrue(rng.equal(a, b), ...)
-}
-
-check.setRNG <- function(value, target, title){
-	
-	runif(10)
-	old <- getRNG()
-	checkIdenticalRNG(setRNG(value), old, paste(title, ": correctly returns old value of RNG"))	
-	checkIdentical(.Random.seed, target, paste(title, ": correctly sets the seed"))
-	
-	if( is.numeric(value) ){
-		runif(100)
-		old <- getRNG()
-		checkIdenticalRNG(setRNG(value, test=FALSE), old, paste(title, ", test=FALSE: correctly returns old value of RNG"))	
-		checkIdentical(.Random.seed, target, paste(title, ", test=FALSE: correctly sets the seed"))
-		
-		runif(1000)
-		old <- getRNG()
-		checkIdentical(setRNG(value, test=TRUE)@seed, target, paste(title, ", test=TRUE: correctly returns new value of RNG"))
-		checkIdentical(.Random.seed, old@seed, paste(title, ", test=TRUE: correctly DO NOT set RNG"))
-	}
-	
-}
-
-#' Unit test for setRNG
-test.setRNG <- function(){
-	DEACTIVATED("Algorithm 'setRNG' was changed a lot.")		
-	checkTrue(is(getRNG(), 'rstream'), "No arguments: returns an rstream oject")
-	checkException(setRNG(c(1,2)), "Error if argument is of wrong length")
-	checkException(setRNG(numeric()), "Error if argument is of wrong length")
-	
-	set.seed(123456)
-	seed123456 <- .Random.seed
-	rng123456 <- getRNG()
-	
-	# Single numeric argument
-	check.setRNG(123456, seed123456, 'Single numeric')
-		
-	# .Random.seed-length numeric argument
-	check.setRNG(rng123456, seed123456, '.Random.seed-length numeric')	
-	checkException( setRNG(seed123456), 'Error called with a numeric too long')
-	
-}
-
-test.getRNG <- function(){
-	
-	set.seed(123456)
-	seed123456 <- .Random.seed
-	rng123456 <- getRNG()
-	
-	checkIdentical(seed123456, rng123456, "No arguments: returns .Random.seed")
-	
-	# check test calls of getRNG
-	runif(10)
-	oseed <- .Random.seed
-	rngtest <- getRNG(123456)
-	checkIdentical(seed123456, rngtest, "Single numeric argument: returns .Random.seed as it would be after setting the seed")
-	checkIdentical(.Random.seed, oseed, "Single numeric argument: does not change .Random.seed")
-	
-	oseed <- .Random.seed
-	rngtest <- getRNG(.Random.seed)
-	checkIdentical(oseed, rngtest, "Numeric vector argument: returns its argument unchanged")
-	checkIdentical(.Random.seed, oseed, "Numeric vector argument: does not change .Random.seed")
-	
-}
-
-test.setRNG2 <- function(){
-	
-	on.exit( RNGrecovery() )
-	
-	set.seed(123456)
-	refseed <- .Random.seed
-	
-	runif(10)
-	setRNG(123456)
-	checkIdentical(refseed, .Random.seed, "Single numeric: sets current RNG with seed")
-	RNGrecovery()
-		
-	# setting kind with a character string
-	runif(100)
-	RNGkind('Mar')
-	refseed <- .Random.seed
-	RNGrecovery()
-	runif(100)
-	setRNG('Mar')
-	checkIdentical(refseed, .Random.seed, "Single character: change RNG kind")
-	RNGrecovery()
-	
-	# setting kind with a character string
-	runif(100)
-	RNGkind('Mar', 'Ahrens')
-	refseed <- .Random.seed
-	RNGrecovery()
-	runif(100)
-	setRNG('Mar', 'Ahrens')
-	checkIdentical(refseed, .Random.seed, "Two character strings: change RNG kind and normal kind")
-	RNGrecovery()
-	
-	# setting kind
-	runif(100)
-	set.seed(123456, kind='Mar')
-	refseed <- .Random.seed
-	RNGrecovery()
-	runif(100)
-	setRNG(123456, kind='Mar')
-	checkIdentical(refseed, .Random.seed, "Single numeric + kind: change RNG kind + set seed")
-	RNGrecovery()
-	
-	# setting Nkind
-	runif(100)
-	set.seed(123456, normal.kind='Ahrens')
-	refseed <- .Random.seed
-	RNGrecovery()
-	runif(100)
-	setRNG(123456, normal.kind='Ahrens')
-	checkIdentical(refseed, .Random.seed, "Single numeric + normal.kind: change RNG normal kind + set seed")
-	RNGrecovery()
-	
-	# setting kind and Nkind
-	runif(100)
-	set.seed(123456, kind='Mar', normal.kind='Ahrens')
-	refseed <- .Random.seed
-	RNGrecovery()
-	runif(100)
-	setRNG(123456, kind='Mar', normal.kind='Ahrens')
-	checkIdentical(refseed, .Random.seed, "Single numeric + kind + normal.kind: change RNG all kinds + set seed")
-	RNGrecovery()
-	
-	# with seed length > 1
-	runif(100)
-	refseed <- as.integer(c(201, 0, 0))
-	runif(100)
-	setRNG(refseed)
-	checkIdentical(refseed, .Random.seed, "numeric vector: directly set seed")
-	checkIdentical(RNGkind(), c("Marsaglia-Multicarry", "Box-Muller"), "after numeric vector: RNGkind is correct")
-	RNGrecovery()
-	refseed <- .Random.seed
-	checkException( setRNG(c(906, 1, 1)), "numeric vector: throws an error if invalid value for .Random.seed")
-	checkIdentical( .Random.seed, refseed, ".Random.seed is not changed in case of an error in setRNG")
-	
+.testData <- function(n=20, r=3, m=10, ...){
+	syntheticNMF(n, r, m, ...)
 }
 
 #' Unit test for seeding method: none
 test.none <- function(){	
 	
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m, noise=TRUE) 
+	r <- 3; V <- .testData(r=r)
+	n <- nrow(V); m <- ncol(V);
 	
 	# seed with the matrix
 	obj <- seed(V, r, 'none')
@@ -204,8 +63,8 @@ test.zzz.all <- function(){
 	
 	set.seed(123)
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m)
+	r <- 3; V <- .testData(r=r)
+	n <- nrow(V); m <- ncol(V);
 	
 	# list the available algorithms
 	algorithms <- nmfAlgorithm()
@@ -306,10 +165,7 @@ test.seed.effect <- function(){
 	# set random seed
 	set.seed(123456)
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m, noise=TRUE)
-	
-	
+	r <- 3; V <- .testData(r=r)
 	
 	# Single runs
 	check.seed.change("After single run without seed", nmf(V, r), TRUE)	
@@ -347,9 +203,8 @@ test.restore <- function(){
 	DEACTIVATED("The option 'restore.seed' is deprecated. Related tests are now in test.seed.effect")
 	
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m, noise=TRUE)
-	
+	r <- 3; V <- .testData(r=r)
+
 	# default call no seed
 	os <- .Random.seed
 	nmf(V, r)
@@ -385,8 +240,7 @@ test.nndsvd <- function(){
 	set.seed(.seedTest)
 	
 	# create a random target matrix
-	n <- 50; r <- 3; m <- 20
-	V <- syntheticNMF(n, r, m, noise=TRUE)
+	r <- 3; V <- .testData(r=r)
 		
 	# perform NMF with seed 'nndsvd'
 	check.seed.change('seeding with "nndsvd"', obj <- seed(V, r, 'nndsvd'), FALSE)

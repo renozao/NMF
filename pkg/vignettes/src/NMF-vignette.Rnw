@@ -610,15 +610,15 @@ Moreover, single runs can also use RNGstream by passing a 6-length seed.
 <<seed_numeric>>=
 # single run and single numeric seed
 res <- nmf(esGolub, 3, seed=123456)
-RNGinfo(res)
+showRNG(res)
 
 # multiple runs and single numeric seed
 res <- nmf(esGolub, 3, seed=123456, nrun=2)
-RNGinfo(res)
+showRNG(res)
 
 # single run with a 6-length seed
 res <- nmf(esGolub, 3, seed=rep(123456, 6))
-RNGinfo(res)
+showRNG(res)
 @
 \nbnote{To show the RNG changes happening during the computation use \texttt{.options='v4'} to turn on verbosity at level 4.\\
 In versions prior 0.6, one could specify option \texttt{restore.seed=FALSE} or \texttt{'-r'}, this option is now deprecated.}

@@ -1,14 +1,14 @@
 \docType{methods}
 \name{nneg}
 \alias{nneg}
-\alias{nneg,NMF-method}
 \alias{nneg,matrix-method}
 \alias{nneg-methods}
+\alias{nneg,NMF-method}
 \alias{posneg}
 \alias{rposneg}
-\alias{rposneg,NMF-method}
 \alias{rposneg,matrix-method}
 \alias{rposneg-methods}
+\alias{rposneg,NMF-method}
 \title{Transforming from Mixed-sign to Nonnegative Data}
 \usage{
   nneg(object, ...)

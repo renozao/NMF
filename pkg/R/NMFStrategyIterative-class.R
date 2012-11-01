@@ -264,7 +264,12 @@ setMethod('run', signature(object='NMFStrategyIterative', y='matrix', x='NMFfit'
 	# override the stop method on runtime
 	if( !is.null(.stop) ){
 		method@Stop <- NMFStop(.stop)
-		if( is.integer(.stop) )
+		# honour maxIter unless .stop is an integer and maxIter is not passed
+		# either directly or from initial call
+		# NB: maxIter may be not missing in the call to run() due to the application 
+		# of default arguments from the Strategy within nmf(), in which case one does not 
+		# want to honour it, since it is effectively missing in the original call. 
+		if( is.integer(.stop) && (missing(maxIter) || !('maxIter' %in% names(x@call))) )
 			maxIter <- .stop[1]
 	}
 	
@@ -743,12 +748,19 @@ nmf.stop.threshold <- function(threshold){
 
 #' \code{nmf.stop.stationary} implements the stopping criterion of stationarity 
 #' of the objective value, which stops when the gradient of the objective function 
-#' does not change anymore with further iterations.
+#' is uniformly small over a certain number of iterations.
 #' 
-#' The gradient is computed by finite differences over an interaval 
-#' of iterations specified in argument \code{check.interval}.
-#' The criterion stops when the absolute value of the gradient is lower than the 
-#' specified threshold \code{stationary.th}.
+#' More precisely, the objective function is computed over \eqn{n} successive iterations (specified 
+#' in argument \code{check.niter}), every \code{check.interval} iterations.
+#' The criterion stops when the absolute difference between the maximum and the minimum 
+#' objective values over these iterations is lower than a given threshold \eqn{\alpha} 
+#' (specified in \code{stationary.th}):
+#' 
+#' \deqn{
+#' \left| \frac{\max_{i- N_s + 1 \leq k \leq i} D_k - \min_{i - N_s +1 \leq k \leq i} D_k}{n} \right| \leq \alpha,
+#' }{
+#' | [max( D(i- N_s + 1), ..., D(i) ) - min( D(i- N_s + 1), ..., D(i) )] / n | <= alpha
+#' }
 #' 
 #' @param object an NMF strategy object
 #' @param i the current iteration
@@ -758,6 +770,8 @@ nmf.stop.threshold <- function(threshold){
 #' function to be considered stationary.
 #' @param check.interval interval (in number of iterations) on which stationarity 
 #' is computed. 
+#' @param check.niter number of successive iteration used to compute the stationnary 
+#' criterion.
 #' @param ... extra arguments passed to the function \code{\link{objective}}, 
 #' which computes the objective value between \code{x} and \code{y}.
 #' 
@@ -766,38 +780,67 @@ nmf.stop.threshold <- function(threshold){
 nmf.stop.stationary <- local({
 	
 	# static variable
-	.last.objective.value <- NULL
+	.last.objective.value <- c(-Inf, Inf)
+	.niter <- 0L
 	
-	function(object, i, y, x, stationary.th=10^-6, check.interval=10L, ...){
+	.store_value <- function(value){
+		.niter <<- .niter + 1L
+		.last.objective.value <<- c(max(.last.objective.value[1L], value)
+									, min(.last.objective.value[2L], value))
+	}
+	
+	.reset_value <- function(){
+		.last.objective.value <<- c(-Inf, Inf)
+		.niter <<- 0L
+	}
+	
+	function(object, i, y, x, stationary.th=.Machine$double.eps, check.interval=5*check.niter, check.niter=10L, ...){
 		
+		# check validity
+		if( check.interval < check.niter ){
+			stop("Invalid argument values: `check.interval` must always be greater than `check.niter`")
+		}
 		# initialisation call: compute initial objective value
 		if( i == 0L || (i == 1L && is.null(.last.objective.value)) ){
-			.last.objective.value <<- NULL
+			.reset_value()
 			
 			# give the chance to update once and estimate from a partial model
 			if( is.partial.nmf(x) ) return( FALSE )
+			
 			# compute initial deviance
 			current.value <- deviance(object, x, y, ...)
 			# check for NaN, i.e. probably infinitely small value (cf. bug reported by Nadine POUKEN SIEWE)
 			if( is.nan(current.value) ) return(TRUE)
-			# store value in workspace for later calls
-			.last.objective.value <<- current.value
+			
+			# store value in static variable for next calls
+			.store_value(current.value)
+			
 			return(FALSE)
 		}
 		
 		# test convergence only every 10 iterations
-		if( i %% check.interval != 0 ) return( FALSE );
+		if( .niter==0L && i %% check.interval != 0 ) return( FALSE );
 		
-		# get last objective value from workspace		
-		last.value <- .last.objective.value #staticVar('objective.value')
+		# get last objective value from static variable		
 		current.value <- deviance(object, x, y, ...)
 		# check for NaN, i.e. probably infinitely small value (cf. bug reported by Nadine POUKEN SIEWE)
 		if( is.nan(current.value) ) return(TRUE)
-		# if the relative decrease in the objective value is to small then stop
-		if( abs( (last.value - current.value)/check.interval ) <= stationary.th ) return( TRUE )
 		
-		# update the objective value
-		.last.objective.value <<- current.value #staticVar('objective.value', current.value)
+		# update static variables
+		.store_value(current.value)
+		
+		# once values have been computed for check.niter iterations:
+		# check if the difference in the extreme objective values is small enough
+		if( .niter == check.niter+1 ){
+			crit <- abs(.last.objective.value[1L] - .last.objective.value[2L]) / check.niter
+			if( crit <= stationary.th ){
+				if( nmf.getOption('verbose') ){
+					message(crit)
+				}
+				return( TRUE )
+			}
+			.reset_value()
+		}
 		
 		# do NOT stop
 		FALSE

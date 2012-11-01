@@ -1,18 +1,18 @@
 \docType{methods}
 \name{heatmap-NMF}
 \alias{basismap}
-\alias{basismap,NMF-method}
-\alias{basismap,NMFfitX-method}
 \alias{basismap-methods}
+\alias{basismap,NMFfitX-method}
+\alias{basismap,NMF-method}
 \alias{coefmap}
-\alias{coefmap,NMF-method}
-\alias{coefmap,NMFfitX-method}
 \alias{coefmap-methods}
+\alias{coefmap,NMFfitX-method}
+\alias{coefmap,NMF-method}
 \alias{consensusmap}
-\alias{consensusmap,NMF-method}
-\alias{consensusmap,NMFfitX-method}
 \alias{consensusmap,matrix-method}
 \alias{consensusmap-methods}
+\alias{consensusmap,NMFfitX-method}
+\alias{consensusmap,NMF-method}
 \alias{heatmap-NMF}
 \title{Heatmaps of NMF Factors}
 \usage{

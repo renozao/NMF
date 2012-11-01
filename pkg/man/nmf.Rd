@@ -3,17 +3,17 @@
 \alias{nmf}
 \alias{nmf,data.frame,ANY,ANY-method}
 \alias{nmf,formula,ANY,ANY-method}
-\alias{nmf,matrix,NMF,ANY-method}
-\alias{nmf,matrix,NULL,ANY-method}
 \alias{nmf,matrix,data.frame,ANY-method}
 \alias{nmf,matrix,matrix,ANY-method}
 \alias{nmf,matrix,missing,ANY-method}
-\alias{nmf,matrix,numeric,NMFStrategy-method}
-\alias{nmf,matrix,numeric,NULL-method}
+\alias{nmf,matrix,NMF,ANY-method}
+\alias{nmf,matrix,NULL,ANY-method}
 \alias{nmf,matrix,numeric,character-method}
 \alias{nmf,matrix,numeric,function-method}
 \alias{nmf,matrix,numeric,list-method}
 \alias{nmf,matrix,numeric,missing-method}
+\alias{nmf,matrix,numeric,NMFStrategy-method}
+\alias{nmf,matrix,numeric,NULL-method}
 \alias{nmf-methods}
 \title{Running NMF algorithms}
 \usage{

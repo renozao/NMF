@@ -1,10 +1,10 @@
 \docType{class}
 \name{NMFStrategy-class}
-\alias{NMFStrategy-class}
 \alias{is.mixed}
-\alias{objective,NMFStrategy-method}
+\alias{NMFStrategy-class}
 \alias{objective<-,NMFStrategy,character-method}
 \alias{objective<-,NMFStrategy,function-method}
+\alias{objective,NMFStrategy-method}
 \alias{show,NMFStrategy-method}
 \title{Virtual Interface for NMF Algorithms}
 \usage{
@@ -56,11 +56,6 @@
 \section{Methods}{
   \describe{
 
-  \item{NMFStrategy}{\code{signature(name = "NMFStrategy",
-  method = "missing")}: Creates an \code{NMFStrategy} based
-  on a template object (Constructor-Copy), in particular it
-  uses the \strong{same} name. }
-
   \item{canFit}{\code{signature(x = "NMFStrategy", y =
   "character")}: Tells if an NMF algorithm can fit a given
   class of NMF models }
@@ -76,6 +71,11 @@
   \item{modelname}{\code{signature(object =
   "NMFStrategy")}: Returns the model(s) that an NMF
   algorithm can fit. }
+
+  \item{NMFStrategy}{\code{signature(name = "NMFStrategy",
+  method = "missing")}: Creates an \code{NMFStrategy} based
+  on a template object (Constructor-Copy), in particular it
+  uses the \strong{same} name. }
 
   \item{objective}{\code{signature(object =
   "NMFStrategy")}: Gets the objective function associated

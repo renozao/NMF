@@ -4,14 +4,14 @@
 # Creation: 26 Oct 2011
 ###############################################################################
 
-tests <- try( pkgmaker::utest('package:NMF', quiet=FALSE) )
+tests <- try( pkgmaker::utest('package:NMF', 'interface', 'nmf.custom', quiet=FALSE) )
 
 td <- pkgmaker:::utestPath(package='package:NMF')
 resfile <- list.files(td, pattern=".+\\.txt", full.names=TRUE)
 cat("Result files:\n")
 print(resfile)
 
-if( length(resfile) && Sys.info()['user'] != 'renaud'){
+if( length(resfile) ){ #&& Sys.info()['user'] != 'renaud'){
 	# send
 	library(mail)
 	sapply(resfile, function(f){

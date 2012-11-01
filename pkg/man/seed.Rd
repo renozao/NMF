@@ -1,10 +1,10 @@
 \docType{methods}
 \name{seed}
 \alias{seed}
-\alias{seed,ANY,ANY,NULL-method}
 \alias{seed,ANY,ANY,character-method}
 \alias{seed,ANY,ANY,function-method}
 \alias{seed,ANY,ANY,missing-method}
+\alias{seed,ANY,ANY,NULL-method}
 \alias{seed,ANY,ANY,numeric-method}
 \alias{seed,ANY,list,NMFSeed-method}
 \alias{seed,ANY,numeric,NMFSeed-method}
