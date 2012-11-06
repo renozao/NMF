@@ -2,163 +2,159 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Factory Methods NMF Models. NMF </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<title>nmfModel. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {padding-top: 60px;}
-      h2 {padding-top: 20px}
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/highlight.css" rel="stylesheet">
-    <link href="css/staticdocs.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class = "container">
-          <a class="brand" href="index.html">NMF </a>
-          <div class="nav">
-            <ul class="nav">
-              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
     </div>
+  </div>
+</div>
 
     <div class="container">
+      <header>
+        
+      </header>
+      
       <h1>Factory Methods NMF Models</h1>
 
-      <div class="row">
-        <div class="span8">
-          <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">rank</span><span class="keyword">,</span> <span class="argument">target</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">rank</span><span class="keyword">,</span> <span class="argument">target</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (numeric,numeric)</span>
-<span class="functioncall"><a href='NA'>`nmfModel`</a></span><span class="keyword">(</span><span class="symbol">rank</span><span class="keyword">,</span> <span class="symbol">target</span><span class="keyword">,</span> <span class="argument">ncol</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">model</span> <span class="argument">=</span> <span class="string">"NMFstd"</span><span class="keyword">,</span> <span class="symbol">W</span><span class="keyword">,</span> <span class="symbol">H</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">force.dim</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span>
+<span class="functioncall">`nmfModel`</span><span class="keyword">(</span><span class="symbol">rank</span><span class="keyword">,</span> <span class="symbol">target</span><span class="keyword">,</span> <span class="argument">ncol</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">model</span> <span class="argument">=</span> <span class="string">"NMFstd"</span><span class="keyword">,</span> <span class="symbol">W</span><span class="keyword">,</span> <span class="symbol">H</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">force.dim</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span>
   <span class="argument">order.basis</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (numeric,matrix)</span>
-<span class="functioncall"><a href='NA'>`nmfModel`</a></span><span class="keyword">(</span><span class="symbol">rank</span><span class="keyword">,</span> <span class="symbol">target</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">use.names</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
+<span class="functioncall">`nmfModel`</span><span class="keyword">(</span><span class="symbol">rank</span><span class="keyword">,</span> <span class="symbol">target</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">use.names</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (formula,ANY)</span>
-<span class="functioncall"><a href='NA'>`nmfModel`</a></span><span class="keyword">(</span><span class="symbol">rank</span><span class="keyword">,</span> <span class="symbol">target</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">data</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">no.attrib</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+<span class="functioncall">`nmfModel`</span><span class="keyword">(</span><span class="symbol">rank</span><span class="keyword">,</span> <span class="symbol">target</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">data</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">no.attrib</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='nmfModel.html'>nmfModels</a></span><span class="keyword">(</span><span class="argument">builtin.only</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span></pre>
-          
-          <h2>Arguments</h2>
-          <dl>
-            <dt>rank</dt>
-            <dd>specification of the target factorization
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>rank</dt>
+      <dd>specification of the target factorization
   rank (i.e. the number of components).</dd>
-            <dt>target</dt>
-            <dd>an object that specifies the dimension of
+      <dt>target</dt>
+      <dd>an object that specifies the dimension of
   the estimated target matrix.</dd>
-            <dt>...</dt>
-            <dd>extra arguments to allow extension, that are
+      <dt>...</dt>
+      <dd>extra arguments to allow extension, that are
   passed down to the workhorse method
   <code>nmfModel,numeric.numeric</code>, where they are used to
   initialise slots specific to the instantiating NMF model
   class.</dd>
-            <dt>ncol</dt>
-            <dd>a numeric value that specifies the number of
+      <dt>ncol</dt>
+      <dd>a numeric value that specifies the number of
   columns of the target matrix, fitted the NMF model. It is
   used only if not missing and when argument <code>target</code>
   is a single numeric value.</dd>
-            <dt>model</dt>
-            <dd>the class of the object to be created. It
+      <dt>model</dt>
+      <dd>the class of the object to be created. It
   must be a valid class name that inherits from class
   <code>NMF</code>. Default is the standard NMF model
   <code><a href='NMFstd-class.html'>NMFstd-class</a></code>.</dd>
-            <dt>W</dt>
-            <dd>value for the basis matrix. <code>data.frame</code>
+      <dt>W</dt>
+      <dd>value for the basis matrix. <code>data.frame</code>
   objects are converted into matrices with
-  <code><a href='NA'>as.matrix</a></code>.</dd>
-            <dt>H</dt>
-            <dd>value for the mixture coefficient matrix
+  <code><a href='http://www.inside-r.org/r-doc/base/matrix'>as.matrix</a></code>.</dd>
+      <dt>H</dt>
+      <dd>value for the mixture coefficient matrix
   <code>data.frame</code> objects are converted into matrices
-  with <code><a href='NA'>as.matrix</a></code>.</dd>
-            <dt>force.dim</dt>
-            <dd>logical that indicates whether the
+  with <code><a href='http://www.inside-r.org/r-doc/base/matrix'>as.matrix</a></code>.</dd>
+      <dt>force.dim</dt>
+      <dd>logical that indicates whether the
   method should try lowering the rank or shrinking
   dimensions of the input matrices to make them compatible</dd>
-            <dt>order.basis</dt>
-            <dd>logical that indicates whether the
+      <dt>order.basis</dt>
+      <dd>logical that indicates whether the
   basis components should reorder the rows of the mixture
   coefficient matrix to match the order of the basis
   components, based on their respective names. It is only
   used if the basis and coefficient matrices have common
   unique column and row names respectively.</dd>
-            <dt>use.names</dt>
-            <dd>a logical that indicates whether the
+      <dt>use.names</dt>
+      <dd>a logical that indicates whether the
   dimension names of the target matrix should be set on the
   returned NMF model.</dd>
-            <dt>data</dt>
-            <dd>Optional argument where to look for the
+      <dt>data</dt>
+      <dd>Optional argument where to look for the
   variables used in the formula.</dd>
-            <dt>no.attrib</dt>
-            <dd>logical that indicate if attributes
+      <dt>no.attrib</dt>
+      <dd>logical that indicate if attributes
   containing data related to the formula should be attached
   as attributes. If <code>FALSE</code> attributes <code>'target'</code>
   and <code>'formula'</code> contain the target matrix, and a
   list describing each formula part (response, regressors,
   etc.).</dd>
-            <dt>builtin.only</dt>
-            <dd>logical that indicates whether only
+      <dt>builtin.only</dt>
+      <dd>logical that indicates whether only
   built-in NMF models, i.e. defined within the NMF package,
   should be listed.</dd>
-          </dl>
-          
-          <div class="Value">
-            <h2>Value</h2>
-            
-            <p>an object that inherits from class
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>an object that inherits from class
   <code><a href='NMF-class.html'>NMF-class</a></code>.</p>
-        
-            <p>a list</p>
-        
-          </div>
+  
+      <p>a list</p>
+  
+    </div>
 
-          <div class="Description">
-            <h2>Description</h2>
-            
-            <p><code>nmfModel</code> is a S4 generic function which provides a
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>nmfModel</code> is a S4 generic function which provides a
   convenient way to build NMF models. It implements a
   unified interface for creating <code>NMF</code> objects from
   any NMF models, which is designed to resolve potential
   dimensions inconsistencies.</p>
-        
-            <p><code>nmfModels</code> lists all available NMF models currently
+  
+      <p><code>nmfModels</code> lists all available NMF models currently
   defined that can be used to create NMF objects, i.e. --
   more or less -- all S4 classes that inherit from class
   <code><a href='NMF-class.html'>NMF-class</a></code>.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Details">
-            <h2>Details</h2>
-            
-            <p>All <code>nmfModel</code> methods return an object that
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>All <code>nmfModel</code> methods return an object that
   inherits from class <code>NMF</code>, that is suitable for
   seeding NMF algorithms via arguments <code>rank</code> or
   <code>seed</code> of the <code><a href='nmf.html'>nmf</a></code> method, in which
   case the factorisation rank is implicitly set by the
   number of basis components in the seeding model (see
   <code><a href='nmf.html'>nmf</a></code>).</p>
-        
-            <p>For convenience, shortcut methods and internal
+  
+      <p>For convenience, shortcut methods and internal
   conversions for working on <code>data.frame</code> objects
   directly are implemented. However, note that conversion
   of a <code>data.frame</code> into a <code>matrix</code> object may
@@ -166,110 +162,110 @@
   using this method or other NMF-related methods several
   times, consider converting your data <code>data.frame</code>
   object into a matrix once for good, when first loaded.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Methods">
-            <h2>Methods</h2>
-            
-            <p><span class='describe'></p>
-        
-            <p>nmfModel<code>signature(rank = "numeric", target
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><span class='describe'></p>
+  
+      <p>nmfModel<code>signature(rank = "numeric", target
   = "numeric")</code>: Main factory method for NMF models</p>
-        
-            <p>This method is the workhorse method that is eventually
+  
+      <p>This method is the workhorse method that is eventually
   called by all other methods. See section <em>Main
   factory method</em> for more details.</p>
-        
-            <p>nmfModel<code>signature(rank = "numeric", target
+  
+      <p>nmfModel<code>signature(rank = "numeric", target
   = "missing")</code>: Creates an empty NMF model of a given
   rank.</p>
-        
-            <p>This call is equivalent to <code>nmfModel(rank, 0L,
+  
+      <p>This call is equivalent to <code>nmfModel(rank, 0L,
   ...)</code>, which creates <em>empty</em> <code>NMF</code> object with
   a basis and mixture coefficient matrix of dimension 0 x
   <code>rank</code> and <code>rank</code> x 0 respectively.</p>
-        
-            <p>nmfModel<code>signature(rank = "missing", target
+  
+      <p>nmfModel<code>signature(rank = "missing", target
   = "ANY")</code>: Creates an empty NMF model of null rank and a
   given dimension.</p>
-        
-            <p>This call is equivalent to <code>nmfModel(0, target,
+  
+      <p>This call is equivalent to <code>nmfModel(0, target,
   ...)</code>.</p>
-        
-            <p>nmfModel<code>signature(rank = "NULL", target =
+  
+      <p>nmfModel<code>signature(rank = "NULL", target =
   "ANY")</code>: Creates an empty NMF model of null rank and
   given dimension.</p>
-        
-            <p>This call is equivalent to <code>nmfModel(0, target,
+  
+      <p>This call is equivalent to <code>nmfModel(0, target,
   ...)</code>, and is meant for internal usage only.</p>
-        
-            <p>nmfModel<code>signature(rank = "missing", target
+  
+      <p>nmfModel<code>signature(rank = "missing", target
   = "missing")</code>: Creates an empty NMF model or from
   existing factors</p>
-        
-            <p>This method is equivalent to <code>nmfModel(0, 0, ...,
+  
+      <p>This method is equivalent to <code>nmfModel(0, 0, ...,
   force.dim=FALSE)</code>. This means that the dimensions of the
   NMF model will be taken from the optional basis and
   mixture coefficient arguments <code>W</code> and <code>H</code>. An
   error is thrown if their dimensions are not compatible.</p>
-        
-            <p>Hence, this method may be used to generate an NMF model
+  
+      <p>Hence, this method may be used to generate an NMF model
   from existing factor matrices, by providing the named
   arguments <code>W</code> and/or <code>H</code>:</p>
-        
-            <p><code>nmfModel(W=w)</code> or <code>nmfModel(H=h)</code> or
+  
+      <p><code>nmfModel(W=w)</code> or <code>nmfModel(H=h)</code> or
   <code>nmfModel(W=w, H=h)</code></p>
-        
-            <p>Note that this may be achieved using the more convenient
+  
+      <p>Note that this may be achieved using the more convenient
   interface is provided by the method
   <code>nmfModel,matrix,matrix</code> (see its dedicated
   description).</p>
-        
-            <p>See the description of the appropriate method below.</p>
-        
-            <p>nmfModel<code>signature(rank = "numeric", target
+  
+      <p>See the description of the appropriate method below.</p>
+  
+      <p>nmfModel<code>signature(rank = "numeric", target
   = "matrix")</code>: Creates an NMF model compatible with a
   target matrix.</p>
-        
-            <p>This call is equivalent to <code>nmfModel(rank,
+  
+      <p>This call is equivalent to <code>nmfModel(rank,
   dim(target), ...)</code>. That is that the returned NMF object
   fits a target matrix of the same dimension as
   <code>target</code>.</p>
-        
-            <p>Only the dimensions of <code>target</code> are used to
+  
+      <p>Only the dimensions of <code>target</code> are used to
   construct the <code>NMF</code> object. The matrix slots are
   filled with <code>NA</code> values if these are not specified
   in arguments <code>W</code> and/or <code>H</code>. However, dimension
   names are set on the return NMF model if present in
   <code>target</code> and argument <code>use.names=TRUE</code>.</p>
-        
-            <p>nmfModel<code>signature(rank = "matrix", target =
+  
+      <p>nmfModel<code>signature(rank = "matrix", target =
   "matrix")</code>: Creates an NMF model based on two existing
   factors.</p>
-        
-            <p>This method is equivalent to <code>nmfModel(0, 0, W=rank,
+  
+      <p>This method is equivalent to <code>nmfModel(0, 0, W=rank,
   H=target..., force.dim=FALSE)</code>. This allows for a natural
   shortcut for wrapping existing <strong>compatible</strong>
   matrices into NMF models: <span class = "samp">nmfModel(w, h)</span></p>
-        
-            <p>Note that an error is thrown if their dimensions are not
+  
+      <p>Note that an error is thrown if their dimensions are not
   compatible.</p>
-        
-            <p>nmfModel<code>signature(rank = "data.frame",
+  
+      <p>nmfModel<code>signature(rank = "data.frame",
   target = "data.frame")</code>: Same as <code>nmfModel('matrix',
   'matrix')</code> but for <code>data.frame</code> objects, which are
-  generally produced by <code><a href='NA'>read.delim</a></code>-like
+  generally produced by <code><a href='http://www.inside-r.org/r-doc/utils/read.table'>read.delim</a></code>-like
   functions.</p>
-        
-            <p>The input <code>data.frame</code> objects are converted into
-  matrices with <code><a href='NA'>as.matrix</a></code>.</p>
-        
-            <p>nmfModel<code>signature(rank = "matrix", target =
+  
+      <p>The input <code>data.frame</code> objects are converted into
+  matrices with <code><a href='http://www.inside-r.org/r-doc/base/matrix'>as.matrix</a></code>.</p>
+  
+      <p>nmfModel<code>signature(rank = "matrix", target =
   "ANY")</code>: Creates an NMF model with arguments <code>rank</code>
   and <code>target</code> swapped.</p>
-        
-            <p>This call is equivalent to <code>nmfModel(rank=target,
+  
+      <p>This call is equivalent to <code>nmfModel(rank=target,
   target=rank, ...)</code>. This allows to call the
   <code>nmfModel</code> function with arguments <code>rank</code> and
   <code>target</code> swapped. It exists for convenience:
@@ -282,30 +278,30 @@
   arguments in any order (the one that comes to the user's
   mind first) and it still works as expected. </li>
 </ul></p>
-        
-            <p>nmfModel<code>signature(rank = "formula", target
+  
+      <p>nmfModel<code>signature(rank = "formula", target
   = "ANY")</code>: Build a formula-based NMF model, that can
   incorporate fixed basis or coefficient terms.</p>
-        
-            <p></span></p>
-        
-          </div>
+  
+      <p></span></p>
+  
+    </div>
 
-          <div class="Main factory method">
-            <h2>Main factory method</h2>
-            
-            <p>The main factory engine of NMF models is implemented by
+    <div class="Main factory method">
+      <h2>Main factory method</h2>
+      
+      <p>The main factory engine of NMF models is implemented by
   the method with signature <code>numeric, numeric</code>. Other
   factory methods provide convenient ways of creating NMF
   models from e.g. a given target matrix or known
   basis/coef matrices (see section <em>Other Factory
   Methods</em>).</p>
-        
-            <p>This method creates an object of class <code>model</code>,
+  
+      <p>This method creates an object of class <code>model</code>,
   using the extra arguments in <code>...</code> to initialise
   slots that are specific to the given model.</p>
-        
-            <p>All NMF models implement get/set methods to access the
+  
+      <p>All NMF models implement get/set methods to access the
   matrix factors (see <code><a href='basis-coef-methods.html'>basis</a></code>), which are
   called to initialise them from arguments <code>W</code> and
   <code>H</code>. These argument names derive from the definition
@@ -313,14 +309,14 @@
   <code><a href='NMFstd-class.html'>NMFstd-class</a></code>, which has two slots, <var>W</var>
   and <var>H</var>, to hold the two factors -- following the
   notations used in <cite>Lee et al. (1999)</cite>.</p>
-        
-            <p>If argument <code>target</code> is missing, the method creates
+  
+      <p>If argument <code>target</code> is missing, the method creates
   a standard NMF model of dimension 0x<code>rank</code>x0. That
   is that the basis and mixture coefficient matrices,
   <var>W</var> and <var>H</var>, have dimension 0x<code>rank</code> and
   <code>rank</code>x0 respectively.</p>
-        
-            <p>If target dimensions are also provided in argument
+  
+      <p>If target dimensions are also provided in argument
   <code>target</code> as a 2-length vector, then the method
   creates an <code>NMF</code> object compatible to fit a target
   matrix of dimension <code>target[1]</code>x<code>target[2]</code>.
@@ -333,50 +329,50 @@
   rows and the number of columns of the target matrix
   respectively. If no other argument is provided, these
   matrices are filled with NAs.</p>
-        
-            <p>If arguments <code>W</code> and/or <code>H</code> are provided, the
+  
+      <p>If arguments <code>W</code> and/or <code>H</code> are provided, the
   method creates a NMF model where the basis and mixture
   coefficient matrices, <var>W</var> and <var>H</var>, are
   initialised using the values of <code>W</code> and/or <code>H</code>.</p>
-        
-            <p>The dimensions given by <code>target</code>, <code>W</code> and
+  
+      <p>The dimensions given by <code>target</code>, <code>W</code> and
   <code>H</code>, must be compatible. However if
   <code>force.dim=TRUE</code>, the method will reduce the
   dimensions to the achieve dimension compatibility
   whenever possible.</p>
-        
-            <p>When <code>W</code> and <code>H</code> are both provided, the
+  
+      <p>When <code>W</code> and <code>H</code> are both provided, the
   <code>NMF</code> object created is suitable to seed a NMF
   algorithm in a call to the <code><a href='nmf.html'>nmf</a></code> method. Note
   that in this case the factorisation rank is implicitly
   set by the number of basis components in the seed.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="References">
-            <h2>References</h2>
-            
-            <p>Lee DD and Seung HS (1999). "Learning the parts of
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Lee DD and Seung HS (1999). "Learning the parts of
   objects by non-negative matrix factorization." _Nature_,
   *401*(6755), pp. 788-91. ISSN 0028-0836, <URL:
   http://dx.doi.org/10.1038/44565>, <URL:
   http://www.ncbi.nlm.nih.gov/pubmed/10548103>.</p>
-        
-          </div>
-      
-          <h2 id="examples">Examples</h2>
-          <pre class="examples"><div class='input'><span class="comment"># data</span>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class="comment"># data</span>
 <span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">20</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span> <span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">10</span>
 <span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span> <span class="comment"># some target matrix</span>
 
 <span class="comment"># create a r-ranked NMF model with a given target dimensions n x p as a 2-length vector</span>
-<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span><span class="symbol">p</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># directly</span></div>
+<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span><span class="symbol">p</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># directly</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 20 
 basis/rank: 3 
 samples: 10 
 </div>
-<div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>dim</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># or from an existing matrix &lt;=&gt; nmfModel(r, V)</span></div>
+<div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/dim'>dim</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># or from an existing matrix &lt;=&gt; nmfModel(r, V)</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 20 
 basis/rank: 3 
@@ -393,9 +389,9 @@ samples: 10
 <span class="comment"># trying to create a NMF object based on incompatible matrices generates an error</span>
 <span class="symbol">w</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">)</span>
 <span class="symbol">h</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">+</span><span class="number">1</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
-<span class="functioncall"><a href='NA'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='NA'>new</a></span><span class="keyword">(</span><span class="string">'NMFstd'</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span> <span class="keyword">)</span>
-<span class="functioncall"><a href='NA'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">)</span> <span class="keyword">)</span>
-<span class="functioncall"><a href='NA'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">+</span><span class="number">1</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span> <span class="keyword">)</span>
+<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/try'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/methods/new'>new</a></span><span class="keyword">(</span><span class="string">'NMFstd'</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span> <span class="keyword">)</span>
+<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/try'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">)</span> <span class="keyword">)</span>
+<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/try'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">+</span><span class="number">1</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span> <span class="keyword">)</span>
 <span class="comment"># The factory method can be force the model to match some target dimensions</span>
 <span class="comment"># but warnings are thrown</span>
 <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span></div>
@@ -429,7 +425,7 @@ features: 10
 basis/rank: 0 
 samples: 10 
 </div>
-<div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">target</span><span class="argument">=</span><span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">target</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 10 
 basis/rank: 0 
@@ -472,10 +468,10 @@ basis/rank: 3
 samples: 20 
 </div>
 <div class='input'><span class="comment"># error if not compatible</span>
-<span class="functioncall"><a href='NA'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">[</span><span class="keyword">-</span><span class="number">1</span><span class="keyword">,</span><span class="keyword">]</span><span class="keyword">)</span> <span class="keyword">)</span>
+<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/try'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">[</span><span class="keyword">-</span><span class="number">1</span><span class="keyword">,</span><span class="keyword">]</span><span class="keyword">)</span> <span class="keyword">)</span>
 <span class="comment"># create a r-ranked NMF model compatible with a given target matrix</span>
 <span class="symbol">obj</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">,</span> <span class="symbol">V</span><span class="keyword">)</span>
-<span class="functioncall"><a href='NA'>all</a></span><span class="keyword">(</span><span class="functioncall"><a href='NA'>is.na</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">obj</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/all'>all</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/NA'>is.na</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">obj</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>[1] TRUE
 </div>
 <div class='input'><span class="comment">## From two existing factors</span>
@@ -542,7 +538,7 @@ samples: 10
 </div>
 <div class='input'>
 <span class="comment"># add fixed coefficient term defined by a factor</span>
-<span class="symbol">gr</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>gl</a></span><span class="keyword">(</span><span class="number">2</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span>
+<span class="symbol">gr</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/gl'>gl</a></span><span class="keyword">(</span><span class="number">2</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span>
 <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">x</span> <span class="keyword">~</span> <span class="number">3</span> <span class="keyword">+</span> <span class="symbol">gr</span><span class="keyword">)</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 20 
@@ -553,7 +549,7 @@ fixed coef [2]:
 </div>
 <div class='input'>
 <span class="comment"># add fixed coefficient term defined by a numeric covariate</span>
-<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">x</span> <span class="keyword">~</span> <span class="number">3</span> <span class="keyword">+</span> <span class="symbol">gr</span> <span class="keyword">+</span> <span class="symbol">b</span><span class="keyword">,</span> <span class="argument">data</span><span class="argument">=</span><span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="argument">b</span><span class="argument">=</span><span class="functioncall"><a href='NA'>runif</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">x</span> <span class="keyword">~</span> <span class="number">3</span> <span class="keyword">+</span> <span class="symbol">gr</span> <span class="keyword">+</span> <span class="symbol">b</span><span class="keyword">,</span> <span class="argument">data</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/list'>list</a></span><span class="keyword">(</span><span class="argument">b</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/stats/Uniform'>runif</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 20 
 basis/rank: 6 
@@ -564,8 +560,8 @@ fixed coef [3]:
 </div>
 <div class='input'>
 <span class="comment"># 3-rank model that fits a given ExpressionSet (with fixed coef terms)</span>
-<span class="symbol">e</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>ExpressionSet</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span>
-<span class="functioncall"><a href='NA'>pData</a></span><span class="keyword">(</span><span class="symbol">e</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>data.frame</a></span><span class="keyword">(</span><span class="argument">a</span><span class="argument">=</span><span class="functioncall"><a href='NA'>runif</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">)</span><span class="keyword">)</span>
+<span class="symbol">e</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span>
+<span class="functioncall"><a href='http://www.inside-r.org/r-doc/Biobase/phenoData'>pData</a></span><span class="keyword">(</span><span class="symbol">e</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/data.frame'>data.frame</a></span><span class="keyword">(</span><span class="argument">a</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/stats/Uniform'>runif</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">)</span><span class="keyword">)</span>
 <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">e</span> <span class="keyword">~</span> <span class="number">3</span> <span class="keyword">+</span> <span class="symbol">gr</span> <span class="keyword">+</span> <span class="symbol">a</span><span class="keyword">)</span> <span class="comment"># `a` is looked up in the phenotypic data of x pData(x)</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 20 
@@ -583,37 +579,38 @@ fixed coef [3]:
 <span class="functioncall"><a href='nmfModel.html'>nmfModels</a></span><span class="keyword">(</span><span class="argument">builtin.only</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span></div>
 <div class='output'>[1] "NMFstd"    "NMFOffset" "NMFns"    
 </div></pre>
-        </div>
-        <div class="span4">
-          <!-- <ul>
-            <li>nmfModel</li><li>nmfModel,NULL,ANY-method</li><li>nmfModel,data.frame,data.frame-method</li><li>nmfModel,formula,ANY-method</li><li>nmfModel,matrix,ANY-method</li><li>nmfModel,matrix,matrix-method</li><li>nmfModel,missing,ANY-method</li><li>nmfModel,missing,missing-method</li><li>nmfModel,numeric,matrix-method</li><li>nmfModel,numeric,missing-method</li><li>nmfModel,numeric,numeric-method</li><li>nmfModel-methods</li><li>nmfModels</li>
-          </ul>
-          <ul>
-            <li>methods</li>
-          </ul> -->
-            
-          <h2>See also</h2>
-          
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>nmfModel</li><li>nmfModel,data.frame,data.frame-method</li><li>nmfModel,formula,ANY-method</li><li>nmfModel,matrix,ANY-method</li><li>nmfModel,matrix,matrix-method</li><li>nmfModel-methods</li><li>nmfModel,missing,ANY-method</li><li>nmfModel,missing,missing-method</li><li>nmfModel,NULL,ANY-method</li><li>nmfModel,numeric,matrix-method</li><li>nmfModel,numeric,missing-method</li><li>nmfModel,numeric,numeric-method</li><li>nmfModels</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
   <code><a href='types.html'>is.empty.nmf</a></code>
 
-  Other NMF-interface: <code><a href='NMF-class.html'>$,NMF-method</a></code>,
-  <code><a href='NMF-class.html'>$<-,NMF-method</a></code>,
-  <code><a href='NMF-class.html'>.DollarNames,NMF-method</a></code>,
+  Other NMF-interface: <code><a href='basis-coef-methods.html'>basis</a></code>,
   <code><a href='basis-coef-methods.html'>.basis</a></code>, <code><a href='basis-coef-methods.html'>.basis<-</a></code>,
-  <code><a href='basis-coef-methods.html'>.coef</a></code>, <code><a href='basis-coef-methods.html'>.coef<-</a></code>,
-  <code><a href='NMF-class.html'>NMF-class</a></code>, <code><a href='basis-coef-methods.html'>basis</a></code>,
   <code><a href='basis-coef-methods.html'>basis<-</a></code>, <code><a href='basis-coef-methods.html'>coef</a></code>,
+  <code><a href='basis-coef-methods.html'>.coef</a></code>, <code><a href='basis-coef-methods.html'>.coef<-</a></code>,
   <code><a href='basis-coef-methods.html'>coef<-</a></code>, <code><a href='basis-coef-methods.html'>coefficients</a></code>,
+  <code><a href='NMF-class.html'>.DollarNames,NMF-method</a></code>,
   <code><a href='basis-coef-methods.html'>loadings,NMF-method</a></code>, <code><a href='NMF-class.html'>misc</a></code>,
-  <code><a href='rnmf.html'>rnmf</a></code>, <code><a href='basis-coef-methods.html'>scoef</a></code>
+  <code><a href='NMF-class.html'>NMF-class</a></code>, <code><a href='NMF-class.html'>$<-,NMF-method</a></code>,
+  <code><a href='NMF-class.html'>$,NMF-method</a></code>, <code><a href='rnmf.html'>rnmf</a></code>,
+  <code><a href='basis-coef-methods.html'>scoef</a></code>
 
-                    
-        </div>
-      </div>
-      <footer class="footer">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
-    </div> <!-- /container -->
+    </div>
   </body>
 </html>

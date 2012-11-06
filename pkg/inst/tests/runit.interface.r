@@ -3,6 +3,9 @@
 #' @author Renaud Gaujoux
 #' @creation 14 May 2009
 
+library(rngtools)
+checkIdenticalRNG <- checkRNG
+
 # make the internal functions/objects visible
 if( isNamespaceLoaded('NMF') ){
 	seed <- NMF:::seed

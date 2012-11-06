@@ -228,6 +228,16 @@ setMethod('fitted', signature(object='NMF'),
 #' @export
 #'  
 setGeneric('basis', function(object, ...) standardGeneric('basis') )
+#' Default method returns the value of S3 slot or attribute \code{'basis'}.
+#' It returns \code{NULL} if none of these are set. 
+#' 
+#' Arguments \code{...} are not used by this method.
+setMethod('basis', signature(object='ANY'),
+	function(object, ...){
+		if( is.list(object) && 'basis' %in% names(object) ) object[['basis']]
+		else attr(object, 'basis')
+	}
+)
 #' @param all a logical that indicates whether the complete matrix factor 
 #' should be returned (\code{TRUE}) or only the non-fixed part.
 #' This is relevant only for formula-based NMF models that include fixed basis or 
@@ -767,7 +777,8 @@ setMethod('show', 'NMF',
 #' @aliases dim-NMF
 setGeneric('nbasis', function(x, ...) standardGeneric('nbasis') )
 #' Default method which returns the number of columns of the basis matrix extracted 
-#' from \code{x} using a suitable method \code{basis}.
+#' from \code{x} using a suitable method \code{basis}, or, if the latter is \code{NULL}, 
+#' the value of attributes \code{'nbasis'}.
 #' 
 #' For NMF models, this also corresponds to the number of rows in the coefficient
 #' matrix.
@@ -775,21 +786,11 @@ setGeneric('nbasis', function(x, ...) standardGeneric('nbasis') )
 setMethod('nbasis', signature(x='ANY'), 
 	function(x, ...)
 	{
-		ncol(basis(x, ...))
+		if( !is.null(n <- ncol(basis(x, ...))) ) n
+		else if( is.list(x) && 'nbasis' %in% names(x) ) x[['nbasis']]
+		else attr(x, 'nbasis')
 	}
 )
-#' For a matrix, the attribute 'nbasis' is returned, e.g. as attached 
-#' to the consensus matrix returned by the method \code{\link{consensus}}.
-#' 
-#' This is used internally to keep track of data about the parent fit and 
-#' annotate plots.
-setMethod('nbasis', signature(x='matrix'), 
-	function(x)
-	{
-		attr(x, 'nbasis')
-	}
-)
-
 #' method for NMF objects for the base generic \code{\link{dim}}.
 #' It returns all dimensions in a length-3 integer vector:
 #' the number of row and columns of the estimated target matrix, 

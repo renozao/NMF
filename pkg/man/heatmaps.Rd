@@ -19,21 +19,23 @@
   basismap(object, ...)
 
   \S4method{basismap}{NMF}(object, color = "YlOrRd:50",
-    ..., scale = "r1", Colv = NA, subsetRow = FALSE,
-    annRow = ":basis", main = "Basis components",
+    ..., scale = "r1", Rowv = TRUE, Colv = NA,
+    subsetRow = FALSE, annRow = NA, annCol = NA,
+    tracks = "basis", main = "Basis components",
     info = FALSE)
 
   coefmap(object, ...)
 
   \S4method{coefmap}{NMF}(object, color = "YlOrRd:50", ...,
     scale = "c1", Rowv = NA, Colv = TRUE, annRow = NA,
-    annCol = ":basis", main = "Mixture coefficients",
-    info = FALSE)
+    annCol = NA, tracks = "basis",
+    main = "Mixture coefficients", info = FALSE)
 
   consensusmap(object, ...)
 
   \S4method{consensusmap}{NMFfitX}(object, ...,
-    annCol = c(":basis", ":consensus"),
+    annRow = NA, annCol = NA,
+    tracks = c("basis:", "consensus:"),
     main = "Consensus matrix", info = FALSE)
 
   \S4method{consensusmap}{matrix}(object,
@@ -44,7 +46,8 @@
     info = FALSE)
 
   \S4method{coefmap}{NMFfitX}(object, ..., Colv = TRUE,
-    annCol = c(":basis", ":consensus"))
+    annRow = NA, annCol = NA,
+    tracks = c("basis", "consensus:"))
 }
 \arguments{
   \item{object}{an object from which is extracted NMF
@@ -73,6 +76,17 @@
   Note \code{\link{extractFeatures}} is called with
   argument \code{nodups=TRUE}, so that features that are
   selected for multiple components only appear once. }}
+
+  \item{tracks}{Special additional annotation tracks to
+  highlight associations between basis components and
+  sample clusters: \describe{ \item{basis}{matches each row
+  (resp. column) to the most contributing basis component
+  in \code{basismap} (resp. \code{coefmap}). In
+  \code{basismap} (resp. \code{coefmap}), adding a track
+  \code{':basis'} to \code{annCol} (resp. \code{annRow})
+  makes the column (resp. row) corresponding to the
+  component being also highlited using the mathcing
+  colours.} }}
 
   \item{info}{if \code{TRUE} then the name of the algorithm
   that fitted the NMF model is displayed at the bottom of
@@ -110,29 +124,6 @@
   \item \code{"r1"}: scale each row to sum up to one \item
   \code{"c1"}: scale each column to sum up to one \item
   \code{"none"}: no scaling }}
-
-  \item{Colv}{clustering specification(s) for the columns.
-  It accepts the same values as argument \code{Rowv}
-  (modulo the expected length for vector specifications),
-  and allow specifying the
-  distance/clustering/ordering/display parameters to be
-  used for the \emph{columns only}. \code{Colv} may also be
-  set to \code{"Rowv"}, in which case the dendrogram or
-  ordering specifications applied to the rows are also
-  applied to the columns. Note that this is allowed only
-  for square input matrices, and that the row ordering is
-  in this case by default reversed (\code{revC=TRUE}) to
-  obtain the diagonal in the standard way (from top-left to
-  bottom-right). See argument \code{Rowv} for other
-  possible values.}
-
-  \item{annRow}{specifications of row annotation tracks
-  displayed as coloured columns on the left of the
-  heatmaps. The annotation tracks are drawn from left to
-  right. The same conversion, renaming and colouring rules
-  as for argument \code{annCol} apply.}
-
-  \item{main}{Main title as a character string or a grob.}
 
   \item{Rowv}{clustering specification(s) for the rows. It
   allows to specify the
@@ -185,6 +176,27 @@
   used by the computed dendrogram. That is that this value
   is used in place of \code{treeheight}. }}
 
+  \item{Colv}{clustering specification(s) for the columns.
+  It accepts the same values as argument \code{Rowv}
+  (modulo the expected length for vector specifications),
+  and allow specifying the
+  distance/clustering/ordering/display parameters to be
+  used for the \emph{columns only}. \code{Colv} may also be
+  set to \code{"Rowv"}, in which case the dendrogram or
+  ordering specifications applied to the rows are also
+  applied to the columns. Note that this is allowed only
+  for square input matrices, and that the row ordering is
+  in this case by default reversed (\code{revC=TRUE}) to
+  obtain the diagonal in the standard way (from top-left to
+  bottom-right). See argument \code{Rowv} for other
+  possible values.}
+
+  \item{annRow}{specifications of row annotation tracks
+  displayed as coloured columns on the left of the
+  heatmaps. The annotation tracks are drawn from left to
+  right. The same conversion, renaming and colouring rules
+  as for argument \code{annCol} apply.}
+
   \item{annCol}{specifications of column annotation tracks
   displayed as coloured rows on top of the heatmaps. The
   annotation tracks are drawn from bottom to top. A single
@@ -201,6 +213,8 @@
   corresponding colour is specified in argument
   \code{annColors}, a palette or a ramp is automatically
   computed and named after the track's name.}
+
+  \item{main}{Main title as a character string or a grob.}
 
   \item{distfun}{default distance measure used in
   clustering rows and columns. Possible values are:
@@ -220,10 +234,10 @@
 \description{
   The NMF package ships an advanced heatmap engine
   implemented by the function \code{\link{aheatmap}}. Some
-  convenience heatmap functions are implemented, that
-  redefine default values for some of the arguments of
-  \code{\link{aheatmap}}, to tune the output specifically
-  for NMF models.
+  convenience heatmap functions have been implemented for
+  NMF models, which redefine default values for some of the
+  arguments of \code{\link{aheatmap}}, hence tuning the
+  output specifically for NMF models.
 
   \code{basimap} draws an annotated heatmap of the basis
   matrix.
@@ -246,16 +260,14 @@
   default named annotation track, that shows the dominant
   basis component for each row (i.e. each feature).
 
-  This track, named \code{':basis'}, is specified as a
-  single character string, that is looked-up in argument
-  \code{annRow}, which may be of any type supported by
-  \code{\link{aheatmap}}. Note that if \code{annRow} is a
-  character vector, that contains special track names ,
-  e.g., \code{":basis"}, then these are extracted and
-  displayed separately, after the character track -- which
-  is interpreted as a factor. \item a suitable title and
-  extra information like the fitting algorithm, when
-  \code{object} is a fitted NMF model. }
+  This track is specified in argument \code{tracks} (see
+  its argument description). By default, a matching column
+  annotation track is also displayed, but may be disabled
+  using \code{tracks=':basis'}.
+
+  \item a suitable title and extra information like the
+  fitting algorithm, when \code{object} is a fitted NMF
+  model. }
 
   \code{coefmap} redefines default values for the following
   arguments of \code{\link{aheatmap}}: \itemize{ \item the
@@ -266,12 +278,12 @@
   track, that shows the most contributing basis component
   for each column (i.e. each sample).
 
-  This track is specified in argument \code{annCol}, which
-  behaves like argument \code{annRow} in \code{basismap}
-  (see above). A matching row annotation track may be
-  displayed using \code{annRow='basis'}. \item a suitable
-  title and extra information like the fitting algorithm,
-  when \code{object} is a fitted NMF model. }
+  This track is specified in argument \code{tracks} (see
+  its argument description). By default, a matching row
+  annotation track is also displayed, but can be disabled
+  using \code{tracks='basis:'}. \item a suitable title and
+  extra information like the fitting algorithm, when
+  \code{object} is a fitted NMF model. }
 
   \code{consensusmap} redefines default values for the
   following arguments of \code{\link{aheatmap}}: \itemize{
@@ -281,16 +293,15 @@
   methods used to order the rows (and columns). The default
   is to use 1 minus the consensus matrix itself as
   distance, and average linkage. \item the addition of two
-  special named annotation tracks, \code{':basis'} and
-  \code{':consensus'}, that show, for each column (i.e.
+  special named annotation tracks, \code{'basis:'} and
+  \code{'consensus:'}, that show, for each column (i.e.
   each sample), the dominant basis component in the best
   fit and the hierarchical clustering of the consensus
   matrix respectively (using 1-consensus as distance and
   average linkage).
 
-  These tracks are specified in argument \code{annCol},
-  which behaves like argument \code{annRow} in
-  \code{\link{basismap}}.
+  These tracks are specified in argument \code{tracks},
+  which behaves as in \code{\link{basismap}}.
 
   \item a suitable title and extra information like the
   type of NMF model or the fitting algorithm, when
@@ -308,9 +319,27 @@
   Plots a heatmap of the basis matrix of the best fit in
   \code{object}. }
 
+  \item{coefmap}{\code{signature(object = "NMF")}: The
+  default method for NMF objects has special default values
+  for some arguments of \code{\link{aheatmap}} (see
+  argument description). }
+
   \item{coefmap}{\code{signature(object = "NMFfitX")}:
   Plots a heatmap of the coefficient matrix of the best fit
-  in \code{object}. }
+  in \code{object}.
+
+  This method adds: \itemize{ \item an extra special column
+  annotation track for multi-run NMF fits,
+  \code{'consensus:'}, that shows the consensus cluster
+  associated to each sample. \item a column sorting schema
+  \code{'consensus'} (or \code{'cmap'}) that can be passed
+  to argument \code{Colv} and orders the columns using the
+  hierarchical clustering of the consensus matrix with
+  average linkage, as returned by
+  \code{\link{consensushc}(object)}. This is also the
+  ordering that is used by default for the heatmap of the
+  consensus matrix as ploted by \code{\link{consensusmap}}.
+  } }
 
   \item{consensusmap}{\code{signature(object = "NMFfitX")}:
   Plots a heatmap of the consensus matrix obtained when
@@ -327,29 +356,32 @@
   }
 }
 \examples{
+## More examples are provided in demo `heatmaps`
+\dontrun{
+demo(heatmaps)
+}
+##
+
 # random data with underlying NMF model
-v <- syntheticNMF(50, 3, 20)
+v <- syntheticNMF(20, 3, 10)
 # estimate a model
 x <- nmf(v, 3)
-
 # show basis matrix
 basismap(x)
-basismap(x, annRow=NA) # no annotation track
-
-# character annotation vector: ok if it does not contain 'basis'
-basismap(x, annRow=c('alpha', 'beta')) # annotate first and second row
-try( basismap(x, annRow=c('alpha', 'beta', 'basis')) ) # error
-basismap(x, annRow=list(c('alpha', 'beta', 'basis'))) # ok
-basismap(x, annRow=list('basis', c('alpha', 'beta', 'basis'))) # ok
-
-# changing the name of the basis annotation
-basismap(x, annRow=c(new_name='basis'))
+\dontrun{
+# without the default annotation tracks
+basismap(x, tracks=NA)
+}
 # coefficient matrix
 coefmap(x)
-coefmap(x, annCol=NA)
-coefmap(x, annCol=c('alpha', 'beta')) # annotate first and second sample
-coefmap(x, annCol=list('basis', Greek=c('alpha', 'beta'))) # annotate first and second sample + basis annotation
-coefmap(x, annCol=c(new_name='basis'))
+\dontrun{
+# without the default annotation tracks
+coefmap(x, tracks=NA)
+}
+\dontrun{
+res <- nmf(x, 3, nrun=3)
+consensusmap(res)
+}
 }
 \keyword{methods}
 

@@ -313,14 +313,15 @@ setMethod('consensus', 'NMF',
 setGeneric('consensushc', function(object, ...) standardGeneric('consensushc'))
 #' Workhorse method for matrices.
 #' 
+#' @param method linkage method passed to \code{\link{hclust}}.
 #' @param dendrogram a logical that specifies if the result of the hierarchical 
 #' clustering (en \code{hclust} object) should be converted into a dendrogram. 
 #' Default value is \code{TRUE}.
 setMethod('consensushc', 'matrix', 
-	function(object, dendrogram=TRUE){
+	function(object, method='average', dendrogram=TRUE){
 		
 		# hierachical clustering based on the connectivity matrix
-		hc <- hclust(as.dist(1-object), method='average')
+		hc <- hclust(as.dist(1-object), method=method)
 		
 		# convert into a dendrogram if requested
 		if( dendrogram ) as.dendrogram(hc)
@@ -734,14 +735,13 @@ setClass('NMFfitXn'
 )
 
 # Updater for slot .Data
-objectUpdater('NMFfitXn', '0.5.06'
-	, vfun=function(object){ !.hasSlot(object, 'rng1') }
-	, function(x, y){
-		y@.Data <- lapply(x@.Data, nmfObject)
-	}
-)
-
-
+#objectUpdater('NMFfitXn', '0.5.06'
+#	, vfun=function(object){ !.hasSlot(object, 'rng1') }
+#	, function(x, y){
+#		y@.Data <- lapply(x@.Data, nmfObject)
+#	}
+#)
+ 
 #' Show method for objects of class \code{NMFfitXn}
 #' @export
 setMethod('show', 'NMFfitXn', 
@@ -1651,26 +1651,34 @@ setMethod('metaHeatmap', signature(object='NMFfitX'),
 #' \item the distance and linkage methods used to order the rows (and columns).
 #' The default is to use 1 minus the consensus matrix itself as distance, and 
 #' average linkage. 
-#' \item the addition of two special named annotation tracks, \code{':basis'} and 
-#' \code{':consensus'}, that show, for each column (i.e. each sample), 
+#' \item the addition of two special named annotation tracks, \code{'basis:'} and 
+#' \code{'consensus:'}, that show, for each column (i.e. each sample), 
 #' the dominant basis component in the best fit and the hierarchical clustering
 #' of the consensus matrix respectively (using 1-consensus as distance and average 
 #' linkage). 
 #' 
-#' These tracks are specified in argument \code{annCol}, which behaves like 
-#' argument \code{annRow} in \code{\link{basismap}}.
+#' These tracks are specified in argument \code{tracks}, which behaves as in 
+#' \code{\link{basismap}}.
 #' 
 #' \item a suitable title and extra information like the type of NMF model or the 
 #' fitting algorithm, when \code{object} is a fitted NMF model. 
 #' }  
 #' 
 #' @rdname heatmaps
+#' 
+#' @examples
+#' 
+#' \dontrun{
+#' res <- nmf(x, 3, nrun=3)
+#' consensusmap(res)
+#' }
+#' 
 #' @inline
 #' @export
 setGeneric('consensusmap', function(object, ...) standardGeneric('consensusmap') )
 #' Plots a heatmap of the consensus matrix obtained when fitting an NMF model with multiple runs. 
 setMethod('consensusmap', 'NMFfitX', 
-	function(object, ..., annCol=c(':basis', ':consensus'), main = 'Consensus matrix', info = FALSE){
+	function(object, ..., annRow=NA, annCol=NA, tracks=c('basis:', 'consensus:'), main = 'Consensus matrix', info = FALSE){
 			
 		# add side information if requested
 		info <- if( isTRUE(info) ){
@@ -1684,16 +1692,19 @@ setMethod('consensusmap', 'NMFfitX',
 		x <- consensus(object)
 		
 		# process annotation tracks
-		if( length(annCol) > 0L && !isNA(annCol) ){
-			annCol <- atrack(annCol, .DATA=amargin(x,2L)
-						, .SPECIAL = list(
-							basis = function() predict(object)
-							, consensus = function() predict(object, what='cmap')
-						))
-		}
-		##
-					
-		consensusmap(x, ..., annCol=annCol, main = main, info = info)	
+		ptracks <- process_tracks(x, tracks, annRow, annCol)
+		annRow <- ptracks$row 
+		annCol <- ptracks$col
+		# set special annotation handler
+		ahandlers <- list(
+			basis = function() predict(object)
+			, consensus = function() predict(object, what='cmap')
+		)
+		specialAnnotation(1L, ahandlers)
+		specialAnnotation(2L, ahandlers)
+		#
+		
+		consensusmap(x, ..., annRow=annRow, annCol=annCol, main = main, info = info)	
 	}
 )
 #' Plots a heatmap of the connectivity matrix of an NMF model.
@@ -1802,21 +1813,30 @@ setMethod('basismap', signature(object='NMFfitX'),
 )
 
 #' Plots a heatmap of the coefficient matrix of the best fit in \code{object}.
+#' 
+#' This method adds:
+#' \itemize{
+#' \item an extra special column annotation track for multi-run NMF fits,
+#' \code{'consensus:'}, that shows the consensus cluster associated to each sample.
+#' \item a column sorting schema \code{'consensus'} (or \code{'cmap'}) that can be passed
+#' to argument \code{Colv} and orders the columns using the hierarchical clustering of the 
+#' consensus matrix with average linkage, as returned by \code{\link{consensushc}(object)}.
+#' This is also the ordering that is used by default for the heatmap of the consensus matrix 
+#' as ploted by \code{\link{consensusmap}}. 
+#' } 
 setMethod('coefmap', signature(object='NMFfitX'),
-	function(object, ..., Colv=TRUE, annCol=c(':basis', ':consensus')){
+	function(object, ..., Colv=TRUE, annRow=NA, annCol=NA, tracks=c('basis', 'consensus:')){
 		
 		x <- minfit(object)
 		
 		# process annotation tracks
-		if( length(annCol) > 0L && !isNA(annCol) ){
-			
-			annCol <- atrack(annCol, .DATA=amargin(x,2L)
-					, .SPECIAL = list(
-						consensus = function() predict(object, what='cmap')
-					)
-			)
-		}
-		##
+		ptracks <- process_tracks(x, tracks, annRow, annCol)
+		annRow <- ptracks$row 
+		annCol <- ptracks$col
+		# set special annotation handler
+		specialAnnotation(2L, 'consensus', function() predict(object, what='cmap'))
+		# row track handler is added in coefmap,NMF
+		#
 		
 		## process ordering
 		if( isString(Colv) ){
@@ -1824,9 +1844,8 @@ setMethod('coefmap', signature(object='NMFfitX'),
 				Colv <- consensushc(object, 'consensus')
 		}
 		##
-		
 		# call the method on the best fit
-		coefmap(x, ..., Colv=Colv, annCol=annCol)	
+		coefmap(x, ..., Colv=Colv, annRow=annRow, annCol=annCol, tracks=NA)	
 	}
 )
 

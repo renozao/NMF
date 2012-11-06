@@ -9,7 +9,8 @@
 \usage{
   consensushc(object, ...)
 
-  \S4method{consensushc}{matrix}(object, dendrogram = TRUE)
+  \S4method{consensushc}{matrix}(object,
+    method = "average", dendrogram = TRUE)
 
   \S4method{consensushc}{NMFfitX}(object,
     what = c("consensus", "fit"), ...)
@@ -19,6 +20,9 @@
   returned by multiple NMF runs.}
 
   \item{...}{extra arguments passed to next method calls}
+
+  \item{method}{linkage method passed to
+  \code{\link{hclust}}.}
 
   \item{dendrogram}{a logical that specifies if the result
   of the hierarchical clustering (en \code{hclust} object)

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>Strategy-class. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Generic Strategy Class</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='Strategy-class.html'>name</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="comment"><span class="label label-important">S4</span> (Strategy)</span>
+<span class="functioncall">`name`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">all</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='Strategy-class.html'>name</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">value</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>an R object with a defined <code>name</code>
+  method</dd>
+      <dt>...</dt>
+      <dd>extra arguments to allow extension</dd>
+      <dt>value</dt>
+      <dd>replacement value</dd>
+      <dt>all</dt>
+      <dd>a logical that indicates if all the names
+  associated with a strategy should be return
+  (<code>TRUE</code>), or only the first (primary) one
+  (<code>FALSE</code>).</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This class defines a common interface for generic
+  algorithm strategies (e.g.,
+  <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code>).</p>
+  
+      <p><code>name</code> and <code>name<-</code> gets and sets the name
+  associated with an object. In the case of <code>Strategy</code>
+  objects it is the the name of the algorithm.</p>
+  
+    </div>
+
+    <div class="Slots">
+      <h2>Slots</h2>
+      
+      <p><span class='describe'></p>
+  
+      <p>namecharacter string giving the name of the
+  algorithm</p>
+  
+      <p>packagename of the package that defined the
+  strategy.</p>
+  
+      <p>defaultsdefault values for some of the
+  algorithm's arguments.</p>
+  
+      <p></span></p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><span class='describe'></p>
+  
+      <p>name<code>signature(object = "Strategy")</code>:
+  Returns the name of an algorithm</p>
+  
+      <p>name<code>signature(object = "Strategy")</code>:
+  Returns the name of an algorithm</p>
+  
+      <p>name<-<code>signature(object = "Strategy", value
+  = "character")</code>: Sets the name(s) of an NMF algorithm</p>
+  
+      <p>name<-<code>signature(object = "Strategy", value
+  = "character")</code>: Sets the name(s) of an NMF algorithm</p>
+  
+      <p></span></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>name</li><li>name&lt;-</li><li>name&lt;--methods</li><li>name-methods</li><li>name&lt;-,Strategy,character-method</li><li>name,Strategy-method</li><li>Strategy-class</li>
+    </ul>
+    <ul>
+      <li>internal</li><li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

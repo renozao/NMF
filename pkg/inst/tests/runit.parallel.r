@@ -10,7 +10,7 @@ if( isNamespaceLoaded('NMF') ){
 }
 
 
-test.synchronicity <- function(){
+check_shared_memory <- function(.msg, libs=TRUE, seq=FALSE){
 	
 	.test <- function(.msg, mutex, libs, seq){
 		
@@ -55,48 +55,57 @@ test.synchronicity <- function(){
 		wt
 	}
 	
-	.check <- function(.msg, libs=TRUE, seq=FALSE){
-		
-		mess <- function(...) paste(.msg, ":", ...)
-		
-		on.exit( registerDoSEQ() )
-			
-		# no mutex
-		wtime <- .test(mess(), mutex=FALSE, libs, seq)
-		checkTrue( wtime[1] >= 2 , mess("No mutex: Thread 1 waits 2 second (", wtime[1], ')'))
-		checkTrue( wtime[2] <  1 , mess("No mutex: Thread 2 does not wait at all (", wtime[2], ')'))
-		
-		# check mutex lock
-		wtime <- .test(mess(), mutex=TRUE, libs, seq)
-		checkTrue( wtime[1] >= 2 , mess("With mutex : Thread 1 waits 2 seconds (", wtime[1], ')'))
-		if( !seq )
-			checkTrue( wtime[2] > 2 , mess("With mutex: Thread 2 also waits at least 2 seconds (", wtime[2], ')'))
-	}
+	mess <- function(...) paste(.msg, ":", ...)
 	
-	# restore backend on.exit
+	# restore doSEQ backend on.exit
 	on.exit( registerDoSEQ() )
+		
+	# no mutex
+	wtime <- .test(mess(), mutex=FALSE, libs, seq)
+	checkTrue( wtime[1] >= 2 , mess("No mutex: Thread 1 waits 2 second (", wtime[1], ')'))
+	checkTrue( wtime[2] <  1 , mess("No mutex: Thread 2 does not wait at all (", wtime[2], ')'))
+	
+	# check mutex lock
+	wtime <- .test(mess(), mutex=TRUE, libs, seq)
+	checkTrue( wtime[1] >= 2 , mess("With mutex : Thread 1 waits 2 seconds (", wtime[1], ')'))
+	if( !seq )
+		checkTrue( wtime[2] > 2 , mess("With mutex: Thread 2 also waits at least 2 seconds (", wtime[2], ')'))
+	
+}
+
+test.shared_memory_doSEQ <- function(){
 	
 	# doSEQ
 	registerDoSEQ()
-	.check('doSEQ', libs=FALSE, seq=TRUE)
+	check_shared_memory('doSEQ', libs=FALSE, seq=TRUE)
 	
+}
+
+test.shared_memory_doMC <- function(){
 	# doParallel (doMC)
 	library(doParallel)
 	registerDoParallel(2)
-	.check('doParallel - Multicore', libs=FALSE)
+	check_shared_memory('doParallel - Multicore', libs=FALSE)
 	
+}
+
+test.shared_memory_doSNOW <- function(){
 	# doParallel (doSNOW)
 	cl <- makeCluster(2, outfile='wout.log')
 	on.exit( stopCluster(cl), add=TRUE)
 	registerDoParallel(cl)
-	.check('doParallel')
+	check_shared_memory('doParallel')
 	
+}
+
+test.shared_memory_doMPI <- function(){
+	DEACTIVATED("NMF shared memory feature does not currently work with doMPI.")
 	# doMPI
 	library(doMPI)
 	cl_MPI <- startMPIcluster(2)
 	on.exit( closeCluster(cl_MPI), add=TRUE)
 	registerDoMPI(cl_MPI)
-	.check('doMPI')
+	check_shared_memory('doMPI')
 	
 }
 

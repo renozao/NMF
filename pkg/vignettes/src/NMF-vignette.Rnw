@@ -744,17 +744,14 @@ For the moment it can either be the string \code{'mc'} or a single \code{numeric
 \nbnote{The number of processors to use can also be specified in the runtime options as e.g. \texttt{.options='p4'} or \texttt{.options='P4'} -- to ask or request 4 CPUs.}
 
 \paragraph{Examples}\ \\
-The following exmaples are run with \code{.options='v2'} which turn on verbosity at level 2.
-However \emph{Sweave} do not show all the messages. 
-The user is therefore encouraged to run these commands on his machine to see the internal differences of each call.
+The following exmaples are run with \code{.options='v'} which turn on verbosity at level 1, that will show which parallell setting is used by each computation.
+Although we do not show the output here, the user is recommended to run these commands on his machine to see the internal differences of each call.
 
-<<parallel_multicore, cache=TRUE>>=
+<<parallel_multicore_alt, eval=FALSE>>=
 # the default call will try to run in parallel using all the cores
 # => will be in parallel if all the requirements are satisfied
 nmf(esGolub, 3, nrun=5, .opt='v')
-@
 
-<<parallel_multicore_alt, eval=FALSE>>=
 # request a certain number of cores to use => no error if not possible 
 nmf(esGolub, 3, nrun=5, .opt='vp8')
 
@@ -820,16 +817,21 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 \code{.pbackend='seq'} to use the foreach backend \code{doSEQ} or to \code{NA} to use a standard \code{sapply} call:
 
 <<force_seq, cache=TRUE>>=
-# force sequential computation by sapply: use option '-p'
-res1 <- nmf(esGolub, 3, nrun=5, .opt='v-p', seed=123)
+# parallel execution on 2 cores (if possible)
+res1 <- nmf(esGolub, 3, nrun=5, .opt='vp2', seed=123)
 
-# or use the SEQ backend of foreach: .pbackend=NA or 'seq'
+# or use the doParallel with single core
 res2 <- nmf(esGolub, 3, nrun=5, .opt='vp1', seed=123)
-res3 <- nmf(esGolub, 3, nrun=5, .opt='v', .pbackend='seq', seed=123)
+
+# force sequential computation by sapply: use option '-p' or .pbackend=NA  
+res3 <- nmf(esGolub, 3, nrun=5, .opt='v-p', seed=123)
 res4 <- nmf(esGolub, 3, nrun=5, .opt='v', .pbackend=NA, seed=123)
 
+# or use the SEQ backend of foreach: .pbackend='seq'
+res5 <- nmf(esGolub, 3, nrun=5, .opt='v', .pbackend='seq', seed=123)
+
 # all results are all identical
-nmf.equal(list(res1, res2, res3, res4))
+nmf.equal(list(res1, res2, res3, res4, res5))
 @
 
 

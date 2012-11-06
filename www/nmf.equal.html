@@ -2,183 +2,179 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Testing Equality of NMF Models. NMF </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<title>nmf.equal. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {padding-top: 60px;}
-      h2 {padding-top: 20px}
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/highlight.css" rel="stylesheet">
-    <link href="css/staticdocs.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class = "container">
-          <a class="brand" href="index.html">NMF </a>
-          <div class="nav">
-            <ul class="nav">
-              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
     </div>
+  </div>
+</div>
 
     <div class="container">
+      <header>
+        
+      </header>
+      
       <h1>Testing Equality of NMF Models</h1>
 
-      <div class="row">
-        <div class="span8">
-          <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='nmf.equal.html'>nmf.equal</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='nmf.equal.html'>nmf.equal</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMF,NMF)</span>
-<span class="functioncall"><a href='NA'>`nmf.equal`</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="argument">identical</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="functioncall">`nmf.equal`</span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="argument">identical</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (list,list)</span>
-<span class="functioncall"><a href='NA'>`nmf.equal`</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">all</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">vector</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span></pre>
-          
-          <h2>Arguments</h2>
-          <dl>
-            <dt>x</dt>
-            <dd>an NMF model or an object that is associated
+<span class="functioncall">`nmf.equal`</span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">all</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">vector</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>an NMF model or an object that is associated
   with an NMF model, e.g. the result from a fit with
   <code><a href='nmf.html'>nmf</a></code>.</dd>
-            <dt>y</dt>
-            <dd>an NMF model or an object that is associated
+      <dt>y</dt>
+      <dd>an NMF model or an object that is associated
   with an NMF model, e.g. the result from a fit with
   <code><a href='nmf.html'>nmf</a></code>.</dd>
-            <dt>identical</dt>
-            <dd>a logical that indicates if the
+      <dt>identical</dt>
+      <dd>a logical that indicates if the
   comparison should be made using the function
-  <code><a href='NA'>identical</a></code> (<code>TRUE</code>) or
-  <code><a href='NA'>all.equal</a></code> (<code>FALSE</code>). See description
+  <code><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></code> (<code>TRUE</code>) or
+  <code><a href='http://www.inside-r.org/r-doc/base/all.equal'>all.equal</a></code> (<code>FALSE</code>). See description
   for method <code>nmf.equal,NMF,NMF</code>.</dd>
-            <dt>...</dt>
-            <dd>extra arguments to allow extension, and passed
+      <dt>...</dt>
+      <dd>extra arguments to allow extension, and passed
   to subsequent calls</dd>
-            <dt>all</dt>
-            <dd>a logical that indicates if all fits should be
+      <dt>all</dt>
+      <dd>a logical that indicates if all fits should be
   compared separately or only the best fits</dd>
-            <dt>vector</dt>
-            <dd>a logical, only used when <code>all=TRUE</code>,
+      <dt>vector</dt>
+      <dd>a logical, only used when <code>all=TRUE</code>,
   that indicates if all fits must be equal for <code>x</code> and
   <code>y</code> to be declared equal, or if one wants to return
   the result of each comparison in a vector.</dd>
-          </dl>
-          
-          <div class="Description">
-            <h2>Description</h2>
-            
-            <p>The function <code>nmf.equal</code> tests if two NMF models are
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The function <code>nmf.equal</code> tests if two NMF models are
   the same, i.e. they contain -- almost -- identical data:
   same basis and coefficient matrices, as well as same
   extra parameters.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Details">
-            <h2>Details</h2>
-            
-            <p><code>nmf.equal</code> compares two NMF models, and return
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p><code>nmf.equal</code> compares two NMF models, and return
   <code>TRUE</code> iff they are identical acording to the
-  function <code><a href='NA'>identical</a></code> when
+  function <code><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></code> when
   <code>identical=TRUE</code>, or equal up to some tolerance
-  acording to the function <code><a href='NA'>all.equal</a></code>. This
+  acording to the function <code><a href='http://www.inside-r.org/r-doc/base/all.equal'>all.equal</a></code>. This
   means that all data contained in the objects are
   compared, which includes at least the basis and
   coefficient matrices, as well as the extra parameters
   stored in slot &#145;misc&#146;.</p>
-        
-            <p>If extra arguments are specified in <code>...</code>, then the
-  comparison is performed using <code><a href='NA'>all.equal</a></code>,
+  
+      <p>If extra arguments are specified in <code>...</code>, then the
+  comparison is performed using <code><a href='http://www.inside-r.org/r-doc/base/all.equal'>all.equal</a></code>,
   irrespective of the value of argument <code>identical</code>.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Methods">
-            <h2>Methods</h2>
-            
-            <p><span class='describe'></p>
-        
-            <p>nmf.equal<code>signature(x = "NMF", y = "NMF")</code>:
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><span class='describe'></p>
+  
+      <p>nmf.equal<code>signature(x = "NMF", y = "NMF")</code>:
   Compares two NMF models.</p>
-        
-            <p>Arguments in <code>...</code> are used only when
+  
+      <p>Arguments in <code>...</code> are used only when
   <code>identical=FALSE</code> and are passed to
   <code>all.equal</code>.</p>
-        
-            <p>nmf.equal<code>signature(x = "NMFfit", y =
+  
+      <p>nmf.equal<code>signature(x = "NMFfit", y =
   "NMF")</code>: Compares two NMF models when at least one comes
   from a NMFfit object, i.e. an object returned by a single
   run of <code><a href='nmf.html'>nmf</a></code>.</p>
-        
-            <p>nmf.equal<code>signature(x = "NMF", y =
+  
+      <p>nmf.equal<code>signature(x = "NMF", y =
   "NMFfit")</code>: Compares two NMF models when at least one
   comes from a NMFfit object, i.e. an object returned by a
   single run of <code><a href='nmf.html'>nmf</a></code>.</p>
-        
-            <p>nmf.equal<code>signature(x = "NMFfit", y =
+  
+      <p>nmf.equal<code>signature(x = "NMFfit", y =
   "NMFfit")</code>: Compares two fitted NMF models, i.e. objects
   returned by single runs of <code><a href='nmf.html'>nmf</a></code>.</p>
-        
-            <p>nmf.equal<code>signature(x = "NMFfitX", y =
+  
+      <p>nmf.equal<code>signature(x = "NMFfitX", y =
   "NMF")</code>: Compares two NMF models when at least one comes
   from multiple NMF runs.</p>
-        
-            <p>nmf.equal<code>signature(x = "NMF", y =
+  
+      <p>nmf.equal<code>signature(x = "NMF", y =
   "NMFfitX")</code>: Compares two NMF models when at least one
   comes from multiple NMF runs.</p>
-        
-            <p>nmf.equal<code>signature(x = "NMFfitX1", y =
+  
+      <p>nmf.equal<code>signature(x = "NMFfitX1", y =
   "NMFfitX1")</code>: Compares the NMF models fitted by multiple
   runs, that only kept the best fits.</p>
-        
-            <p>nmf.equal<code>signature(x = "list", y =
+  
+      <p>nmf.equal<code>signature(x = "list", y =
   "list")</code>: Compares the results of multiple NMF runs.</p>
-        
-            <p>This method either compare the two best fit, or all fits
+  
+      <p>This method either compare the two best fit, or all fits
   separately. All extra arguments in <code>...</code> are passed
   to each internal call to <code>nmf.equal</code>.</p>
-        
-            <p>nmf.equal<code>signature(x = "list", y =
+  
+      <p>nmf.equal<code>signature(x = "list", y =
   "missing")</code>: Compare all elements in <code>x</code> to
   <code>x[[1]]</code>.</p>
-        
-            <p></span></p>
-        
-          </div>
-      
-        </div>
-        <div class="span4">
-          <!-- <ul>
-            <li>nmf.equal</li><li>nmf.equal,NMF,NMF-method</li><li>nmf.equal,NMF,NMFfit-method</li><li>nmf.equal,NMF,NMFfitX-method</li><li>nmf.equal,NMFfit,NMF-method</li><li>nmf.equal,NMFfit,NMFfit-method</li><li>nmf.equal,NMFfitX,NMF-method</li><li>nmf.equal,NMFfitX1,NMFfitX1-method</li><li>nmf.equal,list,list-method</li><li>nmf.equal,list,missing-method</li><li>nmf.equal-methods</li>
-          </ul>
-          <ul>
-            <li>methods</li>
-          </ul> -->
-            
-                    
-        </div>
+  
+      <p></span></p>
+  
+    </div>
       </div>
-      <footer class="footer">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+  <div class="span4">
+    <!-- <ul>
+      <li>nmf.equal</li><li>nmf.equal,list,list-method</li><li>nmf.equal,list,missing-method</li><li>nmf.equal-methods</li><li>nmf.equal,NMFfit,NMFfit-method</li><li>nmf.equal,NMFfit,NMF-method</li><li>nmf.equal,NMFfitX1,NMFfitX1-method</li><li>nmf.equal,NMFfitX,NMF-method</li><li>nmf.equal,NMF,NMFfit-method</li><li>nmf.equal,NMF,NMFfitX-method</li><li>nmf.equal,NMF,NMF-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
-    </div> <!-- /container -->
+    </div>
   </body>
 </html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>getRNG1. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Extracting RNG Data from NMF Objects</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='RNG.html'>getRNG1</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='RNG.html'>.getRNG</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>an R object from which RNG settings can be
+  extracted, e.g. an integer vector containing a suitable
+  value for <code>.Random.seed</code> or embedded RNG data, e.g.,
+  in S3/S4 slot <code>rng</code> or <code>rng$noise</code>.</dd>
+      <dt>...</dt>
+      <dd>extra arguments to allow extension and passed
+  to a suitable S4 method <code>.getRNG</code> or
+  <code>.setRNG</code>.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The <code><a href='nmf.html'>nmf</a></code> function returns objects that
+  contain embedded RNG data, that can be used to exactly
+  reproduce any computation. These data can be extracted
+  using dedicated methods for the S4 generics
+  <code><a href='http://www.inside-r.org/r-doc/rngtools/rng'>getRNG</a></code> and
+  <code><a href='http://www.inside-r.org/r-doc/rngtools/rng'>getRNG1</a></code>.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><span class='describe'></p>
+  
+      <p>.getRNG<code>signature(object = "NMFfitXn")</code>:
+  Returns the RNG settings used for the best fit.</p>
+  
+      <p>This method throws an error if the object is empty.</p>
+  
+      <p>getRNG1<code>signature(object = "NMFfitX")</code>:
+  Returns the RNG settings used for the first NMF run of
+  multiple NMF runs.</p>
+  
+      <p>getRNG1<code>signature(object = "NMFfitX1")</code>:
+  Returns the RNG settings used to compute the first of all
+  NMF runs, amongst which <code>object</code> was selected as the
+  best fit.</p>
+  
+      <p>getRNG1<code>signature(object = "NMFfitXn")</code>:
+  Returns the RNG settings used for the first run.</p>
+  
+      <p>This method throws an error if the object is empty.</p>
+  
+      <p></span></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class="comment"># For multiple NMF runs, the RNG settings used for the first run is also stored</span>
+<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">)</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">4</span><span class="keyword">)</span>
+<span class="comment"># RNG used for the best fit</span>
+<span class="functioncall"><a href='http://www.inside-r.org/r-doc/rngtools/rng'>getRNG</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>[1]         407 -1095383638  1851156330   771553762  -227471793  2129111752 -1286920462
+</div>
+<div class='input'><span class="comment"># RNG used for the first of all fits</span>
+<span class="functioncall"><a href='RNG.html'>getRNG1</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>[1]         407  1254024653  1918266922  1626888611 -1659892088 -1524593943  1829114262
+</div>
+<div class='input'><span class="comment"># they may differ if the best fit is not the first one</span>
+<span class="functioncall"><a href='http://www.inside-r.org/r-doc/rngtools/rngcmp'>rng.equal</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="functioncall"><a href='RNG.html'>getRNG1</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='output'>[1] FALSE
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>.getRNG</li><li>getRNG1</li><li>getRNG1-methods</li><li>getRNG1,NMFfitX1-method</li><li>getRNG1,NMFfitX-method</li><li>getRNG1,NMFfitXn-method</li><li>.getRNG-methods</li><li>.getRNG,NMFfitXn-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

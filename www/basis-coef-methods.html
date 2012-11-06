@@ -2,52 +2,48 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Accessing NMF Factors. NMF </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<title>basis. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {padding-top: 60px;}
-      h2 {padding-top: 20px}
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/highlight.css" rel="stylesheet">
-    <link href="css/staticdocs.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class = "container">
-          <a class="brand" href="index.html">NMF </a>
-          <div class="nav">
-            <ul class="nav">
-              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
     </div>
+  </div>
+</div>
 
     <div class="container">
+      <header>
+        
+      </header>
+      
       <h1>Accessing NMF Factors</h1>
 
-      <div class="row">
-        <div class="span8">
-          <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMF)</span>
-<span class="functioncall"><a href='NA'>`basis`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">all</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="functioncall">`basis`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">all</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='basis-coef-methods.html'>.basis</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
@@ -56,12 +52,12 @@
 <span class="functioncall"><a href='basis-coef-methods.html'>.basis</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">value</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMF)</span>
-<span class="functioncall"><a href='NA'>`loadings`</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span>
+<span class="functioncall">`loadings`</span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMF)</span>
-<span class="functioncall"><a href='NA'>`coef`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">all</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="functioncall">`coef`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">all</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='basis-coef-methods.html'>.coef</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
@@ -72,93 +68,93 @@
 <span class="functioncall"><a href='basis-coef-methods.html'>coefficients</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMF)</span>
-<span class="functioncall"><a href='NA'>`coefficients`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">all</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="functioncall">`coefficients`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">all</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='basis-coef-methods.html'>scoef</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMF)</span>
-<span class="functioncall"><a href='NA'>`scoef`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="number">1</span><span class="keyword">)</span></pre>
-          
-          <h2>Arguments</h2>
-          <dl>
-            <dt>object</dt>
-            <dd>an object from which to extract the factor
+<span class="functioncall">`scoef`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="number">1</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>an object from which to extract the factor
   matrices, typically an object of class
   <code><a href='NMF-class.html'>NMF-class</a></code>.</dd>
-            <dt>...</dt>
-            <dd>extra arguments to allow extension and passed
+      <dt>...</dt>
+      <dd>extra arguments to allow extension and passed
   to the low-level access functions <code>.coef</code> and
   <code>.basis</code>.</dd>
-            <dt>all</dt>
-            <dd>a logical that indicates whether the complete
+      <dt>all</dt>
+      <dd>a logical that indicates whether the complete
   matrix factor should be returned (<code>TRUE</code>) or only
   the non-fixed part. This is relevant only for
   formula-based NMF models that include fixed basis or
   coefficient terms.</dd>
-            <dt>value</dt>
-            <dd>replacement value</dd>
-            <dt>scale</dt>
-            <dd>scaling factor, which indicates to the value
+      <dt>value</dt>
+      <dd>replacement value</dd>
+      <dt>scale</dt>
+      <dd>scaling factor, which indicates to the value
   the columns of the coefficient matrix should sum up to.</dd>
-            <dt>x</dt>
-            <dd>an object of class <code>"<a href='NA'>factanal</a>"</code> or
-  <code>"<a href='NA'>princomp</a>"</code> or the <code>loadings</code> component
+      <dt>x</dt>
+      <dd>an object of class <code>"<a href='http://www.inside-r.org/r-doc/stats/factanal'>factanal</a>"</code> or
+  <code>"<a href='http://www.inside-r.org/r-doc/stats/princomp'>princomp</a>"</code> or the <code>loadings</code> component
   of such an object.</dd>
-          </dl>
-          
-          <div class="Description">
-            <h2>Description</h2>
-            
-            <p><code>basis</code> and <code>basis<-</code> are S4 generic functions
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>basis</code> and <code>basis<-</code> are S4 generic functions
   which respectively extract and set the matrix of basis
   components of an NMF model (i.e. the first matrix
   factor).</p>
-        
-            <p>The methods <code>.basis</code>, <code>.coef</code> and their
+  
+      <p>The methods <code>.basis</code>, <code>.coef</code> and their
   replacement versions are implemented as pure virtual
   methods for the interface class <code>NMF</code>, meaning that
   concrete NMF models must provide a definition for their
   corresponding class (i.e. sub-classes of class
   <code>NMF</code>). See <code><a href='NMF-class.html'>NMF-class</a></code> for more
   details.</p>
-        
-            <p><code>coef</code> and <code>coef<-</code> respectively extract and
+  
+      <p><code>coef</code> and <code>coef<-</code> respectively extract and
   set the coefficient matrix of an NMF model (i.e. the
   second matrix factor). For example, in the case of the
   standard NMF model <code class = 'eq'>V ~ W H</code>, the method
   <code>coef</code> will return the matrix <code class = 'eq'>H</code>.</p>
-        
-            <p><code>.coef</code> and <code>.coef<-</code> are low-level S4 generics
+  
+      <p><code>.coef</code> and <code>.coef<-</code> are low-level S4 generics
   that simply return/set coefficient data in an object,
   leaving some common processing to be performed in
   <code>coef</code> and <code>coef<-</code>.</p>
-        
-            <p>Methods <code>coefficients</code> and <code>coefficients<-</code> are
+  
+      <p>Methods <code>coefficients</code> and <code>coefficients<-</code> are
   simple aliases for methods <code>coef</code> and <code>coef<-</code>
   respectively.</p>
-        
-            <p><code>scoef</code> is similar to <code>coef</code>, but returns the
+  
+      <p><code>scoef</code> is similar to <code>coef</code>, but returns the
   mixture coefficient matrix of an NMF model, with the
   columns scaled so that they sum up to a given value (1 by
   default).</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Details">
-            <h2>Details</h2>
-            
-            <p>For example, in the case of the standard NMF model <code class = 'eq'>V ~ W H</code>, the method <code>basis</code> will return
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>For example, in the case of the standard NMF model <code class = 'eq'>V ~ W H</code>, the method <code>basis</code> will return
   the matrix <code class = 'eq'>W</code>.</p>
-        
-            <p><code>basis</code> and <code>basis<-</code> are defined for the top
+  
+      <p><code>basis</code> and <code>basis<-</code> are defined for the top
   virtual class <code><a href='NMF-class.html'>NMF-class</a></code> only, and rely
   internally on the low-level S4 generics <code>.basis</code> and
   <code>.basis<-</code> respectively that effectively extract/set
   the coefficient data. These data are post/pre-processed,
   e.g., to extract/set only their non-fixed terms or check
   dimension compatibility.</p>
-        
-            <p><code>coef</code> and <code>coef<-</code> are S4 methods defined for
+  
+      <p><code>coef</code> and <code>coef<-</code> are S4 methods defined for
   the corresponding generic functions from package
   <code>stats</code> (See <a href='http://www.inside-r.org/r-doc/stats/coef'>coef</a>). Similarly to
   <code>basis</code> and <code>basis<-</code>, they are defined for the
@@ -168,203 +164,204 @@
   the coefficient data. These data are post/pre-processed,
   e.g., to extract/set only their non-fixed terms or check
   dimension compatibility.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Methods">
-            <h2>Methods</h2>
-            
-            <p><span class='describe'></p>
-        
-            <p>.basis<code>signature(object = "NMF")</code>: Pure
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><span class='describe'></p>
+  
+      <p>basis<code>signature(object = "NMFfitXn")</code>:
+  Returns the basis matrix of the best fit amongst all the
+  fits stored in <code>object</code>. It is a shortcut for
+  <code>basis(fit(object))</code>.</p>
+  
+      <p>.basis<code>signature(object = "NMF")</code>: Pure
   virtual method for objects of class
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
-        
-            <p>.basis<code>signature(object = "NMFstd")</code>: Get
+  
+      <p>.basis<code>signature(object = "NMFstd")</code>: Get
   the basis matrix in standard NMF models</p>
-        
-            <p>This function returns slot <code>W</code> of <code>object</code>.</p>
-        
-            <p>.basis<code>signature(object = "NMFfit")</code>:
+  
+      <p>This function returns slot <code>W</code> of <code>object</code>.</p>
+  
+      <p>.basis<code>signature(object = "NMFfit")</code>:
   Returns the basis matrix from an NMF model fitted with
   function <code><a href='nmf.html'>nmf</a></code>.</p>
-        
-            <p>It is a shortcut for <code>.basis(fit(object), ...)</code>,
+  
+      <p>It is a shortcut for <code>.basis(fit(object), ...)</code>,
   dispatching the call to the <code>.basis</code> method of the
   actual NMF model.</p>
-        
-            <p>.basis<-<code>signature(object = "NMF", value =
+  
+      <p>.basis<-<code>signature(object = "NMF", value =
   "matrix")</code>: Pure virtual method for objects of class
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
-        
-            <p>.basis<-<code>signature(object = "NMFstd", value
+  
+      <p>.basis<-<code>signature(object = "NMFstd", value
   = "matrix")</code>: Set the basis matrix in standard NMF models</p>
-        
-            <p>This function sets slot <code>W</code> of <code>object</code>.</p>
-        
-            <p>.basis<-<code>signature(object = "NMFfit", value
+  
+      <p>This function sets slot <code>W</code> of <code>object</code>.</p>
+  
+      <p>.basis<-<code>signature(object = "NMFfit", value
   = "matrix")</code>: Sets the the basis matrix of an NMF model
   fitted with function <code><a href='nmf.html'>nmf</a></code>.</p>
-        
-            <p>It is a shortcut for <code>.basis(fit(object)) <- value</code>,
+  
+      <p>It is a shortcut for <code>.basis(fit(object)) <- value</code>,
   dispatching the call to the <code>.basis<-</code> method of the
   actual NMF model. It is not meant to be used by the user,
   except when developing NMF algorithms, to update the
   basis matrix of the seed object before returning it.</p>
-        
-            <p>.coef<code>signature(object = "NMF")</code>: Pure
+  
+      <p>basis<-<code>signature(object = "ANY")</code>: Default
+  methods that calls <code>.basis<-</code> and check the validity
+  of the updated object.</p>
+  
+      <p>coef<code>signature(object = "NMFfitXn")</code>:
+  Returns the coefficient matrix of the best fit amongst
+  all the fits stored in <code>object</code>. It is a shortcut
+  for <code>coef(fit(object))</code>.</p>
+  
+      <p>.coef<code>signature(object = "NMF")</code>: Pure
   virtual method for objects of class
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
-        
-            <p>.coef<code>signature(object = "NMFstd")</code>: Get the
+  
+      <p>.coef<code>signature(object = "NMFstd")</code>: Get the
   mixture coefficient matrix in standard NMF models</p>
-        
-            <p>This function returns slot <code>H</code> of <code>object</code>.</p>
-        
-            <p>.coef<code>signature(object = "NMFfit")</code>: Returns
+  
+      <p>This function returns slot <code>H</code> of <code>object</code>.</p>
+  
+      <p>.coef<code>signature(object = "NMFfit")</code>: Returns
   the the coefficient matrix from an NMF model fitted with
   function <code><a href='nmf.html'>nmf</a></code>.</p>
-        
-            <p>It is a shortcut for <code>.coef(fit(object), ...)</code>,
+  
+      <p>It is a shortcut for <code>.coef(fit(object), ...)</code>,
   dispatching the call to the <code>.coef</code> method of the
   actual NMF model.</p>
-        
-            <p>.coef<-<code>signature(object = "NMF", value =
+  
+      <p>.coef<-<code>signature(object = "NMF", value =
   "matrix")</code>: Pure virtual method for objects of class
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
-        
-            <p>.coef<-<code>signature(object = "NMFstd", value =
+  
+      <p>.coef<-<code>signature(object = "NMFstd", value =
   "matrix")</code>: Set the mixture coefficient matrix in
   standard NMF models</p>
-        
-            <p>This function sets slot <code>H</code> of <code>object</code>.</p>
-        
-            <p>.coef<-<code>signature(object = "NMFfit", value =
+  
+      <p>This function sets slot <code>H</code> of <code>object</code>.</p>
+  
+      <p>.coef<-<code>signature(object = "NMFfit", value =
   "matrix")</code>: Sets the the coefficient matrix of an NMF
   model fitted with function <code><a href='nmf.html'>nmf</a></code>.</p>
-        
-            <p>It is a shortcut for <code>.coef(fit(object)) <- value</code>,
+  
+      <p>It is a shortcut for <code>.coef(fit(object)) <- value</code>,
   dispatching the call to the <code>.coef<-</code> method of the
   actual NMF model. It is not meant to be used by the user,
   except when developing NMF algorithms, to update the
   coefficient matrix in the seed object before returning
   it.</p>
-        
-            <p>basis<code>signature(object = "NMFfitXn")</code>:
-  Returns the basis matrix of the best fit amongst all the
-  fits stored in <code>object</code>. It is a shortcut for
-  <code>basis(fit(object))</code>.</p>
-        
-            <p>basis<-<code>signature(object = "ANY")</code>: Default
-  methods that calls <code>.basis<-</code> and check the validity
-  of the updated object.</p>
-        
-            <p>coef<code>signature(object = "NMFfitXn")</code>:
-  Returns the coefficient matrix of the best fit amongst
-  all the fits stored in <code>object</code>. It is a shortcut
-  for <code>coef(fit(object))</code>.</p>
-        
-            <p>coef<-<code>signature(object = "ANY")</code>: Default
+  
+      <p>coef<-<code>signature(object = "ANY")</code>: Default
   methods that calls <code>.coef<-</code> and check the validity
   of the updated object.</p>
-        
-            <p>coefficients<code>signature(object = "NMF")</code>:
+  
+      <p>coefficients<code>signature(object = "NMF")</code>:
   Alias to <code>coef,NMF</code>, therefore also pure virtual.</p>
-        
-            <p>loadings<code>signature(x = "NMF")</code>: Method
+  
+      <p>loadings<code>signature(x = "NMF")</code>: Method
   loadings for NMF Models</p>
-        
-            <p>The method <code>loadings</code> is identical to <code>basis</code>,
+  
+      <p>The method <code>loadings</code> is identical to <code>basis</code>,
   but do not accept any extra argument.</p>
-        
-            <p>The method <code>loadings</code> is provided to standardise the
+  
+      <p>The method <code>loadings</code> is provided to standardise the
   NMF interface against the one defined in the
-  <code><a href='NA'>stats</a></code> package, and emphasises the
+  <code><a href='http://www.inside-r.org/r-doc/stats/stats-package'>stats</a></code> package, and emphasises the
   similarities between NMF and PCA or factorial analysis
-  (see <code><a href='NA'>loadings</a></code>).</p>
-        
-            <p></span></p>
-        
-          </div>
-      
-          <h2 id="examples">Examples</h2>
-          <pre class="examples"><div class='input'><span class="comment"># Scaled coefficient matrix</span>
+  (see <code><a href='http://www.inside-r.org/r-doc/stats/loadings'>loadings</a></code>).</p>
+  
+      <p></span></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class="comment"># Scaled coefficient matrix</span>
 <span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span>
 <span class="functioncall"><a href='basis-coef-methods.html'>scoef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>          [,1]      [,2]        [,3]      [,4]      [,5]
-[1,] 0.3695056 0.2592472 0.006160676 0.2523931 0.1823087
-[2,] 0.4434207 0.3000629 0.601853655 0.2606375 0.3940410
-[3,] 0.1870738 0.4406899 0.391985669 0.4869694 0.4236503
+<div class='output'>          [,1]      [,2]      [,3]      [,4]      [,5]
+[1,] 0.2620301 0.4561917 0.3629135 0.1869728 0.1345399
+[2,] 0.5007356 0.2380933 0.1258562 0.0969721 0.5216647
+[3,] 0.2372343 0.3057149 0.5112303 0.7160551 0.3437954
 </div>
 <div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>scoef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">100</span><span class="keyword">)</span></div>
-<div class='output'>         [,1]     [,2]       [,3]     [,4]     [,5]
-[1,] 36.95056 25.92472  0.6160676 25.23931 18.23087
-[2,] 44.34207 30.00629 60.1853655 26.06375 39.40410
-[3,] 18.70738 44.06899 39.1985669 48.69694 42.36503
+<div class='output'>         [,1]     [,2]     [,3]     [,4]     [,5]
+[1,] 26.20301 45.61917 36.29135 18.69728 13.45399
+[2,] 50.07356 23.80933 12.58562  9.69721 52.16647
+[3,] 23.72343 30.57149 51.12303 71.60551 34.37954
 </div>
 <div class='input'><span class="comment"># random standard NMF model</span>
 <span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span>
 <span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>            [,1]       [,2]      [,3]
- [1,] 0.26800187 0.67217678 0.3087196
- [2,] 0.47963130 0.57280614 0.8536965
- [3,] 0.37670207 0.03688192 0.7649530
- [4,] 0.43943395 0.20516282 0.8745051
- [5,] 0.89606124 0.06413149 0.5231145
- [6,] 0.62458082 0.99096402 0.8517673
- [7,] 0.81339546 0.83858653 0.8324029
- [8,] 0.21192007 0.25896236 0.8956133
- [9,] 0.27321995 0.87356176 0.9532608
-[10,] 0.06735608 0.33382172 0.7201729
+<div class='output'>           [,1]      [,2]       [,3]
+ [1,] 0.7208252 0.9961687 0.12514133
+ [2,] 0.8187304 0.7937883 0.39658277
+ [3,] 0.4594528 0.5419796 0.74530544
+ [4,] 0.2307499 0.4420451 0.05264301
+ [5,] 0.3800652 0.3539249 0.24622268
+ [6,] 0.6526429 0.9233914 0.95641576
+ [7,] 0.8255845 0.7578398 0.70868011
+ [8,] 0.8474454 0.2974755 0.94351822
+ [9,] 0.3902456 0.7052198 0.77277206
+[10,] 0.1475976 0.6880727 0.09022958
 </div>
 <div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>          [,1]      [,2]        [,3]       [,4]      [,5]
-[1,] 0.6237500 0.7228252 0.355561638 0.04591137 0.8246939
-[2,] 0.9120627 0.6078268 0.005451367 0.61612829 0.8180402
-[3,] 0.8918588 0.1945157 0.932453481 0.09908273 0.2436760
+<div class='output'>           [,1]      [,2]      [,3]      [,4]       [,5]
+[1,] 0.50601936 0.2943410 0.2249700 0.3739522 0.36987336
+[2,] 0.86713964 0.2636950 0.8680566 0.9481553 0.13908320
+[3,] 0.08325181 0.6329277 0.6494422 0.5638767 0.04297954
 </div>
 <div class='input'>
 <span class="comment"># set matrix factors</span>
-<span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>matrix</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>nrow</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span>
-<span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>matrix</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>ncol</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span>
+<span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/matrix'>matrix</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/nrow'>nrow</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span>
+<span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/matrix'>matrix</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/nrow'>ncol</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span>
 <span class="comment"># set random factors</span>
 <span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span>
 <span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span>
 
 <span class="comment"># incompatible matrices generate an error:</span>
-<span class="functioncall"><a href='NA'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>matrix</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">-</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>nrow</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span> <span class="keyword">)</span>
+<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/try'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/matrix'>matrix</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">-</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/nrow'>nrow</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span> <span class="keyword">)</span>
 <span class="comment"># but the low-level method allow it</span>
-<span class="functioncall"><a href='basis-coef-methods.html'>.coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>matrix</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">-</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='NA'>nrow</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span>
-<span class="functioncall"><a href='NA'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='NA'>validObject</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="keyword">)</span></div></pre>
-        </div>
-        <div class="span4">
-          <!-- <ul>
-            <li>.basis</li><li>.basis,NMF-method</li><li>.basis,NMFfit-method</li><li>.basis,NMFstd-method</li><li>.basis-methods</li><li>.basis&lt;-</li><li>.basis&lt;-,NMF,matrix-method</li><li>.basis&lt;-,NMFfit,matrix-method</li><li>.basis&lt;-,NMFstd,matrix-method</li><li>.basis&lt;--methods</li><li>.coef</li><li>.coef,NMF-method</li><li>.coef,NMFfit-method</li><li>.coef,NMFstd-method</li><li>.coef-methods</li><li>.coef&lt;-</li><li>.coef&lt;-,NMF,matrix-method</li><li>.coef&lt;-,NMFfit,matrix-method</li><li>.coef&lt;-,NMFstd,matrix-method</li><li>.coef&lt;--methods</li><li>basis</li><li>basis,NMF-method</li><li>basis,NMFfitXn-method</li><li>basis-methods</li><li>basis&lt;-</li><li>basis&lt;-,ANY-method</li><li>basis&lt;--methods</li><li>coef</li><li>coef,NMF-method</li><li>coef,NMFfitXn-method</li><li>coef-methods</li><li>coef&lt;-</li><li>coef&lt;-,ANY-method</li><li>coef&lt;--methods</li><li>coefficients</li><li>coefficients,NMF-method</li><li>coefficients-methods</li><li>loadings,NMF-method</li><li>scoef</li><li>scoef,NMF-method</li><li>scoef-methods</li>
-          </ul>
-          <ul>
-            <li>methods</li>
-          </ul> -->
-            
-          <h2>See also</h2>
-          
-  Other NMF-interface: <code><a href='NMF-class.html'>$,NMF-method</a></code>,
-  <code><a href='NMF-class.html'>$<-,NMF-method</a></code>,
+<span class="functioncall"><a href='basis-coef-methods.html'>.coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/matrix'>matrix</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">-</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/nrow'>nrow</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span>
+<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/try'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/methods/validObject'>validObject</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="keyword">)</span></div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>basis</li><li>.basis</li><li>.basis&lt;-</li><li>basis&lt;-</li><li>basis&lt;-,ANY-method</li><li>.basis&lt;--methods</li><li>.basis-methods</li><li>basis&lt;--methods</li><li>basis-methods</li><li>.basis&lt;-,NMFfit,matrix-method</li><li>.basis,NMFfit-method</li><li>basis,NMFfitXn-method</li><li>.basis&lt;-,NMF,matrix-method</li><li>.basis,NMF-method</li><li>basis,NMF-method</li><li>.basis&lt;-,NMFstd,matrix-method</li><li>.basis,NMFstd-method</li><li>coef</li><li>.coef</li><li>.coef&lt;-</li><li>coef&lt;-</li><li>coef&lt;-,ANY-method</li><li>coefficients</li><li>coefficients-methods</li><li>coefficients,NMF-method</li><li>.coef&lt;--methods</li><li>.coef-methods</li><li>coef&lt;--methods</li><li>coef-methods</li><li>.coef&lt;-,NMFfit,matrix-method</li><li>.coef,NMFfit-method</li><li>coef,NMFfitXn-method</li><li>.coef&lt;-,NMF,matrix-method</li><li>.coef,NMF-method</li><li>coef,NMF-method</li><li>.coef&lt;-,NMFstd,matrix-method</li><li>.coef,NMFstd-method</li><li>loadings,NMF-method</li><li>scoef</li><li>scoef-methods</li><li>scoef,NMF-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  Other NMF-interface:
   <code><a href='NMF-class.html'>.DollarNames,NMF-method</a></code>,
-  <code><a href='NMF-class.html'>NMF-class</a></code>, <code><a href='NMF-class.html'>misc</a></code>,
+  <code><a href='NMF-class.html'>misc</a></code>, <code><a href='NMF-class.html'>NMF-class</a></code>,
+  <code><a href='NMF-class.html'>$<-,NMF-method</a></code>, <code><a href='NMF-class.html'>$,NMF-method</a></code>,
   <code><a href='nmfModel.html'>nmfModel</a></code>, <code><a href='nmfModel.html'>nmfModels</a></code>,
   <code><a href='rnmf.html'>rnmf</a></code>
 
-                    
-        </div>
-      </div>
-      <footer class="footer">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
-    </div> <!-- /container -->
+    </div>
   </body>
 </html>

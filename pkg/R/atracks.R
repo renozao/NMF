@@ -302,13 +302,14 @@ setMethod('.atrack', 'character',
 			if( length(object) == 1L ) object
 			else if( length(i) == length(object) ) as.list(object)
 			else{
-				spe <- object[i]
-				object <- sub("^\\\\:", ":", object[-i])
-				t <- callNextMethod() 
-				c(list(t), spe)
+#				spe <- object[i]
+#				object <- sub("^\\\\:", ":", object[-i])
+#				t <- callNextMethod() 
+#				c(list(t), spe)
+				callNextMethod()
 			}
 		}else{
-			object <- sub("^\\\\:", ":", object)
+#			object <- sub("^\\\\:", ":", object)
 			callNextMethod()
 		}
 	}
@@ -330,10 +331,11 @@ atrack_code <- function(x, value=FALSE){
 	
 }
 
+
 match_atrack_code <- function(x, table, ...){
 	# pre-pend ':'
 	table.plain <- sub("^:", '', table)	
-	table <- str_c(':', table)
+	table <- str_c(':', table.plain)
 	
 	# convert into an annotation track
 	if( !is.atrack(x) ) x <- atrack(x, ...)
@@ -380,7 +382,7 @@ match_atrack_code <- function(x, table, ...){
 #'  
 #' @rdname atrack
 #' @export 
-atrack <- function(..., order = NULL, enforceNames=FALSE, .SPECIAL=NULL, .DATA = NULL, .CACHE = NULL){
+atrack <- function(..., order = NULL, enforceNames=FALSE, .SPECIAL=NA, .DATA = NULL, .CACHE = NULL){
 	
 	# cbind object with the other arguments
 	l <- list(...)
@@ -396,6 +398,7 @@ atrack <- function(..., order = NULL, enforceNames=FALSE, .SPECIAL=NULL, .DATA =
 						return()
 					
 					xa <- .atrack(x, data=.DATA)
+					
 					if( isNA(xa) || is.null(xa) )
 						return()
 					
@@ -403,7 +406,7 @@ atrack <- function(..., order = NULL, enforceNames=FALSE, .SPECIAL=NULL, .DATA =
 					# convert into a list
 					if( !is.list(xa) )
 						xa <- setNames(list(xa), names(l)[i])
-					
+							
 					# remove NA and NULL elements
 					if( is.null(xa) || isNA(xa) ) return()
 					# cbind with previous tracks
@@ -417,57 +420,69 @@ atrack <- function(..., order = NULL, enforceNames=FALSE, .SPECIAL=NULL, .DATA =
 	if( is.null(object) ) return()
 	if( !length(object) ) return( annotationTrack() )
 	
-	# remove special tracks if necessary (before ordering as this changes 
-	# the type of object
-	if( isFALSE(.SPECIAL) && length(i <- atrack_code(object)) ){
-		warning("Discarding unresolved special annotation tracks: "
-				, str_out(unlist(object[i]), use.names=TRUE))
-		object <- object[-i] 
-	}
-		
-	if( !length(object) ) return(object)
-	
-	# reorder if necessary
-	if( !is.null(order) ){
-		object <- sapply(object, function(x) x[order], simplify=FALSE)
-		#lapply(seq_along(object), function(i) object[[i]] <<- object[[i]][order])
-	}
-	
 	# add class 'annotationTrack' if not already there 
-	# (needed before calling match_atrack_code
+	# (needed before calling match_atrack_code)
 	object <- annotationTrack(object)
 	
 	# substitute special tracks
 	if( is.list(.SPECIAL) ){
-		
+	
+#		str(object)
 		m <- match_atrack_code(object, names(.SPECIAL))
 		i_spe <- which(m!=0L)
 		if( length(i_spe) ){
-			
 			# add names where needed
 			if( is.null(names(object)) ) names(object) <- rep('', length(object))
 			
+			# remove duplicated special tracks
+			if( anyDuplicated(m[i_spe]) ){
+				# enforce name consistency if necessary
+				g <- split(i_spe, m[i_spe])
+				sapply(g, function(i){
+					n <- names(object)[i]
+					if( length(n <- n[n!='']) )					
+						names(object)[i] <<- n[1L] 
+				})
+				#
+				idup <- which(duplicated(m) & m!=0L)
+				object <- object[-idup]
+				m <- m[-idup]
+				i_spe <- which(m!=0L)
+			}
+			#
+		
 			# enforce names consistent with the CACHE
-			if( !is.null(.CACHE) ){
+			if( anyValue(.CACHE) ){
 				if( !is.atrack(.CACHE) )
 					stop("Argument .CACHE should be an annotation track object. [", class(.CACHE), ']')
-				cache_spe <- atrack_code(.CACHE)
-				if( length(cache_spe) ){
-					sapply(seq_along(object), function(i){
-						x <- object[[i]]
-						if( names(object)[i] == '' 
-							&& is_track_code(x) && !isNA(j <- match(x, .CACHE)) ){
-							names(object)[i] <<- names(.CACHE)[j]
-						}
-					})
+				i_spe_cache <- atrack_code(.CACHE)
+				if( length(i_spe_cache) ){
+					.CACHE_SPE <- unlist(.CACHE[i_spe_cache])
+					if( !is.null(names(.CACHE_SPE)) ){
+						sapply(i_spe, function(i){
+							x <- object[[i]]
+							if( names(object)[i] == '' 
+								&& !isNA(j <- match(x, .CACHE_SPE)) 
+								&& names(.CACHE_SPE)[j] != ''){
+								names(object)[i] <<- names(.CACHE_SPE)[j]
+							}
+						})
+					}
 				}
 			}
 			# compute value
 			a <- sapply(m[i_spe], function(i) .SPECIAL[[i]](), simplify=FALSE)
-			object[i_spe] <- a
-			# set names
+			object[i_spe] <- a # NB: this does not change the names
+			# reset names
 			nm <- names(object)[i_spe]
 			names(object)[i_spe] <- ifelse(nm!='', nm, names(a))
+		}
+		
+		# remove special tracks if necessary
+		if( length(i <- atrack_code(object)) ){
+			warning("Discarding unresolved special annotation tracks: "
+					, str_out(unlist(object[i]), use.names=TRUE))
+			object <- object[-i] 
 		}
 	}
 	
@@ -479,9 +494,15 @@ atrack <- function(..., order = NULL, enforceNames=FALSE, .SPECIAL=NULL, .DATA =
 		else names(object)[n==''] <- xnames[n==''] 
 	}
 	
+	# reorder if necessary
+	if( !is.null(order) ){
+		object <- sapply(object, function(x) x[order], simplify=FALSE)
+		#lapply(seq_along(object), function(i) object[[i]] <<- object[[i]][order])
+	}
+	
 	#print(object)
 	# return object
-	object
+	annotationTrack(object)
 }
 
 #' \code{annotationTrack} is constructor function for \code{annotationTrack} object

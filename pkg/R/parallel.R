@@ -7,6 +7,13 @@
 # Creation: 08-Feb-2011
 ###############################################################################
 
+# returns the number of cores to use in all NMF computation when no number is
+# specified by the user
+getMaxCores <- function(){
+	#ceiling(parallel::detectCores()/2)
+	parallel::detectCores()	
+}
+
 #' Utilities and Extensions for Foreach Loops
 #' 
 #' \code{registerDoBackend} is a unified register function for foreach backends.
@@ -36,7 +43,7 @@ registerDoBackend <- function(object, ...){
 	doBackendCleanup(ob)
 	
 	# return old backend
-	ob
+	invisible(ob)
 }
 
 #' \code{getDoBackend} returns the internal data of the currently registered foreach \%dopar\% backend.
@@ -65,7 +72,7 @@ setDoBackend <- function(data){
 	else{
 		do.call('setDoPar', list(NULL))
 		fe <- foreach:::.foreachGlobals
-		if (exists("fun", where = fe, inherits = FALSE))
+		if (exists("fun", envir = fe, inherits = FALSE))
 			remove("fun", envir = fe)
 	}
 	invisible(ob)
@@ -148,7 +155,7 @@ getDoParHosts <- function(x){
 		return( rep('localhost', be$data[[1]]) )
 	
 	if( be$name == 'doParallel' ) sapply(be$data[[1]], '[[', 'host')
-	else if( be$name == 'doMPI' && missing(x) ){
+	else if( missing(x) ){
 		setNames(unlist(times(getDoParWorkers()) %dopar% { Sys.info()['nodename'] }), NULL)
 	}else{
 		'UNKNOWN'
@@ -272,7 +279,7 @@ setMethod('ForeachBackend', 'doParallel_backend',
 	function(object, cl){
 		
 		# use all available cores if not otherwise specified
-		if( missing(cl) ) cl <- ceiling(parallel::detectCores()/2)
+		if( missing(cl) ) cl <- getMaxCores()
 		
 		# On Windows doParallel::registerDoParallel(numeric) will create a 
 		# SOCKcluster with `object` cores.
@@ -285,9 +292,10 @@ setMethod('ForeachBackend', 'doParallel_backend',
 		# to the global variable `.revoDoParCluster`
 		if ( is.numeric(cl) && .Platform$OS.type == "windows") {
 			doBackendCleanup(object, function(x){
+				# get cluster object from global variable `.revoDoParCluster`
 				if( !exists(".revoDoParCluster", envir = .GlobalEnv) ) return()
 				cl <- get(".revoDoParCluster", envir = .GlobalEnv)
-				stopCluster(cl)
+				parallel::stopCluster(cl)
 				rm(list=".revoDoParCluster", envir = ".GlobalEnv")
 			})
 		}
@@ -306,6 +314,14 @@ setMethod('ForeachBackend', 'doParallel_backend',
 ###############
 # doMPI 
 ###############
+
+isMPIBackend <- function(x, ...){
+	b <- if( missing(x) ) ForeachBackend(...) else ForeachBackend(object=x, ...)
+	!is.null(b) && (b$name == 'doMPI' 
+				|| is(b$data[[1]], 'MPIcluster') 
+				|| is(b$data[[1]], 'mpicluster'))
+}
+
 #' @S3method register doMPI_backend
 register.doMPI_backend <- function(x, ...){
 	
@@ -338,7 +354,7 @@ setMethod('ForeachBackend', 'doMPI_backend',
 	function(object, cl){
 		
 		# use all available cores if not otherwise specified
-		if( missing(cl) ) cl <- ceiling(parallel::detectCores()/2)
+		if( missing(cl) ) cl <- getMaxCores()
 		
 		if ( is.numeric(cl) ) {
 			doBackendCleanup(object, function(x){
@@ -346,7 +362,7 @@ setMethod('ForeachBackend', 'doMPI_backend',
 				if( !exists(".doMPICluster", envir = .GlobalEnv) ) return()
 				
 				cl <- get(".doMPICluster", envir = .GlobalEnv)
-				closeCluster(cl)
+				doMPI::closeCluster(cl)
 				rm(list=".doMPICluster", envir = .GlobalEnv)
 			})
 		}
@@ -359,6 +375,55 @@ setMethod('ForeachBackend', 'doMPI_backend',
 		object
 	}
 )
+
+##############
+# doSNOW
+##############
+
+setOldClass('doSNOW_backend')
+#' doSNOW-specific backend factory
+setMethod('ForeachBackend', 'doSNOW_backend',
+	function(object, cl, ...){
+		
+		# use all available cores if not otherwise specified
+		if( missing(cl) ) cl <- getMaxCores()
+		
+		if ( is.numeric(cl) ) {
+			doBackendCleanup(object, function(x){
+				# get cluster object from global variable `.doMPICluster`
+				if( !exists(".doSNOWCluster", envir = .GlobalEnv) ) return()
+				cl <- get(".doSNOWCluster", envir = .GlobalEnv)
+				snow::stopCluster(cl)
+				rm(list=".doSNOWCluster", envir = .GlobalEnv)
+			})
+		}
+		
+		# required registration data
+		object$fun <- doSNOW:::doSNOW
+		object$info <- doSNOW:::info
+		
+		# return object
+		object
+	}
+)
+
+#' @S3method register doMPI_backend
+register.doSNOW_backend <- function(x, ...){
+	
+	cl <- x$data[[1]]
+	if( is.numeric(cl) ){
+		# cleanup first
+		doBackendCleanup(x, verbose=FALSE)
+		# start cluster
+		cl <- do.call(snow::makeCluster, x$data)
+		x$data <- list(cl)
+		# add global variable to enable closing the cluster when registering 
+		# another backend
+		assign('.doSNOWCluster', cl, envir = .GlobalEnv)
+	}
+	register.foreach_backend(x, ...)
+}
+
 #as.foreach_backend <- function(x, ...){
 #	
 #	args <- list(...)
@@ -505,7 +570,7 @@ setupBackend <- function(spec, optional, backend, verbose=FALSE){
 	}
 	
 	# test if requested number of cores is actually available
-	NCORES <- parallel::detectCores()
+	NCORES <- getMaxCores()
 	if( verbose > 2 ) message("# Check available cores ... [", NCORES, ']')
 	if( verbose > 2 ) message("# Check requested cores ... ", appendLF=FALSE)
 	ncores <- if( doSEQ ) 1L
@@ -608,26 +673,31 @@ setupBackend <- function(spec, optional, backend, verbose=FALSE){
 #' @rdname setup 
 setupSharedMemory <- function(verbose){
 	
-	# early exit if option shared is off
-	if( !nmf.getOption('shared.memory') ) return(FALSE)
-	
 	if( verbose > 1 ) message("# Check shared memory capability ... ", appendLF=FALSE)
+	# early exit if option shared is off
+	if( !nmf.getOption('shared.memory') ){
+		if( verbose > 1 ) message('SKIP [disabled]')
+		return(FALSE)
+	}
+	# early exit if foreach backend is doMPI: it is not working, not sure why
+	if( isMPIBackend() ){
+		if( verbose > 1 ) message('SKIP [MPI cluster]')
+		return(FALSE)
+	}
+	
 	if( !require.quiet('bigmemory', character.only=TRUE) ){
 		if( verbose > 1 ){
-			message('NO')
-			if( verbose > 2 ) message("# NOTE: Package `bigmemory` is not available.")
+			message('NO', if( verbose > 2 ) ' [Package `bigmemory` required]')
 		}
 		return(FALSE)
 	}
 	if( !require.quiet('synchronicity', character.only=TRUE) ){
 		if( verbose > 1 ){
-			message('NO')
-			if( verbose > 2 ) message("# NOTE: Package `synchronicity` is not available.")
+			message('NO', if( verbose > 2 ) ' [Package `synchronicity` required]')
 		}
 		return(FALSE)
 	}
-	if( verbose > 1 ) message('YES')
-	if( verbose > 2 ) message("# Using mutexes from `synchronicity`")
+	if( verbose > 1 ) message('YES', if( verbose > 2 ) ' [synchronicity]')
 	TRUE
 }
 

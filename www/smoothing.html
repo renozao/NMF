@@ -2,90 +2,86 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Smoothing Matrix in Nonsmooth NMF Models. NMF </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<title>smoothing. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {padding-top: 60px;}
-      h2 {padding-top: 20px}
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/highlight.css" rel="stylesheet">
-    <link href="css/staticdocs.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class = "container">
-          <a class="brand" href="index.html">NMF </a>
-          <div class="nav">
-            <ul class="nav">
-              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
     </div>
+  </div>
+</div>
 
     <div class="container">
+      <header>
+        
+      </header>
+      
       <h1>Smoothing Matrix in Nonsmooth NMF Models</h1>
 
-      <div class="row">
-        <div class="span8">
-          <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='smoothing.html'>smoothing</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">theta</span> <span class="argument">=</span> <span class="symbol">x</span><span class="keyword">@</span><span class="slot">theta</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
-          
-          <h2>Arguments</h2>
-          <dl>
-            <dt>x</dt>
-            <dd>a object of class <code>NMFns</code>.</dd>
-            <dt>theta</dt>
-            <dd>the smoothing parameter (numeric) between 0
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='smoothing.html'>smoothing</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">theta</span> <span class="argument">=</span> <span class="symbol">x</span><span class="keyword">@</span><span class="slot">theta</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>a object of class <code>NMFns</code>.</dd>
+      <dt>theta</dt>
+      <dd>the smoothing parameter (numeric) between 0
   and 1.</dd>
-            <dt>...</dt>
-            <dd>extra arguments to allow extension (not used)</dd>
-          </dl>
-          
-          <div class="Value">
-            <h2>Value</h2>
-            
-            <p>if <code>x</code> estimates a <code class = 'eq'>r</code>-rank NMF, then the result
+      <dt>...</dt>
+      <dd>extra arguments to allow extension (not used)</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>if <code>x</code> estimates a <code class = 'eq'>r</code>-rank NMF, then the result
   is a <code class = 'eq'>r \times r</code> square matrix.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Description">
-            <h2>Description</h2>
-            
-            <p>The function <code>smoothing</code> builds a smoothing matrix
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The function <code>smoothing</code> builds a smoothing matrix
   for using in Nonsmooth NMF models.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Details">
-            <h2>Details</h2>
-            
-            <p>For a <code class = 'eq'>r</code>-rank NMF, the smoothing matrix of parameter
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>For a <code class = 'eq'>r</code>-rank NMF, the smoothing matrix of parameter
   <code class = 'eq'>\theta</code> is built as follows: <pre class = 'eq'>S = (1-\theta)I +
   \frac{\theta}{r} 11^T ,</code> where <code class = 'eq'>I</code> is the identity
   matrix and <code class = 'eq'>1</code> is a vector of ones (cf.
   <code><a href='NMFns-class.html'>NMFns-class</a></code> for more details).</p>
-        
-          </div>
-      
-          <h2 id="examples">Examples</h2>
-          <pre class="examples"><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFns'</span><span class="keyword">)</span>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFns'</span><span class="keyword">)</span>
 <span class="functioncall"><a href='smoothing.html'>smoothing</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
 <div class='output'>          [,1]      [,2]      [,3]
 [1,] 0.6666667 0.1666667 0.1666667
@@ -98,22 +94,23 @@
 [2,] 0.03333333 0.93333333 0.03333333
 [3,] 0.03333333 0.03333333 0.93333333
 </div></pre>
-        </div>
-        <div class="span4">
-          <!-- <ul>
-            <li>smoothing</li>
-          </ul>
-          <ul>
-            
-          </ul> -->
-            
-                    
-        </div>
-      </div>
-      <footer class="footer">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>smoothing</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
-    </div> <!-- /container -->
+    </div>
   </body>
 </html>

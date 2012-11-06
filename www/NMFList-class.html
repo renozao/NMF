@@ -2,109 +2,105 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Class for Storing Heterogeneous NMF fits. NMF </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<title>NMFList-class. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {padding-top: 60px;}
-      h2 {padding-top: 20px}
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/highlight.css" rel="stylesheet">
-    <link href="css/staticdocs.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class = "container">
-          <a class="brand" href="index.html">NMF </a>
-          <div class="nav">
-            <ul class="nav">
-              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
     </div>
+  </div>
+</div>
 
     <div class="container">
+      <header>
+        
+      </header>
+      
       <h1>Class for Storing Heterogeneous NMF fits</h1>
 
-      <div class="row">
-        <div class="span8">
-                    
-          <div class="Description">
-            <h2>Description</h2>
-            
-            <p>This class wraps a list of NMF fit objects, which may
+<div class="row">
+  <div class="span8">
+        
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This class wraps a list of NMF fit objects, which may
   come from different runs of the function
   <code><a href='nmf.html'>nmf</a></code>, using different parameters, methods,
   etc.. These can be either from a single run (NMFfit) or
   multiple runs (NMFfitX).</p>
-        
-            <p>Note that its definition/interface is very likely to
+  
+      <p>Note that its definition/interface is very likely to
   change in the future.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Methods">
-            <h2>Methods</h2>
-            
-            <p><span class='describe'></p>
-        
-            <p>algorithm<code>signature(object = "NMFList")</code>:
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><span class='describe'></p>
+  
+      <p>algorithm<code>signature(object = "NMFList")</code>:
   Returns the method names used to compute the NMF fits in
   the list. It returns <code>NULL</code> if the list is empty.</p>
-        
-            <p>runtime<code>signature(object = "NMFList")</code>:
+  
+      <p>runtime<code>signature(object = "NMFList")</code>:
   Returns the CPU time required to compute all NMF fits in
   the list. It returns <code>NULL</code> if the list is empty. If
   no timing data are available, the sequential time is
   returned.</p>
-        
-            <p>seqtime<code>signature(object = "NMFList")</code>:
+  
+      <p>seqtime<code>signature(object = "NMFList")</code>:
   Returns the CPU time that would be required to
   sequentially compute all NMF fits stored in
   <code>object</code>.</p>
-        
-            <p>This method calls the function <code>runtime</code> on each fit
+  
+      <p>This method calls the function <code>runtime</code> on each fit
   and sum up the results. It returns <code>NULL</code> on an
   empty object.</p>
-        
-            <p>show<code>signature(object = "NMFList")</code>: Show
+  
+      <p>show<code>signature(object = "NMFList")</code>: Show
   method for objects of class <code>NMFList</code></p>
-        
-            <p></span></p>
-        
-          </div>
-      
-        </div>
-        <div class="span4">
-          <!-- <ul>
-            <li>NMFList-class</li>
-          </ul>
-          <ul>
-            
-          </ul> -->
-            
-                    
-        </div>
+  
+      <p></span></p>
+  
+    </div>
       </div>
-      <footer class="footer">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+  <div class="span4">
+    <!-- <ul>
+      <li>NMFList-class</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
-    </div> <!-- /container -->
+    </div>
   </body>
 </html>

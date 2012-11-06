@@ -2,98 +2,94 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Package Specific Options. NMF </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<title>nmf.options. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {padding-top: 60px;}
-      h2 {padding-top: 20px}
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/highlight.css" rel="stylesheet">
-    <link href="css/staticdocs.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class = "container">
-          <a class="brand" href="index.html">NMF </a>
-          <div class="nav">
-            <ul class="nav">
-              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
     </div>
+  </div>
+</div>
 
     <div class="container">
+      <header>
+        
+      </header>
+      
       <h1>Package Specific Options</h1>
 
-      <div class="row">
-        <div class="span8">
-          <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='options.html'>nmf.options</a></span><span class="keyword">(</span><span class="symbol">...</span><span class="keyword">)</span>
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='options.html'>nmf.options</a></span><span class="keyword">(</span><span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='options.html'>nmf.getOption</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">default</span> <span class="argument">=</span> NULL<span class="keyword">)</span></pre>
-          
-          <h2>Arguments</h2>
-          <dl>
-            <dt>...</dt>
-            <dd>any options can be defined, using <code>name =
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>...</dt>
+      <dd>any options can be defined, using <code>name =
   value</code> or by passing a list of such tagged values.
   However, only the ones below are used in base <span style="R">R</span>.
   Further, <code>options('name') == options()['name']</code>, see
   the example.  </dd>
-            <dt>x</dt>
-            <dd>a character string holding an option name.</dd>
-            <dt>default</dt>
-            <dd>if the specified option is not set in the
+      <dt>x</dt>
+      <dd>a character string holding an option name.</dd>
+      <dt>default</dt>
+      <dd>if the specified option is not set in the
   options list, this value is returned.  This facilitates
   retrieving an option and checking whether it is set and
   setting it separately if not.</dd>
-          </dl>
-          
-          <div class="Description">
-            <h2>Description</h2>
-            
-            <p><code>nmf.options</code> sets/get single or multiple options,
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>nmf.options</code> sets/get single or multiple options,
   that are specific to the NMF package. It behaves in the
   same way as <code><a href='http://www.inside-r.org/r-doc/base/options'>options</a></code>.</p>
-        
-            <p><code>nmf.getOption</code> returns the value of a single
+  
+      <p><code>nmf.getOption</code> returns the value of a single
   option, that is specific to the NMF package. It behaves
   in the same way as <code><a href='http://www.inside-r.org/r-doc/base/options'>getOption</a></code>.</p>
-        
-          </div>
-      
-        </div>
-        <div class="span4">
-          <!-- <ul>
-            <li>nmf.getOption</li><li>nmf.options</li>
-          </ul>
-          <ul>
-            
-          </ul> -->
-            
-                    
-        </div>
+  
+    </div>
       </div>
-      <footer class="footer">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+  <div class="span4">
+    <!-- <ul>
+      <li>nmf.getOption</li><li>nmf.options</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
-    </div> <!-- /container -->
+    </div>
   </body>
 </html>

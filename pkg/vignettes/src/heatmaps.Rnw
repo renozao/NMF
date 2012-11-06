@@ -173,15 +173,26 @@ rdata <- data.frame(Var=d, Type=e)
 # column annotations and covariates
 p <- ncol(X)
 a <- sample(c('alpha', 'beta', 'gamma'), p, replace=TRUE)
-# add an annotation track for the true groups
-Groups <- X$gcoef
+# define covariates: true groups and some numeric variable
 c <- rnorm(p)
 # gather them in a data.frame
-covariates <- data.frame(a, Groups, c)
-	
+covariates <- data.frame(a, X$pData, c)
 @
 
-Then, we fit an NMF model using multiple runs:
+\SweaveOpts{fig.width=14,fig.height=7}
+Note that in the code above, the object \code{X} returned by \code{syntheticNMF} \emph{really is} a matrix object, but wrapped through the function \code{ExposedAttribute} object, which exposes its attributes via a more friendly and access controlled interface \code{\$}.
+Of particular interests are attributes \code{'pData'} and \code{'fData'}, which are lists that contain a factor named \code{'Group'} that indicates the true underlying clusters.
+These are respectively defined as each sample's most contrbuting basis component and the basis component to which each feature contributes the most.
+They are useful to annotate heatmaps and assess the ability of NMF methods to recover the true clusters. 
+
+As an example, one can conveniently visualize the target matrix as a heatmap, with or without the relevant sample and feature annotations, using simple calls to the \code{aheatmap} function:
+<<heatmap_data>>=
+par(mfrow=c(1,2))
+aheatmap(X, annCol=covariates, annRow=X$fData)
+aheatmap(X)
+@
+
+Then, we fit an NMF model using multiple runs, that will be used throughtout this vignette to illustrate the use of NMF heatmaps:
 
 <<model, cache=TRUE>>=
 res <- nmf(X, 3, nrun=10)
@@ -205,7 +216,6 @@ In the legend, these tracks are named \emph{basis} and \emph{consensus} respecti
 For single NMF run or NMF model objects, no consensus data are available, and 
 only the clusters from the fit are displayed.
 
-\SweaveOpts{fig.width=14,fig.height=7}
 <<coefmap_res, fig.keep='last'>>=
 opar <- par(mfrow=c(1,2))
 # coefmap from multiple run fit: includes a consensus track
@@ -251,22 +261,19 @@ The default behaviour of \code{aheatmap} can be obtained by setting arguments
 
 \medskip
 The automatic annotation tracks can be hidden all together by setting argument 
-\code{annCol=NA}, displayed separately by passing only one of the given names 
-(e.g. \code{annCol=':basis'}), and their legend names may be changed by
-specifying e.g. \code{annCol=c(Metagene=':basis', 'consensus')}.
+\code{tracks=NA}, displayed separately by passing only one of the given names 
+(e.g. \code{tracks=':basis'} or \code{tracks='basis:'} for the row or column respectively),
+and their legend names may be changed by
+specifying e.g. \code{tracks=c(Metagene=':basis', 'consensus')}.
 Beside this, they are handled by the heatmap engine function \code{aheatmap} 
 and can be customised as any other annotation tracks -- that can be added via 
 the same argument \code{annCol} (see \cref{sec:aheatmap} or \code{?aheatmap} for
 more details).
 
-An annotation track highlighting the basis component, that matches the column
-annotation track from \code{annCol=':basis'}, can be added using
-\code{annRow=':basis'}.
-
 <<coefmap_custom, fig.keep='last', tidy=FALSE>>=
 opar <- par(mfrow=c(1,2))
 # removing all automatic annotation tracks
-coefmap(res, annCol=NA)
+coefmap(res, tracks=NA)
 # customized plot
 coefmap(res, Colv = 'euclidean'
 	, main = "Metagene contributions in each sample", labCol = NULL
@@ -289,15 +296,15 @@ the dominant basis component.
 That is, for each row, the index of the basis component with the highest 
 loading.
 
-This track can be disabled by setting \code{annRow=NA}, and extra 
+This track can be disabled by setting \code{tracks=NA}, and extra 
 row annotations can be added using the same argument \code{annRow}.
 
 <<basismap_res, fig.keep='last'>>=
 opar <- par(mfrow=c(1,2))
 # default plot
 basismap(res)
-# customized plot
-basismap(res, main="Metagenes", annRow=list(':basis', d, e))
+# customized plot: only use row special annotation track.  
+basismap(res, main="Metagenes", annRow=list(d, e), tracks=c(Metagene=':basis'))
 par(opar)
 @
 

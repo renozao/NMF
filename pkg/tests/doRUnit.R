@@ -4,14 +4,16 @@
 # Creation: 26 Oct 2011
 ###############################################################################
 
-tests <- try( pkgmaker::utest('package:NMF', 'interface', 'nmf.custom', quiet=FALSE) )
+library(pkgmaker)
+tests <- try( utest('package:NMF', quiet=FALSE) )
 
-td <- pkgmaker:::utestPath(package='package:NMF')
-resfile <- list.files(td, pattern=".+\\.txt", full.names=TRUE)
+testdir <- pkgmaker:::utestPath(package='package:NMF')
+
+resfile <- list.files(testdir, pattern=".+\\.txt", full.names=TRUE)
 cat("Result files:\n")
 print(resfile)
 
-if( length(resfile) ){ #&& Sys.info()['user'] != 'renaud'){
+if( length(resfile) ){
 	# send
 	library(mail)
 	sapply(resfile, function(f){
@@ -24,12 +26,13 @@ if( length(resfile) ){ #&& Sys.info()['user'] != 'renaud'){
 		msg <- c(msg, "**************\nRESULTS:\n**************\n", readLines(f))
 		# collapse
 		msg <- paste(msg, collapse="\n")
-		# send email
-		sendmail('renaud@cbio.uct.ac.za',
-				, paste("NMF: unit test results",
-					"-", basename(f),
-					"-", if( is(tests, 'try-error') ) 'ERROR' else "OK", "]")
-				, msg 
-		)
+		# subject
+		subject <- paste("NMF: unit test results"
+						, "-", basename(f), "-"
+						, "[", if( is(tests, 'try-error') ) 'ERROR' else "OK", "]"
+						, sep='')
+		# try send email
+		if( !userIs('renaud') ) try( sendmail('renaud@cbio.uct.ac.za', subject, msg) )
+		else write(msg, file=file.path(testdir, paste("check_", basename(f), sep='')))
 	})
 }

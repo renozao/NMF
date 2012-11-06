@@ -5,6 +5,7 @@
 \alias{.basis<-}
 \alias{basis<-}
 \alias{basis<-,ANY-method}
+\alias{basis,ANY-method}
 \alias{.basis<--methods}
 \alias{.basis-methods}
 \alias{basis<--methods}
@@ -157,6 +158,13 @@
 }
 \section{Methods}{
   \describe{
+
+  \item{basis}{\code{signature(object = "ANY")}: Default
+  method returns the value of S3 slot or attribute
+  \code{'basis'}. It returns \code{NULL} if none of these
+  are set.
+
+  Arguments \code{...} are not used by this method. }
 
   \item{basis}{\code{signature(object = "NMFfitXn")}:
   Returns the basis matrix of the best fit amongst all the

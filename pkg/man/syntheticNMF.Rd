@@ -41,10 +41,29 @@
   state of the RNG is restored on exit.}
 }
 \value{
-  a matrix, or a list if argument \code{factors=TRUE}. The
-  result is in fact returned as an
-  \code{\link{ExposeAttribute}} matrix object, which
-  provides
+  a matrix, or a list if argument \code{factors=TRUE}.
+
+  When \code{factors=FALSE}, the result is a matrix object,
+  with the following attributes set: \describe{
+  \item{coefficients}{the true underlying coefficient
+  matrix (i.e. \code{H});} \item{basis}{the true underlying
+  coefficient matrix (i.e. \code{H});} \item{offset}{the
+  offset if any;} \item{pData}{a \code{list} with one
+  element \code{'Group'} that contains a factor that
+  indicates the true groups of samples, i.e. the most
+  contributing basis component for each sample;}
+  \item{fData}{a \code{list} with one element
+  \code{'Group'} that contains a factor that indicates the
+  true groups of features, i.e. the basis component to
+  which each feature contributes the most.} }
+
+  Moreover, the result object is an
+  \code{\link{ExposeAttribute}} object, which means that
+  relevant attributes are accessible via \code{$}, e.g.,
+  \code{res$coefficients}. In particular, methods
+  \code{\link{coef}} and \code{\link{basis}} will work as
+  expected and return the true underlying coefficient and
+  basis matrices respectively.
 }
 \description{
   The function \code{syntheticNMF} generates random target

@@ -6,7 +6,6 @@ BiocGenerics
 colorspace
 gridBase
 grid
-doRNG
 bigmemory
 bigmemory.sri
 doParallel
@@ -14,6 +13,7 @@ parallel
 iterators
 foreach
 registry
+rngtools
 pkgmaker
 codetools
 stringr

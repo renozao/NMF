@@ -2,93 +2,89 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Computational Setup Functions. NMF </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<title>setupBackend. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {padding-top: 60px;}
-      h2 {padding-top: 20px}
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/highlight.css" rel="stylesheet">
-    <link href="css/staticdocs.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class = "container">
-          <a class="brand" href="index.html">NMF </a>
-          <div class="nav">
-            <ul class="nav">
-              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
     </div>
+  </div>
+</div>
 
     <div class="container">
+      <header>
+        
+      </header>
+      
       <h1>Computational Setup Functions</h1>
 
-      <div class="row">
-        <div class="span8">
-          <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='setup.html'>setupBackend</a></span><span class="keyword">(</span><span class="symbol">spec</span><span class="keyword">,</span> <span class="symbol">optional</span><span class="keyword">,</span> <span class="symbol">backend</span><span class="keyword">,</span> <span class="argument">verbose</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='setup.html'>setupBackend</a></span><span class="keyword">(</span><span class="symbol">spec</span><span class="keyword">,</span> <span class="symbol">optional</span><span class="keyword">,</span> <span class="symbol">backend</span><span class="keyword">,</span> <span class="argument">verbose</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='setup.html'>setupSharedMemory</a></span><span class="keyword">(</span><span class="symbol">verbose</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='setup.html'>setupTempDirectory</a></span><span class="keyword">(</span><span class="symbol">verbose</span><span class="keyword">)</span>
 
-<span class="functioncall"><a href='setup.html'>setupLibPaths</a></span><span class="keyword">(</span><span class="argument">pkg</span> <span class="argument">=</span> <span class="string">"NMF"</span><span class="keyword">)</span>
+<span class="functioncall"><a href='setup.html'>setupLibPaths</a></span><span class="keyword">(</span><span class="argument">pkg</span> <span class="argument">=</span> <span class="string">"NMF"</span><span class="keyword">,</span> <span class="argument">verbose</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='setup.html'>setupRNG</a></span><span class="keyword">(</span><span class="symbol">seed</span><span class="keyword">,</span> <span class="symbol">n</span><span class="keyword">,</span> <span class="argument">verbose</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span></pre>
-          
-          <h2>Arguments</h2>
-          <dl>
-            <dt>spec</dt>
-            <dd>target parallel specification: either
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>spec</dt>
+      <dd>target parallel specification: either
   <code>TRUE</code> or <code>FALSE</code>, or a single numeric value
   that specifies the number of cores to setup.</dd>
-            <dt>optional</dt>
-            <dd>a logical that indicates if the
+      <dt>optional</dt>
+      <dd>a logical that indicates if the
   specification must be fully satisfied, throwing an error
   if it is not, or if one can switch back to sequential,
   only outputting a verbose message.</dd>
-            <dt>backend</dt>
-            <dd>value from argument <code>.pbackend</code> of
+      <dt>backend</dt>
+      <dd>value from argument <code>.pbackend</code> of
   <code>nmf</code>.</dd>
-            <dt>verbose</dt>
-            <dd>logical or integer level of verbosity for
+      <dt>verbose</dt>
+      <dd>logical or integer level of verbosity for
   message outputs.</dd>
-            <dt>pkg</dt>
-            <dd>package name whose path should be exported the
+      <dt>pkg</dt>
+      <dd>package name whose path should be exported the
   workers.</dd>
-            <dt>seed</dt>
-            <dd>initial RNG seed specification</dd>
-            <dt>n</dt>
-            <dd>number of RNG seeds to generate</dd>
-          </dl>
-          
-          <div class="Description">
-            <h2>Description</h2>
-            
-            <p>Functions used internally to setup the computational
+      <dt>seed</dt>
+      <dd>initial RNG seed specification</dd>
+      <dt>n</dt>
+      <dd>number of RNG seeds to generate</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Functions used internally to setup the computational
   environment.</p>
-        
-            <p><code>setupBackend</code> sets up the foreach backend.</p>
-        
-            <p><code>setupSharedMemory</code> checks if one can use the
+  
+      <p><code>setupBackend</code> sets up the foreach backend.</p>
+  
+      <p><code>setupSharedMemory</code> checks if one can use the
   packages <em>bigmemory</em> and <em>sychronicity</em> to
   speed-up parallel computations when not keeping all the
   fits. When both these packages are available, only one
@@ -97,38 +93,38 @@
   all cores on a same host. It returns <code>TRUE</code> if both
   packages are available and NMF option <code>'shared'</code> is
   toggled on.</p>
-        
-            <p><code>setupTempDirectory</code> creates a temporary directory
+  
+      <p><code>setupTempDirectory</code> creates a temporary directory
   to store the best fits computed on each host. It ensures
   each worker process has access to it.</p>
-        
-            <p><code>setupLibPaths</code> add the path to the NMF package to
+  
+      <p><code>setupLibPaths</code> add the path to the NMF package to
   each workers' libPaths.</p>
-        
-            <p><code>setupRNG</code> sets the RNG for use by the function nmf.
+  
+      <p><code>setupRNG</code> sets the RNG for use by the function nmf.
   It returns the old RNG as an rstream object or the result
   of set.seed if the RNG is not changed due to one of the
   following reason: - the settings are not compatible with
   rstream</p>
-        
-          </div>
-      
-        </div>
-        <div class="span4">
-          <!-- <ul>
-            <li>setupBackend</li><li>setupLibPaths</li><li>setupRNG</li><li>setupSharedMemory</li><li>setupTempDirectory</li>
-          </ul>
-          <ul>
-            <li>internals</li>
-          </ul> -->
-            
-                    
-        </div>
+  
+    </div>
       </div>
-      <footer class="footer">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+  <div class="span4">
+    <!-- <ul>
+      <li>setupBackend</li><li>setupLibPaths</li><li>setupRNG</li><li>setupSharedMemory</li><li>setupTempDirectory</li>
+    </ul>
+    <ul>
+      <li>internals</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
-    </div> <!-- /container -->
+    </div>
   </body>
 </html>

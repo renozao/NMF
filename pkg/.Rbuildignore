@@ -7,3 +7,4 @@ vignettes/cache$
 vignettes/Rpackages\.bib
 vignettes/.*\.tex
 ^makefile$
+tests-results$

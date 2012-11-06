@@ -2,174 +2,170 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Residuals in NMF Models. NMF </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<title>residuals. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {padding-top: 60px;}
-      h2 {padding-top: 20px}
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/highlight.css" rel="stylesheet">
-    <link href="css/staticdocs.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class = "container">
-          <a class="brand" href="index.html">NMF </a>
-          <div class="nav">
-            <ul class="nav">
-              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
     </div>
+  </div>
+</div>
 
     <div class="container">
+      <header>
+        
+      </header>
+      
       <h1>Residuals in NMF Models</h1>
 
-      <div class="row">
-        <div class="span8">
-          <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='residuals.html'>residuals</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='residuals.html'>residuals</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMFfit)</span>
-<span class="functioncall"><a href='NA'>`residuals`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">track</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="functioncall">`residuals`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">track</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='residuals.html'>hasTrack</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='residuals.html'>trackError</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">value</span><span class="keyword">,</span> <span class="symbol">iter</span><span class="keyword">,</span> <span class="argument">force</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span></pre>
-          
-          <h2>Arguments</h2>
-          <dl>
-            <dt>object</dt>
-            <dd>an <code>NMFfit</code> object as fitted by
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>an <code>NMFfit</code> object as fitted by
   function <code><a href='nmf.html'>nmf</a></code>, in single run mode.</dd>
-            <dt>...</dt>
-            <dd>extra parameters (not used)</dd>
-            <dt>track</dt>
-            <dd>a logical that indicates if the complete
+      <dt>...</dt>
+      <dd>extra parameters (not used)</dd>
+      <dt>track</dt>
+      <dd>a logical that indicates if the complete
   track of residuals should be returned (if it has been
   computed during the fit), or only the last value.</dd>
-            <dt>value</dt>
-            <dd>new residual value</dd>
-            <dt>iter</dt>
-            <dd>iteration number at which the value is
+      <dt>value</dt>
+      <dd>new residual value</dd>
+      <dt>iter</dt>
+      <dd>iteration number at which the value is
   computed</dd>
-            <dt>force</dt>
-            <dd>logical that indicates if the value should
+      <dt>force</dt>
+      <dd>logical that indicates if the value should
   be added to the track even if there already is a value
   for this iteration number or if the iteration does not
   conform to the tracking interval
   <code>nmf.getOption('track.interval')</code>.</dd>
-          </dl>
-          
-          <div class="Value">
-            <h2>Value</h2>
-            
-            <p><code>residuals</code> returns a single numeric value if
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p><code>residuals</code> returns a single numeric value if
   <code>track=FALSE</code> or a numeric vector containing the
   residual values at some iterations. The names correspond
   to the iterations at which the residuals were computed.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Description">
-            <h2>Description</h2>
-            
-            <p>The package NMF defines methods for the function
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The package NMF defines methods for the function
   <code><a href='http://www.inside-r.org/r-doc/stats/residuals'>residuals</a></code> that returns the final
   residuals of an NMF fit or the track of the residuals
   along the fit process, computed according to the
   objective function associated with the algorithm that
   fitted the model.</p>
-        
-            <p>Tells if an <code>NMFfit</code> object contains a recorded
+  
+      <p>Tells if an <code>NMFfit</code> object contains a recorded
   residual track.</p>
-        
-            <p><code>trackError</code> adds a residual value to the track of
+  
+      <p><code>trackError</code> adds a residual value to the track of
   residuals.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Details">
-            <h2>Details</h2>
-            
-            <p>When called with <code>track=TRUE</code>, the whole residuals
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>When called with <code>track=TRUE</code>, the whole residuals
   track is returned, if available. Note that method
   <code><a href='nmf.html'>nmf</a></code> does not compute the residuals track,
   unless explicitly required.</p>
-        
-            <p>It is a S4 methods defined for the associated generic
+  
+      <p>It is a S4 methods defined for the associated generic
   functions from package <code>stats</code> (See
   <a href='http://www.inside-r.org/r-doc/stats/residuals'>residuals</a>).</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Note">
-            <h2>Note</h2>
-            
-            <p>Stricly speaking, the method <code>residuals,NMFfit</code> does
+    <div class="Note">
+      <h2>Note</h2>
+      
+      <p>Stricly speaking, the method <code>residuals,NMFfit</code> does
   not fulfill its contract as defined by the package
   <code>stats</code>, but rather acts as function
   <code>deviance</code>. The might be changed in a later release
   to make it behave as it should.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Methods">
-            <h2>Methods</h2>
-            
-            <p><span class='describe'></p>
-        
-            <p>residuals<code>signature(object = "NMFfit")</code>:
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><span class='describe'></p>
+  
+      <p>residuals<code>signature(object = "NMFfit")</code>:
   Returns the residuals -- track -- between the target
   matrix and the NMF fit <code>object</code>.</p>
-        
-            <p>residuals<code>signature(object = "NMFfitX")</code>:
+  
+      <p>residuals<code>signature(object = "NMFfitX")</code>:
   Returns the residuals achieved by the best fit object,
   i.e. the lowest residual approximation error achieved
   across all NMF runs.</p>
-        
-            <p></span></p>
-        
-          </div>
+  
+      <p></span></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>hasTrack</li><li>residuals</li><li>residuals-methods</li><li>residuals,NMFfit-method</li><li>residuals,NMFfitX-method</li><li>trackError</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
       
-        </div>
-        <div class="span4">
-          <!-- <ul>
-            <li>hasTrack</li><li>residuals</li><li>residuals,NMFfit-method</li><li>residuals,NMFfitX-method</li><li>residuals-methods</li><li>trackError</li>
-          </ul>
-          <ul>
-            <li>methods</li>
-          </ul> -->
-            
-          <h2>See also</h2>
-          
+    <h2>See also</h2>
+    
   Other stats: <code><a href='deviance.html'>deviance</a></code>,
   <code><a href='deviance.html'>deviance,NMF-method</a></code>,
   <code><a href='deviance.html'>nmfDistance</a></code>
 
-                    
-        </div>
-      </div>
-      <footer class="footer">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
-    </div> <!-- /container -->
+    </div>
   </body>
 </html>

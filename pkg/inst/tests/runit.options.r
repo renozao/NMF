@@ -45,10 +45,3 @@ test.nmf.getOption <-function(){
 	# clean up removing created options
 	nmf.options(toto=NULL)
 }
-
-test.options.runtime <-function(){
-	DEACTIVATED("All options are now runtime options.")
-	op <- nmf.options.runtime()
-	checkTrue( is.list(op), 'Runtime options are returned as a list' )
-	checkEquals( names(op), .nmf.Options.Runtime, 'Object .nmf.Options.Runtime is returned' )
-}

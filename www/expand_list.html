@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>expand_list. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Expanding Lists</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='expand_list.html'>expand_list</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">.exact</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">.names</span> <span class="argument">=</span> <span class="keyword">!</span><span class="symbol">.exact</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='expand_list.html'>expand_dots</a></span><span class="keyword">(</span><span class="symbol">...</span><span class="keyword">,</span> <span class="argument">.exclude</span> <span class="argument">=</span> NULL<span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>input list</dd>
+      <dt>...</dt>
+      <dd>extra named arguments defining the default
+  items. A list of default values can also be passed as a a
+  single unnamed argument.</dd>
+      <dt>.exact</dt>
+      <dd>logical that indicates if the names in
+  <code>x</code> should be partially matched against the
+  defaults.</dd>
+      <dt>.names</dt>
+      <dd>logical that only used when
+  <code>.exact=FALSE</code> and indicates that the names of items
+  in <code>x</code> that partially match some defaults should be
+  expanded in the returned list.</dd>
+      <dt>.exclude</dt>
+      <dd>optional character vector of argument
+  names to exclude from expansion.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a list</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>expand_list</code> expands a named list with a given set
+  of default items, if these are not already in the list,
+  partially matching their names.</p>
+  
+      <p><code>expand_dots</code> expands the <code>...</code> arguments of
+  the function in which it is called with default values,
+  using <code>expand_list</code>. It can <strong>only</strong> be called
+  from inside a function.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class="functioncall"><a href='expand_list.html'>expand_list</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/list'>list</a></span><span class="keyword">(</span><span class="argument">a</span><span class="argument">=</span><span class="number">1</span><span class="keyword">,</span> <span class="argument">b</span><span class="argument">=</span><span class="number">2</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">c</span><span class="argument">=</span><span class="number">3</span><span class="keyword">)</span></div>
+<div class='output'>$a
+[1] 1
+
+$b
+[1] 2
+
+$c
+[1] 3
+
+</div>
+<div class='input'><span class="functioncall"><a href='expand_list.html'>expand_list</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/list'>list</a></span><span class="keyword">(</span><span class="argument">a</span><span class="argument">=</span><span class="number">1</span><span class="keyword">,</span> <span class="argument">b</span><span class="argument">=</span><span class="number">2</span><span class="keyword">,</span> <span class="argument">c</span><span class="argument">=</span><span class="number">4</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">c</span><span class="argument">=</span><span class="number">3</span><span class="keyword">)</span></div>
+<div class='output'>$a
+[1] 1
+
+$b
+[1] 2
+
+$c
+[1] 4
+
+</div>
+<div class='input'><span class="comment"># with a list</span>
+<span class="functioncall"><a href='expand_list.html'>expand_list</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/list'>list</a></span><span class="keyword">(</span><span class="argument">a</span><span class="argument">=</span><span class="number">1</span><span class="keyword">,</span> <span class="argument">b</span><span class="argument">=</span><span class="number">2</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/list'>list</a></span><span class="keyword">(</span><span class="argument">c</span><span class="argument">=</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">d</span><span class="argument">=</span><span class="number">10</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<div class='output'>$a
+[1] 1
+
+$b
+[1] 2
+
+$c
+[1] 3
+
+$d
+[1] 10
+
+</div>
+<div class='input'><span class="comment"># no partial match</span>
+<span class="functioncall"><a href='expand_list.html'>expand_list</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/list'>list</a></span><span class="keyword">(</span><span class="argument">a</span><span class="argument">=</span><span class="number">1</span><span class="keyword">,</span> <span class="argument">b</span><span class="argument">=</span><span class="number">2</span><span class="keyword">,</span> <span class="argument">c</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">cd</span><span class="argument">=</span><span class="number">3</span><span class="keyword">)</span></div>
+<div class='output'>$a
+[1] 1
+
+$b
+[1] 2
+
+$c
+[1] 5
+
+$cd
+[1] 3
+
+</div>
+<div class='input'><span class="comment"># partial match with names expanded</span>
+<span class="functioncall"><a href='expand_list.html'>expand_list</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/list'>list</a></span><span class="keyword">(</span><span class="argument">a</span><span class="argument">=</span><span class="number">1</span><span class="keyword">,</span> <span class="argument">b</span><span class="argument">=</span><span class="number">2</span><span class="keyword">,</span> <span class="argument">c</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">cd</span><span class="argument">=</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">.exact</span><span class="argument">=</span><span class="number">FALSE</span><span class="keyword">)</span></div>
+<div class='output'>$a
+[1] 1
+
+$b
+[1] 2
+
+$cd
+[1] 5
+
+</div>
+<div class='input'><span class="comment"># partial match without expanding names</span>
+<span class="functioncall"><a href='expand_list.html'>expand_list</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/list'>list</a></span><span class="keyword">(</span><span class="argument">a</span><span class="argument">=</span><span class="number">1</span><span class="keyword">,</span> <span class="argument">b</span><span class="argument">=</span><span class="number">2</span><span class="keyword">,</span> <span class="argument">c</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">cd</span><span class="argument">=</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">.exact</span><span class="argument">=</span><span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">.names</span><span class="argument">=</span><span class="number">FALSE</span><span class="keyword">)</span></div>
+<div class='output'>$a
+[1] 1
+
+$b
+[1] 2
+
+$c
+[1] 5
+
+</div>
+<div class='input'><span class="comment"># expanding dot arguments</span>
+
+<span class="symbol">f</span> <span class="assignement">&lt;-</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">...</span><span class="keyword">)</span><span class="keyword">{</span>
+        <span class="functioncall"><a href='expand_list.html'>expand_dots</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/list'>list</a></span><span class="keyword">(</span><span class="argument">a</span><span class="argument">=</span><span class="number">2</span><span class="keyword">,</span> <span class="argument">bcd</span><span class="argument">=</span><span class="string">'a'</span><span class="keyword">,</span> <span class="argument">xxx</span><span class="argument">=</span><span class="number">20</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">.exclude</span><span class="argument">=</span><span class="string">'xxx'</span><span class="keyword">)</span>
+<span class="keyword">}</span>
+
+<span class="comment"># add default value for all arguments</span>
+<span class="functioncall">f</span><span class="keyword">(</span><span class="keyword">)</span></div>
+<div class='output'>$a
+[1] 2
+
+$bcd
+[1] "a"
+
+</div>
+<div class='input'><span class="comment"># add default value for `bcd` only</span>
+<span class="functioncall">f</span><span class="keyword">(</span><span class="argument">a</span><span class="argument">=</span><span class="number">10</span><span class="keyword">)</span></div>
+<div class='output'>$a
+[1] 10
+
+$bcd
+[1] "a"
+
+</div>
+<div class='input'><span class="comment"># expand names</span>
+<span class="functioncall">f</span><span class="keyword">(</span><span class="argument">a</span><span class="argument">=</span><span class="number">10</span><span class="keyword">,</span> <span class="argument">b</span><span class="argument">=</span><span class="number">4</span><span class="keyword">)</span></div>
+<div class='output'>$a
+[1] 10
+
+$bcd
+[1] 4
+
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>expand_dots</li><li>expand_list</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

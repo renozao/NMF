@@ -6,6 +6,7 @@
 \alias{ForeachBackend,cluster-method}
 \alias{ForeachBackend,doMPI_backend-method}
 \alias{ForeachBackend,doParallel_backend-method}
+\alias{ForeachBackend,doSNOW_backend-method}
 \alias{ForeachBackend-methods}
 \alias{ForeachBackend,missing-method}
 \alias{ForeachBackend,mpicluster-method}
@@ -33,6 +34,9 @@
   \S4method{ForeachBackend}{doParallel_backend}(object, cl)
 
   \S4method{ForeachBackend}{doMPI_backend}(object, cl)
+
+  \S4method{ForeachBackend}{doSNOW_backend}(object, cl,
+    ...)
 }
 \arguments{
   \item{object}{specification of a foreach backend, e.g.
@@ -108,6 +112,9 @@
 
   \item{ForeachBackend}{\code{signature(object =
   "doMPI_backend")}: doMPI-specific backend factory }
+
+  \item{ForeachBackend}{\code{signature(object =
+  "doSNOW_backend")}: doSNOW-specific backend factory }
 
   }
 }

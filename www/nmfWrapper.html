@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>nmfWrapper. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Wrapping NMF Algorithms</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='nmfWrapper.html'>nmfWrapper</a></span><span class="keyword">(</span><span class="symbol">method</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>method</dt>
+      <dd>Name of the NMF algorithm to be wrapped. It
+  should be the name of a registered algorithm as returned
+  by <code><a href='nmfAlgorithm.html'>nmfAlgorithm</a></code>, or an NMF algorithm object
+  (i.e. an instance of <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code>).</dd>
+      <dt>...</dt>
+      <dd>extra named arguments that define default
+  values for any arguments of <code><a href='nmf.html'>nmf</a></code> or the
+  algorithm itself.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a function with attribute <code>'algorithm'</code> set to the
+  value of <code>key</code>.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This function creates a wrapper function for calling the
+  function <code><a href='nmf.html'>nmf</a></code> with a given NMF algorithm.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class="comment"># wrap Lee &amp; Seung algorithm into a function</span>
+<span class="symbol">lee</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfWrapper.html'>nmfWrapper</a></span><span class="keyword">(</span><span class="string">'lee'</span><span class="keyword">)</span>
+<span class="symbol">lee</span></div>
+<div class='output'>function(...){
+		
+		# set non fixed arguments from current call
+		ca <- match.call(nmf)
+		nm <- names(ca)[-1L]
+		if( any(fnm <- nm %in% .fixedargs) ){
+			warning("Discarding fixed arguments from wrapped call to ", .call[1L]
+					, " [", str_out(nm[fnm], Inf), '].', immediate.=TRUE)
+			nm <- nm[!fnm]
+		}
+		sapply(nm, function(x)	.call[[x]] <<- ca[[x]])
+		print(.call)
+		# eval
+		e <- parent.frame()
+		eval(.call, envir=e)
+	}
+<environment: 0xedf0384>
+attr(,"algorithm")
+[1] "lee"
+attr(,"call")
+nmf(method = "lee")
+attr(,".ExposeAttribute")
+[1] "rw"
+attr(,"class")
+[1] "function"        "ExposeAttribute"
+</div>
+<div class='input'>
+<span class="comment"># test on random data</span>
+<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">100</span><span class="keyword">,</span><span class="number">20</span><span class="keyword">)</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="string">'lee'</span><span class="keyword">,</span> <span class="argument">seed</span><span class="argument">=</span><span class="number">12345</span><span class="keyword">)</span>
+<span class="symbol">res2</span> <span class="assignement">&lt;-</span> <span class="functioncall">lee</span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">seed</span><span class="argument">=</span><span class="number">12345</span><span class="keyword">)</span></div>
+<div class='output'>nmf(method = "lee", x = x, rank = 3, seed = 12345)
+</div>
+<div class='input'><span class="functioncall"><a href='nmf.equal.html'>nmf.equal</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">res2</span><span class="keyword">)</span></div>
+<div class='output'>[1] TRUE
+</div>
+<div class='input'></div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>nmfWrapper</li>
+    </ul>
+    <ul>
+      <li>internal</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  <code><a href='nmfAlgorithm.html'>nmfAlgorithm</a></code>, <code><a href='nmf.html'>nmf</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

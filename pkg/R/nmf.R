@@ -81,8 +81,35 @@ NULL
 #' 
 #' @export
 #' @inline
-#' 
+#'
 #' @examples
+#' 
+#' # Only basic calls are presented in this manpage.
+#' # Many more examples are provided in the demo file nmf.R
+#' \dontrun{
+#' demo('nmf')
+#' }
+#' 
+#' # random data
+#' x <- rmatrix(20,10)
+#' 
+#' # run default algorithm with rank 2
+#' res <- nmf(x, 2)
+#' 
+#' # specify the algorithm
+#' res <- nmf(x, 2, 'lee')
+#' 
+#' # get verbose message on what is going on
+#' res <- nmf(x, 2, .options='v') 
+#' \dontrun{ 
+#' # more messages
+#' res <- nmf(x, 2, .options='v2')
+#' # even more
+#' res <- nmf(x, 2, .options='v3')
+#' # and so on ... 
+#' }
+#'  
+#' @demo Using the main function nmf()
 #' 
 #' # generate a synthetic dataset with known classes: 50 features, 23 samples (10+5+8)
 #' n <- 20; counts <- c(5, 3, 2);
@@ -93,17 +120,12 @@ NULL
 #' # build the true cluster membership
 #' groups <- unlist(mapply(rep, seq(counts), counts))
 #' 
-#' \dontshow{
-#' # to speed-up the example we redefine some methods to use only 30 iterations:
-#' sapply(c('brunet', 'lee', 'nsNMF'), setNMFMethod, defaults=list(maxIter=30), overwrite=TRUE, verbose=TRUE)
-#' } 
-#' 
 setGeneric('nmf', function(x, rank, method, ...) standardGeneric('nmf') )
 #' Fits an NMF model on a \code{data.frame}.
 #' 
 #' The target \code{data.frame} is coerced into a matrix with \code{\link{as.matrix}}.
 #' 
-#' @examples
+#' @demo
 #' 
 #' # run on a data.frame
 #' res <- nmf(data.frame(x), 3)
@@ -131,7 +153,7 @@ setMethod('nmf', signature(x='data.frame', rank='ANY', method='ANY'),
 #' This method is provided for internal usage, when called from other \code{nmf} methods 
 #' with argument \code{method} missing in the top call (e.g. \code{nmf,matrix,numeric,missing}).
 #' 
-#' @examples
+#' @demo
 #' 
 #' # missing method: use algorithm suitable for seed
 #' res <- nmf(x, 2, seed=rnmf(2, x))
@@ -187,13 +209,14 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='NULL'),
 #' This method returns an object of class \code{\linkS4class{NMFList}}, that is  
 #' essentially a list containing each fit.  
 #' 
-#' @examples 
+#' @demo 
 #' # compare some NMF algorithms (tracking the approximation error)
-#' res <- nmf(x, 2, list('brunet', 'lee', 'nsNMF'), .opt='t')
+#' res <- nmf(x, 2, list('brunet', 'lee', 'nsNMF'), .options='t')
 #' res
 #' summary(res, class=groups)
+#' 
 #' # plot the track of the residual errors
-#' \dontrun{plot(res)}
+#' plot(res)
 #' 
 setMethod('nmf', signature(x='matrix', rank='numeric', method='list'), 
 	function(x, rank, method, ...)
@@ -205,19 +228,20 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='list'),
 			res <- lapply(method, 
 				function(meth, ...){
 					k <<- k+1
-					message("Compute NMF method ", k, " ... ", appendLF=FALSE)
+					methname <- if( isString(meth) ) meth else name(meth)
+					cat("Compute NMF method '", methname, "' [", k, "/", n, "] ... ", sep='')
 					# restore RNG on exit (except after last method)
 					# => this ensures the methods use the same stochastic environment
 					orng <- RNGseed()
 					if( k < n ) on.exit( RNGseed(orng), add = TRUE)
 					
 					#o <- capture.output( 
-							res <- try( nmf(x, rank, meth, ...) , silent=TRUE) 
+						res <- try( nmf(x, rank, meth, ...) , silent=TRUE) 
 					#)
 					if( is(res, 'try-error') )
-						message("ERROR")
+						cat("ERROR\n")
 					else 
-						message("OK")
+						cat("OK\n")
 					return(res)
 				}
 				, ...)
@@ -345,14 +369,13 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='list'),
 #' 
 #' @seealso \code{\link{nmfAlgorithm}}
 #' 
-#' @examples 
+#' @demo 
 #' 
 #' # specify algorithm by its name
-#' res <- nmf(x, 3, 'nsNMF') # nonsmooth NMF 
-#' \dontrun{
+#' res <- nmf(x, 3, 'nsNMF', seed=123) # nonsmooth NMF 
 #' # names are partially matched so this also works  
-#' nmf(x, 3, 'ns')
-#' }
+#' identical(res, nmf(x, 3, 'ns', seed=123))
+#' 
 #' res <- nmf(x, 3, 'offset') # NMF with offset
 #' 
 #' 
@@ -403,7 +426,7 @@ function(x, rank, method, ...)
 #' \code{method} support mixed-sign target matrices, i.e. that may contain negative 
 #' values [only used when \code{method} is a function].
 #' 
-#' @examples 
+#' @demo 
 #' 
 #' # run a custom algorithm defined as a standard function
 #' myfun <- function(x, start, alpha){
@@ -493,7 +516,7 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='function'),
 #' \code{nmf,matrix,numeric,NULL}, which will infer an algorithm suitable for fitting an 
 #' NMF model of the class of \code{rank}.
 #' 
-#' @examples
+#' @demo
 #' 
 #' # assume a known NMF model compatible with the matrix `x`
 #' y <- rnmf(3, x)
@@ -549,7 +572,7 @@ setMethod('nmf', signature(x='matrix', rank='missing', method='ANY'),
 #' Method defined to ensure the correct dispatch to workhorse methods in case
 #' of argument \code{method} is missing.
 #' 
-#' @examples
+#' @demo
 #' # missing method: use default algorithm
 #' res <- nmf(x, 3)
 #' 
@@ -573,15 +596,13 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='missing'),
 #' partial seeds, with only the coefficient or basis matrix initialised 
 #' respectively.
 #' 
-#' @examples
+#' @demo
 #' 
-#' \dontrun{
 #' # Fit a 3-rank model providing an initial value for the basis matrix
 #' nmf(x, rmatrix(nrow(x), 3), 'snmf/r')
 #'  
 #' # Fit a 3-rank model providing an initial value for the mixture coefficient matrix
 #' nmf(x, rmatrix(3, ncol(x)), 'snmf/l')
-#' }
 #' 
 setMethod('nmf', signature(x='matrix', rank='matrix', method='ANY'), 
 	function(x, rank, method, seed, model=list(), ...)
@@ -997,7 +1018,7 @@ checkErrors <- function(object, element=NULL){
 #' \item{Multiple runs, multiple methods:}{When \code{nrun > 1} and \code{method} 
 #' is a \code{list}, this method returns an object of class \code{\linkS4class{NMFList}}.}
 #' 
-#' @examples
+#' @demo
 #' 
 #' # default fit
 #' res <- nmf(x, 2)
@@ -1013,10 +1034,8 @@ checkErrors <- function(object, element=NULL){
 #' res
 #' summary(res, class=groups)
 #' 
-#' \dontrun{
 #' ## Note: one could have equivalently done
-#' res <- nmf(V, 3, nrun=10, .options=list(keep.all=TRUE))
-#' }
+#' # res <- nmf(V, 3, nrun=10, .options=list(keep.all=TRUE))
 #'  
 #' # use a method that fit different model
 #' res <- nmf(x, 2, 'nsNMF')
@@ -1040,12 +1059,10 @@ checkErrors <- function(object, element=NULL){
 #' ## USING SEEDING METHODS
 #' 
 #' # run default algorithm with the Non-negative Double SVD seeding method ('nndsvd')
-#' nmf(x, 3, seed='nndsvd')
+#' res <- nmf(x, 3, seed='nndsvd')
 #' 
-#' \dontrun{
 #' ## Note: partial match also works
-#' nmf(x, 3, seed='nn')
-#' }
+#' identical(res, nmf(x, 3, seed='nn'))
 #' 
 #' # run nsNMF algorithm, fixing the seed of the random number generator 
 #' res <- nmf(x, 3, 'nsNMF', seed=123456)
@@ -1083,11 +1100,6 @@ checkErrors <- function(object, element=NULL){
 #' # Passs a callback function which throws an error
 #' cb <- function(){ i<-0; function(object){ i <<- i+1; if( i == 1 ) stop('SOME BIG ERROR'); summary(object) }}
 #' res <- nmf(x, 3, nrun=3, .callback=cb())
-#' 
-#' \dontshow{
-#' # reset default method
-#' sapply(c('brunet', 'lee', 'nsNMF'), setNMFMethod, defaults=list(), overwrite=TRUE, verbose=TRUE)
-#' }
 #' 
 setMethod('nmf', signature(x='matrix', rank='numeric', method='NMFStrategy'),
 #function(x, rank, method, seed='random', nrun=1, keep.all=FALSE, optimized=TRUE, init='NMF', track, verbose, ...)
@@ -1387,6 +1399,7 @@ function(x, rank, method
 				if( verbose > 2 ) message("# Running on host(s): ", str_out(hosts))
 				SINGLE_HOST <- length(hosts) > 1L
 				MODE_SHARED <- MODE_SHARED && SINGLE_HOST
+				if( verbose > 2 ) message("# Using shared memory ... ", MODE_SHARED)
 				
 				# setup mutex evaluation function
 				mutex_eval <- if( MODE_SHARED ) ts_eval(verbose = verbose > 4) else force
@@ -1637,7 +1650,10 @@ function(x, rank, method
 				}
 											
 				## 2. RUN:
-				# perform a single run `nrun` times								
+				# perform a single run `nrun` times
+				if( verbose == 2 ){
+					showRNG()
+				}
 				if( verbose && !debug ) cat('Runs:')
 				res.runs <- mapply(1:nrun, .RNG.seed, FUN=function(n, RNGobj){
 					
@@ -1648,10 +1664,6 @@ function(x, rank, method
 							cat("\n## Run: ",n, "/", nrun, "\n", sep='')							
 						}else{
 						# otherwise only some details for the first run
-							if(n == 1 ){
-								showRNG()								
-								cat("Runs:")
-							}
 							cat('', n)
 						}
 					}#end_verbose
@@ -1673,8 +1685,8 @@ function(x, rank, method
 						err <- residuals(res)
 						best <- best.static$residuals
 						if( is.na(best) || err < best ){
-							if( n>1 && verbose ){
-								if( debug ) cat("## Better fit found [err=", err, "]\n")
+							if( verbose ){
+								if( verbose > 1L ) cat("## Updating best fit [deviance =", err, "]\n", sep='')
 								else cat('*')
 							}
 							

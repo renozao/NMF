@@ -2,75 +2,71 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Factory Method for NMFStrategy Objects. NMF </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<title>NMFStrategy. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {padding-top: 60px;}
-      h2 {padding-top: 20px}
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/highlight.css" rel="stylesheet">
-    <link href="css/staticdocs.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class = "container">
-          <a class="brand" href="index.html">NMF </a>
-          <div class="nav">
-            <ul class="nav">
-              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
     </div>
+  </div>
+</div>
 
     <div class="container">
+      <header>
+        
+      </header>
+      
       <h1>Factory Method for NMFStrategy Objects</h1>
 
-      <div class="row">
-        <div class="span8">
-          <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='NMFStrategy.html'>NMFStrategy</a></span><span class="keyword">(</span><span class="symbol">name</span><span class="keyword">,</span> <span class="symbol">method</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='NMFStrategy.html'>NMFStrategy</a></span><span class="keyword">(</span><span class="symbol">name</span><span class="keyword">,</span> <span class="symbol">method</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMFStrategy,matrix,NMFfit)</span>
-<span class="functioncall"><a href='NA'>`run`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="functioncall">`run`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMFStrategy,matrix,NMF)</span>
-<span class="functioncall"><a href='NA'>`run`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="functioncall">`run`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMFStrategyFunction,matrix,NMFfit)</span>
-<span class="functioncall"><a href='NA'>`run`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="functioncall">`run`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMFStrategyIterative,matrix,NMFfit)</span>
-<span class="functioncall"><a href='NA'>`run`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="argument">.stop</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">maxIter</span> <span class="argument">=</span> <span class="number">2000</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="functioncall">`run`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="argument">.stop</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">maxIter</span> <span class="argument">=</span> <span class="number">2000</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMFStrategyIterativeX,matrix,NMFfit)</span>
-<span class="functioncall"><a href='NA'>`run`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">maxIter</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
-          
-          <h2>Arguments</h2>
-          <dl>
-            <dt>name</dt>
-            <dd>name of an NMF algorithm.</dd>
-            <dt>method</dt>
-            <dd>definition of the algorithm</dd>
-            <dt>...</dt>
-            <dd>extra arguments passed to <code><a href='NA'>new</a></code>.</dd>
-            <dt>.stop</dt>
-            <dd>specification of a stopping criterion, that
+<span class="functioncall">`run`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">maxIter</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>name</dt>
+      <dd>name/key of an NMF algorithm.</dd>
+      <dt>method</dt>
+      <dd>definition of the algorithm</dd>
+      <dt>...</dt>
+      <dd>extra arguments passed to <code><a href='http://www.inside-r.org/r-doc/methods/new'>new</a></code>.</dd>
+      <dt>.stop</dt>
+      <dd>specification of a stopping criterion, that
   is used instead of the one associated to the NMF
   algorithm. It may be specified as: <ul>
 <li> the
@@ -93,60 +89,78 @@
   the NMF model. </li>
 </ul>
 </dd>
-            <dt>maxIter</dt>
-            <dd>maximum number of iterations to perform.</dd>
-            <dt>object</dt>
-            <dd>an object computed using some algorithm, or
+      <dt>maxIter</dt>
+      <dd>maximum number of iterations to perform.</dd>
+      <dt>object</dt>
+      <dd>an object computed using some algorithm, or
   that describes an algorithm itself.</dd>
-            <dt>y</dt>
-            <dd>data object, e.g. a target matrix</dd>
-            <dt>x</dt>
-            <dd>a model object used as a starting point by the
+      <dt>y</dt>
+      <dd>data object, e.g. a target matrix</dd>
+      <dt>x</dt>
+      <dd>a model object used as a starting point by the
   algorithm, e.g. a non-empty NMF model.</dd>
-          </dl>
-          
-          <div class="Description">
-            <h2>Description</h2>
-            
-            <p>Creates NMFStrategy objects that wraps implementation of
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Creates NMFStrategy objects that wraps implementation of
   NMF algorithms into a unified interface.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Methods">
-            <h2>Methods</h2>
-            
-            <p><span class='describe'></p>
-        
-            <p>NMFStrategy<code>signature(name = "character",
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><span class='describe'></p>
+  
+      <p>NMFStrategy<code>signature(name = "character",
   method = "function")</code>: Creates an
   <code>NMFStrategyFunction</code> object that wraps the function
   <code>method</code> into a unified interface.</p>
-        
-            <p><code>method</code> must be a function with signature
+  
+      <p><code>method</code> must be a function with signature
   <code>(y="matrix", x="NMFfit", ...)</code>, and return an
   object of class <code><a href='NMFfit-class.html'>NMFfit-class</a></code>.</p>
-        
-            <p>NMFStrategy<code>signature(name = "character",
+  
+      <p>NMFStrategy<code>signature(name = "character",
   method = "NMFStrategy")</code>: Creates an <code>NMFStrategy</code>
   object based on a template object (Constructor-Copy).</p>
-        
-            <p>NMFStrategy<code>signature(name = "NMFStrategy",
+  
+      <p>NMFStrategy<code>signature(name = "NMFStrategy",
   method = "missing")</code>: Creates an <code>NMFStrategy</code> based
-  on a template object (Constructor-Copy) using a randomly
+  on a template object (Constructor-Copy), in particular it
+  uses the <strong>same</strong> name.</p>
+  
+      <p>NMFStrategy<code>signature(name = "missing",
+  method = "character")</code>: Creates an <code>NMFStrategy</code>
+  based on a registered NMF algorithm that is used as a
+  template (Constructor-Copy), in particular it uses the
+  <strong>same</strong> name.</p>
+  
+      <p>It is a shortcut for
+  <code>NMFStrategy(nmfAlgorithm(method, exact=TRUE),
+  ...)</code>.</p>
+  
+      <p>NMFStrategy<code>signature(name = "NULL", method
+  = "NMFStrategy")</code>: Creates an <code>NMFStrategy</code> based on
+  a template object (Constructor-Copy) but using a randomly
   generated name.</p>
-        
-            <p>NMFStrategy<code>signature(name = "character",
+  
+      <p>NMFStrategy<code>signature(name = "character",
   method = "character")</code>: Creates an <code>NMFStrategy</code>
-  based on a registered NMF algorithm, that is used as a
+  based on a registered NMF algorithm that is used as a
   template.</p>
-        
-            <p>NMFStrategy<code>signature(name = "missing",
-  method = "character")</code>: Creates an <code>NMFStrategy</code>
-  based on a registered NMF algorithm (Constructor-Copy)
-  using a randomly generated name.</p>
-        
-            <p>NMFStrategy<code>signature(name = "character",
+  
+      <p>NMFStrategy<code>signature(name = "NULL", method
+  = "character")</code>: Creates an <code>NMFStrategy</code> based on a
+  registered NMF algorithm (Constructor-Copy) using a
+  randomly generated name.</p>
+  
+      <p>It is a shortcut for <code>NMFStrategy(NULL,
+  nmfAlgorithm(method), ...)</code>.</p>
+  
+      <p>NMFStrategy<code>signature(name = "character",
   method = "missing")</code>: Creates an NMFStrategy, determining
   its type from the extra arguments passed in <code>...</code>:
   if there is an argument named <code>Update</code> then an
@@ -154,56 +168,56 @@
   argument named <code>algorithm</code> then an
   <code>NMFStrategyFunction</code> is created. Calls other than
   these generates an error.</p>
-        
-            <p>run<code>signature(object = "NMFStrategy", y =
+  
+      <p>run<code>signature(object = "NMFStrategy", y =
   "matrix", x = "NMFfit")</code>: Pure virtual method defined for
   all NMF algorithms to ensure that a method <code>run</code> is
   defined by sub-classes of <code>NMFStrategy</code>.</p>
-        
-            <p>It throws an error if called directly.</p>
-        
-            <p>run<code>signature(object = "NMFStrategy", y =
+  
+      <p>It throws an error if called directly.</p>
+  
+      <p>run<code>signature(object = "NMFStrategy", y =
   "matrix", x = "NMF")</code>: Method to run an NMF algorithm
   directly starting from a given NMF model.</p>
-        
-            <p>run<code>signature(object =
+  
+      <p>run<code>signature(object =
   "NMFStrategyFunction", y = "matrix", x = "NMFfit")</code>: Runs
   the NMF algorithms implemented by the single R function
   -- and stored in slot <code>'algorithm'</code> of
   <code>object</code>, on the data object <code>y</code>, using
   <code>x</code> as starting point. It is equivalent to calling
   <code>object@algorithm(y, x, ...)</code>.</p>
-        
-            <p>This method is usually not called directly, but only via
+  
+      <p>This method is usually not called directly, but only via
   the function <code><a href='nmf.html'>nmf</a></code>, which takes care of many
   other details such as seeding the computation, handling
   RNG settings, or setting up parallelisation.</p>
-        
-            <p>run<code>signature(object =
+  
+      <p>run<code>signature(object =
   "NMFStrategyIterative", y = "matrix", x = "NMFfit")</code>:
   Runs an NMF iterative algorithm on a target matrix
   <code>y</code>.</p>
-        
-            <p></span></p>
-        
-          </div>
-      
-        </div>
-        <div class="span4">
-          <!-- <ul>
-            <li>NMFStrategy</li><li>NMFStrategy,NMFStrategy,missing-method</li><li>NMFStrategy,character,NMFStrategy-method</li><li>NMFStrategy,character,character-method</li><li>NMFStrategy,character,function-method</li><li>NMFStrategy,character,missing-method</li><li>NMFStrategy,missing,character-method</li><li>NMFStrategy-methods</li><li>run,NMFStrategy,matrix,NMF-method</li><li>run,NMFStrategy,matrix,NMFfit-method</li><li>run,NMFStrategyFunction,matrix,NMFfit-method</li><li>run,NMFStrategyIterative,matrix,NMFfit-method</li><li>run,NMFStrategyIterativeX,matrix,NMFfit-method</li>
-          </ul>
-          <ul>
-            <li>methods</li>
-          </ul> -->
-            
-                    
-        </div>
+  
+      <p></span></p>
+  
+    </div>
       </div>
-      <footer class="footer">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+  <div class="span4">
+    <!-- <ul>
+      <li>NMFStrategy</li><li>NMFStrategy,character,character-method</li><li>NMFStrategy,character,function-method</li><li>NMFStrategy,character,missing-method</li><li>NMFStrategy,character,NMFStrategy-method</li><li>NMFStrategy-methods</li><li>NMFStrategy,missing,character-method</li><li>NMFStrategy,NMFStrategy,missing-method</li><li>NMFStrategy,NULL,character-method</li><li>NMFStrategy,NULL,NMFStrategy-method</li><li>run,NMFStrategyFunction,matrix,NMFfit-method</li><li>run,NMFStrategyIterative,matrix,NMFfit-method</li><li>run,NMFStrategyIterativeX,matrix,NMFfit-method</li><li>run,NMFStrategy,matrix,NMFfit-method</li><li>run,NMFStrategy,matrix,NMF-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
-    </div> <!-- /container -->
+    </div>
   </body>
 </html>

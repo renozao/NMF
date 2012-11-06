@@ -30,7 +30,7 @@
   \S4method{.atrack}{ANY}(object, data = NULL, ...)
 
   atrack(..., order = NULL, enforceNames = FALSE,
-    .SPECIAL = NULL, .DATA = NULL, .CACHE = NULL)
+    .SPECIAL = NA, .DATA = NULL, .CACHE = NULL)
 
   annotationTrack(x = list())
 }

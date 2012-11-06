@@ -2,118 +2,114 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Simple Progress Bar. NMF </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="
+<title>txtProgressBar. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="
   R Core Team
 ">
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {padding-top: 60px;}
-      h2 {padding-top: 20px}
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/highlight.css" rel="stylesheet">
-    <link href="css/staticdocs.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class = "container">
-          <a class="brand" href="index.html">NMF </a>
-          <div class="nav">
-            <ul class="nav">
-              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
     </div>
+  </div>
+</div>
 
     <div class="container">
+      <header>
+        
+      </header>
+      
       <h1>Simple Progress Bar</h1>
 
-      <div class="row">
-        <div class="span8">
-          <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='txtProgressBar.html'>txtProgressBar</a></span><span class="keyword">(</span><span class="argument">min</span> <span class="argument">=</span> <span class="number">0</span><span class="keyword">,</span> <span class="argument">max</span> <span class="argument">=</span> <span class="number">1</span><span class="keyword">,</span> <span class="argument">initial</span> <span class="argument">=</span> <span class="number">0</span><span class="keyword">,</span> <span class="argument">char</span> <span class="argument">=</span> <span class="string">"="</span><span class="keyword">,</span> <span class="argument">width</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">title</span> <span class="argument">=</span> <span class="keyword">if</span> <span class="keyword">(</span><span class="symbol">style</span> ==
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='txtProgressBar.html'>txtProgressBar</a></span><span class="keyword">(</span><span class="argument">min</span> <span class="argument">=</span> <span class="number">0</span><span class="keyword">,</span> <span class="argument">max</span> <span class="argument">=</span> <span class="number">1</span><span class="keyword">,</span> <span class="argument">initial</span> <span class="argument">=</span> <span class="number">0</span><span class="keyword">,</span> <span class="argument">char</span> <span class="argument">=</span> <span class="string">"="</span><span class="keyword">,</span> <span class="argument">width</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">title</span> <span class="argument">=</span> <span class="keyword">if</span> <span class="keyword">(</span><span class="symbol">style</span> ==
   <span class="number">3</span><span class="keyword">)</span> <span class="string">" "</span><span class="keyword">,</span> <span class="symbol">label</span><span class="keyword">,</span> <span class="argument">style</span> <span class="argument">=</span> <span class="number">1</span><span class="keyword">,</span> <span class="argument">file</span> <span class="argument">=</span> <span class="string">""</span><span class="keyword">)</span></pre>
-          
-          <h2>Arguments</h2>
-          <dl>
-            <dt>min</dt>
-            <dd>(finite) numeric values for the extremes of
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>min</dt>
+      <dd>(finite) numeric values for the extremes of
   the progress bar. Must have <code>min < max</code>.</dd>
-            <dt>max</dt>
-            <dd>(finite) numeric values for the extremes of
+      <dt>max</dt>
+      <dd>(finite) numeric values for the extremes of
   the progress bar. Must have <code>min < max</code>.</dd>
-            <dt>initial</dt>
-            <dd>initial or new value for the progress bar.
+      <dt>initial</dt>
+      <dd>initial or new value for the progress bar.
   See &#145;Details&#146; for what happens with invalid
   values.</dd>
-            <dt>char</dt>
-            <dd>the character (or character string) to form
+      <dt>char</dt>
+      <dd>the character (or character string) to form
   the progress bar.</dd>
-            <dt>width</dt>
-            <dd>the width of the progress bar, as a multiple
+      <dt>width</dt>
+      <dd>the width of the progress bar, as a multiple
   of the width of <code>char</code>.  If <code>NA</code>, the default,
   the number of characters is that which fits into
   <code>getOption("width")</code>.</dd>
-            <dt>title</dt>
-            <dd>ignored, for compatibility with other
+      <dt>title</dt>
+      <dd>ignored, for compatibility with other
   progress bars.</dd>
-            <dt>label</dt>
-            <dd>ignored, for compatibility with other
+      <dt>label</dt>
+      <dd>ignored, for compatibility with other
   progress bars.</dd>
-            <dt>style</dt>
-            <dd>the &#145;style&#146; of the bar -- see
+      <dt>style</dt>
+      <dd>the &#145;style&#146; of the bar -- see
   &#145;Details&#146;.</dd>
-            <dt>file</dt>
-            <dd>an open connection object or <code>""</code> which
-  indicates the console: <code><a href='NA'>stderr</a>()</code> might be
+      <dt>file</dt>
+      <dd>an open connection object or <code>""</code> which
+  indicates the console: <code><a href='http://www.inside-r.org/r-doc/base/showConnections'>stderr</a>()</code> might be
   useful here.</dd>
-          </dl>
-          
-          <div class="Description">
-            <h2>Description</h2>
-            
-            <p>Creates a simple progress bar with title. This function
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Creates a simple progress bar with title. This function
   is identical to <code>utils::txtProgressBar</code> but allow
   adding a title to the progress bar.</p>
-        
-          </div>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>txtProgressBar</li>
+    </ul>
+    <ul>
+      <li>internal</li>
+    </ul> -->
       
-        </div>
-        <div class="span4">
-          <!-- <ul>
-            <li>txtProgressBar</li>
-          </ul>
-          <ul>
-            <li>internal</li>
-          </ul> -->
-            
-          
-          <h2>Author</h2>
-          
+    
+    <h2>Author</h2>
+    
   R Core Team
 
-          
-        </div>
-      </div>
-      <footer class="footer">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
-    </div> <!-- /container -->
+    </div>
   </body>
 </html>

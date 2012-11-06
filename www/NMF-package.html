@@ -2,54 +2,50 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Algorithms and framework for Nonnegative Matrix Factorization (NMF).. NMF </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="
+<title>NMF-package. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="
   Renaud Gaujoux &lt;a href='mailto:renaud@cbio.uct.ac.za'&gt;renaud@cbio.uct.ac.za&lt;/a&gt;
 ">
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {padding-top: 60px;}
-      h2 {padding-top: 20px}
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/highlight.css" rel="stylesheet">
-    <link href="css/staticdocs.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class = "container">
-          <a class="brand" href="index.html">NMF </a>
-          <div class="nav">
-            <ul class="nav">
-              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
     </div>
+  </div>
+</div>
 
     <div class="container">
+      <header>
+        
+      </header>
+      
       <h1>Algorithms and framework for Nonnegative Matrix Factorization (NMF).</h1>
 
-      <div class="row">
-        <div class="span8">
-                    
-          <div class="Description">
-            <h2>Description</h2>
-            
-            <p>This package provides a framework to perform Non-negative
+<div class="row">
+  <div class="span8">
+        
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This package provides a framework to perform Non-negative
   Matrix Factorization (NMF). It implements a set of
   already published algorithms and seeding methods, and
   provides a framework to test, develop and plug new/custom
@@ -57,26 +53,26 @@
   optimized in C++, and the main interface function
   provides an easy way of performing parallel computations
   on multicore machines.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Details">
-            <h2>Details</h2>
-            
-            <p><code><a href='nmf.html'>nmf</a></code> Run a given NMF algorithm</p>
-        
-          </div>
-
-          <div class="References">
-            <h2>References</h2>
-            
-            <p><a href = 'http://www.r-project.org/'>http://www.r-project.org/</a></p>
-        
-          </div>
+    <div class="Details">
+      <h2>Details</h2>
       
-          <h2 id="examples">Examples</h2>
-          <pre class="examples"><div class='input'><span class="comment"># generate a synthetic dataset with known classes</span>
-<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">)</span><span class="keyword">;</span>
+      <p><code><a href='nmf.html'>nmf</a></code> Run a given NMF algorithm</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p><a href = 'http://www.r-project.org/'>http://www.r-project.org/</a></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class="comment"># generate a synthetic dataset with known classes</span>
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">)</span><span class="keyword">;</span>
 <span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span>
 
 <span class="comment"># perform a 3-rank NMF using the default algorithm</span>
@@ -88,31 +84,32 @@
 <div class='input'><span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
 <p><img src='NMF-package-5.png' alt='' width='400' height='400' /></p>
 <p><img src='NMF-package-6.png' alt='' width='400' height='400' /></p></pre>
-        </div>
-        <div class="span4">
-          <!-- <ul>
-            <li>NMF</li><li>NMF-package</li>
-          </ul>
-          <ul>
-            <li>package</li>
-          </ul> -->
-            
-          <h2>See also</h2>
-          
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>NMF</li><li>NMF-package</li>
+    </ul>
+    <ul>
+      <li>package</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
   <code><a href='nmf.html'>nmf</a></code>
 
-          
-          <h2>Author</h2>
-          
+    
+    <h2>Author</h2>
+    
   Renaud Gaujoux <a href='mailto:renaud@cbio.uct.ac.za'>renaud@cbio.uct.ac.za</a>
 
-          
-        </div>
-      </div>
-      <footer class="footer">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
-    </div> <!-- /container -->
+    </div>
   </body>
 </html>

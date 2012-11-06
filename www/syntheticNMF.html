@@ -2,56 +2,52 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Simulating Datasets. NMF </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<title>syntheticNMF. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {padding-top: 60px;}
-      h2 {padding-top: 20px}
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/highlight.css" rel="stylesheet">
-    <link href="css/staticdocs.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class = "container">
-          <a class="brand" href="index.html">NMF </a>
-          <div class="nav">
-            <ul class="nav">
-              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
     </div>
+  </div>
+</div>
 
     <div class="container">
+      <header>
+        
+      </header>
+      
       <h1>Simulating Datasets</h1>
 
-      <div class="row">
-        <div class="span8">
-          <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">,</span> <span class="argument">offset</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">noise</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">factors</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">seed</span> <span class="argument">=</span> NULL<span class="keyword">)</span></pre>
-          
-          <h2>Arguments</h2>
-          <dl>
-            <dt>n</dt>
-            <dd>number of rows of the target matrix.</dd>
-            <dt>r</dt>
-            <dd>specification of the factorization rank. It may
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">,</span> <span class="argument">offset</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">noise</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">factors</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">seed</span> <span class="argument">=</span> NULL<span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>n</dt>
+      <dd>number of rows of the target matrix.</dd>
+      <dt>r</dt>
+      <dd>specification of the factorization rank. It may
   be a single <code>numeric</code>, in which case argument
   <code>p</code> is required and <code>r</code> groups of samples are
   generated from a draw from a multinomial distribution
@@ -61,53 +57,53 @@
   number of samples in each class (i.e integers). In this
   case argument <code>p</code> is discarded and forced to be the
   sum of <code>r</code>.</dd>
-            <dt>p</dt>
-            <dd>number of columns of the synthetic target
+      <dt>p</dt>
+      <dd>number of columns of the synthetic target
   matrix. Not used if parameter <code>r</code> is a vector (see
   description of argument <code>r</code>).</dd>
-            <dt>offset</dt>
-            <dd>specification of a common offset to be
+      <dt>offset</dt>
+      <dd>specification of a common offset to be
   added to the synthetic target matrix, before
   noisification. Its may be a numeric vector of length
   <code>n</code>, or a single numeric value that is used as the
   standard deviation of a centred normal distribution from
   which the actual offset values are drawn.</dd>
-            <dt>noise</dt>
-            <dd>a logical that indicate if noise should be
+      <dt>noise</dt>
+      <dd>a logical that indicate if noise should be
   added to the matrix.</dd>
-            <dt>factors</dt>
-            <dd>a logical that indicates if the NMF
+      <dt>factors</dt>
+      <dd>a logical that indicates if the NMF
   factors should be return together with the matrix.</dd>
-            <dt>seed</dt>
-            <dd>a single numeric value used to seed the
+      <dt>seed</dt>
+      <dd>a single numeric value used to seed the
   random number generator before generating the matrix. The
   state of the RNG is restored on exit.</dd>
-          </dl>
-          
-          <div class="Value">
-            <h2>Value</h2>
-            
-            <p>a matrix, or a list if argument <code>factors=TRUE</code>. The
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a matrix, or a list if argument <code>factors=TRUE</code>. The
   result is in fact returned as an
-  <code><a href='ExposeAttribute.html'>ExposeAttribute</a></code> matrix object, which
+  <code><a href='http://www.inside-r.org/r-doc/pkgmaker/ExposeAttribute'>ExposeAttribute</a></code> matrix object, which
   provides</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Description">
-            <h2>Description</h2>
-            
-            <p>The function <code>syntheticNMF</code> generates random target
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The function <code>syntheticNMF</code> generates random target
   matrices that follow some defined NMF model, and may be
   used to test NMF algorithms. It is designed to designed
   to produce data with known or clear classes of samples.</p>
-        
-          </div>
-      
-          <h2 id="examples">Examples</h2>
-          <pre class="examples"><div class='input'><span class="comment"># generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)</span>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class="comment"># generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)</span>
 <span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span>
-<span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">)</span>
+<span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">)</span>
 
 <span class="comment"># no noise</span>
 <span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">,</span> <span class="argument">noise</span><span class="argument">=</span><span class="number">FALSE</span><span class="keyword">)</span>
@@ -116,22 +112,23 @@
 <span class="comment"># with noise</span>
 <span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span>
 <span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: aheatmap(V)</span></div></pre>
-        </div>
-        <div class="span4">
-          <!-- <ul>
-            <li>syntheticNMF</li>
-          </ul>
-          <ul>
-            
-          </ul> -->
-            
-                    
-        </div>
-      </div>
-      <footer class="footer">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>syntheticNMF</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
-    </div> <!-- /container -->
+    </div>
   </body>
 </html>

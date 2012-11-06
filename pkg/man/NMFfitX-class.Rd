@@ -35,7 +35,20 @@
 
   \item{coefmap}{\code{signature(object = "NMFfitX")}:
   Plots a heatmap of the coefficient matrix of the best fit
-  in \code{object}. }
+  in \code{object}.
+
+  This method adds: \itemize{ \item an extra special column
+  annotation track for multi-run NMF fits,
+  \code{'consensus:'}, that shows the consensus cluster
+  associated to each sample. \item a column sorting schema
+  \code{'consensus'} (or \code{'cmap'}) that can be passed
+  to argument \code{Colv} and orders the columns using the
+  hierarchical clustering of the consensus matrix with
+  average linkage, as returned by
+  \code{\link{consensushc}(object)}. This is also the
+  ordering that is used by default for the heatmap of the
+  consensus matrix as ploted by \code{\link{consensusmap}}.
+  } }
 
   \item{consensus}{\code{signature(object = "NMFfitX")}:
   Pure virtual method defined to ensure \code{consensus} is

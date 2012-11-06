@@ -2,49 +2,45 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Annotation Tracks. NMF </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<title>.atrack. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {padding-top: 60px;}
-      h2 {padding-top: 20px}
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/highlight.css" rel="stylesheet">
-    <link href="css/staticdocs.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class = "container">
-          <a class="brand" href="index.html">NMF </a>
-          <div class="nav">
-            <ul class="nav">
-              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
     </div>
+  </div>
+</div>
 
     <div class="container">
+      <header>
+        
+      </header>
+      
       <h1>Annotation Tracks</h1>
 
-      <div class="row">
-        <div class="span8">
-          <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='atrack.html'>.atrack</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='atrack.html'>.atrack</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='atrack.html'>is.atrack</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span>
 
@@ -57,44 +53,44 @@
 <span class="functioncall"><a href='atrack.html'>alength</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">default.margin</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (ANY)</span>
-<span class="functioncall"><a href='NA'>`.atrack`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">data</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="functioncall">`.atrack`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">data</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='atrack.html'>atrack</a></span><span class="keyword">(</span><span class="symbol">...</span><span class="keyword">,</span> <span class="argument">order</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">enforceNames</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">.SPECIAL</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">.DATA</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">.CACHE</span> <span class="argument">=</span> NULL<span class="keyword">)</span>
 
-<span class="functioncall"><a href='atrack.html'>annotationTrack</a></span><span class="keyword">(</span><span class="argument">x</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>list</a></span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">)</span></pre>
-          
-          <h2>Arguments</h2>
-          <dl>
-            <dt>object</dt>
-            <dd>an object from which is extracted
+<span class="functioncall"><a href='atrack.html'>annotationTrack</a></span><span class="keyword">(</span><span class="argument">x</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/list'>list</a></span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>an object from which is extracted
   annotation tracks</dd>
-            <dt>...</dt>
-            <dd>extra arguments to allow extensions and passed
+      <dt>...</dt>
+      <dd>extra arguments to allow extensions and passed
   to the next method call. For <code>atrack</code>, arguments in
   <code>...</code> are concatenated into a single
   <code>annotationTrack</code> object.</dd>
-            <dt>x</dt>
-            <dd>an R object</dd>
-            <dt>value</dt>
-            <dd>replacement value for the complete
+      <dt>x</dt>
+      <dd>an R object</dd>
+      <dt>value</dt>
+      <dd>replacement value for the complete
   annotation data list</dd>
-            <dt>default.margin</dt>
-            <dd>margin to use if no margin data is
+      <dt>default.margin</dt>
+      <dd>margin to use if no margin data is
   stored in the <code>x</code>.</dd>
-            <dt>data</dt>
-            <dd>object used to extend the annotation track
+      <dt>data</dt>
+      <dd>object used to extend the annotation track
   within a given data context. It is typically a
   matrix-like object, against which annotation
   specifications are matched using
   <code><a href='match_atrack.html'>match_atrack</a></code>.</dd>
-            <dt>order</dt>
-            <dd>an integer vector that indicates the order
+      <dt>order</dt>
+      <dd>an integer vector that indicates the order
   of the annotation tracks in the result list</dd>
-            <dt>enforceNames</dt>
-            <dd>logical that indicates if missing
+      <dt>enforceNames</dt>
+      <dd>logical that indicates if missing
   track names should be generated as <code>X<i></code></dd>
-            <dt>.SPECIAL</dt>
-            <dd>an optional list of functions (with no
+      <dt>.SPECIAL</dt>
+      <dd>an optional list of functions (with no
   arguments) that are called to generate special annotation
   tracks defined by codes of the form <code>':NAME'</code>. e.g.,
   the function <code>link{consensusmap}</code> defines special
@@ -102,79 +98,79 @@
 
   If <code>.SPECIAL=FALSE</code>, then any special tracks is
   discarded and a warning is thrown.</dd>
-            <dt>.DATA</dt>
-            <dd>data used to match and extend annotation
+      <dt>.DATA</dt>
+      <dd>data used to match and extend annotation
   specifications. It is passed to argument <code>data</code> of
   the <code>.atrack</code> methods, which in turn use pass it to
   <code><a href='match_atrack.html'>match_atrack</a></code>.</dd>
-            <dt>.CACHE</dt>
-            <dd>an <code>annotationTrack</code> object with which
+      <dt>.CACHE</dt>
+      <dd>an <code>annotationTrack</code> object with which
   the generated annotation track should be consistent. This
   argument is more for internal/advanced usage and should
   not be used by the end-user.</dd>
-          </dl>
-          
-          <div class="Value">
-            <h2>Value</h2>
-            
-            <p><code>atrack</code> returns a list, decorated with class
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p><code>atrack</code> returns a list, decorated with class
   <code>'annotationTrack'</code>, where each element contains the
   description of an annotation track.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Description">
-            <h2>Description</h2>
-            
-            <p><code>.atrack</code> is an S4 generic method that converts an
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>.atrack</code> is an S4 generic method that converts an
   object into an annotation track object. It provides a
   general and flexible annotation framework that is used by
   <code><a href='aheatmap.html'>aheatmap</a></code> to annotates heatmap rows and
   columns.</p>
-        
-            <p><code>is.atrack</code> tests if an object is an
+  
+      <p><code>is.atrack</code> tests if an object is an
   <code>annotationTrack</code> object.</p>
-        
-            <p><code>adata</code> get/sets the annotation parameters on an
+  
+      <p><code>adata</code> get/sets the annotation parameters on an
   object</p>
-        
-            <p><code>amargin</code> get/sets the annotation margin, i.e. along
+  
+      <p><code>amargin</code> get/sets the annotation margin, i.e. along
   which dimension of the data the annotations are to be
   considered.</p>
-        
-            <p><code>anames</code> returns the reference margin names for
+  
+      <p><code>anames</code> returns the reference margin names for
   annotation tracks, from their embedded annotation data
   object.</p>
-        
-            <p><code>alength</code> returns the reference length for
+  
+      <p><code>alength</code> returns the reference length for
   annotation tracks, from their embedded annotation data
   object</p>
-        
-            <p><code>atrack</code> creates/concatenates <code>annotationTrack</code>
+  
+      <p><code>atrack</code> creates/concatenates <code>annotationTrack</code>
   objects</p>
-        
-            <p><code>annotationTrack</code> is constructor function for
+  
+      <p><code>annotationTrack</code> is constructor function for
   <code>annotationTrack</code> object</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Details">
-            <h2>Details</h2>
-            
-            <p>Methods for <code>.atrack</code> exist for common type of
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>Methods for <code>.atrack</code> exist for common type of
   objects, which should provide enough options for new
   methods to define how annotation track are extracted from
   more complex objects, by coercing/filtering them into a
   supported type.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Methods">
-            <h2>Methods</h2>
-            
-            <p><span class='describe'></p>
-        
-            <p>.atrack<code>signature(object = "ANY")</code>: The
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><span class='describe'></p>
+  
+      <p>.atrack<code>signature(object = "ANY")</code>: The
   default method converts character or integer vectors into
   factors. Numeric vectors, factors, a single NA or
   <code>annotationTrack</code> objects are returned unchanged
@@ -182,27 +178,27 @@
   frames are not changed either, but class
   'annotationTrack' is appended to their original class
   set.</p>
-        
-            <p></span></p>
-        
-          </div>
-      
-        </div>
-        <div class="span4">
-          <!-- <ul>
-            <li>.atrack</li><li>.atrack,ANY-method</li><li>.atrack,character-method</li><li>.atrack,data.frame-method</li><li>.atrack,matrix-method</li><li>.atrack-methods</li><li>adata</li><li>alength</li><li>amargin</li><li>anames</li><li>annotationTrack</li><li>atrack</li><li>is.atrack</li>
-          </ul>
-          <ul>
-            <li>internal</li><li>methods</li>
-          </ul> -->
-            
-                    
-        </div>
+  
+      <p></span></p>
+  
+    </div>
       </div>
-      <footer class="footer">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+  <div class="span4">
+    <!-- <ul>
+      <li>adata</li><li>alength</li><li>amargin</li><li>anames</li><li>annotationTrack</li><li>atrack</li><li>.atrack</li><li>.atrack,ANY-method</li><li>.atrack,character-method</li><li>.atrack,data.frame-method</li><li>.atrack,matrix-method</li><li>.atrack-methods</li><li>is.atrack</li>
+    </ul>
+    <ul>
+      <li>internal</li><li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
-    </div> <!-- /container -->
+    </div>
   </body>
 </html>

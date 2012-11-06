@@ -139,6 +139,11 @@
   \item{coefficients}{\code{signature(object = "NMF")}:
   Alias to \code{coef,NMF}, therefore also pure virtual. }
 
+  \item{coefmap}{\code{signature(object = "NMF")}: The
+  default method for NMF objects has special default values
+  for some arguments of \code{\link{aheatmap}} (see
+  argument description). }
+
   \item{connectivity}{\code{signature(object = "NMF")}:
   Computes the connectivity matrix for an NMF model, for
   which cluster membership is given by the most

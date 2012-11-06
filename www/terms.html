@@ -2,49 +2,45 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Fixed Terms in NMF Models. NMF </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<title>ibterms. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {padding-top: 60px;}
-      h2 {padding-top: 20px}
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/highlight.css" rel="stylesheet">
-    <link href="css/staticdocs.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class = "container">
-          <a class="brand" href="index.html">NMF </a>
-          <div class="nav">
-            <ul class="nav">
-              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
     </div>
+  </div>
+</div>
 
     <div class="container">
+      <header>
+        
+      </header>
+      
       <h1>Fixed Terms in NMF Models</h1>
 
-      <div class="row">
-        <div class="span8">
-          <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='terms.html'>ibterms</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='terms.html'>ibterms</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='terms.html'>icterms</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
@@ -63,37 +59,37 @@
 <span class="functioncall"><a href='terms.html'>ibasis</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='terms.html'>icoef</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
-          
-          <h2>Arguments</h2>
-          <dl>
-            <dt>object</dt>
-            <dd>NMF object</dd>
-            <dt>...</dt>
-            <dd>extra parameters to allow extension (currently
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>NMF object</dd>
+      <dt>...</dt>
+      <dd>extra parameters to allow extension (currently
   not used)</dd>
-          </dl>
-          
-          <div class="Description">
-            <h2>Description</h2>
-            
-            <p>Formula-based NMF models may contain fixed basis and/or
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Formula-based NMF models may contain fixed basis and/or
   coefficient terms. The functions documented here provide
   access to these data, which are read-only and defined
   when the model object is instantiated (e.g., see
   <code><a href='nmfModel.html'>nmfModel,formula-method</a></code>).</p>
-        
-            <p><code>ibterms</code>, <code>icterms</code> and <code>iterms</code>
+  
+      <p><code>ibterms</code>, <code>icterms</code> and <code>iterms</code>
   respectively return the indexes of the fixed basis terms,
   the fixed coefficient terms and all fixed terms, within
   the basis and/or coefficient matrix of an NMF model.</p>
-        
-            <p><code>nterms</code>, <code>nbterms</code>, and <code>ncterms</code> return,
+  
+      <p><code>nterms</code>, <code>nbterms</code>, and <code>ncterms</code> return,
   respectively, the number of all fixed terms, fixed basis
   terms and fixed coefficient terms in an NMF model. In
   particular: i.e. <code>nterms(object) = nbterms(object) +
   ncterms(object)</code>.</p>
-        
-            <p><code>bterms</code> and <code>cterms</code> return, respectively, the
+  
+      <p><code>bterms</code> and <code>cterms</code> return, respectively, the
   primary data for fixed basis and coefficient terms in an
   NMF model -- as stored in slots <code>bterms</code> and
   <code>cterms</code> . These are factors or numeric vectors
@@ -101,69 +97,69 @@
   defining separate offsets for different <em>a priori</em>
   groups of samples, or to incorporate/correct for some
   known covariate.</p>
-        
-            <p><code>ibasis</code> and <code>icoef</code> return, respectively, the
+  
+      <p><code>ibasis</code> and <code>icoef</code> return, respectively, the
   indexes of all latent basis vectors and estimated
   coefficients within the basis or coefficient matrix of an
   NMF model.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Methods">
-            <h2>Methods</h2>
-            
-            <p><span class='describe'></p>
-        
-            <p>ibterms<code>signature(object = "NMF")</code>: Default
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><span class='describe'></p>
+  
+      <p>ibterms<code>signature(object = "NMF")</code>: Default
   pure virtual method that ensure a method is defined for
   concrete NMF model classes.</p>
-        
-            <p>ibterms<code>signature(object = "NMFstd")</code>:
+  
+      <p>ibterms<code>signature(object = "NMFstd")</code>:
   Method for standard NMF models, which returns the integer
   vector that is stored in slot <code>ibterms</code> when a
   formula-based NMF model is instantiated.</p>
-        
-            <p>ibterms<code>signature(object = "NMFfit")</code>:
+  
+      <p>ibterms<code>signature(object = "NMFfit")</code>:
   Method for single NMF fit objects, which returns the
   indexes of fixed basis terms from the fitted model.</p>
-        
-            <p>ibterms<code>signature(object = "NMFfitX")</code>:
+  
+      <p>ibterms<code>signature(object = "NMFfitX")</code>:
   Method for multiple NMF fit objects, which returns the
   indexes of fixed basis terms from the best fitted model.</p>
-        
-            <p>icterms<code>signature(object = "NMF")</code>: Default
+  
+      <p>icterms<code>signature(object = "NMF")</code>: Default
   pure virtual method that ensure a method is defined for
   concrete NMF model classes.</p>
-        
-            <p>icterms<code>signature(object = "NMFstd")</code>:
+  
+      <p>icterms<code>signature(object = "NMFstd")</code>:
   Method for standard NMF models, which returns the integer
   vector that is stored in slot <code>icterms</code> when a
   formula-based NMF model is instantiated.</p>
-        
-            <p>icterms<code>signature(object = "NMFfit")</code>:
+  
+      <p>icterms<code>signature(object = "NMFfit")</code>:
   Method for single NMF fit objects, which returns the
   indexes of fixed coefficient terms from the fitted model.</p>
-        
-            <p></span></p>
-        
-          </div>
-      
-        </div>
-        <div class="span4">
-          <!-- <ul>
-            <li>bterms</li><li>cterms</li><li>ibasis</li><li>ibterms</li><li>ibterms,NMF-method</li><li>ibterms,NMFfit-method</li><li>ibterms,NMFfitX-method</li><li>ibterms,NMFstd-method</li><li>ibterms-methods</li><li>icoef</li><li>icterms</li><li>icterms,NMF-method</li><li>icterms,NMFfit-method</li><li>icterms,NMFstd-method</li><li>icterms-methods</li><li>iterms</li><li>nbterms</li><li>ncterms</li><li>nterms</li>
-          </ul>
-          <ul>
-            <li>methods</li>
-          </ul> -->
-            
-                    
-        </div>
+  
+      <p></span></p>
+  
+    </div>
       </div>
-      <footer class="footer">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+  <div class="span4">
+    <!-- <ul>
+      <li>bterms</li><li>cterms</li><li>ibasis</li><li>ibterms</li><li>ibterms-methods</li><li>ibterms,NMFfit-method</li><li>ibterms,NMFfitX-method</li><li>ibterms,NMF-method</li><li>ibterms,NMFstd-method</li><li>icoef</li><li>icterms</li><li>icterms-methods</li><li>icterms,NMFfit-method</li><li>icterms,NMF-method</li><li>icterms,NMFstd-method</li><li>iterms</li><li>nbterms</li><li>ncterms</li><li>nterms</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
-    </div> <!-- /container -->
+    </div>
   </body>
 </html>

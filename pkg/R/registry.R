@@ -146,41 +146,34 @@ packageNMFObject <- function(key, method){
 #	message('Call: ', capture.output(print(ca)), ' - ', ns_name , ' - ', capture.output(ns)
 #			, paste(pkgmaker:::pkg_calls(), collapse=', '))
 	
-	envname <- '._NMFmethods'
-	nometh <- !exists(envname, envir=ns)
-	# do nothing if no method is defined and one wants to retrieve a method or delete it
-	if( nometh && (missing(method) || is.null(method)) ){
-		return()
-	}
-
+	# auxiliary function to access the package's registered methods 
+	pkgMethods <- simpleRegistry('.__NMFmethods__', ns)
+	
 	# retrieve method
 	if( missing(method) ){
-		if( nometh ) return()
-		return(ns[['._NMFmethods']][[key]])
+		return( pkgMethods$get(key) )
 	}
 
 	# build access key
-	lkey <- str_c(class(method), '::', packageSlot(method), '::', key)
+	lkey <- str_c(packageSlot(method), '::', key)
 	
-	# removing method 
+	# removing method
 	if( is.null(method) ){
-		if( lkey %in% names(ns[[envname]]) ){
-			#message("Removing local NMF method '", lkey,"' from package '", ns_name, "'")
-			ns[[envname]][[lkey]] <- NULL
-			# cancel deferred loading
-			if( !is_onLoad() ) onLoadTask(NULL, lkey)
-		}
+		pkgMethods$set(lkey, NULL)
+		# cancel deferred loading
+		postponeAction(NULL, lkey, group='NMF')
 		return()
 	}
+	
 	# adding a new method
-	if( nometh )
-		assign(envname, list(), envir=ns)
 	#message("Adding local NMF method '", lkey,"' to package '", ns_name, "'")
-	ns[['._NMFmethods']][[lkey]] <- method
+	pkgMethods$set(lkey, method)
 	# defer loading (will be executed in the NMF namespace)
-	expr <- substitute(setNMFObject(packageNMFObject(key), verbose=getOption('verbose')), list(key=lkey))
+	f <- function(...){
+		setNMFObject(packageNMFObject(lkey), verbose=getOption('verbose'))
+	}
 	e <- topenv()
-	if( !is_onLoad() ) onLoadTask(expr, lkey, envir=e)
+	postponeAction(f, lkey, envir=e, group='NMF')
 	#
 	
 	return()
@@ -197,35 +190,3 @@ setNMFObject <- function(object, ...){
 		stop("Unexpected error: objects of class '", class(object), "' are not supported.")
 	
 }
-
-onLoadTask <- function(expr, key=digest(tempfile()), envir=topns(), verbose=getOption('verbose')){
-	
-	ns <- topns()
-	envname <- '._onLoadTasks'
-	if( !exists(envname, envir=ns) ){
-		if( nargs() == 0L ) return()
-		assign(envname, list(), envir=ns)
-	}
-	if( !missing(expr) ){
-		qe <- if( !is.language(expr) ) substitute(expr) else expr
-		if( !is.null(qe) ) message("# Deferring loading task '", key, "'")
-		else{
-			if( missing(key) ) stop("Missing key for cancelling deferred load task.")
-			message("# Cancelling deferred loading task '", key, "'")
-		}
-		ns[[envname]][[key]]$expr <- qe
-		ns[[envname]][[key]]$envir <- envir
-	}else{
-		if( verbose ) message("# Executing deferred loading tasks in package '", packageName(ns, .Global=TRUE), "'")
-		is_onLoad(TRUE)
-		on.exit(is_onLoad(FALSE))
-		sapply(ns[[envname]], function(x){
-			if( verbose ) message("* ", x$expr, ' [', packageName(x$envir, .Global=TRUE), ']')
-			eval(x$expr, x$envir)
-		})
-		invisible()
-	}
-}
-
-# Tells if one is executing deferred tasks via \code{onLoad}
-is_onLoad <- pkgmaker:::sVariable(FALSE)

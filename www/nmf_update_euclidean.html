@@ -2,53 +2,49 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>NMF Multiplicative Updates for Euclidean Distance. NMF </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="
+<title>nmf_update.euclidean.h. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="
   Update definitions by &lt;cite&gt;Lee et al. (2001)&lt;/cite&gt;.
 
   C++ optimised implementation by Renaud Gaujoux.
 ">
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {padding-top: 60px;}
-      h2 {padding-top: 20px}
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/highlight.css" rel="stylesheet">
-    <link href="css/staticdocs.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class = "container">
-          <a class="brand" href="index.html">NMF </a>
-          <div class="nav">
-            <ul class="nav">
-              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
     </div>
+  </div>
+</div>
 
     <div class="container">
+      <header>
+        
+      </header>
+      
       <h1>NMF Multiplicative Updates for Euclidean Distance</h1>
 
-      <div class="row">
-        <div class="span8">
-          <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='nmf_update_euclidean.html'>nmf_update.euclidean.h</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">eps</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">^</span><span class="keyword">-</span><span class="number">9</span><span class="keyword">,</span> <span class="argument">nbterms</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="argument">ncterms</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="argument">copy</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='nmf_update_euclidean.html'>nmf_update.euclidean.h</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">eps</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">^</span><span class="keyword">-</span><span class="number">9</span><span class="keyword">,</span> <span class="argument">nbterms</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="argument">ncterms</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="argument">copy</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='nmf_update_euclidean.html'>nmf_update.euclidean.h_R</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">wh</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">eps</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">^</span><span class="keyword">-</span><span class="number">9</span><span class="keyword">)</span>
 
@@ -56,116 +52,116 @@
   <span class="argument">copy</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
 
 <span class="functioncall"><a href='nmf_update_euclidean.html'>nmf_update.euclidean.w_R</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">wh</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">eps</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">^</span><span class="keyword">-</span><span class="number">9</span><span class="keyword">)</span></pre>
-          
-          <h2>Arguments</h2>
-          <dl>
-            <dt>v</dt>
-            <dd>target matrix</dd>
-            <dt>w</dt>
-            <dd>current basis matrix</dd>
-            <dt>h</dt>
-            <dd>current coefficient matrix</dd>
-            <dt>eps</dt>
-            <dd>small numeric value used to ensure numeric
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>v</dt>
+      <dd>target matrix</dd>
+      <dt>w</dt>
+      <dd>current basis matrix</dd>
+      <dt>h</dt>
+      <dd>current coefficient matrix</dd>
+      <dt>eps</dt>
+      <dd>small numeric value used to ensure numeric
   stability</dd>
-            <dt>nbterms</dt>
-            <dd>number of fixed basis terms (see
+      <dt>nbterms</dt>
+      <dd>number of fixed basis terms (see
   <code><a href='terms.html'>bterms</a></code>).</dd>
-            <dt>ncterms</dt>
-            <dd>number of fixed coefficient terms (see
+      <dt>ncterms</dt>
+      <dd>number of fixed coefficient terms (see
   <code><a href='terms.html'>cterms</a></code>)</dd>
-            <dt>copy</dt>
-            <dd>logical that indicates if the update should
+      <dt>copy</dt>
+      <dd>logical that indicates if the update should
   be made on the original matrix directly (<code>FALSE</code>) or
   on a copy (<code>TRUE</code> - default). With <code>copy=FALSE</code>
   the memory footprint is very small, and some speed-up may
   be achieved in the case of big matrices.</dd>
-            <dt>wh</dt>
-            <dd>already computed NMF estimate used to compute
+      <dt>wh</dt>
+      <dd>already computed NMF estimate used to compute
   the denominator term.</dd>
-            <dt>weight</dt>
-            <dd>numeric vector of sample weights, e.g.,
+      <dt>weight</dt>
+      <dd>numeric vector of sample weights, e.g.,
   used to normalise samples coming from multiple datasets.
   It must be of the same length as the number of
   samples/columns in <code>v</code> -- and <code>h</code>.</dd>
-          </dl>
-          
-          <div class="Value">
-            <h2>Value</h2>
-            
-            <p>a matrix of the same dimension as the input matrix to
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a matrix of the same dimension as the input matrix to
   update (i.e. <code>w</code> or <code>h</code>). If <code>copy=FALSE</code>,
   the returned matrix uses the same memory as the input
   object.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Description">
-            <h2>Description</h2>
-            
-            <p>Multiplicative updates from <cite>Lee et al. (2001)</cite> for
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Multiplicative updates from <cite>Lee et al. (2001)</cite> for
   standard Nonnegative Matrix Factorization models <code class = 'eq'>V
   \approx W H</code>, where the distance between the target
   matrix and its NMF estimate is measured by the --
   euclidean -- Frobenius norm.</p>
-        
-            <p><code>nmf_update.euclidean.w_R</code> and
+  
+      <p><code>nmf_update.euclidean.w_R</code> and
   <code>nmf_update.euclidean.h_R</code> implement the same
   updates in <em>plain R</em>.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Details">
-            <h2>Details</h2>
-            
-            <p><code>nmf_update.euclidean.w</code> and
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p><code>nmf_update.euclidean.w</code> and
   <code>nmf_update.euclidean.h</code> compute the updated basis
   and coefficient matrices respectively. They use a
   <em>C++</em> implementation which is optimised for speed
   and memory usage.</p>
-        
-            <p>The coefficient matrix (<code>H</code>) is updated as follows:
+  
+      <p>The coefficient matrix (<code>H</code>) is updated as follows:
   <pre class = 'eq'> H_kj <-
   max(H_kj (W^T V)_kj, eps) / ( (W^T W H)_kj + eps ) </code></p>
-        
-            <p>The basis matrix (<code>W</code>) is updated as follows: <pre class = 'eq'> W_ik <- max(W_ik (V
+  
+      <p>The basis matrix (<code>W</code>) is updated as follows: <pre class = 'eq'> W_ik <- max(W_ik (V
   H^T)_ik, eps) / ( (W H H^T)_ik + eps ) </code></p>
-        
-          </div>
+  
+    </div>
 
-          <div class="References">
-            <h2>References</h2>
-            
-            <p>Lee DD and Seung H (2001). "Algorithms for non-negative
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Lee DD and Seung H (2001). "Algorithms for non-negative
   matrix factorization." _Advances in neural information
   processing systems_. <URL:
   http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
-        
-          </div>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>nmf_update.euclidean</li><li>nmf_update.euclidean.h</li><li>nmf_update.euclidean.h_R</li><li>nmf_update.euclidean.w</li><li>nmf_update.euclidean.w_R</li>
+    </ul>
+    <ul>
       
-        </div>
-        <div class="span4">
-          <!-- <ul>
-            <li>nmf_update.euclidean</li><li>nmf_update.euclidean.h</li><li>nmf_update.euclidean.h_R</li><li>nmf_update.euclidean.w</li><li>nmf_update.euclidean.w_R</li>
-          </ul>
-          <ul>
-            
-          </ul> -->
-            
-          
-          <h2>Author</h2>
-          
+    </ul> -->
+      
+    
+    <h2>Author</h2>
+    
   Update definitions by <cite>Lee et al. (2001)</cite>.
 
   C++ optimised implementation by Renaud Gaujoux.
 
-          
-        </div>
-      </div>
-      <footer class="footer">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
-    </div> <!-- /container -->
+    </div>
   </body>
 </html>

@@ -5,7 +5,6 @@
 \alias{dim,NMF-method}
 \alias{nbasis}
 \alias{nbasis,ANY-method}
-\alias{nbasis,matrix-method}
 \alias{nbasis-methods}
 \alias{nbasis,NMFfitXn-method}
 \title{Dimension of NMF Objects}
@@ -77,18 +76,11 @@
   \item{nbasis}{\code{signature(x = "ANY")}: Default method
   which returns the number of columns of the basis matrix
   extracted from \code{x} using a suitable method
-  \code{basis}.
+  \code{basis}, or, if the latter is \code{NULL}, the value
+  of attributes \code{'nbasis'}.
 
   For NMF models, this also corresponds to the number of
   rows in the coefficient matrix. }
-
-  \item{nbasis}{\code{signature(x = "matrix")}: For a
-  matrix, the attribute 'nbasis' is returned, e.g. as
-  attached to the consensus matrix returned by the method
-  \code{\link{consensus}}.
-
-  This is used internally to keep track of data about the
-  parent fit and annotate plots. }
 
   \item{nbasis}{\code{signature(x = "NMFfitXn")}: Returns
   the number of basis components common to all fits.

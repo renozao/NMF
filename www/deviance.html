@@ -2,121 +2,117 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Distances and Objective Functions. NMF </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<title>deviance. NMF 0.8.24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {padding-top: 60px;}
-      h2 {padding-top: 20px}
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/highlight.css" rel="stylesheet">
-    <link href="css/staticdocs.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class = "container">
-          <a class="brand" href="index.html">NMF </a>
-          <div class="nav">
-            <ul class="nav">
-              <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
     </div>
+  </div>
+</div>
 
     <div class="container">
+      <header>
+        
+      </header>
+      
       <h1>Distances and Objective Functions</h1>
 
-      <div class="row">
-        <div class="span8">
-          <h2>Usage</h2>
-          <pre><span class="functioncall"><a href='deviance.html'>deviance</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='deviance.html'>deviance</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMF)</span>
-<span class="functioncall"><a href='NA'>`deviance`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="argument">method</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">""</span><span class="keyword">,</span> <span class="string">"KL"</span><span class="keyword">,</span> <span class="string">"euclidean"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="functioncall">`deviance`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="argument">method</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="string">""</span><span class="keyword">,</span> <span class="string">"KL"</span><span class="keyword">,</span> <span class="string">"euclidean"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
-<span class="functioncall"><a href='deviance.html'>nmfDistance</a></span><span class="keyword">(</span><span class="argument">method</span> <span class="argument">=</span> <span class="functioncall"><a href='NA'>c</a></span><span class="keyword">(</span><span class="string">""</span><span class="keyword">,</span> <span class="string">"KL"</span><span class="keyword">,</span> <span class="string">"euclidean"</span><span class="keyword">)</span><span class="keyword">)</span>
+<span class="functioncall"><a href='deviance.html'>nmfDistance</a></span><span class="keyword">(</span><span class="argument">method</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="string">""</span><span class="keyword">,</span> <span class="string">"KL"</span><span class="keyword">,</span> <span class="string">"euclidean"</span><span class="keyword">)</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMFfit)</span>
-<span class="functioncall"><a href='NA'>`deviance`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">method</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="functioncall">`deviance`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">method</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMFStrategy)</span>
-<span class="functioncall"><a href='NA'>`deviance`</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
-          
-          <h2>Arguments</h2>
-          <dl>
-            <dt>y</dt>
-            <dd>a matrix compatible with the NMF model
+<span class="functioncall">`deviance`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>y</dt>
+      <dd>a matrix compatible with the NMF model
   <code>object</code>, i.e. <code>y</code> must have the same dimension
   as <code>fitted(object)</code>.</dd>
-            <dt>method</dt>
-            <dd>a character string or a function with
+      <dt>method</dt>
+      <dd>a character string or a function with
   signature <code>(x="NMF", y="matrix", ...)</code> that
   implements a distance measure between an NMF model
   <code>x</code> and a target matrix <code>y</code>, i.e. an objective
   function to use to compute the deviance. In
   <code>deviance</code>, it is passed to <code>nmfDistance</code> to
   get the function that effectively computes the deviance.</dd>
-            <dt>...</dt>
-            <dd>extra parameters passed to the objective
+      <dt>...</dt>
+      <dd>extra parameters passed to the objective
   function.</dd>
-            <dt>x</dt>
-            <dd>an NMF model that estimates <code>y</code>.</dd>
-            <dt>object</dt>
-            <dd>an object for which the deviance is
+      <dt>x</dt>
+      <dd>an NMF model that estimates <code>y</code>.</dd>
+      <dt>object</dt>
+      <dd>an object for which the deviance is
   desired.</dd>
-          </dl>
-          
-          <div class="Value">
-            <h2>Value</h2>
-            
-            <p><code>deviance</code> returns a nonnegative numerical value</p>
-        
-            <p><code>nmfDistance</code> returns a function with least two
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p><code>deviance</code> returns a nonnegative numerical value</p>
+  
+      <p><code>nmfDistance</code> returns a function with least two
   arguments: an NMF model and a matrix.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Description">
-            <h2>Description</h2>
-            
-            <p>The NMF package defines methods for the generic
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The NMF package defines methods for the generic
   <code>deviance</code> from the package <code>stats</code>, to compute
   approximation errors between NMF models and matrices,
   using a variety of objective functions.</p>
-        
-            <p><code>nmfDistance</code> returns a function that computes the
+  
+      <p><code>nmfDistance</code> returns a function that computes the
   distance between an NMF model and a compatible matrix.</p>
-        
-          </div>
+  
+    </div>
 
-          <div class="Methods">
-            <h2>Methods</h2>
-            
-            <p><span class='describe'></p>
-        
-            <p>deviance<code>signature(object = "NMF")</code>:
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><span class='describe'></p>
+  
+      <p>deviance<code>signature(object = "NMF")</code>:
   Computes the distance between a matrix and the estimate
   of an <code>NMF</code> model.</p>
-        
-            <p>deviance<code>signature(object = "NMFfit")</code>:
+  
+      <p>deviance<code>signature(object = "NMFfit")</code>:
   Returns the deviance of a fitted NMF model.</p>
-        
-            <p>This method returns the final residual value if the
+  
+      <p>This method returns the final residual value if the
   target matrix <code>y</code> is not supplied, or the
   approximation error between the fitted NMF model stored
   in <code>object</code> and <code>y</code>. In this case, the
@@ -124,47 +120,47 @@
   <code>method</code> if not missing, or the objective of the
   algorithm that fitted the model (stored in slot
   <code>'distance'</code>).</p>
-        
-            <p>If not computed by the NMF algorithm itself, the value is
+  
+      <p>If not computed by the NMF algorithm itself, the value is
   automatically computed at the end of the fitting process
   by the function <code><a href='nmf.html'>nmf</a></code>, using the objective
   function associated with the NMF algorithm, so that it
   should always be available.</p>
-        
-            <p>deviance<code>signature(object = "NMFfitX")</code>:
+  
+      <p>deviance<code>signature(object = "NMFfitX")</code>:
   Returns the deviance achieved by the best fit object,
   i.e. the lowest deviance achieved across all NMF runs.</p>
-        
-            <p>deviance<code>signature(object = "NMFStrategy")</code>:
+  
+      <p>deviance<code>signature(object = "NMFStrategy")</code>:
   Computes the value of the objective function between the
   estimate <code>x</code> and the target <code>y</code>.</p>
-        
-            <p></span></p>
-        
-          </div>
+  
+      <p></span></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>deviance</li><li>deviance-methods</li><li>deviance,NMFfit-method</li><li>deviance,NMFfitX-method</li><li>deviance,NMF-method</li><li>deviance,NMFStrategy-method</li><li>nmfDistance</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
       
-        </div>
-        <div class="span4">
-          <!-- <ul>
-            <li>deviance</li><li>deviance,NMF-method</li><li>deviance,NMFStrategy-method</li><li>deviance,NMFfit-method</li><li>deviance,NMFfitX-method</li><li>deviance-methods</li><li>nmfDistance</li>
-          </ul>
-          <ul>
-            <li>methods</li>
-          </ul> -->
-            
-          <h2>See also</h2>
-          
+    <h2>See also</h2>
+    
   Other stats: <code><a href='deviance.html'>deviance,NMF-method</a></code>,
   <code><a href='residuals.html'>hasTrack</a></code>, <code><a href='residuals.html'>residuals</a></code>,
   <code><a href='residuals.html'>trackError</a></code>
 
-                    
-        </div>
-      </div>
-      <footer class="footer">
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
-    </div> <!-- /container -->
+    </div>
   </body>
 </html>

@@ -208,12 +208,33 @@ match_named_track <- function(annotation, tracks, msg, optional=FALSE){
 #'
 #' The NMF package ships an advanced heatmap engine implemented by the function
 #' \code{\link{aheatmap}}.
-#' Some convenience heatmap functions are implemented, that redefine default values 
-#' for some of the arguments of \code{\link{aheatmap}}, to tune the output 
-#' specifically for NMF models.
+#' Some convenience heatmap functions have been implemented for NMF models, 
+#' which redefine default values for some of the arguments of \code{\link{aheatmap}}, 
+#' hence tuning the output specifically for NMF models.
 #' 
 #' @rdname heatmaps
-#' @name heatmap-NMF 
+#' @name heatmap-NMF
+#' 
+#' @examples
+#' 
+#' ## More examples are provided in demo `heatmaps`
+#' \dontrun{
+#' demo(heatmaps)
+#' }
+#' ##
+#' 
+#' # random data with underlying NMF model
+#' v <- syntheticNMF(20, 3, 10)
+#' # estimate a model
+#' x <- nmf(v, 3)
+#' 
+#' @demo Heatmaps of NMF objects
+#' 
+#' #' # random data with underlying NMF model
+#' v <- syntheticNMF(20, 3, 10)
+#' # estimate a model
+#' x <- nmf(v, 3)
+#'  
 NULL
  
 #' \code{basimap} draws an annotated heatmap of the basis matrix.
@@ -231,12 +252,10 @@ NULL
 #' \item the addition of a default named annotation track, that shows 
 #' the dominant basis component for each row (i.e. each feature).
 #' 
-#' This track, named \code{':basis'}, is specified as a single character string, 
-#' that is looked-up in argument \code{annRow}, which may be of any type 
-#' supported by \code{\link{aheatmap}}.
-#' Note that if \code{annRow} is a character vector, that contains special 
-#' track names , e.g., \code{":basis"}, then these are extracted and displayed
-#' separately, after the character track -- which is interpreted as a factor.
+#' This track is specified in argument \code{tracks} (see its argument description).
+#' By default, a matching column annotation track is also displayed, but may be 
+#' disabled using \code{tracks=':basis'}.
+#' 
 #' \item a suitable title and extra information like the fitting algorithm, 
 #' when \code{object} is a fitted NMF model. 
 #' }
@@ -251,23 +270,30 @@ NULL
 #' 
 #' @examples 
 #' 
-#' # random data with underlying NMF model
-#' v <- syntheticNMF(50, 3, 20)
-#' # estimate a model
-#' x <- nmf(v, 3)
-#' 
 #' # show basis matrix
 #' basismap(x)
-#' basismap(x, annRow=NA) # no annotation track
+#' \dontrun{
+#' # without the default annotation tracks
+#' basismap(x, tracks=NA)
+#' }
 #' 
-#' # character annotation vector: ok if it does not contain 'basis'
-#' basismap(x, annRow=c('alpha', 'beta')) # annotate first and second row
-#' try( basismap(x, annRow=c('alpha', 'beta', 'basis')) ) # error
-#' basismap(x, annRow=list(c('alpha', 'beta', 'basis'))) # ok
-#' basismap(x, annRow=list('basis', c('alpha', 'beta', 'basis'))) # ok
+#' @demo
+#'
+#' # highligh row only (using custom colors)
+#' basismap(x, tracks=':basis', annColor=list(basis=1:3))
+#'   
+#' ## character annotation vector: ok if it does not contain 'basis'
+#' # annotate first and second row + automatic special track
+#' basismap(x, annRow=c('alpha', 'beta'))
+#' # no special track here
+#' basismap(x, annRow=c('alpha', 'beta', ':basis'), tracks=NA)
+#' # with special track `basis`
+#' basismap(x, annRow=list(c('alpha', 'beta'), ':basis'), tracks=NA)
+#' # highligh columns only (using custom colors)
+#' basismap(x, tracks='basis:')
 #' 
-#' # changing the name of the basis annotation
-#' basismap(x, annRow=c(new_name='basis'))
+#' # changing the name of the basis annotation track
+#' basismap(x, annRow=list(new_name=':basis'))
 #' 
 setGeneric('basismap', function(object, ...) standardGeneric('basismap') )
 #' Plots a heatmap of the basis matrix of the NMF model \code{object}.
@@ -292,6 +318,15 @@ setGeneric('basismap', function(object, ...) standardGeneric('basismap') )
 #' Note \code{\link{extractFeatures}} is called with argument \code{nodups=TRUE}, 
 #' so that features that are selected for multiple components only appear once.
 #' }
+#' @param tracks Special additional annotation tracks to highlight associations between 
+#' basis components and sample clusters:
+#' \describe{
+#' \item{basis}{matches each row (resp. column) to the most contributing basis component
+#' in \code{basismap} (resp. \code{coefmap}).
+#' In \code{basismap} (resp. \code{coefmap}), adding a track \code{':basis'} to 
+#' \code{annCol} (resp. \code{annRow}) makes the column (resp. row) corresponding to 
+#' the component being also highlited using the mathcing colours.}
+#' }
 #' @param info if \code{TRUE} then the name of the algorithm that fitted the NMF 
 #' model is displayed at the bottom of the plot, if available.
 #' Other wise it is passed as is to \code{aheatmap}.
@@ -299,20 +334,21 @@ setGeneric('basismap', function(object, ...) standardGeneric('basismap') )
 #' 
 setMethod('basismap', signature(object='NMF'),
 	function(object, color = 'YlOrRd:50', ...
-			, scale = 'r1', Colv=NA, subsetRow=FALSE
-			, annRow = ':basis'
+			, scale = 'r1' 
+			, Rowv=TRUE, Colv=NA, subsetRow=FALSE
+			, annRow=NA, annCol=NA, tracks = 'basis'
 			, main="Basis components", info = FALSE){
 		
 		# resolve subsetRow if its a single value
 		if( is.atomic(subsetRow) && length(subsetRow) == 1 ){
 			subsetRow <- 
-					if( isFALSE(subsetRow) )
-						NULL
-					else if( isTRUE(subsetRow) ) # use Kim and Park scoring scheme for filtering 			
-						extractFeatures(object, format='combine')
-					else if( is.character(subsetRow) || is.numeric(subsetRow) ) # use subsetRow as a filtering method
-						extractFeatures(object, method=subsetRow, format='combine')
-					else stop("NMF::basismap - invalid single value for argument 'subsetRow' [logical, numeric or character expected]")
+				if( isFALSE(subsetRow) )
+					NULL
+				else if( isTRUE(subsetRow) ) # use Kim and Park scoring scheme for filtering 			
+					extractFeatures(object, format='combine')
+				else if( is.character(subsetRow) || is.numeric(subsetRow) ) # use subsetRow as a filtering method
+					extractFeatures(object, method=subsetRow, format='combine')
+				else stop("NMF::basismap - invalid single value for argument 'subsetRow' [logical, numeric or character expected]")
 		}
 		
 		# extract the basis vector matrix
@@ -325,21 +361,18 @@ setMethod('basismap', signature(object='NMF'),
 				else info
 		
 		# process annotation tracks
-		if( anyValue(annRow) ){
+		ptracks <- process_tracks(x, tracks, annRow, annCol)
+		annRow <- ptracks$row 
+		annCol <- ptracks$col
+		# set special annotation handler
+		specialAnnotation(1L, 'basis', function() predict(object, what='features'))
+		specialAnnotation(2L, 'basis', function() as.factor(1:nbasis(object)))
+		#
 			
-			annRow <- atrack(annRow, .DATA=amargin(x,1L)
-				, .SPECIAL = list(
-					basis = function() predict(object, what='features')
-				)
-			)
-			
-		}
-		##
-		
 		# call aheatmap on matrix
 		aheatmap(x, color = color, ...
 				, scale = scale, Colv = Colv, subsetRow = subsetRow
-				, annRow = annRow
+				, annRow = annRow, annCol = annCol
 				, main = main, info = info)	
 	}
 )
@@ -347,6 +380,70 @@ setMethod('basismap', signature(object='NMF'),
 # check if an object contains some value
 anyValue <- function(x){
 	length(x) > 0L && !isNA(x) 
+}
+
+grep_track <- function(x){
+	list(
+		both = grepl("^[^:].*[^:]$", x) | grepl("^:.*:$", x)
+		, row = grepl("^:.*[^:]$", x)
+		, col = grepl("^[^:].*:$", x)
+	)
+}
+
+# process extra annotation tracks
+process_tracks <- function(data, tracks, annRow=NA, annCol=NA){
+	
+	if( anyValue(tracks) ){
+		
+		# extract choices from caller function
+		formal.args <- formals(sys.function(sys.parent()))
+		choices <- eval(formal.args[[deparse(substitute(tracks))]])
+		if( isTRUE(tracks) ) tracks <- choices
+		else{
+			if( !is.character(tracks) ) 
+				stop("Special annotation tracks must be specified either as NA, TRUE or a character vector [", class(tracks), "].")
+			
+			# check validity
+			pattern <- "^(:)?([^:]*)(:)?$"
+			basech <- str_match(choices, pattern)
+			basetr <- str_match(tracks, pattern)
+			tr <- basetr[, 3L]
+	#		print(basetr)
+	#		print(basech)
+			# extend base track name
+			i <- charmatch(tr, basech[,3L])
+			tr[!is.na(i)] <- basech[i[!is.na(i)],3L]
+			tracks_long <- str_c(basetr[,2L], tr, basetr[,4L])
+			# extend choices
+			tty_choice <- grep_track(choices)
+			if( any(tty_choice$both) )
+				choices <- c(choices, str_c(':', choices[tty_choice$both]), str_c(choices[tty_choice$both], ':'))
+			# look for exact match
+			itr <- charmatch(tracks_long, choices)
+			if( length(err <- which(is.na(itr))) ){
+				stop("Invalid special annotation track name [", str_out(tracks[err], Inf)
+					,"]. Should partially match one of ", str_out(choices, Inf), '.')
+			}
+			tracks[!is.na(itr)] <- choices[itr]
+		}
+#		print(tracks)
+	}
+	#
+	tty <- grep_track(tracks)
+	# create result object
+	build <- function(x, ann, data, margin){
+		t <- 
+		if( anyValue(x) ) as.list(setNames(str_c(':', sub("(^:)|(:$)","",x)), names(x)))
+		else NA
+		# build annotations
+		atrack(ann, t, .DATA=amargin(data,margin))
+	}
+	
+	res <- list()
+	res$row <- build(tracks[tty$both | tty$row], annRow, data, 1L)
+	res$col <- build(tracks[tty$both | tty$col], annCol, data, 2L)
+	#str(res)
+	res
 }
 
 #' \code{coefmap} draws an annotated heatmap of the coefficient matrix.
@@ -362,9 +459,9 @@ anyValue <- function(x){
 #' \item the addition of a default annotation track, that shows the most
 #' contributing basis component for each column (i.e. each sample).
 #' 
-#' This track is specified in argument \code{annCol}, which behaves like 
-#' argument \code{annRow} in \code{basismap} (see above).
-#' A matching row annotation track may be displayed using \code{annRow='basis'}.
+#' This track is specified in argument \code{tracks} (see its argument description).
+#' By default, a matching row annotation track is also displayed, but can be disabled 
+#' using \code{tracks='basis:'}.
 #' \item a suitable title and extra information like the fitting algorithm, 
 #' when \code{object} is a fitted NMF model. 
 #' }  
@@ -377,17 +474,26 @@ anyValue <- function(x){
 #' 
 #' # coefficient matrix
 #' coefmap(x)
-#' coefmap(x, annCol=NA)
+#' \dontrun{
+#' # without the default annotation tracks
+#' coefmap(x, tracks=NA)
+#' }
+#' 
+#' @demo
+#' 
+#' # coefficient matrix
 #' coefmap(x, annCol=c('alpha', 'beta')) # annotate first and second sample
 #' coefmap(x, annCol=list('basis', Greek=c('alpha', 'beta'))) # annotate first and second sample + basis annotation
 #' coefmap(x, annCol=c(new_name='basis'))
 #' 
 setGeneric('coefmap', function(object, ...) standardGeneric('coefmap') )
+#' The default method for NMF objects has special default values for 
+#' some arguments of \code{\link{aheatmap}} (see argument description).
 setMethod('coefmap', signature(object='NMF'),
 		function(object, color = 'YlOrRd:50', ...
 				, scale = 'c1'
-				, Rowv = NA, Colv=TRUE
-				, annRow=NA, annCol = ':basis'
+				, Rowv = NA, Colv = TRUE
+				, annRow = NA, annCol = NA, tracks='basis'
 				, main="Mixture coefficients", info = FALSE){
 						
 			# use the mixture coefficient matrix
@@ -399,32 +505,14 @@ setMethod('coefmap', signature(object='NMF'),
 					else if( isFALSE(info) ) NULL
 					else info
 			
-			# process column annotation tracks
-			plainAnnRow <- if( anyValue(annRow) ) atrack(annRow, .DATA=amargin(x,1L)) 
-			plainAnnCol <- if( anyValue(annCol) ) atrack(annCol, .DATA=amargin(x,2L))
-			
-			if( anyValue(annCol) ){
-				annCol <- atrack(plainAnnCol
-						, .SPECIAL = list(
-							basis = function() predict(object)
-						)
-						, .CACHE = plainAnnRow
-				)
-			}	
-			
-			# process row annotation tracks
-			if( anyValue(annRow) ){
-				
-				# extract special row tracks
-				annRow <- atrack(plainAnnRow
-						, .SPECIAL = list(
-							basis = function() as.factor(1:nbasis(object))
-						)
-						, .CACHE = plainAnnCol
-				)
-								
-			}
-			##
+			# process annotation tracks
+			ptracks <- process_tracks(x, tracks, annRow, annCol)
+			annRow <- ptracks$row
+			annCol <- ptracks$col
+			# set special annotation handler
+			specialAnnotation(1L, 'basis', function() as.factor(1:nbasis(object)))
+			specialAnnotation(2L, 'basis', function() predict(object))
+			#
 			
 			## process ordering
 			if( isString(Colv) ){

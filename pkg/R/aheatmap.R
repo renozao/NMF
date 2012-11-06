@@ -1236,6 +1236,31 @@ renderAnnotations <- function(annCol, annRow, annotation_colors, verbose=getOpti
 	
 }
 
+# set/get special annotation handlers
+specialAnnotation <- local({
+	.empty <- list(list(), list())
+	.cache <- .empty
+	function(margin, name, fun, clear=FALSE){
+	
+		if( isTRUE(clear) ){
+			if( nargs() > 1L )
+				stop("Invalid call: no other argument can be passed when `clear=TRUE`")
+			.cache <<- .empty
+			return()
+		}
+		
+		if( missing(name) && missing(fun) ){
+			return(.cache[[margin]])
+		}else if( is.list(name) ){
+			.cache[[margin]] <<- c(.cache[[margin]], name)
+		}else if( missing(fun) ){
+			return(.cache[[margin]][[name]])
+		}else{
+			.cache[[margin]][[name]] <<- fun
+		}
+	}
+})
+
 # Converts Subset Specification into Indexes
 subset_index <- function(x, margin, subset){
 	
@@ -1550,6 +1575,11 @@ subset_index <- function(x, margin, subset){
 #' @importFrom pkgmaker isNA
 #' @examples
 #' 
+#' ## See the demo 'aheatmap' for more examples:
+#' \dontrun{
+#' demo('aheatmap')
+#' }
+#' 
 #' # Generate random data
 #' n <- 50; p <- 20
 #' x <- abs(rmatrix(n, p, rnorm, mean=4, sd=1))
@@ -1565,6 +1595,20 @@ subset_index <- function(x, margin, subset){
 #' aheatmap(x, Rowv = "correlation")
 #' aheatmap(x, Rowv = "man") # partially matched to 'manhattan'
 #' aheatmap(x, Rowv = "man", Colv="binary")
+#' 
+#' #' # Generate column annotations
+#' annotation = data.frame(Var1 = factor(1:p %% 2 == 0, labels = c("Class1", "Class2")), Var2 = 1:10)
+#' aheatmap(x, annCol = annotation)
+#' 
+#' @demo Annotated heatmaps 
+#' 
+#' # Generate random data
+#' n <- 50; p <- 20
+#' x <- abs(rmatrix(n, p, rnorm, mean=4, sd=1))
+#' x[1:10, seq(1, 10, 2)] <- x[1:10, seq(1, 10, 2)] + 3
+#' x[11:20, seq(2, 10, 2)] <- x[11:20, seq(2, 10, 2)] + 2
+#' rownames(x) <- paste("ROW", 1:n)
+#' colnames(x) <- paste("COL", 1:p)
 #' 
 #' ## Scaling
 #' aheatmap(x, scale = "row")
@@ -1586,7 +1630,10 @@ subset_index <- function(x, margin, subset){
 #' aheatmap(x, legend = FALSE)
 #' # cell and font size 
 #' aheatmap(x, cellwidth = 10, cellheight = 5)
+#' 
+#' # directly write into a file
 #' aheatmap(x, cellwidth = 15, cellheight = 12, fontsize = 8, filename = "aheatmap.pdf")
+#' unlink('aheatmap.pdf')
 #'
 #' # Generate column annotations
 #' annotation = data.frame(Var1 = factor(1:p %% 2 == 0, labels = c("Class1", "Class2")), Var2 = 1:10)
@@ -1847,9 +1894,13 @@ aheatmap = function(x
 	annotation_colors <- annColors
 	
 	# render annotation tracks for both rows and columns
-	annTracks <- renderAnnotations(atrack(annCol, order=res$colInd, .SPECIAL=FALSE, .DATA=amargin(x,2L))
-								, atrack(annRow, order=res$rowInd, .SPECIAL=FALSE, .DATA=amargin(x,1L))
-								, annotation_colors = annotation_colors, verbose=verbose)
+	annCol_processed <- atrack(annCol, order=res$colInd, .SPECIAL=specialAnnotation(2L), .DATA=amargin(x,2L), .CACHE=annRow)
+	annRow_processed <- atrack(annRow, order=res$rowInd, .SPECIAL=specialAnnotation(1L), .DATA=amargin(x,1L), .CACHE=annCol)
+	specialAnnotation(clear=TRUE)
+	annTracks <- renderAnnotations(annCol_processed, annRow_processed 
+								, annotation_colors = annotation_colors
+								, verbose=verbose)
+	#
 	
 	# retrieve dimension for computing cexRow and cexCol (evaluated from the arguments)
 	nr <- nrow(mat); nc <- ncol(mat)

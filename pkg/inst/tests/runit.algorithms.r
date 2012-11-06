@@ -127,7 +127,7 @@ test.snmf <- function(){
 
 #' Test Local NMF
 test.lnmf <- function(){
-	DEACTIVATED("Algorithm 'lnmf' was removed, for the moment.")
+	DEACTIVATED("Algorithm 'lnmf' is not fully working.")
 	checkData('lnmf')
 }
 
@@ -194,7 +194,7 @@ test.cversions.offset <- function(){
 #' Unit test for C and R versions of the algorithm: Lee
 test.cversions.lnmf <- function(){
 	
-	DEACTIVATED("Algorithm 'lnmf' was removed, for the moment.")
+	DEACTIVATED("Algorithm 'lnmf' is not fully working.")
 	check.cversion('lnmf')
 	
 }
@@ -206,9 +206,10 @@ test.port_brunet <- function(){
 	if( !require(RcppOctave) ) return()
 	
 	# source
-	o_source(file.path(packagePath('inst/matlab', package='NMF'), 'brunet.m'))
+	o_source(file.path(packagePath('matlab', package='NMF'), 'brunet.m'))
 	
 	# define input data
+	setRNG('default', 'default')
 	set.seed(1234)
 	x <- rmatrix(100,20)
 	x0 <- rnmf(3, x)
@@ -223,17 +224,17 @@ test.port_brunet <- function(){
 	
 	# run R port
 	tol <- 10^-14
-	checkTrue(nmf.equal(ofit, res <- nmf(x, 3, '.R#brunet', seed=x0), tol=tol)
-			, paste("Pure R port and MATLAB results are identical at ", tol))
+	checkTrue(nmf.equal(ofit, res <- nmf(x, 3, '.R#brunet', seed=x0), tolerance=tol)
+			, paste("Pure R port and MATLAB results are identical at tolerance ", tol))
 	checkEquals(niter(res), o$niter, "Pure R and MATLAB use same number of iterations")
 	
 	# C version with copy	
-	checkTrue(isTRUE(nmf.equal(ofit, res <- nmf(x, 3, 'brunet', seed=x0, copy=TRUE), tolerance=10^-14))
-			, paste("C version with copy and MATLAB results are identical"))
+	checkTrue(isTRUE(nmf.equal(ofit, res <- nmf(x, 3, 'brunet', seed=x0, copy=TRUE), tolerance=tol))
+			, paste("C version with copy and MATLAB results are identical at tolerance ", tol))
 	checkEquals(niter(res), o$niter, "C version without copy and MATLAB use same number of iterations")
 	# C version without copy
-	checkTrue(isTRUE(nmf.equal(ofit, res <- nmf(x, 3, 'brunet', seed=x0, copy=FALSE), tolerance=10^-14))
-			, paste("C version without copy and MATLAB results are identical"))
+	checkTrue(isTRUE(nmf.equal(ofit, res <- nmf(x, 3, 'brunet', seed=x0, copy=FALSE), tolerance=tol))
+			, paste("C version without copy and MATLAB results are identical at tolerance ", tol))
 	checkEquals(niter(res), o$niter, "C version without copy and MATLAB use same number of iterations")
 	
 }

@@ -1,7 +1,7 @@
 Package: NMF
 Type: Package
 Title: Algorithms and framework for Nonnegative Matrix Factorization (NMF).
-Version: 0.8.24
+Version: 0.8.27
 Date: 2010-08-20
 Author: Renaud Gaujoux
 Maintainer: Renaud Gaujoux <renaud@cbio.uct.ac.za>
@@ -18,7 +18,7 @@ Depends:
     R (>= 2.14.0),
     methods,
     stats,
-    pkgmaker (>= 0.8.8),
+    pkgmaker (>= 0.9),
     rngtools,
     registry,
     graphics,
@@ -43,6 +43,8 @@ Suggests:
     RColorBrewer,
     fastICA,
     doMPI,
+    doSNOW,
+    snow,
     synchronicity,
     corpcor,
     xtable,
@@ -54,6 +56,7 @@ Enhances: Biobase
 Collate:
     'rmatrix.R'
     'utils.R'
+    'simulation.R'
     'versions.R'
     'colorcode.R'
     'options.R'
