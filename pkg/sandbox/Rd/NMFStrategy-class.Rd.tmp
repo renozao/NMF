@@ -1,0 +1,57 @@
+\name{NMFStrategy-class}
+\Rdversion{1.1}
+\docType{class}
+\alias{NMFStrategy-class}
+\alias{@<-,NMFStrategy-method}
+\alias{model,NMFStrategy-method}
+\alias{model<-,NMFStrategy,character-method}
+\alias{name,NMFStrategy-method}
+\alias{name<-,NMFStrategy,character-method}
+\alias{nmf,matrix,numeric,NMFStrategy-method}
+\alias{nmfRegisterAlgorithm,NMFStrategy,missing-method}
+\alias{objective,NMFStrategy-method}
+\alias{objective<-,NMFStrategy,character-method}
+\alias{objective<-,NMFStrategy,function-method}
+\alias{run,NMFStrategy,matrix,NMF-method}
+\alias{run,NMFStrategy,ExpressionSet,ANY-method}
+\alias{slot<-,NMFStrategy,character-method}
+
+\title{Class "NMFStrategy" ~~~ }
+\description{	 ~~ A concise (1-5 lines) description of what the class is.  ~~}
+\section{Objects from the Class}{A virtual Class: No objects may be created from it.}
+\section{Slots}{
+	 \describe{
+    \item{\code{name}:}{Object of class \code{"character"} ~~ }
+    \item{\code{objective}:}{Object of class \code{"ANY"} ~~ }
+    \item{\code{model}:}{Object of class \code{"character"} ~~ }
+  }
+}
+\section{Methods}{
+  \describe{
+    \item{@<-}{\code{signature(object = "NMFStrategy")}: ... }
+    \item{model}{\code{signature(method = "NMFStrategy")}: ... }
+    \item{model<-}{\code{signature(object = "NMFStrategy", value = "character")}: ... }
+    \item{name}{\code{signature(object = "NMFStrategy")}: ... }
+    \item{name<-}{\code{signature(object = "NMFStrategy", value = "character")}: ... }
+    \item{nmf}{\code{signature(x = "matrix", rank = "numeric", method = "NMFStrategy")}: ... }
+    \item{nmfRegisterAlgorithm}{\code{signature(method = "NMFStrategy", key = "missing")}: ... }
+    \item{objective}{\code{signature(object = "NMFStrategy")}: ... }
+    \item{objective<-}{\code{signature(object = "NMFStrategy", value = "character")}: ... }
+    \item{objective<-}{\code{signature(object = "NMFStrategy", value = "function")}: ... }
+    \item{run}{\code{signature(object = "NMFStrategy", target = "matrix", start = "NMF")}: ... }
+    \item{run}{\code{signature(object = "NMFStrategy", target = "ExpressionSet", start = "ANY")}: ... }
+    \item{slot<-}{\code{signature(object = "NMFStrategy", name = "character")}: ... }
+	 }
+}
+\references{ ~put references to the literature/web site here ~ }
+\author{ ~~who you are~~ }
+\note{ ~~further notes~~ }
+
+\seealso{
+	~~objects to See Also as \code{\link{~~fun~~}}, ~~~
+	or \code{\linkS4class{CLASSNAME}} for links to other classes
+}
+\examples{
+showClass("NMFStrategy")
+}
+\keyword{classes}

@@ -1,0 +1,10 @@
+\documentclass[10pt]{article}
+%\VignetteIndexEntry{An introduction to the package NMF}
+%\VignetteDepends{NMF,Biobase,bigmemory,xtable,RColorBrewer}
+%\VignetteKeyword{math}
+%\VignetteCompiler{knitr}
+\usepackage{url}
+\usepackage[colorlinks]{hyperref}
+
+\begin{document}
+\end{document}

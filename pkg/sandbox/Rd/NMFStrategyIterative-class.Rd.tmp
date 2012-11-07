@@ -1,0 +1,43 @@
+\name{NMFStrategyIterative-class}
+\Rdversion{1.1}
+\docType{class}
+\alias{NMFStrategyIterative-class}
+\alias{run,NMFStrategyIterative,matrix,NMF-method}
+
+\title{Class "NMFStrategyIterative" ~~~ }
+\description{	 ~~ A concise (1-5 lines) description of what the class is.  ~~}
+\section{Objects from the Class}{
+Objects can be created by calls of the form \code{new("NMFStrategyIterative", ...)}.
+	 ~~ describe objects here ~~ 
+}
+\section{Slots}{
+	 \describe{
+    \item{\code{Preprocess}:}{Object of class \code{"character"} ~~ }
+    \item{\code{Update}:}{Object of class \code{"character"} ~~ }
+    \item{\code{Stop}:}{Object of class \code{"character"} ~~ }
+    \item{\code{WrapNMF}:}{Object of class \code{"character"} ~~ }
+    \item{\code{name}:}{Object of class \code{"character"} ~~ }
+    \item{\code{objective}:}{Object of class \code{"ANY"} ~~ }
+    \item{\code{model}:}{Object of class \code{"character"} ~~ }
+  }
+}
+\section{Extends}{
+Class \code{"\linkS4class{NMFStrategy}"}, directly.
+}
+\section{Methods}{
+  \describe{
+    \item{run}{\code{signature(object = "NMFStrategyIterative", target = "matrix", start = "NMF")}: ... }
+	 }
+}
+\references{ ~put references to the literature/web site here ~ }
+\author{ ~~who you are~~ }
+\note{ ~~further notes~~ }
+
+\seealso{
+	~~objects to See Also as \code{\link{~~fun~~}}, ~~~
+	or \code{\linkS4class{CLASSNAME}} for links to other classes
+}
+\examples{
+showClass("NMFStrategyIterative")
+}
+\keyword{classes}

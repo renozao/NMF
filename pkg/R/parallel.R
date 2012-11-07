@@ -1,0 +1,1059 @@
+# Definitions used in the parallel computations of NMF
+#
+# - reproducible backend
+# - reproducible %dopar% operator: %dorng%
+# 
+# Author: Renaud Gaujoux
+# Creation: 08-Feb-2011
+###############################################################################
+
+# returns the number of cores to use in all NMF computation when no number is
+# specified by the user
+getMaxCores <- function(){
+	#ceiling(parallel::detectCores()/2)
+	parallel::detectCores()	
+}
+
+#' Utilities and Extensions for Foreach Loops
+#' 
+#' \code{registerDoBackend} is a unified register function for foreach backends.
+#' 
+#' @param object specification of a foreach backend, e.g. \sQuote{SEQ}, 
+#' \sQuote{PAR} (for doParallel), \sQuote{MPI}, etc\ldots
+#' @param ... extra arguments passed to the backend own registration function. 
+#' 
+#' @keywords internal
+#' @rdname foreach
+registerDoBackend <- function(object, ...){
+
+	# restore old backend data in case of an error
+	old <- getDoBackend()
+	on.exit( setDoBackend(old) )
+	
+	# get old foreach backend object
+	ob <- ForeachBackend()
+	
+	# register new backend: call the register method
+	b <- ForeachBackend(object, ...)
+	res <- register(b)
+	
+	# cancel backend restoration
+	on.exit()
+	# call old backend cleanup method
+	doBackendCleanup(ob)
+	
+	# return old backend
+	invisible(ob)
+}
+
+#' \code{getDoBackend} returns the internal data of the currently registered foreach \%dopar\% backend.
+#' @rdname foreach
+#' @export
+getDoBackend <- function(){
+	fe <- foreach:::.foreachGlobals
+	if( !exists("fun", where = fe, inherits = FALSE) )
+		return(NULL)
+	
+	c(foreach:::getDoPar() # this returns the registered %dopar% function + associated data
+		# -> add info function from foreach internal environment
+		, info= if( exists("info", where = fe, inherits = FALSE) ) 
+					fe$info else function(data, item) NULL)
+}
+#' \code{setDoBackend} is identical to \code{\link[foreach]{setDoPar}}, but 
+#' returns the internal of the previously registered backend.
+#' 
+#' @param data internal data of a foreach \%dopar\% backend.
+#' 
+#' @export
+#' @rdname foreach
+setDoBackend <- function(data){
+	ob <- getDoBackend()
+	if( !is.null(data) ) do.call('setDoPar', data)
+	else{
+		do.call('setDoPar', list(NULL))
+		fe <- foreach:::.foreachGlobals
+		if (exists("fun", envir = fe, inherits = FALSE))
+			remove("fun", envir = fe)
+	}
+	invisible(ob)
+}
+
+doBackendCleanup <- function(object, fun, run=TRUE, verbose=TRUE){
+	
+	if( !exists('.doParCleanup', envir=.GlobalEnv) )
+			assign('.doParCleanup', new.env(), envir=.GlobalEnv)
+	e <- get('.doParCleanup', envir=.GlobalEnv)
+		
+	if( missing(object) ){
+		f <- ls(e, all.names=TRUE)
+		sapply(f, function(f){
+					fun <- e[[f]]
+					if( run ) fun()
+					else fun
+			})
+		invisible()
+	}
+	else if( is.null(object) ) return()
+	else if( missing(fun) ){
+		if( exists(object$name, envir=e) ){ 
+			fun <- get(object$name, envir=e)
+			if( run ){
+				if( verbose ) message("# Cleaning up '", object$name, "'... ", appendLF=FALSE)
+				fun(object)
+				if( verbose ) message('OK')
+			}else fun
+		}
+	}else if( is.null(fun) ){
+		rm(list=object$name, envir=e)
+	}else if( is.function(fun) ){
+		assign(object$name, fun, envir=e)
+	}
+}
+
+#' \code{register} is a generic function that register objects.
+#' It is used to as a unified interface to register foreach backends.
+#' 
+#' @param x specification of a foreach backend
+#' 
+#' @rdname foreach
+#' @export
+register <- function(x, ...){
+	UseMethod('register', x)
+}
+#' @S3method register foreach_backend
+register.foreach_backend <- function(x, ...){
+	
+	be <- x$name
+	# For everything except doSEQ:
+	# require definition package (it is safer to re-check)
+	if( be != 'doSEQ' ){
+		if( !require.quiet(be, character.only=TRUE) )
+			stop("Package '", be, "' is required to use backend '", be, "'")
+	}
+	
+	regfun <- .foreach_regfun(x$name)
+	if( length(formals(regfun)) > 0L ) do.call(regfun, c(x$data, ...))
+	else regfun()
+}
+
+#' \code{getDoParHosts} returns the hostnames of the nodes used by a backend.
+#' 
+#' @export
+#' @rdname foreach
+getDoParHosts <- function(x){
+	
+	be <- 
+	if( missing(x) ) ForeachBackend()
+	else ForeachBackend(x)
+	if( is.null(be) ) return( NULL )
+	
+	if( is.null(be$data) ) return( NULL )
+	# doSEQ
+	if( be$name == 'doSEQ' ) return( 'localhost' )
+	
+	if( is.numeric(be$data[[1]]) )
+		return( rep('localhost', be$data[[1]]) )
+	
+	if( be$name == 'doParallel' ) sapply(be$data[[1]], '[[', 'host')
+	else if( missing(x) ){
+		setNames(unlist(times(getDoParWorkers()) %dopar% { Sys.info()['nodename'] }), NULL)
+	}else{
+		'UNKNOWN'
+		#stop("cannot list backend hostnames [", class(be)[1], ']')
+	}
+}
+
+
+#' \code{ForeachBackend} is a factory method for foreach backend objects.
+#' 
+#' @export
+#' @inline
+#' @rdname foreach
+setGeneric('ForeachBackend', function(object, ...) standardGeneric('ForeachBackend'))
+#' Default method defined to throw an informative error message, when no other
+#' method was found.
+setMethod('ForeachBackend', 'ANY', 
+	function(object, ...){
+		if( is.backend(object) ){
+			# update arg list if necessary
+			if( nargs() > 1L )	object$data <- list(...)
+			object
+		}else if( is(object, 'cluster') )
+			selectMethod('ForeachBackend', 'cluster')(object, ...)
+		else
+			stop("Could not create foreach backend object with a specification of class '", class(object)[1L], "'")
+	}
+)
+
+formatDoName <- function(x){
+	
+	# numeric values are resolved as doParallel
+	if( is.numeric(x) ) x <- 'PAR'
+	else if( is.character(x) ){
+		# use upper case if not already specified as 'do*'
+		if( !grepl("^do", x) ){
+			x <- toupper(x)
+			# special treatment for doParallel
+			if( x %in% c('PAR', 'PARALLEL') ) x <- 'Parallel'
+		}
+		# stick prefix 'do' (removing leading 'do' if necessary)
+		str_c('do', sub('^do', '', x))
+	}else 
+		''
+}
+#' Creates a foreach backend object based on its name.
+setMethod('ForeachBackend', 'character', 
+	function(object, ...){
+		
+		object <- formatDoName(object)
+		
+		# check the registration routine is available
+		regfun <- .foreach_regfun(object)
+		# build S3 class name
+		s3class <- str_c(object, "_backend")
+		
+		# create empty S3 object
+		obj <- structure(list(name=object, data=list(...))
+						, class=c(s3class, 'foreach_backend'))
+
+		# give a chance to a backend-specific ForeachBackend factory method
+		# => this will generally fill the object with the elements suitable
+		# to be used in a call to foreach::setDoPar: fun, data, info
+		# and possibly change the name or the object class, e.g. to allow 
+		# subsequent argument-dependent dispatch.
+		obj <- ForeachBackend(obj, ...)
+		
+		# set data slot if not already set by the backend-specific method
+		if( is.null(obj$data) || (length(obj$data) == 0L && nargs()>1L) ) 
+			obj$data <- list(...)
+		
+		# return object
+		obj
+	}
+)
+#' Creates a foreach backend object for the currently registered backend.
+setMethod('ForeachBackend', 'missing', 
+	function(object, ...){
+		be <- getDoParName()
+		data <- getDoBackend()
+		data <- data$data
+		if( !is.null(data) )
+			do.call(ForeachBackend, c(list(be, data), ...))
+		else 
+			ForeachBackend(be, ...)
+	}
+)
+#' Dummy method that returns \code{NULL}, defined for correct dispatch.
+setMethod('ForeachBackend', 'NULL', function(object, ...){ NULL })
+
+setOldClass('cluster')
+#' Creates a doParallel foreach backend that uses the cluster described in 
+#' \code{object}.
+setMethod('ForeachBackend', 'cluster', 
+	function(object, ...){
+		ForeachBackend('doParallel', cl=object)
+	}
+)
+#' Creates a doParallel foreach backend with \code{object} processes.
+setMethod('ForeachBackend', 'numeric', 
+	function(object, ...){
+		# check numeric specification
+		if( length(object) == 0L )
+			stop("invalid number of cores specified as a backend [empty]")
+		object <- object[1]
+		if( object <= 0 )
+			stop("invalid negative number of cores [", object, "] specified for backend 'doParallel'")
+		
+		ForeachBackend('doParallel', cl=object)
+	}
+)
+###############
+# doParallel
+###############
+setOldClass('doParallel_backend')
+#' doParallel-specific backend factory
+#' 
+#' @param cl cluster specification: a cluster object or a numeric that indicates the 
+#' number of nodes to use. 
+setMethod('ForeachBackend', 'doParallel_backend',
+	function(object, cl){
+		
+		# use all available cores if not otherwise specified
+		if( missing(cl) ) cl <- getMaxCores()
+		
+		# On Windows doParallel::registerDoParallel(numeric) will create a 
+		# SOCKcluster with `object` cores.
+		# On non-Windows machines registerDoParallel(numeric) will use 
+		# parallel::mclapply with `object` cores.
+		# => Windows needs a cleanup function that will stop the cluster 
+		# when another backend is registered.
+		#
+		# Fortunately doParallel::registerDoParallel assign the cluster object 
+		# to the global variable `.revoDoParCluster`
+		if ( is.numeric(cl) && .Platform$OS.type == "windows") {
+			doBackendCleanup(object, function(x){
+				# get cluster object from global variable `.revoDoParCluster`
+				if( !exists(".revoDoParCluster", envir = .GlobalEnv) ) return()
+				cl <- get(".revoDoParCluster", envir = .GlobalEnv)
+				parallel::stopCluster(cl)
+				rm(list=".revoDoParCluster", envir = ".GlobalEnv")
+			})
+		}
+		
+		# required registration data
+		# TODO: a function doParallel:::doParallel should exist and do the same 
+		# thing as parallel::registerDoParallel without registering the backend
+		#object$fun <- doParallel:::doParallel
+		object$info <- doParallel:::info
+		
+		# return object
+		object
+	}
+)
+
+###############
+# doMPI 
+###############
+
+isMPIBackend <- function(x, ...){
+	b <- if( missing(x) ) ForeachBackend(...) else ForeachBackend(object=x, ...)
+	!is.null(b) && (b$name == 'doMPI' 
+				|| is(b$data[[1]], 'MPIcluster') 
+				|| is(b$data[[1]], 'mpicluster'))
+}
+
+#' @S3method register doMPI_backend
+register.doMPI_backend <- function(x, ...){
+	
+	cl <- x$data[[1]]
+	if( is.numeric(cl) ){
+		# cleanup first
+		doBackendCleanup(x, verbose=FALSE)
+		
+		cl <- doMPI::startMPIcluster(cl)
+		x$data[[1]] <- cl
+		# add global variable to enable closing the cluster when registering 
+		# another backend
+		assign('.doMPICluster', cl, envir = .GlobalEnv)
+	}
+	register.foreach_backend(x, ...)
+}
+
+setOldClass('mpicluster')
+#' Creates a doMPI foreach backend that uses the MPI cluster described in 
+#' \code{object}.
+setMethod('ForeachBackend', 'mpicluster', 
+	function(object, ...){
+		ForeachBackend('doMPI', cl=object)
+	}
+)
+
+setOldClass('doMPI_backend')
+#' doMPI-specific backend factory
+setMethod('ForeachBackend', 'doMPI_backend',
+	function(object, cl){
+		
+		# use all available cores if not otherwise specified
+		if( missing(cl) ) cl <- getMaxCores()
+		
+		if ( is.numeric(cl) ) {
+			doBackendCleanup(object, function(x){
+				# get cluster object from global variable `.doMPICluster`
+				if( !exists(".doMPICluster", envir = .GlobalEnv) ) return()
+				
+				cl <- get(".doMPICluster", envir = .GlobalEnv)
+				doMPI::closeCluster(cl)
+				rm(list=".doMPICluster", envir = .GlobalEnv)
+			})
+		}
+		
+		# required registration data
+		object$fun <- doMPI:::doMPI
+		object$info <- doMPI:::info
+		
+		# return object
+		object
+	}
+)
+
+##############
+# doSNOW
+##############
+
+setOldClass('doSNOW_backend')
+#' doSNOW-specific backend factory
+setMethod('ForeachBackend', 'doSNOW_backend',
+	function(object, cl, ...){
+		
+		# use all available cores if not otherwise specified
+		if( missing(cl) ) cl <- getMaxCores()
+		
+		if ( is.numeric(cl) ) {
+			doBackendCleanup(object, function(x){
+				# get cluster object from global variable `.doMPICluster`
+				if( !exists(".doSNOWCluster", envir = .GlobalEnv) ) return()
+				cl <- get(".doSNOWCluster", envir = .GlobalEnv)
+				snow::stopCluster(cl)
+				rm(list=".doSNOWCluster", envir = .GlobalEnv)
+			})
+		}
+		
+		# required registration data
+		object$fun <- doSNOW:::doSNOW
+		object$info <- doSNOW:::info
+		
+		# return object
+		object
+	}
+)
+
+#' @S3method register doMPI_backend
+register.doSNOW_backend <- function(x, ...){
+	
+	cl <- x$data[[1]]
+	if( is.numeric(cl) ){
+		# cleanup first
+		doBackendCleanup(x, verbose=FALSE)
+		# start cluster
+		cl <- do.call(snow::makeCluster, x$data)
+		x$data <- list(cl)
+		# add global variable to enable closing the cluster when registering 
+		# another backend
+		assign('.doSNOWCluster', cl, envir = .GlobalEnv)
+	}
+	register.foreach_backend(x, ...)
+}
+
+#as.foreach_backend <- function(x, ...){
+#	
+#	args <- list(...)
+#	if( is.backend(x) ){
+#		# update arg list if necessary
+#		if( length(args) > 0L )	x$args <- args
+#		return(x)
+#	}
+#	
+#	be <-
+#	if( is.null(x) ){
+#		getDoParName()
+#	} else if( is(x, 'cluster') || is.numeric(x) ){
+#		# check numeric specification
+#		if( is.numeric(x) ){
+#			if( length(x) == 0L )
+#				stop("invalid number of cores specified as a backend [empty]")
+#			x <- x[1]
+#			if( x <= 0 )
+#				stop("invalid negative number of cores [", x, "] specified for backend 'doParallel'")
+#		}
+#		
+#		args$spec <- x
+#		'Parallel'
+#	} else if( is(x, 'mpicluster') ){
+#		args$spec <- x
+#		'MPI'
+#	} else if( is.character(x) ){
+#		toupper(x)
+#	} else 
+#		stop("invalid backend specification: must be NULL, a valid backend name, a numeric value or a cluster object [", class(x)[1L], "]")
+#
+#	if( be %in% c('PAR', 'PARALLEL') ) be <- 'Parallel'
+#	# remove leading 'do'
+#	be <- str_c('do', sub('^do', '', be))
+#	# build S3 class name
+#	s3class <- str_c(be, "_backend")
+#	
+#	# check the registration routine is available
+#	regfun <- .foreach_regfun(be)
+#	
+#	structure(list(name=be, args=args), class=c(s3class, 'foreach_backend'))
+#}
+
+is.backend <- function(x) is(x, 'foreach_backend')
+
+#' @S3method print foreach_backend
+print.foreach_backend <- function(x, ...){
+	cat("<foreach backend:", x$name, ">\n", sep='')
+	if( length(x$data) ){
+		cat("Specifications:\n")
+		str(x$data)
+	}
+}
+
+.foreach_regfun <- function(name){
+	
+	# early exit for doSEQ
+	if( name == 'doSEQ' ) return( registerDoSEQ )
+	
+	# build name of registration function
+	s <- str_c(toupper(substring(name, 1,1)), substring(name, 2))
+	funname <- str_c('register', s)
+	s3class <- str_c(name, "_backend")
+	
+	# require definition package
+	if( !require.quiet(name, character.only=TRUE) )
+		stop("could not find package for backend '", name, "'")
+	# check for registering function or generic
+	if( is.null(regfun <- getFunction(funname, mustFind=FALSE, where=asNamespace(name))) ){
+		if( is.null(regfun <- getS3method('register', s3class, optional=TRUE)) )
+			stop("could not find registration routine for backend '", name, "'")
+		#			stop("backend '", name,"' is not supported: function "
+		#							,"`", regfun, "` and S3 method `register.", s3class, "` not found.")
+	}
+	regfun
+}
+
+# add new option: limit.cores indicates if the number of cores used in parallel 
+# computation can exceed the detected number of CPUs on the host. 
+#.OPTIONS$newOptions(limit.cores=TRUE)
+
+#' Computational Setup Functions
+#' 
+#' @description
+#' Functions used internally to setup the computational environment.
+#' 
+#' \code{setupBackend} sets up the foreach backend.
+#' 
+#' @param spec target parallel specification: either \code{TRUE} or \code{FALSE},
+#' or a single numeric value that specifies the number of cores to setup. 
+#' @param optional a logical that indicates if the specification must be fully 
+#' satisfied, throwing an error if it is not, or if one can switch back to 
+#' sequential, only outputting a verbose message.
+#' @param backend value from argument \code{.pbackend} of \code{nmf}.
+#' @param verbose logical or integer level of verbosity for message outputs.
+#' 
+#' @keywords internals
+#' @rdname setup
+setupBackend <- function(spec, optional, backend, verbose=FALSE){
+
+	pbackend <- backend
+	str_backend <- quick_str(pbackend)
+	# early exit: specifications or backend mean no foreach at all
+	if( isFALSE(spec) || isNA(pbackend) ) return(FALSE)
+	# use doParallel with number of cores if specified in backend
+	if( is.numeric(pbackend) ){
+		spec <- pbackend
+		pbackend <- 'PAR'
+	}
+	# identify doSEQ calls
+	doSEQ <- formatDoName(pbackend) == 'doSEQ'
+		
+	# custom error function
+	pcomp <- is.numeric(spec) && !identical(spec[1], 1)
+	errorFun <- function(value=FALSE, stop=FALSE, level=1){
+		function(e, ...){
+			if( !is(e, 'error') ) e <- list(message=str_c(e, ...))
+			
+			pref <- if( pcomp ) "Parallel" else "Foreach"
+			if( !optional || stop ){
+				if( verbose >= level ) message('ERROR')
+				stop(pref, " computation aborted: ", e$message, call.=FALSE)
+			}else if( verbose >= level ){
+				message('NOTE')
+				message("# NOTE: ", pref, " computation disabled: ", e$message)
+			}
+			value
+		}
+	}
+	
+	# check current backend if backend is NULL
+	if( is.null(pbackend) ){
+		if( verbose > 1 ) message("# Check current backend ... ", appendLF=FALSE)
+		ok <- tryCatch({
+			if( is.null(getDoParName()) )
+				stop(".pbackend is NULL but there is no registered backend")
+			TRUE
+		}, error = errorFun())
+		if( !ok ) return(FALSE)
+		if( verbose > 1 ) message('OK')
+		# exit now since there is nothing to setup, nothing should change
+		return(TRUE)
+	}
+	
+	# test if requested number of cores is actually available
+	NCORES <- getMaxCores()
+	if( verbose > 2 ) message("# Check available cores ... [", NCORES, ']')
+	if( verbose > 2 ) message("# Check requested cores ... ", appendLF=FALSE)
+	ncores <- if( doSEQ ) 1L
+		else{
+			ncores <- tryCatch({
+					if( is.numeric(spec) ){
+						if( length(spec) == 0L )
+							stop("no number of cores specified for backend '", str_backend, "'")
+						spec <- spec[1]
+						if( spec <= 0L )
+							stop("invalid negative number of cores [", spec, "] specified for backend '", str_backend, "'")
+						spec
+					}else # by default use the 'cores' option or half the number of cores
+						getOption('cores', NCORES) #getOption('cores', ceiling(NCORES/2))
+				}, error = errorFun(stop=TRUE))
+			if( isFALSE(ncores) ) return(FALSE)
+			ncores
+		}
+	if( verbose > 2 ) message('[', ncores, ']')
+	
+	# create backend object
+	if( verbose > 2 ) message("# Loading backend for specification `", str_backend, "` ... ", appendLF=FALSE)
+	b <- tryCatch({
+			# NB: limit to the number of cores available on the host 
+			if( !doSEQ ) ForeachBackend(pbackend, min(ncores, NCORES))
+			else ForeachBackend(pbackend)
+		}, error = errorFun(level=3))
+	if( isFALSE(b) ) return(FALSE)
+	if( verbose > 2 ) message('OK')
+	
+	if( verbose > 1 ) message("# Check host compatibility ... ", appendLF=FALSE)
+	ok <- tryCatch({
+		# check if we're not running on MAC from GUI
+		if( is.Mac(check.gui=TRUE) && (b$name == 'doMC' || (b$name == 'doParallel' && is.numeric(b$data[[1]]))) ){
+			# error only if the parallel computation was explicitly asked by the user
+			stop("multicore parallel computations are not safe from R.app on Mac OS X."
+					, "\n  -> Use a terminal session, starting R from the command line.")
+		}
+		TRUE
+		}, error = errorFun())
+	if( !ok ) return(FALSE)
+	if( verbose > 1 ) message('OK')
+	
+	if( verbose > 1 ) message("# Setting up `", b$name, "` ... ", appendLF=FALSE)
+	# try registering the backend
+	oldBackend <- getDoBackend()
+	# setup retoration of backend in case of an error
+	on.exit( setDoBackend(oldBackend) )
+	
+	ok <- tryCatch({
+			registerDoBackend(b)
+			TRUE
+		}
+		, error = errorFun())
+	if( !ok ) return(FALSE)
+	if( verbose > 1 ) message('OK')
+	
+	# early exit if doSEQ backend
+	if( b$name == 'doSEQ' ){
+		on.exit()
+		return(TRUE)
+	}
+	
+	# test allocated number of cores
+	if( verbose > 2 ) message("# Check allocated cores ... ", appendLF=FALSE)
+	wcores <- getDoParWorkers()
+	if( ncores > 0L && wcores < ncores ){
+		if( !optional ){
+			errorFun(level=3)("only ", wcores, " core(s) available [requested ", ncores ," core(s)]")
+		}else if( verbose > 2 ){
+			message('NOTE [', wcores, '/', ncores, ']')
+			message("# NOTE: using only ", wcores,
+					" core(s) [requested ", ncores ," core(s)]")
+		}
+	}
+	else if( verbose > 2 ){
+		message('OK [', wcores, '/', ncores
+				, if(ncores != NCORES ) str_c(' out of ', NCORES)
+				, ']')
+	}
+	
+	# cancel backend restoration
+	on.exit()
+	TRUE
+} 
+
+
+# add new option: shared.memory that indicates if one should try using shared memory
+# to speed-up parallel computations. 
+.OPTIONS$newOptions(shared.memory=TRUE)
+
+#' \code{setupSharedMemory} checks if one can use the packages \emph{bigmemory} and \emph{sychronicity}
+#' to speed-up parallel computations when not keeping all the fits.
+#' When both these packages are available, only one result per host is written on disk,
+#' with its achieved deviance stored in shared memory, that is accessible to all cores on 
+#' a same host.
+#' It returns \code{TRUE} if both packages are available and NMF option \code{'shared'} is 
+#' toggled on. 
+#' 
+#' @rdname setup 
+setupSharedMemory <- function(verbose){
+	
+	if( verbose > 1 ) message("# Check shared memory capability ... ", appendLF=FALSE)
+	# early exit if option shared is off
+	if( !nmf.getOption('shared.memory') ){
+		if( verbose > 1 ) message('SKIP [disabled]')
+		return(FALSE)
+	}
+	# early exit if foreach backend is doMPI: it is not working, not sure why
+	if( isMPIBackend() ){
+		if( verbose > 1 ) message('SKIP [MPI cluster]')
+		return(FALSE)
+	}
+	
+	if( !require.quiet('bigmemory', character.only=TRUE) ){
+		if( verbose > 1 ){
+			message('NO', if( verbose > 2 ) ' [Package `bigmemory` required]')
+		}
+		return(FALSE)
+	}
+	if( !require.quiet('synchronicity', character.only=TRUE) ){
+		if( verbose > 1 ){
+			message('NO', if( verbose > 2 ) ' [Package `synchronicity` required]')
+		}
+		return(FALSE)
+	}
+	if( verbose > 1 ) message('YES', if( verbose > 2 ) ' [synchronicity]')
+	TRUE
+}
+
+is.doSEQ <- function(){
+	dn <- getDoParName()
+	is.null(dn) || dn == 'doSEQ'
+}
+
+#' \code{setupTempDirectory} creates a temporary directory to store the best fits computed on each host.
+#' It ensures each worker process has access to it.
+#' 
+#' @rdname setup
+setupTempDirectory <- function(verbose){
+	
+	# - Create a temporary directory to store the best fits computed on each host
+	NMF_TMPDIR <- tempfile('NMF_', '.')
+	if( verbose > 2 ) message("# Setup temporary directory: '", NMF_TMPDIR, "' ... ", appendLF=FALSE)
+	dir.create(NMF_TMPDIR)
+	if( !is.dir(NMF_TMPDIR) ){
+		if( verbose > 2 ) message('ERROR')
+		nmf_stop('nmf', "could not create temporary result directory '", NMF_TMPDIR, "'")
+	}
+	
+	# ensure that all workers can see the temporary directory
+	wd <- times(getDoParWorkers()) %dopar% {
+		if( !file_test('-d', NMF_TMPDIR) )
+			dir.create(NMF_TMPDIR, recursive=TRUE)
+		file_test('-d', NMF_TMPDIR)
+	}
+	# check it worked
+	if( any(!wd) ){
+		if( verbose > 2 ) message('ERROR')
+		nmf_stop('nmf', "could not create/see temporary result directory '", NMF_TMPDIR, "' on worker nodes ", str_out(which(!wd), Inf))	
+	}
+	if( verbose > 2 ) message('OK')
+	
+	NMF_TMPDIR
+}
+
+#' Utilities for Parallel Computations
+#'
+#' 
+#' @rdname parallel
+#' @name parallel-NMF 
+NULL
+
+#' \code{ts_eval} generates a thread safe version of \code{\link{eval}}.
+#' It uses boost mutexes provided by the \code{\link[synchronicity]{synchronicity}}
+#' package.
+#' The generated function has arguments \code{expr} and \code{envir}, which are passed
+#' to \code{\link{eval}}.
+#' 
+#' @param mutex a mutex or a mutex descriptor.
+#' If missing, a new mutex is created via the function \code{\link[synchronicity]{boost.mutex}}.
+#' @param verbose a logical that indicates if messages should be printed when 
+#' locking and unlocking the mutex.
+#' 
+#' @rdname parallel
+#' @export
+ts_eval <- function(mutex = synchronicity::boost.mutex(), verbose=FALSE){
+	
+	
+	library(bigmemory)
+	library(synchronicity)
+	# describe mutex if necessary
+	# NB: use bigmemory::describe because synchronicity::describe breaks if
+	# synchronicity is loaded together with bigmemory
+	.MUTEX_DESC <- 
+			if( is(mutex, 'boost.mutex') ) bigmemory::describe(mutex)
+			else mutex
+	
+	loadpkg <- TRUE
+	function(expr, envir=parent.frame()){
+		
+		# load packages once
+		if( loadpkg ){
+			library(bigmemory)
+			library(synchronicity)
+			loadpkg <<- FALSE
+		}
+		MUTEX <- synchronicity::attach.mutex(.MUTEX_DESC)
+		synchronicity::lock(MUTEX)
+		if( verbose )
+			message('#', Sys.getpid(), " - START mutex: ", .MUTEX_DESC@description$shared.name)
+		ERROR <- "### <Error in mutex expression> ###\n"
+		on.exit({
+			if( verbose ){
+				message(ERROR, '#', Sys.getpid(), " - END mutex: ", .MUTEX_DESC@description$shared.name)
+			}
+			synchronicity::unlock(MUTEX)
+		})
+		
+		eval(expr, envir=envir)
+		
+		ERROR <- NULL
+	}	
+}
+
+#' \code{ts_tempfile} generates a \emph{unique} temporary filename 
+#' that includes the name of the host machine and/or the caller's process id, 
+#' so that it is thread safe.
+#' 
+#' @inheritParams base::tempfile
+#' @param ... extra arguments passed to \code{\link[base]{tempfile}}.
+#' @param host logical that indicates if the host machine name should 
+#' be appear in the filename.
+#' @param pid logical that indicates if the current process id 
+#' be appear in the filename.
+#' 
+#' @rdname parallel
+#' @export
+ts_tempfile <- function(pattern = "file", ..., host=TRUE, pid=TRUE){
+	if( host ) pattern <- c(pattern, Sys.info()['nodename'])
+	if( pid ) pattern <- c(pattern, Sys.getpid())
+	tempfile(paste(pattern, collapse='_'), ...)
+}
+
+#' \code{hostfile} generates a temporary filename composed with  
+#' the name of the host machine and/or the current process id.
+#' 
+#' @inheritParams base::tempfile
+#' @inheritParams ts_tempfile
+#' 
+#' @rdname parallel
+#' @export
+hostfile <- function(pattern = "file", tmpdir=tempdir(), fileext='', host=TRUE, pid=TRUE){
+	if( host ) pattern <- c(pattern, Sys.info()['nodename'])
+	if( pid ) pattern <- c(pattern, Sys.getpid())
+	file.path(tmpdir, str_c(paste(pattern, collapse='.'), fileext))
+}
+
+#' \code{gVariable} generates a function that access a global static variable, 
+#' possibly in shared memory (only for numeric matrix-coercible data in this case).
+#' It is used primarily in parallel computations, to preserve data accross 
+#' computations that are performed by the same process.
+#' 
+#' @param init initial value
+#' @param shared a logical that indicates if the variable should be stored in shared 
+#' memory or in the global environment.
+#'  
+#' @rdname parallel
+#' @export
+gVariable <- function(init, shared=FALSE){
+	
+	if( shared ){ # use bigmemory shared matrices
+		if( !is.matrix(init) )
+			init <- as.matrix(init)
+		library(bigmemory)
+		DATA <- bigmemory::as.big.matrix(init, type='double', shared=TRUE)
+		DATA_DESC <- bigmemory::describe(DATA)
+	}else{ # use variables assigned to .GlobalEnv
+		DATA_DESC <- basename(tempfile('.gVariable_'))
+	}
+	
+	loadpkg <- TRUE
+	function(value){
+		
+		# load packages once
+		if( loadpkg ){
+			library(bigmemory)
+			loadpkg <<- FALSE	
+		}
+		
+		# if shared: attach bigmemory matrix from its descriptor object
+		if( shared ){
+			DATA <- bigmemory::attach.big.matrix(DATA_DESC)
+		}
+		
+		if( missing(value) ){# READ ACCESS
+			
+			if( !shared ){
+				# initialise if necessary
+				if( !exists(DATA_DESC, envir=.GlobalEnv) )
+					assign(DATA_DESC, init, envir=.GlobalEnv)
+				# return variable
+				get(DATA_DESC, envir=.GlobalEnv)
+			}else 
+				DATA[]
+			
+		}else{# WRITE ACCESS
+			
+			if( !shared ) assign(DATA_DESC, value, envir=.GlobalEnv) 
+			else DATA[] <- value
+			
+		}
+	}
+}
+
+#' \code{setupLibPaths} add the path to the NMF package to each workers' libPaths. 
+#' 
+#' @param pkg package name whose path should be exported the workers.
+#' 
+#' @rdname setup
+setupLibPaths <- function(pkg='NMF', verbose=FALSE){
+	if( verbose ){
+		message("# Setting up libpath on workers for package(s) "
+			, str_out(pkg, Inf), ' ... ', appendLF=FALSE)
+	}
+	p <- path.package(pkg)
+	if( is.null(p) ) return()
+	plibs <- dirname(p)
+	libs <- times(getDoParWorkers()) %dopar% {
+		.libPaths(c(.libPaths(), plibs))
+	}
+	libs <- unique(unlist(libs))
+	if( verbose ){
+		message("OK\n# libPaths:\n", paste('  ', libs, collapse="\n"))
+	}
+	libs
+}
+
+#StaticWorkspace <- function(..., .SHARED=FALSE){
+#		
+#	# create environment
+#	e <- new.env(.GlobalEnv)
+#	# fill with initial data
+#	vars <- list(...)
+#	if( .SHARED ){
+#		lapply(names(vars), function(x){
+#			bm <- bigmemory::as.big.matrix(vars[[x]], type='double', shared=TRUE)
+#			e[[x]] <- bigmemory::describe(bm)
+#		})
+#	}else
+#		list2env(vars, envir=e)
+#	
+#	structure(e, shared=.SHARED, class=c("static_wsp", 'environment'))
+#}
+#
+#`[[.static_wsp` <- function(x, ..., exact = TRUE){
+#	if( attr(x, 'shared') ){
+#		var <- bigmemory::attach.big.matrix(NextMethod())
+#		var[]
+#	}else
+#		NextMethod()
+#}
+#
+#`[[.static_wsp<-` <- function(x, i, value){
+#	
+#	if( attr(x, 'shared') ){
+#		var <- bigmemory::attach.big.matrix(x[[i]])
+#		var[] <- value
+#	}else
+#		x[[i]] <- value
+#	x
+#}
+
+
+isRNGseed <- function(x){
+	is.numeric(x) || 
+			( is.list(x) 
+				&& is.null(names(x)) 
+				&& all(sapply(x, is.numeric)) )
+}
+
+#' \code{setupRNG} sets the RNG for use by the function nmf.
+#' It returns the old RNG as an rstream object or the result of set.seed 
+#'  if the RNG is not changed due to one of the following reason:
+#'  - the settings are not compatible with rstream  
+#' 
+#' @param seed initial RNG seed specification
+#' @param n number of RNG seeds to generate
+#' 
+#' @rdname setup
+setupRNG <- function(seed, n, verbose=FALSE){
+	
+	if( verbose == 2 ){
+		message("# Setting up RNG ... ", appendLF=FALSE)
+		on.exit( if( verbose == 2 ) message("OK") )
+	}else if( verbose > 2 ) message("# Setting up RNG ... ")
+	
+	if( verbose > 3 ){
+		message("# ** Original RNG settings:")
+		showRNG()
+	}
+	
+	# for multiple runs one always uses RNGstreams
+	if( n > 1 ){
+		
+		# seeding with numeric values only
+		if( is.list(seed) && isRNGseed(seed) ){
+			if( length(seed) != n )
+				stop("Invalid list of RNG seeds: must be of length ", n)
+			
+			if( verbose > 2 ) message("# Using supplied list of RNG seeds")
+			return(seed)
+			
+		}else if( is.numeric(seed) ){
+			
+			if( verbose > 2 ){
+				message("# Generate RNGStream sequence using seed ("
+						, RNGstr(seed), ") ... "
+						, appendLF=FALSE)
+			}
+			res <- RNGseq(n, seed)
+			if( verbose > 2 ) message("OK")
+			return(res)
+			
+		}else{ # create a sequence of RNGstream using a random seed
+			if( verbose > 2 ){
+				message("# Generate RNGStream sequence using a random seed ... "
+						, appendLF=FALSE)
+			}
+			res <- RNGseq(n, NULL)
+			if( verbose > 2 ) message("OK")
+			return(res)
+		}
+	}else if( is.numeric(seed) ){ 
+		# for single runs: 1-length seeds are used to set the current RNG
+		# 6-length seeds are used to set RNGstream
+		
+		if( !is.vector(seed) ){
+			message('ERROR')
+			stop("NMF::nmf - Invalid numeric seed: expects a numeric vector.")
+		}
+		
+		# convert to an integer vector
+		seed <- as.integer(seed)
+		# immediately setup the RNG in the standard way		
+		if( length(seed) == 1L ){
+			if( verbose > 2 ){
+				message("# RNG setup: standard [seeding current RNG]")
+				message("# Seeding current RNG with seed (", seed, ") ... "
+						, appendLF=FALSE)
+			}
+			set.seed(seed)
+			if( verbose > 2 ) message("OK")				
+			return( getRNG() )
+		}else if( length(seed) == 6L ){
+			if( verbose > 2 ){
+				message("# RNG setup: reproducible [using RNGstream]")
+				message("# Generate RNGStream sequence using seed ("
+						, RNGstr(seed), ") ... "
+						, appendLF=FALSE)
+			}
+			res <- RNGseq(1, seed)
+			setRNG(res)
+			if( verbose > 2 ) message("OK")
+			return( res )
+		}else{
+			if( verbose > 2 ){
+				message("# RNG setup: directly setting RNG")
+				message("# Setting RNG with .Random.seed= ("
+						, RNGstr(seed), ") ... "
+						, appendLF=FALSE)
+			}
+			setRNG(seed, verbose > 2)
+			if( verbose > 2 ) message("OK")
+			return( getRNG() )
+		}
+		stop("NMF::nmf - Invalid numeric seed: unexpected error.")
+	}else{
+		if( verbose > 2 ) message("# RNG setup: standard [using current RNG]")
+		NULL
+	}
+} 
+
+##################################################################
+## END
+##################################################################
