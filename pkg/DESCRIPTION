@@ -4,7 +4,7 @@ Title: Algorithms and framework for Nonnegative Matrix Factorization (NMF).
 Version: 0.9
 Date: 2010-08-20
 Author: Renaud Gaujoux
-Maintainer: Renaud Gaujoux <renaud@cbio.uct.ac.za>
+Maintainer: Renaud Gaujoux <renaud@mancala.cbio.uct.ac.za>
 Description: This package provides a framework to perform Non-negative Matrix
     Factorization (NMF). It implements a set of already published algorithms
     and seeding methods, and provides a framework to test, develop and plug
