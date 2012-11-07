@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfit-class. NMF 0.8.27</title>
+<title>NMFfit-class. NMF 0.8.28</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.27</a>
+      <a class="brand" href="index.html">NMF 0.8.28</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -357,23 +357,13 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="comment"># run default NMF algorithm on a random matrix</span>
-<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span> <span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span>
-<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">)</span>
-
-<span class="comment"># result class is NMFfit</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/class'>class</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+    <pre class="examples"><div class='input'># run default NMF algorithm on a random matrix</div><div class='input'><span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span> <span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span></div><div class='input'><span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span></div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">)</span></div><div class='input'></div><div class='input'># result class is NMFfit</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/class'>class</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
 <div class='output'>[1] "NMFfit"
 attr(,"package")
 [1] "NMF"
-</div>
-<div class='input'><span class="functioncall"><a href='types.html'>isNMFfit</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='types.html'>isNMFfit</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
 <div class='output'>[1] TRUE
-</div>
-<div class='input'>
-<span class="comment"># show result</span>
-<span class="symbol">res</span></div>
+</div><div class='input'></div><div class='input'># show result</div><div class='input'><span class="symbol">res</span></div>
 <div class='output'><Object of class: NMFfit>
  # Model:
   <Object of class:NMFstd>
@@ -389,13 +379,10 @@ attr(,"package")
   Iterations: 670 
   Timing:
      user  system elapsed 
-    0.357   0.000   0.418 
-</div>
-<div class='input'>
-<span class="comment"># compute summary measures</span>
-<span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="symbol">V</span><span class="keyword">)</span></div>
+    0.332   0.004   0.335 
+</div><div class='input'></div><div class='input'># compute summary measures</div><div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="symbol">V</span><span class="keyword">)</span></div>
 <div class='output'>            rank sparseness.basis  sparseness.coef              rss             evar        residuals            niter              cpu          cpu.all             nrun 
-       3.0000000        0.1518974        0.4116923       64.1684436        0.8019828       73.6481924      670.0000000        0.3570000        0.3570000        1.0000000 
+       3.0000000        0.1518974        0.4116923       64.1684436        0.8019828       73.6481924      670.0000000        0.3320000        0.3320000        1.0000000 
 </div></pre>
   </div>
   <div class="span4">

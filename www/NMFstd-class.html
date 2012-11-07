@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFstd-class. NMF 0.8.27</title>
+<title>NMFstd-class. NMF 0.8.28</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.27</a>
+      <a class="brand" href="index.html">NMF 0.8.28</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -211,43 +211,22 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="comment"># create a completely empty NMFstd object</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/methods/new'>new</a></span><span class="keyword">(</span><span class="string">'NMFstd'</span><span class="keyword">)</span></div>
+    <pre class="examples"><div class='input'># create a completely empty NMFstd object</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/methods/new'>new</a></span><span class="keyword">(</span><span class="string">'NMFstd'</span><span class="keyword">)</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 0 
 basis/rank: 0 
 samples: 0 
-</div>
-<div class='input'>
-<span class="comment"># create a NMF object based on one random matrix: the missing matrix is deduced</span>
-<span class="comment"># Note this only works when using factory method NMF</span>
-<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span>
-<span class="symbol">w</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">)</span>
-<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'># create a NMF object based on one random matrix: the missing matrix is deduced</div><div class='input'># Note this only works when using factory method NMF</div><div class='input'><span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span></div><div class='input'><span class="symbol">w</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">)</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 50 
 basis/rank: 3 
 samples: 0 
-</div>
-<div class='input'>
-<span class="comment"># create a NMF object based on random (compatible) matrices</span>
-<span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span>
-<span class="symbol">h</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
-<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'># create a NMF object based on random (compatible) matrices</div><div class='input'><span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span></div><div class='input'><span class="symbol">h</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 50 
 basis/rank: 3 
 samples: 20 
-</div>
-<div class='input'>
-<span class="comment"># create a NMF object based on incompatible matrices: generate an error</span>
-<span class="symbol">h</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">+</span><span class="number">1</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/try'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/methods/new'>new</a></span><span class="keyword">(</span><span class="string">'NMFstd'</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span> <span class="keyword">)</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/try'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">)</span> <span class="keyword">)</span>
-
-<span class="comment"># Giving target dimensions to the factory method allow for coping with dimension</span>
-<span class="comment"># incompatibilty (a warning is thrown in such case)</span>
-<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'># create a NMF object based on incompatible matrices: generate an error</div><div class='input'><span class="symbol">h</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">+</span><span class="number">1</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/try'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/methods/new'>new</a></span><span class="keyword">(</span><span class="string">'NMFstd'</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span> <span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/try'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">)</span> <span class="keyword">)</span></div><div class='input'></div><div class='input'># Giving target dimensions to the factory method allow for coping with dimension</div><div class='input'># incompatibilty (a warning is thrown in such case)</div><div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">r</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="symbol">w</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="symbol">h</span><span class="keyword">)</span></div>
 <strong class='warning'>Warning message:
 nmfModel - Objective rank [3] is lower than the number of rows in H [4]: only the first 3 rows of H  will be used</strong>
 <div class='output'><Object of class:NMFstd>

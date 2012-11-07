@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>fcnnls. NMF 0.8.27</title>
+<title>fcnnls. NMF 0.8.28</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.27</a>
+      <a class="brand" href="index.html">NMF 0.8.28</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -182,22 +182,7 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="comment">## Define a random non-negative matrix matrix</span>
-<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">200</span><span class="keyword">;</span> <span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span>
-<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span>
-
-<span class="comment">## Compute the optimal matrix K for a given X matrix</span>
-<span class="symbol">X</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">)</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">,</span> <span class="symbol">V</span><span class="keyword">)</span>
-
-<span class="comment">## Compute the same thing using the Moore-Penrose generalized pseudoinverse</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">,</span> <span class="symbol">V</span><span class="keyword">,</span> <span class="argument">pseudo</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span>
-
-<span class="comment">## It also works in the case of single vectors</span>
-<span class="symbol">y</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/stats/Uniform'>runif</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">)</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span>
-<span class="comment"># or</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">[</span><span class="keyword">,</span><span class="number">1</span><span class="keyword">]</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span></div></pre>
+    <pre class="examples"><div class='input'>## Define a random non-negative matrix matrix</div><div class='input'><span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">200</span><span class="keyword">;</span> <span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span></div><div class='input'><span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span></div><div class='input'></div><div class='input'>## Compute the optimal matrix K for a given X matrix</div><div class='input'><span class="symbol">X</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">)</span></div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">,</span> <span class="symbol">V</span><span class="keyword">)</span></div><div class='input'></div><div class='input'>## Compute the same thing using the Moore-Penrose generalized pseudoinverse</div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">,</span> <span class="symbol">V</span><span class="keyword">,</span> <span class="argument">pseudo</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span></div><div class='input'></div><div class='input'>## It also works in the case of single vectors</div><div class='input'><span class="symbol">y</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/stats/Uniform'>runif</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">)</span></div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span></div><div class='input'># or</div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">[</span><span class="keyword">,</span><span class="number">1</span><span class="keyword">]</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span></div></pre>
   </div>
   <div class="span4">
     <!-- <ul>

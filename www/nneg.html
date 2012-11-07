@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nneg. NMF 0.8.27</title>
+<title>nneg. NMF 0.8.28</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.27</a>
+      <a class="brand" href="index.html">NMF 0.8.28</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -156,48 +156,35 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="comment"># random mixed sign data (normal distribution)</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/Random'>set.seed</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">)</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span><span class="number">5</span><span class="keyword">,</span> <span class="symbol">rnorm</span><span class="keyword">,</span> <span class="argument">mean</span><span class="argument">=</span><span class="number">0</span><span class="keyword">,</span> <span class="argument">sd</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span>
-<span class="symbol">x</span></div>
+    <pre class="examples"><div class='input'># random mixed sign data (normal distribution)</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/Random'>set.seed</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">)</span></div><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span><span class="number">5</span><span class="keyword">,</span> <span class="symbol">rnorm</span><span class="keyword">,</span> <span class="argument">mean</span><span class="argument">=</span><span class="number">0</span><span class="keyword">,</span> <span class="argument">sd</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span></div><div class='input'><span class="symbol">x</span></div>
 <div class='output'>           [,1]      [,2]       [,3]        [,4]       [,5]
 [1,] -3.1322691 -4.102342   7.558906 -0.22466805  4.5948869
 [2,]  0.9182166  2.437145   1.949216 -0.08095132  3.9106815
 [3,] -4.1781431  3.691624  -3.106203  4.71918105  0.3728249
 [4,]  7.9764040  2.878907 -11.073499  4.10610598 -9.9467585
 [5,]  1.6475389 -1.526942   5.624655  2.96950661  3.0991287
-</div>
-<div class='input'>
-<span class="comment"># pmax (default)</span>
-<span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'># pmax (default)</div><div class='input'><span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
 <div class='output'>          [,1]     [,2]     [,3]     [,4]      [,5]
 [1,] 0.0000000 0.000000 7.558906 0.000000 4.5948869
 [2,] 0.9182166 2.437145 1.949216 0.000000 3.9106815
 [3,] 0.0000000 3.691624 0.000000 4.719181 0.3728249
 [4,] 7.9764040 2.878907 0.000000 4.106106 0.0000000
 [5,] 1.6475389 0.000000 5.624655 2.969507 3.0991287
-</div>
-<div class='input'><span class="comment"># using a threshold</span>
-<span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">threshold</span><span class="argument">=</span><span class="number">2</span><span class="keyword">)</span></div>
+</div><div class='input'># using a threshold</div><div class='input'><span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">threshold</span><span class="argument">=</span><span class="number">2</span><span class="keyword">)</span></div>
 <div class='output'>         [,1]     [,2]     [,3]     [,4]     [,5]
 [1,] 0.000000 0.000000 7.558906 0.000000 4.594887
 [2,] 0.000000 2.437145 0.000000 0.000000 3.910682
 [3,] 0.000000 3.691624 0.000000 4.719181 0.000000
 [4,] 7.976404 2.878907 0.000000 4.106106 0.000000
 [5,] 0.000000 0.000000 5.624655 2.969507 3.099129
-</div>
-<div class='input'><span class="comment"># without shifting the entries lower than threshold</span>
-<span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">threshold</span><span class="argument">=</span><span class="number">2</span><span class="keyword">,</span> <span class="argument">shift</span><span class="argument">=</span><span class="number">FALSE</span><span class="keyword">)</span></div>
+</div><div class='input'># without shifting the entries lower than threshold</div><div class='input'><span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">threshold</span><span class="argument">=</span><span class="number">2</span><span class="keyword">,</span> <span class="argument">shift</span><span class="argument">=</span><span class="number">FALSE</span><span class="keyword">)</span></div>
 <div class='output'>         [,1]     [,2]     [,3]     [,4]     [,5]
 [1,] 2.000000 2.000000 7.558906 2.000000 4.594887
 [2,] 2.000000 2.437145 2.000000 2.000000 3.910682
 [3,] 2.000000 3.691624 2.000000 4.719181 2.000000
 [4,] 7.976404 2.878907 2.000000 4.106106 2.000000
 [5,] 2.000000 2.000000 5.624655 2.969507 3.099129
-</div>
-<div class='input'>
-<span class="comment"># posneg: split positive and negative part</span>
-<span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">method</span><span class="argument">=</span><span class="string">'posneg'</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'># posneg: split positive and negative part</div><div class='input'><span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">method</span><span class="argument">=</span><span class="string">'posneg'</span><span class="keyword">)</span></div>
 <div class='output'>           [,1]     [,2]      [,3]       [,4]      [,5]
  [1,] 0.0000000 0.000000  7.558906 0.00000000 4.5948869
  [2,] 0.9182166 2.437145  1.949216 0.00000000 3.9106815
@@ -209,8 +196,7 @@
  [8,] 4.1781431 0.000000  3.106203 0.00000000 0.0000000
  [9,] 0.0000000 0.000000 11.073499 0.00000000 9.9467585
 [10,] 0.0000000 1.526942  0.000000 0.00000000 0.0000000
-</div>
-<div class='input'><span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">method</span><span class="argument">=</span><span class="string">'pos'</span><span class="keyword">,</span> <span class="argument">threshold</span><span class="argument">=</span><span class="number">2</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">method</span><span class="argument">=</span><span class="string">'pos'</span><span class="keyword">,</span> <span class="argument">threshold</span><span class="argument">=</span><span class="number">2</span><span class="keyword">)</span></div>
 <div class='output'>          [,1]     [,2]      [,3]     [,4]     [,5]
  [1,] 0.000000 0.000000  7.558906 0.000000 4.594887
  [2,] 0.000000 2.437145  0.000000 0.000000 3.910682
@@ -222,64 +208,48 @@
  [8,] 4.178143 0.000000  3.106203 0.000000 0.000000
  [9,] 0.000000 0.000000 11.073499 0.000000 9.946758
 [10,] 0.000000 0.000000  0.000000 0.000000 0.000000
-</div>
-<div class='input'>
-<span class="comment"># absolute</span>
-<span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">method</span><span class="argument">=</span><span class="string">'absolute'</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'># absolute</div><div class='input'><span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">method</span><span class="argument">=</span><span class="string">'absolute'</span><span class="keyword">)</span></div>
 <div class='output'>          [,1]     [,2]      [,3]       [,4]      [,5]
 [1,] 3.1322691 4.102342  7.558906 0.22466805 4.5948869
 [2,] 0.9182166 2.437145  1.949216 0.08095132 3.9106815
 [3,] 4.1781431 3.691624  3.106203 4.71918105 0.3728249
 [4,] 7.9764040 2.878907 11.073499 4.10610598 9.9467585
 [5,] 1.6475389 1.526942  5.624655 2.96950661 3.0991287
-</div>
-<div class='input'><span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">method</span><span class="argument">=</span><span class="string">'abs'</span><span class="keyword">,</span> <span class="argument">threshold</span><span class="argument">=</span><span class="number">2</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">method</span><span class="argument">=</span><span class="string">'abs'</span><span class="keyword">,</span> <span class="argument">threshold</span><span class="argument">=</span><span class="number">2</span><span class="keyword">)</span></div>
 <div class='output'>         [,1]     [,2]      [,3]     [,4]     [,5]
 [1,] 3.132269 4.102342  7.558906 0.000000 4.594887
 [2,] 0.000000 2.437145  0.000000 0.000000 3.910682
 [3,] 4.178143 3.691624  3.106203 4.719181 0.000000
 [4,] 7.976404 2.878907 11.073499 4.106106 9.946758
 [5,] 0.000000 0.000000  5.624655 2.969507 3.099129
-</div>
-<div class='input'>
-<span class="comment"># min</span>
-<span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">method</span><span class="argument">=</span><span class="string">'min'</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'># min</div><div class='input'><span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">method</span><span class="argument">=</span><span class="string">'min'</span><span class="keyword">)</span></div>
 <div class='output'>          [,1]      [,2]      [,3]     [,4]      [,5]
 [1,]  7.941230  6.971158 18.632405 10.84883 15.668386
 [2,] 11.991716 13.510645 13.022716 10.99255 14.984181
 [3,]  6.895356 14.765123  7.967297 15.79268 11.446324
 [4,] 19.049903 13.952406  0.000000 15.17961  1.126741
 [5,] 12.721038  9.546558 16.698154 14.04301 14.172628
-</div>
-<div class='input'><span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">method</span><span class="argument">=</span><span class="string">'min'</span><span class="keyword">,</span> <span class="argument">threshold</span><span class="argument">=</span><span class="number">2</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">method</span><span class="argument">=</span><span class="string">'min'</span><span class="keyword">,</span> <span class="argument">threshold</span><span class="argument">=</span><span class="number">2</span><span class="keyword">)</span></div>
 <div class='output'>          [,1]      [,2]      [,3]     [,4]     [,5]
 [1,]  7.941230  6.971158 18.632405 10.84883 15.66839
 [2,] 11.991716 13.510645 13.022716 10.99255 14.98418
 [3,]  6.895356 14.765123  7.967297 15.79268 11.44632
 [4,] 19.049903 13.952406  0.000000 15.17961  0.00000
 [5,] 12.721038  9.546558 16.698154 14.04301 14.17263
-</div>
-<div class='input'><span class="comment"># random</span>
-<span class="symbol">M</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/nrow'>ncol</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span><span class="keyword">)</span></div>
+</div><div class='input'># random</div><div class='input'><span class="symbol">M</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/nrow'>ncol</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <strong class='warning'>Warning message:
-Dimensions of W and H look strange [ncol(W)= 5 > ncol(H)= 3 ]</strong>
-<div class='input'><span class="symbol">nnM</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">M</span><span class="keyword">)</span></div>
+Dimensions of W and H look strange [ncol(W)= 5 > ncol(H)= 3 ]</strong><div class='input'><span class="symbol">nnM</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nneg.html'>nneg</a></span><span class="keyword">(</span><span class="symbol">M</span><span class="keyword">)</span></div>
 <strong class='warning'>Warning message:
-Dimensions of W and H look strange [ncol(W)= 5 > ncol(H)= 3 ]</strong>
-<div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">nnM</span><span class="keyword">)</span></div>
+Dimensions of W and H look strange [ncol(W)= 5 > ncol(H)= 3 ]</strong><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">nnM</span><span class="keyword">)</span></div>
 <div class='output'>          [,1]     [,2]     [,3]     [,4]      [,5]
 [1,] 0.0000000 0.000000 7.558906 0.000000 4.5948869
 [2,] 0.9182166 2.437145 1.949216 0.000000 3.9106815
 [3,] 0.0000000 3.691624 0.000000 4.719181 0.3728249
 [4,] 7.9764040 2.878907 0.000000 4.106106 0.0000000
 [5,] 1.6475389 0.000000 5.624655 2.969507 3.0991287
-</div>
-<div class='input'><span class="comment"># mixture coefficients are not affected</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></span><span class="keyword">(</span> <span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">M</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">nnM</span><span class="keyword">)</span> <span class="keyword">)</span></div>
+</div><div class='input'># mixture coefficients are not affected</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></span><span class="keyword">(</span> <span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">M</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">nnM</span><span class="keyword">)</span> <span class="keyword">)</span></div>
 <div class='output'>[1] TRUE
-</div>
-<div class='input'><span class="comment"># shortcut for the "posneg" transformation</span>
-<span class="functioncall"><a href='nneg.html'>posneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
+</div><div class='input'># shortcut for the "posneg" transformation</div><div class='input'><span class="functioncall"><a href='nneg.html'>posneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
 <div class='output'>           [,1]     [,2]      [,3]       [,4]      [,5]
  [1,] 0.0000000 0.000000  7.558906 0.00000000 4.5948869
  [2,] 0.9182166 2.437145  1.949216 0.00000000 3.9106815
@@ -291,8 +261,7 @@ Dimensions of W and H look strange [ncol(W)= 5 > ncol(H)= 3 ]</strong>
  [8,] 4.1781431 0.000000  3.106203 0.00000000 0.0000000
  [9,] 0.0000000 0.000000 11.073499 0.00000000 9.9467585
 [10,] 0.0000000 1.526942  0.000000 0.00000000 0.0000000
-</div>
-<div class='input'><span class="functioncall"><a href='nneg.html'>posneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='nneg.html'>posneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span></div>
 <div class='output'>          [,1]     [,2]      [,3]     [,4]     [,5]
  [1,] 0.000000 0.000000  7.558906 0.000000 4.594887
  [2,] 0.000000 2.437145  0.000000 0.000000 3.910682
@@ -304,30 +273,18 @@ Dimensions of W and H look strange [ncol(W)= 5 > ncol(H)= 3 ]</strong>
  [8,] 4.178143 0.000000  3.106203 0.000000 0.000000
  [9,] 0.000000 0.000000 11.073499 0.000000 9.946758
 [10,] 0.000000 0.000000  0.000000 0.000000 0.000000
-</div>
-<div class='input'><span class="comment"># random mixed sign data (normal distribution)</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/Random'>set.seed</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">)</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span><span class="number">5</span><span class="keyword">,</span> <span class="symbol">rnorm</span><span class="keyword">,</span> <span class="argument">mean</span><span class="argument">=</span><span class="number">0</span><span class="keyword">,</span> <span class="argument">sd</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span>
-<span class="symbol">x</span></div>
+</div><div class='input'># random mixed sign data (normal distribution)</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/Random'>set.seed</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">)</span></div><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span><span class="number">5</span><span class="keyword">,</span> <span class="symbol">rnorm</span><span class="keyword">,</span> <span class="argument">mean</span><span class="argument">=</span><span class="number">0</span><span class="keyword">,</span> <span class="argument">sd</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span></div><div class='input'><span class="symbol">x</span></div>
 <div class='output'>           [,1]      [,2]       [,3]        [,4]       [,5]
 [1,] -3.1322691 -4.102342   7.558906 -0.22466805  4.5948869
 [2,]  0.9182166  2.437145   1.949216 -0.08095132  3.9106815
 [3,] -4.1781431  3.691624  -3.106203  4.71918105  0.3728249
 [4,]  7.9764040  2.878907 -11.073499  4.10610598 -9.9467585
 [5,]  1.6475389 -1.526942   5.624655  2.96950661  3.0991287
-</div>
-<div class='input'>
-<span class="comment"># posneg-transform: split positive and negative part</span>
-<span class="symbol">y</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nneg.html'>posneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/dim'>dim</a></span><span class="keyword">(</span><span class="symbol">y</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'># posneg-transform: split positive and negative part</div><div class='input'><span class="symbol">y</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nneg.html'>posneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/dim'>dim</a></span><span class="keyword">(</span><span class="symbol">y</span><span class="keyword">)</span></div>
 <div class='output'>[1] 10  5
-</div>
-<div class='input'><span class="comment"># posneg-reverse</span>
-<span class="symbol">z</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nneg.html'>rposneg</a></span><span class="keyword">(</span><span class="symbol">y</span><span class="keyword">)</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">z</span><span class="keyword">)</span></div>
+</div><div class='input'># posneg-reverse</div><div class='input'><span class="symbol">z</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nneg.html'>rposneg</a></span><span class="keyword">(</span><span class="symbol">y</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">z</span><span class="keyword">)</span></div>
 <div class='output'>[1] TRUE
-</div>
-<div class='input'><span class="functioncall"><a href='nneg.html'>rposneg</a></span><span class="keyword">(</span><span class="symbol">y</span><span class="keyword">,</span> <span class="argument">unstack</span><span class="argument">=</span><span class="number">FALSE</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='nneg.html'>rposneg</a></span><span class="keyword">(</span><span class="symbol">y</span><span class="keyword">,</span> <span class="argument">unstack</span><span class="argument">=</span><span class="number">FALSE</span><span class="keyword">)</span></div>
 <div class='output'>            [,1]      [,2]       [,3]        [,4]       [,5]
  [1,]  0.0000000  0.000000   7.558906  0.00000000  4.5948869
  [2,]  0.9182166  2.437145   1.949216  0.00000000  3.9106815
@@ -339,19 +296,9 @@ Dimensions of W and H look strange [ncol(W)= 5 > ncol(H)= 3 ]</strong>
  [8,] -4.1781431  0.000000  -3.106203  0.00000000  0.0000000
  [9,]  0.0000000  0.000000 -11.073499  0.00000000 -9.9467585
 [10,]  0.0000000 -1.526942   0.000000  0.00000000  0.0000000
-</div>
-<div class='input'>
-<span class="comment"># But posneg-transformation with a non zero threshold is not reversible</span>
-<span class="symbol">y1</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nneg.html'>posneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">)</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></span><span class="keyword">(</span><span class="functioncall"><a href='nneg.html'>rposneg</a></span><span class="keyword">(</span><span class="symbol">y1</span><span class="keyword">)</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'># But posneg-transformation with a non zero threshold is not reversible</div><div class='input'><span class="symbol">y1</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nneg.html'>posneg</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></span><span class="keyword">(</span><span class="functioncall"><a href='nneg.html'>rposneg</a></span><span class="keyword">(</span><span class="symbol">y1</span><span class="keyword">)</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">)</span></div>
 <div class='output'>[1] FALSE
-</div>
-<div class='input'><span class="comment"># random mixed signed NMF model</span>
-<span class="symbol">M</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="symbol">rnorm</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">4</span><span class="keyword">)</span><span class="keyword">)</span>
-<span class="comment"># split positive and negative part</span>
-<span class="symbol">nnM</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nneg.html'>posneg</a></span><span class="keyword">(</span><span class="symbol">M</span><span class="keyword">)</span>
-<span class="symbol">M2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nneg.html'>rposneg</a></span><span class="keyword">(</span><span class="symbol">nnM</span><span class="keyword">)</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></span><span class="keyword">(</span><span class="symbol">M</span><span class="keyword">,</span> <span class="symbol">M2</span><span class="keyword">)</span></div>
+</div><div class='input'># random mixed signed NMF model</div><div class='input'><span class="symbol">M</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="symbol">rnorm</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">4</span><span class="keyword">)</span><span class="keyword">)</span></div><div class='input'># split positive and negative part</div><div class='input'><span class="symbol">nnM</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nneg.html'>posneg</a></span><span class="keyword">(</span><span class="symbol">M</span><span class="keyword">)</span></div><div class='input'><span class="symbol">M2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nneg.html'>rposneg</a></span><span class="keyword">(</span><span class="symbol">nnM</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></span><span class="keyword">(</span><span class="symbol">M</span><span class="keyword">,</span> <span class="symbol">M2</span><span class="keyword">)</span></div>
 <div class='output'>[1] TRUE
 </div></pre>
   </div>

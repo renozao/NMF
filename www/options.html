@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf.options. NMF 0.8.27</title>
+<title>nmf.options. NMF 0.8.28</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.27</a>
+      <a class="brand" href="index.html">NMF 0.8.28</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -96,8 +96,7 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="comment"># show all NMF specific options</span>
-<span class="functioncall"><a href='options.html'>nmf.printOptions</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
+    <pre class="examples"><div class='input'># show all NMF specific options</div><div class='input'><span class="functioncall"><a href='options.html'>nmf.printOptions</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
 <div class='output'><Package specific options: package:NMF>
 Registered: TRUE
 Options <as default>:
@@ -113,19 +112,11 @@ List of 11
  $ verbose          : logi FALSE
  $ debug            : logi FALSE
  $ shared.memory    : logi TRUE
-</div>
-<div class='input'>
-<span class="comment"># get some options</span>
-<span class="functioncall"><a href='options.html'>nmf.getOption</a></span><span class="keyword">(</span><span class="string">'verbose'</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'># get some options</div><div class='input'><span class="functioncall"><a href='options.html'>nmf.getOption</a></span><span class="keyword">(</span><span class="string">'verbose'</span><span class="keyword">)</span></div>
 <div class='output'>[1] FALSE
-</div>
-<div class='input'><span class="functioncall"><a href='options.html'>nmf.getOption</a></span><span class="keyword">(</span><span class="string">'backend'</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='options.html'>nmf.getOption</a></span><span class="keyword">(</span><span class="string">'backend'</span><span class="keyword">)</span></div>
 <div class='output'>[1] "par"
-</div>
-<div class='input'><span class="comment"># set new values</span>
-<span class="functioncall"><a href='options.html'>nmf.options</a></span><span class="keyword">(</span><span class="argument">verbose</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span>
-<span class="functioncall"><a href='options.html'>nmf.options</a></span><span class="keyword">(</span><span class="argument">backend</span><span class="argument">=</span><span class="string">'snow'</span><span class="keyword">,</span> <span class="argument">default.algorithm</span><span class="argument">=</span><span class="string">'lee'</span><span class="keyword">)</span>
-<span class="functioncall"><a href='options.html'>nmf.printOptions</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
+</div><div class='input'># set new values</div><div class='input'><span class="functioncall"><a href='options.html'>nmf.options</a></span><span class="keyword">(</span><span class="argument">verbose</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='options.html'>nmf.options</a></span><span class="keyword">(</span><span class="argument">backend</span><span class="argument">=</span><span class="string">'snow'</span><span class="keyword">,</span> <span class="argument">default.algorithm</span><span class="argument">=</span><span class="string">'lee'</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='options.html'>nmf.printOptions</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
 <div class='output'><Package specific options: package:NMF>
 Registered: TRUE
 Options:
@@ -154,11 +145,7 @@ List of 11
  $ verbose          : logi FALSE
  $ debug            : logi FALSE
  $ shared.memory    : logi TRUE
-</div>
-<div class='input'>
-<span class="comment"># reset to default</span>
-<span class="functioncall"><a href='options.html'>nmf.resetOptions</a></span><span class="keyword">(</span><span class="keyword">)</span>
-<span class="functioncall"><a href='options.html'>nmf.printOptions</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'># reset to default</div><div class='input'><span class="functioncall"><a href='options.html'>nmf.resetOptions</a></span><span class="keyword">(</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='options.html'>nmf.printOptions</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
 <div class='output'><Package specific options: package:NMF>
 Registered: TRUE
 Options <as default>:

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>rss. NMF 0.8.27</title>
+<title>rss. NMF 0.8.28</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.27</a>
+      <a class="brand" href="index.html">NMF 0.8.28</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -164,29 +164,15 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="comment"># RSS bewteeen random matrices</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">,</span> <span class="argument">max</span><span class="argument">=</span><span class="number">50</span><span class="keyword">)</span>
-<span class="symbol">y</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">,</span> <span class="argument">max</span><span class="argument">=</span><span class="number">50</span><span class="keyword">)</span>
-<span class="functioncall"><a href='rss.html'>rss</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span></div>
+    <pre class="examples"><div class='input'># RSS bewteeen random matrices</div><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">,</span> <span class="argument">max</span><span class="argument">=</span><span class="number">50</span><span class="keyword">)</span></div><div class='input'><span class="symbol">y</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">,</span> <span class="argument">max</span><span class="argument">=</span><span class="number">50</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='rss.html'>rss</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span></div>
 <div class='output'>[1] 78804.71
-</div>
-<div class='input'><span class="functioncall"><a href='rss.html'>rss</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">x</span> <span class="keyword">+</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">max</span><span class="argument">=</span><span class="number">0.1</span><span class="keyword">)</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='rss.html'>rss</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">x</span> <span class="keyword">+</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">max</span><span class="argument">=</span><span class="number">0.1</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>[1] 0.6619555
-</div>
-<div class='input'><span class="comment"># RSS between an NMF model and a target matrix</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span>
-<span class="symbol">y</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">)</span> <span class="comment"># random compatible model</span>
-<span class="functioncall"><a href='rss.html'>rss</a></span><span class="keyword">(</span><span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">)</span></div>
+</div><div class='input'># RSS between an NMF model and a target matrix</div><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span></div><div class='input'><span class="symbol">y</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">)</span> <span class="comment"># random compatible model</span></div><div class='input'><span class="functioncall"><a href='rss.html'>rss</a></span><span class="keyword">(</span><span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">)</span></div>
 <div class='output'>[1] 66.54412
-</div>
-<div class='input'>
-<span class="comment"># fit a model with nmf(): one should do better</span>
-<span class="symbol">y2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span> <span class="comment"># default minimizes the KL-divergence</span>
-<span class="functioncall"><a href='rss.html'>rss</a></span><span class="keyword">(</span><span class="symbol">y2</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'># fit a model with nmf(): one should do better</div><div class='input'><span class="symbol">y2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span> <span class="comment"># default minimizes the KL-divergence</span></div><div class='input'><span class="functioncall"><a href='rss.html'>rss</a></span><span class="keyword">(</span><span class="symbol">y2</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">)</span></div>
 <div class='output'>[1] 7.860229
-</div>
-<div class='input'><span class="symbol">y2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="string">'lee'</span><span class="keyword">)</span> <span class="comment"># 'lee' minimizes the RSS</span>
-<span class="functioncall"><a href='rss.html'>rss</a></span><span class="keyword">(</span><span class="symbol">y2</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="symbol">y2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="string">'lee'</span><span class="keyword">)</span> <span class="comment"># 'lee' minimizes the RSS</span></div><div class='input'><span class="functioncall"><a href='rss.html'>rss</a></span><span class="keyword">(</span><span class="symbol">y2</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">)</span></div>
 <div class='output'>[1] 7.426685
 </div></pre>
   </div>

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfEstimateRank. NMF 0.8.27</title>
+<title>nmfEstimateRank. NMF 0.8.28</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.27</a>
+      <a class="brand" href="index.html">NMF 0.8.28</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -200,28 +200,7 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/Random'>set.seed</a></span><span class="keyword">(</span><span class="number">123456</span><span class="keyword">)</span>
-<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span> <span class="symbol">m</span> <span class="assignement">&lt;-</span> <span class="number">20</span>
-<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">,</span> <span class="symbol">m</span><span class="keyword">)</span>
-
-<span class="comment"># Use a seed that will be set before each first run</span>
-<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: </span>
-<span class="comment"># res &lt;- nmfEstimateRank(V, seq(2,5), method='brunet', nrun=10, seed=123456)</span>
-<span class="comment"># # or equivalently</span>
-<span class="comment"># res &lt;- nmf(V, seq(2,5), method='brunet', nrun=10, seed=123456)</span>
-<span class="comment"># ## &lt;strong&gt;End(Not run)&lt;/strong&gt;</span>
-
-<span class="comment"># plot all the measures</span>
-<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: plot(res)</span>
-<span class="comment"># or only one: e.g. the cophenetic correlation coefficient</span>
-<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: plot(res, 'cophenetic')</span>
-
-<span class="comment"># run same estimation on randomized data</span>
-<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: </span>
-<span class="comment"># rV &lt;- randomize(V)</span>
-<span class="comment"># rand &lt;- nmfEstimateRank(rV, seq(2,5), method='brunet', nrun=10, seed=123456)</span>
-<span class="comment"># plot(res, rand)</span>
-<span class="comment"># ## &lt;strong&gt;End(Not run)&lt;/strong&gt;</span></div></pre>
+    <pre class="examples"><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/Random'>set.seed</a></span><span class="keyword">(</span><span class="number">123456</span><span class="keyword">)</span></div><div class='input'><span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span> <span class="symbol">m</span> <span class="assignement">&lt;-</span> <span class="number">20</span></div><div class='input'><span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">,</span> <span class="symbol">m</span><span class="keyword">)</span></div><div class='input'></div><div class='input'># Use a seed that will be set before each first run</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># res <- nmfEstimateRank(V, seq(2,5), method='brunet', nrun=10, seed=123456)</div><div class='input'># # or equivalently</div><div class='input'># res <- nmf(V, seq(2,5), method='brunet', nrun=10, seed=123456)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'></div><div class='input'># plot all the measures</div><div class='input'>## <strong>Not run</strong>: plot(res)</div><div class='input'># or only one: e.g. the cophenetic correlation coefficient</div><div class='input'>## <strong>Not run</strong>: plot(res, 'cophenetic')</div><div class='input'></div><div class='input'># run same estimation on randomized data</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># rV <- randomize(V)</div><div class='input'># rand <- nmfEstimateRank(rV, seq(2,5), method='brunet', nrun=10, seed=123456)</div><div class='input'># plot(res, rand)</div><div class='input'># ## <strong>End(Not run)</strong></div></pre>
   </div>
   <div class="span4">
     <!-- <ul>

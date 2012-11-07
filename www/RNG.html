@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>getRNG1. NMF 0.8.27</title>
+<title>getRNG1. NMF 0.8.28</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.27</a>
+      <a class="brand" href="index.html">NMF 0.8.28</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -98,19 +98,11 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="comment"># For multiple NMF runs, the RNG settings used for the first run is also stored</span>
-<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">)</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">4</span><span class="keyword">)</span>
-<span class="comment"># RNG used for the best fit</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/rngtools/rng'>getRNG</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+    <pre class="examples"><div class='input'># For multiple NMF runs, the RNG settings used for the first run is also stored</div><div class='input'><span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">)</span></div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">4</span><span class="keyword">)</span></div><div class='input'># RNG used for the best fit</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/rngtools/rng'>getRNG</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
 <div class='output'>[1]         407 -1095383638  1851156330   771553762  -227471793  2129111752 -1286920462
-</div>
-<div class='input'><span class="comment"># RNG used for the first of all fits</span>
-<span class="functioncall"><a href='RNG.html'>getRNG1</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+</div><div class='input'># RNG used for the first of all fits</div><div class='input'><span class="functioncall"><a href='RNG.html'>getRNG1</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
 <div class='output'>[1]         407  1254024653  1918266922  1626888611 -1659892088 -1524593943  1829114262
-</div>
-<div class='input'><span class="comment"># they may differ if the best fit is not the first one</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/rngtools/rngcmp'>rng.equal</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="functioncall"><a href='RNG.html'>getRNG1</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span><span class="keyword">)</span></div>
+</div><div class='input'># they may differ if the best fit is not the first one</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/rngtools/rngcmp'>rng.equal</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="functioncall"><a href='RNG.html'>getRNG1</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>[1] FALSE
 </div></pre>
   </div>

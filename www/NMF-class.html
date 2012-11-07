@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMF-class. NMF 0.8.27</title>
+<title>NMF-class. NMF 0.8.28</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.27</a>
+      <a class="brand" href="index.html">NMF 0.8.28</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -492,32 +492,21 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="comment"># show all the NMF models available (i.e. the classes that inherit from class NMF)</span>
-<span class="functioncall"><a href='nmfModel.html'>nmfModels</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
+    <pre class="examples"><div class='input'># show all the NMF models available (i.e. the classes that inherit from class NMF)</div><div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModels</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
 <div class='output'>[1] "NMFstd"    "NMFOffset" "NMFns"    
-</div>
-<div class='input'><span class="comment"># show all the built-in NMF models available</span>
-<span class="functioncall"><a href='nmfModel.html'>nmfModels</a></span><span class="keyword">(</span><span class="argument">builtin.only</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span></div>
+</div><div class='input'># show all the built-in NMF models available</div><div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModels</a></span><span class="keyword">(</span><span class="argument">builtin.only</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span></div>
 <div class='output'>[1] "NMFstd"    "NMFOffset" "NMFns"    
-</div>
-<div class='input'>
-<span class="comment"># class NMF is a virtual class so cannot be instantiated:</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/try'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/methods/new'>new</a></span><span class="keyword">(</span><span class="string">'NMF'</span><span class="keyword">)</span> <span class="keyword">)</span>
-
-<span class="comment"># To instantiate an NMF model, use the factory method nmfModel. see ?nmfModel</span>
-<span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'># class NMF is a virtual class so cannot be instantiated:</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/try'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/methods/new'>new</a></span><span class="keyword">(</span><span class="string">'NMF'</span><span class="keyword">)</span> <span class="keyword">)</span></div><div class='input'></div><div class='input'># To instantiate an NMF model, use the factory method nmfModel. see ?nmfModel</div><div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 0 
 basis/rank: 0 
 samples: 0 
-</div>
-<div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">)</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 0 
 basis/rank: 3 
 samples: 0 
-</div>
-<div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFns'</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFns'</span><span class="keyword">)</span></div>
 <div class='output'><Object of class:NMFns>
 features: 0 
 basis/rank: 3 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>basiscor. NMF 0.8.27</title>
+<title>basiscor. NMF 0.8.28</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.27</a>
+      <a class="brand" href="index.html">NMF 0.8.28</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -123,74 +123,49 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="comment"># generate two random NMF models</span>
-<span class="symbol">a</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">100</span><span class="keyword">,</span> <span class="number">20</span><span class="keyword">)</span>
-<span class="symbol">b</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">100</span><span class="keyword">,</span> <span class="number">20</span><span class="keyword">)</span>
-
-<span class="comment"># Compute auto-correlations</span>
-<span class="functioncall"><a href='basiscor.html'>basiscor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
-<div class='output'>            [,1]        [,2]        [,3]
-[1,]  1.00000000 -0.14496441 -0.02749208
-[2,] -0.14496441  1.00000000 -0.08042702
-[3,] -0.02749208 -0.08042702  1.00000000
-</div>
-<div class='input'><span class="functioncall"><a href='basiscor.html'>profcor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
-<div class='output'>          [,1]       [,2]       [,3]
-[1,] 1.0000000  0.1044189  0.2921665
-[2,] 0.1044189  1.0000000 -0.2666992
-[3,] 0.2921665 -0.2666992  1.0000000
-</div>
-<div class='input'><span class="comment"># Compute correlations with b</span>
-<span class="functioncall"><a href='basiscor.html'>basiscor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">,</span> <span class="symbol">b</span><span class="keyword">)</span></div>
-<div class='output'>             [,1]        [,2]       [,3]
-[1,] -0.040817346 -0.04145345 0.12076366
-[2,] -0.009195647 -0.10698260 0.01432453
-[3,]  0.076600469 -0.01357271 0.07069176
-</div>
-<div class='input'><span class="functioncall"><a href='basiscor.html'>profcor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">,</span> <span class="symbol">b</span><span class="keyword">)</span></div>
-<div class='output'>            [,1]        [,2]        [,3]
-[1,] -0.01744387 -0.09656622 -0.02074125
-[2,] -0.25281699  0.25212347 -0.03556205
-[3,]  0.32868082  0.01480294 -0.05529551
-</div>
-<div class='input'>
-<span class="comment"># try to recover the underlying NMF model 'a' from noisy data</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="functioncall"><a href='fitted.html'>fitted</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="keyword">+</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
-
-<span class="comment"># Compute correlations with the true model</span>
-<span class="functioncall"><a href='basiscor.html'>basiscor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">,</span> <span class="symbol">res</span><span class="keyword">)</span></div>
+    <pre class="examples"><div class='input'># generate two random NMF models</div><div class='input'><span class="symbol">a</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">100</span><span class="keyword">,</span> <span class="number">20</span><span class="keyword">)</span></div><div class='input'><span class="symbol">b</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">100</span><span class="keyword">,</span> <span class="number">20</span><span class="keyword">)</span></div><div class='input'></div><div class='input'># Compute auto-correlations</div><div class='input'><span class="functioncall"><a href='basiscor.html'>basiscor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>            [,1]       [,2]        [,3]
+[1,]  1.00000000 0.03544001 -0.12172954
+[2,]  0.03544001 1.00000000  0.09613597
+[3,] -0.12172954 0.09613597  1.00000000
+</div><div class='input'><span class="functioncall"><a href='basiscor.html'>profcor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+<div class='output'>           [,1]      [,2]       [,3]
+[1,]  1.0000000 0.0263498 -0.1667290
+[2,]  0.0263498 1.0000000  0.2479834
+[3,] -0.1667290 0.2479834  1.0000000
+</div><div class='input'># Compute correlations with b</div><div class='input'><span class="functioncall"><a href='basiscor.html'>basiscor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">,</span> <span class="symbol">b</span><span class="keyword">)</span></div>
+<div class='output'>            [,1]         [,2]        [,3]
+[1,] -0.21855434 -0.033569636 -0.13717657
+[2,]  0.06962094  0.009173416  0.05810212
+[3,]  0.06040098  0.063263861  0.08854738
+</div><div class='input'><span class="functioncall"><a href='basiscor.html'>profcor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">,</span> <span class="symbol">b</span><span class="keyword">)</span></div>
+<div class='output'>           [,1]        [,2]        [,3]
+[1,] -0.1132365 -0.02926695 -0.06969513
+[2,]  0.1500403  0.16318053 -0.36291706
+[3,]  0.1300672 -0.19343873 -0.33200276
+</div><div class='input'></div><div class='input'># try to recover the underlying NMF model 'a' from noisy data</div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="functioncall"><a href='fitted.html'>fitted</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="keyword">+</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span></div><div class='input'></div><div class='input'># Compute correlations with the true model</div><div class='input'><span class="functioncall"><a href='basiscor.html'>basiscor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">,</span> <span class="symbol">res</span><span class="keyword">)</span></div>
 <div class='output'>           [,1]       [,2]       [,3]
-[1,]  0.8124960 -0.3134950  0.2576546
-[2,]  0.3563807  0.8839310 -0.5192664
-[3,] -0.1246624  0.1909119  0.7862370
-</div>
-<div class='input'><span class="functioncall"><a href='basiscor.html'>profcor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">,</span> <span class="symbol">res</span><span class="keyword">)</span></div>
-<div class='output'>          [,1]        [,2]       [,3]
-[1,] 0.9538563 -0.39683513  0.3693905
-[2,] 0.3213995  0.78048404 -0.5531538
-[3,] 0.1137974 -0.02735617  0.9163544
-</div>
-<div class='input'>
-<span class="comment"># Compute correlations with a random compatible matrix</span>
-<span class="symbol">W</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">)</span>
-<span class="functioncall"><a href='basiscor.html'>basiscor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">,</span> <span class="symbol">W</span><span class="keyword">)</span></div>
-<div class='output'>             [,1]        [,2]       [,3]
-[1,]  0.023294745 -0.09156336  0.2120882
-[2,]  0.065680035 -0.05056812  0.0477551
-[3,] -0.009916318 -0.18974008 -0.2722670
-</div>
-<div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></span><span class="keyword">(</span><span class="functioncall"><a href='basiscor.html'>basiscor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">,</span> <span class="symbol">W</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='basiscor.html'>basiscor</a></span><span class="keyword">(</span><span class="symbol">W</span><span class="keyword">,</span> <span class="symbol">a</span><span class="keyword">)</span><span class="keyword">)</span></div>
+[1,]  0.1777038  0.8478642 -0.3022096
+[2,]  0.9025483 -0.1135912  0.3572884
+[3,] -0.1596826  0.2583759  0.8836744
+</div><div class='input'><span class="functioncall"><a href='basiscor.html'>profcor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">,</span> <span class="symbol">res</span><span class="keyword">)</span></div>
+<div class='output'>            [,1]        [,2]       [,3]
+[1,]  0.24990458  0.94021160 -0.5156119
+[2,]  0.93601035 -0.17997871  0.3883920
+[3,] -0.03844315  0.02438466  0.8974103
+</div><div class='input'></div><div class='input'># Compute correlations with a random compatible matrix</div><div class='input'><span class="symbol">W</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='basiscor.html'>basiscor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">,</span> <span class="symbol">W</span><span class="keyword">)</span></div>
+<div class='output'>           [,1]        [,2]        [,3]
+[1,]  0.1170742  0.10497128 -0.05576034
+[2,] -0.1117362  0.03007181 -0.16634036
+[3,] -0.1914907 -0.15280709 -0.16588392
+</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></span><span class="keyword">(</span><span class="functioncall"><a href='basiscor.html'>basiscor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">,</span> <span class="symbol">W</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='basiscor.html'>basiscor</a></span><span class="keyword">(</span><span class="symbol">W</span><span class="keyword">,</span> <span class="symbol">a</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>[1] FALSE
-</div>
-<div class='input'>
-<span class="symbol">H</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">)</span>
-<span class="functioncall"><a href='basiscor.html'>profcor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">,</span> <span class="symbol">H</span><span class="keyword">)</span></div>
-<div class='output'>           [,1]       [,2]        [,3]
-[1,]  0.1720665 -0.1851900 -0.12712200
-[2,] -0.2232572  0.1107728  0.29643105
-[3,] -0.2900889  0.1079745  0.03580756
-</div>
-<div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></span><span class="keyword">(</span><span class="functioncall"><a href='basiscor.html'>profcor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">,</span> <span class="symbol">H</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='basiscor.html'>profcor</a></span><span class="keyword">(</span><span class="symbol">H</span><span class="keyword">,</span> <span class="symbol">a</span><span class="keyword">)</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'><span class="symbol">H</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='basiscor.html'>profcor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">,</span> <span class="symbol">H</span><span class="keyword">)</span></div>
+<div class='output'>           [,1]        [,2]       [,3]
+[1,] -0.1775764  0.56471441 -0.2924964
+[2,]  0.1970084  0.01325284 -0.2643562
+[3,]  0.1379715 -0.32081011 -0.1573076
+</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></span><span class="keyword">(</span><span class="functioncall"><a href='basiscor.html'>profcor</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">,</span> <span class="symbol">H</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='basiscor.html'>profcor</a></span><span class="keyword">(</span><span class="symbol">H</span><span class="keyword">,</span> <span class="symbol">a</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>[1] FALSE
 </div></pre>
   </div>

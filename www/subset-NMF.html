@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>[,NMF,ANY,ANY,ANY-method. NMF 0.8.27</title>
+<title>[,NMF,ANY,ANY,ANY-method. NMF 0.8.28</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.27</a>
+      <a class="brand" href="index.html">NMF 0.8.28</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -160,133 +160,94 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="comment"># create a dummy NMF object that highlight the different way of subsetting</span>
-<span class="symbol">a</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">W</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/outer'>outer</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/seq'>seq</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span><span class="number">5</span><span class="keyword">)</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">^</span><span class="keyword">(</span><span class="number">0</span><span class="keyword">:</span><span class="number">2</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/outer'>outer</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">^</span><span class="keyword">(</span><span class="number">0</span><span class="keyword">:</span><span class="number">2</span><span class="keyword">)</span><span class="keyword">,</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/seq'>seq</a></span><span class="keyword">(</span><span class="keyword">-</span><span class="number">1</span><span class="keyword">,</span><span class="keyword">-</span><span class="number">10</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span>
-<span class="functioncall"><a href='dimnames.html'>basisnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/paste'>paste</a></span><span class="keyword">(</span><span class="string">'b'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/row_colnames'>rownames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/paste'>paste</a></span><span class="keyword">(</span><span class="string">'f'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/nrow'>nrow</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/row_colnames'>colnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/paste'>paste</a></span><span class="keyword">(</span><span class="string">'s'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/nrow'>ncol</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span>
-
-<span class="comment"># or alternatively:</span>
-<span class="comment"># dimnames(a) &lt;- list( features=paste('f', 1:nrow(a), sep=''), samples=paste('s', 1:ncol(a), sep=''), basis=paste('b', 1:nbasis(a)) )</span>
-
-<span class="comment"># look at the resulting NMF object</span>
-<span class="symbol">a</span></div>
+    <pre class="examples"><div class='input'># create a dummy NMF object that highlight the different way of subsetting</div><div class='input'><span class="symbol">a</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">W</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/outer'>outer</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/seq'>seq</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span><span class="number">5</span><span class="keyword">)</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">^</span><span class="keyword">(</span><span class="number">0</span><span class="keyword">:</span><span class="number">2</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/outer'>outer</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">^</span><span class="keyword">(</span><span class="number">0</span><span class="keyword">:</span><span class="number">2</span><span class="keyword">)</span><span class="keyword">,</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/seq'>seq</a></span><span class="keyword">(</span><span class="keyword">-</span><span class="number">1</span><span class="keyword">,</span><span class="keyword">-</span><span class="number">10</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='dimnames.html'>basisnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/paste'>paste</a></span><span class="keyword">(</span><span class="string">'b'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/row_colnames'>rownames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/paste'>paste</a></span><span class="keyword">(</span><span class="string">'f'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/nrow'>nrow</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/row_colnames'>colnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/paste'>paste</a></span><span class="keyword">(</span><span class="string">'s'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/nrow'>ncol</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span></div><div class='input'></div><div class='input'># or alternatively:</div><div class='input'># dimnames(a) <- list( features=paste('f', 1:nrow(a), sep=''), samples=paste('s', 1:ncol(a), sep=''), basis=paste('b', 1:nbasis(a)) )</div><div class='input'></div><div class='input'># look at the resulting NMF object</div><div class='input'><span class="symbol">a</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 5 
 basis/rank: 3 
 samples: 10 
-</div>
-<div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
 <div class='output'>   b1 b2  b3
 f1  1 10 100
 f2  2 20 200
 f3  3 30 300
 f4  4 40 400
 f5  5 50 500
-</div>
-<div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
 <div class='output'>     s1   s2   s3   s4   s5   s6   s7   s8   s9   s10
 b1   -1   -2   -3   -4   -5   -6   -7   -8   -9   -10
 b2  -10  -20  -30  -40  -50  -60  -70  -80  -90  -100
 b3 -100 -200 -300 -400 -500 -600 -700 -800 -900 -1000
-</div>
-<div class='input'>
-<span class="comment"># extract basis components</span>
-<span class="symbol">a</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">]</span></div>
+</div><div class='input'></div><div class='input'># extract basis components</div><div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">]</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 5 
 basis/rank: 1 
 samples: 10 
-</div>
-<div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">FALSE</span><span class="keyword">]</span> <span class="comment"># not dropping matrix dimension</span></div>
+</div><div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">FALSE</span><span class="keyword">]</span> <span class="comment"># not dropping matrix dimension</span></div>
 <div class='output'>   b1
 f1  1
 f2  2
 f3  3
 f4  4
 f5  5
-</div>
-<div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">]</span></div>
+</div><div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">]</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 5 
 basis/rank: 2 
 samples: 10 
-</div>
-<div class='input'>
-<span class="comment"># subset on the features</span>
-<span class="symbol">a</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">,</span><span class="keyword">]</span></div>
+</div><div class='input'></div><div class='input'># subset on the features</div><div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">,</span><span class="keyword">]</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 1 
 basis/rank: 3 
 samples: 10 
-</div>
-<div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">2</span><span class="keyword">:</span><span class="number">4</span><span class="keyword">,</span><span class="keyword">]</span></div>
+</div><div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">2</span><span class="keyword">:</span><span class="number">4</span><span class="keyword">,</span><span class="keyword">]</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 3 
 basis/rank: 3 
 samples: 10 
-</div>
-<div class='input'><span class="comment"># dropping the NMF-class wrapping =&gt; return subset basis matrix</span>
-<span class="symbol">a</span><span class="keyword">[</span><span class="number">2</span><span class="keyword">:</span><span class="number">4</span><span class="keyword">,</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">]</span></div>
+</div><div class='input'># dropping the NMF-class wrapping => return subset basis matrix</div><div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">2</span><span class="keyword">:</span><span class="number">4</span><span class="keyword">,</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">]</span></div>
 <div class='output'>   b1 b2  b3
 f2  2 20 200
 f3  3 30 300
 f4  4 40 400
-</div>
-<div class='input'>
-<span class="comment"># subset on the samples</span>
-<span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="number">1</span><span class="keyword">]</span></div>
+</div><div class='input'></div><div class='input'># subset on the samples</div><div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="number">1</span><span class="keyword">]</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 5 
 basis/rank: 3 
 samples: 1 
-</div>
-<div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">4</span><span class="keyword">]</span></div>
+</div><div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">4</span><span class="keyword">]</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 5 
 basis/rank: 3 
 samples: 3 
-</div>
-<div class='input'><span class="comment"># dropping the NMF-class wrapping =&gt; return subset coef matrix</span>
-<span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">4</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">]</span></div>
+</div><div class='input'># dropping the NMF-class wrapping => return subset coef matrix</div><div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">4</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">]</span></div>
 <div class='output'>     s2   s3   s4
 b1   -2   -3   -4
 b2  -20  -30  -40
 b3 -200 -300 -400
-</div>
-<div class='input'>
-<span class="comment"># subset on the basis =&gt; subsets simultaneously basis and coef matrix</span>
-<span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">1</span><span class="keyword">]</span></div>
+</div><div class='input'></div><div class='input'># subset on the basis => subsets simultaneously basis and coef matrix</div><div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">1</span><span class="keyword">]</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 5 
 basis/rank: 1 
 samples: 10 
-</div>
-<div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">]</span></div>
+</div><div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">]</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 5 
 basis/rank: 2 
 samples: 10 
-</div>
-<div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">4</span><span class="keyword">:</span><span class="number">5</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">]</span></div>
+</div><div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">4</span><span class="keyword">:</span><span class="number">5</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">]</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 2 
 basis/rank: 2 
 samples: 10 
-</div>
-<div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">4</span><span class="keyword">:</span><span class="number">5</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">]</span> <span class="comment"># return subset basis matrix</span></div>
+</div><div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="number">4</span><span class="keyword">:</span><span class="number">5</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">]</span> <span class="comment"># return subset basis matrix</span></div>
 <div class='output'>   b2  b3
 f4 40 400
 f5 50 500
-</div>
-<div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="number">4</span><span class="keyword">:</span><span class="number">5</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">]</span> <span class="comment"># return subset coef matrix</span></div>
+</div><div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="number">4</span><span class="keyword">:</span><span class="number">5</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">]</span> <span class="comment"># return subset coef matrix</span></div>
 <div class='output'>     s4   s5
 b2  -40  -50
 b3 -400 -500
-</div>
-<div class='input'>
-<span class="comment"># 'drop' has no effect here</span>
-<span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">]</span></div>
+</div><div class='input'></div><div class='input'># 'drop' has no effect here</div><div class='input'><span class="symbol">a</span><span class="keyword">[</span><span class="keyword">,</span><span class="keyword">,</span><span class="number">2</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">drop</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">]</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 5 
 basis/rank: 2 

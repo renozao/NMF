@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfitX1-class. NMF 0.8.27</title>
+<title>NMFfitX1-class. NMF 0.8.28</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.27</a>
+      <a class="brand" href="index.html">NMF 0.8.28</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -135,16 +135,7 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="comment"># generate a synthetic dataset with known classes</span>
-<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">)</span><span class="keyword">;</span>
-<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span>
-
-<span class="comment"># build the class factor</span>
-<span class="symbol">groups</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/factor'>as.factor</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/do.call'>do.call</a></span><span class="keyword">(</span><span class="string">'c'</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/lapply'>lapply</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/seq'>seq</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">)</span><span class="keyword">,</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">x</span><span class="keyword">)</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/rep'>rep</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">[</span><span class="symbol">x</span><span class="keyword">]</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span>
-
-<span class="comment"># perform multiple runs of one algorithm, keeping only the best fit (default)</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span>
-<span class="symbol">res</span></div>
+    <pre class="examples"><div class='input'># generate a synthetic dataset with known classes</div><div class='input'><span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">)</span><span class="keyword">;</span></div><div class='input'><span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span></div><div class='input'></div><div class='input'># build the class factor</div><div class='input'><span class="symbol">groups</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/factor'>as.factor</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/do.call'>do.call</a></span><span class="keyword">(</span><span class="string">'c'</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/lapply'>lapply</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/seq'>seq</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">)</span><span class="keyword">,</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">x</span><span class="keyword">)</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/rep'>rep</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">[</span><span class="symbol">x</span><span class="keyword">]</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span></div><div class='input'></div><div class='input'># perform multiple runs of one algorithm, keeping only the best fit (default)</div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span></div><div class='input'><span class="symbol">res</span></div>
 <div class='output'><Object of class: NMFfitX1 >
   Method: brunet 
   Runs:  5 
@@ -152,32 +143,19 @@
    407L, 1419601685L, 660380882L, -705544661L, -565250192L, -12790607L, 1328828094L 
   Total timing:
    user  system elapsed 
-  1.540   0.192   2.562 
-</div>
-<div class='input'><span class="comment">#NOTE: the implicit nmf options are .options=list(keep.all=FALSE) or .options='-k'</span>
-
-<span class="comment"># compute summary measures</span>
-<span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+  1.549   0.192   2.886 
+</div><div class='input'>#NOTE: the implicit nmf options are .options=list(keep.all=FALSE) or .options='-k'</div><div class='input'></div><div class='input'># compute summary measures</div><div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
 <div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun       cophenetic       dispersion 
-       3.0000000        0.4453993        0.6395552      257.4099674      440.0000000        0.2480000        1.5400000        5.0000000        0.9959041        0.9525926 
-</div>
-<div class='input'><span class="comment"># get more info</span>
-<span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="symbol">V</span><span class="keyword">,</span> <span class="argument">class</span><span class="argument">=</span><span class="symbol">groups</span><span class="keyword">)</span></div>
+       3.0000000        0.4453993        0.6395552      257.4099674      440.0000000        0.2480000        1.5490000        5.0000000        0.9959041        0.9525926 
+</div><div class='input'># get more info</div><div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="symbol">V</span><span class="keyword">,</span> <span class="argument">class</span><span class="argument">=</span><span class="symbol">groups</span><span class="keyword">)</span></div>
 <div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals            niter              cpu 
        3.0000000        0.4453993        0.6395552        1.0000000        0.0000000      328.9306204        0.6862742      257.4099674      440.0000000        0.2480000 
          cpu.all             nrun       cophenetic       dispersion 
-       1.5400000        5.0000000        0.9959041        0.9525926 
-</div>
-<div class='input'>
-<span class="comment"># show computational time</span>
-<span class="functioncall"><a href='algorithmic.html'>runtime.all</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+       1.5490000        5.0000000        0.9959041        0.9525926 
+</div><div class='input'></div><div class='input'># show computational time</div><div class='input'><span class="functioncall"><a href='algorithmic.html'>runtime.all</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
 <div class='output'>   user  system elapsed 
-  1.540   0.192   2.562 
-</div>
-<div class='input'>
-# plot the consensus matrix, as stored (pre-computed) in the object
-## <strong>Not run</strong>:  consensusmap(res, annCol=groups) 
-</div></pre>
+  1.549   0.192   2.886 
+</div><div class='input'></div><div class='input'># plot the consensus matrix, as stored (pre-computed) in the object</div><div class='input'>## <strong>Not run</strong>:  consensusmap(res, annCol=groups) </div></pre>
   </div>
   <div class="span4">
     <!-- <ul>

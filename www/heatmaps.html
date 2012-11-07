@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>heatmap-NMF. NMF 0.8.27</title>
+<title>heatmap-NMF. NMF 0.8.28</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.27</a>
+      <a class="brand" href="index.html">NMF 0.8.28</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -447,37 +447,7 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="comment">## More examples are provided in demo `heatmaps`</span>
-<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: </span>
-<span class="comment"># demo(heatmaps)</span>
-<span class="comment"># ## &lt;strong&gt;End(Not run)&lt;/strong&gt;</span>
-<span class="comment">##</span>
-
-<span class="comment"># random data with underlying NMF model</span>
-<span class="symbol">v</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span>
-<span class="comment"># estimate a model</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
-<span class="comment"># show basis matrix</span>
-<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<p><img src='heatmaps-2.png' alt='' width='400' height='400' /></p>
-<p><img src='heatmaps-3.png' alt='' width='400' height='400' /></p>
-<div class='input'><span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: </span>
-<span class="comment"># # without the default annotation tracks</span>
-<span class="comment"># basismap(x, tracks=NA)</span>
-<span class="comment"># ## &lt;strong&gt;End(Not run)&lt;/strong&gt;</span>
-<span class="comment"># coefficient matrix</span>
-<span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<p><img src='heatmaps-5.png' alt='' width='400' height='400' /></p>
-<p><img src='heatmaps-6.png' alt='' width='400' height='400' /></p>
-<div class='input'>## <strong>Not run</strong>: 
-# # without the default annotation tracks
-# coefmap(x, tracks=NA)
-# ## <strong>End(Not run)</strong>
-## <strong>Not run</strong>: 
-# res <- nmf(x, 3, nrun=3)
-# consensusmap(res)
-# ## <strong>End(Not run)</strong>
-</div></pre>
+    <pre class="examples"><div class='input'>## More examples are provided in demo `heatmaps`</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># demo(heatmaps)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'>##</div><div class='input'></div><div class='input'># random data with underlying NMF model</div><div class='input'><span class="symbol">v</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span></div><div class='input'># estimate a model</div><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span></div><div class='input'># show basis matrix</div><div class='input'><span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div><p><img src='/home/renaud/Documents/projects/NMF/Rnmf/pkg/../www/heatmaps-ex1.png' alt='' width='400' height='400' /></p><div class='input'>## <strong>Not run</strong>: </div><div class='input'># # without the default annotation tracks</div><div class='input'># basismap(x, tracks=NA)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'># coefficient matrix</div><div class='input'><span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div><p><img src='/home/renaud/Documents/projects/NMF/Rnmf/pkg/../www/heatmaps-ex2.png' alt='' width='400' height='400' /></p><div class='input'>## <strong>Not run</strong>: </div><div class='input'># # without the default annotation tracks</div><div class='input'># coefmap(x, tracks=NA)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># res <- nmf(x, 3, nrun=3)</div><div class='input'># consensusmap(res)</div><div class='input'># ## <strong>End(Not run)</strong></div></pre>
   </div>
   <div class="span4">
     <!-- <ul>

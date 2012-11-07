@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfitX-class. NMF 0.8.27</title>
+<title>NMFfitX-class. NMF 0.8.28</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.27</a>
+      <a class="brand" href="index.html">NMF 0.8.28</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -219,18 +219,12 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="comment"># generate a synthetic dataset with known classes</span>
-<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">)</span><span class="keyword">;</span>
-<span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span>
-
-<span class="comment"># perform multiple runs of one algorithm (default is to keep only best fit)</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/utils/str'>str</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+    <pre class="examples"><div class='input'># generate a synthetic dataset with known classes</div><div class='input'><span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">)</span><span class="keyword">;</span></div><div class='input'><span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span></div><div class='input'></div><div class='input'># perform multiple runs of one algorithm (default is to keep only best fit)</div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/utils/str'>str</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
 <div class='output'>Formal class 'NMFfitX1' [package "NMF"] with 16 slots
   ..@ consensus  : num [1:18, 1:18] 1 1 1 1 1 0 0 0 0 0 ...
   ..@ nrun       : int 5
   ..@ rng1       : int [1:7] 407 -1834564630 -1419262877 1265912392 -1641208919 413016918 -507270689
-  ..@ runtime.all:Class 'proc_time'  Named num [1:5] 0.408 0.02 2.201 0.964 0.208
+  ..@ runtime.all:Class 'proc_time'  Named num [1:5] 0.436 0.02 2.235 1.02 0.14
   .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
   ..@ fit        :Formal class 'NMFstd' [package "NMF"] with 7 slots
   .. .. ..@ W      : num [1:50, 1:3] 2.22e-16 2.22e-16 1.73 1.59 1.37 ...
@@ -257,7 +251,7 @@ Formal class 'data.frame' [package "methods"] with 4 slots
   ..@ rng        : int [1:7] 407 -1834564630 -1419262877 1265912392 -1641208919 413016918 -507270689
   ..@ distance   : chr "KL"
   ..@ parameters : list()
-  ..@ runtime    :Class 'proc_time'  Named num [1:5] 0.26 0.012 0.335 0 0
+  ..@ runtime    :Class 'proc_time'  Named num [1:5] 0.244 0.008 0.289 0 0
   .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
   ..@ options    :List of 11
   .. ..$ default.algorithm: chr "brunet"
@@ -275,14 +269,7 @@ Formal class 'data.frame' [package "methods"] with 4 slots
   .. ..$ iteration: int 430
   ..@ call       : language .local(x = x, rank = rank, method = method, seed = ..2, nrun = 1, model = ..3, .options = ..4)
   ..@ misc       : list()
-</div>
-<div class='input'>
-<span class="comment"># plot a heatmap of the consensus matrix</span>
-<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;:  consensusmap(res) </span>
-
-<span class="comment"># perform multiple runs of one algorithm (keep all the fits)</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">5</span><span class="keyword">,</span> <span class="argument">.options</span><span class="argument">=</span><span class="string">'k'</span><span class="keyword">)</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/utils/str'>str</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'># plot a heatmap of the consensus matrix</div><div class='input'>## <strong>Not run</strong>:  consensusmap(res) </div><div class='input'></div><div class='input'># perform multiple runs of one algorithm (keep all the fits)</div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">5</span><span class="keyword">,</span> <span class="argument">.options</span><span class="argument">=</span><span class="string">'k'</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/utils/str'>str</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
 <div class='output'>Formal class 'NMFfitXn' [package "NMF"] with 2 slots
   ..@ .Data      :List of 5
   .. ..$ :Formal class 'NMFfit' [package "NMF"] with 12 slots
@@ -311,7 +298,7 @@ Formal class 'data.frame' [package "methods"] with 4 slots
   .. .. .. ..@ rng       : int [1:7] 407 -1355721004 582962117 -707940926 1430847067 -21410336 -1321747359
   .. .. .. ..@ distance  : chr "KL"
   .. .. .. ..@ parameters: list()
-  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.26 0.028 0.336 0 0
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.248 0.004 0.254 0 0
   .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
   .. .. .. ..@ options   :List of 11
   .. .. .. .. ..$ default.algorithm: chr "brunet"
@@ -355,7 +342,7 @@ Formal class 'data.frame' [package "methods"] with 4 slots
   .. .. .. ..@ rng       : int [1:7] 407 -517354913 -1514777308 -1360749460 -1787334871 -1660615091 1977118747
   .. .. .. ..@ distance  : chr "KL"
   .. .. .. ..@ parameters: list()
-  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.264 0.02 0.289 0 0
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.256 0.004 0.415 0 0
   .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
   .. .. .. ..@ options   :List of 11
   .. .. .. .. ..$ default.algorithm: chr "brunet"
@@ -399,7 +386,7 @@ Formal class 'data.frame' [package "methods"] with 4 slots
   .. .. .. ..@ rng       : int [1:7] 407 -1913805653 -367674901 -1633159124 1999390028 -340202606 -1230713693
   .. .. .. ..@ distance  : chr "KL"
   .. .. .. ..@ parameters: list()
-  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.232 0 0.244 0 0
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.248 0 0.285 0 0
   .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
   .. .. .. ..@ options   :List of 11
   .. .. .. .. ..$ default.algorithm: chr "brunet"
@@ -443,7 +430,7 @@ Formal class 'data.frame' [package "methods"] with 4 slots
   .. .. .. ..@ rng       : int [1:7] 407 2071823022 -1401670214 -1137598863 1636842190 -378016098 252249562
   .. .. .. ..@ distance  : chr "KL"
   .. .. .. ..@ parameters: list()
-  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.252 0.004 0.262 0 0
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.248 0 0.303 0 0
   .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
   .. .. .. ..@ options   :List of 11
   .. .. .. .. ..$ default.algorithm: chr "brunet"
@@ -487,7 +474,7 @@ Formal class 'data.frame' [package "methods"] with 4 slots
   .. .. .. ..@ rng       : int [1:7] 407 -574243509 622315560 656642999 -614223016 1552997537 196997062
   .. .. .. ..@ distance  : chr "KL"
   .. .. .. ..@ parameters: list()
-  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.236 0 0.237 0 0
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.236 0.004 0.238 0 0
   .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
   .. .. .. ..@ options   :List of 11
   .. .. .. .. ..$ default.algorithm: chr "brunet"
@@ -505,7 +492,7 @@ Formal class 'data.frame' [package "methods"] with 4 slots
   .. .. .. .. ..$ iteration: int 420
   .. .. .. ..@ call      : language .local(x = x, rank = rank, method = method, seed = ..2, nrun = 1, model = ..3, .options = ..4)
   .. .. .. ..@ misc      : list()
-  ..@ runtime.all:Class 'proc_time'  Named num [1:5] 0.104 0.012 1.809 2.348 0.316
+  ..@ runtime.all:Class 'proc_time'  Named num [1:5] 0.1 0.012 2.202 2.396 0.336
   .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
 </div></pre>
   </div>

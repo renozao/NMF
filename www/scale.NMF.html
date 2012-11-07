@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>scale.NMF. NMF 0.8.27</title>
+<title>scale.NMF. NMF 0.8.28</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.27</a>
+      <a class="brand" href="index.html">NMF 0.8.28</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -97,46 +97,25 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="comment"># random 3-rank 10x5 NMF model</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span>
-
-<span class="comment"># rescale based on basis</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/colSums'>colSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div>
+    <pre class="examples"><div class='input'># random 3-rank 10x5 NMF model</div><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span></div><div class='input'></div><div class='input'># rescale based on basis</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/colSums'>colSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>[1] 3.095580 5.177963 6.166968
-</div>
-<div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/colSums'>colSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/scale'>scale</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/colSums'>colSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/scale'>scale</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>[1] 1 1 1
-</div>
-<div class='input'>
-<span class="symbol">rx</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/scale'>scale</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="string">'basis'</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/colSums'>colSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'><span class="symbol">rx</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/scale'>scale</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="string">'basis'</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/colSums'>colSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>[1] 10 10 10
-</div>
-<div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/colSums'>rowSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/colSums'>rowSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>[1] 0.6179552 1.7186253 1.2466699
-</div>
-<div class='input'>
-<span class="comment"># rescale based on coef</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/colSums'>rowSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'># rescale based on coef</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/colSums'>rowSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>[1] 1.996250 3.319114 2.021528
-</div>
-<div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/colSums'>rowSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/scale'>scale</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="string">'coef'</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/colSums'>rowSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/scale'>scale</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="string">'coef'</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>[1] 1 1 1
-</div>
-<div class='input'><span class="symbol">rx</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/scale'>scale</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="string">'coef'</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/colSums'>rowSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="symbol">rx</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/scale'>scale</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="string">'coef'</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/colSums'>rowSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>[1] 10 10 10
-</div>
-<div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/colSums'>colSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/colSums'>colSums</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>[1] 0.6179552 1.7186253 1.2466699
-</div>
-<div class='input'>
-<span class="comment"># fitted target matrix is identical but the factors have been rescaled</span>
-<span class="symbol">rx</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/scale'>scale</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="string">'basis'</span><span class="keyword">)</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/all.equal'>all.equal</a></span><span class="keyword">(</span><span class="functioncall"><a href='fitted.html'>fitted</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='fitted.html'>fitted</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'># fitted target matrix is identical but the factors have been rescaled</div><div class='input'><span class="symbol">rx</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/scale'>scale</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="string">'basis'</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/all.equal'>all.equal</a></span><span class="keyword">(</span><span class="functioncall"><a href='fitted.html'>fitted</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='fitted.html'>fitted</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>[1] TRUE
-</div>
-<div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/all.equal'>all.equal</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/all.equal'>all.equal</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">rx</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>[1] "Mean relative difference: 0.7922511"
 </div></pre>
   </div>

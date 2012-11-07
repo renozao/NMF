@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfWrapper. NMF 0.8.27</title>
+<title>nmfWrapper. NMF 0.8.28</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.27</a>
+      <a class="brand" href="index.html">NMF 0.8.28</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -72,9 +72,7 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="comment"># wrap Lee &amp; Seung algorithm into a function</span>
-<span class="symbol">lee</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfWrapper.html'>nmfWrapper</a></span><span class="keyword">(</span><span class="string">'lee'</span><span class="keyword">)</span>
-<span class="symbol">lee</span></div>
+    <pre class="examples"><div class='input'># wrap Lee & Seung algorithm into a function</div><div class='input'><span class="symbol">lee</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfWrapper.html'>nmfWrapper</a></span><span class="keyword">(</span><span class="string">'lee'</span><span class="keyword">)</span></div><div class='input'><span class="symbol">lee</span></div>
 <div class='output'>function(...){
 		
 		# set non fixed arguments from current call
@@ -91,7 +89,7 @@
 		e <- parent.frame()
 		eval(.call, envir=e)
 	}
-<environment: 0xdfb5810>
+<environment: 0xcc21864>
 attr(,"algorithm")
 [1] "lee"
 attr(,"call")
@@ -100,18 +98,11 @@ attr(,".ExposeAttribute")
 [1] "rw"
 attr(,"class")
 [1] "function"        "ExposeAttribute"
-</div>
-<div class='input'>
-<span class="comment"># test on random data</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">100</span><span class="keyword">,</span><span class="number">20</span><span class="keyword">)</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="string">'lee'</span><span class="keyword">,</span> <span class="argument">seed</span><span class="argument">=</span><span class="number">12345</span><span class="keyword">)</span>
-<span class="symbol">res2</span> <span class="assignement">&lt;-</span> <span class="functioncall">lee</span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">seed</span><span class="argument">=</span><span class="number">12345</span><span class="keyword">)</span></div>
+</div><div class='input'></div><div class='input'># test on random data</div><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">100</span><span class="keyword">,</span><span class="number">20</span><span class="keyword">)</span></div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="string">'lee'</span><span class="keyword">,</span> <span class="argument">seed</span><span class="argument">=</span><span class="number">12345</span><span class="keyword">)</span></div><div class='input'><span class="symbol">res2</span> <span class="assignement">&lt;-</span> <span class="functioncall">lee</span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">seed</span><span class="argument">=</span><span class="number">12345</span><span class="keyword">)</span></div>
 <div class='output'>nmf(method = "lee", x = x, rank = 3, seed = 12345)
-</div>
-<div class='input'><span class="functioncall"><a href='nmf.equal.html'>nmf.equal</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">res2</span><span class="keyword">)</span></div>
+</div><div class='input'><span class="functioncall"><a href='nmf.equal.html'>nmf.equal</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">res2</span><span class="keyword">)</span></div>
 <div class='output'>[1] TRUE
-</div>
-<div class='input'></div></pre>
+</div><div class='input'></div><div class='input'></div></pre>
   </div>
   <div class="span4">
     <!-- <ul>
