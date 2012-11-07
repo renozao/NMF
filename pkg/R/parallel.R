@@ -317,9 +317,11 @@ setMethod('ForeachBackend', 'doParallel_backend',
 
 isMPIBackend <- function(x, ...){
 	b <- if( missing(x) ) ForeachBackend(...) else ForeachBackend(object=x, ...)
-	!is.null(b) && (b$name == 'doMPI' 
-				|| is(b$data[[1]], 'MPIcluster') 
-				|| is(b$data[[1]], 'mpicluster'))
+	if( is.null(b) ) FALSE
+	else if( identical(b$name, 'doMPI') ) TRUE 
+	else if( length(b$data) ){
+		is(b$data[[1]], 'MPIcluster') || is(b$data[[1]], 'mpicluster')
+	}else FALSE
 }
 
 #' @S3method register doMPI_backend
