@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nbasis. NMF 0.8.24</title>
+<title>nbasis. NMF 0.8.27</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <a class="brand" href="index.html">NMF 0.8.27</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -126,18 +126,11 @@
       <p>nbasis<code>signature(x = "ANY")</code>: Default method
   which returns the number of columns of the basis matrix
   extracted from <code>x</code> using a suitable method
-  <code>basis</code>.</p>
+  <code>basis</code>, or, if the latter is <code>NULL</code>, the value
+  of attributes <code>'nbasis'</code>.</p>
   
       <p>For NMF models, this also corresponds to the number of
   rows in the coefficient matrix.</p>
-  
-      <p>nbasis<code>signature(x = "matrix")</code>: For a
-  matrix, the attribute 'nbasis' is returned, e.g. as
-  attached to the consensus matrix returned by the method
-  <code><a href='connectivity.html'>consensus</a></code>.</p>
-  
-      <p>This is used internally to keep track of data about the
-  parent fit and annotate plots.</p>
   
       <p>nbasis<code>signature(x = "NMFfitXn")</code>: Returns
   the number of basis components common to all fits.</p>
@@ -152,7 +145,7 @@
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>dim-NMF</li><li>dim,NMFfitXn-method</li><li>dim,NMF-method</li><li>nbasis</li><li>nbasis,ANY-method</li><li>nbasis,matrix-method</li><li>nbasis-methods</li><li>nbasis,NMFfitXn-method</li>
+      <li>dim-NMF</li><li>dim,NMFfitXn-method</li><li>dim,NMF-method</li><li>nbasis</li><li>nbasis,ANY-method</li><li>nbasis-methods</li><li>nbasis,NMFfitXn-method</li>
     </ul>
     <ul>
       <li>methods</li>

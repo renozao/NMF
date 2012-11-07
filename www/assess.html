@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>summary. NMF 0.8.24</title>
+<title>summary. NMF 0.8.27</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <a class="brand" href="index.html">NMF 0.8.27</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -156,19 +156,19 @@
 <span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">20</span><span class="keyword">,</span> <span class="number">12</span><span class="keyword">)</span>
 <span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
 <div class='output'>            rank sparseness.basis  sparseness.coef 
-       3.0000000        0.2562988        0.2415590 
+       3.0000000        0.1509678        0.3108622 
 </div>
 <div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/gl'>gl</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">4</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy 
-       3.0000000        0.2562988        0.2415590        0.4166667        0.9655606 
+       3.0000000        0.1509678        0.3108622        0.5000000        0.8656563 
 </div>
 <div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>            rank sparseness.basis  sparseness.coef              rss             evar 
-       3.0000000        0.2562988        0.2415590       75.8977078        0.7599460 
+       3.0000000        0.1509678        0.3108622       81.4730295        0.7824433 
 </div>
 <div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/gl'>gl</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span><span class="number">4</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div>
 <div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar 
-       3.0000000        0.2562988        0.2415590        0.4166667        0.9655606       84.2125404        0.7433107 
+       3.0000000        0.1509678        0.3108622        0.5000000        0.8656563       85.8290994        0.7736145 
 </div>
 <div class='input'><span class="comment"># generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)</span>
 <span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">)</span><span class="keyword">;</span>
@@ -179,17 +179,17 @@
 <span class="symbol">x2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span>
 <span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x2</span><span class="keyword">,</span> <span class="symbol">cl</span><span class="keyword">,</span> <span class="symbol">V</span><span class="keyword">)</span></div>
 <div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals            niter              cpu 
-       2.0000000        0.2610275        0.6767006        0.7222222        0.3505165      457.1855649        0.6375663      331.3711882      420.0000000        0.2360000 
+       2.0000000        0.3136961        0.7674666        0.7222222        0.3505165      467.2544479        0.6220235      329.4120315      420.0000000        0.2320000 
          cpu.all             nrun 
-       0.2360000        1.0000000 
+       0.2320000        1.0000000 
 </div>
 <div class='input'><span class="comment"># perform default NMF with rank=2</span>
 <span class="symbol">x3</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
 <span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x2</span><span class="keyword">,</span> <span class="symbol">cl</span><span class="keyword">,</span> <span class="symbol">V</span><span class="keyword">)</span></div>
 <div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals            niter              cpu 
-       2.0000000        0.2610275        0.6767006        0.7222222        0.3505165      457.1855649        0.6375663      331.3711882      420.0000000        0.2360000 
+       2.0000000        0.3136961        0.7674666        0.7222222        0.3505165      467.2544479        0.6220235      329.4120315      420.0000000        0.2320000 
          cpu.all             nrun 
-       0.2360000        1.0000000 
+       0.2320000        1.0000000 
 </div></pre>
   </div>
   <div class="span4">

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>Heatmaps of NMF objects. NMF 0.8.27</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.8.27</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_DEMOS.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Heatmaps of NMF objects</h1><br />
+
+<div class="row"><div class="span8">
+  <pre>
+  <div class='input'><span class="roxygencomment">#' # random data with underlying NMF model</span>
+<span class="symbol">v</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span>
+<span class="comment"># estimate a model</span>
+<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
+
+<span class="comment"># highligh row only (using custom colors)</span>
+<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">tracks</span><span class="argument">=</span><span class="string">':basis'</span><span class="keyword">,</span> <span class="argument">annColor</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/list'>list</a></span><span class="keyword">(</span><span class="argument">basis</span><span class="argument">=</span><span class="number">1</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<p><img src='heatmaps-2.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-3.png' alt='' width='400' height='400' /></p>
+<div class='input'>
+<span class="comment">## character annotation vector: ok if it does not contain 'basis'</span>
+<span class="comment"># annotate first and second row + automatic special track</span>
+<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annRow</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="string">'alpha'</span><span class="keyword">,</span> <span class="string">'beta'</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<p><img src='heatmaps-5.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-6.png' alt='' width='400' height='400' /></p>
+<div class='input'><span class="comment"># no special track here</span>
+<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annRow</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="string">'alpha'</span><span class="keyword">,</span> <span class="string">'beta'</span><span class="keyword">,</span> <span class="string">':basis'</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">tracks</span><span class="argument">=</span><span class="number">NA</span><span class="keyword">)</span></div>
+<p><img src='heatmaps-8.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-9.png' alt='' width='400' height='400' /></p>
+<div class='input'><span class="comment"># with special track `basis`</span>
+<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annRow</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/list'>list</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="string">'alpha'</span><span class="keyword">,</span> <span class="string">'beta'</span><span class="keyword">)</span><span class="keyword">,</span> <span class="string">':basis'</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">tracks</span><span class="argument">=</span><span class="number">NA</span><span class="keyword">)</span></div>
+<p><img src='heatmaps-11.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-12.png' alt='' width='400' height='400' /></p>
+<div class='input'><span class="comment"># highligh columns only (using custom colors)</span>
+<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">tracks</span><span class="argument">=</span><span class="string">'basis:'</span><span class="keyword">)</span></div>
+<p><img src='heatmaps-14.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-15.png' alt='' width='400' height='400' /></p>
+<div class='input'>
+<span class="comment"># changing the name of the basis annotation track</span>
+<span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annRow</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/list'>list</a></span><span class="keyword">(</span><span class="argument">new_name</span><span class="argument">=</span><span class="string">':basis'</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<p><img src='heatmaps-17.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-18.png' alt='' width='400' height='400' /></p>
+<div class='input'>
+<span class="comment"># coefficient matrix</span>
+<span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="string">'alpha'</span><span class="keyword">,</span> <span class="string">'beta'</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># annotate first and second sample</span></div>
+<p><img src='heatmaps-20.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-21.png' alt='' width='400' height='400' /></p>
+<div class='input'><span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/list'>list</a></span><span class="keyword">(</span><span class="string">'basis'</span><span class="keyword">,</span> <span class="argument">Greek</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="string">'alpha'</span><span class="keyword">,</span> <span class="string">'beta'</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span> <span class="comment"># annotate first and second sample + basis annotation</span></div>
+<p><img src='heatmaps-23.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-24.png' alt='' width='400' height='400' /></p>
+<div class='input'><span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="argument">new_name</span><span class="argument">=</span><span class="string">'basis'</span><span class="keyword">)</span><span class="keyword">)</span></div>
+<p><img src='heatmaps-26.png' alt='' width='400' height='400' /></p>
+<p><img src='heatmaps-27.png' alt='' width='400' height='400' /></p>
+  </pre>
+</div></div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

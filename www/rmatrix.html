@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>rmatrix. NMF 0.8.24</title>
+<title>rmatrix. NMF 0.8.27</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <a class="brand" href="index.html">NMF 0.8.27</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -191,14 +191,14 @@
 <span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
 <span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
 <div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun 
-       3.0000000        0.2710007        0.5078447        1.6109761      470.0000000        0.2520000        0.2520000        1.0000000 
+       3.0000000        0.2710007        0.5078447        1.6109761      470.0000000        0.2360000        0.2360000        1.0000000 
 </div>
 <div class='input'>
 <span class="comment"># add more noise to the true model (drawn from uniform [0,10])</span>
 <span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">max</span><span class="argument">=</span><span class="number">10</span><span class="keyword">)</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
 <span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
 <div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun 
-       3.0000000        0.3853947        0.3687706       19.7067992      460.0000000        0.2360000        0.2360000        1.0000000 
+       3.0000000        0.3853947        0.3687706       19.7067992      460.0000000        0.2400000        0.2400000        1.0000000 
 </div></pre>
   </div>
   <div class="span4">

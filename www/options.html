@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf.options. NMF 0.8.24</title>
+<title>nmf.options. NMF 0.8.27</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <a class="brand" href="index.html">NMF 0.8.27</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -35,23 +35,37 @@
         
       </header>
       
-      <h1>Package Specific Options</h1>
+      <h1>NMF Package Specific Options</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
     <pre><span class="functioncall"><a href='options.html'>nmf.options</a></span><span class="keyword">(</span><span class="symbol">...</span><span class="keyword">)</span>
 
-<span class="functioncall"><a href='options.html'>nmf.getOption</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">default</span> <span class="argument">=</span> NULL<span class="keyword">)</span></pre>
+<span class="functioncall"><a href='options.html'>nmf.getOption</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">default</span> <span class="argument">=</span> NULL<span class="keyword">)</span>
+
+<span class="functioncall"><a href='options.html'>nmf.resetOptions</a></span><span class="keyword">(</span><span class="symbol">...</span><span class="keyword">,</span> <span class="argument">ALL</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='options.html'>nmf.printOptions</a></span><span class="keyword">(</span><span class="keyword">)</span></pre>
     
     <h2>Arguments</h2>
     <dl>
       <dt>...</dt>
-      <dd>any options can be defined, using <code>name =
-  value</code> or by passing a list of such tagged values.
-  However, only the ones below are used in base <span style="R">R</span>.
-  Further, <code>options('name') == options()['name']</code>, see
-  the example.  </dd>
+      <dd>option specifications. For <code>nmf.options</code>
+  this can be named arguments or a single unnamed argument
+  that is a named list (see <code><a href='http://www.inside-r.org/r-doc/base/options'>options</a></code>.
+
+  For <code>nmf.resetOptions</code>, this must be the names of
+  the options to reset. Note that <span class = "pkg">pkgmaker</span> version >=
+  0.9.1 is required for this to work correctly, when
+  options other than the default ones have been set after
+  the package is loaded.</dd>
+      <dt>ALL</dt>
+      <dd>logical that indicates if options that are not
+  part of the default set of options should be removed.
+  Note that in <span class = "pkg">pkgmaker <= 0.9</span> this argument is only
+  taken into account when no other argument is present.
+  This is fixed in version 0.9.1.</dd>
       <dt>x</dt>
       <dd>a character string holding an option name.</dd>
       <dt>default</dt>
@@ -72,11 +86,99 @@
   option, that is specific to the NMF package. It behaves
   in the same way as <code><a href='http://www.inside-r.org/r-doc/base/options'>getOption</a></code>.</p>
   
+      <p><code>nmf.resetOptions</code> reset all NMF specific options to
+  their default values.</p>
+  
+      <p><code>nmf.printOptions</code> prints all NMF specific options
+  along with their default values, in a relatively compact
+  way.</p>
+  
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class="comment"># show all NMF specific options</span>
+<span class="functioncall"><a href='options.html'>nmf.printOptions</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
+<div class='output'><Package specific options: package:NMF>
+Registered: TRUE
+Options <as default>:
+List of 11
+ $ default.algorithm: chr "brunet"
+ $ default.seed     : chr "random"
+ $ error.track      : logi FALSE
+ $ track.interval   : num 30
+ $ gc               : num 50
+ $ parallel.backend :Class 'option_symlink'  chr "backend"
+ $ backend          : chr "par"
+ $ reproducible     : logi TRUE
+ $ verbose          : logi FALSE
+ $ debug            : logi FALSE
+ $ shared.memory    : logi TRUE
+</div>
+<div class='input'>
+<span class="comment"># get some options</span>
+<span class="functioncall"><a href='options.html'>nmf.getOption</a></span><span class="keyword">(</span><span class="string">'verbose'</span><span class="keyword">)</span></div>
+<div class='output'>[1] FALSE
+</div>
+<div class='input'><span class="functioncall"><a href='options.html'>nmf.getOption</a></span><span class="keyword">(</span><span class="string">'backend'</span><span class="keyword">)</span></div>
+<div class='output'>[1] "par"
+</div>
+<div class='input'><span class="comment"># set new values</span>
+<span class="functioncall"><a href='options.html'>nmf.options</a></span><span class="keyword">(</span><span class="argument">verbose</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span>
+<span class="functioncall"><a href='options.html'>nmf.options</a></span><span class="keyword">(</span><span class="argument">backend</span><span class="argument">=</span><span class="string">'snow'</span><span class="keyword">,</span> <span class="argument">default.algorithm</span><span class="argument">=</span><span class="string">'lee'</span><span class="keyword">)</span>
+<span class="functioncall"><a href='options.html'>nmf.printOptions</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
+<div class='output'><Package specific options: package:NMF>
+Registered: TRUE
+Options:
+List of 11
+ $ default.algorithm: chr "lee"
+ $ default.seed     : chr "random"
+ $ error.track      : logi FALSE
+ $ track.interval   : num 30
+ $ gc               : num 50
+ $ parallel.backend :Class 'option_symlink'  chr "backend"
+ $ backend          : chr "snow"
+ $ reproducible     : logi TRUE
+ $ verbose          : logi TRUE
+ $ debug            : logi FALSE
+ $ shared.memory    : logi TRUE
+Defaults:
+List of 11
+ $ default.algorithm: chr "brunet"
+ $ default.seed     : chr "random"
+ $ error.track      : logi FALSE
+ $ track.interval   : num 30
+ $ gc               : num 50
+ $ parallel.backend :Class 'option_symlink'  chr "backend"
+ $ backend          : chr "par"
+ $ reproducible     : logi TRUE
+ $ verbose          : logi FALSE
+ $ debug            : logi FALSE
+ $ shared.memory    : logi TRUE
+</div>
+<div class='input'>
+<span class="comment"># reset to default</span>
+<span class="functioncall"><a href='options.html'>nmf.resetOptions</a></span><span class="keyword">(</span><span class="keyword">)</span>
+<span class="functioncall"><a href='options.html'>nmf.printOptions</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
+<div class='output'><Package specific options: package:NMF>
+Registered: TRUE
+Options <as default>:
+List of 11
+ $ default.algorithm: chr "brunet"
+ $ default.seed     : chr "random"
+ $ error.track      : logi FALSE
+ $ track.interval   : num 30
+ $ gc               : num 50
+ $ parallel.backend :Class 'option_symlink'  chr "backend"
+ $ backend          : chr "par"
+ $ reproducible     : logi TRUE
+ $ verbose          : logi FALSE
+ $ debug            : logi FALSE
+ $ shared.memory    : logi TRUE
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
-      <li>nmf.getOption</li><li>nmf.options</li>
+      <li>nmf.getOption</li><li>nmf.options</li><li>nmf.printOptions</li><li>nmf.resetOptions</li>
     </ul>
     <ul>
       

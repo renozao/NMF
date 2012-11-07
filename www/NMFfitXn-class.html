@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfitXn-class. NMF 0.8.24</title>
+<title>NMFfitXn-class. NMF 0.8.27</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <a class="brand" href="index.html">NMF 0.8.27</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -220,32 +220,32 @@
    407L, 9243L, 638404768L, 1844660257L, -1365545106L, 646893847L, -233661844L 
   Total timing:
    user  system elapsed 
-  2.356   0.352   2.900 
+  2.408   0.304   2.139 
   Sequential timing:
    user  system elapsed 
-  1.300   0.024   2.340 
+  1.304   0.020   1.791 
 </div>
 <div class='input'>
 <span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
 <div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun       cophenetic       dispersion 
-       3.0000000        0.4210780        0.7219242      251.6773731      430.0000000        0.2480000        2.3560000        5.0000000        1.0000000        0.8380247 
+       3.0000000        0.4210780        0.7219242      251.6773731      430.0000000        0.2720000        2.4080000        5.0000000        1.0000000        0.8380247 
 </div>
 <div class='input'><span class="comment"># get more info</span>
 <span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="symbol">V</span><span class="keyword">,</span> <span class="argument">class</span><span class="argument">=</span><span class="symbol">groups</span><span class="keyword">)</span></div>
 <div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals            niter              cpu 
-       3.0000000        0.4210780        0.7219242        1.0000000        0.0000000      308.9893519        0.7093112      251.6773731      430.0000000        0.2480000 
+       3.0000000        0.4210780        0.7219242        1.0000000        0.0000000      308.9893519        0.7093112      251.6773731      430.0000000        0.2720000 
          cpu.all             nrun       cophenetic       dispersion 
-       2.3560000        5.0000000        1.0000000        0.8380247 
+       2.4080000        5.0000000        1.0000000        0.8380247 
 </div>
 <div class='input'>
 <span class="comment"># compute/show computational times</span>
 <span class="functioncall"><a href='algorithmic.html'>runtime.all</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
 <div class='output'>   user  system elapsed 
-  2.356   0.352   2.900 
+  2.408   0.304   2.139 
 </div>
 <div class='input'><span class="functioncall"><a href='algorithmic.html'>seqtime</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
 <div class='output'>   user  system elapsed 
-  1.300   0.024   2.340 
+  1.304   0.020   1.791 
 </div>
 <div class='input'>
 # plot the consensus matrix, computed on the fly

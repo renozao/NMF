@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>basis. NMF 0.8.24</title>
+<title>basis. NMF 0.8.27</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <a class="brand" href="index.html">NMF 0.8.27</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -172,6 +172,13 @@
       
       <p><span class='describe'></p>
   
+      <p>basis<code>signature(object = "ANY")</code>: Default
+  method returns the value of S3 slot or attribute
+  <code>'basis'</code>. It returns <code>NULL</code> if none of these
+  are set.</p>
+  
+      <p>Arguments <code>...</code> are not used by this method.</p>
+  
       <p>basis<code>signature(object = "NMFfitXn")</code>:
   Returns the basis matrix of the best fit amongst all the
   fits stored in <code>object</code>. It is a shortcut for
@@ -291,37 +298,37 @@
     <pre class="examples"><div class='input'><span class="comment"># Scaled coefficient matrix</span>
 <span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span>
 <span class="functioncall"><a href='basis-coef-methods.html'>scoef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>          [,1]      [,2]      [,3]      [,4]      [,5]
-[1,] 0.2620301 0.4561917 0.3629135 0.1869728 0.1345399
-[2,] 0.5007356 0.2380933 0.1258562 0.0969721 0.5216647
-[3,] 0.2372343 0.3057149 0.5112303 0.7160551 0.3437954
+<div class='output'>         [,1]      [,2]      [,3]       [,4]       [,5]
+[1,] 0.303505 0.3733961 0.3918255 0.60316744 0.49680386
+[2,] 0.264104 0.1621506 0.2575156 0.05344582 0.42898473
+[3,] 0.432391 0.4644532 0.3506588 0.34338674 0.07421142
 </div>
 <div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>scoef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">100</span><span class="keyword">)</span></div>
-<div class='output'>         [,1]     [,2]     [,3]     [,4]     [,5]
-[1,] 26.20301 45.61917 36.29135 18.69728 13.45399
-[2,] 50.07356 23.80933 12.58562  9.69721 52.16647
-[3,] 23.72343 30.57149 51.12303 71.60551 34.37954
+<div class='output'>        [,1]     [,2]     [,3]      [,4]      [,5]
+[1,] 30.3505 37.33961 39.18255 60.316744 49.680386
+[2,] 26.4104 16.21506 25.75156  5.344582 42.898473
+[3,] 43.2391 46.44532 35.06588 34.338674  7.421142
 </div>
 <div class='input'><span class="comment"># random standard NMF model</span>
 <span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span>
 <span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>           [,1]      [,2]       [,3]
- [1,] 0.7208252 0.9961687 0.12514133
- [2,] 0.8187304 0.7937883 0.39658277
- [3,] 0.4594528 0.5419796 0.74530544
- [4,] 0.2307499 0.4420451 0.05264301
- [5,] 0.3800652 0.3539249 0.24622268
- [6,] 0.6526429 0.9233914 0.95641576
- [7,] 0.8255845 0.7578398 0.70868011
- [8,] 0.8474454 0.2974755 0.94351822
- [9,] 0.3902456 0.7052198 0.77277206
-[10,] 0.1475976 0.6880727 0.09022958
+<div class='output'>           [,1]       [,2]      [,3]
+ [1,] 0.8732363 0.14673034 0.8258517
+ [2,] 0.9419600 0.90364250 0.9450016
+ [3,] 0.4366644 0.02449814 0.7655326
+ [4,] 0.1280245 0.13740745 0.3158550
+ [5,] 0.7420695 0.27603784 0.8712964
+ [6,] 0.8514233 0.90217862 0.7792820
+ [7,] 0.2046359 0.83095184 0.7355579
+ [8,] 0.6718778 0.05211159 0.6383124
+ [9,] 0.6220041 0.86345635 0.3955073
+[10,] 0.1696691 0.48215002 0.3446246
 </div>
 <div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>           [,1]      [,2]      [,3]      [,4]       [,5]
-[1,] 0.50601936 0.2943410 0.2249700 0.3739522 0.36987336
-[2,] 0.86713964 0.2636950 0.8680566 0.9481553 0.13908320
-[3,] 0.08325181 0.6329277 0.6494422 0.5638767 0.04297954
+<div class='output'>          [,1]       [,2]      [,3]      [,4]      [,5]
+[1,] 0.9991966 0.84327092 0.3475843 0.1416415 0.8040862
+[2,] 0.4066214 0.02334193 0.3245428 0.1290747 0.6110995
+[3,] 0.1238337 0.02985221 0.7393051 0.8885566 0.7624234
 </div>
 <div class='input'>
 <span class="comment"># set matrix factors</span>
@@ -339,7 +346,7 @@
   </div>
   <div class="span4">
     <!-- <ul>
-      <li>basis</li><li>.basis</li><li>.basis&lt;-</li><li>basis&lt;-</li><li>basis&lt;-,ANY-method</li><li>.basis&lt;--methods</li><li>.basis-methods</li><li>basis&lt;--methods</li><li>basis-methods</li><li>.basis&lt;-,NMFfit,matrix-method</li><li>.basis,NMFfit-method</li><li>basis,NMFfitXn-method</li><li>.basis&lt;-,NMF,matrix-method</li><li>.basis,NMF-method</li><li>basis,NMF-method</li><li>.basis&lt;-,NMFstd,matrix-method</li><li>.basis,NMFstd-method</li><li>coef</li><li>.coef</li><li>.coef&lt;-</li><li>coef&lt;-</li><li>coef&lt;-,ANY-method</li><li>coefficients</li><li>coefficients-methods</li><li>coefficients,NMF-method</li><li>.coef&lt;--methods</li><li>.coef-methods</li><li>coef&lt;--methods</li><li>coef-methods</li><li>.coef&lt;-,NMFfit,matrix-method</li><li>.coef,NMFfit-method</li><li>coef,NMFfitXn-method</li><li>.coef&lt;-,NMF,matrix-method</li><li>.coef,NMF-method</li><li>coef,NMF-method</li><li>.coef&lt;-,NMFstd,matrix-method</li><li>.coef,NMFstd-method</li><li>loadings,NMF-method</li><li>scoef</li><li>scoef-methods</li><li>scoef,NMF-method</li>
+      <li>basis</li><li>.basis</li><li>.basis&lt;-</li><li>basis&lt;-</li><li>basis&lt;-,ANY-method</li><li>basis,ANY-method</li><li>.basis&lt;--methods</li><li>.basis-methods</li><li>basis&lt;--methods</li><li>basis-methods</li><li>.basis&lt;-,NMFfit,matrix-method</li><li>.basis,NMFfit-method</li><li>basis,NMFfitXn-method</li><li>.basis&lt;-,NMF,matrix-method</li><li>.basis,NMF-method</li><li>basis,NMF-method</li><li>.basis&lt;-,NMFstd,matrix-method</li><li>.basis,NMFstd-method</li><li>coef</li><li>.coef</li><li>.coef&lt;-</li><li>coef&lt;-</li><li>coef&lt;-,ANY-method</li><li>coefficients</li><li>coefficients-methods</li><li>coefficients,NMF-method</li><li>.coef&lt;--methods</li><li>.coef-methods</li><li>coef&lt;--methods</li><li>coef-methods</li><li>.coef&lt;-,NMFfit,matrix-method</li><li>.coef,NMFfit-method</li><li>coef,NMFfitXn-method</li><li>.coef&lt;-,NMF,matrix-method</li><li>.coef,NMF-method</li><li>coef,NMF-method</li><li>.coef&lt;-,NMFstd,matrix-method</li><li>.coef,NMFstd-method</li><li>loadings,NMF-method</li><li>scoef</li><li>scoef-methods</li><li>scoef,NMF-method</li>
     </ul>
     <ul>
       <li>methods</li>

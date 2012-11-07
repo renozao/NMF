@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>consensushc. NMF 0.8.24</title>
+<title>consensushc. NMF 0.8.27</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <a class="brand" href="index.html">NMF 0.8.27</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -43,7 +43,7 @@
     <pre><span class="functioncall"><a href='consensushc.html'>consensushc</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (matrix)</span>
-<span class="functioncall">`consensushc`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">dendrogram</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
+<span class="functioncall">`consensushc`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">method</span> <span class="argument">=</span> <span class="string">"average"</span><span class="keyword">,</span> <span class="argument">dendrogram</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (NMFfitX)</span>
 <span class="functioncall">`consensushc`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">what</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="string">"consensus"</span><span class="keyword">,</span> <span class="string">"fit"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
@@ -55,6 +55,9 @@
   returned by multiple NMF runs.</dd>
       <dt>...</dt>
       <dd>extra arguments passed to next method calls</dd>
+      <dt>method</dt>
+      <dd>linkage method passed to
+  <code><a href='http://www.inside-r.org/r-doc/stats/hclust'>hclust</a></code>.</dd>
       <dt>dendrogram</dt>
       <dd>a logical that specifies if the result
   of the hierarchical clustering (en <code>hclust</code> object)

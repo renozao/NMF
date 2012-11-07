@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMF-class. NMF 0.8.24</title>
+<title>NMF-class. NMF 0.8.27</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <a class="brand" href="index.html">NMF 0.8.27</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -191,6 +191,11 @@
   
       <p>coefficients<code>signature(object = "NMF")</code>:
   Alias to <code>coef,NMF</code>, therefore also pure virtual.</p>
+  
+      <p>coefmap<code>signature(object = "NMF")</code>: The
+  default method for NMF objects has special default values
+  for some arguments of <code><a href='aheatmap.html'>aheatmap</a></code> (see
+  argument description).</p>
   
       <p>connectivity<code>signature(object = "NMF")</code>:
   Computes the connectivity matrix for an NMF model, for

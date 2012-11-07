@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>registerDoBackend. NMF 0.8.24</title>
+<title>registerDoBackend. NMF 0.8.27</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <a class="brand" href="index.html">NMF 0.8.27</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -56,7 +56,10 @@
 <span class="functioncall">`ForeachBackend`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">cl</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (doMPI_backend)</span>
-<span class="functioncall">`ForeachBackend`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">cl</span><span class="keyword">)</span></pre>
+<span class="functioncall">`ForeachBackend`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">cl</span><span class="keyword">)</span>
+
+<span class="comment"><span class="label label-important">S4</span> (doSNOW_backend)</span>
+<span class="functioncall">`ForeachBackend`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">cl</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -142,13 +145,16 @@
       <p>ForeachBackend<code>signature(object =
   "doMPI_backend")</code>: doMPI-specific backend factory</p>
   
+      <p>ForeachBackend<code>signature(object =
+  "doSNOW_backend")</code>: doSNOW-specific backend factory</p>
+  
       <p></span></p>
   
     </div>
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>ForeachBackend</li><li>ForeachBackend,ANY-method</li><li>ForeachBackend,character-method</li><li>ForeachBackend,cluster-method</li><li>ForeachBackend,doMPI_backend-method</li><li>ForeachBackend,doParallel_backend-method</li><li>ForeachBackend-methods</li><li>ForeachBackend,missing-method</li><li>ForeachBackend,mpicluster-method</li><li>ForeachBackend,NULL-method</li><li>ForeachBackend,numeric-method</li><li>getDoBackend</li><li>getDoParHosts</li><li>register</li><li>registerDoBackend</li><li>setDoBackend</li>
+      <li>ForeachBackend</li><li>ForeachBackend,ANY-method</li><li>ForeachBackend,character-method</li><li>ForeachBackend,cluster-method</li><li>ForeachBackend,doMPI_backend-method</li><li>ForeachBackend,doParallel_backend-method</li><li>ForeachBackend,doSNOW_backend-method</li><li>ForeachBackend-methods</li><li>ForeachBackend,missing-method</li><li>ForeachBackend,mpicluster-method</li><li>ForeachBackend,NULL-method</li><li>ForeachBackend,numeric-method</li><li>getDoBackend</li><li>getDoParHosts</li><li>register</li><li>registerDoBackend</li><li>setDoBackend</li>
     </ul>
     <ul>
       <li>internal</li><li>methods</li>

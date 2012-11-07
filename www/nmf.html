@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf. NMF 0.8.24</title>
+<title>nmf. NMF 0.8.27</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <a class="brand" href="index.html">NMF 0.8.27</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -804,372 +804,36 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="comment"># generate a synthetic dataset with known classes: 50 features, 23 samples (10+5+8)</span>
-<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">20</span><span class="keyword">;</span> <span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span><span class="keyword">;</span>
-<span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/sum'>sum</a></span><span class="keyword">(</span><span class="symbol">counts</span><span class="keyword">)</span>
-<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/dim'>dim</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>[1] 20 10
-</div>
-<div class='input'>
-<span class="comment"># build the true cluster membership</span>
-<span class="symbol">groups</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/unlist'>unlist</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/mapply'>mapply</a></span><span class="keyword">(</span><span class="symbol">rep</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/seq'>seq</a></span><span class="keyword">(</span><span class="symbol">counts</span><span class="keyword">)</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span><span class="keyword">)</span>
-
-
-<span class="comment"># run on a data.frame</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/data.frame'>data.frame</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
-<span class="comment"># missing method: use algorithm suitable for seed</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="argument">seed</span><span class="argument">=</span><span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">2</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span>
-<span class="functioncall"><a href='algorithmic.html'>algorithm</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
-<div class='output'>[1] "brunet"
-</div>
-<div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="argument">seed</span><span class="argument">=</span><span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">2</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFns'</span><span class="keyword">)</span><span class="keyword">)</span>
-<span class="functioncall"><a href='algorithmic.html'>algorithm</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
-<div class='output'>[1] "nsNMF"
-</div>
-<div class='input'><span class="comment"># compare some NMF algorithms (tracking the approximation error)</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/list'>list</a></span><span class="keyword">(</span><span class="string">'brunet'</span><span class="keyword">,</span> <span class="string">'lee'</span><span class="keyword">,</span> <span class="string">'nsNMF'</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">.opt</span><span class="argument">=</span><span class="string">'t'</span><span class="keyword">)</span></div>
-<strong class='message'>Compute NMF method 1 ... </strong>
-<strong class='message'>OK</strong>
-<strong class='message'>Compute NMF method 2 ... </strong>
-<strong class='message'>OK</strong>
-<strong class='message'>Compute NMF method 3 ... </strong>
-<strong class='message'>OK</strong>
-<div class='input'><span class="symbol">res</span></div>
-<div class='output'><Object of class: NMFList >
-Length: 3 
-Method(s): brunet, lee, nsNMF 
-Total timing:
-   user  system elapsed 
-  1.608   0.008   1.769 
-</div>
-<div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">class</span><span class="argument">=</span><span class="symbol">groups</span><span class="keyword">)</span></div>
-<div class='output'>       method   seed rng    metric rank sparseness.basis sparseness.coef purity   entropy residuals niter   cpu cpu.all nrun
-brunet brunet random   1        KL    2        0.3310652       0.5153302    0.5 0.8613128  65.87273   450 0.244   0.244    1
-lee       lee random   1 euclidean    2        0.3317053       0.7154665    0.5 0.8833017  43.56870   470 0.336   0.336    1
-nsNMF   nsNMF random   1        KL    2        0.3475413       0.9117871    0.6 0.6126016  73.18591   490 0.428   0.428    1
-</div>
-<div class='input'><span class="comment"># plot the track of the residual errors</span>
-<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: plot(res)</span>
-<span class="comment"># specify algorithm by its name</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="string">'nsNMF'</span><span class="keyword">)</span> <span class="comment"># nonsmooth NMF</span>
+    <pre class="examples"><div class='input'><span class="comment"># Only basic calls are presented in this manpage.</span>
+<span class="comment"># Many more examples are provided in the demo file nmf.R</span>
 <span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: </span>
-<span class="comment"># # names are partially matched so this also works</span>
-<span class="comment"># nmf(x, 3, 'ns')</span>
+<span class="comment"># demo('nmf')</span>
 <span class="comment"># ## &lt;strong&gt;End(Not run)&lt;/strong&gt;</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="string">'offset'</span><span class="keyword">)</span> <span class="comment"># NMF with offset</span>
-<span class="comment"># run a custom algorithm defined as a standard function</span>
-<span class="symbol">myfun</span> <span class="assignement">&lt;-</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">x</span><span class="keyword">,</span> <span class="formalargs">start</span><span class="keyword">,</span> <span class="formalargs">alpha</span><span class="keyword">)</span><span class="keyword">{</span>
-        <span class="comment"># update starting point</span>
-        <span class="comment"># ...</span>
-        <span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">start</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="number">3</span> <span class="keyword">*</span> <span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">start</span><span class="keyword">)</span>
-        <span class="comment"># return updated point</span>
-        <span class="symbol">start</span>
-<span class="keyword">}</span>
 
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="symbol">myfun</span><span class="keyword">,</span> <span class="argument">alpha</span><span class="argument">=</span><span class="number">3</span><span class="keyword">)</span>
-<span class="functioncall"><a href='algorithmic.html'>algorithm</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
-<div class='output'>[1] "nmf_dc71a359a72"
-</div>
-<div class='input'><span class="comment"># error: alpha missing</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/try'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="symbol">myfun</span><span class="keyword">)</span> <span class="keyword">)</span></div>
-<div class='output'><Object of class: NMFfit>
- # Model:
-  <Object of class:NMFstd>
-  features: 20 
-  basis/rank: 2 
-  samples: 10 
- # Details:
-  algorithm:  nmf_dc7430b9809 
-  seed:  random 
-  RNG: 403L, 538L, -355358562L, ... [31215c1c5020d356fb72485e96622701]
-  distance metric:  'euclidean' 
-  residuals:  55713.39 
-  Timing:
-     user  system elapsed 
-    0.004   0.000   0.002 
-</div>
-<div class='input'>
-<span class="comment"># possibly the algorithm fits a non-standard NMF model, e.g. NMFns model</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="symbol">myfun</span><span class="keyword">,</span> <span class="argument">alpha</span><span class="argument">=</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFns'</span><span class="keyword">)</span>
-<span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
-<div class='output'>[1] "NMFns"
-</div>
-<div class='input'><span class="comment"># assume a known NMF model compatible with the matrix `x`</span>
-<span class="symbol">y</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">)</span>
-<span class="comment"># fits an NMF model (with default method) on some data using y as a starting point</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span>
-<span class="comment"># the fit can be reproduced using the same starting point</span>
-<span class="functioncall"><a href='nmf.equal.html'>nmf.equal</a></span><span class="keyword">(</span><span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span><span class="keyword">,</span> <span class="symbol">res</span><span class="keyword">)</span></div>
-<div class='output'>[1] TRUE
-</div>
-<div class='input'><span class="comment"># missing method: use default algorithm</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
-<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: </span>
-<span class="comment"># # Fit a 3-rank model providing an initial value for the basis matrix</span>
-<span class="comment"># nmf(x, rmatrix(nrow(x), 3), 'snmf/r')</span>
-<span class="comment"># </span>
-<span class="comment"># # Fit a 3-rank model providing an initial value for the mixture coefficient matrix</span>
-<span class="comment"># nmf(x, rmatrix(3, ncol(x)), 'snmf/l')</span>
-<span class="comment"># ## &lt;strong&gt;End(Not run)&lt;/strong&gt;</span>
-<span class="comment"># default fit</span>
+<span class="comment"># random data</span>
+<span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">)</span>
+
+<span class="comment"># run default algorithm with rank 2</span>
 <span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span>
-<span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">class</span><span class="argument">=</span><span class="symbol">groups</span><span class="keyword">)</span></div>
-<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy        residuals            niter              cpu          cpu.all             nrun 
-       2.0000000        0.2861855        0.6245917        0.5000000        0.8047438       65.0947795      500.0000000        0.2640000        0.2640000        1.0000000 
-</div>
-<div class='input'>
-<span class="comment"># run default algorithm multiple times (only keep the best fit)</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">10</span><span class="keyword">)</span>
-<span class="symbol">res</span></div>
-<div class='output'><Object of class: NMFfitX1 >
-  Method: brunet 
-  Runs:  10 
-  RNG:
-   407L, 782947973L, -499676798L, -2114537701L, 1358430112L, 1848824609L, -1500725650L 
-  Total timing:
-   user  system elapsed 
-  2.984   0.260   6.323 
-</div>
-<div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">class</span><span class="argument">=</span><span class="symbol">groups</span><span class="keyword">)</span></div>
-<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy        residuals            niter              cpu          cpu.all             nrun 
-       3.0000000        0.4547926        0.6227698        0.7000000        0.5523719       49.1400130      490.0000000        0.2600000        2.9840000       10.0000000 
-      cophenetic       dispersion 
-       0.9695853        0.6872000 
-</div>
-<div class='input'>
-<span class="roxygencomment">#' # run default algorithm multiple times keeping all the fits</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">10</span><span class="keyword">,</span> <span class="argument">.options</span><span class="argument">=</span><span class="string">'k'</span><span class="keyword">)</span>
-<span class="symbol">res</span></div>
-<div class='output'><Object of class: NMFfitXn >
-  Method: brunet 
-  Runs:  10 
-  RNG:
-   407L, -725493431L, 277656694L, 441221247L, 1917343924L, -1994118107L, -732284254L 
-  Total timing:
-   user  system elapsed 
-  5.041   0.448   5.919 
-  Sequential timing:
-   user  system elapsed 
-  2.848   0.044   6.065 
-</div>
-<div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">class</span><span class="argument">=</span><span class="symbol">groups</span><span class="keyword">)</span></div>
-<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy        residuals            niter              cpu          cpu.all             nrun 
-       3.0000000        0.4587121        0.6266926        0.6000000        0.7324868       49.1289699      480.0000000        0.2720000        5.0410000       10.0000000 
-      cophenetic       dispersion 
-       0.9407026        0.6448000 
-</div>
-<div class='input'>
-<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: </span>
-<span class="comment"># ## Note: one could have equivalently done</span>
-<span class="comment"># res &lt;- nmf(V, 3, nrun=10, .options=list(keep.all=TRUE))</span>
-<span class="comment"># ## &lt;strong&gt;End(Not run)&lt;/strong&gt;</span>
 
-<span class="comment"># use a method that fit different model</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="string">'nsNMF'</span><span class="keyword">)</span>
-<span class="functioncall"><a href='fit.html'>fit</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
-<div class='output'><Object of class:NMFns>
-features: 20 
-basis/rank: 2 
-samples: 10 
-theta: 0.5 
-</div>
-<div class='input'>
-<span class="comment"># pass parameter theta to the model via `...`</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="string">'nsNMF'</span><span class="keyword">,</span> <span class="argument">theta</span><span class="argument">=</span><span class="number">0.2</span><span class="keyword">)</span>
-<span class="functioncall"><a href='fit.html'>fit</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
-<div class='output'><Object of class:NMFns>
-features: 20 
-basis/rank: 2 
-samples: 10 
-theta: 0.2 
-</div>
-<div class='input'>
-<span class="comment">## handling arguments in `...` and model parameters</span>
-<span class="symbol">myfun</span> <span class="assignement">&lt;-</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">x</span><span class="keyword">,</span> <span class="formalargs">start</span><span class="keyword">,</span> <span class="formalargs">theta</span><span class="eqformalargs">=</span><span class="number">100</span><span class="keyword">)</span><span class="keyword">{</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/cat'>cat</a></span><span class="keyword">(</span><span class="string">"theta in myfun="</span><span class="keyword">,</span> <span class="symbol">theta</span><span class="keyword">,</span> <span class="string">"\n\n"</span><span class="keyword">)</span><span class="keyword">;</span> <span class="symbol">start</span> <span class="keyword">}</span>
-<span class="comment"># no conflict: default theta</span>
-<span class="functioncall"><a href='fit.html'>fit</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="symbol">myfun</span><span class="keyword">)</span> <span class="keyword">)</span></div>
-<div class='output'>theta in myfun= 100 
+<span class="comment"># specify the algorithm</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="string">'lee'</span><span class="keyword">)</span>
 
+<span class="comment"># get verbose message on what is going on</span>
+<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="argument">.options</span><span class="argument">=</span><span class="string">'v'</span><span class="keyword">)</span></div>
+<strong class='message'>NMF algorithm: 'brunet'</strong>
+<strong class='message'>NMF seeding method: random</strong>
+<div class='output'>Iterations: 1 50 100 150 200 250 300 350 400 450 500 550 600 650 700 750 800
+DONE (stopped at 840/2000 iterations)
 </div>
-<div class='output'><Object of class:NMFstd>
-features: 20 
-basis/rank: 2 
-samples: 10 
-</div>
-<div class='input'><span class="comment"># no conlfict: theta is passed to the algorithm</span>
-<span class="functioncall"><a href='fit.html'>fit</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="symbol">myfun</span><span class="keyword">,</span> <span class="argument">theta</span><span class="argument">=</span><span class="number">1</span><span class="keyword">)</span> <span class="keyword">)</span></div>
-<div class='output'>theta in myfun= 1 
-
-</div>
-<div class='output'><Object of class:NMFstd>
-features: 20 
-basis/rank: 2 
-samples: 10 
-</div>
-<div class='input'><span class="comment"># conflict: theta is used as model parameter</span>
-<span class="functioncall"><a href='fit.html'>fit</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="symbol">myfun</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFns'</span><span class="keyword">,</span> <span class="argument">theta</span><span class="argument">=</span><span class="number">0.1</span><span class="keyword">)</span> <span class="keyword">)</span></div>
-<div class='output'>theta in myfun= 100 
-
-</div>
-<div class='output'><Object of class:NMFns>
-features: 20 
-basis/rank: 2 
-samples: 10 
-theta: 0.1 
-</div>
-<div class='input'><span class="comment"># conflict solved: can pass different theta to model and algorithm</span>
-<span class="functioncall"><a href='fit.html'>fit</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="symbol">myfun</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/list'>list</a></span><span class="keyword">(</span><span class="string">'NMFns'</span><span class="keyword">,</span> <span class="argument">theta</span><span class="argument">=</span><span class="number">0.1</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">theta</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span> <span class="keyword">)</span></div>
-<div class='output'>theta in myfun= 5 
-
-</div>
-<div class='output'><Object of class:NMFns>
-features: 20 
-basis/rank: 2 
-samples: 10 
-theta: 0.1 
-</div>
-<div class='input'>
-<span class="comment">## USING SEEDING METHODS</span>
-
-<span class="comment"># run default algorithm with the Non-negative Double SVD seeding method ('nndsvd')</span>
-<span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">seed</span><span class="argument">=</span><span class="string">'nndsvd'</span><span class="keyword">)</span></div>
-<div class='output'><Object of class: NMFfit>
- # Model:
-  <Object of class:NMFstd>
-  features: 20 
-  basis/rank: 3 
-  samples: 10 
- # Details:
-  algorithm:  brunet 
-  seed:  nndsvd 
-  RNG: 403L, 12L, -1992258372L, ... [f088633f9bc4eb39c2610eaa5fc7f78b]
-  distance metric:  'KL' 
-  residuals:  49.12897 
-  Iterations: 420 
-  Timing:
-     user  system elapsed 
-    0.240   0.000   0.275 
-</div>
-<div class='input'>
-<span class="comment">## &lt;strong&gt;Not run&lt;/strong&gt;: </span>
-<span class="comment"># ## Note: partial match also works</span>
-<span class="comment"># nmf(x, 3, seed='nn')</span>
-<span class="comment"># ## &lt;strong&gt;End(Not run)&lt;/strong&gt;</span>
-
-<span class="comment"># run nsNMF algorithm, fixing the seed of the random number generator</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="string">'nsNMF'</span><span class="keyword">,</span> <span class="argument">seed</span><span class="argument">=</span><span class="number">123456</span><span class="keyword">)</span>
-<span class="functioncall"><a href='nmf.equal.html'>nmf.equal</a></span><span class="keyword">(</span><span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="string">'nsNMF'</span><span class="keyword">,</span> <span class="argument">seed</span><span class="argument">=</span><span class="number">123456</span><span class="keyword">)</span><span class="keyword">,</span> <span class="symbol">res</span><span class="keyword">)</span></div>
-<div class='output'>[1] TRUE
-</div>
-<div class='input'>
-<span class="comment"># run default algorithm specifying the starting point following the NMF standard model</span>
-<span class="symbol">start.std</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">W</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/matrix'>matrix</a></span><span class="keyword">(</span><span class="number">0.5</span><span class="keyword">,</span> <span class="symbol">n</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/matrix'>matrix</a></span><span class="keyword">(</span><span class="number">0.2</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span><span class="keyword">)</span>
-<span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">start.std</span><span class="keyword">)</span></div>
-<div class='output'><Object of class: NMFfit>
- # Model:
-  <Object of class:NMFstd>
-  features: 20 
-  basis/rank: 3 
-  samples: 10 
- # Details:
-  algorithm:  brunet 
-  seed:  none 
-  RNG: 403L, 12L, -1992258372L, ... [f088633f9bc4eb39c2610eaa5fc7f78b]
-  distance metric:  'KL' 
-  residuals:  88.97092 
-  Iterations: 420 
-  Timing:
-     user  system elapsed 
-    0.236   0.000   0.246 
-</div>
-<div class='input'>
-<span class="comment"># to run nsNMF algorithm with an explicit starting point, this one</span>
-<span class="comment"># needs to follow the 'NMFns' model:</span>
-<span class="symbol">start.ns</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="argument">model</span><span class="argument">=</span><span class="string">'NMFns'</span><span class="keyword">,</span> <span class="argument">W</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/matrix'>matrix</a></span><span class="keyword">(</span><span class="number">0.5</span><span class="keyword">,</span> <span class="symbol">n</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">H</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/matrix'>matrix</a></span><span class="keyword">(</span><span class="number">0.2</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span><span class="keyword">)</span>
-<span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">start.ns</span><span class="keyword">)</span></div>
-<div class='output'><Object of class: NMFfit>
- # Model:
-  <Object of class:NMFns>
-  features: 20 
-  basis/rank: 3 
-  samples: 10 
-  theta: 0.5 
- # Details:
-  algorithm:  nsNMF 
-  seed:  none 
-  RNG: 403L, 12L, -1992258372L, ... [f088633f9bc4eb39c2610eaa5fc7f78b]
-  distance metric:  'KL' 
-  residuals:  88.97092 
-  Iterations: 420 
-  Timing:
-     user  system elapsed 
-    0.400   0.000   0.416 
-</div>
-<div class='input'><span class="comment"># Note: the method name does not need to be specified as it is infered from the</span>
-<span class="comment"># when there is only one algorithm defined for the model.</span>
-
-<span class="comment"># if the model is not appropriate (as defined by the algorihtm) an error is thrown</span>
-<span class="comment"># [cf. the standard model doesn't include a smoothing parameter used in nsNMF]</span>
-<span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/try'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">start.std</span><span class="keyword">,</span> <span class="argument">method</span><span class="argument">=</span><span class="string">'nsNMF'</span><span class="keyword">)</span> <span class="keyword">)</span>
-
-<span class="comment">## Callback functions</span>
-<span class="comment"># Pass a callback function to only save summary measure of each run</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">.callback</span><span class="argument">=</span><span class="symbol">summary</span><span class="keyword">)</span>
-<span class="comment"># the callback results are simplified into a matrix</span>
-<span class="symbol">res</span><span class="keyword">$</span><span class="symbol">.callback</span></div>
-<div class='output'>                        [,1]        [,2]        [,3]
-rank               3.0000000   3.0000000   3.0000000
-sparseness.basis   0.4052912   0.4052912   0.4534621
-sparseness.coef    0.7006337   0.6925515   0.6257077
-residuals         49.4186756  49.4186756  49.1405944
-niter            670.0000000 450.0000000 520.0000000
-cpu                0.3640000   0.2480000   0.2840000
-cpu.all            0.3640000   0.2480000   0.2840000
-nrun               1.0000000   1.0000000   1.0000000
-</div>
-<div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">.callback</span><span class="argument">=</span><span class="symbol">summary</span><span class="keyword">,</span> <span class="argument">.opt</span><span class="argument">=</span><span class="string">'-S'</span><span class="keyword">)</span>
-<span class="comment"># the callback results are simplified into a matrix</span>
-<span class="symbol">res</span><span class="keyword">$</span><span class="symbol">.callback</span></div>
-<div class='output'>[[1]]
-            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun 
-       3.0000000        0.3097033        0.8124882       52.7748076      430.0000000        0.2520000        0.2520000        1.0000000 
-
-[[2]]
-            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun 
-       3.0000000        0.4895110        0.5671632       49.4690849      490.0000000        0.2720000        0.2720000        1.0000000 
-
-[[3]]
-            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun 
-       3.0000000        0.4579533        0.6183901       49.1293545      480.0000000        0.2560000        0.2560000        1.0000000 
-
-</div>
-<div class='input'>
-<span class="comment"># Pass a custom callback function</span>
-<span class="symbol">cb</span> <span class="assignement">&lt;-</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">obj</span><span class="keyword">,</span> <span class="formalargs">i</span><span class="keyword">)</span><span class="keyword">{</span> <span class="keyword">if</span><span class="keyword">(</span> <span class="symbol">i</span> <span class="keyword">%%</span> <span class="number">2</span> <span class="keyword">)</span> <span class="functioncall"><a href='sparseness.html'>sparseness</a></span><span class="keyword">(</span><span class="symbol">obj</span><span class="keyword">)</span> <span class="keyword">&gt;=</span> <span class="number">0.5</span> <span class="keyword">}</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">.callback</span><span class="argument">=</span><span class="symbol">cb</span><span class="keyword">)</span>
-<span class="symbol">res</span><span class="keyword">$</span><span class="symbol">.callback</span></div>
-<div class='output'>[[1]]
-basis  coef 
-FALSE  TRUE 
-
-[[2]]
-NULL
-
-[[3]]
-basis  coef 
-FALSE  TRUE 
-
-</div>
-<div class='input'>
-<span class="comment"># Passs a callback function which throws an error</span>
-<span class="symbol">cb</span> <span class="assignement">&lt;-</span> <span class="keyword">function</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">{</span> <span class="symbol">i</span><span class="assignement">&lt;-</span><span class="number">0</span><span class="keyword">;</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">object</span><span class="keyword">)</span><span class="keyword">{</span> <span class="symbol">i</span> <span class="assignement">&lt;&lt;-</span> <span class="symbol">i</span><span class="keyword">+</span><span class="number">1</span><span class="keyword">;</span> <span class="keyword">if</span><span class="keyword">(</span> <span class="symbol">i</span> == <span class="number">1</span> <span class="keyword">)</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/stop'>stop</a></span><span class="keyword">(</span><span class="string">'SOME BIG ERROR'</span><span class="keyword">)</span><span class="keyword">;</span> <span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">)</span> <span class="keyword">}</span><span class="keyword">}</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">.callback</span><span class="argument">=</span><span class="functioncall">cb</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<strong class='warning'>Warning message:
-NMF::nmf - All NMF fits were successful but 2/3 callback call(s) threw an error.
-# Callback error(s) thrown:
-  - run #1: SOME BIG ERROR</strong>
-<div class='input'></div></pre>
+<div class='input'>## <strong>Not run</strong>: 
+# # more messages
+# res <- nmf(x, 2, .options='v2')
+# # even more
+# res <- nmf(x, 2, .options='v3')
+# # and so on ...
+# ## <strong>End(Not run)</strong>
+</div></pre>
   </div>
   <div class="span4">
     <!-- <ul>

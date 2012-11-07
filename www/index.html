@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>Index. NMF 0.8.24</title>
+<title>Index. NMF 0.8.27</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,11 +20,12 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <a class="brand" href="index.html">NMF 0.8.27</a>
       <div class="nav">
         <ul class="nav">
         <li><a href=""><i class="icon-home icon-white"></i> Index</a></li>
        <li><a href="_MAN.html">Documentation</a></li>
+       <li><a href="_DEMOS.html">Demos</a></li>
        <li><a href="_REFERENCES.html">References</a></li>
        </ul>
    	  </div>
@@ -89,7 +90,7 @@ Documentation, source code and sample data are available from CRAN at <a href="h
 </li>
             
       <li>
-        <code><a href="basis-coef-methods.html">basis</a></code>(.basis, .basis&lt;-, basis&lt;-, basis&lt;-,ANY-method, .basis&lt;--methods, .basis-methods, basis&lt;--methods, basis-methods, .basis&lt;-,NMFfit,matrix-method, .basis,NMFfit-method, basis,NMFfitXn-method, .basis&lt;-,NMF,matrix-method, .basis,NMF-method, basis,NMF-method, .basis&lt;-,NMFstd,matrix-method, .basis,NMFstd-method, coef, .coef, .coef&lt;-, coef&lt;-, coef&lt;-,ANY-method, coefficients, coefficients-methods, coefficients,NMF-method, .coef&lt;--methods, .coef-methods, coef&lt;--methods, coef-methods, .coef&lt;-,NMFfit,matrix-method, .coef,NMFfit-method, coef,NMFfitXn-method, .coef&lt;-,NMF,matrix-method, .coef,NMF-method, coef,NMF-method, .coef&lt;-,NMFstd,matrix-method, .coef,NMFstd-method, loadings,NMF-method, scoef, scoef-methods, scoef,NMF-method)<br />Accessing NMF Factors</li>
+        <code><a href="basis-coef-methods.html">basis</a></code>(.basis, .basis&lt;-, basis&lt;-, basis&lt;-,ANY-method, basis,ANY-method, .basis&lt;--methods, .basis-methods, basis&lt;--methods, basis-methods, .basis&lt;-,NMFfit,matrix-method, .basis,NMFfit-method, basis,NMFfitXn-method, .basis&lt;-,NMF,matrix-method, .basis,NMF-method, basis,NMF-method, .basis&lt;-,NMFstd,matrix-method, .basis,NMFstd-method, coef, .coef, .coef&lt;-, coef&lt;-, coef&lt;-,ANY-method, coefficients, coefficients-methods, coefficients,NMF-method, .coef&lt;--methods, .coef-methods, coef&lt;--methods, coef-methods, .coef&lt;-,NMFfit,matrix-method, .coef,NMFfit-method, coef,NMFfitXn-method, .coef&lt;-,NMF,matrix-method, .coef,NMF-method, coef,NMF-method, .coef&lt;-,NMFstd,matrix-method, .coef,NMFstd-method, loadings,NMF-method, scoef, scoef-methods, scoef,NMF-method)<br />Accessing NMF Factors</li>
             
       <li>
         <code><a href="basiscor.html">basiscor</a></code>(basiscor,matrix,NMF-method, basiscor-methods, basiscor,NMF,matrix-method, basiscor,NMF,missing-method, basiscor,NMF,NMF-method, profcor, profcor,matrix,NMF-method, profcor-methods, profcor,NMF,matrix-method, profcor,NMF,missing-method, profcor,NMF,NMF-method)<br />Correlations in NMF Models</li>
@@ -165,7 +166,7 @@ Documentation, source code and sample data are available from CRAN at <a href="h
         <code><a href="registry-algorithm.html">methods-NMF</a></code>(existsNMFMethod, getNMFMethod, selectNMFMethod)<br />Registry for NMF Algorithms</li>
             
       <li>
-        <code><a href="dims.html">nbasis</a></code>(dim-NMF, dim,NMFfitXn-method, dim,NMF-method, nbasis,ANY-method, nbasis,matrix-method, nbasis-methods, nbasis,NMFfitXn-method)<br />Dimension of NMF Objects</li>
+        <code><a href="dims.html">nbasis</a></code>(dim-NMF, dim,NMFfitXn-method, dim,NMF-method, nbasis,ANY-method, nbasis-methods, nbasis,NMFfitXn-method)<br />Dimension of NMF Objects</li>
             
       <li>
         <code><a href="nmf.html">nmf</a></code>(nmf,data.frame,ANY,ANY-method, nmf,formula,ANY,ANY-method, nmf,matrix,data.frame,ANY-method, nmf,matrix,matrix,ANY-method, nmf,matrix,missing,ANY-method, nmf,matrix,NMF,ANY-method, nmf,matrix,NULL,ANY-method, nmf,matrix,numeric,character-method, nmf,matrix,numeric,function-method, nmf,matrix,numeric,list-method, nmf,matrix,numeric,missing-method, nmf,matrix,numeric,NMFStrategy-method, nmf,matrix,numeric,NULL-method, nmf-methods)<br />Running NMF algorithms</li>
@@ -222,7 +223,7 @@ Documentation, source code and sample data are available from CRAN at <a href="h
         <code><a href="NMFOffset-class.html">NMFOffset-class</a></code>(initialize,NMFOffset-method)<br />NMF Model - Nonnegative Matrix Factorization with Offset</li>
             
       <li>
-        <code><a href="options.html">nmf.options</a></code>(nmf.getOption)<br />Package Specific Options</li>
+        <code><a href="options.html">nmf.options</a></code>(nmf.getOption, nmf.printOptions, nmf.resetOptions)<br />NMF Package Specific Options</li>
             
       <li>
         <code><a href="NMF-package.html">NMF-package</a></code>(NMF)<br />Algorithms and framework for Nonnegative Matrix Factorization (NMF).</li>
@@ -384,12 +385,19 @@ Documentation, source code and sample data are available from CRAN at <a href="h
       <li><a href="vignettes/NMF-unitTests.pdf">NMF-unitTests</a></li>
       <li><a href="vignettes/NMF-vignette.pdf">An introduction to the package NMF</a></li>
     </ul>
-        
+    
+    <h2>Demos</h2>
+    <ul>
+      <li><a href="demo-nmf.html">Using the main function nmf()</a></li>
+      <li><a href="demo-heatmaps.html">Heatmaps of NMF objects</a></li>
+      <li><a href="demo-aheatmap.html">Annotated heatmaps</a></li>
+    </ul>
+    
     <h2>Dependencies</h2>
     <ul>
       <li><strong>Depends</strong>: methods, stats, pkgmaker, rngtools, registry, graphics, foreach, doParallel, bigmemory, digest, gridBase, stringr, colorspace</li>
       <li><strong>Imports</strong>: methods, stats, graphics, pkgmaker, registry, stringr, rngtools</li>
-      <li><strong>Suggests</strong>: RcppOctave, Biobase, RColorBrewer, fastICA, doMPI, synchronicity, corpcor, xtable, devtools, knitr, RUnit, mail</li>
+      <li><strong>Suggests</strong>: RcppOctave, Biobase, RColorBrewer, fastICA, doMPI, doSNOW, snow, synchronicity, corpcor, xtable, devtools, knitr, RUnit, mail</li>
       <li><strong>Extends</strong>: </li>
     </ul>
      

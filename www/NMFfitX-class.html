@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfitX-class. NMF 0.8.24</title>
+<title>NMFfitX-class. NMF 0.8.27</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.8.24</a>
+      <a class="brand" href="index.html">NMF 0.8.27</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -88,6 +88,22 @@
       <p>coefmap<code>signature(object = "NMFfitX")</code>:
   Plots a heatmap of the coefficient matrix of the best fit
   in <code>object</code>.</p>
+  
+      <p>This method adds: <ul>
+<li> an extra special column
+  annotation track for multi-run NMF fits,
+  <code>'consensus:'</code>, that shows the consensus cluster
+  associated to each sample. </li>
+<li> a column sorting schema
+  <code>'consensus'</code> (or <code>'cmap'</code>) that can be passed
+  to argument <code>Colv</code> and orders the columns using the
+  hierarchical clustering of the consensus matrix with
+  average linkage, as returned by
+  <code><a href='consensushc.html'>consensushc</a>(object)</code>. This is also the
+  ordering that is used by default for the heatmap of the
+  consensus matrix as ploted by <code><a href='heatmaps.html'>consensusmap</a></code>.
+  </li>
+</ul></p>
   
       <p>consensus<code>signature(object = "NMFfitX")</code>:
   Pure virtual method defined to ensure <code>consensus</code> is
@@ -214,7 +230,7 @@
   ..@ consensus  : num [1:18, 1:18] 1 1 1 1 1 0 0 0 0 0 ...
   ..@ nrun       : int 5
   ..@ rng1       : int [1:7] 407 -1834564630 -1419262877 1265912392 -1641208919 413016918 -507270689
-  ..@ runtime.all:Class 'proc_time'  Named num [1:5] 0.468 0.032 3.697 1.012 0.16
+  ..@ runtime.all:Class 'proc_time'  Named num [1:5] 0.408 0.02 2.201 0.964 0.208
   .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
   ..@ fit        :Formal class 'NMFstd' [package "NMF"] with 7 slots
   .. .. ..@ W      : num [1:50, 1:3] 2.22e-16 2.22e-16 1.73 1.59 1.37 ...
@@ -241,7 +257,7 @@ Formal class 'data.frame' [package "methods"] with 4 slots
   ..@ rng        : int [1:7] 407 -1834564630 -1419262877 1265912392 -1641208919 413016918 -507270689
   ..@ distance   : chr "KL"
   ..@ parameters : list()
-  ..@ runtime    :Class 'proc_time'  Named num [1:5] 0.268 0.012 0.647 0 0
+  ..@ runtime    :Class 'proc_time'  Named num [1:5] 0.26 0.012 0.335 0 0
   .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
   ..@ options    :List of 11
   .. ..$ default.algorithm: chr "brunet"
@@ -295,7 +311,7 @@ Formal class 'data.frame' [package "methods"] with 4 slots
   .. .. .. ..@ rng       : int [1:7] 407 -1355721004 582962117 -707940926 1430847067 -21410336 -1321747359
   .. .. .. ..@ distance  : chr "KL"
   .. .. .. ..@ parameters: list()
-  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.256 0.016 0.644 0 0
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.26 0.028 0.336 0 0
   .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
   .. .. .. ..@ options   :List of 11
   .. .. .. .. ..$ default.algorithm: chr "brunet"
@@ -339,7 +355,7 @@ Formal class 'data.frame' [package "methods"] with 4 slots
   .. .. .. ..@ rng       : int [1:7] 407 -517354913 -1514777308 -1360749460 -1787334871 -1660615091 1977118747
   .. .. .. ..@ distance  : chr "KL"
   .. .. .. ..@ parameters: list()
-  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.26 0.008 0.647 0 0
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.264 0.02 0.289 0 0
   .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
   .. .. .. ..@ options   :List of 11
   .. .. .. .. ..$ default.algorithm: chr "brunet"
@@ -383,7 +399,7 @@ Formal class 'data.frame' [package "methods"] with 4 slots
   .. .. .. ..@ rng       : int [1:7] 407 -1913805653 -367674901 -1633159124 1999390028 -340202606 -1230713693
   .. .. .. ..@ distance  : chr "KL"
   .. .. .. ..@ parameters: list()
-  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.228 0.004 0.554 0 0
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.232 0 0.244 0 0
   .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
   .. .. .. ..@ options   :List of 11
   .. .. .. .. ..$ default.algorithm: chr "brunet"
@@ -427,7 +443,7 @@ Formal class 'data.frame' [package "methods"] with 4 slots
   .. .. .. ..@ rng       : int [1:7] 407 2071823022 -1401670214 -1137598863 1636842190 -378016098 252249562
   .. .. .. ..@ distance  : chr "KL"
   .. .. .. ..@ parameters: list()
-  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.24 0 0.57 0 0
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.252 0.004 0.262 0 0
   .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
   .. .. .. ..@ options   :List of 11
   .. .. .. .. ..$ default.algorithm: chr "brunet"
@@ -471,7 +487,7 @@ Formal class 'data.frame' [package "methods"] with 4 slots
   .. .. .. ..@ rng       : int [1:7] 407 -574243509 622315560 656642999 -614223016 1552997537 196997062
   .. .. .. ..@ distance  : chr "KL"
   .. .. .. ..@ parameters: list()
-  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.232 0.004 0.265 0 0
+  .. .. .. ..@ runtime   :Class 'proc_time'  Named num [1:5] 0.236 0 0.237 0 0
   .. .. .. .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
   .. .. .. ..@ options   :List of 11
   .. .. .. .. ..$ default.algorithm: chr "brunet"
@@ -489,7 +505,7 @@ Formal class 'data.frame' [package "methods"] with 4 slots
   .. .. .. .. ..$ iteration: int 420
   .. .. .. ..@ call      : language .local(x = x, rank = rank, method = method, seed = ..2, nrun = 1, model = ..3, .options = ..4)
   .. .. .. ..@ misc      : list()
-  ..@ runtime.all:Class 'proc_time'  Named num [1:5] 0.104 0.044 3.003 2.308 0.296
+  ..@ runtime.all:Class 'proc_time'  Named num [1:5] 0.104 0.012 1.809 2.348 0.316
   .. .. ..- attr(*, "names")= chr [1:5] "user.self" "sys.self" "elapsed" "user.child" ...
 </div></pre>
   </div>
