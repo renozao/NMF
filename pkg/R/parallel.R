@@ -529,12 +529,11 @@ setMethod('getDoParHosts', 'ANY',
 	}
 )
 
-#' \code{getDoParWorkers} redefines \pkg{foreach} function so that it handles 
-#' passing a backend object in argument.
+#' \code{getDoParNHosts} returns the number of hosts used by a backend.
 #' 
 #' @export
 #' @rdname foreach
-getDoParWorkers <- function(object){
+getDoParNHosts <- function(object){
 	if( missing(object) ) foreach::getDoParWorkers()
 	else{
 		length(getDoParHosts(object))

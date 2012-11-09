@@ -15,7 +15,7 @@
 \alias{getDoParHosts}
 \alias{getDoParHosts,ANY-method}
 \alias{getDoParHosts-methods}
-\alias{getDoParWorkers}
+\alias{getDoParNHosts}
 \alias{register}
 \alias{registerDoBackend}
 \alias{setDoBackend}
@@ -37,7 +37,7 @@
 
   getDoParHosts(object, ...)
 
-  getDoParWorkers(object)
+  getDoParNHosts(object)
 }
 \arguments{
   \item{object}{specification of a foreach backend, e.g.
@@ -76,8 +76,8 @@
   \code{getDoParHosts} is a generic function that returns
   the hostname of the worker nodes used by a backend.
 
-  \code{getDoParWorkers} redefines \pkg{foreach} function
-  so that it handles passing a backend object in argument.
+  \code{getDoParNHosts} returns the number of hosts used by
+  a backend.
 }
 \section{Methods}{
   \describe{
