@@ -48,8 +48,6 @@
 
 <span class="functioncall"><a href='foreach.html'>register</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
-<span class="functioncall"><a href='foreach.html'>getDoParHosts</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span>
-
 <span class="functioncall"><a href='foreach.html'>ForeachBackend</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
 
 <span class="comment"><span class="label label-important">S4</span> (doParallel_backend)</span>
@@ -58,8 +56,9 @@
 <span class="comment"><span class="label label-important">S4</span> (doMPI_backend)</span>
 <span class="functioncall">`ForeachBackend`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">cl</span><span class="keyword">)</span>
 
-<span class="comment"><span class="label label-important">S4</span> (doSNOW_backend)</span>
-<span class="functioncall">`ForeachBackend`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">cl</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+<span class="functioncall"><a href='foreach.html'>getDoParHosts</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='foreach.html'>getDoParNHosts</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">)</span></pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -97,11 +96,14 @@
   objects. It is used to as a unified interface to register
   foreach backends.</p>
   
-      <p><code>getDoParHosts</code> returns the hostnames of the nodes
-  used by a backend.</p>
-  
       <p><code>ForeachBackend</code> is a factory method for foreach
   backend objects.</p>
+  
+      <p><code>getDoParHosts</code> is a generic function that returns
+  the hostname of the worker nodes used by a backend.</p>
+  
+      <p><code>getDoParNHosts</code> returns the number of hosts used by
+  a backend.</p>
   
     </div>
 
@@ -145,8 +147,11 @@
       <p>ForeachBackend<code>signature(object =
   "doMPI_backend")</code>: doMPI-specific backend factory</p>
   
-      <p>ForeachBackend<code>signature(object =
-  "doSNOW_backend")</code>: doSNOW-specific backend factory</p>
+      <p>getDoParHosts<code>signature(object = "ANY")</code>:
+  Default method that tries to heuristaically infer the
+  number of hosts and in last resort temporarly register
+  the backend and performs a foreach loop, to retrieve the
+  nodename from each worker.</p>
   
       <p></span></p>
   
@@ -154,7 +159,7 @@
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>ForeachBackend</li><li>ForeachBackend,ANY-method</li><li>ForeachBackend,character-method</li><li>ForeachBackend,cluster-method</li><li>ForeachBackend,doMPI_backend-method</li><li>ForeachBackend,doParallel_backend-method</li><li>ForeachBackend,doSNOW_backend-method</li><li>ForeachBackend-methods</li><li>ForeachBackend,missing-method</li><li>ForeachBackend,mpicluster-method</li><li>ForeachBackend,NULL-method</li><li>ForeachBackend,numeric-method</li><li>getDoBackend</li><li>getDoParHosts</li><li>register</li><li>registerDoBackend</li><li>setDoBackend</li>
+      <li>ForeachBackend</li><li>ForeachBackend,ANY-method</li><li>ForeachBackend,character-method</li><li>ForeachBackend,cluster-method</li><li>ForeachBackend,doMPI_backend-method</li><li>ForeachBackend,doParallel_backend-method</li><li>ForeachBackend-methods</li><li>ForeachBackend,missing-method</li><li>ForeachBackend,mpicluster-method</li><li>ForeachBackend,NULL-method</li><li>ForeachBackend,numeric-method</li><li>getDoBackend</li><li>getDoParHosts</li><li>getDoParHosts,ANY-method</li><li>getDoParHosts-methods</li><li>getDoParNHosts</li><li>register</li><li>registerDoBackend</li><li>setDoBackend</li>
     </ul>
     <ul>
       <li>internal</li><li>methods</li>

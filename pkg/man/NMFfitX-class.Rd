@@ -165,19 +165,19 @@
 }
 \examples{
 # generate a synthetic dataset with known classes
-n <- 50; counts <- c(5, 5, 8);
+n <- 20; counts <- c(5, 2, 3);
 V <- syntheticNMF(n, counts)
 
 # perform multiple runs of one algorithm (default is to keep only best fit)
-res <- nmf(V, 3, nrun=5)
-str(res)
+res <- nmf(V, 3, nrun=3)
+res
 
 # plot a heatmap of the consensus matrix
 \dontrun{ consensusmap(res) }
 
 # perform multiple runs of one algorithm (keep all the fits)
-res <- nmf(V, 3, nrun=5, .options='k')
-str(res)
+res <- nmf(V, 3, nrun=3, .options='k')
+res
 }
 \seealso{
   Other multipleNMF: \code{\link{NMFfitX1-class}},

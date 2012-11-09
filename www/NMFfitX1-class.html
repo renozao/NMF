@@ -143,18 +143,18 @@
    407L, 1419601685L, 660380882L, -705544661L, -565250192L, -12790607L, 1328828094L 
   Total timing:
    user  system elapsed 
-  1.541   0.188   2.548 
+  1.196   0.180   3.181 
 </div><div class='input'>#NOTE: the implicit nmf options are .options=list(keep.all=FALSE) or .options='-k'</div><div class='input'></div><div class='input'># compute summary measures</div><div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
 <div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun       cophenetic       dispersion 
-       3.0000000        0.4453993        0.6395552      257.4099674      440.0000000        0.2520000        1.5410000        5.0000000        0.9959041        0.9525926 
+       3.0000000        0.4453993        0.6395552      257.4099674      440.0000000        0.2680000        1.1960000        5.0000000        0.9959041        0.9525926 
 </div><div class='input'># get more info</div><div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="symbol">V</span><span class="keyword">,</span> <span class="argument">class</span><span class="argument">=</span><span class="symbol">groups</span><span class="keyword">)</span></div>
 <div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals            niter              cpu 
-       3.0000000        0.4453993        0.6395552        1.0000000        0.0000000      328.9306204        0.6862742      257.4099674      440.0000000        0.2520000 
+       3.0000000        0.4453993        0.6395552        1.0000000        0.0000000      328.9306204        0.6862742      257.4099674      440.0000000        0.2680000 
          cpu.all             nrun       cophenetic       dispersion 
-       1.5410000        5.0000000        0.9959041        0.9525926 
+       1.1960000        5.0000000        0.9959041        0.9525926 
 </div><div class='input'></div><div class='input'># show computational time</div><div class='input'><span class="functioncall"><a href='algorithmic.html'>runtime.all</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
 <div class='output'>   user  system elapsed 
-  1.541   0.188   2.548 
+  1.196   0.180   3.181 
 </div><div class='input'></div><div class='input'># plot the consensus matrix, as stored (pre-computed) in the object</div><div class='input'>## <strong>Not run</strong>:  consensusmap(res, annCol=groups) </div></pre>
   </div>
   <div class="span4">

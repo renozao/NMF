@@ -153,14 +153,14 @@
 }
 \examples{
 # generate a synthetic dataset with known classes
-n <- 50; counts <- c(5, 5, 8);
+n <- 20; counts <- c(5, 2, 3);
 V <- syntheticNMF(n, counts)
 
-# build the class factor
-groups <- as.factor(do.call('c', lapply(seq(3), function(x) rep(x, counts[x]))))
+# get the class factor
+groups <- V$pData$Group
 
 # perform multiple runs of one algorithm, keeping all the fits
-res <- nmf(V, 3, nrun=5, .options='k') # .options=list(keep.all=TRUE) also works
+res <- nmf(V, 3, nrun=3, .options='k') # .options=list(keep.all=TRUE) also works
 res
 
 summary(res)

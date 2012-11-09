@@ -116,7 +116,7 @@ List of 11
 <div class='output'>[1] FALSE
 </div><div class='input'><span class="functioncall"><a href='options.html'>nmf.getOption</a></span><span class="keyword">(</span><span class="string">'backend'</span><span class="keyword">)</span></div>
 <div class='output'>[1] "par"
-</div><div class='input'># set new values</div><div class='input'><span class="functioncall"><a href='options.html'>nmf.options</a></span><span class="keyword">(</span><span class="argument">verbose</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='options.html'>nmf.options</a></span><span class="keyword">(</span><span class="argument">backend</span><span class="argument">=</span><span class="string">'snow'</span><span class="keyword">,</span> <span class="argument">default.algorithm</span><span class="argument">=</span><span class="string">'lee'</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='options.html'>nmf.printOptions</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
+</div><div class='input'># set new values</div><div class='input'><span class="functioncall"><a href='options.html'>nmf.options</a></span><span class="keyword">(</span><span class="argument">verbose</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='options.html'>nmf.options</a></span><span class="keyword">(</span><span class="argument">backend</span><span class="argument">=</span><span class="string">'mc'</span><span class="keyword">,</span> <span class="argument">default.algorithm</span><span class="argument">=</span><span class="string">'lee'</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='options.html'>nmf.printOptions</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
 <div class='output'><Package specific options: package:NMF>
 Registered: TRUE
 Options:
@@ -127,7 +127,7 @@ List of 11
  $ track.interval   : num 30
  $ gc               : num 50
  $ parallel.backend :Class 'option_symlink'  chr "backend"
- $ backend          : chr "snow"
+ $ backend          : chr "mc"
  $ reproducible     : logi TRUE
  $ verbose          : logi TRUE
  $ debug            : logi FALSE

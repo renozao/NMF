@@ -212,20 +212,19 @@ as.NMFList <- function(..., unlist=FALSE){
 #' @examples
 #' 
 #' # generate a synthetic dataset with known classes
-#' n <- 50; counts <- c(5, 5, 8);
+#' n <- 20; counts <- c(5, 2, 3);
 #' V <- syntheticNMF(n, counts)
 #' 
 #' # perform multiple runs of one algorithm (default is to keep only best fit)
-#' res <- nmf(V, 3, nrun=5)
-#' str(res)
+#' res <- nmf(V, 3, nrun=3)
+#' res
 #' 
 #' # plot a heatmap of the consensus matrix
 #' \dontrun{ consensusmap(res) }
 #' 
 #' # perform multiple runs of one algorithm (keep all the fits)
-#' res <- nmf(V, 3, nrun=5, .options='k')
-#' str(res)
-#' 
+#' res <- nmf(V, 3, nrun=3, .options='k')
+#' res
 #'  
 setClass('NMFfitX'
 		, representation(
@@ -533,18 +532,17 @@ setMethod('deviance', signature(object='NMFfitX'),
 #' @family multipleNMF 
 #' @examples
 #' 
-#' 
 #' # generate a synthetic dataset with known classes
-#' n <- 50; counts <- c(5, 5, 8);
+#' n <- 20; counts <- c(5, 2, 3);
 #' V <- syntheticNMF(n, counts)
 #' 
-#' # build the class factor
-#' groups <- as.factor(do.call('c', lapply(seq(3), function(x) rep(x, counts[x]))))
+#' # get the class factor
+#' groups <- V$pData$Group
 #' 
 #' # perform multiple runs of one algorithm, keeping only the best fit (default)
-#' res <- nmf(V, 3, nrun=5) 
+#' #i.e.: the implicit nmf options are .options=list(keep.all=FALSE) or .options='-k'
+#' res <- nmf(V, 3, nrun=3) 
 #' res
-#' #NOTE: the implicit nmf options are .options=list(keep.all=FALSE) or .options='-k'
 #' 
 #' # compute summary measures
 #' summary(res)
@@ -685,14 +683,14 @@ setMethod('nmf.equal', signature(x='NMFfitX1', y='NMFfitX1'),
 #' @examples
 #' 
 #' # generate a synthetic dataset with known classes
-#' n <- 50; counts <- c(5, 5, 8);
+#' n <- 20; counts <- c(5, 2, 3);
 #' V <- syntheticNMF(n, counts)
 #' 
-#' # build the class factor
-#' groups <- as.factor(do.call('c', lapply(seq(3), function(x) rep(x, counts[x]))))
+#' # get the class factor
+#' groups <- V$pData$Group
 #' 
 #' # perform multiple runs of one algorithm, keeping all the fits
-#' res <- nmf(V, 3, nrun=5, .options='k') # .options=list(keep.all=TRUE) also works
+#' res <- nmf(V, 3, nrun=3, .options='k') # .options=list(keep.all=TRUE) also works
 #' res
 #'  
 #' summary(res)

@@ -226,13 +226,13 @@
     
     <h2 id="examples">Examples</h2>
     <pre class="examples"><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span><span class="number">10</span><span class="keyword">)</span></div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span></div><div class='input'><span class="symbol">res2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="string">'lee'</span><span class="keyword">)</span></div><div class='input'></div><div class='input'># compare arguments</div><div class='input'><span class="functioncall"><a href='algorithmic.html'>compare</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">res2</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef       rss      evar residuals niter   cpu cpu.all nrun
-1 brunet random   2        KL    3        0.2679786       0.4993122  9.395128 0.8471253 10.765241   570 0.248   0.248    1
-2    lee random   1 euclidean    2        0.1909799       0.3007673 12.065199 0.8036787  6.032599   680 0.428   0.428    1
+<div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef      rss      evar residuals niter   cpu cpu.all nrun
+1 brunet random   1        KL    3        0.2055608       0.5278601 6.936569 0.8857757  8.026578   480 0.220   0.220    1
+2    lee random   2 euclidean    2        0.1157095       0.4402278 9.082604 0.8504370  4.541302   560 0.364   0.364    1
 </div><div class='input'># compare elements of a list</div><div class='input'><span class="functioncall"><a href='algorithmic.html'>compare</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/list'>list</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">res2</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef       rss      evar residuals niter   cpu cpu.all nrun
-1 brunet random   2        KL    3        0.2679786       0.4993122  9.395128 0.8471253 10.765241   570 0.248   0.248    1
-2    lee random   1 euclidean    2        0.1909799       0.3007673 12.065199 0.8036787  6.032599   680 0.428   0.428    1
+<div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef      rss      evar residuals niter   cpu cpu.all nrun
+1 brunet random   1        KL    3        0.2055608       0.5278601 6.936569 0.8857757  8.026578   480 0.220   0.220    1
+2    lee random   2 euclidean    2        0.1157095       0.4402278 9.082604 0.8504370  4.541302   560 0.364   0.364    1
 </div></pre>
   </div>
   <div class="span4">
