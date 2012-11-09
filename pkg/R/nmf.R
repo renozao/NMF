@@ -2600,10 +2600,10 @@ nmfEstimateRank <- function(x, range, method=nmf.getOption('default.algorithm')
 #' \code{nmfEstimateRank}.
 #' @param y reference object of class \code{NMF.rank}, as returned by
 #' function \code{nmfEstimateRank}. 
-#' The measures contained in \code{ref} are used and plotted as a reference.
-#' It is typically used to plot results obtained on randomized data.  
-#' The associated curves are drawn in \emph{red}, while those from \code{x} 
-#' are drawn in \emph{blue}.
+#' The measures contained in \code{y} are used and plotted as a reference.
+#' It is typically used to plot results obtained from randomized data.  
+#' The associated curves are drawn in \emph{red} (and \emph{pink}), 
+#' while those from \code{x} are drawn in \emph{blue} (and \emph{green}).
 #' @param what a \code{character} string that partially matches one of the
 #' following item: \sQuote{all}, \sQuote{cophenetic}, \sQuote{rss},
 #' \sQuote{residuals} , \sQuote{dispersion}.  
