@@ -476,7 +476,7 @@ basis/rank: 6
 samples: 10 
 fixed coef [3]:
   gr = <1, 2>
-  b = 0.809179290896282, 0.560596470255405, ..., 0.738870776025578
+  b = 0.822658469900489, 0.858837715350091, ..., 0.830506294267252
 </div><div class='input'></div><div class='input'># 3-rank model that fits a given ExpressionSet (with fixed coef terms)</div><div class='input'><span class="symbol">e</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/Biobase/phenoData'>pData</a></span><span class="keyword">(</span><span class="symbol">e</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/data.frame'>data.frame</a></span><span class="keyword">(</span><span class="argument">a</span><span class="argument">=</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/stats/Uniform'>runif</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">)</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="symbol">e</span> <span class="keyword">~</span> <span class="number">3</span> <span class="keyword">+</span> <span class="symbol">gr</span> <span class="keyword">+</span> <span class="symbol">a</span><span class="keyword">)</span> <span class="comment"># `a` is looked up in the phenotypic data of x pData(x)</span></div>
 <div class='output'><Object of class:NMFstd>
 features: 20 
@@ -484,7 +484,7 @@ basis/rank: 6
 samples: 10 
 fixed coef [3]:
   gr = <1, 2>
-  a = 0.751224067993462, 0.215100965229794, ..., 0.597145409788936
+  a = 0.177084094844759, 0.863206594018266, ..., 0.862168541876599
 </div><div class='input'># show all the NMF models available (i.e. the classes that inherit from class NMF)</div><div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModels</a></span><span class="keyword">(</span><span class="keyword">)</span></div>
 <div class='output'>[1] "NMFstd"    "NMFOffset" "NMFns"    
 </div><div class='input'># show all the built-in NMF models available</div><div class='input'><span class="functioncall"><a href='nmfModel.html'>nmfModels</a></span><span class="keyword">(</span><span class="argument">builtin.only</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span></div>

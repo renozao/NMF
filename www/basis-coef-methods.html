@@ -296,32 +296,32 @@
     
     <h2 id="examples">Examples</h2>
     <pre class="examples"><div class='input'># Scaled coefficient matrix</div><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>scoef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>          [,1]      [,2]      [,3]       [,4]      [,5]
-[1,] 0.5310702 0.3791420 0.3929835 0.52366973 0.2061661
-[2,] 0.2324353 0.2407087 0.4840738 0.05826614 0.4696203
-[3,] 0.2364945 0.3801493 0.1229427 0.41806413 0.3242136
+<div class='output'>           [,1]       [,2]       [,3]      [,4]      [,5]
+[1,] 0.78302035 0.02967301 0.59594513 0.3754576 0.3797722
+[2,] 0.03983248 0.41622083 0.03972449 0.3841392 0.3662801
+[3,] 0.17714718 0.55410616 0.36433038 0.2404032 0.2539477
 </div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>scoef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">100</span><span class="keyword">)</span></div>
-<div class='output'>         [,1]     [,2]     [,3]      [,4]     [,5]
-[1,] 53.10702 37.91420 39.29835 52.366973 20.61661
-[2,] 23.24353 24.07087 48.40738  5.826614 46.96203
-[3,] 23.64945 38.01493 12.29427 41.806413 32.42136
+<div class='output'>          [,1]      [,2]      [,3]     [,4]     [,5]
+[1,] 78.302035  2.967301 59.594513 37.54576 37.97722
+[2,]  3.983248 41.622083  3.972449 38.41392 36.62801
+[3,] 17.714718 55.410616 36.433038 24.04032 25.39477
 </div><div class='input'># random standard NMF model</div><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>            [,1]       [,2]       [,3]
- [1,] 0.71663760 0.92404132 0.06736425
- [2,] 0.35827725 0.05102256 0.31056780
- [3,] 0.03113959 0.04464049 0.92407971
- [4,] 0.44305436 0.15204766 0.40411841
- [5,] 0.24761942 0.40892431 0.90258226
- [6,] 0.87871530 0.84568204 0.99601061
- [7,] 0.60663216 0.82538016 0.11494900
- [8,] 0.02808083 0.64569794 0.18122651
- [9,] 0.33801635 0.74242752 0.74646138
-[10,] 0.20646560 0.62900346 0.83454861
+<div class='output'>             [,1]       [,2]      [,3]
+ [1,] 0.908230909 0.77958253 0.3366066
+ [2,] 0.341885715 0.50978297 0.9433919
+ [3,] 0.001726054 0.21963460 0.3250001
+ [4,] 0.780382484 0.12780276 0.3040211
+ [5,] 0.667700104 0.93799589 0.2835908
+ [6,] 0.614181958 0.17777671 0.4793608
+ [7,] 0.730512547 0.92223209 0.3348005
+ [8,] 0.705095413 0.92648762 0.4363206
+ [9,] 0.454241179 0.36541855 0.1685401
+[10,] 0.246235491 0.01310498 0.9311018
 </div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>          [,1]      [,2]       [,3]        [,4]      [,5]
-[1,] 0.8514281 0.8490273 0.30694170 0.006907114 0.9619098
-[2,] 0.7505675 0.3607495 0.27304180 0.367605873 0.6599864
-[3,] 0.3568136 0.8814160 0.03429532 0.783117051 0.2462743
+<div class='output'>          [,1]      [,2]      [,3]       [,4]      [,5]
+[1,] 0.4996848 0.1221594 0.2542322 0.07383784 0.8620873
+[2,] 0.3161760 0.1033811 0.4312048 0.24663714 0.7148025
+[3,] 0.1246387 0.8905957 0.0340016 0.36509904 0.8677451
 </div><div class='input'></div><div class='input'># set matrix factors</div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/matrix'>matrix</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/nrow'>nrow</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/matrix'>matrix</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/nrow'>ncol</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div><div class='input'># set random factors</div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div><div class='input'></div><div class='input'># incompatible matrices generate an error:</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/try'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/matrix'>matrix</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">-</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/nrow'>nrow</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span> <span class="keyword">)</span></div><div class='input'># but the low-level method allow it</div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>.coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/matrix'>matrix</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">-</span><span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/nrow'>nrow</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/try'>try</a></span><span class="keyword">(</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/methods/validObject'>validObject</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="keyword">)</span></div></pre>
   </div>
   <div class="span4">

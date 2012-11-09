@@ -175,16 +175,16 @@ $basis
 </div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
 <div class='output'>        basis
 features        b1        b2
-      f1 0.7037746 0.5235526
-      f2 0.9599481 0.2514117
-      f3 0.5013982 0.4129921
-      f4 0.7436773 0.7635460
-      f5 0.1232252 0.9889603
+      f1 0.6520105 0.4608880
+      f2 0.6626761 0.9126371
+      f3 0.9838716 0.3986169
+      f4 0.3040875 0.4165649
+      f5 0.6810693 0.4588586
 </div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
 <div class='output'>     samples
-basis        s1        s2         s3
-   b1 0.9006805 0.6099955 0.09059449
-   b2 0.5252585 0.5866857 0.56374429
+basis        s1         s2        s3
+   b1 0.7003839 0.17130144 0.1911170
+   b2 0.4229664 0.01347132 0.4215863
 </div><div class='input'></div><div class='input'># access the dimensions separately</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/row_colnames'>rownames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
 <div class='output'>[1] "f1" "f2" "f3" "f4" "f5"
 </div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/row_colnames'>colnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
@@ -204,16 +204,16 @@ NULL
 </div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
 <div class='output'>        
 features      [,1]      [,2]
-      f1 0.7037746 0.5235526
-      f2 0.9599481 0.2514117
-      f3 0.5013982 0.4129921
-      f4 0.7436773 0.7635460
-      f5 0.1232252 0.9889603
+      f1 0.6520105 0.4608880
+      f2 0.6626761 0.9126371
+      f3 0.9838716 0.3986169
+      f4 0.3040875 0.4165649
+      f5 0.6810693 0.4588586
 </div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
 <div class='output'>      
-            [,1]      [,2]       [,3]
-  [1,] 0.9006805 0.6099955 0.09059449
-  [2,] 0.5252585 0.5866857 0.56374429
+            [,1]       [,2]      [,3]
+  [1,] 0.7003839 0.17130144 0.1911170
+  [2,] 0.4229664 0.01347132 0.4215863
 </div><div class='input'></div><div class='input'># set only the two first dimensions (rows and columns of basis and coef respectively):</div><div class='input'># the basisnames are set to NULL</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/dimnames'>dimnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">dims</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">:</span><span class="number">2</span><span class="keyword">]</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/dimnames'>dimnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
 <div class='output'>$features
 [1] "f1" "f2" "f3" "f4" "f5"
@@ -227,46 +227,46 @@ NULL
 </div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
 <div class='output'>        
 features      [,1]      [,2]
-      f1 0.7037746 0.5235526
-      f2 0.9599481 0.2514117
-      f3 0.5013982 0.4129921
-      f4 0.7436773 0.7635460
-      f5 0.1232252 0.9889603
+      f1 0.6520105 0.4608880
+      f2 0.6626761 0.9126371
+      f3 0.9838716 0.3986169
+      f4 0.3040875 0.4165649
+      f5 0.6810693 0.4588586
 </div><div class='input'></div><div class='input'># reset the dimensions</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/dimnames'>dimnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> NULL</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/dimnames'>dimnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
 <div class='output'>NULL
 </div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
 <div class='output'>          [,1]      [,2]
-[1,] 0.7037746 0.5235526
-[2,] 0.9599481 0.2514117
-[3,] 0.5013982 0.4129921
-[4,] 0.7436773 0.7635460
-[5,] 0.1232252 0.9889603
+[1,] 0.6520105 0.4608880
+[2,] 0.6626761 0.9126371
+[3,] 0.9838716 0.3986169
+[4,] 0.3040875 0.4165649
+[5,] 0.6810693 0.4588586
 </div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
-<div class='output'>          [,1]      [,2]       [,3]
-[1,] 0.9006805 0.6099955 0.09059449
-[2,] 0.5252585 0.5866857 0.56374429
+<div class='output'>          [,1]       [,2]      [,3]
+[1,] 0.7003839 0.17130144 0.1911170
+[2,] 0.4229664 0.01347132 0.4215863
 </div><div class='input'></div><div class='input'># set each dimensions separately</div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/row_colnames'>rownames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/paste'>paste</a></span><span class="keyword">(</span><span class="string">'X'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/nrow'>nrow</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span> <span class="comment"># only affect rows of basis</span></div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
 <div class='output'>        [,1]      [,2]
-X1 0.7037746 0.5235526
-X2 0.9599481 0.2514117
-X3 0.5013982 0.4129921
-X4 0.7436773 0.7635460
-X5 0.1232252 0.9889603
+X1 0.6520105 0.4608880
+X2 0.6626761 0.9126371
+X3 0.9838716 0.3986169
+X4 0.3040875 0.4165649
+X5 0.6810693 0.4588586
 </div><div class='input'></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/row_colnames'>colnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/paste'>paste</a></span><span class="keyword">(</span><span class="string">'Y'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/nrow'>ncol</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span> <span class="comment"># only affect columns of coef</span></div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
-<div class='output'>            Y1        Y2         Y3
-[1,] 0.9006805 0.6099955 0.09059449
-[2,] 0.5252585 0.5866857 0.56374429
+<div class='output'>            Y1         Y2        Y3
+[1,] 0.7003839 0.17130144 0.1911170
+[2,] 0.4229664 0.01347132 0.4215863
 </div><div class='input'></div><div class='input'><span class="functioncall"><a href='dimnames.html'>basisnames</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/paste'>paste</a></span><span class="keyword">(</span><span class="string">'Z'</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="functioncall"><a href='dims.html'>nbasis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">sep</span><span class="argument">=</span><span class="string">''</span><span class="keyword">)</span> <span class="comment"># affect both basis and coef matrices</span></div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
 <div class='output'>          Z1        Z2
-X1 0.7037746 0.5235526
-X2 0.9599481 0.2514117
-X3 0.5013982 0.4129921
-X4 0.7436773 0.7635460
-X5 0.1232252 0.9889603
+X1 0.6520105 0.4608880
+X2 0.6626761 0.9126371
+X3 0.9838716 0.3986169
+X4 0.3040875 0.4165649
+X5 0.6810693 0.4588586
 </div><div class='input'><span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">a</span><span class="keyword">)</span></div>
-<div class='output'>          Y1        Y2         Y3
-Z1 0.9006805 0.6099955 0.09059449
-Z2 0.5252585 0.5866857 0.56374429
+<div class='output'>          Y1         Y2        Y3
+Z1 0.7003839 0.17130144 0.1911170
+Z2 0.4229664 0.01347132 0.4215863
 </div></pre>
   </div>
   <div class="span4">
