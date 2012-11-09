@@ -162,8 +162,8 @@ This section gives a formal definition for Nonnegative Matrix Factorization prob
 
 Let $X$ be a $n \times p$ non-negative matrix, (i.e with $x_{ij} \geq 0$,
 denoted $X \geq 0$), and $r > 0$ an integer. Non-negative Matrix Factorization (NMF) consists in finding an approximation
-\begin{equation}\label{NMFstd}
-X \approx W H\ ,
+\begin{equation}
+X \approx W H\ , \label{NMFstd}
 \end{equation}
 where $W, H$ are $n\times r$ and $r \times p$ non-negative matrices, respectively. 
 In practice, the factorization rank $r$ is often chosen such that $r \ll \min(n, p)$. 
@@ -173,8 +173,8 @@ Depending on the application field, these factors are given different names: bas
 \emph{basis matrix} or \emph{metagenes} to refer to matrix $W$, and \emph{mixture coefficient matrix} and \emph{metagene expression profiles} to refer to matrix $H$.
 
 The main approach to NMF is to estimate matrices $W$ and $H$ as a local minimum:
-\begin{equation}\label{nmf_min}
-\min_{W, H \geq 0}\ \underbrace{[D(X, WH) + R(W, H)]}_{=F(W,H)} \label{eq:optim_base}
+\begin{equation}
+\min_{W, H \geq 0}\ \underbrace{[D(X, WH) + R(W, H)]}_{=F(W,H)} \label{nmf_min}
 \end{equation}
 where 
 
@@ -620,7 +620,7 @@ This ensures the complete reproducibility of any given set of runs, even when th
 Since RNGstream requires a 6-length numeric seed, a random one is generated if only a single numeric value is passed to \code{seed}.
 Moreover, single runs can also use RNGstream by passing a 6-length seed.
   
-<<seed_numeric>>=
+<<seed_numeric, cache=TRUE>>=
 # single run and single numeric seed
 res <- nmf(esGolub, 3, seed=123456)
 showRNG(res)
@@ -643,7 +643,7 @@ Yet another option is to completely specify the initial factorization, by passin
 init <- nmfModel(3, esGolub, W=0.5, H=0.3)
 head(basis(init))
 
-# fit using this NMF object
+# fit using this NMF model as a seed
 res <- nmf(esGolub, 3, seed=init)
 @
 
@@ -880,18 +880,18 @@ Since we removed the variable 'Sample' in the preliminaries, these are the only 
 One can see that at rank 2, the clusters correspond to the ALL and AML samples respectively, while rank 3 separates AML from ALL/T-cell and ALL/B-cell\footnote{Remember that the plots shown in \cref{fig:estim_all_hm} come from only 10 runs, using the 200 first genes in the dataset, which explains the somewhat not so clean clusters.
 The results are in fact much cleaner when using the full dataset (\cref{fig:heatmap_consensus}).}.
 
-\begin{figure}\label{fig:estim_all}
+\begin{figure}
 <<estimate_rank_plot, fig.width=10, fig.height=6>>=
 plot(estim.r)
 @
-\caption{Estimation of the rank: Quality measures computed from 10 runs for each value of $r$.}
+\caption{Estimation of the rank: Quality measures computed from 10 runs for each value of $r$. \label{fig:estim_all}}
 \end{figure}
 
-\begin{figure}\label{fig:estim_all_hm}
+\begin{figure}
 <<estimate_rank_hm_include, fig.width=14, fig.height=7, fig.keep='last'>>=
 consensusmap(estim.r, annCol=esGolub, labCol=NA, labRow=NA)
 @
-\caption{Estimation of the rank: Consensus matrices computed from 10 runs for each value of $r$.}
+\caption{Estimation of the rank: Consensus matrices computed from 10 runs for each value of $r$. \label{fig:estim_all_hm}}
 \end{figure}
 
 \subsubsection{Overfitting}
@@ -903,17 +903,19 @@ However it requires to compute the quality measure(s) for the random data.
 The \nmfpack package provides a function that shuffles the original data, by permuting the rows of each column, using each time a different permutation.
 The rank estimation procedure can then be applied to the randomized data, and the ``random'' measures added to the plot for comparison (\cref{fig:estim_all_rd}).
 
-\begin{figure}\label{fig:estim_all_rd}
+\begin{figure}
 <<estimate_rank_random, cache=TRUE, fig.width=10, fig.height=6, fig.keep='last'>>=
 # shuffle original data
 V.random <- randomize(esGolub)
 # estimate quality measures from the shuffled data (use default NMF algorithm)
-estim.r.random <- nmfEstimateRank(V.random, range=2:6, nrun=10, seed=123456)
+estim.r.random <- nmf(V.random, 2:6, nrun=10, seed=123456)
 # plot measures on same graph
-plot(estim.r, ref=estim.r.random)
+plot(estim.r, estim.r.random)
 @
 \caption{Estimation of the rank: Comparison of the quality measures with those obtained from randomized data. 
-The curves for the actual data are in blue and green, those for the randomized data are in red and pink. The estimation is based on Brunet's algorithm.}
+The curves for the actual data are in blue and green, those for the randomized data are in red and pink. 
+The estimation is based on Brunet's algorithm.}
+\label{fig:estim_all_rd}
 \end{figure}
 
 \subsection{Comparing algorithms}
@@ -953,7 +955,7 @@ res <- nmf(esGolub, 3, .options='t')
 @
 
 The trajectory can be plot with the method \code{plot} (\cref{fig:errorplot}):
-\begin{figure}
+\begin{figure}[!htbp]
 <<errorplot, out.width="0.5\\textwidth", fig.show='hold'>>=
 plot(res)
 plot(res.multi.method)
@@ -990,7 +992,7 @@ The function \code{basismap} extends the use of argument \code{subsetRow} (from 
 In \cref{fig:heatmap_coef_basis} we simply used \code{subsetRow=TRUE}, which subsets the rows using the method described in \cite{KimH2007}, to only keep the basis-specific features (e.g. the metagene-specific genes). 
 We refer to the relevant help pages \code{?basismap} and \code{?aheatmap} for more details about other possible values for this argument.
 
-\begin{figure}[ht]
+\begin{figure}[!htbp]
 \centering
 <<heatmap_coef_basis_inc, fig.width=14, fig.height=7, fig.keep='last'>>=
 layout(cbind(1,2))

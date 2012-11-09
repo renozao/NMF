@@ -459,7 +459,14 @@ consensusmap(res_methods)
 \section{Generic heatmap engine: \texttt{aheatmap}}
 \label{sec:aheatmap}
 
-TODO
+This section still needs to be written, but many examples of annotated heatmaps can be found in the demos \code{'aheatmap'} and \code{'heatmaps'}:
+<<demo_hm, eval=FALSE>>=
+demo('aheatmap')
+# or 
+demo('heatmaps')
+@
+
+These demos and the plots they generate can also be browsed online at \url{http://nmf.r-forge.r-project.org/_DEMOS.html}.
 
 \section{Session Info}
 <<sessionInfo, echo=FALSE, results='asis'>>=
