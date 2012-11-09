@@ -1,0 +1,8 @@
+# ignore eclipse files
+/*
+/pkg/.project
+/pkg/.settings
+# do not ignore the content of these directories
+!/pkg/
+!/www/
+!.gitignore
