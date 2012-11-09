@@ -19,12 +19,23 @@ pkgmaker::latex_preamble()
 \newcommand{\refeqn}[1]{(\ref{#1})}
 
 % REFERENCES
-\usepackage[minnames=1,maxnames=2]{biblatex}
+\usepackage[citestyle=authoryear-icomp
+, doi=true
+, url=true
+, maxnames=1
+, maxbibnames=15
+, backref=true]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 <<bibliofile, echo=FALSE, results='asis'>>=
 pkgmaker::latex_bibliography('NMF')	
 @
 \bibliography{Rpackages}
+\newcommand{\citet}[1]{\textcite{#1}}
+\renewcommand{\cite}[1]{\parencite{#1}}
+\DefineBibliographyStrings{english}{%
+    backrefpage  = {see p.}, % for single page number
+    backrefpages = {see pp.} % for multiple page numbers
+}
 %
 
 % boxed figures

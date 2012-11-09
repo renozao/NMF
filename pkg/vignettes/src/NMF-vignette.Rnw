@@ -13,8 +13,6 @@
 pkgmaker::latex_preamble()
 @
 
-\newcommand{\citet}[1]{\citeauthor{#1}~\cite{#1}}
-
 \newcommand{\nmfpack}{\Rpkg{NMF}}
 \newcommand{\RcppOctave}{\textit{RcppOctave}\xspace}
 \newcommand{\matlab}{Matlab$^\circledR$\xspace}
@@ -25,12 +23,23 @@ pkgmaker::latex_preamble()
 \newcommand{\refeqn}[1]{(\ref{#1})}
 
 % REFERENCES
-\usepackage[minnames=1,maxnames=2]{biblatex}
+\usepackage[citestyle=authoryear-icomp
+, doi=true
+, url=true
+, maxnames=1
+, maxbibnames=15
+, backref=true]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 <<bibliofile, echo=FALSE, results='asis'>>=
 pkgmaker::latex_bibliography('NMF')
 @
 \bibliography{Rpackages}
+\newcommand{\citet}[1]{\textcite{#1}}
+\renewcommand{\cite}[1]{\parencite{#1}}
+\DefineBibliographyStrings{english}{%
+    backrefpage  = {see p.}, % for single page number
+    backrefpages = {see pp.} % for multiple page numbers
+}
 %%
 
 % boxed figures
@@ -49,7 +58,6 @@ pkgmaker::latex_bibliography('NMF')
 options(prompt=' ', width = 60)
 options(continue=' ')
 set.seed(123456)
-if( Sys.info()['user'] == 'renaud' ) .libPaths(c('./loclib', .libPaths()))
 @
 
 % use cleveref for automatic reference label formatting
@@ -94,17 +102,22 @@ If you use the package \nmfpack in your analysis and publications please cite:
 \bigskip
 \todo[inline, backgroundcolor=blue!10!white]{\fullcite{NMF}}
 
-The latest stable version of the package can be installed from any
-\href{http://cran.r-project.org}{CRAN} repository mirror, and loaded with the
-standard calls:
+\bigskip
+\paragraph{Installation:} The latest stable version of the package can be installed from any
+\href{http://cran.r-project.org}{CRAN} repository mirror:
 <<load_library_fake, eval=FALSE>>=
 # Install
 install.packages('NMF')
 # Load
 library(NMF)
 @
+The \nmfpack is a project hosted on \emph{R-forge}\footnote{\url{https://r-forge.r-project.org/projects/nmf}}.
+The latest development version is available from \url{https://r-forge.r-project.org/R/?group_id=649} and may be installed from there\footnote{\code{install.packages("NMF", repos = "http://R-Forge.R-project.org")}}.
 
-Note that some of the classes defined in the NMF package have gained new slots.
+\paragraph{Support:} UseRs interested in this package are encouraged to subscribe to the user mailing list (\href{https://lists.r-forge.r-project.org/mailman/listinfo/nmf-user}{nmf-user@lists.r-forge.r-project.org}), which is the preferred channel for enquiries, bug reports, feature requests, suggestions or NMF-related discussions.
+This will enable better tracking as well as fruitful community exchange.
+
+\paragraph{Important:} Note that some of the classes defined in the NMF package have gained new slots.
 If you need to load objects saved in versions prior 0.8.14 please use:
 
 <<updateObject, eval=FALSE>>=
@@ -715,9 +728,13 @@ Instead, you should use doMC from a terminal session, starting R from the comman
 Therefore, the \code{nmf} function does not allow to run multicore computation from the 
 MacOS X GUI.
 
-From version 0.8, other parallel backends such as those provided by the
-\citeCRANpkg{doSNOW} and \citeCRANpkg{doMPI} are supported, and may be specified
-as \code{.pbackend='snow'} and \code{.pbackend='mpi'} respectively.
+From version 0.8, other parallel backends are supported, and may be specified
+via argument \code{.pbackend}:
+
+\begin{description}
+  \item[\code{.pbackend='mpi'}] uses the parallel backend \citeCRANpkg{doParallel} and \citeCRANpkg{doMPI} 
+  \item[\code{.pbackend=NULL}]{}
+\end{description}
 
 It is possible to specify that the currently registered backend should be
 used, by setting argument \code{.pbackend=NULL}.
@@ -1121,8 +1138,7 @@ As an example, we reuse the previously defined custom algorithm\footnote{As it i
 V.neg <- V; V.neg[1,] <- -1;
 
 # this generates an error
-err <- try( nmf(V.neg, 3, my.algorithm, scale.factor=10) )
-err
+nmf(V.neg, 3, my.algorithm, scale.factor=10)
 
 # this runs my.algorithm without error
 nmf(V.neg, 3, my.algorithm, mixed=TRUE, scale.factor=10)
