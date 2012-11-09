@@ -43,8 +43,6 @@ Suggests:
     RColorBrewer,
     fastICA,
     doMPI,
-    doSNOW,
-    snow,
     synchronicity,
     corpcor,
     xtable,

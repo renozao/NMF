@@ -89,8 +89,8 @@ test.shared_memory_doMC <- function(){
 	
 }
 
-test.shared_memory_doSNOW <- function(){
-	# doParallel (doSNOW)
+test.shared_memory_doParallel <- function(){
+	# doParallel (doParallel)
 	cl <- makeCluster(2, outfile='wout.log')
 	on.exit( stopCluster(cl), add=TRUE)
 	registerDoParallel(cl)
@@ -230,17 +230,18 @@ test.nmf <- function(){
 		checkTrue( identical(be, getDoBackend()), str_c(msg, ": backend is restored") )
 	}
 	
+	library(parallel)
 	# Multicore
 	if( parallel::detectCores() > 1 ) 
 		.check('P2', .options='P2')
 	
-	# SNOW
+	# SNOW-type
 	cl <- makeCluster(2)
 	on.exit( stopCluster(cl))
-	.check('.pbackend=cl + SNOW cluster', .pbackend=cl)
+	.check('.pbackend=cl + SNOW-like cluster', .pbackend=cl)
 	library(doParallel)
 	registerDoParallel(cl)
-	.check('.pbackend=NULL + doParallel registered SNOW cluster', .pbackend=NULL)
+	.check('.pbackend=NULL + doParallel registered cluster', .pbackend=NULL)
 	
 	# MPI
 	library(doMPI)

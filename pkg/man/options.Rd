@@ -62,7 +62,7 @@ nmf.getOption('verbose')
 nmf.getOption('backend')
 # set new values
 nmf.options(verbose=TRUE)
-nmf.options(backend='snow', default.algorithm='lee')
+nmf.options(backend='mc', default.algorithm='lee')
 nmf.printOptions()
 
 # reset to default

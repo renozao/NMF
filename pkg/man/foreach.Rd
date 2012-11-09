@@ -6,7 +6,6 @@
 \alias{ForeachBackend,cluster-method}
 \alias{ForeachBackend,doMPI_backend-method}
 \alias{ForeachBackend,doParallel_backend-method}
-\alias{ForeachBackend,doSNOW_backend-method}
 \alias{ForeachBackend-methods}
 \alias{ForeachBackend,missing-method}
 \alias{ForeachBackend,mpicluster-method}
@@ -14,6 +13,9 @@
 \alias{ForeachBackend,numeric-method}
 \alias{getDoBackend}
 \alias{getDoParHosts}
+\alias{getDoParHosts,ANY-method}
+\alias{getDoParHosts-methods}
+\alias{getDoParWorkers}
 \alias{register}
 \alias{registerDoBackend}
 \alias{setDoBackend}
@@ -27,16 +29,15 @@
 
   register(x, ...)
 
-  getDoParHosts(x)
-
   ForeachBackend(object, ...)
 
   \S4method{ForeachBackend}{doParallel_backend}(object, cl)
 
   \S4method{ForeachBackend}{doMPI_backend}(object, cl)
 
-  \S4method{ForeachBackend}{doSNOW_backend}(object, cl,
-    ...)
+  getDoParHosts(object, ...)
+
+  getDoParWorkers(object)
 }
 \arguments{
   \item{object}{specification of a foreach backend, e.g.
@@ -69,11 +70,14 @@
   objects. It is used to as a unified interface to register
   foreach backends.
 
-  \code{getDoParHosts} returns the hostnames of the nodes
-  used by a backend.
-
   \code{ForeachBackend} is a factory method for foreach
   backend objects.
+
+  \code{getDoParHosts} is a generic function that returns
+  the hostname of the worker nodes used by a backend.
+
+  \code{getDoParWorkers} redefines \pkg{foreach} function
+  so that it handles passing a backend object in argument.
 }
 \section{Methods}{
   \describe{
@@ -113,8 +117,11 @@
   \item{ForeachBackend}{\code{signature(object =
   "doMPI_backend")}: doMPI-specific backend factory }
 
-  \item{ForeachBackend}{\code{signature(object =
-  "doSNOW_backend")}: doSNOW-specific backend factory }
+  \item{getDoParHosts}{\code{signature(object = "ANY")}:
+  Default method that tries to heuristaically infer the
+  number of hosts and in last resort temporarly register
+  the backend and performs a foreach loop, to retrieve the
+  nodename from each worker. }
 
   }
 }

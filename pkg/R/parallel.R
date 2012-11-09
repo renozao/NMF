@@ -7,6 +7,8 @@
 # Creation: 08-Feb-2011
 ###############################################################################
 
+library(foreach)
+
 # returns the number of cores to use in all NMF computation when no number is
 # specified by the user
 getMaxCores <- function(){
@@ -68,8 +70,10 @@ getDoBackend <- function(){
 #' @rdname foreach
 setDoBackend <- function(data){
 	ob <- getDoBackend()
-	if( !is.null(data) ) do.call('setDoPar', data)
-	else{
+	if( !is.null(data) ){
+		if( is.backend(data) )	data <- data[!names(data) %in% 'name']
+		do.call('setDoPar', data)
+	}else{
 		do.call('setDoPar', list(NULL))
 		fe <- foreach:::.foreachGlobals
 		if (exists("fun", envir = fe, inherits = FALSE))
@@ -132,37 +136,14 @@ register.foreach_backend <- function(x, ...){
 	}
 	
 	regfun <- .foreach_regfun(x$name)
+	res <- 
 	if( length(formals(regfun)) > 0L ) do.call(regfun, c(x$data, ...))
 	else regfun()
+	# throw an error if not successful (foreach::setDoPar do not throw errors!!)
+	if( is(res, 'simpleError') ) stop(res)
+	# return result
+	res
 }
-
-#' \code{getDoParHosts} returns the hostnames of the nodes used by a backend.
-#' 
-#' @export
-#' @rdname foreach
-getDoParHosts <- function(x){
-	
-	be <- 
-	if( missing(x) ) ForeachBackend()
-	else ForeachBackend(x)
-	if( is.null(be) ) return( NULL )
-	
-	if( is.null(be$data) ) return( NULL )
-	# doSEQ
-	if( be$name == 'doSEQ' ) return( 'localhost' )
-	
-	if( is.numeric(be$data[[1]]) )
-		return( rep('localhost', be$data[[1]]) )
-	
-	if( be$name == 'doParallel' ) sapply(be$data[[1]], '[[', 'host')
-	else if( missing(x) ){
-		setNames(unlist(times(getDoParWorkers()) %dopar% { Sys.info()['nodename'] }), NULL)
-	}else{
-		'UNKNOWN'
-		#stop("cannot list backend hostnames [", class(be)[1], ']')
-	}
-}
-
 
 #' \code{ForeachBackend} is a factory method for foreach backend objects.
 #' 
@@ -279,7 +260,12 @@ setMethod('ForeachBackend', 'doParallel_backend',
 	function(object, cl){
 		
 		# use all available cores if not otherwise specified
-		if( missing(cl) ) cl <- getMaxCores()
+		register_cleanup <-
+		if( missing(cl) ){
+			!length(object$data) || isNumber(object$data) || isNumber(object$data[[1L]])
+		}else{
+			isNumber(cl)
+		}
 		
 		# On Windows doParallel::registerDoParallel(numeric) will create a 
 		# SOCKcluster with `object` cores.
@@ -290,7 +276,7 @@ setMethod('ForeachBackend', 'doParallel_backend',
 		#
 		# Fortunately doParallel::registerDoParallel assign the cluster object 
 		# to the global variable `.revoDoParCluster`
-		if ( is.numeric(cl) && .Platform$OS.type == "windows") {
+		if ( register_cleanup && .Platform$OS.type == "windows") {
 			doBackendCleanup(object, function(x){
 				# get cluster object from global variable `.revoDoParCluster`
 				if( !exists(".revoDoParCluster", envir = .GlobalEnv) ) return()
@@ -327,8 +313,7 @@ isMPIBackend <- function(x, ...){
 #' @S3method register doMPI_backend
 register.doMPI_backend <- function(x, ...){
 	
-	cl <- x$data[[1]]
-	if( is.numeric(cl) ){
+	if( length(x$data) && isNumber(cl <- x$data[[1]]) ){
 		# cleanup first
 		doBackendCleanup(x, verbose=FALSE)
 		
@@ -382,49 +367,49 @@ setMethod('ForeachBackend', 'doMPI_backend',
 # doSNOW
 ##############
 
-setOldClass('doSNOW_backend')
-#' doSNOW-specific backend factory
-setMethod('ForeachBackend', 'doSNOW_backend',
-	function(object, cl, ...){
-		
-		# use all available cores if not otherwise specified
-		if( missing(cl) ) cl <- getMaxCores()
-		
-		if ( is.numeric(cl) ) {
-			doBackendCleanup(object, function(x){
-				# get cluster object from global variable `.doMPICluster`
-				if( !exists(".doSNOWCluster", envir = .GlobalEnv) ) return()
-				cl <- get(".doSNOWCluster", envir = .GlobalEnv)
-				snow::stopCluster(cl)
-				rm(list=".doSNOWCluster", envir = .GlobalEnv)
-			})
-		}
-		
-		# required registration data
-		object$fun <- doSNOW:::doSNOW
-		object$info <- doSNOW:::info
-		
-		# return object
-		object
-	}
-)
-
-#' @S3method register doMPI_backend
-register.doSNOW_backend <- function(x, ...){
-	
-	cl <- x$data[[1]]
-	if( is.numeric(cl) ){
-		# cleanup first
-		doBackendCleanup(x, verbose=FALSE)
-		# start cluster
-		cl <- do.call(snow::makeCluster, x$data)
-		x$data <- list(cl)
-		# add global variable to enable closing the cluster when registering 
-		# another backend
-		assign('.doSNOWCluster', cl, envir = .GlobalEnv)
-	}
-	register.foreach_backend(x, ...)
-}
+#setOldClass('doSNOW_backend')
+# #' doSNOW-specific backend factory
+#setMethod('ForeachBackend', 'doSNOW_backend',
+#	function(object, cl, ...){
+#		
+#		# use all available cores if not otherwise specified
+#		if( missing(cl) ) cl <- getMaxCores()
+#		
+#		if ( is.numeric(cl) ) {
+#			doBackendCleanup(object, function(x){
+#				# get cluster object from global variable `.doMPICluster`
+#				if( !exists(".doSNOWCluster", envir = .GlobalEnv) ) return()
+#				cl <- get(".doSNOWCluster", envir = .GlobalEnv)
+#				snow::stopCluster(cl)
+#				rm(list=".doSNOWCluster", envir = .GlobalEnv)
+#			})
+#		}
+#		
+#		# required registration data
+#		object$fun <- doSNOW:::doSNOW
+#		object$info <- doSNOW:::info
+#		
+#		# return object
+#		object
+#	}
+#)
+#
+# #' @S3method register doSNOW_backend
+#register.doSNOW_backend <- function(x, ...){
+#	
+#	cl <- x$data[[1]]
+#	if( is.numeric(cl) ){
+#		# cleanup first
+#		doBackendCleanup(x, verbose=FALSE)
+#		# start cluster
+#		cl <- do.call(snow::makeCluster, x$data)
+#		x$data <- list(cl)
+#		# add global variable to enable closing the cluster when registering 
+#		# another backend
+#		assign('.doSNOWCluster', cl, envir = .GlobalEnv)
+#	}
+#	register.foreach_backend(x, ...)
+#}
 
 #as.foreach_backend <- function(x, ...){
 #	
@@ -502,6 +487,58 @@ print.foreach_backend <- function(x, ...){
 		#							,"`", regfun, "` and S3 method `register.", s3class, "` not found.")
 	}
 	regfun
+}
+
+
+#' \code{getDoParHosts} is a generic function that returns the hostname of the worker nodes used by a backend.
+#' 
+#' @export
+#' @rdname foreach
+#' @inline
+setGeneric('getDoParHosts', function(object, ...) standardGeneric('getDoParHosts'))
+setOldClass('foreach_backend')
+#' Default method that tries to heuristaically infer the number of hosts and in last 
+#' resort temporarly register the backend and performs a foreach loop, to retrieve the 
+#' nodename from each worker.
+setMethod('getDoParHosts', 'ANY',
+	function(object, ...){
+		
+		be <- if( missing(object) ) ForeachBackend(...) else ForeachBackend(object, ...)
+		if( existsMethod('getDoParHosts', class(be)[1L]) ) return( callGeneric(object) )
+		
+		# default behaviour
+		nodename <- setNames(Sys.info()['nodename'], NULL)
+			
+		if( is.null(be) || is.null(be$data) ) return( NULL )
+		# doSEQ
+		if( be$name == 'doSEQ' ) 
+			return( nodename )
+		if( isNumber(be$data) ) 
+			return( rep(nodename, be$data) )
+		if( length(be$data) && isNumber(be$data[[1]]) ) 
+			return( rep(nodename, be$data[[1]]) )
+		if( length(be$data) && be$name == 'doParallel' ) 
+			return( sapply(be$data[[1L]], '[[', 'host') )
+		
+		if( !missing(object) ){ # backend passed: register temporarly
+			ob <- getDoBackend()
+			on.exit( setDoBackend(ob) )
+			registerDoBackend(be)
+		}
+		setNames(unlist(times(getDoParWorkers()) %dopar% { Sys.info()['nodename'] }), NULL)
+	}
+)
+
+#' \code{getDoParWorkers} redefines \pkg{foreach} function so that it handles 
+#' passing a backend object in argument.
+#' 
+#' @export
+#' @rdname foreach
+getDoParWorkers <- function(object){
+	if( missing(object) ) foreach::getDoParWorkers()
+	else{
+		length(getDoParHosts(object))
+	}
 }
 
 # add new option: limit.cores indicates if the number of cores used in parallel 
