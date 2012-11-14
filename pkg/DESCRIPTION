@@ -15,7 +15,7 @@ License: GPL (>=2)
 URL: http://nmf.r-forge.r-project.org
 LazyLoad: yes
 Depends:
-    R (>= 2.14.0),
+    R (>= 2.15.2),
     methods,
     stats,
     pkgmaker (>= 0.9),
