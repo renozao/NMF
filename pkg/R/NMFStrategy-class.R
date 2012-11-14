@@ -676,8 +676,8 @@ existsNMFMethod <- function(name, exact=TRUE){
 #' or an NMF algorithm object (i.e. an instance of \code{\linkS4class{NMFStrategy}}). 
 #' @param ... extra named arguments that define default values for any arguments 
 #' of \code{\link{nmf}} or the algorithm itself. 
-#' @return a function with attribute \code{'algorithm'} set to the value of
-#' \code{key}.
+#' @return a function with argument \code{...} and a set of default arguments defined 
+#' in \code{...} in the call to \code{nmfWrapper}.
 #' 
 #' @seealso \code{\link{nmfAlgorithm}}, \code{\link{nmf}}
 #' @keywords internal
@@ -697,49 +697,58 @@ existsNMFMethod <- function(name, exact=TRUE){
 #' 
 #' \dontshow{ stopifnot(nmf.equal(res, res2)) }
 #' 
-nmfWrapper <- function(method, ...){
+nmfWrapper <- function(method, ..., .FIXED=FALSE){
 	
-	# store key and call
+	# store original call
 	.call <- match.call()
-#	print(.call)
 	
 	# check that all arguments are named
 	if( nargs() > 1L && any(names(.call)[-(1:2)]=='') )
 		stop("Invalid call: all arguments must be named.")
 	
-	# modify the call to call `nmf` instead
-	.call[[1]] <- as.name('nmf')
-	
 	# store fixed arguments from default arguments
-	.fixedargs <- grep("^\\.\\.", names(.call))
-	.fixedargs <- c(2L, .fixedargs)
-	e <- parent.frame()
-	for(n in names(.call)[.fixedargs] ){
-		.call[[n]] <- eval(.call[[n]], envir=e)
+	.fixedargs <- 'method'
+	.defaults <- names(.call)[-1L]
+	if( length(.defaults) ){
+		e <- parent.frame()
+		for(n in .defaults ){
+			.call[[n]] <- eval(.call[[n]], envir=e)
+		}
+		if( isTRUE(.FIXED) ) .fixedargs <- c(.fixedargs, .defaults)
+		else if( is.character(.FIXED) ){
+			.FIXED <- .FIXED[.FIXED %in% .defaults]
+			.fixedargs <- c(.fixedargs, .FIXED)	
+		}
 	}
-	names(.call) <- sub("^\\.\\.", "", names(.call))
-	.fixedargs <- names(.call)[.fixedargs]
-	
+
 	# define wrapper function
-	f <- function(...){
+	fwrap <- function(...){
 		
-		# set non fixed arguments from current call
-		ca <- match.call(nmf)
+		# check for fixed arguments passed in the call that need
+		# to be discarded
+		ca <- match.call()
 		nm <- names(ca)[-1L]
 		if( any(fnm <- nm %in% .fixedargs) ){
 			warning("Discarding fixed arguments from wrapped call to ", .call[1L]
 					, " [", str_out(nm[fnm], Inf), '].', immediate.=TRUE)
-			nm <- nm[!fnm]
+			ca <- ca[!c(FALSE, fnm)]
 		}
-		sapply(nm, function(x)	.call[[x]] <<- ca[[x]])
-		print(.call)
+		#
+		
+		# set values of default arguments
+		defaults <- formals()[-1L] # skip first argument `...`
+		.call <- expand_list(ca, defaults, .exact=FALSE)
+		# change into a call to nmf
+		.call[[1L]] <- as.name('nmf')
+		.call <- as.call(.call)
 		# eval
 		e <- parent.frame()
 		eval(.call, envir=e)
 	}
-	attr(f, "algorithm") <- method
-	attr(f, "call") <- .call
+	# add default arguments to signature
+	if( length(.defaults) )
+		formals(fwrap) <- c(formals(fwrap), as.list(.call[.defaults]))
 	
-	return( ExposeAttribute(f) )
+	return( fwrap )
 	
 }
