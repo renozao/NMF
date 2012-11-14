@@ -73,3 +73,38 @@ test.rmatrix <- function(){
 #	
 #	
 #}
+
+
+test.nmfWrapper <- function(){
+	
+	.msg <- NULL
+	msg <- function(...) paste(.msg, ': ', ..., sep='')
+	
+	f <- nmfWrapper('lee')
+	x <- rmatrix(20, 10)
+	checkTrue( isNMFfit(res <- f(x, 3)), msg('result is an NMFfit object') )
+	checkIdentical(nbasis(res), 3L, msg('result was computed using the correct rank') )
+	checkIdentical(algorithm(res), 'lee', msg('result was computed using the correct algorithm') )
+	
+	
+	.msg <- 'with default maxIter and seed value'
+	f <- nmfWrapper('nsNMF', maxIter=3, seed='nndsvd')
+	checkTrue( isNMFfit(res <- f(x, 2)), msg('result is an NMFfit object' ))
+	checkIdentical(nbasis(res), 2L, msg('result was computed using the correct rank') )
+	checkIdentical(algorithm(res), 'nsNMF', msg('result was computed using the correct algorithm') )
+	checkIdentical(niter(res), 3L, msg('result was computed using the correct number of iterations') )
+	checkIdentical(seeding(res), 'nndsvd', msg('result was computed using the correct seed') )
+	# overwrite default in call
+	.msg <- 'overwriting defaults in call'
+	checkTrue( isNMFfit(res <- f(x, 4, seed='random')), msg('result is an NMFfit object' ))
+	checkIdentical(nbasis(res), 4L, msg('result was computed using the correct rank') )
+	checkIdentical(algorithm(res), 'nsNMF', msg('result was computed using the correct algorithm') )
+	checkIdentical(niter(res), 3L, msg('result was computed using the correct number of iterations') )
+	checkIdentical(seeding(res), 'random', msg('result was computed using the correct seed') )
+	# pass method as well
+	.msg <- 'overwriting defaults in call + try overwrite method'
+	checkWarning(res <- f(x, 4, method='lee', seed='random'), 'Discarding fixed arguments.*', msg('a warning is thrown'))
+	checkTrue( isNMFfit(res), msg('result is an NMFfit object' ))
+	checkIdentical(algorithm(res), 'nsNMF', msg('result was still computed using the correct algorithm defined in nmfWrapper') )
+	
+}
