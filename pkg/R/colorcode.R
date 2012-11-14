@@ -4,6 +4,8 @@
 # Creation: 19 Sep 2011
 ###############################################################################
 
+library(RColorBrewer)
+
 col2hex <- function (cname) 
 {
 	colMat <- col2rgb(cname)

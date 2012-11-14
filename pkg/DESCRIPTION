@@ -28,7 +28,8 @@ Depends:
     digest,
     gridBase,
     stringr,
-    colorspace
+    colorspace,
+    RColorBrewer
 Imports:
     methods,
     stats,
@@ -40,7 +41,6 @@ Imports:
 Suggests:
     RcppOctave,
     Biobase,
-    RColorBrewer,
     fastICA,
     doMPI,
     synchronicity,
