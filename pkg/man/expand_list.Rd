@@ -50,6 +50,15 @@ expand_list(list(a=1, b=2, c=5), cd=3)
 expand_list(list(a=1, b=2, c=5), cd=3, .exact=FALSE)
 # partial match without expanding names
 expand_list(list(a=1, b=2, c=5), cd=3, .exact=FALSE, .names=FALSE)
+# expand a call with default arguments in a function
+f <- function(...){
+	cl  <- match.call()
+	expand_list(cl, list(a=3, b=4), .exact=FALSE)
+}
+f()
+f(c=1)
+f(a=2)
+f(c=1, a=2)
 # expanding dot arguments
 
 f <- function(...){

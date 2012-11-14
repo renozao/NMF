@@ -2,7 +2,7 @@
 \alias{nmfWrapper}
 \title{Wrapping NMF Algorithms}
 \usage{
-  nmfWrapper(method, ...)
+  nmfWrapper(method, ..., .FIXED = FALSE)
 }
 \arguments{
   \item{method}{Name of the NMF algorithm to be wrapped. It
@@ -13,10 +13,24 @@
   \item{...}{extra named arguments that define default
   values for any arguments of \code{\link{nmf}} or the
   algorithm itself.}
+
+  \item{.FIXED}{a logical that indicates if the default
+  arguments defined in \code{...} must be considered as
+  fixed, i.e. that they are forced to have the defined
+  values and cannot be used in a call to the wrapper
+  function, in which case, a warning about discarding them
+  is thrown if they are used. Non fixed arguments may have
+  their value changed at call time, in which case it is
+  honoured and passed to the \code{nmf} call.
+
+  \code{.FIXED} may also be a character vector that
+  specifies which argument amongst \code{...} should be
+  considered as fixed.}
 }
 \value{
-  a function with attribute \code{'algorithm'} set to the
-  value of \code{key}.
+  a function with argument \code{...} and a set of default
+  arguments defined in \code{...} in the call to
+  \code{nmfWrapper}.
 }
 \description{
   This function creates a wrapper function for calling the
