@@ -133,6 +133,7 @@ nmfUnregister <- Vectorize(nmfUnregister, 'name')
 
 packageNMFObject <- function(key, method){
 
+	library(pkgmaker)
 	# do nothing if 
 	# - not loading a namespace
 	# - loading the NMF namespace
