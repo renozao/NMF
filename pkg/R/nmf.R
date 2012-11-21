@@ -1797,7 +1797,7 @@ function(x, rank, method
 	
 	# do something if the RNG was actually changed
 	newRNG <- getRNG()
-	.RNG.seed <- setupRNG(seed, 1, verbose=verbose)
+	.RNG.seed <- setupRNG(seed, 1, verbose=verbose-1)
 	
 	# update the seeding method
 	if( isRNGseed(seed) ){
