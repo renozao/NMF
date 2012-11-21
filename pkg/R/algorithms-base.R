@@ -15,44 +15,61 @@ NULL
 # BRUNET (standard KL-based NMF)
 ################################################################################
 
-###% Computes the Nonegative Matrix Factorization of a matrix.
-###%
-###% This software and its documentation are copyright 2004 by the
-###% Broad Institute/Massachusetts Institute of Technology. All rights are reserved.
-###% This software is supplied without any warranty or guaranteed support whatsoever. 
-###% Neither the Broad Institute nor MIT can not be responsible for its use, misuse, 
-###% or functionality. 
-###%
-###% @param v N (genes) x M (samples) original matrix to be factorized.
-###%           Numerical data only. 
-###%           Must be non negative. 
-###%           Not all entries in a row can be 0. If so, add a small constant to the 
-###%           matrix, eg.v+0.01*min(min(v)),and restart.
-###%           
-###% @param r the number of desired factors (i.e. the rank of factorization)
-###% @param verbose prints iteration count and changes in connectivity matrix elements unless verbose is 0 
-###% @return The two factors of the factorization:
-###% \item{w }{N x r NMF factor}
-###% \item{h }{r x M NMF factor}
-###%
-###% @note NMF iterations stop when connectivity matrix has not changed 
-###%        for 10*stopconv interations. This is experimental and can be
-###%        adjusted.
-###% @author Jean-Philippe Brunet \email{brunet@@broad.mit.edu}
-###% @author Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
-###% @references
-###% Metagenes and molecular pattern discovery using matrix factorization
-###% , Brunet, J.~P., Tamayo, P., Golub, T.~R., and Mesirov, J.~P. (2004)
-###% , Proc Natl Acad Sci U S A
-###% , 101(12)
-###% , 4164--4169.
-###% NMF divergence update equations :
-###% Lee, D..D., and Seung, H.S., (2001), 'Algorithms for Non-negative Matrix 
-###% Factorization', Adv. Neural Info. Proc. Syst. 13, 556-562.
-nmf_update.brunet_R <- function(i, v, data, eps=.Machine$double.eps, ...)
+#' NMF Algorithm/Updates for Kullback-Leibler Divergence
+#' 
+#' The built-in NMF algorithms \sQuote{KL} and \sQuote{brunet} minimise 
+#' the Kullback-Leibler divergence (KL) between an NMF model and a target matrix. 
+#' They use the updates for the basis and coefficient matrices (\eqn{W} and \eqn{H}) 
+#' defined by \cite{Brunet2004}, which are essentially those from \cite{Lee2001}, 
+#' with an stabilisation step that shift up all entries from zero every 10 iterations, 
+#' to a very small positive value.
+#' 
+#' The only difference between algorithms \sQuote{KL} and \sQuote{brunet} is that 
+#' \sQuote{KL} uses the stopping criterion based on the stationarity of the objective 
+#' value \code{\link{nmf.stop.stationary}}, whereas \sQuote{brunet} uses the 
+#' stationarity of the connectivity matrix \code{\link{nmf.stop.connectivity}}. 
+#' 
+#' @param i current iteration number.
+#' @param v target matrix.
+#' @param x current NMF model, as an \code{\linkS4class{NMF}} object.
+#' @param eps small numeric value used to ensure numeric stability, by shifting up
+#' entries from zero to this fixed value.
+#' @param ... extra arguments. These are generally not used and present
+#' only to allow other arguments from the main call to be passed to the 
+#' initialisation and stopping criterion functions. 
+#' @inheritParams nmf_update.KL.h
+#' 
+#' @author 
+#' Original implementation in MATLAB: Jean-Philippe Brunet \email{brunet@@broad.mit.edu}
+#' 
+#' Port to R and optimisation in C++: Renaud Gaujoux
+#' 
+#' @source
+#' 
+#' Original MATLAB files and references can be found at:
+#' 
+#' \url{http://www.broadinstitute.org/mpr/publications/projects/NMF/nmf.m}
+#' 
+#' \url{http://www.broadinstitute.org/publications/broad872}
+#' 
+#' Original license terms:
+#'  
+#' This software and its documentation are copyright 2004 by the
+#' Broad Institute/Massachusetts Institute of Technology. All rights are reserved.
+#' This software is supplied without any warranty or guaranteed support whatsoever. 
+#' Neither the Broad Institute nor MIT can not be responsible for its use, misuse, 
+#' or functionality. 
+#' 
+#' @details
+#' \code{nmf_update.brunet_R} implements in pure R a single update step, i.e. it updates 
+#' both matrices.
+#' 
+#' @export
+#' @rdname KL-nmf
+nmf_update.brunet_R <- function(i, v, x, eps=.Machine$double.eps, ...)
 {
 	# retrieve each factor
-	w <- .basis(data); h <- .coef(data);
+	w <- .basis(x); h <- .coef(x);
 	
 	# standard divergence-reducing NMF update for H
 	h <- R_std.divergence.update.h(v, w, h)
@@ -68,24 +85,22 @@ nmf_update.brunet_R <- function(i, v, data, eps=.Machine$double.eps, ...)
 		w[w<eps] <- eps;
 	}
 	
-	#return the modified data
-	.basis(data) <- w; .coef(data) <- h;	
-	return(data)
+	#return the modified model
+	.basis(x) <- w; .coef(x) <- h;	
+	return(x)
 	
 }
 
-# Brunet (R version)
-setNMFMethod('.R#brunet'
-			, objective='KL' 
-			, Update=nmf_update.brunet_R
-			, Stop='connectivity')
-
-nmf_update.brunet <- function(i, v, data, copy=FALSE, eps=.Machine$double.eps, ...)
+#' \code{nmf_update.brunet} implements in C++ an optimised version of the single update step.
+#'  
+#' @export
+#' @rdname KL-nmf
+nmf_update.brunet <- function(i, v, x, copy=FALSE, eps=.Machine$double.eps, ...)
 {
 	# retrieve each factor
-	w <- .basis(data); h <- .coef(data);
+	w <- .basis(x); h <- .coef(x);
 	# fixed terms
-	nb <- nbterms(data); nc <- ncterms(data)
+	nb <- nbterms(x); nc <- ncterms(x)
 	
 	# standard divergence-reducing NMF update for H	
 	h <- std.divergence.update.h(v, w, h, nbterms=nb, ncterms=nc, copy=copy)
@@ -97,40 +112,89 @@ nmf_update.brunet <- function(i, v, data, copy=FALSE, eps=.Machine$double.eps, .
 	# NB: one adjusts in place even when copy=TRUE, as 'h' and 'w' are local variables
 	if( i %% 10 == 0 ){
 		#eps <- .Machine$double.eps
-		h <- pmax.inplace(h, eps, icterms(data))
-		w <- pmax.inplace(w, eps, ibterms(data))
+		h <- pmax.inplace(h, eps, icterms(x))
+		w <- pmax.inplace(w, eps, ibterms(x))
 	}
 	
-	# update object if the updates duplicated the data
+	# update object if the updates duplicated the model
 	if( copy ){		
-		#return the modified data	
-		.basis(data) <- w; 
-		.coef(data) <- h;
+		#return the modified model	
+		.basis(x) <- w; 
+		.coef(x) <- h;
 	}
-	return(data)
+	return(x)
 	
 }
 
-# Brunet (optimised version)
+#' Algorithms \sQuote{brunet} and \sQuote{.R#brunet} provide the complete NMF algorithm from \cite{Brunet2004}, 
+#' using the C++-optimised and pure R updates \code{\link{nmf_update.brunet}} and \code{\link{nmf_update.brunet_R}} 
+#' respectively.
+#' 
+#' @rdname KL-nmf
+#' @aliases Rbrunet-nmf
+#' @name brunet-nmf
+NULL
+setNMFMethod('.R#brunet'
+		, objective='KL' 
+		, Update=nmf_update.brunet_R
+		, Stop='connectivity')
+
+# Optimised version
 setNMFMethod('brunet', '.R#brunet', Update=nmf_update.brunet)
+
+#' Algorithm \sQuote{KL} provides an NMF algorithm based on the C++-optimised version of 
+#' the updates from \cite{Brunet2004}, but using the stationarity of the objective value 
+#' as a stopping criterion.
+#' @rdname KL-nmf
+#' @name KL-nmf
+NULL 
+setNMFMethod('KL'
+		, objective='KL' 
+		, Update=nmf_update.brunet
+		, Stop='stationary')
 
 ################################################################################
 # LEE (standard Euclidean-based NMF)
 ################################################################################
 
-###% Multiplicative update for reducing the euclidean distance.
-###%
-###% 
-nmf_update.lee_R <- function(i, v, data, rescale=TRUE, eps=10^-9, ...)
+#' NMF Algorithm/Updates for Frobenius Norm
+#' 
+#' The built-in NMF algorithms \sQuote{Frobenius} and \sQuote{lee} minimise 
+#' the Frobenius norm (Euclidean distance) between an NMF model and a target matrix. 
+#' They use the updates for the basis and coefficient matrices (\eqn{W} and \eqn{H}) 
+#' defined by \cite{Lee2001}.
+#' 
+#' The only difference between algorithms \sQuote{Frobenius} and \sQuote{lee} is that 
+#' \sQuote{Frobenius} uses the stopping criterion based on the stationarity of the objective 
+#' value \code{\link{nmf.stop.stationary}}, whereas \sQuote{lee} uses the 
+#' stationarity of the connectivity matrix \code{\link{nmf.stop.connectivity}}. 
+#' 
+#' @inheritParams nmf_update.brunet
+#' @inheritParams nmf_update.euclidean.h
+#' @param rescale logical that indicates if the basis matrix \eqn{W} should be 
+#' rescaled so that its columns sum up to one. 
+#' 
+#' @author 
+#' Original update definition: D D Lee and HS Seung
+#' 
+#' Port to R and optimisation in C++: Renaud Gaujoux
+#' 
+#' @details
+#' \code{nmf_update.lee_R} implements in pure R a single update step, i.e. it updates 
+#' both matrices.
+#' 
+#' @export
+#' @rdname Frobenius-nmf
+nmf_update.lee_R <- function(i, v, x, rescale=TRUE, eps=10^-9, ...)
 {
 	# retrieve each factor
-	w <- .basis(data); h <- .coef(data);	
+	w <- .basis(x); h <- .coef(x);	
 	
 	#precision threshold for numerical stability
 	#eps <- 10^-9
 	
 	# compute the estimate WH
-	#wh <- estimate(data)
+	#wh <- estimate(x)
 	
 	# euclidean-reducing NMF iterations	
 	# H_au = H_au (W^T V)_au / (W^T W H)_au
@@ -138,8 +202,8 @@ nmf_update.lee_R <- function(i, v, data, rescale=TRUE, eps=10^-9, ...)
 	h <- R_std.euclidean.update.h(v, w, h, eps=eps)
 	
 	# update H and recompute the estimate WH
-	#metaprofiles(data) <- h
-	#wh <- estimate(data)
+	#metaprofiles(x) <- h
+	#wh <- estimate(x)
 	
 	# W_ia = W_ia (V H^T)_ia / (W H H^T)_ia and columns are rescaled after each iteration	
 	#w <- pmax(w * (v %*% t(h)), eps) / (w %*% (h %*% t(h)) + eps);
@@ -147,34 +211,33 @@ nmf_update.lee_R <- function(i, v, data, rescale=TRUE, eps=10^-9, ...)
 	#rescale columns TODO: effect of rescaling? the rescaling makes the update with offset fail
 	if( rescale ) w <- sweep(w, 2L, colSums(w), "/", check.margin=FALSE)
 	
-	#return the modified data
-	.basis(data) <- w; .coef(data) <- h;	
-	return(data)
+	#return the modified model
+	.basis(x) <- w; .coef(x) <- h;	
+	return(x)
 }
 
-# Lee (R version)	
-setNMFMethod('.R#lee', objective='euclidean'
-			, Update=nmf_update.lee_R
-			, Stop='connectivity')	
-
-nmf_update.lee <- function(i, v, data, rescale=TRUE, copy=FALSE, eps=10^-9, weight=NULL, ...)
+#' \code{nmf_update.lee} implements in C++ an optimised version of the single update step.
+#'  
+#' @export
+#' @rdname Frobenius-nmf	
+nmf_update.lee <- function(i, v, x, rescale=TRUE, copy=FALSE, eps=10^-9, weight=NULL, ...)
 {
 	# retrieve each factor
-	w <- .basis(data); h <- .coef(data);
+	w <- .basis(x); h <- .coef(x);
 	# fixed terms
-	nb <- nbterms(data); nc <- ncterms(data)
+	nb <- nbterms(x); nc <- ncterms(x)
 	
 	#precision threshold for numerical stability
 	#eps <- 10^-9
 	
 	# compute the estimate WH
-	#wh <- estimate(data)
+	#wh <- estimate(x)
 	
 	# euclidean-reducing NMF iterations	
 	# H_au = H_au (W^T V)_au / (W^T W H)_au
 	h <- std.euclidean.update.h(v, w, h, eps=eps, nbterms=nb, ncterms=nc, copy=copy)
 	# update original object if not modified in place
-	if( copy ) .coef(data) <- h
+	if( copy ) .coef(x) <- h
 	
 	# W_ia = W_ia (V H^T)_ia / (W H H^T)_ia and columns are rescaled after each iteration	
 	w <- std.euclidean.update.w(v, w, h, eps=eps, weight=weight, nbterms=nb, ncterms=nc, copy=copy)
@@ -183,40 +246,92 @@ nmf_update.lee <- function(i, v, data, rescale=TRUE, copy=FALSE, eps=10^-9, weig
 		w <- sweep(w, 2L, colSums(w), "/", check.margin=FALSE)
     }
 	
-	#return the modified data
-	.basis(data) <- w; 	
-	return(data)
+	#return the modified model
+	.basis(x) <- w; 	
+	return(x)
 }
 
-# Lee (optimised version)	
+#' Algorithms \sQuote{lee} and \sQuote{.R#lee} provide the complete NMF algorithm from \cite{Lee2001}, 
+#' using the C++-optimised and pure R updates \code{\link{nmf_update.lee}} and \code{\link{nmf_update.lee_R}}
+#' respectively.
+#' 
+#' @rdname Frobenius-nmf
+#' @aliases Rlee-nmf
+#' @name lee-nmf
+NULL
+setNMFMethod('.R#lee', objective='euclidean'
+		, Update=nmf_update.lee_R
+		, Stop='connectivity')	
+
+# Optmised version
 setNMFMethod('lee', '.R#lee', Update=nmf_update.lee)
+
+#' Algorithm \sQuote{Frobenius} provides an NMF algorithm based on the C++-optimised version of 
+#' the updates from \cite{Lee2001}, but uses the stopping criterion based on the 
+#' stationarity of the objective value.
+#' 
+#' @rdname Frobenius-nmf
+#' @name Frobenius-nmf
+NULL
+setNMFMethod('Frobenius', objective='euclidean'
+		, Update=nmf_update.lee
+		, Stop='stationary')
 
 ################################################################################
 # OFFSET (Euclidean-based NMF with offset) [Badea (2008)]
 ################################################################################
 
 
-# Updates for NMF with offset
-# H
+#' NMF Multiplicative Update for NMF with Offset Models
+#' 
+#' These update rules proposed by \cite{Badea2008} are modified version of 
+#' the updates from \cite{Lee2001}, that include an offset/intercept vector, 
+#' which models a common baseline for each feature accross all samples: 
+#' \deqn{V \approx W H + I}
+#' 
+#' \code{nmf_update.euclidean_offset.h} and \code{nmf_update.euclidean_offset.w} 
+#' compute the updated NMFOffset model, using the optimized \emph{C++} implementations.
+#' 
+#' @details 
+#' The associated model is defined as an \code{\linkS4class{NMFOffset}} object. 
+#' The details of the multiplicative updates can be found in \cite{Badea2008}.
+#' Note that the updates are the ones defined for a single datasets, not the 
+#' simultaneous NMF model, which is fit by algorithm \sQuote{siNMF} from 
+#' formula-based NMF models.
+#' 
+#' @inheritParams nmf_update.brunet
+#' @inheritParams nmf_update.euclidean.h
+#' 
+#' @param offset current value of the offset/intercept vector.
+#' It must be of length equal to the number of rows in the target matrix.
+#' 
+#' @author 
+#' Original update definition: Liviu Badea
+#' 
+#' Port to R and optimisation in C++: Renaud Gaujoux
+#' 
+#' @return an \code{\linkS4class{NMFOffset}} model object.
+#' 
+#' @export
+#' @rdname offset-nmf
 nmf_update.euclidean_offset.h <- function(v, w, h, offset, eps=10^-9, copy=TRUE){
 	.Call("offset_euclidean_update_H", v, w, h, offset, eps, copy, PACKAGE='NMF')
 }
-# W
+#' @export 
+#' @rdname offset-nmf
 nmf_update.euclidean_offset.w <- function(v, w, h, offset, eps=10^-9, copy=TRUE){
 	.Call("offset_euclidean_update_W", v, w, h, offset, eps, copy, PACKAGE='NMF')
 }
-
-###% Multiplicative update for reducing the euclidean distance including on offset.
-###%
-###% The method is a modified version of Lee's method that also fits an offset 
-###% vector which model a common expression baseline for each gene accross all 
-###% samples.
-nmf_update.offset_R <- function(i, v, data, eps=10^-9, ...)
+#' \code{nmf_update.offset_R} implements a complete single update step, 
+#' using plain R updates.
+#' @export 
+#' @rdname offset-nmf
+nmf_update.offset_R <- function(i, v, x, eps=10^-9, ...)
 {	
 	# retrieve each factor
-	w <- .basis(data); h <- .coef(data);
+	w <- .basis(x); h <- .coef(x);
 	# retrieve offset and fill it if necessary (with mean of rows)
-	off <- offset(data)
+	off <- offset(x)
 	if( i == 1 && length(off) == 0 )
 		off <- rowMeans(v)
 	
@@ -227,29 +342,26 @@ nmf_update.offset_R <- function(i, v, data, eps=10^-9, ...)
 	
 	h <- R_std.euclidean.update.h(v, w, h, wh=w%*%h + off, eps=eps)
 	w <- R_std.euclidean.update.w(v, w, h, wh=w%*%h + off, eps=eps)
-	#data <- nmf_update.lee(i, v, data, rescale=FALSE, ...)
+	#x <- nmf_update.lee(i, v, x, rescale=FALSE, ...)
 	
 	# update the offset	
 	# V0_i = V0_i ( sum_j V_ij ) / ( sum_j (V.off + W H)_ij )
-	data@offset <- off * pmax(rowSums(v), eps) / (rowSums(w%*%h + off) + eps)
+	x@offset <- off * pmax(rowSums(v), eps) / (rowSums(w%*%h + off) + eps)
 	
-	#return the modified data
-	.basis(data) <- w; .coef(data) <- h;
-	return(data)
+	#return the modified model
+	.basis(x) <- w; .coef(x) <- h;
+	return(x)
 }
-
-# NMF with offset (R version)
-setNMFMethod('.R#offset', objective='euclidean'
-		, model = 'NMFOffset'
-		, Update=nmf_update.offset_R
-		, Stop='connectivity')
-
-nmf_update.offset <- function(i, v, data, copy=FALSE, eps=10^-9, ...)
+#' \code{nmf_update.offset} implements a complete single update step, 
+#' using C++-optimised updates.
+#' @export 
+#' @rdname offset-nmf
+nmf_update.offset <- function(i, v, x, copy=FALSE, eps=10^-9, ...)
 {	
 	# retrieve each factor
-	w <- .basis(data); h <- .coef(data);
+	w <- .basis(x); h <- .coef(x);
 	# retrieve offset and fill it if necessary (with mean of rows)
-	off <- offset(data)
+	off <- offset(x)
 	if( i == 1 && length(off) == 0 )
 		off <- rowMeans(v)
 	
@@ -262,15 +374,28 @@ nmf_update.offset <- function(i, v, data, copy=FALSE, eps=10^-9, ...)
 	
 	# update the offset	
 	# V0_i = V0_i ( sum_j V_ij ) / ( sum_j (V.off + W H)_ij )
-	data@offset <- off * pmax(rowSums(v), eps) / (rowSums(w%*%h + off) + eps)	
+	x@offset <- off * pmax(rowSums(v), eps) / (rowSums(w%*%h + off) + eps)	
 	
 	# update the original object if not modified in place
 	if( copy ){ 
-		.basis(data) <- w; 
-		.coef(data) <- h;
+		.basis(x) <- w; 
+		.coef(x) <- h;
 	}
-	return(data)
+	return(x)
 }
+
+#' Algorithms \sQuote{offset} and \sQuote{.R#offset} provide the complete NMF-with-offset algorithm 
+#' from \cite{Badea2008}, using the C++-optimised and pure R updates \code{\link{nmf_update.offset}} 
+#' and \code{\link{nmf_update.offset_R}} respectively.
+#' 
+#' @rdname offset-nmf
+#' @aliases Roffset-nmf
+#' @name offset-nmf
+NULL
+setNMFMethod('.R#offset', objective='euclidean'
+		, model = 'NMFOffset'
+		, Update=nmf_update.offset_R
+		, Stop='connectivity')
 
 # NMF with offset (optimised version)
 setNMFMethod('offset', '.R#offset', Update=nmf_update.offset)
@@ -281,7 +406,7 @@ setNMFMethod('offset', '.R#offset', Update=nmf_update.offset)
 
 #' NMF Multiplicative Update for Nonsmooth Nonnegative Matrix Factorization (nsNMF).
 #' 
-#' These update rules, defined for the \code{nsNMF} model \eqn{V \approx W S H} from 
+#' These update rules, defined for the \code{\linkS4class{NMFns}} model \eqn{V \approx W S H} from 
 #' \cite{Pascual-Montano2006}, that introduces an intermediate smoothing matrix to enhance
 #' sparsity of the factors.  
 #' 
@@ -297,30 +422,24 @@ setNMFMethod('offset', '.R#offset', Update=nmf_update.offset)
 #' 
 #' See \code{\link{nmf_update.KL}} for more details on the update formula.
 #' 
-#' @param i current iteration
-#' @param v target matrix
-#' @param data current NMF model
-#' @param copy logical that indicates if the update should be made in place 
-#' (\code{FALSE}) or on a copy of the current NMF model (\code{TRUE} - default).
-#' @param ... extra arguments to cope with arguments that are not aimed at this 
-#' function 
+#' @inheritParams nmf_update.brunet
 #' 
 #' @return an \code{\linkS4class{NMFns}} model object.
 #' 
 #' @export
-#' @rdname nmf_update_ns
-nmf_update.ns <- function(i, v, data, copy=FALSE, ...)
+#' @rdname nsNMF-nmf
+nmf_update.ns <- function(i, v, x, copy=FALSE, ...)
 {
 	# retrieve and alter the factors for updating H
-	S <- smoothing(data)
-	w <- .basis(data)
-	h <- .coef(data);
+	S <- smoothing(x)
+	w <- .basis(x)
+	h <- .coef(x);
 	
 	# standard divergence-reducing update for H with modified W
 	h <- std.divergence.update.h(v, w %*% S, h, copy=copy)
 	
 	# update H if not modified in place
-	if( copy ) .coef(data) <- h
+	if( copy ) .coef(x) <- h
 	
 	# standard divergence-reducing update for W with modified H
 	w <- std.divergence.update.w(v, w, S %*% h, copy=copy)
@@ -328,33 +447,33 @@ nmf_update.ns <- function(i, v, data, copy=FALSE, ...)
 	# rescale columns of W
 	w <- sweep(w, 2L, colSums(w), '/', check.margin=FALSE)
 	
-	#return the modified data
-	.basis(data) <- w;
-	return(data)
+	#return the modified model
+	.basis(x) <- w;
+	return(x)
 }
 #' \code{nmf_update.ns_R} implements the same updates in \emph{plain R}.
 #' 
 #' @export
-#' @rdname nmf_update_ns
-nmf_update.ns_R <- function(i, v, data, ...)
+#' @rdname nsNMF-nmf
+nmf_update.ns_R <- function(i, v, x, ...)
 {
 	# retrieve and alter the factors for updating H
-	S <- smoothing(data)
-	w <- .basis(data)
-	#w <- metagenes(data) %*% smoothing(fit(data)); # W <- WS
-	h <- .coef(data);
+	S <- smoothing(x)
+	w <- .basis(x)
+	#w <- metagenes(x) %*% smoothing(fit(x)); # W <- WS
+	h <- .coef(x);
 	
 	# compute the estimate WH
-	#wh <- estimate(data, W=w.init, H=h, S=S)
+	#wh <- estimate(x, W=w.init, H=h, S=S)
 	
 	# standard divergence-reducing update for H with modified W
 	h <- R_std.divergence.update.h(v, w %*% S, h)
 	
 	# update H and recompute the estimate WH
-	.coef(data) <- h
+	.coef(x) <- h
 	# retrieve and alter the factors for updating W
 	#w <- tmp;
-	#h <- smoothing(fit(data)) %*% metaprofiles(data); # H <- SH
+	#h <- smoothing(fit(x)) %*% metaprofiles(x); # H <- SH
 	#h <- S %*% h; # H <- SH
 	
 	# standard divergence-reducing update for W with modified H
@@ -363,17 +482,25 @@ nmf_update.ns_R <- function(i, v, data, ...)
 	# rescale columns of W
 	w <- sweep(w, 2L, colSums(w), '/', check.margin=FALSE)
 	
-	#return the modified data
-	.basis(data) <- w; #metaprofiles(data) <- h;
-	return(data)
+	#return the modified model
+	.basis(x) <- w; #metaprofiles(x) <- h;
+	return(x)
 }
 
 ## REGISTRATION
-# nsNMF (R version)
+#' Algorithms \sQuote{nsNMF} and \sQuote{.R#nsNMF} provide the complete NMF algorithm from \cite{Pascual-Montano2006}, 
+#' using the C++-optimised and plain R updates \code{\link{nmf_update.brunet}} and \code{\link{nmf_update.brunet_R}} 
+#' respectively.
+#' The stopping criterion is based on the stationarity of the connectivity matrix.
+#' 
+#' @rdname nsNMF-nmf
+#' @aliases RnsNMF-nmf
+#' @name nsNMF-nmf
+NULL
 setNMFMethod('.R#nsNMF', objective='KL'
 		, model='NMFns'
 		, Update=nmf_update.ns_R
 		, Stop='connectivity')
 
-# nsNMF (optimised version)
+# Optmized version
 setNMFMethod('nsNMF', '.R#nsNMF', Update=nmf_update.ns)

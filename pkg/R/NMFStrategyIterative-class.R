@@ -440,6 +440,9 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 #' H_kj <- H_kj ( sum_i [ W_ik V_ij / (WH)_ij ] ) / ( sum_i W_ik )
 #' }
 #' 
+#' These updates are used in built-in NMF algorithms \code{\link[=KL-nmf]{KL}} and 
+#' \code{\link[=brunet-nmf]{brunet}}.
+#' 
 #' @param v target matrix
 #' @param w current basis matrix
 #' @param h current coefficient matrix
@@ -449,6 +452,8 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 #' matrix directly (\code{FALSE}) or on a copy (\code{TRUE} - default).
 #' With \code{copy=FALSE} the memory footprint is very small, and some speed-up may be 
 #' achieved in the case of big matrices.
+#' However, greater care should be taken due the side effect. 
+#' We recommend that only experienced users use \code{copy=TRUE}. 
 #'
 #' @return a matrix of the same dimension as the input matrix to update 
 #' (i.e. \code{w} or \code{h}).
@@ -530,16 +535,12 @@ nmf_update.KL.w_R <- R_std.divergence.update.w <- function(v, w, h, wh=NULL)
 #' H_kj <- max(H_kj (W^T V)_kj, eps) / ( (W^T W H)_kj + eps )
 #' }
 #' 
-#' @param v target matrix
-#' @param w current basis matrix
-#' @param h current coefficient matrix
-#' @param eps small numeric value used to ensure numeric stability
-#' @param nbterms number of fixed basis terms (see \code{\link{bterms}}).
-#' @param ncterms number of fixed coefficient terms (see \code{\link{cterms}})
-#' @param copy logical that indicates if the update should be made on the original
-#' matrix directly (\code{FALSE}) or on a copy (\code{TRUE} - default).
-#' With \code{copy=FALSE} the memory footprint is very small, and some speed-up may be 
-#' achieved in the case of big matrices.
+#' These updates are used by the built-in NMF algorithms \code{\link[Frobenius-nmf]{Frobenius}} and 
+#' \code{\link[lee-nmf]{lee}}
+#' 
+#' @inheritParams nmf_update.KL.h
+#' @param eps small numeric value used to ensure numeric stability, by shifting up
+#' entries from zero to this fixed value.
 #'
 #' @return a matrix of the same dimension as the input matrix to update 
 #' (i.e. \code{w} or \code{h}).
