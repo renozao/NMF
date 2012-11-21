@@ -535,8 +535,8 @@ nmf_update.KL.w_R <- R_std.divergence.update.w <- function(v, w, h, wh=NULL)
 #' H_kj <- max(H_kj (W^T V)_kj, eps) / ( (W^T W H)_kj + eps )
 #' }
 #' 
-#' These updates are used by the built-in NMF algorithms \code{\link[Frobenius-nmf]{Frobenius}} and 
-#' \code{\link[lee-nmf]{lee}}
+#' These updates are used by the built-in NMF algorithms \code{\link[=Frobenius-nmf]{Frobenius}} and 
+#' \code{\link[=lee-nmf]{lee}}.
 #' 
 #' @inheritParams nmf_update.KL.h
 #' @param eps small numeric value used to ensure numeric stability, by shifting up
