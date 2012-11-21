@@ -371,7 +371,7 @@ setMethod('basismap', signature(object='NMF'),
 			
 		# call aheatmap on matrix
 		aheatmap(x, color = color, ...
-				, scale = scale, Colv = Colv, subsetRow = subsetRow
+				, scale = scale, Rowv=Rowv, Colv = Colv, subsetRow = subsetRow
 				, annRow = annRow, annCol = annCol
 				, main = main, info = info)	
 	}
@@ -523,7 +523,7 @@ setMethod('coefmap', signature(object='NMF'),
 			##
 			
 			# call aheatmap on matrix
-			aheatmap(x, color = color, ...
+			aheatmap(x, ..., color = color
 					, scale = scale, Rowv = Rowv, Colv=Colv
 					, annRow=annRow, annCol = annCol
 					, main=main, info = info)
