@@ -1125,6 +1125,9 @@ function(x, rank, method
 	
 	# get seeding method from the strategy's defaults if needed
 	seed <- defaultArgument(seed, method, nmf.getOption('default.seed'), force=is.null(seed))
+	.method_defaults <- method@defaults
+	.method_defaults$seed <- NULL
+	#
 
 	# setup verbosity options
 	debug <- if( !is.null(.options$debug) ) .options$debug else nmf.getOption('debug')
@@ -1820,7 +1823,7 @@ function(x, rank, method
 
 	# a priori the parameters for the run are all the one in '...'
 	# => expand with the strategy's defaults
-	parameters.method <- expand_list(list(...), method@defaults)
+	parameters.method <- expand_list(list(...), .method_defaults)
 	#
 	
 	if( is.nmf(seed) ){
