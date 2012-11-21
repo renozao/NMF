@@ -720,9 +720,9 @@ nmfWrapper <- function(method, ..., .FIXED=FALSE){
 	.defaults <- names(.call)[-1L]
 	if( length(.defaults) ){
 		e <- parent.frame()
-		for(n in .defaults ){
-			.call[[n]] <- eval(.call[[n]], envir=e)
-		}
+#		for(n in .defaults){
+#			.call[[n]] <- eval(.call[[n]], envir=e)
+#		}
 		if( isTRUE(.FIXED) ) .fixedargs <- c(.fixedargs, .defaults)
 		else if( is.character(.FIXED) ){
 			.FIXED <- .FIXED[.FIXED %in% .defaults]
