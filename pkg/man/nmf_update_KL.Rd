@@ -31,7 +31,9 @@
   be made on the original matrix directly (\code{FALSE}) or
   on a copy (\code{TRUE} - default). With \code{copy=FALSE}
   the memory footprint is very small, and some speed-up may
-  be achieved in the case of big matrices.}
+  be achieved in the case of big matrices. However, greater
+  care should be taken due the side effect. We recommend
+  that only experienced users use \code{copy=TRUE}.}
 
   \item{wh}{already computed NMF estimate used to compute
   the denominator term.}
@@ -63,6 +65,10 @@
   \frac{W_{ik} V_{ij}}{(WH)_{ij}} \right)}{ sum_i W_{ik} }.
   }{ H_kj <- H_kj ( sum_i [ W_ik V_ij / (WH)_ij ] ) / (
   sum_i W_ik ) }
+
+  These updates are used in built-in NMF algorithms
+  \code{\link[=KL-nmf]{KL}} and
+  \code{\link[=brunet-nmf]{brunet}}.
 
   The basis matrix (\code{W}) is updated as follows: \deqn{
   W_{ik} \leftarrow W_{ik} \frac{ sum_j [\frac{H_{kj}

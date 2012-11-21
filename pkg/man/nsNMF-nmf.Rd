@@ -1,37 +1,55 @@
 \name{nmf_update.ns}
 \alias{nmf_update.ns}
 \alias{nmf_update.ns_R}
+\alias{nsNMF-nmf}
+\alias{RnsNMF-nmf}
 \title{NMF Multiplicative Update for Nonsmooth Nonnegative Matrix Factorization (nsNMF).}
 \usage{
-  nmf_update.ns(i, v, data, copy = FALSE, ...)
+  nmf_update.ns(i, v, x, copy = FALSE, ...)
 
-  nmf_update.ns_R(i, v, data, ...)
+  nmf_update.ns_R(i, v, x, ...)
 }
 \arguments{
-  \item{i}{current iteration}
+  \item{i}{current iteration number.}
 
-  \item{v}{target matrix}
+  \item{v}{target matrix.}
 
-  \item{data}{current NMF model}
+  \item{x}{current NMF model, as an
+  \code{\linkS4class{NMF}} object.}
 
   \item{copy}{logical that indicates if the update should
-  be made in place (\code{FALSE}) or on a copy of the
-  current NMF model (\code{TRUE} - default).}
+  be made on the original matrix directly (\code{FALSE}) or
+  on a copy (\code{TRUE} - default). With \code{copy=FALSE}
+  the memory footprint is very small, and some speed-up may
+  be achieved in the case of big matrices. However, greater
+  care should be taken due the side effect. We recommend
+  that only experienced users use \code{copy=TRUE}.}
 
-  \item{...}{extra arguments to cope with arguments that
-  are not aimed at this function}
+  \item{...}{extra arguments. These are generally not used
+  and present only to allow other arguments from the main
+  call to be passed to the initialisation and stopping
+  criterion functions.}
 }
 \value{
   an \code{\linkS4class{NMFns}} model object.
 }
 \description{
-  These update rules, defined for the \code{nsNMF} model
-  \eqn{V \approx W S H} from \cite{Pascual-Montano et al.
-  (2006)}, that introduces an intermediate smoothing matrix
-  to enhance sparsity of the factors.
+  These update rules, defined for the
+  \code{\linkS4class{NMFns}} model \eqn{V \approx W S H}
+  from \cite{Pascual-Montano et al. (2006)}, that
+  introduces an intermediate smoothing matrix to enhance
+  sparsity of the factors.
 
   \code{nmf_update.ns_R} implements the same updates in
   \emph{plain R}.
+
+  Algorithms \sQuote{nsNMF} and \sQuote{.R#nsNMF} provide
+  the complete NMF algorithm from \cite{Pascual-Montano et
+  al. (2006)}, using the C++-optimised and plain R updates
+  \code{\link{nmf_update.brunet}} and
+  \code{\link{nmf_update.brunet_R}} respectively. The
+  stopping criterion is based on the stationarity of the
+  connectivity matrix.
 }
 \details{
   \code{nmf_update.ns} computes the updated nsNMF model. It

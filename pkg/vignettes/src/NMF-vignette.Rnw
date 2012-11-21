@@ -100,7 +100,7 @@ performance benchmarking.
 If you use the package \nmfpack in your analysis and publications please cite:
 
 \bigskip
-\todo[inline, backgroundcolor=blue!10!white]{\fullcite{NMF}}
+\todo[inline, backgroundcolor=blue!10!white]{\fullcite{Rpackage:NMF}}
 
 \bigskip
 \paragraph{Installation:} The latest stable version of the package can be installed from any
