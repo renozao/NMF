@@ -263,6 +263,8 @@ setMethod('NMFStrategy', signature(name='character', method='missing'),
 			# check iterative strategy
 			if( hasArg2('Update') ){ # create a new NMFStrategyIterative object
 				new('NMFStrategyIterative', name=name, ..., package=topns_name())
+			}else if( hasArg2('mfiles') ){
+				new('NMFStrategyOctave', name=name, ..., package=topns_name())
 			}else if( hasArg2('algorithm') ){
 				new('NMFStrategyFunction', name=name, ..., package=topns_name())
 			}else{

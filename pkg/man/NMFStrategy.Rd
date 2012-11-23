@@ -15,6 +15,7 @@
 \alias{run,NMFStrategyIterativeX,matrix,NMFfit-method}
 \alias{run,NMFStrategy,matrix,NMFfit-method}
 \alias{run,NMFStrategy,matrix,NMF-method}
+\alias{run,NMFStrategyOctave,matrix,NMFfit-method}
 \title{Factory Method for NMFStrategy Objects}
 \usage{
   NMFStrategy(name, method, ...)
@@ -32,6 +33,9 @@
 
   \S4method{run}{NMFStrategyIterativeX,matrix,NMFfit}(object,
     y, x, maxIter, ...)
+
+  \S4method{run}{NMFStrategyOctave,matrix,NMFfit}(object,
+    y, x, ...)
 }
 \arguments{
   \item{name}{name/key of an NMF algorithm.}
@@ -158,6 +162,17 @@
   "NMFStrategyIterative", y = "matrix", x = "NMFfit")}:
   Runs an NMF iterative algorithm on a target matrix
   \code{y}. }
+
+  \item{run}{\code{signature(object = "NMFStrategyOctave",
+  y = "matrix", x = "NMFfit")}: Runs the NMF algorithms
+  implemented by the Octave/Matlab function associated with
+  the strategy -- and stored in slot \code{'algorithm'} of
+  \code{object}.
+
+  This method is usually not called directly, but only via
+  the function \code{\link{nmf}}, which takes care of many
+  other details such as seeding the computation, handling
+  RNG settings, or setting up parallel computations. }
 
   }
 }
