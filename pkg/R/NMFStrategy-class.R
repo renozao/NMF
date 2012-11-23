@@ -414,7 +414,7 @@ setNMFMethod <- function(name, method, ..., overwrite=isLoadingNamespace(), verb
 	if( verbose ){
 		tmpl <- 
 		if( !is.null(parent.method) && parent.method != key )
-			stringr::str_c(" based on template '", parent.method, "'")
+			str_c(" based on template '", parent.method, "'")
 	
 		pkg <- packageSlot(method)
 		message("Registering NMF algorithm '", pkg, '::', key,"'", tmpl,"... ", appendLF=FALSE)

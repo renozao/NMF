@@ -5,7 +5,7 @@
 
 # make the internal functions visible
 if( isNamespaceLoaded('NMF') ){
-	join <- NMF:::join
+	join <- NMF:::NMFfitX
 }
 
 .testData <- function(n=20, r=3, m=10, ...){

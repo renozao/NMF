@@ -846,14 +846,7 @@ test.compare <- function(){
 	res <- nmf(V, r, list('brunet', 'lee', 'ns'), nrun=3)
 	checkTrue( is.data.frame(compare(res, class=classes))
 			, "Result of method 'compare' (list with multiple runs + multiple methods) is a data.frame" )
-	
-	# wrap up the list into a NMFSet object
-	#res <- join(res)
-	
-	# compare the results
-	#comp <- compare(res, class=classes)
-	#checkTrue( is.data.frame(comp), "Result of method 'compare' (NMFSet) is a data.frame" )
-		
+			
 }
 
 

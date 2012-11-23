@@ -16,9 +16,9 @@ alphacol <- function(x, alpha=FALSE){
 	apply(as.character(as.hexmode(col2rgb(x))), 2, function(x) paste("#", paste(x, collapse=''), alpha, sep=''))
 }
 
+#' @import grDevices
 corplot <- function(x, y, legend=TRUE, ...){
 	
-	library(grDevices)
 	cols <- rainbow(ncol(x))
 	
 	# set default arguments
@@ -143,8 +143,6 @@ corplot <- function(x, y, legend=TRUE, ...){
 #' @export
 #' @examples
 #' 
-#' if( interactive() ){
-#' 
 #' # create a random target matrix
 #' v <- rmatrix(50, 10)
 #' 
@@ -157,7 +155,7 @@ corplot <- function(x, y, legend=TRUE, ...){
 #' profplot(res, Colv=-1) # decreasing
 #' 
 #' # fit a multi-run NMF model
-#' res2 <- nmf(v, 3, nrun=5)
+#' res2 <- nmf(v, 3, nrun=3)
 #' profplot(res2)
 #' 
 #' # draw a profile correlation plot: this show how the basis components are 
@@ -166,9 +164,6 @@ corplot <- function(x, y, legend=TRUE, ...){
 #' 
 #' # looking at all the correlations allow to order the components in a "common" order
 #' profcor(res, res2)
-#' 
-#' }
-#' 
 #' 
 profplot <- function(x, y, scale=FALSE, match.names=TRUE, legend=TRUE, Colv, labels, annotation, ...){
 	
@@ -367,7 +362,6 @@ profplot <- function(x, y, scale=FALSE, match.names=TRUE, legend=TRUE, Colv, lab
 	axis(1, at = px, labels = FALSE)
 	
 	# setup grid-base mixed graphic
-	library(gridBase)
 	vps <- baseViewports()
 	pushViewport(vps$inner, vps$figure, vps$plot)
 	# clean up on exit

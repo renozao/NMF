@@ -1,6 +1,5 @@
 \docType{methods}
 \name{NMF-deprecated}
-\alias{join}
 \alias{metaHeatmap}
 \alias{metaHeatmap,matrix-method}
 \alias{metaHeatmap-methods}
@@ -10,8 +9,6 @@
 \title{Deprecated Functions in the Package NMF}
 \usage{
   metaHeatmap(object, ...)
-
-  join(...)
 }
 \arguments{
   \item{object}{an R object}

@@ -4,7 +4,9 @@
 # Creation: 19 Sep 2011
 ###############################################################################
 
-library(RColorBrewer)
+#' @import RColorBrewer
+#' @import colorspace
+NULL
 
 col2hex <- function (cname) 
 {

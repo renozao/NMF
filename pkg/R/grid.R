@@ -7,6 +7,9 @@
 # Creation: 04 Jun 2012
 ###############################################################################
 
+#' @import grid
+NULL
+
 #' Grid Internal Functions
 #' 
 #' These functions are generally redefinitions of their counter parts in the 

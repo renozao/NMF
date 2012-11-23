@@ -2,8 +2,6 @@
 #' @include heatmaps.R
 NULL
 
-library(rngtools)
-
 #' \code{isNMFfit} tells if an object results from an NMF fit. 
 #' 
 #' @details  \emph{isNMFfit} checks if \code{object} inherits from class 
@@ -442,7 +440,6 @@ setMethod('show', 'NMFfitX',
 #' @inheritParams rngtools::getRNG
 #' @inheritParams rngtools::getRNG1
 #' 
-#' @importMethodsFrom rngtools getRNG1
 #' @inline
 #' @rdname RNG
 #' @export
@@ -952,7 +949,6 @@ setMethod('getRNG1', signature(object='NMFfitXn'),
 	}
 )
 
-#' @importMethodsFrom rngtools .getRNG
 #' @inline
 #' @rdname RNG
 #' @export
@@ -1283,13 +1279,6 @@ setMethod('NMFfitX', 'NMFfitX',
 			do.call(f, c(list(object), extra))
 		}
 )
-
-#' @export
-#' @rdname NMF-deprecated
-join <- function(...){
-	.Deprecated('NMFfitX', 'NMF')
-	NMFfitX(...)
-}
 
 #' Computes the best or mean purity across all NMF fits stored in \code{x}.
 #' 

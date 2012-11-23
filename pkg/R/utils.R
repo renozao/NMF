@@ -1,4 +1,5 @@
 #' @include rmatrix.R
+#' @include nmf-package.R
 NULL
 
 library(pkgmaker)
@@ -384,6 +385,7 @@ parallelEnv <- function(load=TRUE){
 }
 
 ###% Hash a function body (using digest)
+#' @import digest
 hash_function <- function(f){
 	b <- body(f)
 	attributes(b) <- NULL

@@ -1,3 +1,9 @@
+#' @import rngtools
+#' @import digest
+#' @import stringr
+NULL
+library(digest)
+
 #' Algorithms and framework for Nonnegative Matrix Factorization (NMF).
 #' 
 #' This package provides a framework to perform Non-negative Matrix Factorization (NMF).

@@ -1400,7 +1400,7 @@ function(x, rank, method
 				# check if single host of multiple host
 				hosts <- getDoParHosts()
 				if( verbose > 2 ) message("# Running on host(s): ", str_out(hosts))
-				SINGLE_HOST <- length(hosts) <= 1L
+				SINGLE_HOST <- length(unique(hosts)) <= 1L
 				MODE_SHARED <- MODE_SHARED && SINGLE_HOST
 				if( verbose > 2 ) message("# Using shared memory ... ", MODE_SHARED)
 				
@@ -2613,7 +2613,6 @@ nmfEstimateRank <- function(x, range, method=nmf.getOption('default.algorithm')
 #' It specifies which measure must be plotted (\code{what='all'} plots 
 #' all the measures).
 #' 
-#' @importFrom graphics plot
 #' @S3method plot NMF.rank
 #' @rdname nmfEstimateRank
 plot.NMF.rank <- function(x, y=NULL, what=c('all', 'cophenetic', 'rss', 'residuals'

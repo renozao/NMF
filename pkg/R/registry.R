@@ -10,8 +10,9 @@
 ###########################################################################
 # COMMON REGISTRY
 ###########################################################################
-library(registry)
 
+#' @import pkgmaker
+#' @import registry
 nmfRegistry <- function(...) pkgmaker::packageRegistry(...)
 
 .init.nmf.registry <- function(){

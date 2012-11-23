@@ -78,8 +78,6 @@
   profiles.
 }
 \examples{
-if( interactive() ){
-
 # create a random target matrix
 v <- rmatrix(50, 10)
 
@@ -92,7 +90,7 @@ profplot(res, Colv=1) # increasing
 profplot(res, Colv=-1) # decreasing
 
 # fit a multi-run NMF model
-res2 <- nmf(v, 3, nrun=5)
+res2 <- nmf(v, 3, nrun=3)
 profplot(res2)
 
 # draw a profile correlation plot: this show how the basis components are
@@ -101,8 +99,6 @@ profplot(res, res2)
 
 # looking at all the correlations allow to order the components in a "common" order
 profcor(res, res2)
-
-}
 }
 \seealso{
   \code{\link{profcor}}

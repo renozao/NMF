@@ -5,8 +5,6 @@ NULL
 
 library(grid)
 library(gridBase)
-library(colorspace)
-library(stringr)
 
 lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 , treeheight_col, treeheight_row, legend, main = NULL, sub = NULL, info = NULL
@@ -768,6 +766,7 @@ cutheight <- function(x, n){
 #' @param x a dendrogram
 #' @param n the number of groups
 #' 
+#' @import digest
 #' @keywords internal
 cutdendro <- function(x, n){
 	
@@ -990,8 +989,6 @@ scale_mat = function(x, scale, na.rm=TRUE){
 }
 
 .Rd.seed <- new.env()
-
-library(stringr)
 
 round.pretty <- function(x, min=2){
 		
@@ -1572,7 +1569,6 @@ subset_index <- function(x, margin, subset){
 #' 
 #' Enhancement into \code{aheatmap}: Renaud Gaujoux
 #' 
-#' @importFrom pkgmaker isNA
 #' @examples
 #' 
 #' ## See the demo 'aheatmap' for more examples:
@@ -1918,6 +1914,7 @@ aheatmap = function(x
 	invisible(res)
 }
 
+#' @import gridBase
 grid.base.mix <- function(opar, trace = getOption('verbose')){
 	
 	if( !missing(opar) ){
@@ -1930,7 +1927,6 @@ grid.base.mix <- function(opar, trace = getOption('verbose')){
 	}
 	
 	if( trace ) message("grid.base.mix - init")
-	library(gridBase)
 	if( trace ) grid.rect(gp=gpar(lwd=40, col="blue"))
 	opar <- par(xpd=NA)
 	if( trace ) grid.rect(gp=gpar(lwd=30, col="green"))

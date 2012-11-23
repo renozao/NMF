@@ -7,7 +7,9 @@
 # Creation: 08-Feb-2011
 ###############################################################################
 
-library(foreach)
+#' @import foreach
+#' @import doParallel
+NULL
 
 # returns the number of cores to use in all NMF computation when no number is
 # specified by the user
@@ -801,10 +803,8 @@ ts_eval <- function(mutex = synchronicity::boost.mutex(), verbose=FALSE){
 	library(bigmemory)
 	library(synchronicity)
 	# describe mutex if necessary
-	# NB: use bigmemory::describe because synchronicity::describe breaks if
-	# synchronicity is loaded together with bigmemory
 	.MUTEX_DESC <- 
-			if( is(mutex, 'boost.mutex') ) bigmemory::describe(mutex)
+			if( is(mutex, 'boost.mutex') ) synchronicity::describe(mutex)
 			else mutex
 	
 	loadpkg <- TRUE

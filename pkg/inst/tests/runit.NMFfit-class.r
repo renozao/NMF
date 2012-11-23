@@ -5,7 +5,7 @@
 
 # make the internal functions/objects visible
 if( isNamespaceLoaded('NMF') ){
-	join <- NMF:::join
+	NMFfitX <- NMF:::NMFfitX
 }
 
 .TestSeed <- 123456
@@ -75,7 +75,7 @@ test.nmf.equal <- function(){
 		set.seed(123)
 		V <- rmatrix(n, m)
 		resM <- nmf(V, 3)
-		resM <- join(list(resM))
+		resM <- NMFfitX(list(resM))
 		
 		## utility functions
 		create.type <- function(type, obj){
@@ -84,7 +84,7 @@ test.nmf.equal <- function(){
 			else if( type=='NMFfit' )
 				minfit(obj)
 			else if( type=='NMFfitX1' )
-				join(obj, .merge=TRUE)
+				NMFfitX(obj, .merge=TRUE)
 			else
 				obj
 	

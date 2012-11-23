@@ -142,7 +142,7 @@ setNMFSeed <- function(..., overwrite=isLoadingNamespace(), verbose=TRUE){
 	
 	if( lverbose ){
 		tmpl <- if( !is.null(parent.method) && parent.method != key )
-			stringr::str_c(" based on template '", parent.method, "'")
+			str_c(" based on template '", parent.method, "'")
 		
 		pkg <- packageSlot(method)
 		message("Registering NMF seeding method '", pkg, '::', key,"'", tmpl,"... ", appendLF=FALSE)
