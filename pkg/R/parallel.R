@@ -84,7 +84,7 @@ setDoBackend <- function(data){
 	invisible(ob)
 }
 
-doBackendCleanup <- function(object, fun, run=TRUE, verbose=TRUE){
+doBackendCleanup <- function(object, fun, ..., run=TRUE, verbose=TRUE){
 	
 	if( !exists('.doParCleanup', envir=.GlobalEnv) )
 			assign('.doParCleanup', new.env(), envir=.GlobalEnv)
@@ -105,8 +105,8 @@ doBackendCleanup <- function(object, fun, run=TRUE, verbose=TRUE){
 			fun <- get(object$name, envir=e)
 			if( run ){
 				if( verbose ) message("# Cleaning up '", object$name, "'... ", appendLF=FALSE)
-				fun(object)
-				if( verbose ) message('OK')
+				res <- fun(object, ...)
+				if( verbose ) message('OK', if( !is.null(res) ) str_c(' [', res,']'))
 			}else fun
 		}
 	}else if( is.null(fun) ){
@@ -134,7 +134,7 @@ register.foreach_backend <- function(x, ...){
 	# require definition package (it is safer to re-check)
 	if( be != 'doSEQ' ){
 		if( !require.quiet(be, character.only=TRUE) )
-			stop("Package '", be, "' is required to use backend '", be, "'")
+			stop("Package '", be, "' is required to use foreach backend '", be, "'")
 	}
 	
 	regfun <- .foreach_regfun(x$name)
@@ -144,7 +144,7 @@ register.foreach_backend <- function(x, ...){
 	# throw an error if not successful (foreach::setDoPar do not throw errors!!)
 	if( is(res, 'simpleError') ) stop(res)
 	# return result
-	res
+	invisible(res)
 }
 
 #' \code{ForeachBackend} is a factory method for foreach backend objects.
@@ -172,7 +172,7 @@ formatDoName <- function(x){
 	
 	# numeric values are resolved as doParallel
 	if( is.numeric(x) ) x <- 'PAR'
-	else if( is.character(x) ){
+	if( is.character(x) ){
 		# use upper case if not already specified as 'do*'
 		if( !grepl("^do", x) ){
 			x <- toupper(x)
@@ -190,8 +190,6 @@ setMethod('ForeachBackend', 'character',
 		
 		object <- formatDoName(object)
 		
-		# check the registration routine is available
-		regfun <- .foreach_regfun(object)
 		# build S3 class name
 		s3class <- str_c(object, "_backend")
 		
@@ -205,6 +203,9 @@ setMethod('ForeachBackend', 'character',
 		# and possibly change the name or the object class, e.g. to allow 
 		# subsequent argument-dependent dispatch.
 		obj <- ForeachBackend(obj, ...)
+		
+		# check the registration routine is available
+		.foreach_regfun(obj$name)
 		
 		# set data slot if not already set by the backend-specific method
 		if( is.null(obj$data) || (length(obj$data) == 0L && nargs()>1L) ) 
@@ -258,8 +259,9 @@ setOldClass('doParallel_backend')
 #' 
 #' @param cl cluster specification: a cluster object or a numeric that indicates the 
 #' number of nodes to use. 
+#' @param type type of cluster, See \code{\link[parallel]{makeCluster}}.
 setMethod('ForeachBackend', 'doParallel_backend',
-	function(object, cl){
+	function(object, cl, type=NULL){
 		
 		# use all available cores if not otherwise specified
 		register_cleanup <-
@@ -268,7 +270,14 @@ setMethod('ForeachBackend', 'doParallel_backend',
 		}else{
 			isNumber(cl)
 		}
-		
+
+		.cl_cleanup <- function(gvar){
+			if( !exists(gvar, envir = .GlobalEnv) ) return()
+			cl <- get(gvar, envir = .GlobalEnv)
+			try( parallel::stopCluster(cl), silent=TRUE)
+			rm(list=gvar, envir = .GlobalEnv)
+			TRUE
+		} 
 		# On Windows doParallel::registerDoParallel(numeric) will create a 
 		# SOCKcluster with `object` cores.
 		# On non-Windows machines registerDoParallel(numeric) will use 
@@ -278,13 +287,16 @@ setMethod('ForeachBackend', 'doParallel_backend',
 		#
 		# Fortunately doParallel::registerDoParallel assign the cluster object 
 		# to the global variable `.revoDoParCluster`
-		if ( register_cleanup && .Platform$OS.type == "windows") {
-			doBackendCleanup(object, function(x){
-				# get cluster object from global variable `.revoDoParCluster`
-				if( !exists(".revoDoParCluster", envir = .GlobalEnv) ) return()
-				cl <- get(".revoDoParCluster", envir = .GlobalEnv)
-				parallel::stopCluster(cl)
-				rm(list=".revoDoParCluster", envir = ".GlobalEnv")
+		if ( register_cleanup ) {
+			doBackendCleanup(object, function(x, force=FALSE){
+				# do not cleanup if current backend is the same (TODO: improve this)
+				if( !force && getDoParName() == 'doParallel') return()
+				# on Windows: stop cluster stored in global variable `.revoDoParCluster`
+				if( .Platform$OS.type == "windows" ){
+					.cl_cleanup(".revoDoParCluster")
+				}
+				# on all Platforms: try to cleanup PSOCK
+				.cl_cleanup('.doParPSOCKCluster')
 			})
 		}
 		
@@ -294,10 +306,50 @@ setMethod('ForeachBackend', 'doParallel_backend',
 		#object$fun <- doParallel:::doParallel
 		object$info <- doParallel:::info
 		
+		# set type of cluster if explicitly provided
+		if( !is.null(type) ) object$data$type <- type
+		
 		# return object
 		object
 	}
 )
+
+######################################################
+# doPSOCK
+# Default snow-like cluster from parallel on Windows 
+# but works on Unix as well
+######################################################
+
+setOldClass('doPSOCK_backend')
+#' doSNOW-specific backend factory
+setMethod('ForeachBackend', 'doPSOCK_backend',
+		function(object, cl){
+			
+			# use all available cores if not otherwise specified
+			if( missing(cl) ) cl <- getMaxCores()
+			
+			# return equivalent doParallel object
+			ForeachBackend('doParallel', cl, type='PSOCK')
+		}
+)
+
+#' @S3method register doParallel_backend
+register.doParallel_backend <- function(x, ...){
+	
+	# start cluster if numeric specification and type is defined
+	cl <- x$data[[1]]
+	if( is.numeric(cl) && !is.null(x$data$type) ){
+		# cleanup first
+		doBackendCleanup(x, force=TRUE, verbose=FALSE)
+		# start cluster
+		clObj <- do.call(parallel::makeCluster, x$data)
+		x$data <- list(clObj)
+		# add global variable to enable closing the cluster when registering 
+		# another backend
+		assign('.doParPSOCKCluster', clObj, envir = .GlobalEnv)
+	}
+	register.foreach_backend(x, ...)
+}
 
 ###############
 # doMPI 
@@ -347,12 +399,13 @@ setMethod('ForeachBackend', 'doMPI_backend',
 		
 		if ( is.numeric(cl) ) {
 			doBackendCleanup(object, function(x){
+				gvname <- ".doMPICluster"
 				# get cluster object from global variable `.doMPICluster`
-				if( !exists(".doMPICluster", envir = .GlobalEnv) ) return()
-				
-				cl <- get(".doMPICluster", envir = .GlobalEnv)
+				if( !exists(gvname, envir = .GlobalEnv) ) return()				
+				cl <- get(gvname, envir = .GlobalEnv)
 				doMPI::closeCluster(cl)
-				rm(list=".doMPICluster", envir = .GlobalEnv)
+				rm(list=gvname, envir = .GlobalEnv)
+				TRUE
 			})
 		}
 		
@@ -364,54 +417,6 @@ setMethod('ForeachBackend', 'doMPI_backend',
 		object
 	}
 )
-
-##############
-# doSNOW
-##############
-
-#setOldClass('doSNOW_backend')
-# #' doSNOW-specific backend factory
-#setMethod('ForeachBackend', 'doSNOW_backend',
-#	function(object, cl, ...){
-#		
-#		# use all available cores if not otherwise specified
-#		if( missing(cl) ) cl <- getMaxCores()
-#		
-#		if ( is.numeric(cl) ) {
-#			doBackendCleanup(object, function(x){
-#				# get cluster object from global variable `.doMPICluster`
-#				if( !exists(".doSNOWCluster", envir = .GlobalEnv) ) return()
-#				cl <- get(".doSNOWCluster", envir = .GlobalEnv)
-#				snow::stopCluster(cl)
-#				rm(list=".doSNOWCluster", envir = .GlobalEnv)
-#			})
-#		}
-#		
-#		# required registration data
-#		object$fun <- doSNOW:::doSNOW
-#		object$info <- doSNOW:::info
-#		
-#		# return object
-#		object
-#	}
-#)
-#
-# #' @S3method register doSNOW_backend
-#register.doSNOW_backend <- function(x, ...){
-#	
-#	cl <- x$data[[1]]
-#	if( is.numeric(cl) ){
-#		# cleanup first
-#		doBackendCleanup(x, verbose=FALSE)
-#		# start cluster
-#		cl <- do.call(snow::makeCluster, x$data)
-#		x$data <- list(cl)
-#		# add global variable to enable closing the cluster when registering 
-#		# another backend
-#		assign('.doSNOWCluster', cl, envir = .GlobalEnv)
-#	}
-#	register.foreach_backend(x, ...)
-#}
 
 #as.foreach_backend <- function(x, ...){
 #	
@@ -480,11 +485,11 @@ print.foreach_backend <- function(x, ...){
 	
 	# require definition package
 	if( !require.quiet(name, character.only=TRUE) )
-		stop("could not find package for backend '", name, "'")
+		stop("could not find package for foreach backend '", name, "'")
 	# check for registering function or generic
 	if( is.null(regfun <- getFunction(funname, mustFind=FALSE, where=asNamespace(name))) ){
 		if( is.null(regfun <- getS3method('register', s3class, optional=TRUE)) )
-			stop("could not find registration routine for backend '", name, "'")
+			stop("could not find registration routine for foreach backend '", name, "'")
 		#			stop("backend '", name,"' is not supported: function "
 		#							,"`", regfun, "` and S3 method `register.", s3class, "` not found.")
 	}
@@ -660,11 +665,16 @@ setupBackend <- function(spec, optional, backend, verbose=FALSE){
 	# setup retoration of backend in case of an error
 	on.exit( setDoBackend(oldBackend) )
 	
+	ov <- lverbose(verbose)
 	ok <- tryCatch({
 			registerDoBackend(b)
 			TRUE
 		}
-		, error = errorFun())
+		, error ={
+			lverbose(ov)
+			errorFun()
+		})
+	lverbose(ov)
 	if( !ok ) return(FALSE)
 	if( verbose > 1 ) message('OK')
 	
