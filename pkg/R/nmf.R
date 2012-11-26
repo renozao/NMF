@@ -1208,21 +1208,23 @@ function(x, rank, method
 	## ROLLBACK PROCEDURE
 	exitSuccess <- exitCheck()
 	on.exit({ 
+		if( verbose > 1 ) message("# NMF computation exit status ... ", if( exitSuccess() ) 'OK' else 'ERROR')
 		if( verbose > 2 ){
-			if( exitSuccess() )
-				message('## Cleaning up ... ')
-			else 
-				message('## An error occurred: rolling back changes ... ')
+			if( exitSuccess() ){
+				message('\n## Running normal exit clean up ... ')
+			}else{ 
+				message('\n## Running rollback clean up ... ')
+			}
 		}
 	}, add=TRUE)
 	# RNG restoration on error
 	.RNG_ORIGIN <- getRNG()
 	on.exit({
 		if( !exitSuccess() ){
-			if( verbose > 2 ) message("# Restoring RNG settings ... ", appendLF=FALSE)
+			if( verbose > 2 ) message("# Restoring RNG settings ... ", appendLF=verbose>3)
 			setRNG(.RNG_ORIGIN)
+			if( verbose > 3 ) showRNG(indent=' #')
 			if( verbose > 2 ) message("OK")
-			if( verbose > 3 ) showRNG()
 		}
 	}, add=TRUE)
 
@@ -1244,7 +1246,7 @@ function(x, rank, method
 		fwarning("Option 'restore.seed' is deprecated and discarded since version 0.5.99.")
 	
 	if( verbose ){
-		if( dry.run ) message("*** dry-run ***")
+		if( dry.run ) message("*** fake/dry-run ***")
 		message("NMF algorithm: '", name(method), "'")
 	}
 	
@@ -1379,7 +1381,7 @@ function(x, rank, method
 				# delete on exit
 				if( .CLEANUP ){
 					on.exit({
-						if( verbose > 2 ) message("# Deleting directory '", NMF_TMPDIR, "' ... ", appendLF=FALSE)
+						if( verbose > 2 ) message("# Deleting temporary directory '", NMF_TMPDIR, "' ... ", appendLF=FALSE)
 						unlink(NMF_TMPDIR, recursive=TRUE)
 						if( verbose > 2 ) message('OK')
 					}, add=TRUE)
@@ -1397,10 +1399,10 @@ function(x, rank, method
 				keep.all <- keep.all
 				opt.gc <- .options$garbage.collect
 				CALLBACK <- .callback
-				# check if single host of multiple host
-				hosts <- getDoParHosts()
-				if( verbose > 2 ) message("# Running on host(s): ", str_out(hosts))
-				SINGLE_HOST <- length(unique(hosts)) <= 1L
+				# check if single or multiple host(s)
+				hosts <- unique(getDoParHosts())
+				if( verbose > 2 ) message("# Running on ", length(hosts), " host(s): ", str_out(hosts))
+				SINGLE_HOST <- length(hosts) <= 1L
 				MODE_SHARED <- MODE_SHARED && SINGLE_HOST
 				if( verbose > 2 ) message("# Using shared memory ... ", MODE_SHARED)
 				
