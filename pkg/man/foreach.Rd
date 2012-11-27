@@ -6,6 +6,7 @@
 \alias{ForeachBackend,cluster-method}
 \alias{ForeachBackend,doMPI_backend-method}
 \alias{ForeachBackend,doParallel_backend-method}
+\alias{ForeachBackend,doPSOCK_backend-method}
 \alias{ForeachBackend-methods}
 \alias{ForeachBackend,missing-method}
 \alias{ForeachBackend,mpicluster-method}
@@ -31,7 +32,10 @@
 
   ForeachBackend(object, ...)
 
-  \S4method{ForeachBackend}{doParallel_backend}(object, cl)
+  \S4method{ForeachBackend}{doParallel_backend}(object, cl,
+    type = NULL)
+
+  \S4method{ForeachBackend}{doPSOCK_backend}(object, cl)
 
   \S4method{ForeachBackend}{doMPI_backend}(object, cl)
 
@@ -54,6 +58,9 @@
 
   \item{cl}{cluster specification: a cluster object or a
   numeric that indicates the number of nodes to use.}
+
+  \item{type}{type of cluster, See
+  \code{\link[parallel]{makeCluster}}.}
 }
 \description{
   \code{registerDoBackend} is a unified register function
@@ -109,6 +116,9 @@
   \item{ForeachBackend}{\code{signature(object =
   "doParallel_backend")}: doParallel-specific backend
   factory }
+
+  \item{ForeachBackend}{\code{signature(object =
+  "doPSOCK_backend")}: doSNOW-specific backend factory }
 
   \item{ForeachBackend}{\code{signature(object =
   "mpicluster")}: Creates a doMPI foreach backend that uses

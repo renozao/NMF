@@ -17,7 +17,7 @@
 }
 \details{
   The \code{run} method for this class runs the algorithms
-  via the \code{\link{RcppOctave}} package.
+  via the \code{\link[RcppOctave]{RcppOctave}} package.
 }
 \section{Slots}{
   \describe{
@@ -49,6 +49,10 @@
   "NMFStrategyOctave", value = "character")}: Sets the name
   of the Octave/Matlab function that implements the NMF
   algorithm. It is stored in slot \code{algorithm}. }
+
+  \item{initialize}{\code{signature(.Object =
+  "NMFStrategyOctave")}: Initialize method for
+  \code{\linkS4class{NMFStrategyOctave}}. }
 
   \item{run}{\code{signature(object = "NMFStrategyOctave",
   y = "matrix", x = "NMFfit")}: Runs the NMF algorithms

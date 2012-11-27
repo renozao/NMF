@@ -235,6 +235,9 @@ test.nmf <- function(){
 	if( parallel::detectCores() > 1 ) 
 		.check('P2', .options='P2')
 	
+	# SNOW-type from char spec
+	.check('.pbackend="psock"', .options='P2', .pbackend='psock')
+	
 	# SNOW-type
 	cl <- makeCluster(2)
 	on.exit( stopCluster(cl))

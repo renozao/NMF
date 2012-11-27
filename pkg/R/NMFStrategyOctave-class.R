@@ -14,7 +14,7 @@ NULL
 #' a set of .m files or as plain code.
 #' 
 #' The \code{run} method for this class runs the algorithms via the 
-#' \code{\link{RcppOctave}} package.  
+#' \code{\link[RcppOctave]{RcppOctave}} package.  
 #' 
 #' @slot algorithm character string that gives the name of the main Octave/Matlab 
 #' function that implements the algorithm.
@@ -25,7 +25,6 @@ NULL
 #' These files are (re-)sourced every time the strategy is called, and must be 
 #' present at runtime in the current directory or in a directory from Octave path. 
 #' 
-#' @export
 setClass('NMFStrategyOctave'
 	, representation(
 		algorithm = 'character' # the function that implements the algorithm
@@ -43,6 +42,9 @@ setClass('NMFStrategyOctave'
 	, contains = 'NMFStrategy'
 )
 
+#' Initialize method for \code{\linkS4class{NMFStrategyOctave}}.
+#' 
+#' @param mfiles .m files specifications.
 setMethod('initialize', 'NMFStrategyOctave',
 	function(.Object, ..., mfiles){
 		# initialize parent
@@ -80,6 +82,7 @@ setMethod('run', signature(object='NMFStrategyOctave', y='matrix', x='NMFfit'),
 		o_addpath(pdir)
 		tdir <- tempdir()
 		o_addpath(tdir)
+		sapply(object@mfiles, o_source)
 		on.exit({
 			rmpath <- RcppOctave::.O$rmpath
 			rmpath(pdir); rmpath(tdir) 
@@ -95,7 +98,7 @@ setMethod('run', signature(object='NMFStrategyOctave', y='matrix', x='NMFfit'),
 #' M Files
 #' 
 #' \code{mfiles} convert mfile specifications in to real paths to .m files
-#' that can be sourced with \code{\link{o_source}}.
+#' that can be sourced with \code{\link[RcppOctave]{o_source}}.
 #' 
 #' @param ... specification of a .m files as character arguments.
 #' The elements of the vector can be either file paths or plain Octave/Matlab code, 
@@ -108,7 +111,9 @@ setMethod('run', signature(object='NMFStrategyOctave', y='matrix', x='NMFfit'),
 #' @export
 mfiles <- function(..., pattern='mfile_', dir=tempdir()){
 	
+	in_package <- FALSE
 	if( missing(dir) && !is.null(ns <- getLoadingNamespace()) ){
+		in_package <- TRUE
 		dir <- packagePath('matlab', package=ns)
 	}
 	
@@ -130,15 +135,15 @@ mfiles <- function(..., pattern='mfile_', dir=tempdir()){
 			if( !file.exists(dir) )	dir.create(dir, recursive=TRUE)
 	
 			# build file path
-			f <- 
-			if( nchar(f) ) str_c(file.path(dir, f), ".m")
-			else tempfile(pattern, tmpdir=dir, fileext=".m")
-	
+			ofile <- f
+			if( nchar(f) ) f <- file.path(dir, f)
+			else f <- tempfile(pattern, tmpdir=dir)
+			f <- str_c(f, '.m')
 			# write file
 			cat(x, file=f)
 			
 			# return filepath
-			f
+			if( in_package ) ofile else f
 		}, names(code), code)
 	}
 	x

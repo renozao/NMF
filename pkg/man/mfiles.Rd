@@ -20,6 +20,6 @@
 \description{
   \code{mfiles} convert mfile specifications in to real
   paths to .m files that can be sourced with
-  \code{\link{o_source}}.
+  \code{\link[RcppOctave]{o_source}}.
 }
 
