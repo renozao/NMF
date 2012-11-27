@@ -133,7 +133,7 @@
 , backref=true]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 
-\bibliography{/tmp/tmp.U3XYDLF2NR/NMF/REFERENCES}
+\bibliography{/tmp/tmp.Gn0tsWnTQo/NMF/REFERENCES}
 
 
 
@@ -184,7 +184,7 @@
 
 
 \title{An introduction to NMF package\\\small Version
-0.9.3}
+0.9.4}
 \author{Renaud Gaujoux, \url{renaud@cbio.uct.ac.za}}
 % \\Address Computational Biology - University of Cape Town, South Africa,
 
@@ -527,10 +527,10 @@ Moreover they do not show up in the listing returned by the \code{nmfAlgorithm} 
 ## ".R#brunet"    "brunet"        "KL"    ".R#lee"       "lee" 
 ##   Frobenius      offset      offset       nsNMF       nsNMF 
 ## "Frobenius" ".R#offset"    "offset"  ".R#nsNMF"     "nsNMF" 
-##      ls-nmf      pe-nmf      snmf/r      snmf/l       siNMF 
-##    "ls-nmf"    "pe-nmf"    "snmf/r"    "snmf/l"    ".siNMF" 
-##       siNMF 
-##     "siNMF"
+##      brunet      ls-nmf      pe-nmf      snmf/r      snmf/l 
+## ".M#brunet"    "ls-nmf"    "pe-nmf"    "snmf/r"    "snmf/l" 
+##       siNMF       siNMF 
+##    ".siNMF"     "siNMF"
 \end{verbatim}
 \begin{alltt}
 
@@ -594,7 +594,7 @@ t <- \hlfunctioncall{sapply}(res, runtime)[3, ]
 
 
 % latex table generated in R 2.15.2 by xtable 1.7-0 package
-% Fri Nov 23 13:34:35 2012
+% Mon Nov 26 15:31:06 2012
 \begin{table}[ht]
 \begin{center}
 \begin{tabular}{rrrr}
@@ -1838,7 +1838,7 @@ V <- \hlfunctioncall{syntheticNMF}(n, r, p, noise = TRUE)
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_1feb488cd899 
+##   algorithm:  nmf_74a648fed865 
 ##   seed:  random 
 ##   RNG: 403L, 172L, ..., 1280296329L [f11f4336959dbb0d633a75745dda3b35]
 ##   distance metric:  'euclidean' 
@@ -1846,7 +1846,7 @@ V <- \hlfunctioncall{syntheticNMF}(n, r, p, noise = TRUE)
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.012   0.000   0.028
+##     0.004   0.000   0.031
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1870,7 +1870,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_1feb2226c1cf 
+##   algorithm:  nmf_74a65fb07f1d 
 ##   seed:  random 
 ##   RNG: 403L, 382L, ..., 1280296329L [40c9d89082672b624bf61a9723044992]
 ##   distance metric:  'KL' 
@@ -1878,7 +1878,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.007
+##     0.004   0.000   0.006
 \end{verbatim}
 \begin{alltt}
 \hlcomment{# based on custom distance metric}
@@ -1897,7 +1897,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_1feb13fe67b3 
+##   algorithm:  nmf_74a62ece1ae3 
 ##   seed:  random 
 ##   RNG: 403L, 592L, ..., 1280296329L [b2ca9850bf32b6d9a03f59dd36a3bba9]
 ##   distance metric:  <function> 
@@ -1905,7 +1905,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.007
+##     0.004   0.000   0.006
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1958,7 +1958,7 @@ V.neg[1, ] <- -1
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_1feb3a743d45 
+##   algorithm:  nmf_74a66681b1ae 
 ##   seed:  random 
 ##   RNG: 403L, 178L, ..., -818492466L [d8c5d857673ef895e42fdb30f26b009f]
 ##   distance metric:  'euclidean' 
@@ -1966,7 +1966,7 @@ V.neg[1, ] <- -1
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.008   0.000   0.006
+##     0.004   0.000   0.005
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2046,7 +2046,7 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   samples: 20 
 ##   offset: [ 0.7753 0.722 0.3148 1.049 1.107 ... ]
 ##  # Details:
-##   algorithm:  nmf_1feb264f47cb 
+##   algorithm:  nmf_74a63549e59a 
 ##   seed:  random 
 ##   RNG: 403L, 388L, ..., -818492466L [ba905d5003280d7b56582b321f3281ac]
 ##   distance metric:  'euclidean' 
@@ -2054,7 +2054,7 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.007
+##     0.008   0.000   0.006
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2104,14 +2104,14 @@ To use the new seeding method:
 ##   samples: 20 
 ##  # Details:
 ##   algorithm:  snmf/r 
-##   seed:  NMF.seed.1feb7c13534 
+##   seed:  NMF.seed.74a63cbc96da 
 ##   RNG: 403L, 24L, ..., -1308220775L [1d3a94aa2d7b0646ecb06c2434029097]
 ##   distance metric:  <function> 
 ##   residuals:  205.3 
 ##   Iterations: 65 
 ##   Timing:
 ##      user  system elapsed 
-##     0.324   0.000   0.329
+##     0.312   0.000   0.311
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2180,7 +2180,7 @@ debug & FALSE & Toggle debug mode, which is an extended verbose mode.\\
   \item Other packages: bigmemory~4.3.0,
     bigmemory.sri~0.1.2, Biobase~2.16.0,
     BiocGenerics~0.2.0, digest~0.5.2, knitr~0.8,
-    NMF~0.9.3, pkgmaker~0.9.5, RColorBrewer~1.0-5,
+    NMF~0.9.4, pkgmaker~0.9.5, RColorBrewer~1.0-5,
     registry~0.2, rngtools~1.0, stringr~0.6.1,
     xtable~1.7-0
   \item Loaded via a namespace (and not attached):
