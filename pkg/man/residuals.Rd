@@ -2,7 +2,10 @@
 \name{residuals}
 \alias{hasTrack}
 \alias{residuals}
+\alias{residuals<-}
+\alias{residuals<--methods}
 \alias{residuals-methods}
+\alias{residuals<-,NMFfit-method}
 \alias{residuals,NMFfit-method}
 \alias{residuals,NMFfitX-method}
 \alias{trackError}
@@ -10,11 +13,17 @@
 \usage{
   residuals(object, ...)
 
-  \S4method{residuals}{NMFfit}(object, track = FALSE, ...)
+  \S4method{residuals}{NMFfit}(object, track = FALSE,
+    niter = NULL, ...)
 
-  hasTrack(object)
+  residuals(object, ...) <- value
 
-  trackError(object, value, iter, force = FALSE)
+  \S4method{residuals}{NMFfit}(object, ..., niter = NULL,
+    track = FALSE) <- value
+
+  hasTrack(object, niter = NULL)
+
+  trackError(object, value, niter, force = FALSE)
 }
 \arguments{
   \item{object}{an \code{NMFfit} object as fitted by
@@ -26,10 +35,11 @@
   track of residuals should be returned (if it has been
   computed during the fit), or only the last value.}
 
-  \item{value}{new residual value}
+  \item{niter}{specifies the iteration number for which one
+  wants to get/set/test a residual value. This argument is
+  used only if not \code{NULL}}
 
-  \item{iter}{iteration number at which the value is
-  computed}
+  \item{value}{residual value}
 
   \item{force}{logical that indicates if the value should
   be added to the track even if there already is a value
@@ -50,6 +60,9 @@
   along the fit process, computed according to the
   objective function associated with the algorithm that
   fitted the model.
+
+  \code{residuals<-} sets the value of the last residuals,
+  or, optionally, of the complete residual track.
 
   Tells if an \code{NMFfit} object contains a recorded
   residual track.

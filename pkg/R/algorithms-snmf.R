@@ -98,8 +98,9 @@ setGeneric('fcnnls', function(x, y, ...) standardGeneric('fcnnls') )
 setMethod('fcnnls', signature(x='matrix', y='matrix'), 
 	function(x, y, verbose=FALSE, pseudo=TRUE, ...){
 		# load corpcor if necessary
-		if( pseudo ) 
+		if( isTRUE(pseudo) ){ 
 			library(corpcor)
+		}
 		
 		# call the internal function
 		res <- .fcnnls(x, y, verbose=verbose, pseudo=pseudo, ...)
@@ -132,7 +133,10 @@ print.fcnnls <- function(x, ...){
 	cat("<object of class 'fcnnls': Fast Combinatorial Non-Negative Least Squares>\n")
 	cat("Residual sum of squares:", x$deviance,"\n")
 	cat("Active constraints:", length(x$passive)-sum(x$passive),"/", length(x$passive), "\n")
-	cat("Inverse method:", if(x$pseudo) 'pseudoinverse (corpcor)' else 'QR (solve)', "\n")
+	cat("Inverse method:", 
+			if( isTRUE(x$pseudo) ) 'pseudoinverse (corpcor)'
+			else if( is.function(x$pseudo) ) str_fun(x$pseudo) 
+			else 'QR (solve)', "\n")
 	invisible(x)
 }
 
@@ -150,7 +154,7 @@ print.fcnnls <- function(x, ...){
 ###%
 ###% @return [K, Pset]
 ###%
-.fcnnls <- function(C, A, verbose=FALSE, pseudo=FALSE){
+.fcnnls <- function(C, A, verbose=FALSE, pseudo=FALSE, eps=0){
 # NNLS using normal equations and the fast combinatorial strategy
 	#
 	# I/O: [K, Pset] = fcnnls(C, A);
@@ -197,7 +201,7 @@ print.fcnnls <- function(x, ...){
 		
 		# Find any infeasible solutions
 		# subset Fset on the columns that have at least one negative entry
-		Hset = Fset[ colSums(K[,Fset, drop=FALSE] < 0) > 0 ];
+		Hset = Fset[ colSums(K[,Fset, drop=FALSE] < eps) > 0 ];
 		#V+# Make infeasible solutions feasible (standard NNLS inner loop)
 		if ( length(Hset)>0 ){
 			nHset = length(Hset);
@@ -206,7 +210,7 @@ print.fcnnls <- function(x, ...){
 				iter = iter + 1; 
 				alpha[,1:nHset] = Inf;
 				#Vc# Find indices of negative variables in passive set
-				ij = which( Pset[,Hset, drop=FALSE] & (K[,Hset, drop=FALSE] < 0) , arr.ind=TRUE);			
+				ij = which( Pset[,Hset, drop=FALSE] & (K[,Hset, drop=FALSE] < eps) , arr.ind=TRUE);			
 				i = ij[,1]; j = ij[,2]
 				if ( length(i)==0 ) break;			
 				hIdx = (j - 1) * lVar + i; # convert array indices to indexes relative to a lVar x nHset matrix
@@ -223,7 +227,7 @@ print.fcnnls <- function(x, ...){
 				Pset[idx2zero] = FALSE;
 				K[, Hset] = .cssls(CtC, CtA[,Hset, drop=FALSE], Pset[,Hset, drop=FALSE], pseudo=pseudo);
 				# which column of K have at least one negative entry?
-				Hset = which( colSums(K < 0) > 0 );
+				Hset = which( colSums(K < eps) > 0 );
 				nHset = length(Hset);
 			}
 		}
@@ -234,7 +238,7 @@ print.fcnnls <- function(x, ...){
 		# Check solutions for optimality
 		W[,Fset] = CtA[,Fset, drop=FALSE] - CtC %*% K[,Fset, drop=FALSE];
 		# which columns have all entries non-positive
-		Jset = which( colSums( (ifelse(!(Pset[,Fset, drop=FALSE]),1,0) * W[,Fset, drop=FALSE]) > 0 ) == 0 );
+		Jset = which( colSums( (ifelse(!(Pset[,Fset, drop=FALSE]),1,0) * W[,Fset, drop=FALSE]) > eps ) == 0 );
 		Fset = setdiff(Fset, Fset[Jset]);
 		
 		if ( length(Fset) > 0 ){				
@@ -253,6 +257,13 @@ print.fcnnls <- function(x, ...){
 # ****************************** Subroutine****************************
 #library(corpcor)
 .cssls <- function(CtC, CtA, Pset=NULL, pseudo=FALSE){
+	
+	# use provided function
+	if( is.function(pseudo) ){
+		pseudoinverse <- pseudo
+		pseudo <- TRUE
+	}
+	
 	# Solve the set of equations CtA = CtC*K for the variables in set Pset
 	# using the fast combinatorial approach
 	K = matrix(0, nrow(CtA), ncol(CtA));	
@@ -434,7 +445,7 @@ print.fcnnls <- function(x, ...){
 
 		# track the error (not computed unless tracking option is enabled in nmf.fit)
 		if( !is.null(nmf.fit) ) 
-			nmf.fit <- trackError(nmf.fit, .snmf.objective(A, W, H, eta, beta), i)
+			nmf.fit <- trackError(nmf.fit, .snmf.objective(A, W, H, eta, beta), niter=i)
 		
 		# test convergence every 5 iterations OR if the base average error has not been computed yet
 		if ( (i %% 5==0)  || (length(erravg1)==0) ){
@@ -472,7 +483,7 @@ print.fcnnls <- function(x, ...){
 	
 	# force to compute last error if not already done
 	if( !is.null(nmf.fit) ) 
-		nmf.fit <- trackError(nmf.fit, .snmf.objective(A, W, H, eta, beta), i, force=TRUE)	
+		nmf.fit <- trackError(nmf.fit, .snmf.objective(A, W, H, eta, beta), niter=i, force=TRUE)	
 
 	# transpose and reswap the roles
 	if( !is.null(nmf.fit) ){ 

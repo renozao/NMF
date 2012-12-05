@@ -17,7 +17,7 @@ alphacol <- function(x, alpha=FALSE){
 }
 
 #' @import grDevices
-corplot <- function(x, y, legend=TRUE, ...){
+corplot <- function(x, y, legend=TRUE, pvalue=TRUE, ...){
 	
 	cols <- rainbow(ncol(x))
 	
@@ -39,17 +39,21 @@ corplot <- function(x, y, legend=TRUE, ...){
 	# add perfect match line
 	abline(a=0, b=1)	
 	
-	gco <- cor( as.numeric(x), as.numeric(y) )
+	gco <- cor.test( as.numeric(x), as.numeric(y) )
 	
 	# add legend if requested
 	if( legend ){
-		lco <- round(diag(cor(x, y)), 2)
+		lco <- t(sapply(1:ncol(x), function(i) as.numeric(cor.test(x[,i], y[,i])[c('estimate', 'p.value')])))
 		lpar <- .extract.args(gpar, graphics::legend)
 		lpar$lty <- -1		
 		lpar$pt.cex <- lpar$cex
 		lpar$cex <- 1
-		do.call('legend', c(list(x='topleft', legend=paste(colnames(x), ' (', lco, ')', sep='')), lpar))
-		legend("bottomright", legend=bquote(r == .(round(gco, 2))) )
+		do.call('legend', c(list(x='topleft', legend=paste(colnames(x)
+				, ' (', round(lco[,1], 2)
+						, if( pvalue ) str_c('-', round(lco[,2], 5))
+					, ')', sep='')), lpar))
+		legend("bottomright", legend=str_c('r = ', round(gco$estimate, 2) 
+										, if( pvalue ) str_c(' (', round(gco$p.value, 5), ')') ))
 	}
 	invisible(gco)
 }
@@ -120,6 +124,8 @@ corplot <- function(x, y, legend=TRUE, ...){
 #' @param legend a logical that specifies whether drawing the legend or not, or
 #' coordinates specifications passed to argument \code{x} of
 #' \code{\link{legend}}, that specifies the position of the legend.
+#' @param pvalue logical that indicates if p-values for the correlation 
+#' coefficients should be shown in legend.
 #' @param Colv specifies the way the columns of \code{x} are ordered before
 #' plotting. It is used only when \code{y} is missing.  It can be: \itemize{
 #' \item a single numeric value, specifying the index of a row of \code{x},
@@ -165,7 +171,7 @@ corplot <- function(x, y, legend=TRUE, ...){
 #' # looking at all the correlations allow to order the components in a "common" order
 #' profcor(res, res2)
 #' 
-profplot <- function(x, y, scale=FALSE, match.names=TRUE, legend=TRUE, Colv, labels, annotation, ...){
+profplot <- function(x, y, scale=FALSE, match.names=TRUE, legend=TRUE, pvalue=TRUE, Colv, labels, annotation, ...){
 	
 	# initialise result list
 	res <- list()
@@ -260,7 +266,7 @@ profplot <- function(x, y, scale=FALSE, match.names=TRUE, legend=TRUE, Colv, lab
 		gpar <- .set.list.defaults(gpar			
 				, main="Profile correlations")
 		# plot the correlation plot		
-		res$cor <- do.call(corplot, c(list(x=t(x), y=t(y), legend=legend), gpar))
+		res$cor <- do.call(corplot, c(list(x=t(x), y=t(y), legend=legend, pvalue=pvalue), gpar))
 		
 		# return result list
 		return( invisible(res) )

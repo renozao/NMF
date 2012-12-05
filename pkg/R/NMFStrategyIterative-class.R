@@ -233,6 +233,8 @@ staticVar <- local({
 				if( init ) nmf.debug('Strategy Workspace', "initialize variable '", name, "'")
 				assign(name, value, envir=.Workspace)
 			}
+			# return current value
+			get(name, envir=.Workspace, inherits=FALSE)
 		}
 		
 	}
@@ -388,13 +390,13 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 		nmfFit <- updateFun(i, v, nmfFit, ...)
 		
 		# every now and then track the error if required
-		nmfData <- trackError(nmfData, deviance(strategy, nmfFit, v, ...), i)
+		nmfData <- trackError(nmfData, deviance(strategy, nmfFit, v, ...), niter=i)
 				
 	}
 	if( showNIter ) cat("\nDONE (stopped at ",i,'/', maxIter," iterations)\n", sep='')
 	
 	# force to compute last error if not already done
-	nmfData <- trackError(nmfData, deviance(strategy, nmfFit, v, ...), i, force=TRUE)
+	nmfData <- trackError(nmfData, deviance(strategy, nmfFit, v, ...), niter=i, force=TRUE)
 	
 	# store the fitted model
 	fit(nmfData) <- nmfFit

@@ -94,7 +94,7 @@
 \seealso{
   Other stats: \code{\link{deviance,NMF-method}},
   \code{\link{hasTrack}}, \code{\link{residuals}},
-  \code{\link{trackError}}
+  \code{\link{residuals<-}}, \code{\link{trackError}}
 }
 \keyword{methods}
 

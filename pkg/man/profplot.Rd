@@ -3,7 +3,8 @@
 \title{Plotting Basis Profiles}
 \usage{
   profplot(x, y, scale = FALSE, match.names = TRUE,
-    legend = TRUE, Colv, labels, annotation, ...)
+    legend = TRUE, pvalue = TRUE, Colv, labels, annotation,
+    ...)
 }
 \arguments{
   \item{x}{a matrix or an NMF object from which is
@@ -31,6 +32,9 @@
   the legend or not, or coordinates specifications passed
   to argument \code{x} of \code{\link{legend}}, that
   specifies the position of the legend.}
+
+  \item{pvalue}{logical that indicates if p-values for the
+  correlation coefficients should be shown in legend.}
 
   \item{Colv}{specifies the way the columns of \code{x} are
   ordered before plotting. It is used only when \code{y} is

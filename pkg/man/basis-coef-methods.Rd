@@ -40,6 +40,7 @@
 \alias{.coef,NMFstd-method}
 \alias{loadings,NMF-method}
 \alias{scoef}
+\alias{scoef,matrix-method}
 \alias{scoef-methods}
 \alias{scoef,NMF-method}
 \title{Accessing NMF Factors}
@@ -73,6 +74,8 @@
   scoef(object, ...)
 
   \S4method{scoef}{NMF}(object, scale = 1)
+
+  \S4method{scoef}{matrix}(object, scale = 1)
 }
 \arguments{
   \item{object}{an object from which to extract the factor

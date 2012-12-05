@@ -17,8 +17,8 @@
 
   \item{y}{optional specification of number of columns}
 
-  \item{dist}{a random distribution function (see details
-  of method \code{rmatrix,numeric})}
+  \item{dist}{a random distribution function or a numeric
+  seed (see details of method \code{rmatrix,numeric})}
 
   \item{byrow}{a logical passed in the internal call to the
   function \code{\link{matrix}}}

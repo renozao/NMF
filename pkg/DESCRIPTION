@@ -18,7 +18,7 @@ Depends:
     R (>= 2.15.2),
     methods,
     stats,
-    pkgmaker (>= 0.9.4),
+    pkgmaker (>= 0.9.6),
     rngtools,
     registry,
     digest,
@@ -92,4 +92,5 @@ Collate:
     'seed-ica.R'
     'seed-nndsvd.R'
     'data.R'
+    'tests.R'
 BuildVignettes: no

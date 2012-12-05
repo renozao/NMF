@@ -1239,7 +1239,7 @@ function(x, rank, method
 	# make sure rank is an integer
 	rank <- as.integer(rank)
 	if( length(rank) != 1 ) fstop("invalid argument 'rank': must be a single numeric value")
-	if( rank <= 1 ) fstop("invalid argument 'rank': must be greater than 1")
+	if( rank < 1 ) fstop("invalid argument 'rank': must be greater than 0")
 	
 	# option 'restore.seed' is deprecated
 	if( !is.null(.options$restore.seed) )
@@ -1433,7 +1433,10 @@ function(x, rank, method
 					
 					if( !.MODE_SEQ && !debug || (.MODE_SEQ && verbose == 1) ){
 						if( verbose == 1 ){
-							pbar <- txtProgressBar(0, nrun, width=50, style=3, title='Runs:')
+							progressdir <- tempfile()
+							on.exit(if( file.exists(progressdir) ) unlink(progressdir, recursive=TRUE), add=TRUE)
+							dir.create(progressdir)
+							pbar <- txtProgressBar(0, nrun+1, width=50, style=3, title='Runs:')
 						}else{
 							cat("Runs: ")
 						}
@@ -1476,7 +1479,19 @@ function(x, rank, method
 					# limited verbosity in simple mode
 					if( verbose && !(MODE_SEQ && verbose > 1)){
 						if( verbose >= 2 ) mutex_eval( cat('', n) )		
-						else mutex_eval( setTxtProgressBar(pbar, n) )
+						else{
+							# update progress bar (in mutex)
+							mutex_eval({
+								nstep <- 
+								if( !file.exists(progressdir) ) n
+								else{
+									cat('', file=tempfile(tmpdir=progressdir))
+									length(list.files(progressdir))
+								}
+								setTxtProgressBar(pbar, nstep)
+							})
+							#
+						}
 					}
 					
 					# fit a single NMF model
@@ -1566,7 +1581,7 @@ function(x, rank, method
 				if( verbose && !debug ){
 					if( verbose >= 2 ) cat(" ... DONE\n")
 					else{
-						setTxtProgressBar(pbar, nrun)
+						setTxtProgressBar(pbar, nrun+1)
 						cat("\n")
 					}
 				}
@@ -2061,13 +2076,12 @@ function(x, rank, method
 	# last residuals
 	if( length(residuals(res)) == 0 && !is.partial.nmf(seed) ){
 		parameters.run$x <- res
-		residuals(res) <- setNames(do.call('deviance', parameters.run), niter(res))
+		residuals(res, niter=niter(res)) <- do.call('deviance', parameters.run)
 	}
 	# first residual if tracking is enabled
 	if( .OPTIONS$track && !is.null(init.resid) ){
-		otrack <- residuals(res, track=TRUE)
-		if( !is.null(names(otrack)) && names(otrack)[1] != '0' )
-			residuals(res) <- c('0'=init.resid, otrack)
+		if( !hasTrack(res, niter=0) )
+			residuals(res, track=TRUE) <- c('0'=init.resid, residuals(res, track=TRUE))
 	}
 	
 	if( length(residuals(res)) && is.na(residuals(res)) ) warning("NMF residuals: final objective value is NA")

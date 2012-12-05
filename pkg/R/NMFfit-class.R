@@ -428,20 +428,38 @@ setGeneric('residuals', package='stats')
 #' should be returned (if it has been computed during the fit), or only the last
 #' value.
 #' 
+#' @param niter specifies the iteration number for which one wants 
+#' to get/set/test a residual value. This argument is used only if not \code{NULL}
+#' 
 setMethod('residuals', 'NMFfit', 
-	function(object, track=FALSE, ...){ 
+	function(object, track=FALSE, niter=NULL, ...){ 
 		## IMPORTANT: keep this '...' and do not add a 'method' argument as this
 		## one is passed by NMFfitX::fit (see bug #159) and is not supposed to be 
 		## used
 		res <- slot(object, 'residuals')
-		if( track ) res else tail(res, n=1)
+		if( track ) res 
+		else if( is.null(niter) ) tail(res, n=1)
+		else res[as.character(niter)]
 	} 
 )
 
-setGeneric('residuals<-', function(object, value) standardGeneric('residuals<-') )
+#' \code{residuals<-} sets the value of the last residuals, or, optionally, 
+#' of the complete residual track.
+#' 
+#' @param value residual value
+#' 
+#' @export
+#' @inline
+#' @rdname residuals 
+setGeneric('residuals<-', function(object, ..., value) standardGeneric('residuals<-') )
+#' @inline
 setReplaceMethod('residuals', 'NMFfit',
-	function(object, value){ 		
-		slot(object, 'residuals') <- value 
+	function(object, ..., niter=NULL, track=FALSE, value){
+		if( track ) slot(object, 'residuals') <- value
+		else{
+			if( !is.null(niter) ) value <- setNames(value, niter)
+			slot(object, 'residuals') <- c(slot(object, 'residuals'), value)
+		}
 		object
 	}
 )
@@ -450,30 +468,31 @@ setReplaceMethod('residuals', 'NMFfit',
 #' 
 #' @export
 #' @rdname residuals
-hasTrack <- function(object){
-	length( slot(object, 'residuals') ) > 1
+hasTrack <- function(object, niter=NULL){
+	if( is.null(niter) ) length( slot(object, 'residuals') ) > 1
+	else !is.na(slot(object, 'residuals')[as.character(niter)])
 }
 
 #' \code{trackError} adds a residual value to the track of residuals.
 #' 
-#' @param value new residual value
-#' @param iter iteration number at which the value is computed
 #' @param force logical that indicates if the value should be added to the track
 #' even if there already is a value for this iteration number or if the iteration 
 #' does not conform to the tracking interval \code{nmf.getOption('track.interval')}.
 #' 
 #' @rdname residuals
 #' @export
-trackError <- function(object, value, iter, force=FALSE){	
+trackError <- function(object, value, niter, force=FALSE){	
 	track <- run.options(object, 'error.track')
 	track.interval <- run.options(object, 'track.interval')
-	# add the new value to the error track
-	last.iter <- names(residuals(object))
-	duplicate <- if( !is.null(last.iter) ) iter == last.iter else FALSE 
-	if( !duplicate && (force || (track && iter %% track.interval == 0)) ){		
-		res <- c(residuals(object, track=TRUE), value)
-		if( iter >= 0 ) names(res)[length(res)] <- iter
-		residuals(object) <- res
+	
+	if( force || (track && niter %% track.interval == 0) ){
+		# add the new value to the error track
+		last.iter <- names(residuals(object))
+		duplicate <- if( !is.null(last.iter) ) niter == last.iter else FALSE
+		if( !duplicate ){
+			iter <- if( niter >= 0 ) niter
+			residuals(object, niter=iter) <- value
+		}
 	}
 	object
 }
