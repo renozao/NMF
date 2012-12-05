@@ -618,12 +618,6 @@ setMethod('verbose', 'NMFfit',
 		return(run.options(object, 'verbose') || nmf.getOption('debug'))
 	}
 )
- 
-#' @export
-#' @rdname NMF-defunct
-errorPlot <- function(x, ...){ 
-	.Defunct('plot', 'NMF')
-}
 
 #' @export
 #' @noRd

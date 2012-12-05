@@ -651,6 +651,8 @@ nmfAlgorithm <- function(name=NULL, version=NULL, all=FALSE, ...){
 		algo <- Filter( function(x) grepl(str_c("^\\.", version, '#'), x), algo)
 	}
 	
+	# remove names if no arguments
+	if( is.null(version) ) algo <- setNames(algo, NULL)
 	# return the selected algorithm(s)
 	algo
 }

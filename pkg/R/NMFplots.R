@@ -354,7 +354,7 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE, legend=TRUE, p
 	do.call(matplot, c(list(x=t(x)), gpar, xaxt='n'))
 		
 	# add legend if requested
-	if( !identical(legend, FALSE) ){
+	if( !isFALSE(legend) ){
 		if( isTRUE(legend) )
 			legend <- 'topleft'
 		
@@ -362,7 +362,7 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE, legend=TRUE, p
 		leg <- rownames(x)
 		if( is.null(leg) )
 			leg <- paste('basis', 1:nrow(x), sep='_')		
-		legend(legend, legend=leg, col=cols, lwd=1, pch=gpar$pch)
+		legend(legend, legend=leg, col=gpar$col, lwd=1, pch=gpar$pch)
 	}
 	
 	# axis ticks

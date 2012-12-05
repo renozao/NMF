@@ -1,6 +1,7 @@
 #' @import rngtools
 #' @import digest
 #' @import stringr
+#' @import stats
 NULL
 library(digest)
 

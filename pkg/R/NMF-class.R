@@ -1379,13 +1379,7 @@ unit.test('rmatrix,NMF',{
 ###% not already set
 ###% The default values are given in argument ...
 .set.list.defaults <- function(input.list, ...){
-	defaults <- list(...)
-	n <- names(defaults)[!names(defaults) %in% names(input.list)]
-	lapply(n, function(name){
-			input.list[[name]] <<- defaults[[name]]
-		}
-	)
-	input.list
+	expand_list(input.list, ..., .exact=FALSE)
 }
 
 ###% Partially match arguments for a given function 
@@ -2266,7 +2260,6 @@ nmfApply <- function(X, MARGIN, FUN, ..., simplify = TRUE, USE.NAMES = TRUE){
 #' @cite Brunet2004,Pascual-Montano2006
 #' @inline
 #' @export
-#' @importFrom stats predict
 setGeneric('predict', package='stats')
 
 #' Default method for NMF models

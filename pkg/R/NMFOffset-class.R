@@ -106,7 +106,6 @@ setMethod("initialize", 'NMFOffset',
 		}
 )
 
-#' @importFrom stats offset
 #' @export
 setGeneric('offset', package='stats')
 #' Offsets in NMF Models with Offset

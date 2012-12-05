@@ -1,11 +1,11 @@
 \docType{methods}
-\name{NMF-Defunct}
+\name{NMF-defunct}
 \alias{metaHeatmap}
 \alias{metaHeatmap,matrix-method}
 \alias{metaHeatmap-methods}
 \alias{metaHeatmap,NMFfitX-method}
 \alias{metaHeatmap,NMF-method}
-\alias{NMF-Defunct}
+\alias{NMF-defunct}
 \title{Defunct Functions and Classes in the NMF Package}
 \usage{
   metaHeatmap(object, ...)

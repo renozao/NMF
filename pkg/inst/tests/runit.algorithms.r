@@ -160,7 +160,7 @@ check.algos <- function(algo1, algo2, identical=FALSE){
 	res1 <- nmf(eset, r, algo1, seed=.TestSeed)
 	res2 <- nmf(eset, r, algo2, seed=.TestSeed)
 	checkTrue( nmf.equal(res2, res2, identical=identical)
-			, "Results are the same for '", algo1, "' and '", algo2, "'")
+			, paste("Results are the same for '", algo1, "' and '", algo2, "'", sep=''))
 	
 }
 
@@ -248,6 +248,6 @@ test.port_brunet <- function(){
 	checkEquals(niter(res), o$niter, "C version without copy and MATLAB use same number of iterations")
 	
 	# check NMFStrategyOctave
-	check.algos('brunet', '.M#brunet')
+	check.algos('brunet', '.M#brunet', identical=TRUE)
 	
 }

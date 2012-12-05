@@ -129,7 +129,7 @@
 , backref=true]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 
-\bibliography{/tmp/tmp.Gn0tsWnTQo/NMF/REFERENCES}
+\bibliography{/tmp/tmp.EKkeIgMf6U/NMF/REFERENCES}
 
 
 
@@ -309,7 +309,7 @@ As an example, one can conveniently visualize the target matrix as a heatmap, wi
 \hlfunctioncall{aheatmap}(X, annCol = covariates, annRow = X$fData)
 \hlfunctioncall{aheatmap}(X)
 \end{alltt}
-\end{kframe}\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-heatmap_data} 
+\end{kframe}
 \end{knitrout}
 
 
@@ -362,7 +362,7 @@ opar <- \hlfunctioncall{par}(mfrow = \hlfunctioncall{c}(1, 2))
 \hlfunctioncall{coefmap}(\hlfunctioncall{minfit}(res))
 \hlfunctioncall{par}(opar)
 \end{alltt}
-\end{kframe}\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-coefmap_res} 
+\end{kframe}
 \end{knitrout}
 
 
@@ -430,7 +430,7 @@ opar <- \hlfunctioncall{par}(mfrow=\hlfunctioncall{c}(1,2))
 	, info = TRUE)
 \hlfunctioncall{par}(opar)
 \end{alltt}
-\end{kframe}\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-coefmap_custom} 
+\end{kframe}
 \end{knitrout}
 
 
@@ -460,7 +460,7 @@ opar <- \hlfunctioncall{par}(mfrow = \hlfunctioncall{c}(1, 2))
 \hlfunctioncall{basismap}(res, main = \hlstring{"Metagenes"}, annRow = \hlfunctioncall{list}(d, e), tracks = \hlfunctioncall{c}(Metagene = \hlstring{":basis"}))
 \hlfunctioncall{par}(opar)
 \end{alltt}
-\end{kframe}\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-basismap_res} 
+\end{kframe}
 \end{knitrout}
 
 
@@ -533,7 +533,7 @@ opar <- \hlfunctioncall{par}(mfrow = \hlfunctioncall{c}(1, 2))
     main = \hlstring{"Cluster stability"}, sub = \hlstring{"Consensus matrix and all covariates"})
 \hlfunctioncall{par}(opar)
 \end{alltt}
-\end{kframe}\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_res} 
+\end{kframe}
 \end{knitrout}
 
 
@@ -605,7 +605,7 @@ which plots all the consensus matrices on the same plot:
 \begin{alltt}
 \hlfunctioncall{consensusmap}(res2_7)
 \end{alltt}
-\end{kframe}\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_estimate} 
+\end{kframe}
 \end{knitrout}
 
 
@@ -656,7 +656,7 @@ As previously, the sequence of consensus matrices is plotted with \code{consensu
 \begin{alltt}
 \hlfunctioncall{consensusmap}(res_methods)
 \end{alltt}
-\end{kframe}\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_methods} 
+\end{kframe}
 \end{knitrout}
 
 
@@ -686,12 +686,13 @@ These demos and the plots they generate can also be browsed online at \url{http:
     methods, stats, utils
   \item Other packages: bigmemory~4.3.0, bigmemory.sri~0.1.2,
     Biobase~2.16.0, BiocGenerics~0.2.0, digest~0.5.2, knitr~0.8,
-    NMF~0.9.4, pkgmaker~0.9.5, RColorBrewer~1.0-5, registry~0.2,
+    NMF~0.9.4, pkgmaker~0.9.7, RColorBrewer~1.0-5, registry~0.2,
     rngtools~1.0, stringr~0.6.1
   \item Loaded via a namespace (and not attached):
     codetools~0.2-8, colorspace~1.2-0, doParallel~1.0.1,
-    evaluate~0.4.2, foreach~1.4.0, formatR~0.6, gridBase~0.4-5,
-    iterators~1.0.6, plyr~1.7.1, tools~2.15.2, xtable~1.7-0
+    evaluate~0.4.3, foreach~1.4.0, formatR~0.6, gridBase~0.4-5,
+    iterators~1.0.6, plyr~1.7.1, Rcpp~0.10.1, RcppOctave~0.8.11,
+    tools~2.15.2, xtable~1.7-0
 \end{itemize}
 
 

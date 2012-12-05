@@ -23,7 +23,7 @@ Depends:
     registry,
     digest,
     grid,
-    bigmemory (>= 4.3)
+    bigmemory (>= 4.2)
 Imports:
     graphics,
     rngtools,

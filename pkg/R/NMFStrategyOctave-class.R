@@ -62,6 +62,15 @@ setMethod('initialize', 'NMFStrategyOctave',
 	}
 )
 
+o_inpath <- function(..., dir){
+	p <- RcppOctave::.CallOctave('path')
+	p <- strsplit(p, ':')[[1]]
+	if( !missing(dir) ) dir %in% p
+	else{
+		any(sapply(file.path(p, ...), file.exists)) 
+	}
+}
+
 #' Runs the NMF algorithms implemented by the Octave/Matlab function associated with the 
 #' strategy -- and stored in slot \code{'algorithm'} of \code{object}.
 #' 
@@ -85,16 +94,25 @@ setMethod('run', signature(object='NMFStrategyOctave', y='matrix', x='NMFfit'),
 			fstop("main algorithm function is not defined.")
 		
 		# add path to all mfiles
-		pdir <- packagePath('matlab', package=packageSlot(object))
-		o_addpath(pdir)
 		tdir <- tempdir()
-		o_addpath(tdir)
-		sapply(mfiles(object@mfiles), o_source)
+		if( !o_inpath(tdir) ){
+			o_addpath(tdir)
+		}else tdir <- FALSE
+		pdir <- packagePath('matlab', package=packageSlot(object))
+		if( !o_inpath(pdir) ){
+			o_addpath(pdir)
+		}else pdir <- FALSE
+#		sapply(mfiles(object@mfiles), o_source)
 		on.exit({
 			rmpath <- RcppOctave::.O$rmpath
-			rmpath(pdir); rmpath(tdir) 
+			if( !isFALSE(tdir) ) rmpath(tdir); 
+			if( !isFALSE(pdir) ) rmpath(pdir);  
 		})
 		
+		# convert matrix storage mode if necessary
+		if( storage.mode(y) != 'double' ){
+			storage.mode(y) <- 'double'
+		}
 		# call main function
 		res <- .CallOctave(main, y, list(W=basis(x), H=coef(x)), ...)
 		# wrap result
