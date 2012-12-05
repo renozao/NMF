@@ -960,7 +960,7 @@ setupLibPaths <- function(pkg='NMF', verbose=FALSE){
 #StaticWorkspace <- function(..., .SHARED=FALSE){
 #		
 #	# create environment
-#	e <- new.env(.GlobalEnv)
+#	e <- new.env(parent=.GlobalEnv)
 #	# fill with initial data
 #	vars <- list(...)
 #	if( .SHARED ){

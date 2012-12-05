@@ -18,7 +18,7 @@ Depends:
     R (>= 2.15.2),
     methods,
     stats,
-    pkgmaker (>= 0.9.6),
+    pkgmaker (>= 0.9.7),
     rngtools,
     registry,
     digest,

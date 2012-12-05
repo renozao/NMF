@@ -24,7 +24,7 @@ nmfRegistry <- function(...) pkgmaker::packageRegistry(...)
 #	msg.addon <- if( exists(registryName) ) ' [reset]' else NULL
 #	sreg <- utils::capture.output(print(registryEnv))
 #	message("Create NMF main registry in ", sreg, msg.addon)		
-#	.NMFRegistry <<- new.env(.NMFRegistry)
+#	.NMFRegistry <<- new.env(parent=.NMFRegistry)
 #	
 #	# initialize all sub-registries
 #	sapply(nmfSubRegistry(), function(n) nmfSubRegistry(n, create=TRUE))

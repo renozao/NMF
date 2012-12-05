@@ -1,10 +1,13 @@
 \name{profplot}
 \alias{profplot}
-\title{Plotting Basis Profiles}
+\alias{profplot.default}
+\title{Plotting Expression Profiles}
 \usage{
-  profplot(x, y, scale = FALSE, match.names = TRUE,
-    legend = TRUE, pvalue = TRUE, Colv, labels, annotation,
-    ...)
+  profplot(x, ...)
+
+  \method{profplot}{default} (x, y, scale = FALSE,
+    match.names = TRUE, legend = TRUE, pvalue = TRUE, Colv,
+    labels, annotation, ...)
 }
 \arguments{
   \item{x}{a matrix or an NMF object from which is
@@ -65,17 +68,14 @@
   \item{...}{graphical parameters passed to matplot.}
 }
 \description{
-  The function \code{profplot} draws plots of the basis
-  profiles, i.e. the rows of the coefficient matrix of NMF
-  models. A given profile is composed of the contribution
-  of the corresponding basis to each sample.
-}
-\details{
+  Plotting Expression Profiles
+
   When using NMF for clustering in particular, one looks
   for strong associations between the basis and a priori
   known groups of samples. Plotting the profiles may
   highlight such patterns.
-
+}
+\details{
   The function can also be used to compare the profiles
   from two NMF models or mixture coefficient matrices. In
   this case, it draws a scatter plot of the paired
