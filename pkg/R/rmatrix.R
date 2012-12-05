@@ -47,7 +47,7 @@ setGeneric('rmatrix', function(x, ...) standardGeneric('rmatrix'))
 #'  
 #' 
 #' @param y optional specification of number of columns
-#' @param dist a random distribution function (see details of method 
+#' @param dist a random distribution function or a numeric seed (see details of method 
 #' \code{rmatrix,numeric})
 #' @param byrow a logical passed in the internal call to the function 
 #' \code{\link{matrix}}
@@ -89,7 +89,14 @@ setMethod('rmatrix', 'numeric',
 			if( length(x) == 0L )
 				stop("NMF::rmatrix - invalid empty vector in argument `x`.")
 			
-			# check that 'dist' is a function.
+			# check/ensure that 'dist' is a function.
+			if( is.null(dist) ) dist <- runif
+			if( isNumber(dist) ){
+				os <- RNGseed()
+				on.exit( RNGseed(os), add=TRUE)
+				set.seed(dist)
+				dist <- runif
+			}
 			if( !is.function(dist) )
 				stop("NMF::rmatrix - invalid value for argument 'dist': must be a function [class(dist)='", class(dist), "'].")
 			
