@@ -3,6 +3,9 @@
 # Script to compare the results/performances from the NMF package 
 # and the original MATLAB implementation of the algorithm from Brunet et al..
 #
+# This is for when the RcppOctave package is not available, which
+# makes things much manual... 
+#
 #######################################################################
 
 cat("\n# START\n")

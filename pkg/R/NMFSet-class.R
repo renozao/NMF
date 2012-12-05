@@ -1665,7 +1665,10 @@ setMethod('metaHeatmap', signature(object='NMFfitX'),
 setGeneric('consensusmap', function(object, ...) standardGeneric('consensusmap') )
 #' Plots a heatmap of the consensus matrix obtained when fitting an NMF model with multiple runs. 
 setMethod('consensusmap', 'NMFfitX', 
-	function(object, ..., annRow=NA, annCol=NA, tracks=c('basis:', 'consensus:'), main = 'Consensus matrix', info = FALSE){
+	function(object, annRow=NA, annCol=NA
+			, tracks=c('basis:', 'consensus:')
+			, main = 'Consensus matrix', info = FALSE
+			, ...){
 			
 		# add side information if requested
 		info <- if( isTRUE(info) ){
@@ -1702,11 +1705,12 @@ setMethod('consensusmap', 'NMF',
 )
 #' Main method that redefines default values for arguments of \code{\link{aheatmap}}.
 setMethod('consensusmap', 'matrix', 
-	function(object, color='-RdYlBu', ...
+	function(object, color='-RdYlBu'
 			, distfun = function(x) as.dist(1-x), hclustfun = 'average'
 			, Rowv = TRUE, Colv = "Rowv"
 			, main = if( is.null(nr) || nr > 1 ) 'Consensus matrix' else 'Connectiviy matrix'
-			, info = FALSE){
+			, info = FALSE
+			, ...){
 				
 		nr <- nrun(object)
 		nb <- nbasis(object)
@@ -1748,7 +1752,9 @@ setMethod('consensusmap', 'NMF.rank',
 #' 
 #' @rdname nmf-compare
 setMethod('consensusmap', 'list', 
-	function(object, layout, ..., Rowv = FALSE, main = names(object)){
+	function(object, layout
+			, Rowv = FALSE, main = names(object)
+			, ...){
 				
 		opar <- par(no.readonly=TRUE)
 		on.exit(par(opar))
@@ -1812,7 +1818,11 @@ setMethod('basismap', signature(object='NMFfitX'),
 #' as ploted by \code{\link{consensusmap}}. 
 #' } 
 setMethod('coefmap', signature(object='NMFfitX'),
-	function(object, ..., Colv=TRUE, annRow=NA, annCol=NA, tracks=c('basis', 'consensus:')){
+	function(object
+			, Colv=TRUE
+			, annRow=NA, annCol=NA
+			, tracks=c('basis', 'consensus:')
+			, ...){
 		
 		x <- minfit(object)
 		

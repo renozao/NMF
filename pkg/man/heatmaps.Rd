@@ -19,35 +19,34 @@
   basismap(object, ...)
 
   \S4method{basismap}{NMF}(object, color = "YlOrRd:50",
-    ..., scale = "r1", Rowv = TRUE, Colv = NA,
+    scale = "r1", Rowv = TRUE, Colv = NA,
     subsetRow = FALSE, annRow = NA, annCol = NA,
     tracks = "basis", main = "Basis components",
-    info = FALSE)
+    info = FALSE, ...)
 
   coefmap(object, ...)
 
-  \S4method{coefmap}{NMF}(object, color = "YlOrRd:50", ...,
+  \S4method{coefmap}{NMF}(object, color = "YlOrRd:50",
     scale = "c1", Rowv = NA, Colv = TRUE, annRow = NA,
     annCol = NA, tracks = "basis",
-    main = "Mixture coefficients", info = FALSE)
+    main = "Mixture coefficients", info = FALSE, ...)
 
   consensusmap(object, ...)
 
-  \S4method{consensusmap}{NMFfitX}(object, ...,
-    annRow = NA, annCol = NA,
-    tracks = c("basis:", "consensus:"),
-    main = "Consensus matrix", info = FALSE)
+  \S4method{consensusmap}{NMFfitX}(object, annRow = NA,
+    annCol = NA, tracks = c("basis:", "consensus:"),
+    main = "Consensus matrix", info = FALSE, ...)
 
   \S4method{consensusmap}{matrix}(object,
-    color = "-RdYlBu", ...,
+    color = "-RdYlBu",
     distfun = function(x) as.dist(1 - x),
     hclustfun = "average", Rowv = TRUE, Colv = "Rowv",
     main = if (is.null(nr) || nr > 1) "Consensus matrix" else "Connectiviy matrix",
-    info = FALSE)
+    info = FALSE, ...)
 
-  \S4method{coefmap}{NMFfitX}(object, ..., Colv = TRUE,
+  \S4method{coefmap}{NMFfitX}(object, Colv = TRUE,
     annRow = NA, annCol = NA,
-    tracks = c("basis", "consensus:"))
+    tracks = c("basis", "consensus:"), ...)
 }
 \arguments{
   \item{object}{an object from which is extracted NMF
@@ -248,6 +247,12 @@
   \code{consensusmap} plots heatmaps of consensus matrices.
 }
 \details{
+  \strong{IMPORTANT:} although they essentially have the
+  same set of arguments, their order sometimes differ
+  between them, as well as from \code{\link{aheatmap}}. We
+  therefore strongly recommend to use fully named arguments
+  when calling these functions.
+
   \code{basimap} default values for the following arguments
   of \code{\link{aheatmap}}: \itemize{ \item the color
   palette; \item the scaling specification, which by

@@ -20,8 +20,8 @@
 
   \S4method{consensusmap}{NMF.rank}(object, ...)
 
-  \S4method{consensusmap}{list}(object, layout, ...,
-    Rowv = FALSE, main = names(object))
+  \S4method{consensusmap}{list}(object, layout,
+    Rowv = FALSE, main = names(object), ...)
 }
 \arguments{
   \item{...}{extra arguments passed by \code{compare} to

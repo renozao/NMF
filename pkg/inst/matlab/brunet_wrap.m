@@ -1,5 +1,5 @@
 
-function [W,H,runtime,niter] = nmf_wrap(v, model, verbose)
+function [W,H,runtime,niter] = brunet_wrap(v, model, verbose)
 if nargin<3,
  verbose=false;
 end

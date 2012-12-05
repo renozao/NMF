@@ -151,15 +151,23 @@ atest.zzz.runs <- function(){
 	
 }
 
-#' Unit test for C and R versions of the algorithm: Brunet
-check.cversion <- function(algo){
-		
+#' Unit test for identical results if NMF algorithms
+check.algos <- function(algo1, algo2, identical=FALSE){
+	
 	r <- 3
 	data(esGolub)
 	eset <- esGolub[1:50,]
-	resR <- nmf(eset, r, paste('.R#', algo, sep=''), seed=.TestSeed)
-	res <- nmf(eset, r, algo, seed=.TestSeed)
-	checkTrue( nmf.equal(res, resR, identical=FALSE), 'Results are the same for C and R version' )
+	res1 <- nmf(eset, r, algo1, seed=.TestSeed)
+	res2 <- nmf(eset, r, algo2, seed=.TestSeed)
+	checkTrue( nmf.equal(res2, res2, identical=identical)
+			, "Results are the same for '", algo1, "' and '", algo2, "'")
+	
+}
+
+#' Unit test for C and R versions of algorithms
+check.cversion <- function(algo){
+		
+	check.algos(paste('.R#', algo, sep=''), algo)
 	
 }
 
@@ -203,7 +211,9 @@ test.cversions.lnmf <- function(){
 test.port_brunet <- function(){
 	
 	# load RcppOctave if possible
-	if( !require(RcppOctave) ) return()
+	if( !require(RcppOctave) ){
+		DEACTIVATED("Package RcppOctave not available.")
+	}
 	
 	# source
 	o_source(file.path(packagePath('matlab', package='NMF'), 'brunet.m'))
@@ -236,5 +246,8 @@ test.port_brunet <- function(){
 	checkTrue(isTRUE(nmf.equal(ofit, res <- nmf(x, 3, 'brunet', seed=x0, copy=FALSE), tolerance=tol))
 			, paste("C version without copy and MATLAB results are identical at tolerance ", tol))
 	checkEquals(niter(res), o$niter, "C version without copy and MATLAB use same number of iterations")
+	
+	# check NMFStrategyOctave
+	check.algos('brunet', '.M#brunet')
 	
 }

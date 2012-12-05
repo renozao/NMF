@@ -7,9 +7,12 @@
 #' @include aheatmap.R
 NULL
 
+#' @param object an R object 
+#' @param ... other arguments 
+#' 
 #' @export
 #' @inline
-#' @rdname NMF-deprecated
+#' @rdname NMF-defunct
 setGeneric('metaHeatmap', function(object, ...) standardGeneric('metaHeatmap') )
 #' Defunct method substituted by \code{\link{aheatmap}}.
 setMethod('metaHeatmap', signature(object='matrix'),
@@ -146,14 +149,14 @@ setMethod('metaHeatmap', signature(object='NMF'),
 				what <- match.arg(what)
 				if( what == 'samples' ){
 					# send deprecated warning
-					.Deprecated('coefmap', 'NMF', "Direct use of the S4-Method 'metaHeatmap' for 'NMF' objects is deprecated, use 'coefmap' instead.")
+					.Defunct('coefmap', 'NMF', "Direct use of the S4-Method 'metaHeatmap' for 'NMF' objects is defunct, use 'coefmap' instead.")
 					
 					# call the new function 'coefmap'
 					return( coefmap(object, ...) )			
 					
 				}else if( what == 'features' ){
 					# send deprecated warning
-					.Deprecated('basismap', 'NMF', "Direct use of the S4-Method 'metaHeatmap' for 'NMF' objects is deprecated, use 'basismap' instead.")
+					.Defunct('basismap', 'NMF', "Direct use of the S4-Method 'metaHeatmap' for 'NMF' objects is defunct, use 'basismap' instead.")
 					
 					# call the new function 'basismap'
 					return( basismap(object, subsetRow=filter, ...) )
@@ -211,6 +214,10 @@ match_named_track <- function(annotation, tracks, msg, optional=FALSE){
 #' Some convenience heatmap functions have been implemented for NMF models, 
 #' which redefine default values for some of the arguments of \code{\link{aheatmap}}, 
 #' hence tuning the output specifically for NMF models.
+#' 
+#' \strong{IMPORTANT:} although they essentially have the same set of arguments, 
+#' their order sometimes differ between them, as well as from \code{\link{aheatmap}}.
+#' We therefore strongly recommend to use fully named arguments when calling these functions.
 #' 
 #' @rdname heatmaps
 #' @name heatmap-NMF
@@ -333,11 +340,12 @@ setGeneric('basismap', function(object, ...) standardGeneric('basismap') )
 #'  
 #' 
 setMethod('basismap', signature(object='NMF'),
-	function(object, color = 'YlOrRd:50', ...
+	function(object, color = 'YlOrRd:50'
 			, scale = 'r1' 
 			, Rowv=TRUE, Colv=NA, subsetRow=FALSE
 			, annRow=NA, annCol=NA, tracks = 'basis'
-			, main="Basis components", info = FALSE){
+			, main="Basis components", info = FALSE
+			, ...){
 		
 		# resolve subsetRow if its a single value
 		if( is.atomic(subsetRow) && length(subsetRow) == 1 ){
@@ -490,11 +498,12 @@ setGeneric('coefmap', function(object, ...) standardGeneric('coefmap') )
 #' The default method for NMF objects has special default values for 
 #' some arguments of \code{\link{aheatmap}} (see argument description).
 setMethod('coefmap', signature(object='NMF'),
-		function(object, color = 'YlOrRd:50', ...
+		function(object, color = 'YlOrRd:50'
 				, scale = 'c1'
 				, Rowv = NA, Colv = TRUE
 				, annRow = NA, annCol = NA, tracks='basis'
-				, main="Mixture coefficients", info = FALSE){
+				, main="Mixture coefficients", info = FALSE
+				, ...){
 						
 			# use the mixture coefficient matrix
 			x <- coef(object)

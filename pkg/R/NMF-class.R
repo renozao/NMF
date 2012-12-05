@@ -15,24 +15,6 @@ NULL
 #' @name advanced-NMF
 NULL 
 
-#' Defunct Functions in the Package NMF 
-#' 
-#' @param x an R object
-#' @param ... extra arguments
-#' 
-#' @name NMF-defunct
-#' @rdname NMF-defunct
-NULL
-
-#' Deprecated Functions in the Package NMF
-#' 
-#' @param object an R object
-#' @param ... extra arguments 
-#' 
-#' @name NMF-deprecated
-#' @rdname NMF-deprecated
-NULL
-
 # declare old S3 class 'proc_time' to use it as a slot for class NMF 
 setOldClass('proc_time', prototype=numeric())
 

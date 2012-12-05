@@ -4,6 +4,23 @@
 NULL
 library(digest)
 
+#' Defunct Functions and Classes in the NMF Package
+#' 
+#' @name NMF-defunct
+#' @rdname NMF-defunct
+NULL
+
+#' Deprecated Functions in the Package NMF
+#' 
+#' @param object an R object
+#' @param ... extra arguments 
+#' 
+#' @name NMF-deprecated
+#' @rdname NMF-deprecated
+NULL
+
+
+
 #' Algorithms and framework for Nonnegative Matrix Factorization (NMF).
 #' 
 #' This package provides a framework to perform Non-negative Matrix Factorization (NMF).

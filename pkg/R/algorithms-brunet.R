@@ -6,6 +6,6 @@
 
 setNMFMethod('.M#brunet',
 	, objective= 'KL'
-	, algorithm = 'nmf_wrap'
-	, mfiles=mfiles('brunet.m', 'nmf_wrap')
+	, algorithm = 'brunet_wrap'
+	, mfiles=c('brunet.m', 'brunet_wrap.m')
 )

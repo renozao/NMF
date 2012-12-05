@@ -47,10 +47,16 @@ setClass('NMFStrategyOctave'
 #' @param mfiles .m files specifications.
 setMethod('initialize', 'NMFStrategyOctave',
 	function(.Object, ..., mfiles){
+		
+		# resolve within the package
+		if( require.quiet(RcppOctave) ){
+			library(RcppOctave)
+			mfiles <- RcppOctave::mfiles(mfiles)
+		}
 		# initialize parent
 		.Object <- callNextMethod(.Object, ...)
 		# process mfiles
-		.Object@mfiles <- mfiles(mfiles)
+		.Object@mfiles <- mfiles
 		# return object
 		.Object
 	}
@@ -71,7 +77,8 @@ setMethod('run', signature(object='NMFStrategyOctave', y='matrix', x='NMFfit'),
 		
 		# first thing check for RcppOctave
 		if( !require(RcppOctave) )
-			fstop("could not load required package RcppOctave")
+			fstop("The package RcppOctave is required to run this algorithm.\n"
+				, "  Try installing it with: install.packages('RcppOctave')")
 		
 		main <- algorithm(object)
 		if( !length(main) || !nchar(main) )
@@ -82,7 +89,7 @@ setMethod('run', signature(object='NMFStrategyOctave', y='matrix', x='NMFfit'),
 		o_addpath(pdir)
 		tdir <- tempdir()
 		o_addpath(tdir)
-		sapply(object@mfiles, o_source)
+		sapply(mfiles(object@mfiles), o_source)
 		on.exit({
 			rmpath <- RcppOctave::.O$rmpath
 			rmpath(pdir); rmpath(tdir) 
@@ -94,60 +101,6 @@ setMethod('run', signature(object='NMFStrategyOctave', y='matrix', x='NMFfit'),
 		object@onReturn(res, x)
 	}
 )
-
-#' M Files
-#' 
-#' \code{mfiles} convert mfile specifications in to real paths to .m files
-#' that can be sourced with \code{\link[RcppOctave]{o_source}}.
-#' 
-#' @param ... specification of a .m files as character arguments.
-#' The elements of the vector can be either file paths or plain Octave/Matlab code, 
-#' which are then written to disk in -- temporary -- .m files. 
-#' Note that the paths do not need to correspond to existing files.
-#' @inheritParams base::tempfile
-#' @param dir existing directory where to write the .m files generated from 
-#' the plain code elements of \var{x}.
-#' 
-#' @export
-mfiles <- function(..., pattern='mfile_', dir=tempdir()){
-	
-	in_package <- FALSE
-	if( missing(dir) && !is.null(ns <- getLoadingNamespace()) ){
-		in_package <- TRUE
-		dir <- packagePath('matlab', package=ns)
-	}
-	
-	# get args
-	x <- unlist(list(...))
-	if( !is.character(x) )
-		stop("All arguments must be character strings")
-	
-	# detect type of input
-	isfile <- !grepl("\n", x) | !grepl(" ", x)
-	# add names if needed
-	if( is.null(names(x)) ) names(x) <- rep('', length(x))
-	
-	code <- x[!isfile]
-	if( length(code) ){
-		x[!isfile] <- mapply(function(f, x){
-			
-			# create directory if it does not exist
-			if( !file.exists(dir) )	dir.create(dir, recursive=TRUE)
-	
-			# build file path
-			ofile <- f
-			if( nchar(f) ) f <- file.path(dir, f)
-			else f <- tempfile(pattern, tmpdir=dir)
-			f <- str_c(f, '.m')
-			# write file
-			cat(x, file=f)
-			
-			# return filepath
-			if( in_package ) ofile else f
-		}, names(code), code)
-	}
-	x
-}
 
 #' Returns the name of the Octave/Matlab function that implements the NMF algorithm -- as stored in 
 #' slot \code{algorithm}.
