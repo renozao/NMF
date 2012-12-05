@@ -6,6 +6,7 @@
 
 #' @import RColorBrewer
 #' @import colorspace
+#' @import grDevices
 NULL
 
 col2hex <- function (cname) 

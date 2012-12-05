@@ -991,17 +991,14 @@ scale_mat = function(x, scale, na.rm=TRUE){
 .Rd.seed <- new.env()
 
 round.pretty <- function(x, min=2){
-		
+	
 	if( is.null(x) ) return(NULL)		
-	d <- max(x) - min(x)
 	n <- 0
-	#message("d0=", d)
-	while(d<1){
-		#message("d=", d)
-		d <- d*10
+	y <- round(sort(x), n)
+	while( any(diff(y)==0) ){
 		n <- n+1
+		y <- round(sort(x), n)
 	}	
-	#message("n=", n)
 	round(x, max(min,n))
 }
 
