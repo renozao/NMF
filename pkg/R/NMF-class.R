@@ -432,7 +432,13 @@ setGeneric('scoef', function(object, ...) standardGeneric('scoef') )
 #' @inline
 setMethod('scoef', 'NMF',
 	function(object, scale=1){
-		sweep(coef(object), 2, colSums(coef(object)) / scale, '/')
+		sweep(coef(object), 2L, colSums(coef(object)) / scale, '/')
+	}
+)
+#' @inline
+setMethod('scoef', 'matrix',
+	function(object, scale=1){
+		sweep(object, 2L, colSums(object) / scale, '/')
 	}
 )
 
