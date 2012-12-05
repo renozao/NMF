@@ -10,12 +10,6 @@ sum2one <- function(x){
 	sweep(x, 2L, colSums(x), '/')
 }
 
-# Add an alpha value to colours.
-# 
-alphacol <- function(x, alpha=FALSE){	
-	apply(as.character(as.hexmode(col2rgb(x))), 2, function(x) paste("#", paste(x, collapse=''), alpha, sep=''))
-}
-
 #' @import grDevices
 corplot <- function(x, y, legend=TRUE, pvalue=TRUE, ...){
 	
@@ -93,7 +87,13 @@ corplot <- function(x, y, legend=TRUE, pvalue=TRUE, ...){
 #		}
 #)
 
-#' Plotting Basis Profiles
+#' Plotting Expression Profiles
+#' 
+#' @export
+profplot <- function(x, ...){
+	UseMethod('profplot')
+}
+
 #' 
 #' The function \code{profplot} draws plots of the basis profiles, i.e. the rows
 #' of the coefficient matrix of NMF models. 
@@ -146,7 +146,9 @@ corplot <- function(x, y, legend=TRUE, pvalue=TRUE, ...){
 #' 
 #' @seealso \code{\link{profcor}}
 #' @keywords aplot
+#' @rdname profplot
 #' @export
+#' @S3method profplot default
 #' @examples
 #' 
 #' # create a random target matrix
@@ -171,7 +173,7 @@ corplot <- function(x, y, legend=TRUE, pvalue=TRUE, ...){
 #' # looking at all the correlations allow to order the components in a "common" order
 #' profcor(res, res2)
 #' 
-profplot <- function(x, y, scale=FALSE, match.names=TRUE, legend=TRUE, pvalue=TRUE, Colv, labels, annotation, ...){
+profplot.default <- function(x, y, scale=FALSE, match.names=TRUE, legend=TRUE, pvalue=TRUE, Colv, labels, annotation, ...){
 	
 	# initialise result list
 	res <- list()
