@@ -17,7 +17,7 @@ NULL
 #' and \eqn{n \times r}{n x r} respectively, 
 #' and \eqn{\|.\|_F}{|.|_F} is the Frobenius norm.
 #'
-#' The algorithm is very fast compared to other approaches, as it optimised 
+#' The algorithm is very fast compared to other approaches, as it is optimised 
 #' for handling multiple right-hand sides.
 #' 
 #' @details
@@ -35,16 +35,18 @@ NULL
 #' the initial passive sets.
 #'  
 #' The function \code{fcnnls} is provided separately so that it can be 
-#' used to solve other types of non-negative least squares problem. 
-#' For faster computation, it is recommended to use the internal 
-#' -- non-exported -- function \code{NMF:::.fcnnls}.
-#' The code is a port from the original MATLAB code used in \cite{KimH2007}.
+#' used to solve other types of nonnegative least squares problem. 
+#' For faster computation, when multiple nonnegative least square fits 
+#' are needed, it is recommended to directly use the function \code{\link{.fcnnls}}.
 #' 
-#' @param x the coefficient matrix
-#' @param y the target matrix to be approximated by \eqn{X K}.
+#' The code of this function is a port from the original MATLAB code 
+#' provided by \cite{KimH2007}.
+#' 
+#' @inheritParams .fcnnls
 #' @param ...  extra arguments passed to the internal function \code{.fcnnls}.
 #' Currently not used.
-#' @return The returned value is a list containing the following components:
+#' @return A list containing the following components:
+#' 
 #' \item{x}{ the estimated optimal matrix \eqn{K}.} \item{fitted}{ the fitted
 #' matrix \eqn{X K}.} \item{residuals}{ the residual matrix \eqn{Y - X K}.}
 #' \item{deviance}{ the residual sum of squares between the fitted matrix
@@ -60,6 +62,14 @@ NULL
 #' 
 #' Original MATLAB code from Van Benthem and Keenan, slightly modified by H.
 #' Kim:\cr \url{http://www.cc.gatech.edu/~hpark/software/fcnnls.m}
+#' 
+#' @author 
+#' Original MATLAB code : Van Benthem and Keenan
+#' 
+#' Adaption of MATLAB code for SNMF/R(L): H. Kim
+#' 
+#' Adaptation to the NMF package framework: Renaud Gaujoux
+#' 
 #' @keywords optimize multivariate regression
 #' @export 
 #' @inline
@@ -89,11 +99,6 @@ setGeneric('fcnnls', function(x, y, ...) standardGeneric('fcnnls') )
 #' as \code{\link{lm}}. 
 #' 
 #' @param verbose toggle verbosity (default is \code{FALSE}).
-#' @param pseudo By default (\code{pseudo=FALSE}) the algorithm uses Gaussian
-#' elimination to solve the successive internal linear problems, using the
-#' \code{\link{solve}} function.  If \code{pseudo=TRUE} the algorithm uses
-#' Moore-Penrose generalized \code{\link[corpcor]{pseudoinverse}} from the
-#' \code{corpcor} package instead of \link{solve}.
 #' 
 setMethod('fcnnls', signature(x='matrix', y='matrix'), 
 	function(x, y, verbose=FALSE, pseudo=TRUE, ...){
@@ -106,11 +111,11 @@ setMethod('fcnnls', signature(x='matrix', y='matrix'),
 		res <- .fcnnls(x, y, verbose=verbose, pseudo=pseudo, ...)
 		
 		# process the result
-		f <- x %*% res$K
+		f <- x %*% res$coef
 		resid <- y - f
 
 		# wrap up the result
-		out <- list(x=res$K, fitted=f, residuals=resid, deviance=norm(resid, 'F')^2, passive=res$Pset, pseudo=pseudo)
+		out <- list(x=res$coef, fitted=f, residuals=resid, deviance=norm(resid, 'F')^2, passive=res$Pset, pseudo=pseudo)
 		class(out) <- 'fcnnls'
 		out
 	}
@@ -131,6 +136,7 @@ setMethod('fcnnls', signature(x='ANY', y='numeric'),
 #' @S3method print fcnnls
 print.fcnnls <- function(x, ...){
 	cat("<object of class 'fcnnls': Fast Combinatorial Non-Negative Least Squares>\n")
+	cat("Dimensions:", nrow(x$x)," x ", ncol(x$x), "\n")
 	cat("Residual sum of squares:", x$deviance,"\n")
 	cat("Active constraints:", length(x$passive)-sum(x$passive),"/", length(x$passive), "\n")
 	cat("Inverse method:", 
@@ -139,6 +145,7 @@ print.fcnnls <- function(x, ...){
 			else 'QR (solve)', "\n")
 	invisible(x)
 }
+
 
 ###% M. H. Van Benthem and M. R. Keenan, J. Chemometrics 2004; 18: 441-450
 ###%
@@ -154,7 +161,50 @@ print.fcnnls <- function(x, ...){
 ###%
 ###% @return [K, Pset]
 ###%
-.fcnnls <- function(C, A, verbose=FALSE, pseudo=FALSE, eps=0){
+#' Internal Routine for Fast Combinatorial Nonnegative Least-Squares
+#'
+#' @description 
+#' This is the workhorse function for the higher-level function 
+#' \code{\link{fcnnls}}, which implements the fast nonnegative least-square 
+#' algorithm for multiple right-hand-sides from \cite{VanBenthem2004} to solve 
+#' the following problem:
+#' 
+#' \deqn{
+#'  \begin{array}{l}
+#'  \min \|Y - X K\|_F\\
+#'  \mbox{s.t. } K>=0
+#'  \end{array}
+#' }{min ||Y - X K||_F, s.t. K>=0}
+#' 
+#' where \eqn{Y} and \eqn{X} are two real matrices of dimension \eqn{n \times p}{n x p} 
+#' and \eqn{n \times r}{n x r} respectively, 
+#' and \eqn{\|.\|_F}{|.|_F} is the Frobenius norm.
+#'
+#' The algorithm is very fast compared to other approaches, as it is optimised 
+#' for handling multiple right-hand sides.
+#' 
+#' @param x the coefficient matrix
+#' @param y the target matrix to be approximated by \eqn{X K}.
+#' @param verbose logical that indicates if log messages should be shown.
+#' @param pseudo By default (\code{pseudo=FALSE}) the algorithm uses Gaussian
+#' elimination to solve the successive internal linear problems, using the
+#' \code{\link{solve}} function.  If \code{pseudo=TRUE} the algorithm uses
+#' Moore-Penrose generalized \code{\link[corpcor]{pseudoinverse}} from the
+#' \code{corpcor} package instead of \link{solve}.
+#' @param eps threshold for considering entries as nonnegative.
+#' This is an experimental parameter, and it is recommended to 
+#' leave it at 0.
+#' 
+#' @return A list with the following elements: 
+#' 
+#' \item{coef}{the fitted coefficient matrix.} 
+#' \item{Pset}{the set of passive constraints, as a logical matrix of 
+#' the same size as \code{K} that indicates which element is positive.}
+#'  
+#' @export
+.fcnnls <- function(x, y, verbose=FALSE, pseudo=FALSE, eps=0){
+	C <- x
+	A <- y
 # NNLS using normal equations and the fast combinatorial strategy
 	#
 	# I/O: [K, Pset] = fcnnls(C, A);
@@ -252,7 +302,7 @@ print.fcnnls <- function(x, ...){
 	#V-#
 	
 	# return K and Pset
-	list(K=K, Pset=Pset)
+	list(coef=K, Pset=Pset)
 }
 # ****************************** Subroutine****************************
 #library(corpcor)
@@ -422,7 +472,7 @@ print.fcnnls <- function(x, ...){
 	  	res = .fcnnls(rbind(W, betavec), rbind(A, rep(0, n)));	  	  	
 		H = res[[1]]
 
-		if ( any(rowSums(H)==0) ){ 	  
+		if ( any(rowSums(H)==0) ){
 			if( verbose ) cat(sprintf("iter%d: 0 row in H eta=%.4e restart!\n",i,eta));
 			nrestart=nrestart+1;
 			if ( nrestart >= 10 ){

@@ -112,8 +112,8 @@ profplot <- function(x, ...){
 #' coefficient matrix. It is extracted from the best fit if \code{x} is the
 #' results from multiple NMF runs.
 #' @param y a matrix or an NMF object from which is extracted the mixture
-#' coefficient matrix.It is extracted from the best fit if \code{y} is the
-#' results from multiple NMF runs.
+#' coefficient matrix.
+#' It is extracted from the best fit if \code{y} is the results from multiple NMF runs.
 #' @param scale a logical that specifies whether the columns of the matrices
 #' should be scaled into proportions (i.e. to sum up to one) before plotting.
 #' Default is \code{FALSE}.
@@ -299,14 +299,14 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE, legend=TRUE, p
 	}
 	
 	# reorder the samples if requested	
-	labels <- if( missing(labels) ){
-				if( !is.null(colnames(x)) ) colnames(x)
-				else 1:ncol(x)			
-			}else if( isNA(labels) ) NA
-			else if( length(labels) != ncol(x) )
-				stop("NMF::profplot - Invalid argument `labels`: length should be equal to the number of columns in ", xvar, " [=", ncol(x),"]")
-			else
-				labels
+	if( missing(labels) ){
+		labels <- 
+		if( !is.null(colnames(x)) ) colnames(x)
+		else 1:ncol(x)			
+	} else if( length(labels) != ncol(x) ){
+		labels <- rep(labels, length.out=ncol(x))
+#	stop("NMF::profplot - Invalid argument `labels`: length should be equal to the number of columns in ", xvar, " [=", ncol(x),"]")
+	}
 	
 	# check annotation
 	if( !missing(annotation) && length(annotation) != ncol(x) )
@@ -403,6 +403,7 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE, legend=TRUE, p
 		#popViewport(3)
 	}
 	
+	invisible(nrow(x))
 	# add xlab
 	#if( nchar(xlab) > 0 )
 	#	grid.text(xlab, x = unit(length(px)/2, "native"), y = unit(-voffset,"lines"), just = 'center')

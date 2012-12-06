@@ -16,7 +16,7 @@
   multiple NMF runs.}
 
   \item{y}{a matrix or an NMF object from which is
-  extracted the mixture coefficient matrix.It is extracted
+  extracted the mixture coefficient matrix. It is extracted
   from the best fit if \code{y} is the results from
   multiple NMF runs.}
 

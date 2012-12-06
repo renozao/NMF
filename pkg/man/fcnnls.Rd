@@ -13,16 +13,16 @@
     pseudo = TRUE, ...)
 }
 \arguments{
-  \item{x}{the coefficient matrix}
-
-  \item{y}{the target matrix to be approximated by \eqn{X
-  K}.}
-
   \item{...}{extra arguments passed to the internal
   function \code{.fcnnls}. Currently not used.}
 
   \item{verbose}{toggle verbosity (default is
   \code{FALSE}).}
+
+  \item{x}{the coefficient matrix}
+
+  \item{y}{the target matrix to be approximated by \eqn{X
+  K}.}
 
   \item{pseudo}{By default (\code{pseudo=FALSE}) the
   algorithm uses Gaussian elimination to solve the
@@ -33,9 +33,10 @@
   \code{corpcor} package instead of \link{solve}.}
 }
 \value{
-  The returned value is a list containing the following
-  components: \item{x}{ the estimated optimal matrix
-  \eqn{K}.} \item{fitted}{ the fitted matrix \eqn{X K}.}
+  A list containing the following components:
+
+  \item{x}{ the estimated optimal matrix \eqn{K}.}
+  \item{fitted}{ the fitted matrix \eqn{X K}.}
   \item{residuals}{ the residual matrix \eqn{Y - X K}.}
   \item{deviance}{ the residual sum of squares between the
   fitted matrix \eqn{X K} and the target matrix \eqn{Y}.
@@ -62,7 +63,8 @@
   Frobenius norm.
 
   The algorithm is very fast compared to other approaches,
-  as it optimised for handling multiple right-hand sides.
+  as it is optimised for handling multiple right-hand
+  sides.
 
   Within the \code{NMF} package, this algorithm is used
   internally by the SNMF/R(L) algorithm from \cite{Kim et
@@ -81,12 +83,14 @@
   sets.
 
   The function \code{fcnnls} is provided separately so that
-  it can be used to solve other types of non-negative least
-  squares problem. For faster computation, it is
-  recommended to use the internal -- non-exported --
-  function \code{NMF:::.fcnnls}. The code is a port from
-  the original MATLAB code used in \cite{Kim et al.
-  (2007)}.
+  it can be used to solve other types of nonnegative least
+  squares problem. For faster computation, when multiple
+  nonnegative least square fits are needed, it is
+  recommended to directly use the function
+  \code{\link{.fcnnls}}.
+
+  The code of this function is a port from the original
+  MATLAB code provided by \cite{Kim et al. (2007)}.
 }
 \section{Methods}{
   \describe{
@@ -123,6 +127,13 @@ y <- runif(n)
 res <- fcnnls(X, y)
 # or
 res <- fcnnls(X[,1], y)
+}
+\author{
+  Original MATLAB code : Van Benthem and Keenan
+
+  Adaption of MATLAB code for SNMF/R(L): H. Kim
+
+  Adaptation to the NMF package framework: Renaud Gaujoux
 }
 \references{
   Original MATLAB code from Van Benthem and Keenan,

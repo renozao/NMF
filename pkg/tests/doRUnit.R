@@ -36,3 +36,8 @@ if( length(resfile) ){
 		else write(msg, file=file.path(testdir, paste("check_", basename(f), sep='')))
 	})
 }
+
+# stop if testing locally
+if( userIs('renaud') && is(tests, 'try-error') ){
+	stop(tests)
+}

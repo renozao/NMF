@@ -383,7 +383,9 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='character'),
 function(x, rank, method, ...)
 {	
 	# if there is more than one methods then treat the vector as a list
-	if( length(method) > 1 ) return( nmf(x, rank, as.list(method), ...) )
+	if( length(method) > 1 ){
+		return( nmf(x, rank, as.list(method), ...) )
+	}
 	
 	# create the NMFStrategy from its name
 	strategy <- nmfAlgorithm(method)		
@@ -528,11 +530,16 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='function'),
 setMethod('nmf', signature(x='matrix', rank='NMF', method='ANY'),
 	function(x, rank, method, seed, ...){
 		
-		if( !missing(seed) )
-			warning("NMF::nmf - Discarding value of argument `seed`: using NMF model supplied in `rank` instead.")
-		
+		if( !missing(seed) ){		
+			if( isNumber(seed) ){
+				set.seed(seed)
+			}else if( !is.null(seed) ){
+				warning("NMF::nmf - Discarding value of argument `seed`: directly using NMF model supplied in `rank` instead.\n"
+						, "  If seeding is necessary, please use argument `model` pass initial model slots, which will be filled by the seeding method.")
+			}
 #			# pass the model via a one-off global variable
 #			.nmf_InitModel(rank)
+		}
 		
 		# replace missing method by NULL for correct dispatch
 		if( missing(method) ) method <- NULL
@@ -642,9 +649,9 @@ setMethod('nmf', signature(x='matrix', rank='matrix', method='ANY'),
 		
 		# replace missing values by NULL values for correct dispatch
 		if( missing(method) ) method <- NULL
-		#if( missing(seed) ) seed <- NULL
+		if( missing(seed) ) seed <- NULL
 		#nmf(x, nbasis(newseed), method, seed=seed, model=newseed, ...)
-		nmf(x, newseed, method, ...)
+		nmf(x, newseed, method, seed=seed, ...)
 	}
 )
 #' Shortcut for \code{nmf(x, as.matrix(rank), method, ...)}.
@@ -1311,8 +1318,10 @@ function(x, rank, method
 		}
 		
 		# check seed method: fixed values are not sensible -> warning
-		if( is.nmf(seed) && !is.empty.nmf(seed) )
-			warning("NMF::nmf - You are running multiple NMF runs with a fixed seed")
+		.checkRandomness <- FALSE
+		if( is.nmf(seed) && !is.empty.nmf(seed) ){
+			.checkRandomness <- TRUE
+		}
 		# start_RNG_all
 		# if the seed is numerical or a rstream object,	then use it to set the 
 		# initial state of the random number generator:			
@@ -1399,6 +1408,8 @@ function(x, rank, method
 				keep.all <- keep.all
 				opt.gc <- .options$garbage.collect
 				CALLBACK <- .callback
+				.checkRandomness <- .checkRandomness
+				
 				# check if single or multiple host(s)
 				hosts <- unique(getDoParHosts())
 				if( verbose > 2 ) message("# Running on ", length(hosts), " host(s): ", str_out(hosts))
@@ -1475,7 +1486,7 @@ function(x, rank, method
 					setRNG(RNGobj, verbose=verbose>3 && MODE_SEQ)
 					if( MODE_SEQ && verbose > 2 )
 							message("OK")
-															
+						
 					# limited verbosity in simple mode
 					if( verbose && !(MODE_SEQ && verbose > 1)){
 						if( verbose >= 2 ) mutex_eval( cat('', n) )		
@@ -1494,8 +1505,17 @@ function(x, rank, method
 						}
 					}
 					
+					# check RNG changes
+					if( n == 1 && .checkRandomness ){
+						.RNGinit <- getRNG()
+					}
+					
 					# fit a single NMF model
 					res <- nmf(x, rank, method, nrun=1, seed=seed, model=model, .options=.options, ...)
+					
+					if( n==1 && .checkRandomness && rng.equal(.RNGinit) ){
+						warning("NMF::nmf - You are running multiple non-random NMF runs with a fixed seed")
+					}
 					
 					# if only the best fit must be kept then update the shared objects
 					if( !keep.all ){
@@ -1692,9 +1712,19 @@ function(x, rank, method
 					if( verbose > 2 ) message("# Setting up loop RNG ... ", appendLF=FALSE)
 					setRNG(RNGobj, verbose=verbose>3)
 					if( verbose > 2 ) message("OK")
-									
+					
+					# check RNG changes
+					if( n == 1 && .checkRandomness ){
+						.RNGinit <- getRNG()
+					}
+					
 					# fit a single NMF model
 					res <- nmf(x, rank, method, nrun=1, seed=seed, model=model, .options=.options, ...)
+					
+					if( n==1 && .checkRandomness && rng.equal(.RNGinit) ){
+						warning("NMF::nmf - You are running multiple non-random NMF runs with a fixed seed"
+								, immediate.=TRUE)
+					}
 					
 					if( !keep.all ){
 						
@@ -2050,7 +2080,7 @@ function(x, rank, method
 				else
 					seed
 	})
-	
+
 	## CHECK RESULT
 	# check the result is of the right type
 	if( !isTRUE(err <- checkResult(res, seed)) ){ 

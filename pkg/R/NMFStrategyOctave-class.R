@@ -27,7 +27,7 @@ NULL
 #' 
 setClass('NMFStrategyOctave'
 	, representation(
-		algorithm = 'character' # the function that implements the algorithm
+		algorithm = '.functionSlot' # the function that implements the algorithm
 		, mfiles = 'character'
 		, onReturn = 'function' # method called just before returning the resulting NMF object
 	)
@@ -49,7 +49,7 @@ setMethod('initialize', 'NMFStrategyOctave',
 	function(.Object, ..., mfiles){
 		
 		# resolve within the package
-		if( require.quiet(RcppOctave) ){
+		if( length(mfiles) && any(nchar(mfiles) > 0) && require.quiet(RcppOctave) ){
 			library(RcppOctave)
 			mfiles <- RcppOctave::mfiles(mfiles)
 		}
@@ -89,10 +89,6 @@ setMethod('run', signature(object='NMFStrategyOctave', y='matrix', x='NMFfit'),
 			fstop("The package RcppOctave is required to run this algorithm.\n"
 				, "  Try installing it with: install.packages('RcppOctave')")
 		
-		main <- algorithm(object)
-		if( !length(main) || !nchar(main) )
-			fstop("main algorithm function is not defined.")
-		
 		# add path to all mfiles
 		tdir <- tempdir()
 		if( !o_inpath(tdir) ){
@@ -108,13 +104,16 @@ setMethod('run', signature(object='NMFStrategyOctave', y='matrix', x='NMFfit'),
 			if( !isFALSE(tdir) ) rmpath(tdir); 
 			if( !isFALSE(pdir) ) rmpath(pdir);  
 		})
-		
+
+		# load algorithm
+		main <- algorithm(object, load=TRUE)
+
 		# convert matrix storage mode if necessary
 		if( storage.mode(y) != 'double' ){
 			storage.mode(y) <- 'double'
 		}
 		# call main function
-		res <- .CallOctave(main, y, list(W=basis(x), H=coef(x)), ...)
+		res <- main(y, x, ...)
 		# wrap result
 		object@onReturn(res, x)
 	}
@@ -122,9 +121,23 @@ setMethod('run', signature(object='NMFStrategyOctave', y='matrix', x='NMFfit'),
 
 #' Returns the name of the Octave/Matlab function that implements the NMF algorithm -- as stored in 
 #' slot \code{algorithm}.
+#' 
+#' @param load logical that indicates if the algorithm should be loaded as an 
+#' R function. 
+#' 
 setMethod('algorithm', signature(object='NMFStrategyOctave'),
-		function(object){
-			slot(object, 'algorithm')
+		function(object, load=FALSE){
+			f <- slot(object, 'algorithm')
+			if( !load || is.function(f) ) return(f)
+			
+			if( !length(f) || !nchar(f) )
+				fstop("Main function is not defined for NMF algorithm '", name(object), "'.")
+			
+			# return wrapped into a function
+			.main <- o_get(f)
+			function(y, x, ...){
+				.main(y, r=nbasis(x), W=basis(x), H=coef(x), ...)
+			}
 		}
 )
 #' Sets the name of the Octave/Matlab function that implements the NMF algorithm.
@@ -140,7 +153,10 @@ setReplaceMethod('algorithm', signature(object='NMFStrategyOctave', value='chara
 #' @rdname NMFStrategyOctave-class
 setMethod('show', 'NMFStrategyOctave', function(object){
 		callNextMethod()
-		cat(" main: ", algorithm(object), "\n", sep='')
+		f <- algorithm(object)
+		cat(" main: "
+			, if( is.function(f) ) str_fun(f) else str_c(f, ' <Octave function>')
+			, "\n", sep='')
 		cat(" mfiles: ", str_out(object@mfiles, Inf), "\n", sep='')
 	}
 )

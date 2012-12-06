@@ -69,7 +69,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-function [w,h,elapsed,user,sys,niter] = brunet(v,r,verbose, w, h)
+function [W,H,runtime,niter] = brunet(v,r,verbose, w, h)
 %
 % Jean-Philippe Brunet
 % Cancer Genomics 
@@ -139,6 +139,10 @@ end
 
 [total, user, sys] = cputime(); % [RG] Add CPU timing
 
+if verbose                     % prints number of changing elements 
+fprintf('\t%s\t%s\t%s\n','niter','citer','changes'), 
+end
+
 for i=1:niter
 
 % divergence-reducing NMF iterations
@@ -182,8 +186,10 @@ end
 
 % [RG_START] Compute CPU time
 [total2, user2, sys2] = cputime();
-elapsed = total2 - total;
-user = user2 - user;
-sys = sys2 - sys;
+runtime.user = user2 - user;
+runtime.sys = sys2 - sys;
+runtime.elapsed = total2 - total;
 niter = i;
+W = w;
+H = h;
 % [RG_END]
