@@ -42,34 +42,25 @@ setClass('NMFStrategyOctave'
 	, contains = 'NMFStrategy'
 )
 
-#' Initialize method for \code{\linkS4class{NMFStrategyOctave}}.
-#' 
-#' @param mfiles .m files specifications.
-setMethod('initialize', 'NMFStrategyOctave',
-	function(.Object, ..., mfiles){
-		
-		# resolve within the package
-		if( length(mfiles) && any(nchar(mfiles) > 0) && require.quiet(RcppOctave) ){
-			library(RcppOctave)
-			mfiles <- RcppOctave::mfiles(mfiles)
-		}
-		# initialize parent
-		.Object <- callNextMethod(.Object, ...)
-		# process mfiles
-		.Object@mfiles <- mfiles
-		# return object
-		.Object
-	}
-)
-
-o_inpath <- function(..., dir){
-	p <- RcppOctave::.CallOctave('path')
-	p <- strsplit(p, ':')[[1]]
-	if( !missing(dir) ) dir %in% p
-	else{
-		any(sapply(file.path(p, ...), file.exists)) 
-	}
-}
+##' Initialize method for \code{\linkS4class{NMFStrategyOctave}}.
+##' 
+##' @param mfiles .m files specifications.
+#setMethod('initialize', 'NMFStrategyOctave',
+#	function(.Object, ..., mfiles){
+#		
+#		# resolve within the package
+#		if( length(mfiles) && any(nchar(mfiles) > 0) 
+#			&& require.quiet('RcppOctave') ){
+#			mfiles <- RcppOctave::mfiles(mfiles)
+#		}
+#		# initialize parent
+#		.Object <- callNextMethod(.Object, ...)
+#		# process mfiles
+#		.Object@mfiles <- mfiles
+#		# return object
+#		.Object
+#	}
+#)
 
 #' Runs the NMF algorithms implemented by the Octave/Matlab function associated with the 
 #' strategy -- and stored in slot \code{'algorithm'} of \code{object}.
@@ -85,24 +76,28 @@ setMethod('run', signature(object='NMFStrategyOctave', y='matrix', x='NMFfit'),
 		fstop <- function(...) stop("NMFStrategyOctave[", name(object), "]: ", ...)
 		
 		# first thing check for RcppOctave
-		if( !require(RcppOctave) )
+		if( !require.quiet('RcppOctave', character.only=TRUE) )
 			fstop("The package RcppOctave is required to run this algorithm.\n"
 				, "  Try installing it with: install.packages('RcppOctave')")
 		
 		# add path to all mfiles
-		tdir <- tempdir()
-		if( !o_inpath(tdir) ){
-			o_addpath(tdir)
-		}else tdir <- FALSE
-		pdir <- packagePath('matlab', package=packageSlot(object))
-		if( !o_inpath(pdir) ){
-			o_addpath(pdir)
-		}else pdir <- FALSE
+		mfiles <- object@mfiles
+		if( length(mfiles) && any(nchar(mfiles) > 0) ){
+			mfiles <- mfiles(mfiles)
+		}
+			
+		mdirs <- unique(c(dirname(mfiles), tempdir(), packagePath('matlab', package=packageSlot(object))))
+		inp <- sapply(mdirs, o_inpath)
+		added <- sapply(mdirs, function(p){
+			if( !o_inpath(p) ){
+				o_addpath(p)
+				TRUE
+			}else FALSE
+		})
 #		sapply(mfiles(object@mfiles), o_source)
 		on.exit({
 			rmpath <- RcppOctave::.O$rmpath
-			if( !isFALSE(tdir) ) rmpath(tdir); 
-			if( !isFALSE(pdir) ) rmpath(pdir);  
+			sapply(mdirs[added], rmpath)
 		})
 
 		# load algorithm

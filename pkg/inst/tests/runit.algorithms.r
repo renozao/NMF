@@ -3,6 +3,8 @@
 #' @author Renaud Gaujoux
 #' @creation 22 April 2009
 
+library(rngtools)
+
 .TestSeed <- 123456
 
 .testData <- function(n=20, r=3, m=10, ...){
@@ -226,10 +228,10 @@ test.port_brunet <- function(){
 	
 	# run MATLAB code: brunet(v,r,verbose, w, h)
 	o <- .CallOctave('brunet', x, 3, FALSE, basis(x0), coef(x0))
-	ofit <- nmfModel(o$w, o$h)
+	ofit <- nmfModel(o$W, o$H)
 	checkTrue( !nmf.equal(ofit, x0), "MATLAB version returned something different than the seed model")
 	o2 <- .CallOctave('brunet', x, 3, FALSE, basis(x0), coef(x0))
-	ofit2 <- nmfModel(o2$w, o2$h)
+	ofit2 <- nmfModel(o2$W, o2$H)
 	checkTrue( nmf.equal(ofit, ofit2), "MATLAB version really uses the seed model")
 	
 	# run R port

@@ -11,6 +11,10 @@
 #' @import doParallel
 NULL
 
+# registry of cluster objects
+.clusterObjects <- simpleRegistry('.clusterObjects', verbose=TRUE)
+#.clusterObjects <- new.env()
+
 # returns the number of cores to use in all NMF computation when no number is
 # specified by the user
 getMaxCores <- function(){
@@ -84,35 +88,69 @@ setDoBackend <- function(data){
 	invisible(ob)
 }
 
+
+#.doParCleanup <- new.env()
+#doBackendCleanup <- function(object, fun, ..., run=TRUE, verbose=TRUE){
+#	
+#	# setup environment
+##	if( !exists('.doParCleanup', envir=.GlobalEnv) )
+##			assign('.doParCleanup', new.env(), envir=.GlobalEnv)
+##	e <- get('.doParCleanup', envir=.GlobalEnv)
+#	e <- .doParCleanup
+#		
+#	if( missing(object) ){
+#		f <- ls(e, all.names=TRUE)
+#		sapply(f, function(f){
+#					fun <- e[[f]]
+#					if( run ) fun()
+#					else fun
+#			})
+#		invisible()
+#	}
+#	else if( is.null(object) ) return()
+#	else if( missing(fun) ){
+#		if( exists(object$name, envir=e) ){ 
+#			fun <- get(object$name, envir=e)
+#			if( run ){
+#				if( verbose ) message("# Cleaning up '", object$name, "'... ", appendLF=FALSE)
+#				res <- fun(object, ...)
+#				if( verbose ) message('OK', if( !is.null(res) ) str_c(' [', res,']'))
+#			}else fun
+#		}
+#	}else if( is.null(fun) ){
+#		rm(list=object$name, envir=e)
+#	}else if( is.function(fun) ){
+#		assign(object$name, fun, envir=e)
+#	}
+#}
+
 doBackendCleanup <- function(object, fun, ..., run=TRUE, verbose=TRUE){
 	
-	if( !exists('.doParCleanup', envir=.GlobalEnv) )
-			assign('.doParCleanup', new.env(), envir=.GlobalEnv)
-	e <- get('.doParCleanup', envir=.GlobalEnv)
-		
+	.cleanup <- function(name, ...){
+		obj <- .clusterObjects$get(name)
+		fun <- obj$cleanup
+		if( run ){
+			if( verbose ) message("# Cleaning up '", name, "'... ", appendLF=FALSE)
+			if( res <- fun(...) )
+				.clusterObjects$set(name, NULL)
+			if( verbose ) message('OK', if( !is.null(res) ) str_c(' [', res,']'))
+		}else fun
+	}
+	
 	if( missing(object) ){
-		f <- ls(e, all.names=TRUE)
-		sapply(f, function(f){
-					fun <- e[[f]]
-					if( run ) fun()
-					else fun
-			})
+		f <- .clusterObjects$names()
+		sapply(f, .cleanup, ...)
 		invisible()
 	}
 	else if( is.null(object) ) return()
 	else if( missing(fun) ){
-		if( exists(object$name, envir=e) ){ 
-			fun <- get(object$name, envir=e)
-			if( run ){
-				if( verbose ) message("# Cleaning up '", object$name, "'... ", appendLF=FALSE)
-				res <- fun(object, ...)
-				if( verbose ) message('OK', if( !is.null(res) ) str_c(' [', res,']'))
-			}else fun
+		if( .clusterObjects$has(object$name) ){ 
+			.cleanup(object$name, ...)
 		}
 	}else if( is.null(fun) ){
-		rm(list=object$name, envir=e)
+		.clusterObjects$set(object$name, NULL)
 	}else if( is.function(fun) ){
-		assign(object$name, fun, envir=e)
+		.clusterObjects$set(object$name, list(cleanup=fun, ...))
 	}
 }
 
@@ -271,13 +309,6 @@ setMethod('ForeachBackend', 'doParallel_backend',
 			isNumber(cl)
 		}
 
-		.cl_cleanup <- function(gvar){
-			if( !exists(gvar, envir = .GlobalEnv) ) return()
-			cl <- get(gvar, envir = .GlobalEnv)
-			try( parallel::stopCluster(cl), silent=TRUE)
-			rm(list=gvar, envir = .GlobalEnv)
-			TRUE
-		} 
 		# On Windows doParallel::registerDoParallel(numeric) will create a 
 		# SOCKcluster with `object` cores.
 		# On non-Windows machines registerDoParallel(numeric) will use 
@@ -287,18 +318,18 @@ setMethod('ForeachBackend', 'doParallel_backend',
 		#
 		# Fortunately doParallel::registerDoParallel assign the cluster object 
 		# to the global variable `.revoDoParCluster`
-		if ( register_cleanup ) {
-			doBackendCleanup(object, function(x, force=FALSE){
-				# do not cleanup if current backend is the same (TODO: improve this)
-				if( !force && getDoParName() == 'doParallel') return()
-				# on Windows: stop cluster stored in global variable `.revoDoParCluster`
-				if( .Platform$OS.type == "windows" ){
-					.cl_cleanup(".revoDoParCluster")
-				}
-				# on all Platforms: try to cleanup PSOCK
-				.cl_cleanup('.doParPSOCKCluster')
-			})
-		}
+#		if ( register_cleanup ) {
+#			doBackendCleanup(object, function(x, force=FALSE){
+#				# do not cleanup if current backend is the same (TODO: improve this)
+#				if( !force && getDoParName() == 'doParallel') return()
+#				# on Windows: stop cluster stored in global variable `.revoDoParCluster`
+#				if( .Platform$OS.type == "windows" ){
+#					.cl_cleanup(".revoDoParCluster")
+#				}
+#				# on all Platforms: try to cleanup PSOCK
+#				.cl_cleanup('.doParPSOCKCluster')
+#			})
+#		}
 		
 		# required registration data
 		# TODO: a function doParallel:::doParallel should exist and do the same 
@@ -333,6 +364,34 @@ setMethod('ForeachBackend', 'doPSOCK_backend',
 		}
 )
 
+.cl_cleanup <- function(gvar, envir=.GlobalEnv){
+	if( !exists(gvar, envir = envir) ) return()
+	cl <- get(gvar, envir = envir)
+	try( parallel::stopCluster(cl), silent=TRUE)
+	rm(list=gvar, envir = envir)
+	TRUE
+} 
+
+cleanupCluster <- function(x, cl){
+	
+	function(force=FALSE){
+		
+		if( is(x, 'doParallel_backend') ){
+			# do not cleanup if current backend is the same (TODO: improve this)
+			if( !force && identical(getDoParName(), 'doParallel') ) return(FALSE)
+			
+			# on Windows: stop cluster stored in global variable `.revoDoParCluster`
+			if( .Platform$OS.type == "windows" ){
+				.cl_cleanup(".revoDoParCluster")
+			}
+		}
+		
+		# stop cluster
+		try( parallel::stopCluster(cl), silent=TRUE)
+		TRUE
+	}
+}
+
 #' @S3method register doParallel_backend
 register.doParallel_backend <- function(x, ...){
 	
@@ -340,13 +399,15 @@ register.doParallel_backend <- function(x, ...){
 	cl <- x$data[[1]]
 	if( is.numeric(cl) && !is.null(x$data$type) ){
 		# cleanup first
-		doBackendCleanup(x, force=TRUE, verbose=FALSE)
+		message('Force doPar cleanup')
+		doBackendCleanup(x, force=TRUE, verbose=TRUE)
 		# start cluster
 		clObj <- do.call(parallel::makeCluster, x$data)
 		x$data <- list(clObj)
 		# add global variable to enable closing the cluster when registering 
 		# another backend
-		assign('.doParPSOCKCluster', clObj, envir = .GlobalEnv)
+#		assign('.doParPSOCKCluster', clObj, envir = .clusterObjects)
+		doBackendCleanup(x, cleanupCluster(x, clObj))
 	}
 	register.foreach_backend(x, ...)
 }
@@ -369,13 +430,15 @@ register.doMPI_backend <- function(x, ...){
 	
 	if( length(x$data) && isNumber(cl <- x$data[[1]]) ){
 		# cleanup first
+		message('Force MPI cleanup')
 		doBackendCleanup(x, verbose=FALSE)
 		
 		cl <- doMPI::startMPIcluster(cl)
 		x$data[[1]] <- cl
 		# add global variable to enable closing the cluster when registering 
 		# another backend
-		assign('.doMPICluster', cl, envir = .GlobalEnv)
+		doBackendCleanup(x, cleanupCluster(x, cl))
+#		assign('.doMPICluster', cl, envir = .GlobalEnv)
 	}
 	register.foreach_backend(x, ...)
 }
@@ -397,17 +460,17 @@ setMethod('ForeachBackend', 'doMPI_backend',
 		# use all available cores if not otherwise specified
 		if( missing(cl) ) cl <- getMaxCores()
 		
-		if ( is.numeric(cl) ) {
-			doBackendCleanup(object, function(x){
-				gvname <- ".doMPICluster"
-				# get cluster object from global variable `.doMPICluster`
-				if( !exists(gvname, envir = .GlobalEnv) ) return()				
-				cl <- get(gvname, envir = .GlobalEnv)
-				doMPI::closeCluster(cl)
-				rm(list=gvname, envir = .GlobalEnv)
-				TRUE
-			})
-		}
+#		if ( is.numeric(cl) ) {
+##			doBackendCleanup(object, function(x){
+##				gvname <- ".doMPICluster"
+##				# get cluster object from global variable `.doMPICluster`
+##				if( !exists(gvname, envir = .GlobalEnv) ) return()				
+##				cl <- get(gvname, envir = .GlobalEnv)
+##				doMPI::closeCluster(cl)
+##				rm(list=gvname, envir = .GlobalEnv)
+##				TRUE
+##			})
+#		}
 		
 		# required registration data
 		object$fun <- doMPI:::doMPI
@@ -884,7 +947,7 @@ hostfile <- function(pattern = "file", tmpdir=tempdir(), fileext='', host=TRUE, 
 #' 
 #' @param init initial value
 #' @param shared a logical that indicates if the variable should be stored in shared 
-#' memory or in the global environment.
+#' memory or in a local environment.
 #'  
 #' @rdname parallel
 #' @export
@@ -900,13 +963,14 @@ gVariable <- function(init, shared=FALSE){
 		DATA_DESC <- basename(tempfile('.gVariable_'))
 	}
 	
-	loadpkg <- TRUE
+	.VALUE <- NULL
+	.loadpkg <- TRUE
 	function(value){
 		
 		# load packages once
-		if( loadpkg ){
+		if( .loadpkg ){
 			library(bigmemory)
-			loadpkg <<- FALSE	
+			.loadpkg <<- FALSE	
 		}
 		
 		# if shared: attach bigmemory matrix from its descriptor object
@@ -917,17 +981,19 @@ gVariable <- function(init, shared=FALSE){
 		if( missing(value) ){# READ ACCESS
 			
 			if( !shared ){
-				# initialise if necessary
-				if( !exists(DATA_DESC, envir=.GlobalEnv) )
-					assign(DATA_DESC, init, envir=.GlobalEnv)
-				# return variable
-				get(DATA_DESC, envir=.GlobalEnv)
+				# initialise on first call if necessary
+#				if( !exists(DATA_DESC, envir=.GlobalEnv) )
+#					assign(DATA_DESC, init, envir=.GlobalEnv)
+#				# return variable
+#				get(DATA_DESC, envir=.GlobalEnv)
+				if( is.null(.VALUE) ) .VALUE <- init
+				.VALUE
 			}else 
 				DATA[]
 			
 		}else{# WRITE ACCESS
 			
-			if( !shared ) assign(DATA_DESC, value, envir=.GlobalEnv) 
+			if( !shared ) .VALUE <<- value #assign(DATA_DESC, value, envir=.GlobalEnv) 
 			else DATA[] <- value
 			
 		}
@@ -970,7 +1036,7 @@ setupLibPaths <- function(pkg='NMF', verbose=FALSE){
 					library(devtools)
 					library(bigmemory)
 					library(rngtools)
-					load_all(p)
+					#load_all(p)
 				})
 			})
 		}

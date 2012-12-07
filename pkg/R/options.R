@@ -85,13 +85,13 @@ nmf.getOption <- .OPTIONS$getOption
 #' 
 #' @export
 #' @rdname options
-nmf.resetOptions <- nmf.resetOptions
+nmf.resetOptions <- .OPTIONS$resetOptions
 
 #' \code{nmf.printOptions} prints all NMF specific options along with their default values, 
 #' in a relatively compact way.
 #' @export
 #' @rdname options
-nmf.printOptions <- nmf.printOptions
+nmf.printOptions <- .OPTIONS$printOptions
 
 #nmf.options.runtime <- function(){
 #	nmf.options(.nmf.Options.Runtime)	

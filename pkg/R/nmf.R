@@ -1442,7 +1442,7 @@ function(x, rank, method
 					if( debug || (.MODE_SEQ && verbose > 1) )
 						.options$verbose <- verbose
 					
-					if( !.MODE_SEQ && !debug || (.MODE_SEQ && verbose == 1) ){
+					if( (!.MODE_SEQ && !debug) || (.MODE_SEQ && verbose == 1) ){
 						if( verbose == 1 ){
 							# create progress bar
 							pbar <- txtProgressBar(0, nrun+1, width=50, style=3, title='Runs:'

@@ -4,9 +4,13 @@
 \usage{
   txtProgressBar(min = 0, max = 1, initial = 0, char = "=",
     width = NA, title = if (style == 3) " ", label,
-    style = 1, file = "")
+    style = 1, file = "", shared = NULL)
 }
 \arguments{
+  \item{shared}{specification of a shared directory to use
+  when the progress bar is to be used by multiple
+  processes.}
+
   \item{min}{(finite) numeric values for the extremes of
   the progress bar. Must have \code{min < max}.}
 
@@ -41,7 +45,9 @@
 \description{
   Creates a simple progress bar with title. This function
   is identical to \code{utils::txtProgressBar} but allow
-  adding a title to the progress bar.
+  adding a title to the progress bar, and can be shared by
+  multiple processes, e.g., in multicore or multi-hosts
+  computations.
 }
 \author{
   R Core Team

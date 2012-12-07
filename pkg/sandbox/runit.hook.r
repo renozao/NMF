@@ -1,3 +1,4 @@
+
 checkPlot.hook <- function (expr, msg='', width=1000, height=NULL) 
 {
   ##@bdescr

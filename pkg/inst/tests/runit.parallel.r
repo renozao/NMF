@@ -9,6 +9,7 @@ if( isNamespaceLoaded('NMF') ){
 	setupBackend <- NMF:::setupBackend
 }
 
+library(stringr)
 
 check_shared_memory <- function(.msg, libs=TRUE, seq=FALSE){
 	
