@@ -1385,7 +1385,7 @@ function(x, rank, method
 			.MODE_SHARED <- !keep.all && setupSharedMemory(verbose)
 			
 			# setup temporary directory when not keeping all fits
-			if( !keep.all ){
+			if( !keep.all || verbose ){
 				NMF_TMPDIR <- setupTempDirectory(verbose)
 				# delete on exit
 				if( .CLEANUP ){
@@ -1431,10 +1431,10 @@ function(x, rank, method
 				
 				## 2. RUN
 				# ensure that the package NMF is in each worker's search path
-				.packages <- if( !isDevNamespace('NMF') ){ 
-					setupLibPaths('NMF', verbose>3)
-					'NMF'
-				}
+				.packages <- setupLibPaths('NMF', verbose>3)
+				# export dev environment if in dev mode 
+				.export <- if( isDevNamespace('NMF') && !is.doSEQ() ) 
+								ls(asNamespace('NMF'))
 				
 				# in parallel mode: verbose message from each run are only shown in debug mode
 				.options$verbose <- FALSE 
@@ -1444,10 +1444,9 @@ function(x, rank, method
 					
 					if( !.MODE_SEQ && !debug || (.MODE_SEQ && verbose == 1) ){
 						if( verbose == 1 ){
-							progressdir <- tempfile()
-							on.exit(if( file.exists(progressdir) ) unlink(progressdir, recursive=TRUE), add=TRUE)
-							dir.create(progressdir)
-							pbar <- txtProgressBar(0, nrun+1, width=50, style=3, title='Runs:')
+							# create progress bar
+							pbar <- txtProgressBar(0, nrun+1, width=50, style=3, title='Runs:'
+													, shared=NMF_TMPDIR)
 						}else{
 							cat("Runs: ")
 						}
@@ -1461,9 +1460,6 @@ function(x, rank, method
 				if( MODE_SHARED ) 
 					.packages <- c(.packages, 'bigmemory', 'synchronicity')
 				
-				# export dev environment if in dev mode 
-				.export <- if( isDevNamespace('NMF') ) ls(asNamespace('NMF'))
-					
 				res.runs <- foreach(n=1:nrun
 								, RNGobj = .RNG.seed
 								, .verbose = debug
@@ -1492,15 +1488,7 @@ function(x, rank, method
 						if( verbose >= 2 ) mutex_eval( cat('', n) )		
 						else{
 							# update progress bar (in mutex)
-							mutex_eval({
-								nstep <- 
-								if( !file.exists(progressdir) ) n
-								else{
-									cat('', file=tempfile(tmpdir=progressdir))
-									length(list.files(progressdir))
-								}
-								setTxtProgressBar(pbar, nstep)
-							})
+							mutex_eval(setTxtProgressBar(pbar, n))
 							#
 						}
 					}
@@ -1602,7 +1590,7 @@ function(x, rank, method
 					if( verbose >= 2 ) cat(" ... DONE\n")
 					else{
 						setTxtProgressBar(pbar, nrun+1)
-						cat("\n")
+						pbar$kill(.CLEANUP)
 					}
 				}
 				

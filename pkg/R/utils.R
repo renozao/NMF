@@ -68,13 +68,18 @@ str_args <- function(x, exdent=10L){
 #' 
 #' Creates a simple progress bar with title.
 #' This function is identical to \code{utils::txtProgressBar} but allow adding 
-#' a title to the progress bar.
+#' a title to the progress bar, and can be shared by multiple processes, 
+#' e.g., in multicore or multi-hosts computations.
 #' 
 #' @inheritParams utils::txtProgressBar
+#' @param shared specification of a shared directory to use when the progress
+#' bar is to be used by multiple processes.
+#' 
 #' @author R Core Team
 #' @keywords internal
 txtProgressBar <- function (min = 0, max = 1, initial = 0, char = "=", width = NA, 
-    	title= if( style == 3 ) ' ', label, style = 1, file = "") 
+    	title= if( style == 3 ) ' ', label, style = 1, file = ""
+		, shared = NULL)
 {
     if (!identical(file, "") && !(inherits(file, "connection") && 
         		isOpen(file))) 
@@ -94,9 +99,33 @@ txtProgressBar <- function (min = 0, max = 1, initial = 0, char = "=", width = N
     }
     if (max <= min) 
         stop("must have max > min")
+	
+	# setup shared directory
+	.shared <- NULL
+	if( isTRUE(shared) ) shared <- tempdir()
+	if( is.character(shared) ){
+		.shared <- tempfile('progressbar_', tmpdir=shared[1L])
+		dir.create(.shared)
+	}
+	#
+	
+	getval <- function(value){
+		if( value >= max || value <= min 
+			|| is.null(.shared) || !file.exists(.shared) ){
+			value
+		}else{
+			cat('', file=file.path(.shared, paste('_', value, sep='')))
+			length(list.files(.shared))
+		}
+	}
+	
     up1 <- function(value) {
-        if (!is.finite(value) || value < min || value > max) 
+		if (!is.finite(value) || value < min || value > max) 
             return()
+		
+		# get actual value 
+		value <- getval(value)
+		
         .val <<- value
         nb <- round(width * (value - min)/(max - min))
         if (.nb < nb) {
@@ -115,6 +144,10 @@ txtProgressBar <- function (min = 0, max = 1, initial = 0, char = "=", width = N
     up2 <- function(value) {
         if (!is.finite(value) || value < min || value > max) 
             return()
+		
+		# get actual value 
+		value <- getval(value)
+		
         .val <<- value
         nb <- round(width * (value - min)/(max - min))
         if (.nb <= nb) {
@@ -133,6 +166,10 @@ txtProgressBar <- function (min = 0, max = 1, initial = 0, char = "=", width = N
     up3 <- function(value) {
         if (!is.finite(value) || value < min || value > max) 
             return()
+		
+		# get actual value 
+		value <- getval(value)
+		
         .val <<- value
         nb <- round(width * (value - min)/(max - min))
         pc <- round(100 * (value - min)/(max - min))
@@ -148,10 +185,19 @@ txtProgressBar <- function (min = 0, max = 1, initial = 0, char = "=", width = N
         .pc <<- pc
     }
     getVal <- function() .val
-    kill <- function() if (!.killed) {
+    kill <- function(cleanup=TRUE) if (!.killed) {
         	cat("\n", file = file)
         	flush.console()
-        	.killed <<- TRUE
+			.killed <<- TRUE
+			
+			# do some cleanup
+			if( cleanup ){
+				# delete shared directory
+				if( !is.null(.shared) && file.exists(.shared) ) 
+					unlink(.shared, recursive=TRUE)
+				#
+			}
+			invisible(TRUE)
     	}
     up <- switch(style, up1, up2, up3)
     up(initial)

@@ -940,21 +940,42 @@ gVariable <- function(init, shared=FALSE){
 #' 
 #' @rdname setup
 setupLibPaths <- function(pkg='NMF', verbose=FALSE){
+	
+	# do nothing in sequential mode
+	if( is.doSEQ() ) return( character() )
+	
 	if( verbose ){
 		message("# Setting up libpath on workers for package(s) "
 			, str_out(pkg, Inf), ' ... ', appendLF=FALSE)
 	}
 	p <- path.package(pkg)
 	if( is.null(p) ) return()
-	plibs <- dirname(p)
-	libs <- times(getDoParWorkers()) %dopar% {
-		.libPaths(c(.libPaths(), plibs))
+	
+	if( !isDevNamespace(pkg) ){ # not a dev package
+		plibs <- dirname(p)
+		libs <- times(getDoParWorkers()) %dopar% {
+			.libPaths(c(.libPaths(), plibs))
+		}
+		libs <- unique(unlist(libs))
+		if( verbose ){
+			message("OK\n# libPaths:\n", paste('  ', libs, collapse="\n"))
+		}
+		libs
+		pkg
+	}else if( getDoParName() != 'doParallel' || !isNumber(getDoBackend()$data) ){ 
+		# devmode: load the package + depends
+		times(getDoParWorkers()) %dopar% {
+			capture.output({
+				suppressMessages({
+					library(devtools)
+					library(bigmemory)
+					library(rngtools)
+					load_all(p)
+				})
+			})
+		}
+		c('bigmemory', 'rngtools')
 	}
-	libs <- unique(unlist(libs))
-	if( verbose ){
-		message("OK\n# libPaths:\n", paste('  ', libs, collapse="\n"))
-	}
-	libs
 }
 
 #StaticWorkspace <- function(..., .SHARED=FALSE){
