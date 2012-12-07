@@ -1,6 +1,7 @@
 \name{nmf_update.brunet_R}
 \alias{brunet-nmf}
 \alias{KL-nmf}
+\alias{Mbrunet-nmf}
 \alias{nmf_update.brunet}
 \alias{nmf_update.brunet_R}
 \alias{Rbrunet-nmf}
@@ -77,6 +78,9 @@
   the C++-optimised version of the updates from
   \cite{Brunet et al. (2004)}, but using the stationarity
   of the objective value as a stopping criterion.
+
+  \code{file.show(system.file('matlab', 'brunet.m',
+  package='NMF'))}
 }
 \details{
   The only difference between algorithms \sQuote{KL} and

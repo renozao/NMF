@@ -13,7 +13,6 @@
 \alias{algorithm<-,NMFStrategyFunction,function-method}
 \alias{algorithm,NMFStrategyFunction-method}
 \alias{algorithm<-,NMFStrategyOctave,character-method}
-\alias{algorithm,NMFStrategyOctave-method}
 \alias{compare}
 \alias{compare-methods}
 \alias{compare,NMFfitXn-method}
@@ -208,7 +207,10 @@
   \item{algorithm}{\code{signature(object =
   "NMFStrategyOctave")}: Returns the name of the
   Octave/Matlab function that implements the NMF algorithm
-  -- as stored in slot \code{algorithm}. }
+  -- as stored in slot \code{algorithm}.
+
+  See \code{\link{algorithm,NMFStrategyOctave-method}} for
+  more details. }
 
   \item{algorithm}{\code{signature(object = "NMFSeed")}:
   Returns the workhorse function of the seeding method

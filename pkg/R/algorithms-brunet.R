@@ -13,6 +13,7 @@
 #' 
 #' @rdname KL-nmf
 #' @aliases Mbrunet-nmf
+#' @name Mbrunet-nmf
 NULL
 setNMFMethod('.M#brunet',
 	, objective= 'KL'
