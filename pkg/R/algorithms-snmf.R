@@ -1,9 +1,9 @@
 #' @include NMFStrategyFunction-class.R
 NULL
 
-#' Fast Combinatorial Non-Negative Least-Square
+#' Fast Combinatorial Nonnegative Least-Square
 #' 
-#' This function solves the following non-negative least square linear problem
+#' This function solves the following nonnegative least square linear problem
 #' using normal equations and the fast combinatorial strategy from \cite{VanBenthem2004}:
 #' 
 #' \deqn{
@@ -23,7 +23,7 @@ NULL
 #' @details
 #' Within the \code{NMF} package, this algorithm is used internally by the
 #' SNMF/R(L) algorithm from \cite{KimH2007} to solve general Nonnegative
-#' Matrix Factorization (NMF) problems, using alternating non-negative
+#' Matrix Factorization (NMF) problems, using alternating nonnegative
 #' constrained least-squares. 
 #' That is by iteratively and alternatively estimate each matrix factor.
 #'
@@ -75,7 +75,7 @@ NULL
 #' @inline
 #' @examples
 #' 
-#' ## Define a random non-negative matrix matrix
+#' ## Define a random nonnegative matrix matrix
 #' n <- 200; p <- 20; r <- 3
 #' V <- rmatrix(n, p)
 #' 
@@ -135,7 +135,7 @@ setMethod('fcnnls', signature(x='ANY', y='numeric'),
 
 #' @S3method print fcnnls
 print.fcnnls <- function(x, ...){
-	cat("<object of class 'fcnnls': Fast Combinatorial Non-Negative Least Squares>\n")
+	cat("<object of class 'fcnnls': Fast Combinatorial Nonnegative Least Squares>\n")
 	cat("Dimensions:", nrow(x$x)," x ", ncol(x$x), "\n")
 	cat("Residual sum of squares:", x$deviance,"\n")
 	cat("Active constraints:", length(x$passive)-sum(x$passive),"/", length(x$passive), "\n")

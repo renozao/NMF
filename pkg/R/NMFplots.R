@@ -11,7 +11,7 @@ sum2one <- function(x){
 }
 
 #' @import grDevices
-corplot <- function(x, y, legend=TRUE, pvalue=TRUE, ...){
+corplot <- function(x, y, legend=TRUE, pvalue=TRUE, ..., add=FALSE){
 	
 	cols <- rainbow(ncol(x))
 	
@@ -29,25 +29,35 @@ corplot <- function(x, y, legend=TRUE, pvalue=TRUE, ...){
 		colnames(x) <- paste("column", 1:ncol(x), sep='_')
 
 	# draw plot using matplot
-	do.call(matplot, c(list(x, y), gpar))
+	pfun <- if( add ) matpoints else matplot
+	do.call(pfun, c(list(x, y), gpar))
 	# add perfect match line
 	abline(a=0, b=1)	
 	
+#	gco <- summary(lm(as.numeric(y) ~ as.numeric(x)))
 	gco <- cor.test( as.numeric(x), as.numeric(y) )
 	
 	# add legend if requested
 	if( legend ){
-		lco <- t(sapply(1:ncol(x), function(i) as.numeric(cor.test(x[,i], y[,i])[c('estimate', 'p.value')])))
+		# separate correlations
+		lco <- t(sapply(1:ncol(x), function(i){
+				z <- as.numeric(cor.test(x[,i], y[,i])[c('estimate', 'p.value')])
+				z[1] <- round.pretty(z[1], 2)
+				z[2] <- round.pretty(z[2], 3)
+				z
+			}
+			))
+		#
 		lpar <- .extract.args(gpar, graphics::legend)
 		lpar$lty <- -1		
 		lpar$pt.cex <- lpar$cex
 		lpar$cex <- 1
 		do.call('legend', c(list(x='topleft', legend=paste(colnames(x)
 				, ' (', round(lco[,1], 2)
-						, if( pvalue ) str_c('-', round(lco[,2], 5))
+						, if( pvalue ) str_c('-', lco[,2])
 					, ')', sep='')), lpar))
-		legend("bottomright", legend=str_c('r = ', round(gco$estimate, 2) 
-										, if( pvalue ) str_c(' (', round(gco$p.value, 5), ')') ))
+		legend("bottomright", legend=str_c('r = ', round.pretty(gco$estimate, 2) 
+										, if( pvalue ) str_c(' (', round.pretty(gco$p.value, 3), ')') ))
 	}
 	invisible(gco)
 }
@@ -142,7 +152,8 @@ profplot <- function(x, ...){
 #' \code{x}). If not missing, a coloured raw is plotted under the x-axis and
 #' annotates each sample accordingly. If argument \code{Colv} is a factor, then
 #' it is used to annotate the plot, unless \code{annotation=NA}.
-#' @param ...  graphical parameters passed to matplot.
+#' @param ...  graphical parameters passed to \code{\link{matplot}} or \code{\link{matpoints}}.
+#' @param add logical that indicates if the plot should be added as points to a previous plot 
 #' 
 #' @seealso \code{\link{profcor}}
 #' @keywords aplot
@@ -173,7 +184,9 @@ profplot <- function(x, ...){
 #' # looking at all the correlations allow to order the components in a "common" order
 #' profcor(res, res2)
 #' 
-profplot.default <- function(x, y, scale=FALSE, match.names=TRUE, legend=TRUE, pvalue=TRUE, Colv, labels, annotation, ...){
+profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
+							, legend=TRUE, pvalue=TRUE
+							, Colv, labels, annotation, ..., add = FALSE){
 	
 	# initialise result list
 	res <- list()
@@ -222,7 +235,7 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE, legend=TRUE, p
 					, main="Mixture coefficient profile correlations"
 					, ylab=paste("NMF model", yvar))			
 			y <- coef(y)
-		}else if( is(x, 'ExpressionSet') ){
+		}else if( is(y, 'ExpressionSet') ){
 			y <- exprs(y)
 			gpar <- .set.list.defaults(gpar
 					, main="Expression profile correlations"
@@ -268,7 +281,7 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE, legend=TRUE, p
 		gpar <- .set.list.defaults(gpar			
 				, main="Profile correlations")
 		# plot the correlation plot		
-		res$cor <- do.call(corplot, c(list(x=t(x), y=t(y), legend=legend, pvalue=pvalue), gpar))
+		res$cor <- do.call(corplot, c(list(x=t(x), y=t(y), legend=legend, pvalue=pvalue, add=add), gpar))
 		
 		# return result list
 		return( invisible(res) )
