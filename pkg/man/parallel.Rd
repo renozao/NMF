@@ -37,7 +37,7 @@
   \item{init}{initial value}
 
   \item{shared}{a logical that indicates if the variable
-  should be stored in shared memory or in the global
+  should be stored in shared memory or in a local
   environment.}
 
   \item{pattern}{a non-empty character vector giving the

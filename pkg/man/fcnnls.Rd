@@ -5,7 +5,7 @@
 \alias{fcnnls,matrix,matrix-method}
 \alias{fcnnls-methods}
 \alias{fcnnls,numeric,matrix-method}
-\title{Fast Combinatorial Non-Negative Least-Square}
+\title{Fast Combinatorial Nonnegative Least-Square}
 \usage{
   fcnnls(x, y, ...)
 
@@ -48,7 +48,7 @@
   pseudoinverse. See argument \code{pseudo}.}
 }
 \description{
-  This function solves the following non-negative least
+  This function solves the following nonnegative least
   square linear problem using normal equations and the fast
   combinatorial strategy from \cite{Van Benthem et al.
   (2004)}:
@@ -70,7 +70,7 @@
   internally by the SNMF/R(L) algorithm from \cite{Kim et
   al. (2007)} to solve general Nonnegative Matrix
   Factorization (NMF) problems, using alternating
-  non-negative constrained least-squares. That is by
+  nonnegative constrained least-squares. That is by
   iteratively and alternatively estimate each matrix
   factor.
 
@@ -111,7 +111,7 @@
   }
 }
 \examples{
-## Define a random non-negative matrix matrix
+## Define a random nonnegative matrix matrix
 n <- 200; p <- 20; r <- 3
 V <- rmatrix(n, p)
 

@@ -347,7 +347,7 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='list'),
 #' favour sparse basis matrices (for \sQuote{snmf/l}) or sparse coefficient matrices 
 #' (for \sQuote{snmf/r}).
 #' 
-#' Stopping criterion: built-in within the workhorse function \code{.nmfsh_comb}, 
+#' Stopping criterion: built-in within the internal workhorse function \code{nmf_snmf}, 
 #' based on the KKT optimality conditions.
 #' }
 #' 
@@ -817,6 +817,10 @@ checkErrors <- function(object, element=NULL){
 #' 
 #' }   
 #' 
+#' @param rng rng specification for the run(s).
+#' This argument should be used to set the the RNG seed, while still specifying the seeding 
+#' method argument \var{seed}.
+#' 
 #' @param model specification of the type of NMF model to use.
 #' 
 #' It is used to instantiate the object that inherits from class \code{\linkS4class{NMF}}, 
@@ -1111,7 +1115,8 @@ checkErrors <- function(object, element=NULL){
 setMethod('nmf', signature(x='matrix', rank='numeric', method='NMFStrategy'),
 #function(x, rank, method, seed='random', nrun=1, keep.all=FALSE, optimized=TRUE, init='NMF', track, verbose, ...)
 function(x, rank, method
-		, seed=nmf.getOption('default.seed'), nrun=if( length(rank) > 1L ) 30 else 1, model=NULL, .options=list()
+		, seed=nmf.getOption('default.seed'), rng = NULL
+		, nrun=if( length(rank) > 1L ) 30 else 1, model=NULL, .options=list()
 		, .pbackend=nmf.getOption('backend')
 		, .callback=NULL #callback function called after a run  
 		, ...)
@@ -1135,6 +1140,14 @@ function(x, rank, method
 	.method_defaults <- method@defaults
 	.method_defaults$seed <- NULL
 	#
+	# RNG specification
+	if( isRNGseed(seed) ){
+		if( !is.null(rng) )
+			warning("Discarding RNG specification in argument `rng`: using those passed in argument `seed`.")
+		rng <- seed
+		seed <- 'random'
+	}
+	#
 
 	# setup verbosity options
 	debug <- if( !is.null(.options$debug) ) .options$debug else nmf.getOption('debug')
@@ -1147,7 +1160,7 @@ function(x, rank, method
 		if( verbose <= 1 )
 			.options$verbose <- FALSE
 		return( nmfEstimateRank(x, range = rank, method = method, nrun = nrun
-								, seed = seed, model = model
+								, seed = seed, rng = rng, model = model
 								, .pbackend = .pbackend, .callback = .callback
 								, verbose=verbose, .options=.options, ...) )
 	}
@@ -1336,15 +1349,15 @@ function(x, rank, method
 		if( !.options$RNGstream && (!opt.parallel || .MODE_SEQ) ){
 			
 			.RNG.seed <- rep(list(NULL), nrun)
-			if( isNumber(seed) ){
+			if( isNumber(rng) ){
 				resetRNG <- getRNG()
-				if( verbose > 2 ) message("# Force using current RNG settings seeded with: ", seed)
-				set.seed(seed)
+				if( verbose > 2 ) message("# Force using current RNG settings seeded with: ", rng)
+				set.seed(rng)
 			}else if( verbose > 2 ) 
 				message("# Force using current RNG settings")
 			
 		}else{
-			.RNG.seed <- setupRNG(seed, n = nrun, verbose=verbose)
+			.RNG.seed <- setupRNG(rng, n = nrun, verbose=verbose)
 			# restore the RNG state on exit as after RNGseq:
 			# - if no seeding occured then the RNG has still been drawn once in RNGseq
 			# which must be reflected so that different unseeded calls use different RNG states
@@ -1352,9 +1365,6 @@ function(x, rank, method
 			resetRNG <- getRNG()
 		}
 		stopifnot( length(.RNG.seed) == nrun )
-		# update the seeding method if necessary
-		if( isRNGseed(seed) )			
-			seed <- 'random'
 		# update RNG settings on exit if necessary
 		# and only if no error occured
 		if( !is.null(resetRNG) ){
@@ -1832,12 +1842,9 @@ function(x, rank, method
 	
 	# do something if the RNG was actually changed
 	newRNG <- getRNG()
-	.RNG.seed <- setupRNG(seed, 1, verbose=verbose-1)
-	
-	# update the seeding method
-	if( isRNGseed(seed) ){
-		seed <- 'random'
-		
+	.RNG.seed <- setupRNG(rng, 1, verbose=verbose-1)
+	# setup restoration
+	if( isRNGseed(rng) ){
 		if( verbose > 3 ) showRNG()
 		
 		# restore RNG settings

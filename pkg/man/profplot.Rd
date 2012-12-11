@@ -7,7 +7,7 @@
 
   \method{profplot}{default} (x, y, scale = FALSE,
     match.names = TRUE, legend = TRUE, pvalue = TRUE, Colv,
-    labels, annotation, ...)
+    labels, annotation, ..., add = FALSE)
 }
 \arguments{
   \item{x}{a matrix or an NMF object from which is
@@ -65,7 +65,11 @@
   is used to annotate the plot, unless
   \code{annotation=NA}.}
 
-  \item{...}{graphical parameters passed to matplot.}
+  \item{...}{graphical parameters passed to
+  \code{\link{matplot}} or \code{\link{matpoints}}.}
+
+  \item{add}{logical that indicates if the plot should be
+  added as points to a previous plot}
 }
 \description{
   Plotting Expression Profiles

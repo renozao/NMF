@@ -400,17 +400,15 @@ print.fcnnls <- function(x, ...){
 ###%
 ###% 
 #function [W,H,i] 
+nmf_snmf <- function(A, x, eta=-1, beta=0.01, bi_conv=c(0, 10), eps_conv=1e-4, maxIter=20000L, version=c('R', 'L'), verbose=FALSE){
 #nmfsh_comb <- function(A, k, param, verbose=FALSE, bi_conv=c(0, 10), eps_conv=1e-4, version=c('R', 'L')){
-.nmfsh_comb <- function(A, k, nmf.fit, eta=-1, beta=0.01, bi_conv=c(0, 10), eps_conv=1e-4, version=c('R', 'L'), verbose=FALSE){
-		
+	
 	# depending on the version: 
 	# in version L: A is transposed while W and H are swapped and transposed
 	version <- match.arg(version)
 	if( version == 'L' ) A <- t(A) 
 	#if( missing(param) ) param <- c(-1, 0.01)
 	
-	maxiter = 20000; # maximum number of iterations
-
 	m = nrow(A); n = ncol(A); erravg1 = numeric();
 	
 	#eta=param[1]; beta=param[2]; 
@@ -435,39 +433,47 @@ print.fcnnls <- function(x, ...){
 	# beta
 	if( beta <=0 )
 		stop("SNMF/", version, "::Invalid argument 'beta' - value should be positive")
+	##
+	
+	# initialize random W if no starting point is given
+	if( isNumber(x) ){
+		# rank is given by x
+		k <- x
+		message('# NOTE: Initialise W internally (runif)')
+		W <- matrix(runif(m*k), m,k);	
+		x <- NULL
+	} else if( is.nmf(x) ){
+		# rank is the number of basis components in x
+		k <- nbasis(x)
+		# seed the method (depends on the version to run)
+		start <- if( version == 'R' ) basis(x) else t(coef(x))
+		# check compatibility of the starting point with the target matrix
+		if( any(dim(start) != c(m,k)) )
+			stop("SNMF/", version, " - Invalid initialization - incompatible dimensions [expected: ", paste(c(m,k), collapse=' x '),", got: ", paste(dim(start), collapse=' x '), " ]")	
+		# use the supplied starting point
+		W <- start
+	}else{
+		stop("SNMF/", version, ' - Invalid argument `x`: must be a single numeric or an NMF model [', calss(x), ']')
+	}
 	
 	if ( verbose )
 		cat(sprintf("--\nAlgorithm: SNMF/%s\nParameters: k=%d eta=%.4e beta (for sparse H)=%.4e wminchange=%d iconv=%d\n",
 				version, k,eta,beta,wminchange,iconv));
 
-	idxWold=rep(0, m); idxHold=rep(0, n); inc=0;	
-	
-	# initialize random W if no starting point is given
-	if( missing(nmf.fit) ){
-		message('Init W internally (random)')
-		W=matrix(runif(m*k), m,k);	
-		nmf.fit <- NULL
-	} else {
-		
-		# seed the method (depends on the version to run)
-		start <- if( version == 'R' ) .basis(nmf.fit) else t(.coef(nmf.fit))
-		# check compatibility of the starting point with the target matrix
-		if( any(dim(start) != c(m,k)) ) 
-			stop("SNMF/", version, "::Invalid initialization - incompatible dimensions [expected: ", paste(c(m,k), collapse=' x '),", got: ", paste(dim(start), collapse=' x '), " ]")	
-		# use the supplied starting point
-		W <- start
-		
-	}
+	idxWold=rep(0, m); idxHold=rep(0, n); inc=0;
 		
 	# check validity of seed
 	if( any(NAs <- is.na(W)) )
 		stop("SNMF/", version, "::Invalid initialization - NAs found in the ", if(version=='R') 'basis (W)' else 'coefficient (H)' , " matrix [", sum(NAs), " NAs / ", length(NAs), " entries]")
 	
-	W= apply(W, 2, function(x) x / sqrt(sum(x^2)) );  # normalize columns of W	
+	# normalize columns of W
+	W= apply(W, 2, function(x) x / sqrt(sum(x^2)) );	
 
-	I_k=diag(eta, k); betavec=rep(sqrt(beta), k); nrestart=0;	
-	for ( i in 1:maxiter ){
-
+	I_k=diag(eta, k); betavec=rep(sqrt(beta), k); nrestart=0;
+	i <- 0L
+	while( i < maxIter){
+		i <- i + 1L
+		
 		# min_h ||[[W; 1 ... 1]*H  - [A; 0 ... 0]||, s.t. H>=0, for given A and W.
 	  	res = .fcnnls(rbind(W, betavec), rbind(A, rep(0, n)));	  	  	
 		H = res[[1]]
@@ -493,9 +499,9 @@ print.fcnnls <- function(x, ...){
 		Wt = res[[1]]
 		W= t(Wt);		
 
-		# track the error (not computed unless tracking option is enabled in nmf.fit)
-		if( !is.null(nmf.fit) ) 
-			nmf.fit <- trackError(nmf.fit, .snmf.objective(A, W, H, eta, beta), niter=i)
+		# track the error (not computed unless tracking option is enabled in x)
+		if( !is.null(x) ) 
+			x <- trackError(x, .snmf.objective(A, W, H, eta, beta), niter=i)
 		
 		# test convergence every 5 iterations OR if the base average error has not been computed yet
 		if ( (i %% 5==0)  || (length(erravg1)==0) ){
@@ -532,20 +538,23 @@ print.fcnnls <- function(x, ...){
 	if( verbose ) cat("--\n")
 	
 	# force to compute last error if not already done
-	if( !is.null(nmf.fit) ) 
-		nmf.fit <- trackError(nmf.fit, .snmf.objective(A, W, H, eta, beta), niter=i, force=TRUE)	
+	if( !is.null(x) ) 
+		x <- trackError(x, .snmf.objective(A, W, H, eta, beta), niter=i, force=TRUE)	
 
 	# transpose and reswap the roles
-	if( !is.null(nmf.fit) ){ 
+	if( !is.null(x) ){ 
 		if( version == 'L' ){
-			.basis(nmf.fit) <- t(H)
-			.coef(nmf.fit) <- t(W)
+			.basis(x) <- t(H)
+			.coef(x) <- t(W)
 		}
-		else{ .basis(nmf.fit) <- W; .coef(nmf.fit) <- H}
+		else{ 
+			.basis(x) <- W 
+			.coef(x) <- H
+		}
 		# set number of iterations performed
-		niter(nmf.fit) <- i
+		niter(x) <- i
 		
-		return(nmf.fit)	
+		return(x)	
 	}else{
 		res <- list(W=W, H=H)
 		if( version == 'L' ){
@@ -580,7 +589,7 @@ snmf.objective <- function(x, y, eta=-1, beta=0.01){
 	version <- toupper(substr(name, nchar(name), nchar(name)))
 	
 	# perform factorization using Kim and Park's algorithm 
-	sol <- .nmfsh_comb(target, nbasis(seed), nmf.fit=seed, version=version, verbose=verbose(seed), ...)
+	sol <- nmf_snmf(target, seed, ..., version = version, verbose = verbose(seed))
 		
 	# return solution
 	return(sol)
