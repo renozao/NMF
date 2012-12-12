@@ -6,8 +6,8 @@
   profplot(x, ...)
 
   \method{profplot}{default} (x, y, scale = FALSE,
-    match.names = TRUE, legend = TRUE, pvalue = TRUE, Colv,
-    labels, annotation, ..., add = FALSE)
+    match.names = TRUE, legend = TRUE, confint = TRUE,
+    Colv, labels, annotation, ..., add = FALSE)
 }
 \arguments{
   \item{x}{a matrix or an NMF object from which is
@@ -36,8 +36,8 @@
   to argument \code{x} of \code{\link{legend}}, that
   specifies the position of the legend.}
 
-  \item{pvalue}{logical that indicates if p-values for the
-  correlation coefficients should be shown in legend.}
+  \item{confint}{logical that indicates if confidence
+  intervals for the R-squared should be shown in legend.}
 
   \item{Colv}{specifies the way the columns of \code{x} are
   ordered before plotting. It is used only when \code{y} is
