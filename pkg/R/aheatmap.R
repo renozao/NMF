@@ -228,9 +228,31 @@ draw_matrix = function(matrix, border_color){
 }
 
 draw_colnames = function(coln, ...){
+	
 	m = length(coln)
+	
+	# decide on the label orientation
+	width <- m * unit(1, "grobwidth", textGrob(coln[i <- which.max(nchar(coln))], gp = gpar(...)))
+	width <- as.numeric(convertWidth(width, "inches"))
+	gwidth <- as.numeric(convertWidth(unit(1, 'npc'), "inches"))
+	y <- NULL
+	if( gwidth < width ){
+		rot <- 270
+		vjust <- 0.5
+		hjust <- 0
+		y <- unit(1, 'npc') - unit(5, 'bigpts')
+	}else{
+		rot <- 0
+		vjust <- 0.5
+		hjust <- 0.5
+	}
+	if( is.null(y) ){
+		height <- unit(1, "grobheight", textGrob(coln[i], vjust = vjust, hjust = hjust, rot=rot, gp = gpar(...)))
+		y <- unit(1, 'npc') - height
+	}
+	
 	x = (1:m)/m - 1/2/m
-	grid.text(coln, x = x, y = unit(1, 'npc') - unit(5, "bigpts"), vjust = 0.5, hjust = 0, rot = 270, gp = gpar(...))
+	grid.text(coln, x = x, y = y, vjust = vjust, hjust = hjust, rot=rot, gp = gpar(...))
 }
 
 # draw rownames first row at bottom, last on top
@@ -999,7 +1021,8 @@ round.pretty <- function(x, min=2){
 		n <- n+1
 		y <- round(sort(x), n)
 	}	
-	round(x, max(min,n))
+	dec <- max(min,n)
+	round(x, dec)
 }
 
 generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE){
@@ -1129,15 +1152,24 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 }
 
 # Create row/column names
-generate_dimnames <- function(x, n){
+generate_dimnames <- function(x, n, ref){
 	if( isNA(x) ) NULL
 	else if( length(x) == n ) x
 	else if( identical(x, 1) || identical(x, 1L) ) 1L:n
-	else if( is.character(x) && length(x) == 1 ){
+	else if( isString(x) ){
+		regexp <- "^/(.+)/([0-9]+)?$"
+		if( grepl(regexp, x) ){
+			x <- str_match(x, regexp)
+			p <- x[1,2]
+			n <- if( x[1, 3] != '' ) as.numeric(x[1, 2]) else 2L
+			s <- str_match(ref, p)[, n]
+			ifelse(is.na(s), ref, s)
+		}
+		else paste(x, 1L:n, sep='')
 		#print(str_match_all(x, "^/(([^%]*)(%[in])?)+/$"))
-		paste(x, 1L:n, sep='')
 	}
-	else stop("aheatmap - Invalid row/column label. Possible values are: NA, a vector of correct length, value 1 (or 1L) or single character string.")
+	else stop("aheatmap - Invalid row/column label. Possible values are:"
+			, " NA, a vector of correct length, value 1 (or 1L) or single character string.")
 }
 
 
@@ -1707,14 +1739,14 @@ aheatmap = function(x
 		labRow <- 1L
 	if( !is.null(labRow) ){
 		if( verbose ) message("Process labRow")
-		rownames(mat)  <- generate_dimnames(labRow, nrow(mat))	
+		rownames(mat)  <- generate_dimnames(labRow, nrow(mat), rownames(mat))	
 	}
 	# label columns numerically if no colnames
 	if( is.null(labCol) && is.null(colnames(mat)) )
 		labCol <- 1L
 	if( !is.null(labCol) ){
 		if( verbose ) message("Process labCol")
-		colnames(mat) <- generate_dimnames(labCol, ncol(mat))
+		colnames(mat) <- generate_dimnames(labCol, ncol(mat), colnames(mat))
 	}
 	
 	## DO SUBSET
