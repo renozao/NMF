@@ -168,6 +168,8 @@ identical(M, M2)
 }
 \seealso{
   \code{\link{pmax}}
+
+  Other transforms: \code{\link{t.NMF}}
 }
 \keyword{methods}
 
