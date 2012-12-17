@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf_update.KL.h. NMF 0.9</title>
+<title>nmf_update.KL.h. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="
   Update definitions by &lt;cite&gt;Lee et al. (2001)&lt;/cite&gt;.
@@ -24,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -44,13 +44,13 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='nmf_update_KL.html'>nmf_update.KL.h</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">nbterms</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="argument">ncterms</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="argument">copy</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
+    <pre>nmf_update.KL.h(v, w, h, nbterms = 0L, ncterms = 0L, copy = TRUE)
 
-<span class="functioncall"><a href='nmf_update_KL.html'>nmf_update.KL.h_R</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">wh</span> <span class="argument">=</span> NULL<span class="keyword">)</span>
+nmf_update.KL.h_R(v, w, h, wh = NULL)
 
-<span class="functioncall"><a href='nmf_update_KL.html'>nmf_update.KL.w</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">nbterms</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="argument">ncterms</span> <span class="argument">=</span> <span class="number">0L</span><span class="keyword">,</span> <span class="argument">copy</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
+nmf_update.KL.w(v, w, h, nbterms = 0L, ncterms = 0L, copy = TRUE)
 
-<span class="functioncall"><a href='nmf_update_KL.html'>nmf_update.KL.w_R</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">,</span> <span class="symbol">h</span><span class="keyword">,</span> <span class="argument">wh</span> <span class="argument">=</span> NULL<span class="keyword">)</span></pre>
+nmf_update.KL.w_R(v, w, h, wh = NULL)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -69,7 +69,9 @@
   be made on the original matrix directly (<code>FALSE</code>) or
   on a copy (<code>TRUE</code> - default). With <code>copy=FALSE</code>
   the memory footprint is very small, and some speed-up may
-  be achieved in the case of big matrices.</dd>
+  be achieved in the case of big matrices. However, greater
+  care should be taken due the side effect. We recommend
+  that only experienced users use <code>copy=TRUE</code>.</dd>
       <dt>wh</dt>
       <dd>already computed NMF estimate used to compute
   the denominator term.</dd>
@@ -110,6 +112,10 @@
       <p>The coefficient matrix (<code>H</code>) is updated as follows:
   <pre class = 'eq'> H_kj <- H_kj ( sum_i [ W_ik V_ij / (WH)_ij ] ) / (
   sum_i W_ik ) </code></p>
+  
+      <p>These updates are used in built-in NMF algorithms
+  <code><a href='KL-nmf.html'>KL</a></code> and
+  <code><a href='KL-nmf.html'>brunet</a></code>.</p>
   
       <p>The basis matrix (<code>W</code>) is updated as follows: <pre class = 'eq'> W_ik <- W_ik (
   sum_u [H_kl A_il / (WH)_il ] ) / ( sum_l H_kl ) </code></p>

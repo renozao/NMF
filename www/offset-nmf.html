@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>nmf_update.euclidean_offset.h. NMF 0.10</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="
+  Original update definition: Liviu Badea
+
+  Port to R and optimisation in C++: Renaud Gaujoux
+">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.10</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>NMF Multiplicative Update for NMF with Offset Models</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>nmf_update.euclidean_offset.h(v, w, h, offset, eps = 10^-9, copy = TRUE)
+
+nmf_update.euclidean_offset.w(v, w, h, offset, eps = 10^-9, copy = TRUE)
+
+nmf_update.offset_R(i, v, x, eps = 10^-9, ...)
+
+nmf_update.offset(i, v, x, copy = FALSE, eps = 10^-9, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>offset</dt>
+      <dd>current value of the offset/intercept
+  vector. It must be of length equal to the number of rows
+  in the target matrix.</dd>
+      <dt>v</dt>
+      <dd>target matrix.</dd>
+      <dt>eps</dt>
+      <dd>small numeric value used to ensure numeric
+  stability, by shifting up entries from zero to this fixed
+  value.</dd>
+      <dt>copy</dt>
+      <dd>logical that indicates if the update should
+  be made on the original matrix directly (<code>FALSE</code>) or
+  on a copy (<code>TRUE</code> - default). With <code>copy=FALSE</code>
+  the memory footprint is very small, and some speed-up may
+  be achieved in the case of big matrices. However, greater
+  care should be taken due the side effect. We recommend
+  that only experienced users use <code>copy=TRUE</code>.</dd>
+      <dt>i</dt>
+      <dd>current iteration number.</dd>
+      <dt>x</dt>
+      <dd>current NMF model, as an
+  <code><a href='NMF-class.html'>NMF-class</a></code> object.</dd>
+      <dt>...</dt>
+      <dd>extra arguments. These are generally not used
+  and present only to allow other arguments from the main
+  call to be passed to the initialisation and stopping
+  criterion functions.</dd>
+      <dt>w</dt>
+      <dd>current basis matrix</dd>
+      <dt>h</dt>
+      <dd>current coefficient matrix</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>an <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code> model object.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>These update rules proposed by <cite>Badea (2008)</cite> are
+  modified version of the updates from <cite>Lee et al.
+  (2001)</cite>, that include an offset/intercept vector, which
+  models a common baseline for each feature accross all
+  samples: <pre class = 'eq'>V \approx W H + I</code></p>
+  
+      <p><code>nmf_update.offset_R</code> implements a complete single
+  update step, using plain R updates.</p>
+  
+      <p><code>nmf_update.offset</code> implements a complete single
+  update step, using C++-optimised updates.</p>
+  
+      <p>Algorithms &#145;offset&#146; and &#145;.R#offset&#146; provide
+  the complete NMF-with-offset algorithm from <cite>Badea
+  (2008)</cite>, using the C++-optimised and pure R updates
+  <code><a href='offset-nmf.html'>nmf_update.offset</a></code> and
+  <code><a href='offset-nmf.html'>nmf_update.offset_R</a></code> respectively.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p><code>nmf_update.euclidean_offset.h</code> and
+  <code>nmf_update.euclidean_offset.w</code> compute the updated
+  NMFOffset model, using the optimized <em>C++</em>
+  implementations.</p>
+  
+      <p>The associated model is defined as an
+  <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code> object. The details of the
+  multiplicative updates can be found in <cite>Badea
+  (2008)</cite>. Note that the updates are the ones defined for a
+  single datasets, not the simultaneous NMF model, which is
+  fit by algorithm &#145;siNMF&#146; from formula-based NMF
+  models.</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Badea L (2008). "Extracting gene expression profiles
+  common to colon and pancreatic adenocarcinoma using
+  simultaneous nonnegative matrix factorization." _Pacific
+  Symposium on Biocomputing. Pacific Symposium on
+  Biocomputing_, *290*, pp. 267-78. ISSN 1793-5091, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/18229692>.</p>
+  
+      <p>Lee DD and Seung H (2001). "Algorithms for non-negative
+  matrix factorization." _Advances in neural information
+  processing systems_. <URL:
+  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>nmf_update.euclidean_offset.h</li><li>nmf_update.euclidean_offset.w</li><li>nmf_update.offset</li><li>nmf_update.offset_R</li><li>offset-nmf</li><li>Roffset-nmf</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    
+    <h2>Author</h2>
+    
+  Original update definition: Liviu Badea
+
+  Port to R and optimisation in C++: Renaud Gaujoux
+
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

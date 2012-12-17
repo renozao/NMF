@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>predict. NMF 0.9</title>
+<title>predict. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -40,14 +40,14 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='predict.html'>predict</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+    <pre>predict(object, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (NMF)</span>
-<span class="functioncall">`predict`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">what</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="string">"columns"</span><span class="keyword">,</span> <span class="string">"rows"</span><span class="keyword">,</span> <span class="string">"samples"</span><span class="keyword">,</span> <span class="string">"features"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">prob</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+<span class="label label-important">S4</span> (NMF)
+`predict`(object, what = c("columns", "rows", "samples", "features"), prob = FALSE)
 
-<span class="comment"><span class="label label-important">S4</span> (NMFfitX)</span>
-<span class="functioncall">`predict`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">what</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="string">"columns"</span><span class="keyword">,</span> <span class="string">"rows"</span><span class="keyword">,</span> <span class="string">"samples"</span><span class="keyword">,</span> <span class="string">"features"</span><span class="keyword">,</span> <span class="string">"consensus"</span><span class="keyword">,</span>
-  <span class="string">"cmap"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+<span class="label label-important">S4</span> (NMFfitX)
+`predict`(object, what = c("columns", "rows", "samples", "features", "consensus", 
+  "cmap"), ...)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -176,33 +176,7 @@
   Intell_, *28*, pp. 403-415.</p>
   
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'># random target matrix</div><div class='input'><span class="symbol">v</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span></div><div class='input'># fit an NMF model</div><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span></div><div class='input'></div><div class='input'># predicted column and row clusters</div><div class='input'><span class="functioncall"><a href='predict.html'>predict</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'> [1] 2 1 3 3 2 2 4 3 5 5
-Levels: 1 2 3 4 5
-</div><div class='input'><span class="functioncall"><a href='predict.html'>predict</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="string">'rows'</span><span class="keyword">)</span></div>
-<div class='output'> [1] 4 3 3 1 2 1 3 2 2 4 5 2 2 5 2 2 2 3 5 1
-Levels: 1 2 3 4 5
-</div><div class='input'></div><div class='input'># with relative contributions of each basis component</div><div class='input'><span class="functioncall"><a href='predict.html'>predict</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">prob</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span></div>
-<div class='output'>$predict
- [1] 2 1 3 3 2 2 4 3 5 5
-Levels: 1 2 3 4 5
-
-$prob
- [1] 0.6548911 0.5736570 0.3991033 0.4738792 0.7041045 0.3985352 0.7131128 0.4525372 0.5564594 0.4987524
-
-</div><div class='input'><span class="functioncall"><a href='predict.html'>predict</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="string">'rows'</span><span class="keyword">,</span> <span class="argument">prob</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span></div>
-<div class='output'>$predict
- [1] 4 3 3 1 2 1 3 2 2 4 5 2 2 5 2 2 2 3 5 1
-Levels: 1 2 3 4 5
-
-$prob
- [1] 0.3316286 0.4483612 0.4585225 0.3756082 0.5058462 0.4518340 0.7303948 0.3822813 0.4583829 0.4653933 0.7779704 0.4404912 0.3925128 0.4034469 0.4019369 0.5154141 0.4928875
-[18] 0.3634886 0.3868426 0.7014758
-
-</div></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
       <li>predict</li><li>predict-methods</li><li>predict,NMFfitX-method</li><li>predict,NMF-method</li>

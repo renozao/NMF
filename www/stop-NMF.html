@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFStop. NMF 0.9</title>
+<title>NMFStop. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -40,16 +40,16 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='stop-NMF.html'>NMFStop</a></span><span class="keyword">(</span><span class="symbol">s</span><span class="keyword">,</span> <span class="argument">check</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
+    <pre>NMFStop(s, check = TRUE)
 
-<span class="functioncall"><a href='stop-NMF.html'>nmf.stop.iteration</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">)</span>
+nmf.stop.iteration(n)
 
-<span class="functioncall"><a href='stop-NMF.html'>nmf.stop.threshold</a></span><span class="keyword">(</span><span class="symbol">threshold</span><span class="keyword">)</span>
+nmf.stop.threshold(threshold)
 
-<span class="functioncall"><a href='stop-NMF.html'>nmf.stop.stationary</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">i</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="argument">stationary.th</span> <span class="argument">=</span> <span class="symbol">.Machine</span><span class="keyword">$</span><span class="symbol">double.eps</span><span class="keyword">,</span> <span class="argument">check.interval</span> <span class="argument">=</span> <span class="number">5</span> <span class="keyword">*</span>
-  <span class="symbol">check.niter</span><span class="keyword">,</span> <span class="argument">check.niter</span> <span class="argument">=</span> <span class="number">10L</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+nmf.stop.stationary(object, i, y, x, stationary.th = .Machine$double.eps, check.interval = 5 * 
+  check.niter, check.niter = 10L, ...)
 
-<span class="functioncall"><a href='stop-NMF.html'>nmf.stop.connectivity</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">i</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="argument">stopconv</span> <span class="argument">=</span> <span class="number">40</span><span class="keyword">,</span> <span class="argument">check.interval</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+nmf.stop.connectivity(object, i, y, x, stopconv = 40, check.interval = 10, ...)</pre>
     
     <h2>Arguments</h2>
     <dl>

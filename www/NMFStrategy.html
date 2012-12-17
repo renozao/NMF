@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFStrategy. NMF 0.9</title>
+<title>NMFStrategy. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -40,22 +40,25 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='NMFStrategy.html'>NMFStrategy</a></span><span class="keyword">(</span><span class="symbol">name</span><span class="keyword">,</span> <span class="symbol">method</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+    <pre>NMFStrategy(name, method, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (NMFStrategy,matrix,NMFfit)</span>
-<span class="functioncall">`run`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="label label-important">S4</span> (NMFStrategy,matrix,NMFfit)
+`run`(object, y, x, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (NMFStrategy,matrix,NMF)</span>
-<span class="functioncall">`run`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="label label-important">S4</span> (NMFStrategy,matrix,NMF)
+`run`(object, y, x, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (NMFStrategyFunction,matrix,NMFfit)</span>
-<span class="functioncall">`run`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="label label-important">S4</span> (NMFStrategyFunction,matrix,NMFfit)
+`run`(object, y, x, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (NMFStrategyIterative,matrix,NMFfit)</span>
-<span class="functioncall">`run`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="argument">.stop</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">maxIter</span> <span class="argument">=</span> <span class="number">2000</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="label label-important">S4</span> (NMFStrategyIterative,matrix,NMFfit)
+`run`(object, y, x, .stop = NULL, maxIter = 2000, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (NMFStrategyIterativeX,matrix,NMFfit)</span>
-<span class="functioncall">`run`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">maxIter</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+<span class="label label-important">S4</span> (NMFStrategyIterativeX,matrix,NMFfit)
+`run`(object, y, x, maxIter, ...)
+
+<span class="label label-important">S4</span> (NMFStrategyOctave,matrix,NMFfit)
+`run`(object, y, x, ...)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -198,13 +201,24 @@
   Runs an NMF iterative algorithm on a target matrix
   <code>y</code>.</p>
   
+      <p>run<code>signature(object = "NMFStrategyOctave",
+  y = "matrix", x = "NMFfit")</code>: Runs the NMF algorithms
+  implemented by the Octave/Matlab function associated with
+  the strategy -- and stored in slot <code>'algorithm'</code> of
+  <code>object</code>.</p>
+  
+      <p>This method is usually not called directly, but only via
+  the function <code><a href='nmf.html'>nmf</a></code>, which takes care of many
+  other details such as seeding the computation, handling
+  RNG settings, or setting up parallel computations.</p>
+  
       <p></span></p>
   
     </div>
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>NMFStrategy</li><li>NMFStrategy,character,character-method</li><li>NMFStrategy,character,function-method</li><li>NMFStrategy,character,missing-method</li><li>NMFStrategy,character,NMFStrategy-method</li><li>NMFStrategy-methods</li><li>NMFStrategy,missing,character-method</li><li>NMFStrategy,NMFStrategy,missing-method</li><li>NMFStrategy,NULL,character-method</li><li>NMFStrategy,NULL,NMFStrategy-method</li><li>run,NMFStrategyFunction,matrix,NMFfit-method</li><li>run,NMFStrategyIterative,matrix,NMFfit-method</li><li>run,NMFStrategyIterativeX,matrix,NMFfit-method</li><li>run,NMFStrategy,matrix,NMFfit-method</li><li>run,NMFStrategy,matrix,NMF-method</li>
+      <li>NMFStrategy</li><li>NMFStrategy,character,character-method</li><li>NMFStrategy,character,function-method</li><li>NMFStrategy,character,missing-method</li><li>NMFStrategy,character,NMFStrategy-method</li><li>NMFStrategy-methods</li><li>NMFStrategy,missing,character-method</li><li>NMFStrategy,NMFStrategy,missing-method</li><li>NMFStrategy,NULL,character-method</li><li>NMFStrategy,NULL,NMFStrategy-method</li><li>run,NMFStrategyFunction,matrix,NMFfit-method</li><li>run,NMFStrategyIterative,matrix,NMFfit-method</li><li>run,NMFStrategyIterativeX,matrix,NMFfit-method</li><li>run,NMFStrategy,matrix,NMFfit-method</li><li>run,NMFStrategy,matrix,NMF-method</li><li>run,NMFStrategyOctave,matrix,NMFfit-method</li>
     </ul>
     <ul>
       <li>methods</li>

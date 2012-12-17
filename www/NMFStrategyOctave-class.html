@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>NMFStrategyOctave-class. NMF 0.10</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.10</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>S4 Interface for Octave-Matlab NMF Algorithms</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="label label-important">S4</span> (NMFStrategyOctave)
+`show`(object)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>Any R object</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This class implements the virtual interface
+  <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code> for NMF algorithms that
+  are implemented in Octave/Matlab, and provided as a set
+  of .m files or as plain code.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The <code>run</code> method for this class runs the algorithms
+  via the <code><a href='http://www.inside-r.org/r-doc/RcppOctave/RcppOctave-package'>RcppOctave</a></code> package.</p>
+  
+    </div>
+
+    <div class="Slots">
+      <h2>Slots</h2>
+      
+      <p><span class='describe'></p>
+  
+      <p>algorithmcharacter string that gives the name of
+  the main Octave/Matlab function that implements the
+  algorithm. The function must take at least two arguments:
+  the target matrix and the initial NMF model, converted
+  into an Octave list object, with elements corresponding
+  to slots of the corresponding S4 class.</p>
+  
+      <p>mfilescharacter vector that contains a set of
+  path to .m files. These files are (re-)sourced every time
+  the strategy is called, and must be present at runtime in
+  the current directory or in a directory from Octave
+  path.</p>
+  
+      <p></span></p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><span class='describe'></p>
+  
+      <p>algorithm<code>signature(object =
+  "NMFStrategyOctave")</code>: Returns the name of the
+  Octave/Matlab function that implements the NMF algorithm
+  -- as stored in slot <code>algorithm</code>.</p>
+  
+      <p>algorithm<-<code>signature(object =
+  "NMFStrategyOctave", value = "character")</code>: Sets the name
+  of the Octave/Matlab function that implements the NMF
+  algorithm. It is stored in slot <code>algorithm</code>.</p>
+  
+      <p>run<code>signature(object = "NMFStrategyOctave",
+  y = "matrix", x = "NMFfit")</code>: Runs the NMF algorithms
+  implemented by the Octave/Matlab function associated with
+  the strategy -- and stored in slot <code>'algorithm'</code> of
+  <code>object</code>.</p>
+  
+      <p>This method is usually not called directly, but only via
+  the function <code><a href='nmf.html'>nmf</a></code>, which takes care of many
+  other details such as seeding the computation, handling
+  RNG settings, or setting up parallel computations.</p>
+  
+      <p></span></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>NMFStrategyOctave-class</li><li>show,NMFStrategyOctave-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

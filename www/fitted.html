@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>fitted. NMF 0.9</title>
+<title>fitted. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -40,16 +40,16 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='fitted.html'>fitted</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+    <pre>fitted(object, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (NMFstd)</span>
-<span class="functioncall">`fitted`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">W</span><span class="keyword">,</span> <span class="symbol">H</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="label label-important">S4</span> (NMFstd)
+`fitted`(object, W, H, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (NMFOffset)</span>
-<span class="functioncall">`fitted`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">W</span><span class="keyword">,</span> <span class="symbol">H</span><span class="keyword">,</span> <span class="argument">offset</span> <span class="argument">=</span> <span class="symbol">object</span><span class="keyword">@</span><span class="slot">offset</span><span class="keyword">)</span>
+<span class="label label-important">S4</span> (NMFOffset)
+`fitted`(object, W, H, offset = object@offset)
 
-<span class="comment"><span class="label label-important">S4</span> (NMFns)</span>
-<span class="functioncall">`fitted`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">W</span><span class="keyword">,</span> <span class="symbol">H</span><span class="keyword">,</span> <span class="symbol">S</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+<span class="label label-important">S4</span> (NMFns)
+`fitted`(object, W, H, S, ...)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -157,12 +157,7 @@
       <p></span></p>
   
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'># random standard NMF model</div><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/all.equal'>all.equal</a></span><span class="keyword">(</span><span class="functioncall"><a href='fitted.html'>fitted</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="functioncall"><a href='basis-coef-methods.html'>basis</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="keyword">%*%</span> <span class="functioncall"><a href='basis-coef-methods.html'>coef</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1] TRUE
-</div></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
       <li>fitted</li><li>fitted-methods</li><li>fitted,NMFfit-method</li><li>fitted,NMF-method</li><li>fitted,NMFns-method</li><li>fitted,NMFOffset-method</li><li>fitted,NMFstd-method</li>

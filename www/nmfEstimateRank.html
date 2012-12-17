@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfEstimateRank. NMF 0.9</title>
+<title>nmfEstimateRank. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -40,13 +40,13 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='nmfEstimateRank.html'>nmfEstimateRank</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">range</span><span class="keyword">,</span> <span class="argument">method</span> <span class="argument">=</span> <span class="functioncall"><a href='options.html'>nmf.getOption</a></span><span class="keyword">(</span><span class="string">"default.algorithm"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">nrun</span> <span class="argument">=</span> <span class="number">30</span><span class="keyword">,</span>
-  <span class="argument">model</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">verbose</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">stop</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+    <pre>nmfEstimateRank(x, range, method = nmf.getOption("default.algorithm"), nrun = 30, 
+  model = NULL, ..., verbose = FALSE, stop = FALSE)
 
-<span class="comment"><span class="label label-success">S3</span> (NMF.rank)</span>
-<span class="functioncall">`plot`</span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">y</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">what</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="string">"all"</span><span class="keyword">,</span> <span class="string">"cophenetic"</span><span class="keyword">,</span> <span class="string">"rss"</span><span class="keyword">,</span> <span class="string">"residuals"</span><span class="keyword">,</span> <span class="string">"dispersion"</span><span class="keyword">,</span>
-      <span class="string">"evar"</span><span class="keyword">,</span> <span class="string">"sparseness"</span><span class="keyword">,</span> <span class="string">"sparseness.basis"</span><span class="keyword">,</span> <span class="string">"sparseness.coef"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">na.rm</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span>
-      <span class="symbol">...</span><span class="keyword">)</span></pre>
+<span class="label label-success">S3</span> (NMF.rank)
+`plot`(x, y = NULL, what = c("all", "cophenetic", "rss", "residuals", "dispersion", 
+      "evar", "sparseness", "sparseness.basis", "sparseness.coef"), na.rm = FALSE, 
+      ...)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -198,10 +198,7 @@
   http://www.ncbi.nlm.nih.gov/pubmed/18852176>.</p>
   
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/Random'>set.seed</a></span><span class="keyword">(</span><span class="number">123456</span><span class="keyword">)</span></div><div class='input'><span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span><span class="keyword">;</span> <span class="symbol">m</span> <span class="assignement">&lt;-</span> <span class="number">20</span></div><div class='input'><span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">,</span> <span class="symbol">m</span><span class="keyword">)</span></div><div class='input'></div><div class='input'># Use a seed that will be set before each first run</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># res <- nmfEstimateRank(V, seq(2,5), method='brunet', nrun=10, seed=123456)</div><div class='input'># # or equivalently</div><div class='input'># res <- nmf(V, seq(2,5), method='brunet', nrun=10, seed=123456)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'></div><div class='input'># plot all the measures</div><div class='input'>## <strong>Not run</strong>: plot(res)</div><div class='input'># or only one: e.g. the cophenetic correlation coefficient</div><div class='input'>## <strong>Not run</strong>: plot(res, 'cophenetic')</div><div class='input'></div><div class='input'># run same estimation on randomized data</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># rV <- randomize(V)</div><div class='input'># rand <- nmfEstimateRank(rV, seq(2,5), method='brunet', nrun=10, seed=123456)</div><div class='input'># plot(res, rand)</div><div class='input'># ## <strong>End(Not run)</strong></div></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
       <li>nmfEstimateRank</li><li>plot.NMF.rank</li>

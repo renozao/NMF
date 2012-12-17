@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>nmf_update.lee_R. NMF 0.10</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="
+  Original update definition: D D Lee and HS Seung
+
+  Port to R and optimisation in C++: Renaud Gaujoux
+">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.10</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>NMF Algorithm/Updates for Frobenius Norm</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>nmf_update.lee_R(i, v, x, rescale = TRUE, eps = 10^-9, ...)
+
+nmf_update.lee(i, v, x, rescale = TRUE, copy = FALSE, eps = 10^-9, weight = NULL, 
+  ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>rescale</dt>
+      <dd>logical that indicates if the basis matrix
+  <code class = 'eq'>W</code> should be rescaled so that its columns sum up to
+  one.</dd>
+      <dt>i</dt>
+      <dd>current iteration number.</dd>
+      <dt>v</dt>
+      <dd>target matrix.</dd>
+      <dt>x</dt>
+      <dd>current NMF model, as an
+  <code><a href='NMF-class.html'>NMF-class</a></code> object.</dd>
+      <dt>eps</dt>
+      <dd>small numeric value used to ensure numeric
+  stability, by shifting up entries from zero to this fixed
+  value.</dd>
+      <dt>...</dt>
+      <dd>extra arguments. These are generally not used
+  and present only to allow other arguments from the main
+  call to be passed to the initialisation and stopping
+  criterion functions.</dd>
+      <dt>copy</dt>
+      <dd>logical that indicates if the update should
+  be made on the original matrix directly (<code>FALSE</code>) or
+  on a copy (<code>TRUE</code> - default). With <code>copy=FALSE</code>
+  the memory footprint is very small, and some speed-up may
+  be achieved in the case of big matrices. However, greater
+  care should be taken due the side effect. We recommend
+  that only experienced users use <code>copy=TRUE</code>.</dd>
+      <dt>weight</dt>
+      <dd>numeric vector of sample weights, e.g.,
+  used to normalise samples coming from multiple datasets.
+  It must be of the same length as the number of
+  samples/columns in <code>v</code> -- and <code>h</code>.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The built-in NMF algorithms &#145;Frobenius&#146; and
+  &#145;lee&#146; minimise the Frobenius norm (Euclidean
+  distance) between an NMF model and a target matrix. They
+  use the updates for the basis and coefficient matrices
+  (<code class = 'eq'>W</code> and <code class = 'eq'>H</code>) defined by <cite>Lee et al.
+  (2001)</cite>.</p>
+  
+      <p><code>nmf_update.lee</code> implements in C++ an optimised
+  version of the single update step.</p>
+  
+      <p>Algorithms &#145;lee&#146; and &#145;.R#lee&#146; provide the
+  complete NMF algorithm from <cite>Lee et al. (2001)</cite>,
+  using the C++-optimised and pure R updates
+  <code><a href='Frobenius-nmf.html'>nmf_update.lee</a></code> and
+  <code><a href='Frobenius-nmf.html'>nmf_update.lee_R</a></code> respectively.</p>
+  
+      <p>Algorithm &#145;Frobenius&#146; provides an NMF algorithm
+  based on the C++-optimised version of the updates from
+  <cite>Lee et al. (2001)</cite>, but uses the stopping criterion
+  based on the stationarity of the objective value.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The only difference between algorithms &#145;Frobenius&#146;
+  and &#145;lee&#146; is that &#145;Frobenius&#146; uses the
+  stopping criterion based on the stationarity of the
+  objective value <code><a href='stop-NMF.html'>nmf.stop.stationary</a></code>,
+  whereas &#145;lee&#146; uses the stationarity of the
+  connectivity matrix <code><a href='stop-NMF.html'>nmf.stop.connectivity</a></code>.</p>
+  
+      <p><code>nmf_update.lee_R</code> implements in pure R a single
+  update step, i.e. it updates both matrices.</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Lee DD and Seung H (2001). "Algorithms for non-negative
+  matrix factorization." _Advances in neural information
+  processing systems_. <URL:
+  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>Frobenius-nmf</li><li>lee-nmf</li><li>nmf_update.lee</li><li>nmf_update.lee_R</li><li>Rlee-nmf</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    
+    <h2>Author</h2>
+    
+  Original update definition: D D Lee and HS Seung
+
+  Port to R and optimisation in C++: Renaud Gaujoux
+
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

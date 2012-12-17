@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfitX-class. NMF 0.9</title>
+<title>NMFfitX-class. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -217,31 +217,7 @@
       <p></span></p>
   
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'># generate a synthetic dataset with known classes</div><div class='input'><span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">20</span><span class="keyword">;</span> <span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span><span class="keyword">;</span></div><div class='input'><span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span></div><div class='input'></div><div class='input'># perform multiple runs of one algorithm (default is to keep only best fit)</div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">3</span><span class="keyword">)</span></div><div class='input'><span class="symbol">res</span></div>
-<div class='output'><Object of class: NMFfitX1 >
-  Method: brunet 
-  Runs:  3 
-  RNG:
-   407L, -10343344L, -1439855599L, 581371550L, 1102336647L, 404615452L, -967540883L 
-  Total timing:
-   user  system elapsed 
-  0.760   0.168   1.466 
-</div><div class='input'></div><div class='input'># plot a heatmap of the consensus matrix</div><div class='input'>## <strong>Not run</strong>:  consensusmap(res) </div><div class='input'></div><div class='input'># perform multiple runs of one algorithm (keep all the fits)</div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">.options</span><span class="argument">=</span><span class="string">'k'</span><span class="keyword">)</span></div><div class='input'><span class="symbol">res</span></div>
-<div class='output'><Object of class: NMFfitXn >
-  Method: brunet 
-  Runs:  3 
-  RNG:
-   407L, 1849749352L, -2054160823L, 1115772278L, 677277055L, -1934876236L, -2059329243L 
-  Total timing:
-   user  system elapsed 
-  1.632   0.292   1.802 
-  Sequential timing:
-   user  system elapsed 
-  0.988   0.028   1.454 
-</div></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
       <li>NMFfitX-class</li>
