@@ -290,14 +290,14 @@
 }
 \details{
   The development of this function started as a fork of the
-  function \code{\link[pheatmap]{pheatmap}} from the
-  package \code{pheatmap}, and provides several
-  enhancements such as: \itemize{ \item it replicates the
-  arguments of the base \code{\link{heatmap}} function
-  \item annotation of both columns and rows, with
-  simplified interface \item easy specification of
-  clustering methods and colors \item return clustering
-  data and grid grob object }
+  function \code{pheatmap} from the \pkg{pheatmap} package,
+  and provides several enhancements such as: \itemize{
+  \item argument names match those used in the base
+  function \code{\link{heatmap}}; \item unlimited number of
+  annotation for \strong{both} columns and rows, with
+  simplified and more flexible interface; \item easy
+  specification of clustering methods and colors; \item
+  return clustering data, as well as grid grob object. }
 
   Please read the associated vignette for more information
   and sample code.
@@ -329,8 +329,7 @@ annotation = data.frame(Var1 = factor(1:p \%\% 2 == 0, labels = c("Class1", "Cla
 aheatmap(x, annCol = annotation)
 }
 \author{
-  Original version of \code{\link[pheatmap]{pheatmap}}:
-  Raivo Kolde <rkolde@gmail.com>
+  Original version of \code{pheatmap}: Raivo Kolde
 
   Enhancement into \code{aheatmap}: Renaud Gaujoux
 }

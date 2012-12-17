@@ -42,9 +42,9 @@ setClass('NMFStrategyOctave'
 	, contains = 'NMFStrategy'
 )
 
-##' Initialize method for \code{\linkS4class{NMFStrategyOctave}}.
-##' 
-##' @param mfiles .m files specifications.
+## #' Initialize method for \code{\linkS4class{NMFStrategyOctave}}.
+## #' 
+## #' @param mfiles .m files specifications.
 #setMethod('initialize', 'NMFStrategyOctave',
 #	function(.Object, ..., mfiles){
 #		

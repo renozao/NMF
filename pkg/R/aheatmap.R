@@ -1359,13 +1359,14 @@ subset_index <- function(x, margin, subset){
 #' enabling the easy drawing of multiple heatmaps on a single a plot -- at last!.
 #'
 #' The development of this function started as a fork of the function 
-#' \code{\link[pheatmap]{pheatmap}} from the package \code{pheatmap}, and provides
+#' \code{pheatmap} from the \pkg{pheatmap} package, and provides
 #' several enhancements such as:
 #' \itemize{
-#' \item it replicates the arguments of the base \code{\link{heatmap}} function 
-#' \item annotation of both columns and rows, with simplified interface
-#' \item easy specification of clustering methods and colors
-#' \item return clustering data and grid grob object
+#' \item argument names match those used in the base function \code{\link{heatmap}}; 
+#' \item unlimited number of annotation for \strong{both} columns and rows, 
+#' with simplified and more flexible interface;
+#' \item easy specification of clustering methods and colors;
+#' \item return clustering data, as well as grid grob object.
 #' }
 #' 
 #' Please read the associated vignette for more information and sample code.
@@ -1594,7 +1595,7 @@ subset_index <- function(x, margin, subset){
 #' \code{\link{grid.text}}, see \code{\link{gpar}}. 
 #' 
 #' @author 
-#' Original version of \code{\link[pheatmap]{pheatmap}}: Raivo Kolde <rkolde@@gmail.com>
+#' Original version of \code{pheatmap}: Raivo Kolde
 #' 
 #' Enhancement into \code{aheatmap}: Renaud Gaujoux
 #' 
