@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>scale.NMF. NMF 0.10</title>
+<title>scale.NMF. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -95,7 +95,44 @@
   up to one.</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># random 3-rank 10x5 NMF model</div><div class='input'>x <- rnmf(3, 10, 5)
+</div><div class='input'></div><div class='input'># rescale based on basis</div><div class='input'>colSums(basis(x))
+</div>
+<div class='output'>[1] 3.095580 5.177963 6.166968
+</div><div class='input'>colSums(basis(scale(x)))
+</div>
+<div class='output'>[1] 1 1 1
+</div><div class='input'></div><div class='input'>rx <- scale(x, 'basis', 10)
+</div><div class='input'>colSums(basis(rx))
+</div>
+<div class='output'>[1] 10 10 10
+</div><div class='input'>rowSums(coef(rx))
+</div>
+<div class='output'>[1] 0.6179552 1.7186253 1.2466699
+</div><div class='input'></div><div class='input'># rescale based on coef</div><div class='input'>rowSums(coef(x))
+</div>
+<div class='output'>[1] 1.996250 3.319114 2.021528
+</div><div class='input'>rowSums(coef(scale(x, 'coef')))
+</div>
+<div class='output'>[1] 1 1 1
+</div><div class='input'>rx <- scale(x, 'coef', 10)
+</div><div class='input'>rowSums(coef(rx))
+</div>
+<div class='output'>[1] 10 10 10
+</div><div class='input'>colSums(basis(rx))
+</div>
+<div class='output'>[1] 0.6179552 1.7186253 1.2466699
+</div><div class='input'></div><div class='input'># fitted target matrix is identical but the factors have been rescaled</div><div class='input'>rx <- scale(x, 'basis')
+</div><div class='input'>all.equal(fitted(x), fitted(rx))
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'>all.equal(basis(x), basis(rx))
+</div>
+<div class='output'>[1] "Mean relative difference: 0.7922511"
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>scale.NMF</li>

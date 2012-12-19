@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFstd-class. NMF 0.10</title>
+<title>NMFstd-class. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -209,7 +209,43 @@
   http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># create a completely empty NMFstd object</div><div class='input'>new('NMFstd')
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 0 
+basis/rank: 0 
+samples: 0 
+</div><div class='input'></div><div class='input'># create a NMF object based on one random matrix: the missing matrix is deduced</div><div class='input'># Note this only works when using factory method NMF</div><div class='input'>n <- 50; r <- 3;
+</div><div class='input'>w <- rmatrix(n, r)
+</div><div class='input'>nmfModel(W=w)
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 50 
+basis/rank: 3 
+samples: 0 
+</div><div class='input'></div><div class='input'># create a NMF object based on random (compatible) matrices</div><div class='input'>p <- 20
+</div><div class='input'>h <- rmatrix(r, p)
+</div><div class='input'>nmfModel(W=w, H=h)
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 50 
+basis/rank: 3 
+samples: 20 
+</div><div class='input'></div><div class='input'># create a NMF object based on incompatible matrices: generate an error</div><div class='input'>h <- rmatrix(r+1, p)
+</div><div class='input'>try( new('NMFstd', W=w, H=h) )
+</div><div class='input'>try( nmfModel(w, h) )
+</div><div class='input'></div><div class='input'># Giving target dimensions to the factory method allow for coping with dimension</div><div class='input'># incompatibilty (a warning is thrown in such case)</div><div class='input'>nmfModel(r, W=w, H=h)
+</div>
+<strong class='warning'>Warning message:
+nmfModel - Objective rank [3] is lower than the number of rows in H [4]: only the first 3 rows of H  will be used</strong>
+<div class='output'><Object of class:NMFstd>
+features: 50 
+basis/rank: 3 
+samples: 20 
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>NMFstd-class</li>

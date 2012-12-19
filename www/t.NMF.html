@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>t.NMF. NMF 0.10</title>
+<title>t.NMF. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -68,7 +68,26 @@
   requires specific handling.</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>x <- rnmf(3, 100, 20)
+</div><div class='input'>x
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 100 
+basis/rank: 3 
+samples: 20 
+</div><div class='input'># transpose</div><div class='input'>y <- t(x)
+</div><div class='input'>y
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 20 
+basis/rank: 3 
+samples: 100 
+</div><div class='input'></div><div class='input'># factors are swapped-transposed</div><div class='input'>stopifnot( identical(basis(y), t(coef(x))) )
+</div><div class='input'>stopifnot( identical(coef(y), t(basis(x))) )
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>t.NMF</li>

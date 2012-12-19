@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>seed. NMF 0.10</title>
+<title>seed. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -64,7 +64,7 @@
       <dt>rng</dt>
       <dd>rng setting to use. If not missing the RNG
   settings are set and restored on exit using
-  <code>setRNG</code>.
+  <code><a href='http://www.inside-r.org/r-doc/rngtools/rng'>setRNG</a></code>.
 
   All arguments in <code>...</code> are passed to teh seeding
   strategy.</dd>
@@ -127,7 +127,7 @@
   
       <p>seed<code>signature(x = "ANY", model = "ANY",
   method = "numeric")</code>: Use <code>method</code> to set the RNG
-  with <code>setRNG</code> and use method &#147;random&#148;
+  with <code><a href='http://www.inside-r.org/r-doc/rngtools/rng'>setRNG</a></code> and use method &#147;random&#148;
   to seed the NMF model.</p>
   
       <p>Note that in this case the RNG settings are not restored.

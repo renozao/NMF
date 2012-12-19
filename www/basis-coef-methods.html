@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>basis. NMF 0.10</title>
+<title>basis. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -296,7 +296,50 @@ scoef(object, ...)
       <p></span></p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># Scaled coefficient matrix</div><div class='input'>x <- rnmf(3, 10, 5)
+</div><div class='input'>scoef(x)
+</div>
+<div class='output'>          [,1]      [,2]      [,3]      [,4]     [,5]
+[1,] 0.3150486 0.5124899 0.3100705 0.5522595 0.360257
+[2,] 0.3039321 0.1340396 0.2543077 0.3410990 0.395144
+[3,] 0.3810193 0.3534705 0.4356219 0.1066415 0.244599
+</div><div class='input'>scoef(x, 100)
+</div>
+<div class='output'>         [,1]     [,2]     [,3]     [,4]    [,5]
+[1,] 31.50486 51.24899 31.00705 55.22595 36.0257
+[2,] 30.39321 13.40396 25.43077 34.10990 39.5144
+[3,] 38.10193 35.34705 43.56219 10.66415 24.4599
+</div><div class='input'># random standard NMF model</div><div class='input'>x <- rnmf(3, 10, 5)
+</div><div class='input'>basis(x)
+</div>
+<div class='output'>             [,1]       [,2]       [,3]
+ [1,] 0.551555614 0.66794515 0.84804168
+ [2,] 0.826328839 0.01377463 0.28222740
+ [3,] 0.886118395 0.23934840 0.03576217
+ [4,] 0.593378677 0.77364947 0.96811241
+ [5,] 0.007584995 0.07925967 0.44757247
+ [6,] 0.607410070 0.68161707 0.43667717
+ [7,] 0.255800406 0.38144307 0.67335707
+ [8,] 0.184677493 0.61636279 0.57681050
+ [9,] 0.346069047 0.65428167 0.28949557
+[10,] 0.855370360 0.87605034 0.82366409
+</div><div class='input'>coef(x)
+</div>
+<div class='output'>          [,1]       [,2]      [,3]        [,4]      [,5]
+[1,] 0.2241577 0.07897364 0.6841355 0.005165035 0.7684410
+[2,] 0.9151231 0.10788703 0.5113267 0.514683079 0.4900433
+[3,] 0.4039690 0.62131451 0.3755731 0.068350184 0.2759242
+</div><div class='input'></div><div class='input'># set matrix factors</div><div class='input'>basis(x) <- matrix(1, nrow(x), nbasis(x))
+</div><div class='input'>coef(x) <- matrix(1, nbasis(x), ncol(x))
+</div><div class='input'># set random factors</div><div class='input'>basis(x) <- rmatrix(basis(x))
+</div><div class='input'>coef(x) <- rmatrix(coef(x))
+</div><div class='input'></div><div class='input'># incompatible matrices generate an error:</div><div class='input'>try( coef(x) <- matrix(1, nbasis(x)-1, nrow(x)) )
+</div><div class='input'># but the low-level method allow it</div><div class='input'>.coef(x) <- matrix(1, nbasis(x)-1, nrow(x))
+</div><div class='input'>try( validObject(x) )
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>basis</li><li>.basis</li><li>.basis&lt;-</li><li>basis&lt;-</li><li>basis&lt;-,ANY-method</li><li>basis,ANY-method</li><li>.basis&lt;--methods</li><li>.basis-methods</li><li>basis&lt;--methods</li><li>basis-methods</li><li>.basis&lt;-,NMFfit,matrix-method</li><li>.basis,NMFfit-method</li><li>basis,NMFfitXn-method</li><li>.basis&lt;-,NMF,matrix-method</li><li>.basis,NMF-method</li><li>basis,NMF-method</li><li>.basis&lt;-,NMFstd,matrix-method</li><li>.basis,NMFstd-method</li><li>coef</li><li>.coef</li><li>.coef&lt;-</li><li>coef&lt;-</li><li>coef&lt;-,ANY-method</li><li>coefficients</li><li>coefficients-methods</li><li>coefficients,NMF-method</li><li>.coef&lt;--methods</li><li>.coef-methods</li><li>coef&lt;--methods</li><li>coef-methods</li><li>.coef&lt;-,NMFfit,matrix-method</li><li>.coef,NMFfit-method</li><li>coef,NMFfitXn-method</li><li>.coef&lt;-,NMF,matrix-method</li><li>.coef,NMF-method</li><li>coef,NMF-method</li><li>.coef&lt;-,NMFstd,matrix-method</li><li>.coef,NMFstd-method</li><li>loadings,NMF-method</li><li>scoef</li><li>scoef,matrix-method</li><li>scoef-methods</li><li>scoef,NMF-method</li>

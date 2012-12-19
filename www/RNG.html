@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>getRNG1. NMF 0.10</title>
+<title>getRNG1. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -96,7 +96,21 @@
       <p></span></p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># For multiple NMF runs, the RNG settings used for the first run is also stored</div><div class='input'>V <- rmatrix(20,10)
+</div><div class='input'>res <- nmf(V, 3, nrun=4)
+</div><div class='input'># RNG used for the best fit</div><div class='input'>getRNG(res)
+</div>
+<div class='output'>[1]         407 -1095383638  1851156330   771553762  -227471793  2129111752 -1286920462
+</div><div class='input'># RNG used for the first of all fits</div><div class='input'>getRNG1(res)
+</div>
+<div class='output'>[1]         407  1254024653  1918266922  1626888611 -1659892088 -1524593943  1829114262
+</div><div class='input'># they may differ if the best fit is not the first one</div><div class='input'>rng.equal(res, getRNG1(res))
+</div>
+<div class='output'>[1] FALSE
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>.getRNG</li><li>getRNG1</li><li>getRNG1-methods</li><li>getRNG1,NMFfitX1-method</li><li>getRNG1,NMFfitX-method</li><li>getRNG1,NMFfitXn-method</li><li>.getRNG-methods</li><li>.getRNG,NMFfitXn-method</li>

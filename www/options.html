@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf.options. NMF 0.10</title>
+<title>nmf.options. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -94,7 +94,83 @@ nmf.printOptions()</pre>
   way.</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># show all NMF specific options</div><div class='input'>nmf.printOptions()
+</div>
+<div class='output'><Package specific options: package:NMF>
+Registered: FALSE
+Options <as default>:
+List of 11
+ $ default.algorithm: chr "brunet"
+ $ default.seed     : chr "random"
+ $ error.track      : logi FALSE
+ $ track.interval   : num 30
+ $ gc               : num 50
+ $ parallel.backend :Class 'option_symlink'  chr "backend"
+ $ backend          : chr "par"
+ $ reproducible     : logi TRUE
+ $ verbose          : logi FALSE
+ $ debug            : logi FALSE
+ $ shared.memory    : logi TRUE
+</div><div class='input'></div><div class='input'># get some options</div><div class='input'>nmf.getOption('verbose')
+</div>
+<div class='output'>[1] FALSE
+</div><div class='input'>nmf.getOption('backend')
+</div>
+<div class='output'>[1] "par"
+</div><div class='input'># set new values</div><div class='input'>nmf.options(verbose=TRUE)
+</div><div class='input'>nmf.options(backend='mc', default.algorithm='lee')
+</div><div class='input'>nmf.printOptions()
+</div>
+<div class='output'><Package specific options: package:NMF>
+Registered: FALSE
+Options:
+List of 11
+ $ default.algorithm: chr "lee"
+ $ default.seed     : chr "random"
+ $ error.track      : logi FALSE
+ $ track.interval   : num 30
+ $ gc               : num 50
+ $ parallel.backend :Class 'option_symlink'  chr "backend"
+ $ backend          : chr "mc"
+ $ reproducible     : logi TRUE
+ $ verbose          : logi TRUE
+ $ debug            : logi FALSE
+ $ shared.memory    : logi TRUE
+Defaults:
+List of 11
+ $ default.algorithm: chr "brunet"
+ $ default.seed     : chr "random"
+ $ error.track      : logi FALSE
+ $ track.interval   : num 30
+ $ gc               : num 50
+ $ parallel.backend :Class 'option_symlink'  chr "backend"
+ $ backend          : chr "par"
+ $ reproducible     : logi TRUE
+ $ verbose          : logi FALSE
+ $ debug            : logi FALSE
+ $ shared.memory    : logi TRUE
+</div><div class='input'></div><div class='input'># reset to default</div><div class='input'>nmf.resetOptions()
+</div><div class='input'>nmf.printOptions()
+</div>
+<div class='output'><Package specific options: package:NMF>
+Registered: FALSE
+Options <as default>:
+List of 11
+ $ default.algorithm: chr "brunet"
+ $ default.seed     : chr "random"
+ $ error.track      : logi FALSE
+ $ track.interval   : num 30
+ $ gc               : num 50
+ $ parallel.backend :Class 'option_symlink'  chr "backend"
+ $ backend          : chr "par"
+ $ reproducible     : logi TRUE
+ $ verbose          : logi FALSE
+ $ debug            : logi FALSE
+ $ shared.memory    : logi TRUE
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>nmf.getOption</li><li>nmf.options</li><li>nmf.printOptions</li><li>nmf.resetOptions</li>

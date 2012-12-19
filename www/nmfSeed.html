@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfSeed. NMF 0.10</title>
+<title>nmfSeed. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -112,7 +112,18 @@ existsNMFSeed(name, exact = TRUE)</pre>
   http://linkinghub.elsevier.com/retrieve/pii/S0031320307004359>.</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># list all registered seeding methods</div><div class='input'>nmfSeed()
+</div>
+<div class='output'>[1] "none"   "random" "ica"    "nndsvd"
+</div><div class='input'># retrieve one of the methods</div><div class='input'>nmfSeed('ica')
+</div>
+<div class='output'><object of class:  NMFSeed >
+name:	 ica 
+method:	 <function> 
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>existsNMFSeed</li><li>nmfSeed</li>

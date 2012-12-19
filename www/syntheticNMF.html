@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>syntheticNMF. NMF 0.10</title>
+<title>syntheticNMF. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -118,7 +118,14 @@
   to produce data with known or clear classes of samples.</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)</div><div class='input'>n <- 50
+</div><div class='input'>counts <- c(5, 5, 8)
+</div><div class='input'></div><div class='input'># no noise</div><div class='input'>V <- syntheticNMF(n, counts, noise=FALSE)
+</div><div class='input'>## <strong>Not run</strong>: aheatmap(V)</div><div class='input'></div><div class='input'># with noise</div><div class='input'>V <- syntheticNMF(n, counts)
+</div><div class='input'>## <strong>Not run</strong>: aheatmap(V)</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>syntheticNMF</li>

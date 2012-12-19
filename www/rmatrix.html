@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>rmatrix. NMF 0.10</title>
+<title>rmatrix. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -134,7 +134,46 @@
       <p></span></p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## Generate a random matrix of a given size</div><div class='input'>rmatrix(5, 3)
+</div>
+<div class='output'>           [,1]      [,2]      [,3]
+[1,] 0.06243016 0.1101419 0.8997295
+[2,] 0.90294478 0.5133422 0.3080472
+[3,] 0.02825208 0.8322932 0.5568540
+[4,] 0.32196286 0.4457090 0.9991947
+[5,] 0.12814938 0.7559115 0.2020942
+</div><div class='input'></div><div class='input'></div><div class='input'>## Generate a random matrix of the same dimension of a template matrix</div><div class='input'>a <- matrix(1, 3, 4)
+</div><div class='input'>rmatrix(a)
+</div>
+<div class='output'>            [,1]       [,2]       [,3]      [,4]
+[1,] 0.005399961 0.02837716 0.93087594 0.8358895
+[2,] 0.304086372 0.87260267 0.04652877 0.5589668
+[3,] 0.496753415 0.93407865 0.83542936 0.8811505
+</div><div class='input'></div><div class='input'></div><div class='input'>## Specificy the distribution to use</div><div class='input'></div><div class='input'># the default is uniform</div><div class='input'>a <- rmatrix(1000, 50)
+</div><div class='input'>## <strong>Not run</strong>:  hist(a) </div><div class='input'></div><div class='input'># use normal ditribution</div><div class='input'>a <- rmatrix(1000, 50, rnorm)
+</div><div class='input'>## <strong>Not run</strong>:  hist(a) </div><div class='input'></div><div class='input'># extra arguments can be passed to the random variate generation function</div><div class='input'>a <- rmatrix(1000, 50, rnorm, mean=2, sd=0.5)
+</div><div class='input'>## <strong>Not run</strong>:  hist(a) </div><div class='input'># random matrix of the same dimension as another matrix</div><div class='input'>x <- matrix(3,4)
+</div><div class='input'>dim(rmatrix(x))
+</div>
+<div class='output'>[1] 4 1
+</div><div class='input'># generate noisy fitted target from an NMF model (the true model)</div><div class='input'>gr <- as.numeric(mapply(rep, 1:3, 3))
+</div><div class='input'>h <- outer(1:3, gr, '==') + 0
+</div><div class='input'>x <- rnmf(10, H=h)
+</div><div class='input'>y <- rmatrix(x)
+</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># # show heatmap of the noisy target matrix: block patterns should be clear</div><div class='input'># aheatmap(y)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'></div><div class='input'></div><div class='input'># test NMF algorithm on noisy data</div><div class='input'># add some noise to the true model (drawn from uniform [0,1])</div><div class='input'>res <- nmf(rmatrix(x), 3)
+</div><div class='input'>summary(res)
+</div>
+<div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun 
+       3.0000000        0.2710007        0.5078447        1.6109761      470.0000000        0.1720000        0.1720000        1.0000000 
+</div><div class='input'></div><div class='input'># add more noise to the true model (drawn from uniform [0,10])</div><div class='input'>res <- nmf(rmatrix(x, max=10), 3)
+</div><div class='input'>summary(res)
+</div>
+<div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun 
+       3.0000000        0.3853947        0.3687706       19.7067992      460.0000000        0.1720000        0.1720000        1.0000000 
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>rmatrix</li><li>rmatrix,ANY-method</li><li>rmatrix-methods</li><li>rmatrix,NMF-method</li><li>rmatrix,numeric-method</li>

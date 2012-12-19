@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>fcnnls. NMF 0.10</title>
+<title>fcnnls. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="
   Original MATLAB code : Van Benthem and Keenan
@@ -26,7 +26,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -190,7 +190,18 @@
   http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## Define a random nonnegative matrix matrix</div><div class='input'>n <- 200; p <- 20; r <- 3
+</div><div class='input'>V <- rmatrix(n, p)
+</div><div class='input'></div><div class='input'>## Compute the optimal matrix K for a given X matrix</div><div class='input'>X <- rmatrix(n, r)
+</div><div class='input'>res <- fcnnls(X, V)
+</div><div class='input'></div><div class='input'>## Compute the same thing using the Moore-Penrose generalized pseudoinverse</div><div class='input'>res <- fcnnls(X, V, pseudo=TRUE)
+</div><div class='input'></div><div class='input'>## It also works in the case of single vectors</div><div class='input'>y <- runif(n)
+</div><div class='input'>res <- fcnnls(X, y)
+</div><div class='input'># or</div><div class='input'>res <- fcnnls(X[,1], y)
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>fcnnls</li><li>fcnnls,ANY,numeric-method</li><li>fcnnls,matrix,matrix-method</li><li>fcnnls-methods</li><li>fcnnls,numeric,matrix-method</li>
