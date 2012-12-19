@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>randomize. NMF 0.10</title>
+<title>randomize. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -79,7 +79,25 @@
   data.</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>x <- matrix(1:32, 4, 8)
+</div><div class='input'>randomize(x)
+</div>
+<div class='output'>     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+[1,]    3    8   11   14   19   22   25   30
+[2,]    4    7    9   13   18   21   27   31
+[3,]    2    5   10   16   20   24   26   32
+[4,]    1    6   12   15   17   23   28   29
+</div><div class='input'>randomize(x)
+</div>
+<div class='output'>     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+[1,]    3    8    9   14   17   24   28   32
+[2,]    1    5   12   13   19   22   27   30
+[3,]    2    6   11   16   20   23   26   31
+[4,]    4    7   10   15   18   21   25   29
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>randomize</li>

@@ -241,7 +241,7 @@ test.nmf <- function(){
 	
 	# SNOW-type
 	cl <- makeCluster(2)
-	on.exit( stopCluster(cl))
+	on.exit( stopCluster(cl), add=TRUE)
 	.check('.pbackend=cl + SNOW-like cluster', .pbackend=cl)
 	library(doParallel)
 	registerDoParallel(cl)

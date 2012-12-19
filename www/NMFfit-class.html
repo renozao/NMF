@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfit-class. NMF 0.10</title>
+<title>NMFfit-class. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -133,7 +133,7 @@
   for the fit. Currently the settings are stored as an
   integer vector, the value of <code><a href='http://www.inside-r.org/r-doc/base/Random'>.Random.seed</a></code>
   at the time the object is created. It is initialized by
-  the <code>initialized</code> method. See <code>getRNG</code>
+  the <code>initialized</code> method. See <code><a href='http://www.inside-r.org/r-doc/rngtools/rng'>getRNG</a></code>
   for more details.</p>
   
       <p>distanceeither a single <code>"character"</code> string
@@ -355,7 +355,43 @@
       <p></span></p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># run default NMF algorithm on a random matrix</div><div class='input'>n <- 50; r <- 3; p <- 20
+</div><div class='input'>V <- rmatrix(n, p)
+</div><div class='input'>res <- nmf(V, r)
+</div><div class='input'></div><div class='input'># result class is NMFfit</div><div class='input'>class(res)
+</div>
+<div class='output'>[1] "NMFfit"
+attr(,"package")
+[1] "NMF"
+</div><div class='input'>isNMFfit(res)
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'></div><div class='input'># show result</div><div class='input'>res
+</div>
+<div class='output'><Object of class: NMFfit>
+ # Model:
+  <Object of class:NMFstd>
+  features: 50 
+  basis/rank: 3 
+  samples: 20 
+ # Details:
+  algorithm:  brunet 
+  seed:  random 
+  RNG: 403L, 608L, ..., -1662044055L [584f399267938b24e0f78425adc6521a]
+  distance metric:  'KL' 
+  residuals:  73.64819 
+  Iterations: 670 
+  Timing:
+     user  system elapsed 
+    0.276   0.000   0.274 
+</div><div class='input'></div><div class='input'># compute summary measures</div><div class='input'>summary(res, target=V)
+</div>
+<div class='output'>            rank sparseness.basis  sparseness.coef              rss             evar        residuals            niter              cpu          cpu.all             nrun 
+       3.0000000        0.1518974        0.4116923       64.1684436        0.8019828       73.6481924      670.0000000        0.2760000        0.2760000        1.0000000 
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>NMFfit</li><li>NMFfit-class</li>

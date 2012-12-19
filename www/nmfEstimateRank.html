@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfEstimateRank. NMF 0.10</title>
+<title>nmfEstimateRank. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -198,7 +198,13 @@
   http://www.ncbi.nlm.nih.gov/pubmed/18852176>.</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>set.seed(123456)
+</div><div class='input'>n <- 50; r <- 3; m <- 20
+</div><div class='input'>V <- syntheticNMF(n, r, m)
+</div><div class='input'></div><div class='input'># Use a seed that will be set before each first run</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># res <- nmfEstimateRank(V, seq(2,5), method='brunet', nrun=10, seed=123456)</div><div class='input'># # or equivalently</div><div class='input'># res <- nmf(V, seq(2,5), method='brunet', nrun=10, seed=123456)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'></div><div class='input'># plot all the measures</div><div class='input'>## <strong>Not run</strong>: plot(res)</div><div class='input'># or only one: e.g. the cophenetic correlation coefficient</div><div class='input'>## <strong>Not run</strong>: plot(res, 'cophenetic')</div><div class='input'></div><div class='input'># run same estimation on randomized data</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># rV <- randomize(V)</div><div class='input'># rand <- nmfEstimateRank(rV, seq(2,5), method='brunet', nrun=10, seed=123456)</div><div class='input'># plot(res, rand)</div><div class='input'># ## <strong>End(Not run)</strong></div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>nmfEstimateRank</li><li>plot.NMF.rank</li>

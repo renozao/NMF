@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>aheatmap. NMF 0.10</title>
+<title>aheatmap. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="
   Original version of &lt;code&gt;pheatmap&lt;/code&gt;: Raivo Kolde
@@ -24,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -388,7 +388,22 @@
   and sample code.</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## See the demo 'aheatmap' for more examples:</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># demo('aheatmap')</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'></div><div class='input'># Generate random data</div><div class='input'>n <- 50; p <- 20
+</div><div class='input'>x <- abs(rmatrix(n, p, rnorm, mean=4, sd=1))
+</div><div class='input'>x[1:10, seq(1, 10, 2)] <- x[1:10, seq(1, 10, 2)] + 3
+</div><div class='input'>x[11:20, seq(2, 10, 2)] <- x[11:20, seq(2, 10, 2)] + 2
+</div><div class='input'>rownames(x) <- paste("ROW", 1:n)
+</div><div class='input'>colnames(x) <- paste("COL", 1:p)
+</div><div class='input'></div><div class='input'>## Default heatmap</div><div class='input'>aheatmap(x)
+</div><p><img src='aheatmap-ex1.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'>## Distance methods</div><div class='input'>aheatmap(x, Rowv = "correlation")
+</div><p><img src='aheatmap-ex2.png' alt='' width='400' height='400' /></p><div class='input'>aheatmap(x, Rowv = "man") # partially matched to 'manhattan'
+</div><p><img src='aheatmap-ex3.png' alt='' width='400' height='400' /></p><div class='input'>aheatmap(x, Rowv = "man", Colv="binary")
+</div><p><img src='aheatmap-ex4.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'>#' # Generate column annotations</div><div class='input'>annotation = data.frame(Var1 = factor(1:p %% 2 == 0, labels = c("Class1", "Class2")), Var2 = 1:10)
+</div><div class='input'>aheatmap(x, annCol = annotation)
+</div><p><img src='aheatmap-ex5.png' alt='' width='400' height='400' /></p></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>aheatmap</li>

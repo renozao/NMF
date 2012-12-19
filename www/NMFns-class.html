@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFns-class. NMF 0.10</title>
+<title>NMFns-class. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -164,7 +164,35 @@
   Intell_, *28*, pp. 403-415.</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># create a completely empty NMFns object</div><div class='input'>new('NMFns')
+</div>
+<div class='output'><Object of class:NMFns>
+features: 0 
+basis/rank: 0 
+samples: 0 
+theta: 0.5 
+</div><div class='input'></div><div class='input'># create a NMF object based on random (compatible) matrices</div><div class='input'>n <- 50; r <- 3; p <- 20
+</div><div class='input'>w <- rmatrix(n, r)
+</div><div class='input'>h <- rmatrix(r, p)
+</div><div class='input'>nmfModel(model='NMFns', W=w, H=h)
+</div>
+<div class='output'><Object of class:NMFns>
+features: 50 
+basis/rank: 3 
+samples: 20 
+theta: 0.5 
+</div><div class='input'></div><div class='input'># apply Nonsmooth NMF algorithm to a random target matrix</div><div class='input'>V <- rmatrix(n, p)
+</div><div class='input'>## <strong>Not run</strong>: nmf(V, r, 'ns')</div><div class='input'></div><div class='input'># random nonsmooth NMF model</div><div class='input'>rnmf(3, 10, 5, model='NMFns', theta=0.3)
+</div>
+<div class='output'><Object of class:NMFns>
+features: 10 
+basis/rank: 3 
+samples: 5 
+theta: 0.3 
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>NMFns-class</li>

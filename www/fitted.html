@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>fitted. NMF 0.10</title>
+<title>fitted. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -157,7 +157,14 @@
       <p></span></p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># random standard NMF model</div><div class='input'>x <- rnmf(3, 10, 5)
+</div><div class='input'>all.equal(fitted(x), basis(x) %*% coef(x))
+</div>
+<div class='output'>[1] TRUE
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>fitted</li><li>fitted-methods</li><li>fitted,NMFfit-method</li><li>fitted,NMF-method</li><li>fitted,NMFns-method</li><li>fitted,NMFOffset-method</li><li>fitted,NMFstd-method</li>

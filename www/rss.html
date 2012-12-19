@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>rss. NMF 0.10</title>
+<title>rss. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -162,7 +162,31 @@ evar(object, ...)
   http://www.ncbi.nlm.nih.gov/pubmed/10548103>.</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># RSS bewteeen random matrices</div><div class='input'>x <- rmatrix(20,10, max=50)
+</div><div class='input'>y <- rmatrix(20,10, max=50)
+</div><div class='input'>rss(x, y)
+</div>
+<div class='output'>[1] 78804.71
+</div><div class='input'>rss(x, x + rmatrix(x, max=0.1))
+</div>
+<div class='output'>[1] 0.6619555
+</div><div class='input'># RSS between an NMF model and a target matrix</div><div class='input'>x <- rmatrix(20, 10)
+</div><div class='input'>y <- rnmf(3, x) # random compatible model
+</div><div class='input'>rss(y, x)
+</div>
+<div class='output'>[1] 66.54412
+</div><div class='input'></div><div class='input'># fit a model with nmf(): one should do better</div><div class='input'>y2 <- nmf(x, 3) # default minimizes the KL-divergence
+</div><div class='input'>rss(y2, x)
+</div>
+<div class='output'>[1] 7.860229
+</div><div class='input'>y2 <- nmf(x, 3, 'lee') # 'lee' minimizes the RSS
+</div><div class='input'>rss(y2, x)
+</div>
+<div class='output'>[1] 7.426685
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>evar</li><li>evar,ANY-method</li><li>evar-methods</li><li>rss</li><li>rss,ANY-method</li><li>rss,matrix-method</li><li>rss-methods</li>

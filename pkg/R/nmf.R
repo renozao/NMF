@@ -1040,7 +1040,7 @@ checkErrors <- function(object, element=NULL){
 #' res
 #' summary(res, class=groups)
 #' 
-#' #' # run default algorithm multiple times keeping all the fits
+#' # run default algorithm multiple times keeping all the fits
 #' res <- nmf(x, 3, nrun=10, .options='k')
 #' res
 #' summary(res, class=groups)
@@ -1111,6 +1111,22 @@ checkErrors <- function(object, element=NULL){
 #' # Passs a callback function which throws an error
 #' cb <- function(){ i<-0; function(object){ i <<- i+1; if( i == 1 ) stop('SOME BIG ERROR'); summary(object) }}
 #' res <- nmf(x, 3, nrun=3, .callback=cb())
+#' 
+#' ## PARALLEL COMPUTATIONS
+#' # try using 3 cores, but use sequential if not possible 
+#' res <- nmf(x, 3, nrun=3, .options='p3')
+#' 
+#' # force using 3 cores, error if not possible
+#' res <- nmf(x, 3, nrun=3, .options='P3')
+#' 
+#' # use externally defined cluster
+#' library(parallel)
+#' cl <- makeCluster(6)
+#' res <- nmf(x, 3, nrun=3, .pbackend=cl)
+#' 
+#' # use externally registered backend
+#' registerDoParallel(cl)
+#' res <- nmf(x, 3, nrun=3, .pbackend=NULL)
 #' 
 setMethod('nmf', signature(x='matrix', rank='numeric', method='NMFStrategy'),
 #function(x, rank, method, seed='random', nrun=1, keep.all=FALSE, optimized=TRUE, init='NMF', track, verbose, ...)

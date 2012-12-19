@@ -17,9 +17,12 @@ NULL
 
 # returns the number of cores to use in all NMF computation when no number is
 # specified by the user
-getMaxCores <- function(){
+getMaxCores <- function(limit=TRUE){
 	#ceiling(parallel::detectCores()/2)
-	parallel::detectCores()	
+	n <- parallel::detectCores()
+	# limit to number of cores specified in options if asked for
+	if( limit ) n <- getOption('cores', n)
+	n
 }
 
 #' Utilities and Extensions for Foreach Loops
@@ -678,7 +681,7 @@ setupBackend <- function(spec, optional, backend, verbose=FALSE){
 	}
 	
 	# test if requested number of cores is actually available
-	NCORES <- getMaxCores()
+	NCORES <- getMaxCores(limit=FALSE)
 	if( verbose > 2 ) message("# Check available cores ... [", NCORES, ']')
 	if( verbose > 2 ) message("# Check requested cores ... ", appendLF=FALSE)
 	ncores <- if( doSEQ ) 1L

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>is.nmf. NMF 0.10</title>
+<title>is.nmf. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -150,7 +150,64 @@ isNMFfit(object, recursive = TRUE)</pre>
   <a href = 'https://stat.ethz.ch/pipermail/r-devel/2011-June/061357.html'>https://stat.ethz.ch/pipermail/r-devel/2011-June/061357.html</a></p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># test if an object is an NMF model, i.e. that it implements the NMF interface</div><div class='input'>is.nmf(1:4)
+</div>
+<div class='output'>[1] FALSE
+</div><div class='input'>is.nmf('NMFstd')
+</div>
+<div class='output'>[1] FALSE
+</div><div class='input'>is.nmf('NMFblah')
+</div>
+<div class='output'>[1] FALSE
+</div><div class='input'>is.nmf( nmfModel(3) )
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'>is.nmf( nmf(rmatrix(20,10), 3) )
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'># empty model</div><div class='input'>is.empty.nmf( nmfModel(3) )
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'># non empty models</div><div class='input'>is.empty.nmf( nmfModel(3, 10, 0) )
+</div>
+<div class='output'>[1] FALSE
+</div><div class='input'>is.empty.nmf( rnmf(3, 10, 5) )
+</div>
+<div class='output'>[1] FALSE
+</div><div class='input'>## Testing results of fits</div><div class='input'>	# generate a random</div><div class='input'>	V <- rmatrix(20, 10)
+</div><div class='input'></div><div class='input'>	# single run -- using maxIter to speed up the example</div><div class='input'>	res <- nmf(V, 3, maxIter=3L)
+</div><div class='input'>	isNMFfit(res)
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'></div><div class='input'>	# multiple runs - keeping single fit</div><div class='input'>	resm <- nmf(V, 3, nrun=3, maxIter=3L)
+</div><div class='input'>	isNMFfit(resm)
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'></div><div class='input'>	# multiple runs - keeping all fits</div><div class='input'>	resM <- nmf(V, 3, nrun=3, .opt='k', maxIter=3L)
+</div><div class='input'>	isNMFfit(resM)
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'></div><div class='input'>	# with a list of results</div><div class='input'>	isNMFfit(list(res, resm, resM, 'not a result'))
+</div>
+<div class='output'>[1]  TRUE  TRUE  TRUE FALSE
+</div><div class='input'>	isNMFfit(list(res, list(resm, resM), 'not a result')) # list of list
+</div>
+<div class='output'>[[1]]
+[1] TRUE
+
+[[2]]
+[1] TRUE TRUE
+
+[[3]]
+[1] FALSE
+
+</div><div class='input'>	isNMFfit(list(res, resm, resM, 'not a result'), recursive=FALSE)
+</div>
+<div class='output'>[1] FALSE
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>hasBasis</li><li>hasCoef</li><li>is.empty.nmf</li><li>is.nmf</li><li>isNMFfit</li><li>is.partial.nmf</li>

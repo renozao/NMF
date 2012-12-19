@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>profplot. NMF 0.10</title>
+<title>profplot. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -138,7 +138,24 @@
   profiles.</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># create a random target matrix</div><div class='input'>v <- rmatrix(50, 10)
+</div><div class='input'></div><div class='input'># fit a single NMF model</div><div class='input'>res <- nmf(v, 3)
+</div><div class='input'>profplot(res)
+</div><p><img src='profplot-ex1.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># ordering according to first profile</div><div class='input'>profplot(res, Colv=1) # increasing
+</div><p><img src='profplot-ex2.png' alt='' width='400' height='400' /></p><div class='input'>profplot(res, Colv=-1) # decreasing
+</div><p><img src='profplot-ex3.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># fit a multi-run NMF model</div><div class='input'>res2 <- nmf(v, 3, nrun=3)
+</div><div class='input'>profplot(res2)
+</div><p><img src='profplot-ex4.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># draw a profile correlation plot: this show how the basis components are</div><div class='input'># returned in an unpredictable order</div><div class='input'>profplot(res, res2)
+</div><p><img src='profplot-ex5.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># looking at all the correlations allow to order the components in a "common" order</div><div class='input'>profcor(res, res2)
+</div>
+<div class='output'>           [,1]       [,2]       [,3]
+[1,]  0.9999041 -0.3570973 -0.6357179
+[2,] -0.6441023 -0.4674412  0.9988413
+[3,] -0.3814908  0.9986018 -0.4605362
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>profplot</li><li>profplot.default</li>

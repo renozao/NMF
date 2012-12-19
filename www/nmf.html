@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf. NMF 0.10</title>
+<title>nmf. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -348,7 +348,7 @@
   </span></dd>
       <dt>.pbackend</dt>
       <dd>specification of the
-  <code>foreach</code> parallel backend to register and/or
+  <code><a href='http://www.inside-r.org/r-doc/foreach/foreach'>foreach</a></code> parallel backend to register and/or
   use when running in parallel mode. See options <code>p</code>
   and <code>P</code> in argument <code>.options</code> for how to
   enable this mode. Note that any backend that is
@@ -359,7 +359,7 @@
   Currently it accepts the following values: <span class='describe'>
 
   &#145;par&#146; use the backend(s) defined by the
-  package <code>doParallel</code>; a numeric
+  package <code><a href='http://www.inside-r.org/r-doc/doParallel/doParallel-package'>doParallel</a></code>; a numeric
   value use the specified number of cores with
   <code>doParallel</code> backend; &#145;seq&#146; use the
   foreach sequential backend <code>doSEQ</code>;
@@ -806,7 +806,19 @@
   http://doi.wiley.com/10.1002/cem.889>.</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># Only basic calls are presented in this manpage.</div><div class='input'># Many more examples are provided in the demo file nmf.R</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># demo('nmf')</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'></div><div class='input'># random data</div><div class='input'>x <- rmatrix(20,10)
+</div><div class='input'></div><div class='input'># run default algorithm with rank 2</div><div class='input'>res <- nmf(x, 2)
+</div><div class='input'></div><div class='input'># specify the algorithm</div><div class='input'>res <- nmf(x, 2, 'lee')
+</div><div class='input'></div><div class='input'># get verbose message on what is going on</div><div class='input'>res <- nmf(x, 2, .options='v')
+</div>
+<strong class='message'>NMF algorithm: 'brunet'</strong>
+<strong class='message'>NMF seeding method: random</strong>
+<div class='output'>Iterations: 1 50 100 150 200 250 300 350 400 450 500 550 600 650
+DONE (stopped at 670/2000 iterations)
+</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># # more messages</div><div class='input'># res <- nmf(x, 2, .options='v2')</div><div class='input'># # even more</div><div class='input'># res <- nmf(x, 2, .options='v3')</div><div class='input'># # and so on ...</div><div class='input'># ## <strong>End(Not run)</strong></div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>nmf</li><li>nmf,data.frame,ANY,ANY-method</li><li>nmf,formula,ANY,ANY-method</li><li>nmf,matrix,data.frame,ANY-method</li><li>nmf,matrix,matrix,ANY-method</li><li>nmf,matrix,missing,ANY-method</li><li>nmf,matrix,NMF,ANY-method</li><li>nmf,matrix,NULL,ANY-method</li><li>nmf,matrix,numeric,character-method</li><li>nmf,matrix,numeric,function-method</li><li>nmf,matrix,numeric,list-method</li><li>nmf,matrix,numeric,missing-method</li><li>nmf,matrix,numeric,NMFStrategy-method</li><li>nmf,matrix,numeric,NULL-method</li><li>nmf-methods</li>

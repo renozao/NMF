@@ -892,13 +892,13 @@ test.parallel <- function(){
 	
 	# identical results with .pbackend=cluster
 	cl <- makeCluster(2)
-	on.exit( stopCluster(cl) )
+	on.exit( stopCluster(cl), add=TRUE)
 	res <- nmf(V,r, nrun=3, .pbackend=cl, seed=123456)
 	checkTrue( nmf.equal(res, ref), "Identical results with seeded .pbackend=cl and standard sequential" )
 	
 	# identical results with .pbackend=NULL and registered backend
 	registerDoParallel(cl)
-	on.exit( registerDoSEQ() )
+	on.exit( registerDoSEQ(), add=TRUE)
 	res <- nmf(V,r, nrun=3, .pbackend=NULL, seed=123456)
 	checkTrue( nmf.equal(res, ref), "Identical results with seeded .pbackend=NULL + registered backend and standard sequential" )
 	

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>summary. NMF 0.10</title>
+<title>summary. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -150,7 +150,44 @@
       <p></span></p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># random NMF model</div><div class='input'>x <- rnmf(3, 20, 12)
+</div><div class='input'>summary(x)
+</div>
+<div class='output'>            rank sparseness.basis  sparseness.coef 
+       3.0000000        0.1812183        0.2739649 
+</div><div class='input'>summary(x, gl(3, 4))
+</div>
+<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy 
+       3.0000000        0.1812183        0.2739649        0.6666667        0.5707156 
+</div><div class='input'>summary(x, target=rmatrix(x))
+</div>
+<div class='output'>            rank sparseness.basis  sparseness.coef              rss             evar 
+       3.0000000        0.1812183        0.2739649       73.7833080        0.7828714 
+</div><div class='input'>summary(x, gl(3,4), target=rmatrix(x))
+</div>
+<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar 
+       3.0000000        0.1812183        0.2739649        0.6666667        0.5707156       78.7058128        0.7740797 
+</div><div class='input'># generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)</div><div class='input'>n <- 50; counts <- c(5, 5, 8);
+</div><div class='input'>V <- syntheticNMF(n, counts)
+</div><div class='input'>cl <- unlist(mapply(rep, 1:3, counts))
+</div><div class='input'></div><div class='input'># perform default NMF with rank=2</div><div class='input'>x2 <- nmf(V, 2)
+</div><div class='input'>summary(x2, cl, V)
+</div>
+<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals            niter              cpu 
+       2.0000000        0.3009217        0.6407126        0.7222222        0.4380081      427.5718159        0.5603840      326.4298574      450.0000000        0.2080000 
+         cpu.all             nrun 
+       0.2080000        1.0000000 
+</div><div class='input'># perform default NMF with rank=2</div><div class='input'>x3 <- nmf(V, 3)
+</div><div class='input'>summary(x2, cl, V)
+</div>
+<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals            niter              cpu 
+       2.0000000        0.3009217        0.6407126        0.7222222        0.4380081      427.5718159        0.5603840      326.4298574      450.0000000        0.2080000 
+         cpu.all             nrun 
+       0.2080000        1.0000000 
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>summary</li><li>summary-methods</li><li>summary-NMF</li><li>summary,NMFfit-method</li><li>summary,NMFfitX-method</li><li>summary,NMF-method</li>

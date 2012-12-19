@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>compare-NMF. NMF 0.10</title>
+<title>compare-NMF. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -223,7 +223,23 @@
       <p></span></p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>x <- rmatrix(20,10)
+</div><div class='input'>res <- nmf(x, 3)
+</div><div class='input'>res2 <- nmf(x, 2, 'lee')
+</div><div class='input'></div><div class='input'># compare arguments</div><div class='input'>compare(res, res2, target=x)
+</div>
+<div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef       rss      evar residuals niter   cpu cpu.all nrun
+1 brunet random   1        KL    3        0.3279908       0.3600965  8.256944 0.8742491  9.615037   500 0.180   0.180    1
+2    lee random   2 euclidean    2        0.2160221       0.2444117 11.025567 0.8320837  5.512784   570 0.308   0.308    1
+</div><div class='input'># compare elements of a list</div><div class='input'>compare(list(res, res2), target=x)
+</div>
+<div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef       rss      evar residuals niter   cpu cpu.all nrun
+1 brunet random   1        KL    3        0.3279908       0.3600965  8.256944 0.8742491  9.615037   500 0.180   0.180    1
+2    lee random   2 euclidean    2        0.2160221       0.2444117 11.025567 0.8320837  5.512784   570 0.308   0.308    1
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>compare,list-method</li><li>compare-NMF</li><li>compare,NMFfit-method</li><li>consensusmap,list-method</li><li>consensusmap,NMF.rank-method</li><li>plot,NMFList,missing-method</li><li>summary,NMFList-method</li>

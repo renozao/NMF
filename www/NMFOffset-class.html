@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFOffset-class. NMF 0.10</title>
+<title>NMFOffset-class. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -158,7 +158,35 @@
   http://www.ncbi.nlm.nih.gov/pubmed/18229692>.</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># create a completely empty NMF object</div><div class='input'>new('NMFOffset')
+</div>
+<div class='output'><Object of class:NMFOffset>
+features: 0 
+basis/rank: 0 
+samples: 0 
+offset: none
+</div><div class='input'></div><div class='input'># create a NMF object based on random (compatible) matrices</div><div class='input'>n <- 50; r <- 3; p <- 20
+</div><div class='input'>w <- rmatrix(n, r)
+</div><div class='input'>h <- rmatrix(r, p)
+</div><div class='input'>nmfModel(model='NMFOffset', W=w, H=h, offset=rep(0.5, nrow(w)))
+</div>
+<div class='output'><Object of class:NMFOffset>
+features: 50 
+basis/rank: 3 
+samples: 20 
+offset: none
+</div><div class='input'></div><div class='input'># apply Nonsmooth NMF algorithm to a random target matrix</div><div class='input'>V <- rmatrix(n, p)
+</div><div class='input'>## <strong>Not run</strong>: nmf(V, r, 'offset')</div><div class='input'></div><div class='input'># random NMF model with offset</div><div class='input'>rnmf(3, 10, 5, model='NMFOffset')
+</div>
+<div class='output'><Object of class:NMFOffset>
+features: 10 
+basis/rank: 3 
+samples: 5 
+offset: [ 0.4340462 0.6775427 0.224064 0.5037214 0.7155789 ... ]
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>initialize,NMFOffset-method</li><li>NMFOffset-class</li>

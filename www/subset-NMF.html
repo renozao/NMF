@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>[,NMF,ANY,ANY,ANY-method. NMF 0.10</title>
+<title>[,NMF,ANY,ANY,ANY-method. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -158,7 +158,124 @@
       <p></p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># create a dummy NMF object that highlight the different way of subsetting</div><div class='input'>a <- nmfModel(W=outer(seq(1,5),10^(0:2)), H=outer(10^(0:2),seq(-1,-10)))
+</div><div class='input'>basisnames(a) <- paste('b', 1:nbasis(a), sep='')
+</div><div class='input'>rownames(a) <- paste('f', 1:nrow(a), sep='')
+</div><div class='input'>colnames(a) <- paste('s', 1:ncol(a), sep='')
+</div><div class='input'></div><div class='input'># or alternatively:</div><div class='input'># dimnames(a) <- list( features=paste('f', 1:nrow(a), sep=''), samples=paste('s', 1:ncol(a), sep=''), basis=paste('b', 1:nbasis(a)) )</div><div class='input'></div><div class='input'># look at the resulting NMF object</div><div class='input'>a
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 5 
+basis/rank: 3 
+samples: 10 
+</div><div class='input'>basis(a)
+</div>
+<div class='output'>   b1 b2  b3
+f1  1 10 100
+f2  2 20 200
+f3  3 30 300
+f4  4 40 400
+f5  5 50 500
+</div><div class='input'>coef(a)
+</div>
+<div class='output'>     s1   s2   s3   s4   s5   s6   s7   s8   s9   s10
+b1   -1   -2   -3   -4   -5   -6   -7   -8   -9   -10
+b2  -10  -20  -30  -40  -50  -60  -70  -80  -90  -100
+b3 -100 -200 -300 -400 -500 -600 -700 -800 -900 -1000
+</div><div class='input'></div><div class='input'># extract basis components</div><div class='input'>a[1]
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 5 
+basis/rank: 1 
+samples: 10 
+</div><div class='input'>a[1, drop=FALSE] # not dropping matrix dimension
+</div>
+<div class='output'>   b1
+f1  1
+f2  2
+f3  3
+f4  4
+f5  5
+</div><div class='input'>a[2:3]
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 5 
+basis/rank: 2 
+samples: 10 
+</div><div class='input'></div><div class='input'># subset on the features</div><div class='input'>a[1,]
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 1 
+basis/rank: 3 
+samples: 10 
+</div><div class='input'>a[2:4,]
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 3 
+basis/rank: 3 
+samples: 10 
+</div><div class='input'># dropping the NMF-class wrapping => return subset basis matrix</div><div class='input'>a[2:4,, drop=TRUE]
+</div>
+<div class='output'>   b1 b2  b3
+f2  2 20 200
+f3  3 30 300
+f4  4 40 400
+</div><div class='input'></div><div class='input'># subset on the samples</div><div class='input'>a[,1]
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 5 
+basis/rank: 3 
+samples: 1 
+</div><div class='input'>a[,2:4]
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 5 
+basis/rank: 3 
+samples: 3 
+</div><div class='input'># dropping the NMF-class wrapping => return subset coef matrix</div><div class='input'>a[,2:4, drop=TRUE]
+</div>
+<div class='output'>     s2   s3   s4
+b1   -2   -3   -4
+b2  -20  -30  -40
+b3 -200 -300 -400
+</div><div class='input'></div><div class='input'># subset on the basis => subsets simultaneously basis and coef matrix</div><div class='input'>a[,,1]
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 5 
+basis/rank: 1 
+samples: 10 
+</div><div class='input'>a[,,2:3]
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 5 
+basis/rank: 2 
+samples: 10 
+</div><div class='input'>a[4:5,,2:3]
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 2 
+basis/rank: 2 
+samples: 10 
+</div><div class='input'>a[4:5,,2:3, drop=TRUE] # return subset basis matrix
+</div>
+<div class='output'>   b2  b3
+f4 40 400
+f5 50 500
+</div><div class='input'>a[,4:5,2:3, drop=TRUE] # return subset coef matrix
+</div>
+<div class='output'>     s4   s5
+b2  -40  -50
+b3 -400 -500
+</div><div class='input'></div><div class='input'># 'drop' has no effect here</div><div class='input'>a[,,2:3, drop=TRUE]
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 5 
+basis/rank: 2 
+samples: 10 
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>[,NMF,ANY,ANY,ANY-method</li>

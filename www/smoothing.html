@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>smoothing. NMF 0.10</title>
+<title>smoothing. NMF 0.10.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10</a>
+      <a class="brand" href="index.html">NMF 0.10.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -79,7 +79,23 @@
   <code><a href='NMFns-class.html'>NMFns-class</a></code> for more details).</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>x <- nmfModel(3, model='NMFns')
+</div><div class='input'>smoothing(x)
+</div>
+<div class='output'>          [,1]      [,2]      [,3]
+[1,] 0.6666667 0.1666667 0.1666667
+[2,] 0.1666667 0.6666667 0.1666667
+[3,] 0.1666667 0.1666667 0.6666667
+</div><div class='input'>smoothing(x, 0.1)
+</div>
+<div class='output'>           [,1]       [,2]       [,3]
+[1,] 0.93333333 0.03333333 0.03333333
+[2,] 0.03333333 0.93333333 0.03333333
+[3,] 0.03333333 0.03333333 0.93333333
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>smoothing</li>
