@@ -64,6 +64,16 @@
 
   \item{maxIter}{maximum number of iterations to perform.}
 
+  \item{mfiles}{.m files specifications. Runs the NMF
+  algorithms implemented by the Octave/Matlab function
+  associated with the strategy -- and stored in slot
+  \code{'algorithm'} of \code{object}.
+
+  This method is usually not called directly, but only via
+  the function \code{\link{nmf}}, which takes care of many
+  other details such as seeding the computation, handling
+  RNG settings, or setting up parallel computations.}
+
   \item{object}{an object computed using some algorithm, or
   that describes an algorithm itself.}
 
@@ -164,15 +174,8 @@
   \code{y}. }
 
   \item{run}{\code{signature(object = "NMFStrategyOctave",
-  y = "matrix", x = "NMFfit")}: Runs the NMF algorithms
-  implemented by the Octave/Matlab function associated with
-  the strategy -- and stored in slot \code{'algorithm'} of
-  \code{object}.
-
-  This method is usually not called directly, but only via
-  the function \code{\link{nmf}}, which takes care of many
-  other details such as seeding the computation, handling
-  RNG settings, or setting up parallel computations. }
+  y = "matrix", x = "NMFfit")}: Initialize method for
+  \code{\linkS4class{NMFStrategyOctave}}. }
 
   }
 }

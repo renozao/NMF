@@ -40,8 +40,8 @@
 
   \S4method{nmf}{matrix,numeric,NMFStrategy}(x, rank,
     method, seed = nmf.getOption("default.seed"),
-    nrun = if (length(rank) > 1) 30 else 1, model = NULL,
-    .options = list(),
+    rng = NULL, nrun = if (length(rank) > 1) 30 else 1,
+    model = NULL, .options = list(),
     .pbackend = nmf.getOption("backend"), .callback = NULL,
     ...)
 }
@@ -159,6 +159,10 @@
   respectively. }
 
   }}
+
+  \item{rng}{rng specification for the run(s). This
+  argument should be used to set the the RNG seed, while
+  still specifying the seeding method argument \var{seed}.}
 
   \item{model}{specification of the type of NMF model to
   use.
@@ -671,9 +675,9 @@
   to favour sparse basis matrices (for \sQuote{snmf/l}) or
   sparse coefficient matrices (for \sQuote{snmf/r}).
 
-  Stopping criterion: built-in within the workhorse
-  function \code{.nmfsh_comb}, based on the KKT optimality
-  conditions. }
+  Stopping criterion: built-in within the internal
+  workhorse function \code{nmf_snmf}, based on the KKT
+  optimality conditions. }
 
   }
 }

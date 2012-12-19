@@ -395,7 +395,7 @@ gfile <- function(filename, width, height, ...){
 			jpg = function(x, ...) jpeg(x, ...),
 			tiff = function(x, ...) tiff(x, compression = "lzw", ...),
 			bmp = function(x, ...) bmp(x, ...),
-			stop("File type should be: pdf, png, bmp, jpg, tiff")
+			stop("File type should be: pdf, svg, png, bmp, jpg, tiff")
 	)
 	
 	args <- c(list(filename), list(...))	
