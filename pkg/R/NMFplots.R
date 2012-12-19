@@ -11,7 +11,7 @@ sum2one <- function(x){
 }
 
 #' @import grDevices
-corplot <- function(x, y, legend=TRUE, pvalue=TRUE, ..., add=FALSE){
+corplot <- function(x, y, legend=TRUE, confint=TRUE, ..., add=FALSE){
 	
 	cols <- rainbow(ncol(x))
 	
@@ -34,17 +34,21 @@ corplot <- function(x, y, legend=TRUE, pvalue=TRUE, ..., add=FALSE){
 	# add perfect match line
 	abline(a=0, b=1)	
 	
-#	gco <- summary(lm(as.numeric(y) ~ as.numeric(x)))
+	gco <- lm(as.numeric(y) ~ -1 + as.numeric(x))
+	rsq <- CI.Rsqlm(gco)
 	gco <- cor.test( as.numeric(x), as.numeric(y) )
 	
 	# add legend if requested
 	if( legend ){
 		# separate correlations
 		lco <- t(sapply(1:ncol(x), function(i){
-				z <- as.numeric(cor.test(x[,i], y[,i])[c('estimate', 'p.value')])
-				z[1] <- round.pretty(z[1], 2)
-				z[2] <- round.pretty(z[2], 3)
-				z
+				co <- lm(y[,i] ~ -1 + x[,i])
+				rsq <- CI.Rsqlm(co)
+				return(round(c(Rsq=rsq$Rsq, int=rsq$UCL - rsq$Rsq), 2))
+#				z <- as.numeric(cor.test(x[,i], y[,i])[c('estimate', 'p.value')])
+#				z[1] <- round.pretty(z[1], 2)
+#				z[2] <- round.pretty(z[2], 3)
+#				z
 			}
 			))
 		#
@@ -53,11 +57,11 @@ corplot <- function(x, y, legend=TRUE, pvalue=TRUE, ..., add=FALSE){
 		lpar$pt.cex <- lpar$cex
 		lpar$cex <- 1
 		do.call('legend', c(list(x='topleft', legend=paste(colnames(x)
-				, ' (', round(lco[,1], 2)
-						, if( pvalue ) str_c('-', lco[,2])
+				, ' (', sprintf("%0.2f", lco[,1])
+						, if( confint ) str_c(' +/- ', lco[,2])
 					, ')', sep='')), lpar))
-		legend("bottomright", legend=str_c('r = ', round.pretty(gco$estimate, 2) 
-										, if( pvalue ) str_c(' (', round.pretty(gco$p.value, 3), ')') ))
+		ci <- if( confint ) str_c(' +/- ', round(rsq$UCL - rsq$Rsq, 2)) else ''
+		legend("bottomright", legend=bquote(R^2 == .(sprintf("%0.2f%s", rsq$Rsq, ci))))
 	}
 	invisible(gco)
 }
@@ -134,8 +138,8 @@ profplot <- function(x, ...){
 #' @param legend a logical that specifies whether drawing the legend or not, or
 #' coordinates specifications passed to argument \code{x} of
 #' \code{\link{legend}}, that specifies the position of the legend.
-#' @param pvalue logical that indicates if p-values for the correlation 
-#' coefficients should be shown in legend.
+#' @param confint logical that indicates if confidence intervals for the 
+#' R-squared should be shown in legend.
 #' @param Colv specifies the way the columns of \code{x} are ordered before
 #' plotting. It is used only when \code{y} is missing.  It can be: \itemize{
 #' \item a single numeric value, specifying the index of a row of \code{x},
@@ -185,7 +189,7 @@ profplot <- function(x, ...){
 #' profcor(res, res2)
 #' 
 profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
-							, legend=TRUE, pvalue=TRUE
+							, legend=TRUE, confint=TRUE
 							, Colv, labels, annotation, ..., add = FALSE){
 	
 	# initialise result list
@@ -281,7 +285,7 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
 		gpar <- .set.list.defaults(gpar			
 				, main="Profile correlations")
 		# plot the correlation plot		
-		res$cor <- do.call(corplot, c(list(x=t(x), y=t(y), legend=legend, pvalue=pvalue, add=add), gpar))
+		res$cor <- do.call(corplot, c(list(x=t(x), y=t(y), legend=legend, confint=confint, add=add), gpar))
 		
 		# return result list
 		return( invisible(res) )
