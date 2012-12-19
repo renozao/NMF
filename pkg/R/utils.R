@@ -1042,3 +1042,31 @@ getNCores <- function(){
 #			high = retval$breaks[-1], color = retval$col)
 #	invisible(retval)
 #}
+
+# Extracted from the psychometric package (0.1.0)
+# Copyright Thomas D. Fletcher
+# Under Gnu GPL2
+CI.Rsqlm <- function (obj, level = 0.95) 
+{
+	l <- level
+	rsq <- summary(obj)$r.squared
+	k <- summary(obj)$df[1] - 1
+	n <- obj$df + k + 1
+	mat <- CI.Rsq(rsq, n, k, level = l)
+	return(mat)
+}
+# Extracted from the psychometric package (0.1.0)
+# Copyright Thomas D. Fletcher
+# Under Gnu GPL2
+CI.Rsq <- function (rsq, n, k, level = 0.95) 
+{
+	noma <- 1 - level
+	sersq <- sqrt((4 * rsq * (1 - rsq)^2 * (n - k - 1)^2)/((n^2 - 
+							1) * (n + 3)))
+	zs <- -qnorm(noma/2)
+	mez <- zs * sersq
+	lcl <- rsq - mez
+	ucl <- rsq + mez
+	mat <- data.frame(Rsq = rsq, SErsq = sersq, LCL = lcl, UCL = ucl)
+	return(mat)
+}
