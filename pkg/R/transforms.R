@@ -21,6 +21,7 @@ NULL
 #' @return an object of the same class as argument \code{object}.
 #' @export
 #' @inline
+#' @family transforms
 #' 
 setGeneric('nneg', function(object, ...) standardGeneric('nneg'))
 #' Transforms a mixed-sign matrix into a nonnegative matrix, optionally apply a
@@ -220,3 +221,37 @@ setMethod('rposneg', 'NMF'
 }
 )
 
+#' Transformation NMF Model Objects
+#' 
+#' \code{t} transpose an NMF model, by transposing and swapping its basis and 
+#' coefficient matrices: \eqn{t([W,H]) = [t(H), t(W)]}.
+#' 
+#' The function \code{t} is a generic defined in the \pkg{base} package.
+#' The method \code{t.NMF} defines the trasnformation for the general NMF interface. 
+#' This method may need to be overloaded for NMF models, whose structure requires 
+#' specific handling.
+#' 
+#' @param x NMF model object.
+#' 
+#' @family transforms
+#' @S3method t NMF
+#' @examples
+#' 
+#' x <- rnmf(3, 100, 20)
+#' x
+#' # transpose
+#' y <- t(x)
+#' y
+#' 
+#' # factors are swapped-transposed
+#' stopifnot( identical(basis(y), t(coef(x))) )
+#' stopifnot( identical(coef(y), t(basis(x))) )
+#' 
+t.NMF <- function(x){
+	# transpose and swap factors
+	w <- t(basis(x))
+	.basis(x) <- t(coef(x))
+	.coef(x) <- w
+	# return object
+	x
+}
