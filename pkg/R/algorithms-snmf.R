@@ -453,7 +453,7 @@ nmf_snmf <- function(A, x, eta=-1, beta=0.01, bi_conv=c(0, 10), eps_conv=1e-4, m
 		# use the supplied starting point
 		W <- start
 	}else{
-		stop("SNMF/", version, ' - Invalid argument `x`: must be a single numeric or an NMF model [', calss(x), ']')
+		stop("SNMF/", version, ' - Invalid argument `x`: must be a single numeric or an NMF model [', class(x), ']')
 	}
 	
 	if ( verbose )

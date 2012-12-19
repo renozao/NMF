@@ -65,7 +65,6 @@
 \usepackage[all]{hypcap} % for linking to the top of the figures or tables
 
 % add preamble from pkgmaker
-
 %%%% PKGMAKER COMMANDS %%%%%%
 \usepackage{xspace}
 
@@ -115,7 +114,6 @@
 
 
 
-
 \newcommand{\nmfpack}{\pkgname{NMF}}
 \newcommand{\MATLAB}{MATLAB\textsuperscript{\textregistered}\xspace}
 \newcommand{\refeqn}[1]{(\ref{#1})}
@@ -128,9 +126,7 @@
 , maxbibnames=15
 , backref=true]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
-
-\bibliography{/tmp/tmp.EKkeIgMf6U/NMF/REFERENCES}
-
+\bibliography{/tmp/tmp.4YKVkoHgXW/NMF/REFERENCES}
 
 
 \bibliography{Rpackages}
@@ -172,7 +168,7 @@
 
 
 \title{Generating heatmaps for Nonnegative Matrix Factorization\\
-\small Package \nmfpack\ - Version 0.9.4}
+\small Package \nmfpack\ - Version 0.9.5}
 \author{Renaud Gaujoux}
 % \VignetteIndexEntry{NMF: generating heatmaps}
 % \VignetteDepends{NMF,RColorBrewer}
@@ -272,7 +268,7 @@ random target matrix, as well as some annotations or covariates:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# random data that follow an 3-rank NMF \hlfunctioncall{model} (with quite some noise:}
+\hlcomment{# random data that follow an 3-rank NMF model (with quite some noise:}
 \hlcomment{# sd=2)}
 X <- \hlfunctioncall{syntheticNMF}(100, 3, 20, noise = 2)
 
@@ -310,6 +306,8 @@ As an example, one can conveniently visualize the target matrix as a heatmap, wi
 \hlfunctioncall{aheatmap}(X)
 \end{alltt}
 \end{kframe}
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-heatmap_data} 
+
 \end{knitrout}
 
 
@@ -329,7 +327,7 @@ res
 ##    407L, 1836648330L, -690549885L, 21815016L, -792180791L, -1546669834L, 1782788863L 
 ##   Total timing:
 ##    user  system elapsed 
-##   2.556   0.092   3.810
+##   2.448   0.100   8.767
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -360,6 +358,10 @@ opar <- \hlfunctioncall{par}(mfrow = \hlfunctioncall{c}(1, 2))
 \hlfunctioncall{coefmap}(res)
 \hlcomment{# coefmap of a single run fit: no consensus track}
 \hlfunctioncall{coefmap}(\hlfunctioncall{minfit}(res))
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-coefmap_res} 
+\begin{kframe}\begin{alltt}
 \hlfunctioncall{par}(opar)
 \end{alltt}
 \end{kframe}
@@ -428,6 +430,10 @@ opar <- \hlfunctioncall{par}(mfrow=\hlfunctioncall{c}(1,2))
 	, annRow = \hlfunctioncall{list}(Metagene=\hlstring{':basis'}), annCol = \hlfunctioncall{list}(\hlstring{':basis'}, Class=a, Index=c)
 	, annColors = \hlfunctioncall{list}(Metagene=\hlstring{'Set2'})
 	, info = TRUE)
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-coefmap_custom} 
+\begin{kframe}\begin{alltt}
 \hlfunctioncall{par}(opar)
 \end{alltt}
 \end{kframe}
@@ -458,6 +464,10 @@ opar <- \hlfunctioncall{par}(mfrow = \hlfunctioncall{c}(1, 2))
 \hlfunctioncall{basismap}(res)
 \hlcomment{# customized plot: only use row special annotation track.}
 \hlfunctioncall{basismap}(res, main = \hlstring{"Metagenes"}, annRow = \hlfunctioncall{list}(d, e), tracks = \hlfunctioncall{c}(Metagene = \hlstring{":basis"}))
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-basismap_res} 
+\begin{kframe}\begin{alltt}
 \hlfunctioncall{par}(opar)
 \end{alltt}
 \end{kframe}
@@ -531,6 +541,10 @@ opar <- \hlfunctioncall{par}(mfrow = \hlfunctioncall{c}(1, 2))
 \hlcomment{# customized plot}
 \hlfunctioncall{consensusmap}(res, annCol = covariates, annColors = \hlfunctioncall{list}(c = \hlstring{"blue"}), labCol = \hlstring{"sample "}, 
     main = \hlstring{"Cluster stability"}, sub = \hlstring{"Consensus matrix and all covariates"})
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_res} 
+\begin{kframe}\begin{alltt}
 \hlfunctioncall{par}(opar)
 \end{alltt}
 \end{kframe}
@@ -606,6 +620,8 @@ which plots all the consensus matrices on the same plot:
 \hlfunctioncall{consensusmap}(res2_7)
 \end{alltt}
 \end{kframe}
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_estimate} 
+
 \end{knitrout}
 
 
@@ -657,6 +673,8 @@ As previously, the sequence of consensus matrices is plotted with \code{consensu
 \hlfunctioncall{consensusmap}(res_methods)
 \end{alltt}
 \end{kframe}
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_methods} 
+
 \end{knitrout}
 
 
@@ -678,23 +696,21 @@ This section still needs to be written, but many examples of annotated heatmaps 
 These demos and the plots they generate can also be browsed online at \url{http://nmf.r-forge.r-project.org/_DEMOS.html}.
 
 \section{Session Info}
-
 \begin{itemize}\raggedright
   \item R version 2.15.2 (2012-10-26), \verb|i686-pc-linux-gnu|
   \item Locale: \verb|LC_CTYPE=en_ZA.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_ZA.UTF-8|, \verb|LC_COLLATE=en_ZA.UTF-8|, \verb|LC_MONETARY=en_ZA.UTF-8|, \verb|LC_MESSAGES=en_ZA.UTF-8|, \verb|LC_PAPER=C|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_ZA.UTF-8|, \verb|LC_IDENTIFICATION=C|
   \item Base packages: base, datasets, graphics, grDevices, grid,
-    methods, stats, utils
+    methods, parallel, stats, utils
   \item Other packages: bigmemory~4.3.0, bigmemory.sri~0.1.2,
-    Biobase~2.16.0, BiocGenerics~0.2.0, digest~0.5.2, knitr~0.8,
-    NMF~0.9.4, pkgmaker~0.9.7, RColorBrewer~1.0-5, registry~0.2,
-    rngtools~1.0, stringr~0.6.1
+    Biobase~2.16.0, BiocGenerics~0.2.0, digest~0.5.2,
+    doParallel~1.0.1, foreach~1.4.0, iterators~1.0.6, knitr~0.9,
+    NMF~0.9.5, pkgmaker~0.10.2, RColorBrewer~1.0-5, registry~0.2,
+    rngtools~1.1, synchronicity~1.1.0
   \item Loaded via a namespace (and not attached):
-    codetools~0.2-8, colorspace~1.2-0, doParallel~1.0.1,
-    evaluate~0.4.3, foreach~1.4.0, formatR~0.6, gridBase~0.4-5,
-    iterators~1.0.6, plyr~1.7.1, Rcpp~0.10.1, RcppOctave~0.8.11,
-    tools~2.15.2, xtable~1.7-0
+    codetools~0.2-8, colorspace~1.2-0, compiler~2.15.2,
+    evaluate~0.4.3, formatR~0.6, gridBase~0.4-5, plyr~1.7.1,
+    stringr~0.6.1, tools~2.15.2, xtable~1.7-0
 \end{itemize}
-
 
 
 

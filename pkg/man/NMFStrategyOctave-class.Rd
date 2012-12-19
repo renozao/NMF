@@ -51,8 +51,15 @@
   algorithm. It is stored in slot \code{algorithm}. }
 
   \item{run}{\code{signature(object = "NMFStrategyOctave",
-  y = "matrix", x = "NMFfit")}: Initialize method for
-  \code{\linkS4class{NMFStrategyOctave}}. }
+  y = "matrix", x = "NMFfit")}: Runs the NMF algorithms
+  implemented by the Octave/Matlab function associated with
+  the strategy -- and stored in slot \code{'algorithm'} of
+  \code{object}.
+
+  This method is usually not called directly, but only via
+  the function \code{\link{nmf}}, which takes care of many
+  other details such as seeding the computation, handling
+  RNG settings, or setting up parallel computations. }
 
   }
 }
