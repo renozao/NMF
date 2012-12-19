@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>featureScore. NMF 0.9</title>
+<title>featureScore. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -40,16 +40,16 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='scores.html'>featureScore</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+    <pre>featureScore(object, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (matrix)</span>
-<span class="functioncall">`featureScore`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">method</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="string">"kim"</span><span class="keyword">,</span> <span class="string">"max"</span><span class="keyword">)</span><span class="keyword">)</span>
+<span class="label label-important">S4</span> (matrix)
+`featureScore`(object, method = c("kim", "max"))
 
-<span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+extractFeatures(object, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (matrix)</span>
-<span class="functioncall">`extractFeatures`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">method</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="string">"kim"</span><span class="keyword">,</span> <span class="string">"max"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">format</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="string">"list"</span><span class="keyword">,</span>
-  <span class="string">"combine"</span><span class="keyword">,</span> <span class="string">"subset"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">nodups</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span></pre>
+<span class="label label-important">S4</span> (matrix)
+`extractFeatures`(object, method = c("kim", "max"), format = c("list", 
+  "combine", "subset"), nodups = TRUE)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -267,87 +267,8 @@
   http://dx.doi.org/10.1186/1471-2105-7-78>, <URL:
   http://www.ncbi.nlm.nih.gov/pubmed/16503973>.</p>
   
-      <p>Kim H and Park H (2007). "Sparse non-negative matrix
-  factorizations via alternating non-negativity-constrained
-  least squares for microarray data analysis."
-  _Bioinformatics (Oxford, England)_, *23*(12), pp.
-  1495-502. ISSN 1460-2059, <URL:
-  http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
-  
-      <p>Carmona-Saez P, Pascual-Marqui RD, Tirado F, Carazo JM
-  and Pascual-Montano A (2006). "Biclustering of gene
-  expression data by Non-smooth Non-negative Matrix
-  Factorization." _BMC bioinformatics_, *7*, pp. 78. ISSN
-  1471-2105, <URL:
-  http://dx.doi.org/10.1186/1471-2105-7-78>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/16503973>.</p>
-  
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'># random NMF model</div><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">50</span><span class="keyword">,</span><span class="number">20</span><span class="keyword">)</span></div><div class='input'></div><div class='input'># probably no feature is selected</div><div class='input'><span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>[[1]]
-[1] 35
-
-[[2]]
-[1] 43
-
-[[3]]
-[1] 10 46  8
-
-attr(,"method")
-[1] "kim"
-</div><div class='input'># extract top 5 for each basis</div><div class='input'><span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">5L</span><span class="keyword">)</span></div>
-<div class='output'>[[1]]
-[1] 35  1 25 40 27
-
-[[2]]
-[1] 12 21 45 23 43
-
-[[3]]
-[1] 42 45  8 20 26
-
-attr(,"method")
-[1] 5 5 5
-</div><div class='input'># extract features that have a relative basis contribution above a threshold</div><div class='input'><span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">0.5</span><span class="keyword">)</span></div>
-<div class='output'>[[1]]
-[1]  1  9 16 22 32 35 38 49
-
-[[2]]
-[1]  2  7 12 21 37 43 47
-
-[[3]]
-[1]  8 10 13 15 20 46
-
-attr(,"method")
-[1] 0.5 0.5 0.5
-</div><div class='input'># ambiguity?</div><div class='input'><span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">)</span> <span class="comment"># means relative contribution above 100%</span></div>
-<div class='output'>[[1]]
-[1] NA
-
-[[2]]
-[1] NA
-
-[[3]]
-[1] NA
-
-attr(,"method")
-[1] 1 1 1
-</div><div class='input'><span class="functioncall"><a href='scores.html'>extractFeatures</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">1L</span><span class="keyword">)</span> <span class="comment"># means top contributing feature in each component</span></div>
-<div class='output'>[[1]]
-[1] 35
-
-[[2]]
-[1] 12
-
-[[3]]
-[1] 42
-
-attr(,"method")
-[1] 1 1 1
-</div></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
       <li>extractFeatures</li><li>extractFeatures,matrix-method</li><li>extractFeatures-methods</li><li>extractFeatures,NMF-method</li><li>featureScore</li><li>featureScore,matrix-method</li><li>featureScore-methods</li><li>featureScore,NMF-method</li>

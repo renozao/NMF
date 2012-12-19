@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>nmfCheck. NMF 0.10</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.10</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Checking NMF Algorithm</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>nmfCheck(method = NULL, rank = max(ncol(x)/5, 3), x = NULL, seed = 1234, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>method</dt>
+      <dd>name of the NMF algorithm to be tested.</dd>
+      <dt>rank</dt>
+      <dd>rank of the factorization</dd>
+      <dt>x</dt>
+      <dd>target data. If <code>NULL</code>, a random 20 x 10
+  matrix is generated</dd>
+      <dt>seed</dt>
+      <dd>specifies a seed or seeding method for the
+  computation.</dd>
+      <dt>...</dt>
+      <dd>other arguments passed to the call to
+  <code><a href='nmf.html'>nmf</a></code>.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>the result of the NMF fit invisibly.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>nmfCheck</code> enables to quickly check that a given NMF
+  algorithm runs properly, by applying it to some small
+  random data.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>nmfCheck</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

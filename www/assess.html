@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>summary. NMF 0.9</title>
+<title>summary. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -40,10 +40,10 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+    <pre>summary(object, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (NMF)</span>
-<span class="functioncall">`summary`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">class</span><span class="keyword">,</span> <span class="symbol">target</span><span class="keyword">)</span></pre>
+<span class="label label-important">S4</span> (NMF)
+`summary`(object, class, target)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -150,32 +150,7 @@
       <p></span></p>
   
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'># random NMF model</div><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rnmf.html'>rnmf</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">20</span><span class="keyword">,</span> <span class="number">12</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>            rank sparseness.basis  sparseness.coef 
-       3.0000000        0.1787792        0.2827128 
-</div><div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/gl'>gl</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="number">4</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy 
-       3.0000000        0.1787792        0.2827128        0.5833333        0.8207156 
-</div><div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>            rank sparseness.basis  sparseness.coef              rss             evar 
-       3.0000000        0.1787792        0.2827128       80.5878730        0.8155322 
-</div><div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/gl'>gl</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span><span class="number">4</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar 
-       3.0000000        0.1787792        0.2827128        0.5833333        0.8207156       83.5271672        0.8091578 
-</div><div class='input'># generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)</div><div class='input'><span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">)</span><span class="keyword">;</span></div><div class='input'><span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span></div><div class='input'><span class="symbol">cl</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/unlist'>unlist</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/mapply'>mapply</a></span><span class="keyword">(</span><span class="symbol">rep</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="number">3</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span><span class="keyword">)</span></div><div class='input'></div><div class='input'># perform default NMF with rank=2</div><div class='input'><span class="symbol">x2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x2</span><span class="keyword">,</span> <span class="symbol">cl</span><span class="keyword">,</span> <span class="symbol">V</span><span class="keyword">)</span></div>
-<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals            niter              cpu 
-       2.0000000        0.2536939        0.7419968        0.7222222        0.3505165      469.2993247        0.5616577      351.8186143      450.0000000        0.2360000 
-         cpu.all             nrun 
-       0.2360000        1.0000000 
-</div><div class='input'># perform default NMF with rank=2</div><div class='input'><span class="symbol">x3</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">x2</span><span class="keyword">,</span> <span class="symbol">cl</span><span class="keyword">,</span> <span class="symbol">V</span><span class="keyword">)</span></div>
-<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals            niter              cpu 
-       2.0000000        0.2536939        0.7419968        0.7222222        0.3505165      469.2993247        0.5616577      351.8186143      450.0000000        0.2360000 
-         cpu.all             nrun 
-       0.2360000        1.0000000 
-</div></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
       <li>summary</li><li>summary-methods</li><li>summary-NMF</li><li>summary,NMFfit-method</li><li>summary,NMFfitX-method</li><li>summary,NMF-method</li>

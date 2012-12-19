@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>parallel-NMF. NMF 0.9</title>
+<title>parallel-NMF. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -40,13 +40,13 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='parallel.html'>ts_eval</a></span><span class="keyword">(</span><span class="argument">mutex</span> <span class="argument">=</span> <span class="package">synchronicity</span><span class="keyword">::</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/synchronicity/boost.mutex'>boost.mutex</a></span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">verbose</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+    <pre>ts_eval(mutex = synchronicity::boost.mutex(), verbose = FALSE)
 
-<span class="functioncall"><a href='parallel.html'>ts_tempfile</a></span><span class="keyword">(</span><span class="argument">pattern</span> <span class="argument">=</span> <span class="string">"file"</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">host</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">pid</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
+ts_tempfile(pattern = "file", ..., host = TRUE, pid = TRUE)
 
-<span class="functioncall"><a href='parallel.html'>hostfile</a></span><span class="keyword">(</span><span class="argument">pattern</span> <span class="argument">=</span> <span class="string">"file"</span><span class="keyword">,</span> <span class="argument">tmpdir</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/tempfile'>tempdir</a></span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">fileext</span> <span class="argument">=</span> <span class="string">""</span><span class="keyword">,</span> <span class="argument">host</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">pid</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
+hostfile(pattern = "file", tmpdir = tempdir(), fileext = "", host = TRUE, pid = TRUE)
 
-<span class="functioncall"><a href='parallel.html'>gVariable</a></span><span class="keyword">(</span><span class="symbol">init</span><span class="keyword">,</span> <span class="argument">shared</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span></pre>
+gVariable(init, shared = FALSE)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -70,7 +70,7 @@
       <dd>initial value</dd>
       <dt>shared</dt>
       <dd>a logical that indicates if the variable
-  should be stored in shared memory or in the global
+  should be stored in shared memory or in a local
   environment.</dd>
       <dt>pattern</dt>
       <dd>a non-empty character vector giving the

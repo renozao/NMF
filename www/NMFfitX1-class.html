@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfitX1-class. NMF 0.9</title>
+<title>NMFfitX1-class. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -133,30 +133,7 @@
       <p></span></p>
   
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'># generate a synthetic dataset with known classes</div><div class='input'><span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">20</span><span class="keyword">;</span> <span class="symbol">counts</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span><span class="keyword">;</span></div><div class='input'><span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">counts</span><span class="keyword">)</span></div><div class='input'></div><div class='input'># get the class factor</div><div class='input'><span class="symbol">groups</span> <span class="assignement">&lt;-</span> <span class="symbol">V</span><span class="keyword">$</span><span class="symbol">pData</span><span class="keyword">$</span><span class="symbol">Group</span></div><div class='input'></div><div class='input'># perform multiple runs of one algorithm, keeping only the best fit (default)</div><div class='input'>#i.e.: the implicit nmf options are .options=list(keep.all=FALSE) or .options='-k'</div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">V</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">3</span><span class="keyword">)</span></div><div class='input'><span class="symbol">res</span></div>
-<div class='output'><Object of class: NMFfitX1 >
-  Method: brunet 
-  Runs:  3 
-  RNG:
-   407L, -329241596L, 1464038197L, -1055788430L, 1998647115L, 13725200L, -1201933615L 
-  Total timing:
-   user  system elapsed 
-  0.536   0.156   1.502 
-</div><div class='input'></div><div class='input'># compute summary measures</div><div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
-<div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun       cophenetic       dispersion 
-       3.0000000        0.4652321        0.7740384       41.2847097      430.0000000        0.2280000        0.5360000        3.0000000        0.9529366        0.7866667 
-</div><div class='input'># get more info</div><div class='input'><span class="functioncall"><a href='assess.html'>summary</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">target</span><span class="argument">=</span><span class="symbol">V</span><span class="keyword">,</span> <span class="argument">class</span><span class="argument">=</span><span class="symbol">groups</span><span class="keyword">)</span></div>
-<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals            niter              cpu 
-       3.0000000        0.4652321        0.7740384        0.9000000        0.1738140       65.6360447        0.7445089       41.2847097      430.0000000        0.2280000 
-         cpu.all             nrun       cophenetic       dispersion 
-       0.5360000        3.0000000        0.9529366        0.7866667 
-</div><div class='input'></div><div class='input'># show computational time</div><div class='input'><span class="functioncall"><a href='algorithmic.html'>runtime.all</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span></div>
-<div class='output'>   user  system elapsed 
-  0.536   0.156   1.502 
-</div><div class='input'></div><div class='input'># plot the consensus matrix, as stored (pre-computed) in the object</div><div class='input'>## <strong>Not run</strong>:  consensusmap(res, annCol=groups) </div></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
       <li>NMFfitX1-class</li>

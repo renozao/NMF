@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>registerDoBackend. NMF 0.9</title>
+<title>registerDoBackend. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -40,25 +40,28 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='foreach.html'>registerDoBackend</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+    <pre>registerDoBackend(object, ...)
 
-<span class="functioncall"><a href='foreach.html'>getDoBackend</a></span><span class="keyword">(</span><span class="keyword">)</span>
+getDoBackend()
 
-<span class="functioncall"><a href='foreach.html'>setDoBackend</a></span><span class="keyword">(</span><span class="symbol">data</span><span class="keyword">)</span>
+setDoBackend(data)
 
-<span class="functioncall"><a href='foreach.html'>register</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+register(x, ...)
 
-<span class="functioncall"><a href='foreach.html'>ForeachBackend</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+ForeachBackend(object, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (doParallel_backend)</span>
-<span class="functioncall">`ForeachBackend`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">cl</span><span class="keyword">)</span>
+<span class="label label-important">S4</span> (doParallel_backend)
+`ForeachBackend`(object, cl, type = NULL)
 
-<span class="comment"><span class="label label-important">S4</span> (doMPI_backend)</span>
-<span class="functioncall">`ForeachBackend`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">cl</span><span class="keyword">)</span>
+<span class="label label-important">S4</span> (doPSOCK_backend)
+`ForeachBackend`(object, cl)
 
-<span class="functioncall"><a href='foreach.html'>getDoParHosts</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="label label-important">S4</span> (doMPI_backend)
+`ForeachBackend`(object, cl)
 
-<span class="functioncall"><a href='foreach.html'>getDoParNHosts</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">)</span></pre>
+getDoParHosts(object, ...)
+
+getDoParNHosts(object)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -77,6 +80,9 @@
       <dt>cl</dt>
       <dd>cluster specification: a cluster object or a
   numeric that indicates the number of nodes to use.</dd>
+      <dt>type</dt>
+      <dd>type of cluster, See
+  <code><a href='http://www.inside-r.org/r-doc/parallel/makeCluster'>makeCluster</a></code>.</dd>
     </dl>
     
     <div class="Description">
@@ -141,6 +147,9 @@
   factory</p>
   
       <p>ForeachBackend<code>signature(object =
+  "doPSOCK_backend")</code>: doSNOW-specific backend factory</p>
+  
+      <p>ForeachBackend<code>signature(object =
   "mpicluster")</code>: Creates a doMPI foreach backend that uses
   the MPI cluster described in <code>object</code>.</p>
   
@@ -159,7 +168,7 @@
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>ForeachBackend</li><li>ForeachBackend,ANY-method</li><li>ForeachBackend,character-method</li><li>ForeachBackend,cluster-method</li><li>ForeachBackend,doMPI_backend-method</li><li>ForeachBackend,doParallel_backend-method</li><li>ForeachBackend-methods</li><li>ForeachBackend,missing-method</li><li>ForeachBackend,mpicluster-method</li><li>ForeachBackend,NULL-method</li><li>ForeachBackend,numeric-method</li><li>getDoBackend</li><li>getDoParHosts</li><li>getDoParHosts,ANY-method</li><li>getDoParHosts-methods</li><li>getDoParNHosts</li><li>register</li><li>registerDoBackend</li><li>setDoBackend</li>
+      <li>ForeachBackend</li><li>ForeachBackend,ANY-method</li><li>ForeachBackend,character-method</li><li>ForeachBackend,cluster-method</li><li>ForeachBackend,doMPI_backend-method</li><li>ForeachBackend,doParallel_backend-method</li><li>ForeachBackend,doPSOCK_backend-method</li><li>ForeachBackend-methods</li><li>ForeachBackend,missing-method</li><li>ForeachBackend,mpicluster-method</li><li>ForeachBackend,NULL-method</li><li>ForeachBackend,numeric-method</li><li>getDoBackend</li><li>getDoParHosts</li><li>getDoParHosts,ANY-method</li><li>getDoParHosts-methods</li><li>getDoParNHosts</li><li>register</li><li>registerDoBackend</li><li>setDoBackend</li>
     </ul>
     <ul>
       <li>internal</li><li>methods</li>

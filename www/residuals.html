@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>residuals. NMF 0.9</title>
+<title>residuals. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -40,14 +40,19 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='residuals.html'>residuals</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+    <pre>residuals(object, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (NMFfit)</span>
-<span class="functioncall">`residuals`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">track</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+<span class="label label-important">S4</span> (NMFfit)
+`residuals`(object, track = FALSE, niter = NULL, ...)
 
-<span class="functioncall"><a href='residuals.html'>hasTrack</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">)</span>
+residuals(object, ...) <- value
 
-<span class="functioncall"><a href='residuals.html'>trackError</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">value</span><span class="keyword">,</span> <span class="symbol">iter</span><span class="keyword">,</span> <span class="argument">force</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span></pre>
+<span class="label label-important">S4</span> (NMFfit)
+`residuals`(object, ..., niter = NULL, track = FALSE) <- value
+
+hasTrack(object, niter = NULL)
+
+trackError(object, value, niter, force = FALSE)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -60,11 +65,12 @@
       <dd>a logical that indicates if the complete
   track of residuals should be returned (if it has been
   computed during the fit), or only the last value.</dd>
+      <dt>niter</dt>
+      <dd>specifies the iteration number for which one
+  wants to get/set/test a residual value. This argument is
+  used only if not <code>NULL</code></dd>
       <dt>value</dt>
-      <dd>new residual value</dd>
-      <dt>iter</dt>
-      <dd>iteration number at which the value is
-  computed</dd>
+      <dd>residual value</dd>
       <dt>force</dt>
       <dd>logical that indicates if the value should
   be added to the track even if there already is a value
@@ -92,6 +98,9 @@
   along the fit process, computed according to the
   objective function associated with the algorithm that
   fitted the model.</p>
+  
+      <p><code>residuals<-</code> sets the value of the last residuals,
+  or, optionally, of the complete residual track.</p>
   
       <p>Tells if an <code>NMFfit</code> object contains a recorded
   residual track.</p>
@@ -146,7 +155,7 @@
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>hasTrack</li><li>residuals</li><li>residuals-methods</li><li>residuals,NMFfit-method</li><li>residuals,NMFfitX-method</li><li>trackError</li>
+      <li>hasTrack</li><li>residuals</li><li>residuals&lt;-</li><li>residuals&lt;--methods</li><li>residuals-methods</li><li>residuals&lt;-,NMFfit-method</li><li>residuals,NMFfit-method</li><li>residuals,NMFfitX-method</li><li>trackError</li>
     </ul>
     <ul>
       <li>methods</li>

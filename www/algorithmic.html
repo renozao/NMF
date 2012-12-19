@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>algorithmic-NMF. NMF 0.9</title>
+<title>algorithmic-NMF. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -40,37 +40,37 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='algorithmic.html'>algorithm</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+    <pre>algorithm(object, ...)
 
-<span class="functioncall"><a href='algorithmic.html'>algorithm</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">value</span>
+algorithm(object, ...) <- value
 
-<span class="functioncall"><a href='algorithmic.html'>seeding</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+seeding(object, ...)
 
-<span class="functioncall"><a href='algorithmic.html'>seeding</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">value</span>
+seeding(object, ...) <- value
 
-<span class="functioncall"><a href='algorithmic.html'>niter</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+niter(object, ...)
 
-<span class="functioncall"><a href='algorithmic.html'>niter</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">value</span>
+niter(object, ...) <- value
 
-<span class="functioncall"><a href='algorithmic.html'>nrun</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+nrun(object, ...)
 
-<span class="functioncall"><a href='algorithmic.html'>objective</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+objective(object, ...)
 
-<span class="functioncall"><a href='algorithmic.html'>objective</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="symbol">value</span>
+objective(object, ...) <- value
 
-<span class="functioncall"><a href='algorithmic.html'>runtime</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+runtime(object, ...)
 
-<span class="functioncall"><a href='algorithmic.html'>runtime.all</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+runtime.all(object, ...)
 
-<span class="functioncall"><a href='algorithmic.html'>seqtime</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+seqtime(object, ...)
 
-<span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+modelname(object, ...)
 
-<span class="functioncall"><a href='algorithmic.html'>run</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+run(object, y, x, ...)
 
-<span class="functioncall"><a href='algorithmic.html'>logs</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+logs(object, ...)
 
-<span class="functioncall"><a href='algorithmic.html'>compare</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+compare(object, ...)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -191,6 +191,14 @@
   that implements the NMF algorithm -- as stored in slot
   <code>algorithm</code>.</p>
   
+      <p>algorithm<code>signature(object =
+  "NMFStrategyOctave")</code>: Returns the name of the
+  Octave/Matlab function that implements the NMF algorithm
+  -- as stored in slot <code>algorithm</code>.</p>
+  
+      <p>See <code><a href='algorithm-commaNMFStrategyOctave-method.html'>algorithm,NMFStrategyOctave-method</a></code> for
+  more details.</p>
+  
       <p>algorithm<code>signature(object = "NMFSeed")</code>:
   Returns the workhorse function of the seeding method
   described by <code>object</code>.</p>
@@ -199,6 +207,11 @@
   "NMFStrategyFunction", value = "function")</code>: Sets the
   function that implements the NMF algorithm, stored in
   slot <code>algorithm</code>.</p>
+  
+      <p>algorithm<-<code>signature(object =
+  "NMFStrategyOctave", value = "character")</code>: Sets the name
+  of the Octave/Matlab function that implements the NMF
+  algorithm. It is stored in slot <code>algorithm</code>.</p>
   
       <p>algorithm<-<code>signature(object = "NMFSeed",
   value = "function")</code>: Sets the workhorse function of the
@@ -379,25 +392,10 @@
   page are mainly based on this implementation.</p>
   
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'># get the type of an NMF model</div><div class='input'><span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1] "NMFstd"
-</div><div class='input'><span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFns'</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1] "NMFns"
-</div><div class='input'><span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span><span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFOffset'</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>[1] "NMFOffset"
-</div><div class='input'># get the type of model(s) associated with an NMF algorithm</div><div class='input'><span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfAlgorithm.html'>nmfAlgorithm</a></span><span class="keyword">(</span><span class="string">'brunet'</span><span class="keyword">)</span> <span class="keyword">)</span></div>
-<div class='output'>[1] "NMFstd"
-</div><div class='input'><span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfAlgorithm.html'>nmfAlgorithm</a></span><span class="keyword">(</span><span class="string">'nsNMF'</span><span class="keyword">)</span> <span class="keyword">)</span></div>
-<div class='output'>[1] "NMFns"
-</div><div class='input'><span class="functioncall"><a href='algorithmic.html'>modelname</a></span><span class="keyword">(</span> <span class="functioncall"><a href='nmfAlgorithm.html'>nmfAlgorithm</a></span><span class="keyword">(</span><span class="string">'offset'</span><span class="keyword">)</span> <span class="keyword">)</span></div>
-<div class='output'>[1] "NMFOffset"
-</div></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
-      <li>algorithm</li><li>algorithm&lt;-</li><li>algorithmic-NMF</li><li>algorithm&lt;--methods</li><li>algorithm-methods</li><li>algorithm&lt;-,NMFfit,ANY-method</li><li>algorithm,NMFfit-method</li><li>algorithm,NMFfitXn-method</li><li>algorithm&lt;-,NMFSeed,function-method</li><li>algorithm,NMFSeed-method</li><li>algorithm&lt;-,NMFStrategyFunction,function-method</li><li>algorithm,NMFStrategyFunction-method</li><li>compare</li><li>compare-methods</li><li>compare,NMFfitXn-method</li><li>logs</li><li>logs,ANY-method</li><li>logs-methods</li><li>modelname</li><li>modelname,ANY-method</li><li>modelname-methods</li><li>modelname,NMFfit-method</li><li>modelname,NMFfitXn-method</li><li>modelname,NMFStrategy-method</li><li>niter</li><li>niter&lt;-</li><li>niter&lt;--methods</li><li>niter-methods</li><li>niter,NMFfit-method</li><li>niter&lt;-,NMFfit,numeric-method</li><li>nrun</li><li>nrun,ANY-method</li><li>nrun-methods</li><li>nrun,NMFfit-method</li><li>nrun,NMFfitX1-method</li><li>nrun,NMFfitX-method</li><li>nrun,NMFfitXn-method</li><li>objective</li><li>objective&lt;-</li><li>objective&lt;--methods</li><li>objective-methods</li><li>objective&lt;-,NMFfit,ANY-method</li><li>run</li><li>run-methods</li><li>runtime</li><li>runtime.all</li><li>runtime.all-methods</li><li>runtime.all,NMFfit-method</li><li>runtime.all,NMFfitX-method</li><li>runtime-methods</li><li>runtime,NMFfit-method</li><li>seeding</li><li>seeding&lt;-</li><li>seeding&lt;--methods</li><li>seeding-methods</li><li>seeding&lt;-,NMFfit-method</li><li>seeding,NMFfit-method</li><li>seeding,NMFfitXn-method</li><li>seqtime</li><li>seqtime-methods</li><li>seqtime,NMFfitXn-method</li><li>seqtime,NMFList-method</li>
+      <li>algorithm</li><li>algorithm&lt;-</li><li>algorithmic-NMF</li><li>algorithm&lt;--methods</li><li>algorithm-methods</li><li>algorithm&lt;-,NMFfit,ANY-method</li><li>algorithm,NMFfit-method</li><li>algorithm,NMFfitXn-method</li><li>algorithm&lt;-,NMFSeed,function-method</li><li>algorithm,NMFSeed-method</li><li>algorithm&lt;-,NMFStrategyFunction,function-method</li><li>algorithm,NMFStrategyFunction-method</li><li>algorithm&lt;-,NMFStrategyOctave,character-method</li><li>compare</li><li>compare-methods</li><li>compare,NMFfitXn-method</li><li>logs</li><li>logs,ANY-method</li><li>logs-methods</li><li>modelname</li><li>modelname,ANY-method</li><li>modelname-methods</li><li>modelname,NMFfit-method</li><li>modelname,NMFfitXn-method</li><li>modelname,NMFStrategy-method</li><li>niter</li><li>niter&lt;-</li><li>niter&lt;--methods</li><li>niter-methods</li><li>niter,NMFfit-method</li><li>niter&lt;-,NMFfit,numeric-method</li><li>nrun</li><li>nrun,ANY-method</li><li>nrun-methods</li><li>nrun,NMFfit-method</li><li>nrun,NMFfitX1-method</li><li>nrun,NMFfitX-method</li><li>nrun,NMFfitXn-method</li><li>objective</li><li>objective&lt;-</li><li>objective&lt;--methods</li><li>objective-methods</li><li>objective&lt;-,NMFfit,ANY-method</li><li>run</li><li>run-methods</li><li>runtime</li><li>runtime.all</li><li>runtime.all-methods</li><li>runtime.all,NMFfit-method</li><li>runtime.all,NMFfitX-method</li><li>runtime-methods</li><li>runtime,NMFfit-method</li><li>seeding</li><li>seeding&lt;-</li><li>seeding&lt;--methods</li><li>seeding-methods</li><li>seeding&lt;-,NMFfit-method</li><li>seeding,NMFfit-method</li><li>seeding,NMFfitXn-method</li><li>seqtime</li><li>seqtime-methods</li><li>seqtime,NMFfitXn-method</li><li>seqtime,NMFList-method</li>
     </ul>
     <ul>
       <li>methods</li>

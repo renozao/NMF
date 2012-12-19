@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>profplot. NMF 0.9</title>
+<title>profplot. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -35,13 +35,16 @@
         
       </header>
       
-      <h1>Plotting Basis Profiles</h1>
+      <h1>Plotting Expression Profiles</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">match.names</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">legend</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="symbol">Colv</span><span class="keyword">,</span> <span class="symbol">labels</span><span class="keyword">,</span> <span class="symbol">annotation</span><span class="keyword">,</span>
-  <span class="symbol">...</span><span class="keyword">)</span></pre>
+    <pre>profplot(x, ...)
+
+<span class="label label-success">S3</span> (default)
+`profplot`(x, y, scale = FALSE, match.names = TRUE, legend = TRUE, confint = TRUE, 
+  Colv, labels, annotation, ..., add = FALSE)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -52,7 +55,7 @@
   multiple NMF runs.</dd>
       <dt>y</dt>
       <dd>a matrix or an NMF object from which is
-  extracted the mixture coefficient matrix.It is extracted
+  extracted the mixture coefficient matrix. It is extracted
   from the best fit if <code>y</code> is the results from
   multiple NMF runs.</dd>
       <dt>scale</dt>
@@ -71,6 +74,9 @@
   the legend or not, or coordinates specifications passed
   to argument <code>x</code> of <code><a href='http://www.inside-r.org/r-doc/graphics/legend'>legend</a></code>, that
   specifies the position of the legend.</dd>
+      <dt>confint</dt>
+      <dd>logical that indicates if confidence
+  intervals for the R-squared should be shown in legend.</dd>
       <dt>Colv</dt>
       <dd>specifies the way the columns of <code>x</code> are
   ordered before plotting. It is used only when <code>y</code> is
@@ -104,69 +110,38 @@
   is used to annotate the plot, unless
   <code>annotation=NA</code>.</dd>
       <dt>...</dt>
-      <dd>graphical parameters passed to matplot.</dd>
+      <dd>graphical parameters passed to
+  <code><a href='http://www.inside-r.org/r-doc/graphics/matplot'>matplot</a></code> or <code><a href='http://www.inside-r.org/r-doc/graphics/matplot'>matpoints</a></code>.</dd>
+      <dt>add</dt>
+      <dd>logical that indicates if the plot should be
+  added as points to a previous plot</dd>
     </dl>
     
     <div class="Description">
       <h2>Description</h2>
       
-      <p>The function <code>profplot</code> draws plots of the basis
-  profiles, i.e. the rows of the coefficient matrix of NMF
-  models. A given profile is composed of the contribution
-  of the corresponding basis to each sample.</p>
+      <p>Plotting Expression Profiles</p>
+  
+      <p>When using NMF for clustering in particular, one looks
+  for strong associations between the basis and a priori
+  known groups of samples. Plotting the profiles may
+  highlight such patterns.</p>
   
     </div>
 
     <div class="Details">
       <h2>Details</h2>
       
-      <p>When using NMF for clustering in particular, one looks
-  for strong associations between the basis and a priori
-  known groups of samples. Plotting the profiles may
-  highlight such patterns.</p>
-  
       <p>The function can also be used to compare the profiles
   from two NMF models or mixture coefficient matrices. In
   this case, it draws a scatter plot of the paired
   profiles.</p>
   
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="keyword">if</span><span class="keyword">(</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/interactive'>interactive</a></span><span class="keyword">(</span><span class="keyword">)</span> <span class="keyword">)</span><span class="keyword">{</span>
-
-<span class="comment"># create a random target matrix</span>
-<span class="symbol">v</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">50</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span>
-
-<span class="comment"># fit a single NMF model</span>
-<span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span>
-<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">)</span>
-
-<span class="comment"># ordering according to first profile</span>
-<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">Colv</span><span class="argument">=</span><span class="number">1</span><span class="keyword">)</span> <span class="comment"># increasing</span>
-<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="argument">Colv</span><span class="argument">=</span><span class="keyword">-</span><span class="number">1</span><span class="keyword">)</span> <span class="comment"># decreasing</span>
-
-<span class="comment"># fit a multi-run NMF model</span>
-<span class="symbol">res2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="argument">nrun</span><span class="argument">=</span><span class="number">5</span><span class="keyword">)</span>
-<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res2</span><span class="keyword">)</span>
-
-<span class="comment"># draw a profile correlation plot: this show how the basis components are</span>
-<span class="comment"># returned in an unpredictable order</span>
-<span class="functioncall"><a href='profplot.html'>profplot</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">res2</span><span class="keyword">)</span>
-
-<span class="comment"># looking at all the correlations allow to order the components in a "common" order</span>
-<span class="functioncall"><a href='basiscor.html'>profcor</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">res2</span><span class="keyword">)</span>
-
-<span class="keyword">}</span></div>
-<div class='output'>           [,1]       [,2]       [,3]
-[1,] -0.6402213 -0.3741793  0.9999281
-[2,]  0.9997822 -0.4509342 -0.6530770
-[3,] -0.4572019  0.9997240 -0.3710160
-</div><p><img src='profplot-ex1.png' alt='' width='400' height='400' /></p><p><img src='profplot-ex2.png' alt='' width='400' height='400' /></p><p><img src='profplot-ex3.png' alt='' width='400' height='400' /></p><p><img src='profplot-ex4.png' alt='' width='400' height='400' /></p><p><img src='profplot-ex5.png' alt='' width='400' height='400' /></p></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
-      <li>profplot</li>
+      <li>profplot</li><li>profplot.default</li>
     </ul>
     <ul>
       <li>aplot</li>

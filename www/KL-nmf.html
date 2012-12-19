@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>nmf_update.brunet_R. NMF 0.10</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="
+  Original implementation in MATLAB: Jean-Philippe Brunet
+  &lt;a href='mailto:brunet@broad.mit.edu'&gt;brunet@broad.mit.edu&lt;/a&gt;
+
+  Port to R and optimisation in C++: Renaud Gaujoux
+">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.10</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>NMF Algorithm/Updates for Kullback-Leibler Divergence</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>nmf_update.brunet_R(i, v, x, eps = .Machine$double.eps, ...)
+
+nmf_update.brunet(i, v, x, copy = FALSE, eps = .Machine$double.eps, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>i</dt>
+      <dd>current iteration number.</dd>
+      <dt>v</dt>
+      <dd>target matrix.</dd>
+      <dt>x</dt>
+      <dd>current NMF model, as an
+  <code><a href='NMF-class.html'>NMF-class</a></code> object.</dd>
+      <dt>eps</dt>
+      <dd>small numeric value used to ensure numeric
+  stability, by shifting up entries from zero to this fixed
+  value.</dd>
+      <dt>...</dt>
+      <dd>extra arguments. These are generally not used
+  and present only to allow other arguments from the main
+  call to be passed to the initialisation and stopping
+  criterion functions.</dd>
+      <dt>copy</dt>
+      <dd>logical that indicates if the update should
+  be made on the original matrix directly (<code>FALSE</code>) or
+  on a copy (<code>TRUE</code> - default). With <code>copy=FALSE</code>
+  the memory footprint is very small, and some speed-up may
+  be achieved in the case of big matrices. However, greater
+  care should be taken due the side effect. We recommend
+  that only experienced users use <code>copy=TRUE</code>.</dd>
+    </dl>
+    
+    <div class="NMF Algorithm/Updates for Kullback-Leibler Divergence">
+      <h2>NMF Algorithm/Updates for Kullback-Leibler Divergence</h2>
+      
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The built-in NMF algorithms &#145;KL&#146; and
+  &#145;brunet&#146; minimise the Kullback-Leibler divergence
+  (KL) between an NMF model and a target matrix. They use
+  the updates for the basis and coefficient matrices
+  (<code class = 'eq'>W</code> and <code class = 'eq'>H</code>) defined by <cite>Brunet et al.
+  (2004)</cite>, which are essentially those from <cite>Lee et
+  al. (2001)</cite>, with an stabilisation step that shift up all
+  entries from zero every 10 iterations, to a very small
+  positive value.</p>
+  
+      <p><code>nmf_update.brunet</code> implements in C++ an optimised
+  version of the single update step.</p>
+  
+      <p>Algorithms &#145;brunet&#146; and &#145;.R#brunet&#146; provide
+  the complete NMF algorithm from <cite>Brunet et al.
+  (2004)</cite>, using the C++-optimised and pure R updates
+  <code><a href='KL-nmf.html'>nmf_update.brunet</a></code> and
+  <code><a href='KL-nmf.html'>nmf_update.brunet_R</a></code> respectively.</p>
+  
+      <p>Algorithm &#145;KL&#146; provides an NMF algorithm based on
+  the C++-optimised version of the updates from
+  <cite>Brunet et al. (2004)</cite>, but using the stationarity
+  of the objective value as a stopping criterion.</p>
+  
+      <p><code>file.show(system.file('matlab', 'brunet.m',
+  package='NMF'))</code></p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The only difference between algorithms &#145;KL&#146; and
+  &#145;brunet&#146; is that &#145;KL&#146; uses the stopping
+  criterion based on the stationarity of the objective
+  value <code><a href='stop-NMF.html'>nmf.stop.stationary</a></code>, whereas
+  &#145;brunet&#146; uses the stationarity of the connectivity
+  matrix <code><a href='stop-NMF.html'>nmf.stop.connectivity</a></code>.</p>
+  
+      <p><code>nmf_update.brunet_R</code> implements in pure R a single
+  update step, i.e. it updates both matrices.</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).
+  "Metagenes and molecular pattern discovery using matrix
+  factorization." _Proceedings of the National Academy of
+  Sciences of the United States of America_, *101*(12), pp.
+  4164-9. ISSN 0027-8424, <URL:
+  http://dx.doi.org/10.1073/pnas.0308531101>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/15016911>.</p>
+  
+      <p>Lee DD and Seung H (2001). "Algorithms for non-negative
+  matrix factorization." _Advances in neural information
+  processing systems_. <URL:
+  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>brunet-nmf</li><li>KL-nmf</li><li>Mbrunet-nmf</li><li>nmf_update.brunet</li><li>nmf_update.brunet_R</li><li>Rbrunet-nmf</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    
+    <h2>Author</h2>
+    
+  Original implementation in MATLAB: Jean-Philippe Brunet
+  <a href='mailto:brunet@broad.mit.edu'>brunet@broad.mit.edu</a>
+
+  Port to R and optimisation in C++: Renaud Gaujoux
+
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

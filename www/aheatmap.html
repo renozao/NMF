@@ -2,11 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>aheatmap. NMF 0.9</title>
+<title>aheatmap. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="
-  Original version of &lt;code&gt;&lt;a href='http://www.inside-r.org/r-doc/pheatmap/pheatmap'&gt;pheatmap&lt;/a&gt;&lt;/code&gt;:
-  Raivo Kolde &lt;rkolde@gmail.com&gt;
+  Original version of &lt;code&gt;pheatmap&lt;/code&gt;: Raivo Kolde
 
   Enhancement into &lt;code&gt;aheatmap&lt;/code&gt;: Renaud Gaujoux
 ">
@@ -25,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -45,15 +44,15 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="string">"-RdYlBu2:100"</span><span class="keyword">,</span> <span class="argument">breaks</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">border_color</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">cellwidth</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span>
-  <span class="argument">cellheight</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="string">"none"</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">Colv</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">revC</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></span><span class="keyword">(</span><span class="symbol">Colv</span><span class="keyword">,</span>
-          <span class="string">"Rowv"</span><span class="keyword">)</span> <span class="keyword">||</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/pkgmaker/is_something'>isNA</a></span><span class="keyword">(</span><span class="symbol">Rowv</span><span class="keyword">)</span> <span class="keyword">||</span> <span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/integer'>is.integer</a></span><span class="keyword">(</span><span class="symbol">Rowv</span><span class="keyword">)</span> <span class="keyword">&amp;&amp;</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/length'>length</a></span><span class="keyword">(</span><span class="symbol">Rowv</span><span class="keyword">)</span> <span class="keyword">&gt;</span> <span class="number">1</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">distfun</span> <span class="argument">=</span> <span class="string">"euclidean"</span><span class="keyword">,</span>
-      <span class="argument">hclustfun</span> <span class="argument">=</span> <span class="string">"complete"</span><span class="keyword">,</span> <span class="argument">reorderfun</span> <span class="argument">=</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">d</span><span class="keyword">,</span> <span class="formalargs">w</span><span class="keyword">)</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/stats/reorder.factor'>reorder</a></span><span class="keyword">(</span><span class="symbol">d</span><span class="keyword">,</span> <span class="symbol">w</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">treeheight</span> <span class="argument">=</span> <span class="number">50</span><span class="keyword">,</span>
-      <span class="argument">legend</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">annRow</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">annColors</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">annLegend</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">labRow</span> <span class="argument">=</span> NULL<span class="keyword">,</span>
-      <span class="argument">labCol</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">subsetRow</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">subsetCol</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">fontsize</span> <span class="argument">=</span> <span class="number">10</span><span class="keyword">,</span> <span class="argument">cexRow</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/Extremes'>min</a></span><span class="keyword">(</span><span class="number">0.2</span> <span class="keyword">+</span>
-          <span class="number">1</span><span class="keyword">/</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/Log'>log10</a></span><span class="keyword">(</span><span class="symbol">nr</span><span class="keyword">)</span><span class="keyword">,</span> <span class="number">1.2</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">cexCol</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/Extremes'>min</a></span><span class="keyword">(</span><span class="number">0.2</span> <span class="keyword">+</span> <span class="number">1</span><span class="keyword">/</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/Log'>log10</a></span><span class="keyword">(</span><span class="symbol">nc</span><span class="keyword">)</span><span class="keyword">,</span> <span class="number">1.2</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">filename</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">width</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span>
-      <span class="argument">height</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">main</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">sub</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">info</span> <span class="argument">=</span> NULL<span class="keyword">,</span> <span class="argument">verbose</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/options'>getOption</a></span><span class="keyword">(</span><span class="string">"verbose"</span><span class="keyword">)</span><span class="keyword">,</span>
-      <span class="symbol">...</span><span class="keyword">)</span></pre>
+    <pre>aheatmap(x, color = "-RdYlBu2:100", breaks = NA, border_color = NA, cellwidth = NA, 
+  cellheight = NA, scale = "none", Rowv = TRUE, Colv = TRUE, revC = identical(Colv, 
+          "Rowv") || isNA(Rowv) || (is.integer(Rowv) && length(Rowv) > 1), distfun = "euclidean", 
+      hclustfun = "complete", reorderfun = function(d, w) reorder(d, w), treeheight = 50, 
+      legend = TRUE, annCol = NA, annRow = NA, annColors = NA, annLegend = TRUE, labRow = NULL, 
+      labCol = NULL, subsetRow = NULL, subsetCol = NULL, fontsize = 10, cexRow = min(0.2 + 
+          1/log10(nr), 1.2), cexCol = min(0.2 + 1/log10(nc), 1.2), filename = NA, width = NA, 
+      height = NA, main = NULL, sub = NULL, info = NULL, verbose = getOption("verbose"), 
+      ...)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -372,28 +371,24 @@
       <h2>Details</h2>
       
       <p>The development of this function started as a fork of the
-  function <code><a href='http://www.inside-r.org/r-doc/pheatmap/pheatmap'>pheatmap</a></code> from the
-  package <code>pheatmap</code>, and provides several
-  enhancements such as: <ul>
-<li> it replicates the
-  arguments of the base <code><a href='http://www.inside-r.org/r-doc/stats/heatmap'>heatmap</a></code> function
-  </li>
-<li> annotation of both columns and rows, with
-  simplified interface </li>
-<li> easy specification of
-  clustering methods and colors </li>
-<li> return clustering
-  data and grid grob object </li>
+  function <code>pheatmap</code> from the <span class = "pkg">pheatmap</span> package,
+  and provides several enhancements such as: <ul>
+<li> argument names match those used in the base
+  function <code><a href='http://www.inside-r.org/r-doc/stats/heatmap'>heatmap</a></code>; </li>
+<li> unlimited number of
+  annotation for <strong>both</strong> columns and rows, with
+  simplified and more flexible interface; </li>
+<li> easy
+  specification of clustering methods and colors; </li>
+<li>
+  return clustering data, as well as grid grob object. </li>
 </ul></p>
   
       <p>Please read the associated vignette for more information
   and sample code.</p>
   
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'>## See the demo 'aheatmap' for more examples:</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># demo('aheatmap')</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'></div><div class='input'># Generate random data</div><div class='input'><span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">50</span><span class="keyword">;</span> <span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span></div><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/MathFun'>abs</a></span><span class="keyword">(</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">,</span> <span class="symbol">rnorm</span><span class="keyword">,</span> <span class="argument">mean</span><span class="argument">=</span><span class="number">4</span><span class="keyword">,</span> <span class="argument">sd</span><span class="argument">=</span><span class="number">1</span><span class="keyword">)</span><span class="keyword">)</span></div><div class='input'><span class="symbol">x</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">:</span><span class="number">10</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/seq'>seq</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span><span class="keyword">]</span> <span class="assignement">&lt;-</span> <span class="symbol">x</span><span class="keyword">[</span><span class="number">1</span><span class="keyword">:</span><span class="number">10</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/seq'>seq</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span><span class="keyword">]</span> <span class="keyword">+</span> <span class="number">3</span></div><div class='input'><span class="symbol">x</span><span class="keyword">[</span><span class="number">11</span><span class="keyword">:</span><span class="number">20</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/seq'>seq</a></span><span class="keyword">(</span><span class="number">2</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span><span class="keyword">]</span> <span class="assignement">&lt;-</span> <span class="symbol">x</span><span class="keyword">[</span><span class="number">11</span><span class="keyword">:</span><span class="number">20</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/seq'>seq</a></span><span class="keyword">(</span><span class="number">2</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span><span class="keyword">]</span> <span class="keyword">+</span> <span class="number">2</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/row_colnames'>rownames</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/paste'>paste</a></span><span class="keyword">(</span><span class="string">"ROW"</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="symbol">n</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/row_colnames'>colnames</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/BiocGenerics/paste'>paste</a></span><span class="keyword">(</span><span class="string">"COL"</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">:</span><span class="symbol">p</span><span class="keyword">)</span></div><div class='input'></div><div class='input'>## Default heatmap</div><div class='input'><span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div><p><img src='aheatmap-ex1.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'>## Distance methods</div><div class='input'><span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="string">"correlation"</span><span class="keyword">)</span></div><p><img src='aheatmap-ex2.png' alt='' width='400' height='400' /></p><div class='input'><span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="string">"man"</span><span class="keyword">)</span> <span class="comment"># partially matched to 'manhattan'</span></div><p><img src='aheatmap-ex3.png' alt='' width='400' height='400' /></p><div class='input'><span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="string">"man"</span><span class="keyword">,</span> <span class="argument">Colv</span><span class="argument">=</span><span class="string">"binary"</span><span class="keyword">)</span></div><p><img src='aheatmap-ex4.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'>#' # Generate column annotations</div><div class='input'><span class="symbol">annotation</span> <span class="assignement">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/data.frame'>data.frame</a></span><span class="keyword">(</span><span class="argument">Var1</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/factor'>factor</a></span><span class="keyword">(</span><span class="number">1</span><span class="keyword">:</span><span class="symbol">p</span> <span class="keyword">%%</span> <span class="number">2</span> == <span class="number">0</span><span class="keyword">,</span> <span class="argument">labels</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="string">"Class1"</span><span class="keyword">,</span> <span class="string">"Class2"</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">Var2</span> <span class="argument">=</span> <span class="number">1</span><span class="keyword">:</span><span class="number">10</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='aheatmap.html'>aheatmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="symbol">annotation</span><span class="keyword">)</span></div><p><img src='aheatmap-ex5.png' alt='' width='400' height='400' /></p></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
       <li>aheatmap</li>
@@ -405,8 +400,7 @@
     
     <h2>Author</h2>
     
-  Original version of <code><a href='http://www.inside-r.org/r-doc/pheatmap/pheatmap'>pheatmap</a></code>:
-  Raivo Kolde <rkolde@gmail.com>
+  Original version of <code>pheatmap</code>: Raivo Kolde
 
   Enhancement into <code>aheatmap</code>: Renaud Gaujoux
 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>heatmap-NMF. NMF 0.9</title>
+<title>heatmap-NMF. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -40,33 +40,34 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+    <pre>basismap(object, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (NMF)</span>
-<span class="functioncall">`basismap`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="string">"YlOrRd:50"</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="string">"r1"</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span>
-  <span class="argument">Colv</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">subsetRow</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">annRow</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">tracks</span> <span class="argument">=</span> <span class="string">"basis"</span><span class="keyword">,</span> <span class="argument">main</span> <span class="argument">=</span> <span class="string">"Basis components"</span><span class="keyword">,</span>
-      <span class="argument">info</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+<span class="label label-important">S4</span> (NMF)
+`basismap`(object, color = "YlOrRd:50", scale = "r1", Rowv = TRUE, Colv = NA, 
+  subsetRow = FALSE, annRow = NA, annCol = NA, tracks = "basis", main = "Basis components", 
+      info = FALSE, ...)
 
-<span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+coefmap(object, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (NMF)</span>
-<span class="functioncall">`coefmap`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="string">"YlOrRd:50"</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">scale</span> <span class="argument">=</span> <span class="string">"c1"</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">Colv</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span>
-      <span class="argument">annRow</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">tracks</span> <span class="argument">=</span> <span class="string">"basis"</span><span class="keyword">,</span> <span class="argument">main</span> <span class="argument">=</span> <span class="string">"Mixture coefficients"</span><span class="keyword">,</span> <span class="argument">info</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+<span class="label label-important">S4</span> (NMF)
+`coefmap`(object, color = "YlOrRd:50", scale = "c1", Rowv = NA, Colv = TRUE, 
+      annRow = NA, annCol = NA, tracks = "basis", main = "Mixture coefficients", info = FALSE, 
+      ...)
 
-<span class="functioncall"><a href='heatmaps.html'>consensusmap</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+consensusmap(object, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (NMFfitX)</span>
-<span class="functioncall">`consensusmap`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">annRow</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">tracks</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="string">"basis:"</span><span class="keyword">,</span>
-      <span class="string">"consensus:"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">main</span> <span class="argument">=</span> <span class="string">"Consensus matrix"</span><span class="keyword">,</span> <span class="argument">info</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+<span class="label label-important">S4</span> (NMFfitX)
+`consensusmap`(object, annRow = NA, annCol = NA, tracks = c("basis:", "consensus:"), 
+      main = "Consensus matrix", info = FALSE, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (matrix)</span>
-<span class="functioncall">`consensusmap`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">color</span> <span class="argument">=</span> <span class="string">"-RdYlBu"</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">distfun</span> <span class="argument">=</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">x</span><span class="keyword">)</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/stats/dist'>as.dist</a></span><span class="keyword">(</span><span class="number">1</span> <span class="keyword">-</span>
-      <span class="symbol">x</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">hclustfun</span> <span class="argument">=</span> <span class="string">"average"</span><span class="keyword">,</span> <span class="argument">Rowv</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">Colv</span> <span class="argument">=</span> <span class="string">"Rowv"</span><span class="keyword">,</span> <span class="argument">main</span> <span class="argument">=</span> <span class="keyword">if</span> <span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/NULL'>is.null</a></span><span class="keyword">(</span><span class="symbol">nr</span><span class="keyword">)</span> <span class="keyword">||</span>
-      <span class="symbol">nr</span> <span class="keyword">&gt;</span> <span class="number">1</span><span class="keyword">)</span> <span class="string">"Consensus matrix"</span> <span class="keyword">else</span> <span class="string">"Connectiviy matrix"</span><span class="keyword">,</span> <span class="argument">info</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+<span class="label label-important">S4</span> (matrix)
+`consensusmap`(object, color = "-RdYlBu", distfun = function(x) as.dist(1 - 
+      x), hclustfun = "average", Rowv = TRUE, Colv = "Rowv", main = if (is.null(nr) || 
+      nr > 1) "Consensus matrix" else "Connectiviy matrix", info = FALSE, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (NMFfitX)</span>
-<span class="functioncall">`coefmap`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">,</span> <span class="argument">Colv</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">annRow</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">annCol</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">tracks</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/c'>c</a></span><span class="keyword">(</span><span class="string">"basis"</span><span class="keyword">,</span>
-      <span class="string">"consensus:"</span><span class="keyword">)</span><span class="keyword">)</span></pre>
+<span class="label label-important">S4</span> (NMFfitX)
+`coefmap`(object, Colv = TRUE, annRow = NA, annCol = NA, tracks = c("basis", 
+      "consensus:"), ...)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -310,6 +311,12 @@
     <div class="Details">
       <h2>Details</h2>
       
+      <p><strong>IMPORTANT:</strong> although they essentially have the
+  same set of arguments, their order sometimes differ
+  between them, as well as from <code><a href='aheatmap.html'>aheatmap</a></code>. We
+  therefore strongly recommend to use fully named arguments
+  when calling these functions.</p>
+  
       <p><code>basimap</code> default values for the following arguments
   of <code><a href='aheatmap.html'>aheatmap</a></code>: <ul>
 <li> the color
@@ -445,10 +452,7 @@
       <p></span></p>
   
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'>## More examples are provided in demo `heatmaps`</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># demo(heatmaps)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'>##</div><div class='input'></div><div class='input'># random data with underlying NMF model</div><div class='input'><span class="symbol">v</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='syntheticNMF.html'>syntheticNMF</a></span><span class="keyword">(</span><span class="number">20</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="number">10</span><span class="keyword">)</span></div><div class='input'># estimate a model</div><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmf.html'>nmf</a></span><span class="keyword">(</span><span class="symbol">v</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">)</span></div><div class='input'># show basis matrix</div><div class='input'><span class="functioncall"><a href='heatmaps.html'>basismap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div><p><img src='heatmaps-ex1.png' alt='' width='400' height='400' /></p><div class='input'>## <strong>Not run</strong>: </div><div class='input'># # without the default annotation tracks</div><div class='input'># basismap(x, tracks=NA)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'># coefficient matrix</div><div class='input'><span class="functioncall"><a href='heatmaps.html'>coefmap</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div><p><img src='heatmaps-ex2.png' alt='' width='400' height='400' /></p><div class='input'>## <strong>Not run</strong>: </div><div class='input'># # without the default annotation tracks</div><div class='input'># coefmap(x, tracks=NA)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># res <- nmf(x, 3, nrun=3)</div><div class='input'># consensusmap(res)</div><div class='input'># ## <strong>End(Not run)</strong></div></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
       <li>basismap</li><li>basismap-methods</li><li>basismap,NMFfitX-method</li><li>basismap,NMF-method</li><li>coefmap</li><li>coefmap-methods</li><li>coefmap,NMFfitX-method</li><li>coefmap,NMF-method</li><li>consensusmap</li><li>consensusmap,matrix-method</li><li>consensusmap-methods</li><li>consensusmap,NMFfitX-method</li><li>consensusmap,NMF-method</li><li>heatmap-NMF</li>

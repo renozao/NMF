@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>smoothing. NMF 0.9</title>
+<title>smoothing. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -40,7 +40,7 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='smoothing.html'>smoothing</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="argument">theta</span> <span class="argument">=</span> <span class="symbol">x</span><span class="keyword">@</span><span class="slot">theta</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+    <pre>smoothing(x, theta = x@theta, ...)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -79,20 +79,7 @@
   <code><a href='NMFns-class.html'>NMFns-class</a></code> for more details).</p>
   
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class="symbol">x</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='nmfModel.html'>nmfModel</a></span><span class="keyword">(</span><span class="number">3</span><span class="keyword">,</span> <span class="argument">model</span><span class="argument">=</span><span class="string">'NMFns'</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='smoothing.html'>smoothing</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">)</span></div>
-<div class='output'>          [,1]      [,2]      [,3]
-[1,] 0.6666667 0.1666667 0.1666667
-[2,] 0.1666667 0.6666667 0.1666667
-[3,] 0.1666667 0.1666667 0.6666667
-</div><div class='input'><span class="functioncall"><a href='smoothing.html'>smoothing</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="number">0.1</span><span class="keyword">)</span></div>
-<div class='output'>           [,1]       [,2]       [,3]
-[1,] 0.93333333 0.03333333 0.03333333
-[2,] 0.03333333 0.93333333 0.03333333
-[3,] 0.03333333 0.03333333 0.93333333
-</div></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
       <li>smoothing</li>

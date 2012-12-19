@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>.fcnnls. NMF 0.10</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.10</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Internal Routine for Fast Combinatorial Nonnegative Least-Squares</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>.fcnnls(x, y, verbose = FALSE, pseudo = FALSE, eps = 0)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>the coefficient matrix</dd>
+      <dt>y</dt>
+      <dd>the target matrix to be approximated by <code class = 'eq'>X
+  K</code>.</dd>
+      <dt>verbose</dt>
+      <dd>logical that indicates if log messages
+  should be shown.</dd>
+      <dt>pseudo</dt>
+      <dd>By default (<code>pseudo=FALSE</code>) the
+  algorithm uses Gaussian elimination to solve the
+  successive internal linear problems, using the
+  <code><a href='http://www.inside-r.org/r-doc/base/solve'>solve</a></code> function.  If <code>pseudo=TRUE</code> the
+  algorithm uses Moore-Penrose generalized
+  <code><a href='http://www.inside-r.org/r-doc/corpcor/pseudoinverse'>pseudoinverse</a></code> from the
+  <code>corpcor</code> package instead of <a href='http://www.inside-r.org/r-doc/base/solve'>solve</a>.</dd>
+      <dt>eps</dt>
+      <dd>threshold for considering entries as
+  nonnegative. This is an experimental parameter, and it is
+  recommended to leave it at 0.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>A list with the following elements:</p>
+  
+      <p>coefthe fitted coefficient matrix.
+  Psetthe set of passive constraints, as a logical
+  matrix of the same size as <code>K</code> that indicates which
+  element is positive.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This is the workhorse function for the higher-level
+  function <code><a href='fcnnls.html'>fcnnls</a></code>, which implements the fast
+  nonnegative least-square algorithm for multiple
+  right-hand-sides from <cite>Van Benthem et al. (2004)</cite> to
+  solve the following problem:</p>
+  
+      <p><pre class = 'eq'>min ||Y - X K||_F, s.t. K>=0</code></p>
+  
+      <p>where <code class = 'eq'>Y</code> and <code class = 'eq'>X</code> are two real matrices of
+  dimension <code class = 'eq'>n x p</code> and <code class = 'eq'>n
+  x r</code> respectively, and <code class = 'eq'>|.|_F</code> is the
+  Frobenius norm.</p>
+  
+      <p>The algorithm is very fast compared to other approaches,
+  as it is optimised for handling multiple right-hand
+  sides.</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Van Benthem M and Keenan MR (2004). "Fast algorithm for
+  the solution of large-scale non-negativity-constrained
+  least squares problems." _Journal of Chemometrics_,
+  *18*(10), pp. 441-450. ISSN 0886-9383, <URL:
+  http://dx.doi.org/10.1002/cem.889>, <URL:
+  http://doi.wiley.com/10.1002/cem.889>.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>.fcnnls</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

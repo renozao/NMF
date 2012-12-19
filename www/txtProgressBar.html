@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>txtProgressBar. NMF 0.9</title>
+<title>txtProgressBar. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="
   R Core Team
@@ -22,7 +22,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -42,11 +42,15 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='txtProgressBar.html'>txtProgressBar</a></span><span class="keyword">(</span><span class="argument">min</span> <span class="argument">=</span> <span class="number">0</span><span class="keyword">,</span> <span class="argument">max</span> <span class="argument">=</span> <span class="number">1</span><span class="keyword">,</span> <span class="argument">initial</span> <span class="argument">=</span> <span class="number">0</span><span class="keyword">,</span> <span class="argument">char</span> <span class="argument">=</span> <span class="string">"="</span><span class="keyword">,</span> <span class="argument">width</span> <span class="argument">=</span> <span class="number">NA</span><span class="keyword">,</span> <span class="argument">title</span> <span class="argument">=</span> <span class="keyword">if</span> <span class="keyword">(</span><span class="symbol">style</span> ==
-  <span class="number">3</span><span class="keyword">)</span> <span class="string">" "</span><span class="keyword">,</span> <span class="symbol">label</span><span class="keyword">,</span> <span class="argument">style</span> <span class="argument">=</span> <span class="number">1</span><span class="keyword">,</span> <span class="argument">file</span> <span class="argument">=</span> <span class="string">""</span><span class="keyword">)</span></pre>
+    <pre>txtProgressBar(min = 0, max = 1, initial = 0, char = "=", width = NA, title = if (style == 
+  3) " ", label, style = 1, file = "", shared = NULL)</pre>
     
     <h2>Arguments</h2>
     <dl>
+      <dt>shared</dt>
+      <dd>specification of a shared directory to use
+  when the progress bar is to be used by multiple
+  processes.</dd>
       <dt>min</dt>
       <dd>(finite) numeric values for the extremes of
   the progress bar. Must have <code>min < max</code>.</dd>
@@ -85,7 +89,9 @@
       
       <p>Creates a simple progress bar with title. This function
   is identical to <code>utils::txtProgressBar</code> but allow
-  adding a title to the progress bar.</p>
+  adding a title to the progress bar, and can be shared by
+  multiple processes, e.g., in multicore or multi-hosts
+  computations.</p>
   
     </div>
       </div>

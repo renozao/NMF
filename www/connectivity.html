@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>connectivity. NMF 0.9</title>
+<title>connectivity. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -40,12 +40,12 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='connectivity.html'>connectivity</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+    <pre>connectivity(object, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (NMF)</span>
-<span class="functioncall">`connectivity`</span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="argument">no.attrib</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+<span class="label label-important">S4</span> (NMF)
+`connectivity`(object, no.attrib = FALSE)
 
-<span class="functioncall"><a href='connectivity.html'>consensus</a></span><span class="keyword">(</span><span class="symbol">object</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+consensus(object, ...)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -166,32 +166,7 @@
   http://www.ncbi.nlm.nih.gov/pubmed/15016911>.</p>
   
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'># clustering of random data</div><div class='input'><span class="symbol">h</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/stats/hclust'>hclust</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/stats/dist'>dist</a></span><span class="keyword">(</span><span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="number">10</span><span class="keyword">,</span><span class="number">20</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span></div><div class='input'><span class="functioncall"><a href='connectivity.html'>connectivity</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/stats/cutree'>cutree</a></span><span class="keyword">(</span><span class="symbol">h</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
- [1,]    1    1    0    0    0    0    1    0    1     0
- [2,]    1    1    0    0    0    0    1    0    1     0
- [3,]    0    0    1    1    1    1    0    1    0     1
- [4,]    0    0    1    1    1    1    0    1    0     1
- [5,]    0    0    1    1    1    1    0    1    0     1
- [6,]    0    0    1    1    1    1    0    1    0     1
- [7,]    1    1    0    0    0    0    1    0    1     0
- [8,]    0    0    1    1    1    1    0    1    0     1
- [9,]    1    1    0    0    0    0    1    0    1     0
-[10,]    0    0    1    1    1    1    0    1    0     1
-</div><div class='input'><span class="functioncall"><a href='connectivity.html'>connectivity</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.inside-r.org/r-doc/base/gl'>gl</a></span><span class="keyword">(</span><span class="number">2</span><span class="keyword">,</span> <span class="number">4</span><span class="keyword">)</span><span class="keyword">)</span></div>
-<div class='output'>     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
-[1,]    1    1    1    1    0    0    0    0
-[2,]    1    1    1    1    0    0    0    0
-[3,]    1    1    1    1    0    0    0    0
-[4,]    1    1    1    1    0    0    0    0
-[5,]    0    0    0    0    1    1    1    1
-[6,]    0    0    0    0    1    1    1    1
-[7,]    0    0    0    0    1    1    1    1
-[8,]    0    0    0    0    1    1    1    1
-</div></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
       <li>connectivity</li><li>connectivity,ANY-method</li><li>connectivity,factor-method</li><li>connectivity-methods</li><li>connectivity,NMF-method</li><li>connectivity,numeric-method</li><li>consensus</li><li>consensus-methods</li><li>consensus,NMFfitX-method</li><li>consensus,NMF-method</li>

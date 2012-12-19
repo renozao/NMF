@@ -2,9 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>fcnnls. NMF 0.9</title>
+<title>fcnnls. NMF 0.10</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="author" content="">
+<meta name="author" content="
+  Original MATLAB code : Van Benthem and Keenan
+
+  Adaption of MATLAB code for SNMF/R(L): H. Kim
+
+  Adaptation to the NMF package framework: Renaud Gaujoux
+">
 
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
@@ -20,7 +26,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.9</a>
+      <a class="brand" href="index.html">NMF 0.10</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -35,29 +41,29 @@
         
       </header>
       
-      <h1>Fast Combinatorial Non-Negative Least-Square</h1>
+      <h1>Fast Combinatorial Nonnegative Least-Square</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span>
+    <pre>fcnnls(x, y, ...)
 
-<span class="comment"><span class="label label-important">S4</span> (matrix,matrix)</span>
-<span class="functioncall">`fcnnls`</span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">,</span> <span class="argument">verbose</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">,</span> <span class="argument">pseudo</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+<span class="label label-important">S4</span> (matrix,matrix)
+`fcnnls`(x, y, verbose = FALSE, pseudo = TRUE, ...)</pre>
     
     <h2>Arguments</h2>
     <dl>
-      <dt>x</dt>
-      <dd>the coefficient matrix</dd>
-      <dt>y</dt>
-      <dd>the target matrix to be approximated by <code class = 'eq'>X
-  K</code>.</dd>
       <dt>...</dt>
       <dd>extra arguments passed to the internal
   function <code>.fcnnls</code>. Currently not used.</dd>
       <dt>verbose</dt>
       <dd>toggle verbosity (default is
   <code>FALSE</code>).</dd>
+      <dt>x</dt>
+      <dd>the coefficient matrix</dd>
+      <dt>y</dt>
+      <dd>the target matrix to be approximated by <code class = 'eq'>X
+  K</code>.</dd>
       <dt>pseudo</dt>
       <dd>By default (<code>pseudo=FALSE</code>) the
   algorithm uses Gaussian elimination to solve the
@@ -71,9 +77,10 @@
     <div class="Value">
       <h2>Value</h2>
       
-      <p>The returned value is a list containing the following
-  components: x the estimated optimal matrix
-  <code class = 'eq'>K</code>. fitted the fitted matrix <code class = 'eq'>X K</code>.
+      <p>A list containing the following components:</p>
+  
+      <p>x the estimated optimal matrix <code class = 'eq'>K</code>.
+  fitted the fitted matrix <code class = 'eq'>X K</code>.
   residuals the residual matrix <code class = 'eq'>Y - X K</code>.
   deviance the residual sum of squares between the
   fitted matrix <code class = 'eq'>X K</code> and the target matrix <code class = 'eq'>Y</code>.
@@ -89,7 +96,7 @@
     <div class="Description">
       <h2>Description</h2>
       
-      <p>This function solves the following non-negative least
+      <p>This function solves the following nonnegative least
   square linear problem using normal equations and the fast
   combinatorial strategy from <cite>Van Benthem et al.
   (2004)</cite>:</p>
@@ -107,13 +114,14 @@
   Frobenius norm.</p>
   
       <p>The algorithm is very fast compared to other approaches,
-  as it optimised for handling multiple right-hand sides.</p>
+  as it is optimised for handling multiple right-hand
+  sides.</p>
   
       <p>Within the <code>NMF</code> package, this algorithm is used
   internally by the SNMF/R(L) algorithm from <cite>Kim et
   al. (2007)</cite> to solve general Nonnegative Matrix
   Factorization (NMF) problems, using alternating
-  non-negative constrained least-squares. That is by
+  nonnegative constrained least-squares. That is by
   iteratively and alternatively estimate each matrix
   factor.</p>
   
@@ -126,12 +134,14 @@
   sets.</p>
   
       <p>The function <code>fcnnls</code> is provided separately so that
-  it can be used to solve other types of non-negative least
-  squares problem. For faster computation, it is
-  recommended to use the internal -- non-exported --
-  function <code>NMF:::.fcnnls</code>. The code is a port from
-  the original MATLAB code used in <cite>Kim et al.
-  (2007)</cite>.</p>
+  it can be used to solve other types of nonnegative least
+  squares problem. For faster computation, when multiple
+  nonnegative least square fits are needed, it is
+  recommended to directly use the function
+  <code><a href='dot-fcnnls.html'>.fcnnls</a></code>.</p>
+  
+      <p>The code of this function is a port from the original
+  MATLAB code provided by <cite>Kim et al. (2007)</cite>.</p>
   
     </div>
 
@@ -180,10 +190,7 @@
   http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
   
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'>## Define a random non-negative matrix matrix</div><div class='input'><span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">200</span><span class="keyword">;</span> <span class="symbol">p</span> <span class="assignement">&lt;-</span> <span class="number">20</span><span class="keyword">;</span> <span class="symbol">r</span> <span class="assignement">&lt;-</span> <span class="number">3</span></div><div class='input'><span class="symbol">V</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">p</span><span class="keyword">)</span></div><div class='input'></div><div class='input'>## Compute the optimal matrix K for a given X matrix</div><div class='input'><span class="symbol">X</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='rmatrix.html'>rmatrix</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">,</span> <span class="symbol">r</span><span class="keyword">)</span></div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">,</span> <span class="symbol">V</span><span class="keyword">)</span></div><div class='input'></div><div class='input'>## Compute the same thing using the Moore-Penrose generalized pseudoinverse</div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">,</span> <span class="symbol">V</span><span class="keyword">,</span> <span class="argument">pseudo</span><span class="argument">=</span><span class="number">TRUE</span><span class="keyword">)</span></div><div class='input'></div><div class='input'>## It also works in the case of single vectors</div><div class='input'><span class="symbol">y</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.inside-r.org/r-doc/stats/Uniform'>runif</a></span><span class="keyword">(</span><span class="symbol">n</span><span class="keyword">)</span></div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span></div><div class='input'># or</div><div class='input'><span class="symbol">res</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='fcnnls.html'>fcnnls</a></span><span class="keyword">(</span><span class="symbol">X</span><span class="keyword">[</span><span class="keyword">,</span><span class="number">1</span><span class="keyword">]</span><span class="keyword">,</span> <span class="symbol">y</span><span class="keyword">)</span></div></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
       <li>fcnnls</li><li>fcnnls,ANY,numeric-method</li><li>fcnnls,matrix,matrix-method</li><li>fcnnls-methods</li><li>fcnnls,numeric,matrix-method</li>
@@ -196,7 +203,16 @@
     
   <code><a href='nmf.html'>nmf</a></code>
 
-        
+    
+    <h2>Author</h2>
+    
+  Original MATLAB code : Van Benthem and Keenan
+
+  Adaption of MATLAB code for SNMF/R(L): H. Kim
+
+  Adaptation to the NMF package framework: Renaud Gaujoux
+
+    
   </div>
 </div>
       
