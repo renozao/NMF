@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFstd-class. NMF 0.10.1</title>
+<title>NMFstd-class. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -74,24 +78,34 @@
       <p>Integer <code class = 'eq'>r</code> is called the <em>factorization rank</em>.
   Depending on the context of application of NMF, the
   columns of <code class = 'eq'>W</code> and <code class = 'eq'>H</code> are given different names:
-  <span class='describe'> columns of <code>W</code>basis vector,
-  metagenes, factors, source, image basis columns of
+  <ol>
+<li>columns of <code>W</code>basis vector,
+  metagenes, factors, source, image basis </li>
+<li>columns of
   <code>H</code>mixture coefficients, metagene sample
-  expression profiles, weights rows of
-  <code>H</code>basis profiles, metagene expression profiles </span></p>
+  expression profiles, weights </li>
+<li>rows of
+  <code>H</code>basis profiles, metagene expression profiles </li>
+</ol></p>
   
       <p>NMF approaches have been successfully applied to several
   fields. The package NMF was implemented trying to use
   names as generic as possible for objects and methods.</p>
   
-      <p>The following terminology is used: <span class='describe'>
-  samplesthe columns of the target matrix <code class = 'eq'>V</code>
-  featuresthe rows of the target matrix <code class = 'eq'>V</code>
-  basis matrixthe first matrix factor <code class = 'eq'>W</code>
-  basis vectorsthe columns of first matrix factor
-  <code class = 'eq'>W</code> mixture matrixthe second matrix factor
-  <code class = 'eq'>H</code> mixtures coefficientsthe columns of
-  second matrix factor <code class = 'eq'>H</code> </span></p>
+      <p>The following terminology is used: <ol>
+<li>samplesthe columns of the target matrix <code class = 'eq'>V</code>
+  </li>
+<li>featuresthe rows of the target matrix <code class = 'eq'>V</code>
+  </li>
+<li>basis matrixthe first matrix factor <code class = 'eq'>W</code>
+  </li>
+<li>basis vectorsthe columns of first matrix factor
+  <code class = 'eq'>W</code> </li>
+<li>mixture matrixthe second matrix factor
+  <code class = 'eq'>H</code> </li>
+<li>mixtures coefficientsthe columns of
+  second matrix factor <code class = 'eq'>H</code> </li>
+</ol></p>
   
       <p>However, because the package NMF was primarily
   implemented to work with gene expression microarray data,
@@ -104,20 +118,22 @@
     <div class="Slots">
       <h2>Slots</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>WA <code>matrix</code> that contains the basis matrix,
+      <p><ol>
+<li>WA <code>matrix</code> that contains the basis matrix,
   i.e. the <em>first</em> matrix factor of the factorisation</p>
   
-      <p>HA <code>matrix</code> that contains the coefficient
+      <p></li>
+<li>HA <code>matrix</code> that contains the coefficient
   matrix, i.e. the <em>second</em> matrix factor of the
   factorisation</p>
   
-      <p>btermsa <code>data.frame</code> that contains the
+      <p></li>
+<li>btermsa <code>data.frame</code> that contains the
   primary data that define fixed basis terms. See
   <code><a href='terms.html'>bterms</a></code>.</p>
   
-      <p>ibtermsinteger vector that contains the indexes
+      <p></li>
+<li>ibtermsinteger vector that contains the indexes
   of the basis components that are fixed, i.e. for which
   only the coefficient are estimated.</p>
   
@@ -127,11 +143,13 @@
   is not recommended to not be subsequently changed by the
   end-user.</p>
   
-      <p>ctermsa <code>data.frame</code> that contains the
+      <p></li>
+<li>ctermsa <code>data.frame</code> that contains the
   primary data that define fixed coefficient terms. See
   <code><a href='terms.html'>cterms</a></code>.</p>
   
-      <p>ictermsinteger vector that contains the indexes
+      <p></li>
+<li>ictermsinteger vector that contains the indexes
   of the basis components that have fixed coefficients,
   i.e. for which only the basis vectors are estimated.</p>
   
@@ -141,62 +159,75 @@
   is not recommended to not be subsequently changed by the
   end-user.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>.basis<code>signature(object = "NMFstd")</code>: Get
+      <p><ol>
+<li>.basis<code>signature(object = "NMFstd")</code>: Get
   the basis matrix in standard NMF models</p>
   
       <p>This function returns slot <code>W</code> of <code>object</code>.</p>
   
-      <p>.basis<-<code>signature(object = "NMFstd", value
+      <p></li>
+<li>.basis<-<code>signature(object = "NMFstd", value
   = "matrix")</code>: Set the basis matrix in standard NMF models</p>
   
       <p>This function sets slot <code>W</code> of <code>object</code>.</p>
   
-      <p>bterms<-<code>signature(object = "NMFstd")</code>:
+      <p></li>
+<li>bterms<-<code>signature(object = "NMFstd")</code>:
   Default method tries to coerce <code>value</code> into a
   <code>data.frame</code> with <code><a href='http://www.inside-r.org/r-doc/base/as.data.frame'>as.data.frame</a></code>.</p>
   
-      <p>.coef<code>signature(object = "NMFstd")</code>: Get the
+      <p></li>
+<li>.coef<code>signature(object = "NMFstd")</code>: Get the
   mixture coefficient matrix in standard NMF models</p>
   
       <p>This function returns slot <code>H</code> of <code>object</code>.</p>
   
-      <p>.coef<-<code>signature(object = "NMFstd", value =
+      <p></li>
+<li>.coef<-<code>signature(object = "NMFstd", value =
   "matrix")</code>: Set the mixture coefficient matrix in
   standard NMF models</p>
   
       <p>This function sets slot <code>H</code> of <code>object</code>.</p>
   
-      <p>cterms<-<code>signature(object = "NMFstd")</code>:
+      <p></li>
+<li>cterms<-<code>signature(object = "NMFstd")</code>:
   Default method tries to coerce <code>value</code> into a
   <code>data.frame</code> with <code><a href='http://www.inside-r.org/r-doc/base/as.data.frame'>as.data.frame</a></code>.</p>
   
-      <p>fitted<code>signature(object = "NMFstd")</code>:
+      <p></li>
+<li>fitted<code>signature(object = "NMFstd")</code>:
   Compute the target matrix estimate in <em>standard NMF
   models</em>.</p>
   
       <p>The estimate matrix is computed as the product of the two
   matrix slots <code>W</code> and <code>H</code>: <pre class = 'eq'>V ~ W H</code></p>
   
-      <p>ibterms<code>signature(object = "NMFstd")</code>:
+      <p></li>
+<li>ibterms<code>signature(object = "NMFstd")</code>:
   Method for standard NMF models, which returns the integer
   vector that is stored in slot <code>ibterms</code> when a
   formula-based NMF model is instantiated.</p>
   
-      <p>icterms<code>signature(object = "NMFstd")</code>:
+      <p></li>
+<li>icterms<code>signature(object = "NMFstd")</code>:
   Method for standard NMF models, which returns the integer
   vector that is stored in slot <code>icterms</code> when a
   formula-based NMF model is instantiated.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 

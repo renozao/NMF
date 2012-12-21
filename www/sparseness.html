@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>sparseness. NMF 0.10.1</title>
+<title>sparseness. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -93,20 +97,21 @@
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>sparseness<code>signature(x = "numeric")</code>: Base
+      <p><ol>
+<li>sparseness<code>signature(x = "numeric")</code>: Base
   method that computes the sparseness of a numeric vector.</p>
   
       <p>It returns a single numeric value, computed following the
   definition given in section <em>Description</em>.</p>
   
-      <p>sparseness<code>signature(x = "matrix")</code>:
+      <p></li>
+<li>sparseness<code>signature(x = "matrix")</code>:
   Computes the sparseness of a matrix as the mean
   sparseness of its column vectors. It returns a single
   numeric value.</p>
   
-      <p>sparseness<code>signature(x = "NMF")</code>: Compute
+      <p></li>
+<li>sparseness<code>signature(x = "NMF")</code>: Compute
   the sparseness of an object of class <code>NMF</code>, as the
   sparseness of the basis and coefficient matrices computed
   separately.</p>
@@ -114,7 +119,10 @@
       <p>It returns the two values in a numeric vector with names
   &#145;basis&#146; and &#145;coef&#146;.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 

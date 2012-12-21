@@ -420,16 +420,6 @@ is.Mac <- function(check.gui=FALSE){
 	is.mac && (!check.gui || .Platform$GUI == 'AQUA')
 }
 
-###% Test if parallel computation is possible
-parallelEnv <- function(load=TRUE){
-	
-	isPackageInstalled('doMC') && 
-	# from bigmemory_4 the package synchronicity is required
-	( (isPackageInstalled('bigmemory_4') && isPackageInstalled('synchronicity'))  
-		|| (!isPackageInstalled('bigmemory_4') && isPackageInstalled('bigmemory'))
-	) 
-}
-
 ###% Hash a function body (using digest)
 #' @import digest
 hash_function <- function(f){
@@ -1070,3 +1060,11 @@ CI.Rsq <- function (rsq, n, k, level = 0.95)
 	mat <- data.frame(Rsq = rsq, SErsq = sersq, LCL = lcl, UCL = ucl)
 	return(mat)
 }
+
+# install extra packages if not already installed
+packageExtraHandler('install_missing', function(pkg, ..., force=FALSE){
+	if( force || !require.quiet(pkg, character.only=TRUE) ){
+		install.packages(pkg, ...)
+		require(pkg, character.only=TRUE)
+	}else message("Loaded extra package: ", pkg)
+})

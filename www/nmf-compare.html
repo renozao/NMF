@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>compare-NMF. NMF 0.10.1</title>
+<title>compare-NMF. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -186,30 +190,34 @@
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>compare<code>signature(object = "NMFfit")</code>:
+      <p><ol>
+<li>compare<code>signature(object = "NMFfit")</code>:
   Compare multiple NMF fits passed as arguments.</p>
   
-      <p>compare<code>signature(object = "list")</code>:
+      <p></li>
+<li>compare<code>signature(object = "list")</code>:
   Compares multiple NMF fits passed as a standard list.</p>
   
-      <p>consensusmap<code>signature(object =
+      <p></li>
+<li>consensusmap<code>signature(object =
   "NMF.rank")</code>: Draw a single plot with a heatmap of the
   consensus matrix obtained for each value of the rank, in
   the range tested with <code><a href='nmfEstimateRank.html'>nmfEstimateRank</a></code>.</p>
   
-      <p>consensusmap<code>signature(object = "list")</code>:
+      <p></li>
+<li>consensusmap<code>signature(object = "list")</code>:
   Draw a single plot with a heatmap of the consensus matrix
   of each element in the list <code>object</code>.</p>
   
-      <p>plot<code>signature(x = "NMFList", y =
+      <p></li>
+<li>plot<code>signature(x = "NMFList", y =
   "missing")</code>: <code>plot</code> plot on a single graph the
   residuals tracks for each fit in <code>x</code>. See function
   <code><a href='nmf.html'>nmf</a></code> for details on how to enable the
   tracking of residuals.</p>
   
-      <p>summary<code>signature(object = "NMFList")</code>:
+      <p></li>
+<li>summary<code>signature(object = "NMFList")</code>:
   <code>summary,NMFList</code> computes summary measures for each
   NMF result in the list and return them in rows in a
   <code>data.frame</code>. By default all the measures are
@@ -220,7 +228,10 @@
   compare and evaluate the performance of different
   algorithms.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
     
@@ -231,13 +242,13 @@
 </div><div class='input'></div><div class='input'># compare arguments</div><div class='input'>compare(res, res2, target=x)
 </div>
 <div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef       rss      evar residuals niter   cpu cpu.all nrun
-1 brunet random   1        KL    3        0.3279908       0.3600965  8.256944 0.8742491  9.615037   500 0.180   0.180    1
-2    lee random   2 euclidean    2        0.2160221       0.2444117 11.025567 0.8320837  5.512784   570 0.308   0.308    1
+1 brunet random   2        KL    3        0.2328288       0.4888696  8.754288 0.8690033  9.722430   790 0.296   0.296    1
+2    lee random   1 euclidean    2        0.1515658       0.4216960 10.927088 0.8364902  5.463544   470 0.276   0.276    1
 </div><div class='input'># compare elements of a list</div><div class='input'>compare(list(res, res2), target=x)
 </div>
 <div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef       rss      evar residuals niter   cpu cpu.all nrun
-1 brunet random   1        KL    3        0.3279908       0.3600965  8.256944 0.8742491  9.615037   500 0.180   0.180    1
-2    lee random   2 euclidean    2        0.2160221       0.2444117 11.025567 0.8320837  5.512784   570 0.308   0.308    1
+1 brunet random   2        KL    3        0.2328288       0.4888696  8.754288 0.8690033  9.722430   790 0.296   0.296    1
+2    lee random   1 euclidean    2        0.1515658       0.4216960 10.927088 0.8364902  5.463544   470 0.276   0.276    1
 </div></pre>
   </div>
   <div class="span4">

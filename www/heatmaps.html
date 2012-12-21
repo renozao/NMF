@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>heatmap-NMF. NMF 0.10.1</title>
+<title>heatmap-NMF. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -105,14 +109,17 @@ consensusmap(object, ...)
       <dt>tracks</dt>
       <dd>Special additional annotation tracks to
   highlight associations between basis components and
-  sample clusters: <span class='describe'> basismatches each row
+  sample clusters: <ol>
+<li>basismatches each row
   (resp. column) to the most contributing basis component
   in <code>basismap</code> (resp. <code>coefmap</code>). In
   <code>basismap</code> (resp. <code>coefmap</code>), adding a track
   <code>':basis'</code> to <code>annCol</code> (resp. <code>annRow</code>)
   makes the column (resp. row) corresponding to the
   component being also highlited using the mathcing
-  colours. </span></dd>
+  colours. </li>
+</ol>
+</dd>
       <dt>info</dt>
       <dd>if <code>TRUE</code> then the name of the algorithm
   that fitted the NMF model is displayed at the bottom of
@@ -401,23 +408,25 @@ consensusmap(object, ...)
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>basismap<code>signature(object = "NMF")</code>: Plots a
+      <p><ol>
+<li>basismap<code>signature(object = "NMF")</code>: Plots a
   heatmap of the basis matrix of the NMF model
   <code>object</code>. This method also works for fitted NMF
   models (i.e. <code>NMFfit</code> objects).</p>
   
-      <p>basismap<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>basismap<code>signature(object = "NMFfitX")</code>:
   Plots a heatmap of the basis matrix of the best fit in
   <code>object</code>.</p>
   
-      <p>coefmap<code>signature(object = "NMF")</code>: The
+      <p></li>
+<li>coefmap<code>signature(object = "NMF")</code>: The
   default method for NMF objects has special default values
   for some arguments of <code><a href='aheatmap.html'>aheatmap</a></code> (see
   argument description).</p>
   
-      <p>coefmap<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>coefmap<code>signature(object = "NMFfitX")</code>:
   Plots a heatmap of the coefficient matrix of the best fit
   in <code>object</code>.</p>
   
@@ -437,19 +446,25 @@ consensusmap(object, ...)
   </li>
 </ul></p>
   
-      <p>consensusmap<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>consensusmap<code>signature(object = "NMFfitX")</code>:
   Plots a heatmap of the consensus matrix obtained when
   fitting an NMF model with multiple runs.</p>
   
-      <p>consensusmap<code>signature(object = "NMF")</code>:
+      <p></li>
+<li>consensusmap<code>signature(object = "NMF")</code>:
   Plots a heatmap of the connectivity matrix of an NMF
   model.</p>
   
-      <p>consensusmap<code>signature(object = "matrix")</code>:
+      <p></li>
+<li>consensusmap<code>signature(object = "matrix")</code>:
   Main method that redefines default values for arguments
   of <code><a href='aheatmap.html'>aheatmap</a></code>.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
     

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>plot,NMFfit,missing-method. NMF 0.10.1</title>
+<title>plot,NMFfit,missing-method. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -64,7 +68,8 @@ the NMF model <code>x</code>.</h1>
       <dd>Arguments to be passed to methods, such as
   <a href='http://www.inside-r.org/r-doc/graphics/par'>graphical parameters</a> (see <code><a href='http://www.inside-r.org/r-doc/graphics/par'>par</a></code>).
   Many methods will accept the following arguments:
-  <span class='describe'> <code>type</code>what type of plot should be
+  <ol>
+<li><code>type</code>what type of plot should be
   drawn.  Possible types are <ul>
 <li> <code>"p"</code> for
   <b>p</b>oints, </li>
@@ -89,13 +94,20 @@ the NMF model <code>x</code>.</h1>
   using, e.g., <code>type = "punkte"</code> being equivalent to
   <code>type = "p"</code> for S compatibility.  Note that some
   methods, e.g. <code><a href='http://www.inside-r.org/r-doc/graphics/plot.factor'>plot.factor</a></code>, do not accept
-  this.   <code>main</code>an overall title for the
-  plot: see <code><a href='http://www.inside-r.org/r-doc/graphics/title'>title</a></code>. <code>sub</code>a sub
+  this.   </li>
+<li><code>main</code>an overall title for the
+  plot: see <code><a href='http://www.inside-r.org/r-doc/graphics/title'>title</a></code>. </li>
+<li><code>sub</code>a sub
   title for the plot: see <code><a href='http://www.inside-r.org/r-doc/graphics/title'>title</a></code>.
-  <code>xlab</code>a title for the x axis: see
-  <code><a href='http://www.inside-r.org/r-doc/graphics/title'>title</a></code>. <code>ylab</code>a title for the
-  y axis: see <code><a href='http://www.inside-r.org/r-doc/graphics/title'>title</a></code>. <code>asp</code>the
-  <code class = 'eq'>y/x</code> aspect ratio, see <code><a href='http://www.inside-r.org/r-doc/graphics/plot.window'>plot.window</a></code>. </span>
+  </li>
+<li><code>xlab</code>a title for the x axis: see
+  <code><a href='http://www.inside-r.org/r-doc/graphics/title'>title</a></code>. </li>
+<li><code>ylab</code>a title for the
+  y axis: see <code><a href='http://www.inside-r.org/r-doc/graphics/title'>title</a></code>. </li>
+<li><code>asp</code>the
+  <code class = 'eq'>y/x</code> aspect ratio, see <code><a href='http://www.inside-r.org/r-doc/graphics/plot.window'>plot.window</a></code>. </li>
+</ol>
+
   </dd>
     </dl>
     

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf.equal. NMF 0.10.1</title>
+<title>nmf.equal. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -109,53 +113,63 @@
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>nmf.equal<code>signature(x = "NMF", y = "NMF")</code>:
+      <p><ol>
+<li>nmf.equal<code>signature(x = "NMF", y = "NMF")</code>:
   Compares two NMF models.</p>
   
       <p>Arguments in <code>...</code> are used only when
   <code>identical=FALSE</code> and are passed to
   <code>all.equal</code>.</p>
   
-      <p>nmf.equal<code>signature(x = "NMFfit", y =
+      <p></li>
+<li>nmf.equal<code>signature(x = "NMFfit", y =
   "NMF")</code>: Compares two NMF models when at least one comes
   from a NMFfit object, i.e. an object returned by a single
   run of <code><a href='nmf.html'>nmf</a></code>.</p>
   
-      <p>nmf.equal<code>signature(x = "NMF", y =
+      <p></li>
+<li>nmf.equal<code>signature(x = "NMF", y =
   "NMFfit")</code>: Compares two NMF models when at least one
   comes from a NMFfit object, i.e. an object returned by a
   single run of <code><a href='nmf.html'>nmf</a></code>.</p>
   
-      <p>nmf.equal<code>signature(x = "NMFfit", y =
+      <p></li>
+<li>nmf.equal<code>signature(x = "NMFfit", y =
   "NMFfit")</code>: Compares two fitted NMF models, i.e. objects
   returned by single runs of <code><a href='nmf.html'>nmf</a></code>.</p>
   
-      <p>nmf.equal<code>signature(x = "NMFfitX", y =
+      <p></li>
+<li>nmf.equal<code>signature(x = "NMFfitX", y =
   "NMF")</code>: Compares two NMF models when at least one comes
   from multiple NMF runs.</p>
   
-      <p>nmf.equal<code>signature(x = "NMF", y =
+      <p></li>
+<li>nmf.equal<code>signature(x = "NMF", y =
   "NMFfitX")</code>: Compares two NMF models when at least one
   comes from multiple NMF runs.</p>
   
-      <p>nmf.equal<code>signature(x = "NMFfitX1", y =
+      <p></li>
+<li>nmf.equal<code>signature(x = "NMFfitX1", y =
   "NMFfitX1")</code>: Compares the NMF models fitted by multiple
   runs, that only kept the best fits.</p>
   
-      <p>nmf.equal<code>signature(x = "list", y =
+      <p></li>
+<li>nmf.equal<code>signature(x = "list", y =
   "list")</code>: Compares the results of multiple NMF runs.</p>
   
       <p>This method either compare the two best fit, or all fits
   separately. All extra arguments in <code>...</code> are passed
   to each internal call to <code>nmf.equal</code>.</p>
   
-      <p>nmf.equal<code>signature(x = "list", y =
+      <p></li>
+<li>nmf.equal<code>signature(x = "list", y =
   "missing")</code>: Compare all elements in <code>x</code> to
   <code>x[[1]]</code>.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
       </div>

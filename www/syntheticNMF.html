@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>syntheticNMF. NMF 0.10.1</title>
+<title>syntheticNMF. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -86,18 +90,23 @@
       <p>a matrix, or a list if argument <code>factors=TRUE</code>.</p>
   
       <p>When <code>factors=FALSE</code>, the result is a matrix object,
-  with the following attributes set: <span class='describe'>
-  coefficientsthe true underlying coefficient
-  matrix (i.e. <code>H</code>); basisthe true underlying
-  coefficient matrix (i.e. <code>H</code>); offsetthe
-  offset if any; pDataa <code>list</code> with one
+  with the following attributes set: <ol>
+<li>coefficientsthe true underlying coefficient
+  matrix (i.e. <code>H</code>); </li>
+<li>basisthe true underlying
+  coefficient matrix (i.e. <code>H</code>); </li>
+<li>offsetthe
+  offset if any; </li>
+<li>pDataa <code>list</code> with one
   element <code>'Group'</code> that contains a factor that
   indicates the true groups of samples, i.e. the most
   contributing basis component for each sample;
-  fDataa <code>list</code> with one element
+  </li>
+<li>fDataa <code>list</code> with one element
   <code>'Group'</code> that contains a factor that indicates the
   true groups of features, i.e. the basis component to
-  which each feature contributes the most. </span></p>
+  which each feature contributes the most. </li>
+</ol></p>
   
       <p>Moreover, the result object is an
   <code><a href='http://www.inside-r.org/r-doc/pkgmaker/ExposeAttribute'>ExposeAttribute</a></code> object, which means that

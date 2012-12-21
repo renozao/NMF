@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>algorithmic-NMF. NMF 0.10.1</title>
+<title>algorithmic-NMF. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -165,20 +169,21 @@ compare(object, ...)</pre>
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>algorithm<code>signature(object = "NMFfit")</code>:
+      <p><ol>
+<li>algorithm<code>signature(object = "NMFfit")</code>:
   Returns the name of the algorithm that fitted the NMF
   model <code>object</code>.</p>
   
-      <p>algorithm<code>signature(object = "NMFList")</code>:
+      <p></li>
+<li>algorithm<code>signature(object = "NMFList")</code>:
   Returns the method names used to compute the NMF fits in
   the list. It returns <code>NULL</code> if the list is empty.</p>
   
       <p>See <code><a href='algorithm-commaNMFList-method.html'>algorithm,NMFList-method</a></code> for more
   details.</p>
   
-      <p>algorithm<code>signature(object = "NMFfitXn")</code>:
+      <p></li>
+<li>algorithm<code>signature(object = "NMFfitXn")</code>:
   Returns the name of the common NMF algorithm used to
   compute all fits stored in <code>object</code></p>
   
@@ -186,12 +191,14 @@ compare(object, ...)</pre>
   method returns the name of algorithm that computed the
   first fit. It returns <code>NULL</code> if the object is empty.</p>
   
-      <p>algorithm<code>signature(object =
+      <p></li>
+<li>algorithm<code>signature(object =
   "NMFStrategyFunction")</code>: Returns the single R function
   that implements the NMF algorithm -- as stored in slot
   <code>algorithm</code>.</p>
   
-      <p>algorithm<code>signature(object =
+      <p></li>
+<li>algorithm<code>signature(object =
   "NMFStrategyOctave")</code>: Returns the name of the
   Octave/Matlab function that implements the NMF algorithm
   -- as stored in slot <code>algorithm</code>.</p>
@@ -199,36 +206,43 @@ compare(object, ...)</pre>
       <p>See <code><a href='algorithm-commaNMFStrategyOctave-method.html'>algorithm,NMFStrategyOctave-method</a></code> for
   more details.</p>
   
-      <p>algorithm<code>signature(object = "NMFSeed")</code>:
+      <p></li>
+<li>algorithm<code>signature(object = "NMFSeed")</code>:
   Returns the workhorse function of the seeding method
   described by <code>object</code>.</p>
   
-      <p>algorithm<-<code>signature(object =
+      <p></li>
+<li>algorithm<-<code>signature(object =
   "NMFStrategyFunction", value = "function")</code>: Sets the
   function that implements the NMF algorithm, stored in
   slot <code>algorithm</code>.</p>
   
-      <p>algorithm<-<code>signature(object =
+      <p></li>
+<li>algorithm<-<code>signature(object =
   "NMFStrategyOctave", value = "character")</code>: Sets the name
   of the Octave/Matlab function that implements the NMF
   algorithm. It is stored in slot <code>algorithm</code>.</p>
   
-      <p>algorithm<-<code>signature(object = "NMFSeed",
+      <p></li>
+<li>algorithm<-<code>signature(object = "NMFSeed",
   value = "function")</code>: Sets the workhorse function of the
   seeding method described by <code>object</code>.</p>
   
-      <p>compare<code>signature(object = "NMFfitXn")</code>:
+      <p></li>
+<li>compare<code>signature(object = "NMFfitXn")</code>:
   Compares the fits obtained by separate runs of NMF, in a
   single call to <code><a href='nmf.html'>nmf</a></code>.</p>
   
-      <p>logs<code>signature(object = "ANY")</code>: Default
+      <p></li>
+<li>logs<code>signature(object = "ANY")</code>: Default
   method that returns the value of attribute/slot
   <code>'logs'</code> or, if this latter does not exists, the
   value of element <code>'logs'</code> if <code>object</code> is a
   <code>list</code>. It returns <code>NULL</code> if no logging data
   was found.</p>
   
-      <p>modelname<code>signature(object = "ANY")</code>:
+      <p></li>
+<li>modelname<code>signature(object = "ANY")</code>:
   Default method which returns the class name(s) of
   <code>object</code>. This should work for objects representing
   models on their own.</p>
@@ -237,11 +251,13 @@ compare(object, ...)</pre>
   corresponds to the name of the S4 sub-class of
   <code><a href='NMF-class.html'>NMF-class</a></code>, inherited by <code>object</code>.</p>
   
-      <p>modelname<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>modelname<code>signature(object = "NMFfit")</code>:
   Returns the type of a fitted NMF model. It is a shortcut
   for <code>modelname(fit(object)</code>.</p>
   
-      <p>modelname<code>signature(object = "NMFfitXn")</code>:
+      <p></li>
+<li>modelname<code>signature(object = "NMFfitXn")</code>:
   Returns the common type NMF model of all fits stored in
   <code>object</code></p>
   
@@ -249,18 +265,21 @@ compare(object, ...)</pre>
   returns the model type of the first fit. It returns
   <code>NULL</code> if the object is empty.</p>
   
-      <p>modelname<code>signature(object =
+      <p></li>
+<li>modelname<code>signature(object =
   "NMFStrategy")</code>: Returns the model(s) that an NMF
   algorithm can fit.</p>
   
-      <p>niter<code>signature(object = "NMFfit")</code>: Returns
+      <p></li>
+<li>niter<code>signature(object = "NMFfit")</code>: Returns
   the number of iteration performed to fit an NMF model,
   typically with function <code><a href='nmf.html'>nmf</a></code>.</p>
   
       <p>Currently this data is stored in slot <code>'extra'</code>, but
   this might change in the future.</p>
   
-      <p>niter<-<code>signature(object = "NMFfit", value =
+      <p></li>
+<li>niter<-<code>signature(object = "NMFfit", value =
   "numeric")</code>: Sets the number of iteration performed to
   fit an NMF model.</p>
   
@@ -272,7 +291,8 @@ compare(object, ...)</pre>
   returning it (see
   <code><a href='NMFStrategyFunction-class.html'>NMFStrategyFunction-class</a></code>).</p>
   
-      <p>nrun<code>signature(object = "ANY")</code>: Default
+      <p></li>
+<li>nrun<code>signature(object = "ANY")</code>: Default
   method that returns the value of attribute &#145;nrun&#146;.</p>
   
       <p>Such an attribute my be attached to objects to keep track
@@ -282,7 +302,8 @@ compare(object, ...)</pre>
   <code><a href='heatmaps.html'>consensusmap</a></code>). This method returns
   <code>NULL</code> if no suitable data was found.</p>
   
-      <p>nrun<code>signature(object = "NMFfitX")</code>: Returns
+      <p></li>
+<li>nrun<code>signature(object = "NMFfitX")</code>: Returns
   the number of NMF runs performed to create <code>object</code>.</p>
   
       <p>It is a pure virtual method defined to ensure <code>nrun</code>
@@ -295,19 +316,23 @@ compare(object, ...)</pre>
   only the result of the best run is stored in the object
   (cf. option <code>'k'</code> in method <code><a href='nmf.html'>nmf</a></code>).</p>
   
-      <p>nrun<code>signature(object = "NMFfit")</code>: This
+      <p></li>
+<li>nrun<code>signature(object = "NMFfit")</code>: This
   method always returns 1, since an <code>NMFfit</code> object is
   obtained from a single NMF run.</p>
   
-      <p>nrun<code>signature(object = "NMFfitX1")</code>:
+      <p></li>
+<li>nrun<code>signature(object = "NMFfitX1")</code>:
   Returns the number of NMF runs performed, amongst which
   <code>object</code> was selected as the best fit.</p>
   
-      <p>nrun<code>signature(object = "NMFfitXn")</code>:
+      <p></li>
+<li>nrun<code>signature(object = "NMFfitXn")</code>:
   Returns the number of runs performed to compute the fits
   stored in the list (i.e. the length of the list itself).</p>
   
-      <p>objective<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>objective<code>signature(object = "NMFfit")</code>:
   Returns the objective function associated with the
   algorithm that computed the fitted NMF model
   <code>object</code>, or the objective value with respect to a
@@ -316,11 +341,13 @@ compare(object, ...)</pre>
       <p>See <code><a href='objective-commaNMFfit-method.html'>objective,NMFfit-method</a></code> for more
   details.</p>
   
-      <p>runtime<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>runtime<code>signature(object = "NMFfit")</code>:
   Returns the CPU time required to compute a single NMF
   fit.</p>
   
-      <p>runtime<code>signature(object = "NMFList")</code>:
+      <p></li>
+<li>runtime<code>signature(object = "NMFList")</code>:
   Returns the CPU time required to compute all NMF fits in
   the list. It returns <code>NULL</code> if the list is empty. If
   no timing data are available, the sequential time is
@@ -329,14 +356,17 @@ compare(object, ...)</pre>
       <p>See <code><a href='runtime-commaNMFList-method.html'>runtime,NMFList-method</a></code> for more
   details.</p>
   
-      <p>runtime.all<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>runtime.all<code>signature(object = "NMFfit")</code>:
   Identical to <code>runtime</code>, since their is a single fit.</p>
   
-      <p>runtime.all<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>runtime.all<code>signature(object = "NMFfitX")</code>:
   Returns the CPU time required to compute all the NMF
   runs. It returns <code>NULL</code> if no CPU data is available.</p>
   
-      <p>runtime.all<code>signature(object = "NMFfitXn")</code>:
+      <p></li>
+<li>runtime.all<code>signature(object = "NMFfitXn")</code>:
   If no time data is available from in slot
   &#145;runtime.all&#146; and argument <code>null=TRUE</code>, then
   the sequential time as computed by <code><a href='algorithmic.html'>seqtime</a></code>
@@ -346,12 +376,14 @@ compare(object, ...)</pre>
       <p>See <code><a href='runtime.all-commaNMFfitXn-method.html'>runtime.all,NMFfitXn-method</a></code> for more
   details.</p>
   
-      <p>seeding<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>seeding<code>signature(object = "NMFfit")</code>:
   Returns the name of the seeding method that generated the
   starting point for the NMF algorithm that fitted the NMF
   model <code>object</code>.</p>
   
-      <p>seeding<code>signature(object = "NMFfitXn")</code>:
+      <p></li>
+<li>seeding<code>signature(object = "NMFfitXn")</code>:
   Returns the name of the common seeding method used the
   computation of all fits stored in <code>object</code></p>
   
@@ -360,7 +392,8 @@ compare(object, ...)</pre>
   the first fit. It returns <code>NULL</code> if the object is
   empty.</p>
   
-      <p>seqtime<code>signature(object = "NMFList")</code>:
+      <p></li>
+<li>seqtime<code>signature(object = "NMFList")</code>:
   Returns the CPU time that would be required to
   sequentially compute all NMF fits stored in
   <code>object</code>.</p>
@@ -369,7 +402,8 @@ compare(object, ...)</pre>
   and sum up the results. It returns <code>NULL</code> on an
   empty object.</p>
   
-      <p>seqtime<code>signature(object = "NMFfitXn")</code>:
+      <p></li>
+<li>seqtime<code>signature(object = "NMFfitXn")</code>:
   Returns the CPU time that would be required to
   sequentially compute all NMF fits stored in
   <code>object</code>.</p>
@@ -378,7 +412,10 @@ compare(object, ...)</pre>
   and sum up the results. It returns <code>NULL</code> on an
   empty object.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 

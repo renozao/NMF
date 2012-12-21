@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>connectivity. NMF 0.10.1</title>
+<title>connectivity. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -102,38 +106,43 @@ consensus(object, ...)</pre>
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>connectivity<code>signature(object = "ANY")</code>:
+      <p><ol>
+<li>connectivity<code>signature(object = "ANY")</code>:
   Default method which computes the connectivity matrix
   using the result of <code>predict(x, ...)</code> as cluster
   membership index.</p>
   
-      <p>connectivity<code>signature(object = "factor")</code>:
+      <p></li>
+<li>connectivity<code>signature(object = "factor")</code>:
   Computes the connectivity matrix using <code>x</code> as
   cluster membership index.</p>
   
-      <p>connectivity<code>signature(object = "numeric")</code>:
+      <p></li>
+<li>connectivity<code>signature(object = "numeric")</code>:
   Equivalent to <code>connectivity(as.factor(x))</code>.</p>
   
-      <p>connectivity<code>signature(object = "NMF")</code>:
+      <p></li>
+<li>connectivity<code>signature(object = "NMF")</code>:
   Computes the connectivity matrix for an NMF model, for
   which cluster membership is given by the most
   contributing basis component in each sample. See
   <code><a href='predict.html'>predict,NMF-method</a></code>.</p>
   
-      <p>consensus<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>consensus<code>signature(object = "NMFfitX")</code>:
   Pure virtual method defined to ensure <code>consensus</code> is
   defined for sub-classes of <code>NMFfitX</code>. It throws an
   error if called.</p>
   
-      <p>consensus<code>signature(object = "NMF")</code>: This
+      <p></li>
+<li>consensus<code>signature(object = "NMF")</code>: This
   method is provided for completeness and is identical to
   <code><a href='connectivity.html'>connectivity</a></code>, and returns the connectivity
   matrix, which, in the case of a single NMF model, is also
   the consensus matrix.</p>
   
-      <p>consensus<code>signature(object = "NMFfitX1")</code>:
+      <p></li>
+<li>consensus<code>signature(object = "NMFfitX1")</code>:
   The result is the matrix stored in slot
   &#145;consensus&#146;. This method returns <code>NULL</code> if
   the consensus matrix is empty.</p>
@@ -141,7 +150,8 @@ consensus(object, ...)</pre>
       <p>See <code><a href='consensus-commaNMFfitX1-method.html'>consensus,NMFfitX1-method</a></code> for more
   details.</p>
   
-      <p>consensus<code>signature(object = "NMFfitXn")</code>:
+      <p></li>
+<li>consensus<code>signature(object = "NMFfitXn")</code>:
   This method returns <code>NULL</code> on an empty object. The
   result is a matrix with several attributes attached, that
   are used by plotting functions such as
@@ -150,7 +160,10 @@ consensus(object, ...)</pre>
       <p>See <code><a href='consensus-commaNMFfitXn-method.html'>consensus,NMFfitXn-method</a></code> for more
   details.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 
@@ -172,16 +185,16 @@ consensus(object, ...)</pre>
 </div><div class='input'>connectivity(cutree(h, 2))
 </div>
 <div class='output'>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
- [1,]    1    1    0    0    0    0    0    1    1     0
- [2,]    1    1    0    0    0    0    0    1    1     0
- [3,]    0    0    1    1    1    1    1    0    0     1
- [4,]    0    0    1    1    1    1    1    0    0     1
- [5,]    0    0    1    1    1    1    1    0    0     1
- [6,]    0    0    1    1    1    1    1    0    0     1
- [7,]    0    0    1    1    1    1    1    0    0     1
- [8,]    1    1    0    0    0    0    0    1    1     0
- [9,]    1    1    0    0    0    0    0    1    1     0
-[10,]    0    0    1    1    1    1    1    0    0     1
+ [1,]    1    0    1    0    0    0    0    1    0     1
+ [2,]    0    1    0    1    1    1    1    0    1     0
+ [3,]    1    0    1    0    0    0    0    1    0     1
+ [4,]    0    1    0    1    1    1    1    0    1     0
+ [5,]    0    1    0    1    1    1    1    0    1     0
+ [6,]    0    1    0    1    1    1    1    0    1     0
+ [7,]    0    1    0    1    1    1    1    0    1     0
+ [8,]    1    0    1    0    0    0    0    1    0     1
+ [9,]    0    1    0    1    1    1    1    0    1     0
+[10,]    1    0    1    0    0    0    0    1    0     1
 </div><div class='input'>connectivity(gl(2, 4))
 </div>
 <div class='output'>     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]

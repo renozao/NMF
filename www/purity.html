@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>purity. NMF 0.10.1</title>
+<title>purity. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -143,48 +147,57 @@ entropy(x, y, ...)
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>entropy<code>signature(x = "table", y =
+      <p><ol>
+<li>entropy<code>signature(x = "table", y =
   "missing")</code>: Computes the purity directly from the
   contingency table <code>x</code>.</p>
   
       <p>This is the workhorse method that is eventually called by
   all other methods.</p>
   
-      <p>entropy<code>signature(x = "factor", y = "ANY")</code>:
+      <p></li>
+<li>entropy<code>signature(x = "factor", y = "ANY")</code>:
   Computes the purity on the contingency table of <code>x</code>
   and <code>y</code>, that is coerced into a factor if necessary.</p>
   
-      <p>entropy<code>signature(x = "ANY", y = "ANY")</code>:
+      <p></li>
+<li>entropy<code>signature(x = "ANY", y = "ANY")</code>:
   Default method that should work for results of clustering
   algorithms, that have a suitable <code>predict</code> method
   that returns the cluster membership vector: the purity is
   computed between <code>x</code> and <code>predict{y}</code></p>
   
-      <p>entropy<code>signature(x = "NMFfitXn", y =
+      <p></li>
+<li>entropy<code>signature(x = "NMFfitXn", y =
   "ANY")</code>: Computes the best or mean entropy across all NMF
   fits stored in <code>x</code>.</p>
   
-      <p>purity<code>signature(x = "table", y =
+      <p></li>
+<li>purity<code>signature(x = "table", y =
   "missing")</code>: Computes the purity directly from the
   contingency table <code>x</code></p>
   
-      <p>purity<code>signature(x = "factor", y = "ANY")</code>:
+      <p></li>
+<li>purity<code>signature(x = "factor", y = "ANY")</code>:
   Computes the purity on the contingency table of <code>x</code>
   and <code>y</code>, that is coerced into a factor if necessary.</p>
   
-      <p>purity<code>signature(x = "ANY", y = "ANY")</code>:
+      <p></li>
+<li>purity<code>signature(x = "ANY", y = "ANY")</code>:
   Default method that should work for results of clustering
   algorithms, that have a suitable <code>predict</code> method
   that returns the cluster membership vector: the purity is
   computed between <code>x</code> and <code>predict{y}</code></p>
   
-      <p>purity<code>signature(x = "NMFfitXn", y =
+      <p></li>
+<li>purity<code>signature(x = "NMFfitXn", y =
   "ANY")</code>: Computes the best or mean purity across all NMF
   fits stored in <code>x</code>.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 

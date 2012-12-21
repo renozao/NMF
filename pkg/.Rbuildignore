@@ -2,6 +2,7 @@
 \.settings
 ^sandbox$
 ^ressources/$
+vignettes/tmplib$
 vignettes/figure$
 vignettes/cache$
 vignettes/Rpackages\.bib

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>seed. NMF 0.10.1</title>
+<title>seed. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -99,15 +103,15 @@
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>seed<code>signature(x = "matrix", model = "NMF",
+      <p><ol>
+<li>seed<code>signature(x = "matrix", model = "NMF",
   method = "NMFSeed")</code>: This is the workhorse method that
   seeds an NMF model object using a given seeding strategy
   defined by an <code>NMFSeed</code> object, to fit a given
   target matrix.</p>
   
-      <p>seed<code>signature(x = "ANY", model = "ANY",
+      <p></li>
+<li>seed<code>signature(x = "ANY", model = "ANY",
   method = "function")</code>: Seeds an NMF model using a custom
   seeding strategy, defined by a function.</p>
   
@@ -117,15 +121,18 @@
   return an <code><a href='NMF-class.html'>NMF-class</a></code> object, that contains
   the seeded NMF model.</p>
   
-      <p>seed<code>signature(x = "ANY", model = "ANY",
+      <p></li>
+<li>seed<code>signature(x = "ANY", model = "ANY",
   method = "missing")</code>: Seeds the model with the default
   seeding method given by
   <code>nmf.getOption('default.seed')</code></p>
   
-      <p>seed<code>signature(x = "ANY", model = "ANY",
+      <p></li>
+<li>seed<code>signature(x = "ANY", model = "ANY",
   method = "NULL")</code>: Use NMF method <code>'none'</code>.</p>
   
-      <p>seed<code>signature(x = "ANY", model = "ANY",
+      <p></li>
+<li>seed<code>signature(x = "ANY", model = "ANY",
   method = "numeric")</code>: Use <code>method</code> to set the RNG
   with <code><a href='http://www.inside-r.org/r-doc/rngtools/rng'>setRNG</a></code> and use method &#147;random&#148;
   to seed the NMF model.</p>
@@ -134,20 +141,26 @@
   This is due to some internal technical reasons, and might
   change in future releases.</p>
   
-      <p>seed<code>signature(x = "ANY", model = "ANY",
+      <p></li>
+<li>seed<code>signature(x = "ANY", model = "ANY",
   method = "character")</code>: Use the registered seeding method
   whose access key is <code>method</code>.</p>
   
-      <p>seed<code>signature(x = "ANY", model = "list",
+      <p></li>
+<li>seed<code>signature(x = "ANY", model = "list",
   method = "NMFSeed")</code>: Seed a model using the elements in
   <code>model</code> to instantiate it with
   <code><a href='nmfModel.html'>nmfModel</a></code>.</p>
   
-      <p>seed<code>signature(x = "ANY", model = "numeric",
+      <p></li>
+<li>seed<code>signature(x = "ANY", model = "numeric",
   method = "NMFSeed")</code>: Seeds a standard NMF model (i.e. of
   class <code><a href='NMFstd-class.html'>NMFstd-class</a></code>) of rank <code>model</code>.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
       </div>

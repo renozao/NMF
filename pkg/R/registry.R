@@ -15,23 +15,6 @@
 #' @import registry
 nmfRegistry <- function(...) pkgmaker::packageRegistry(...)
 
-.init.nmf.registry <- function(){
-	
-#	# initialize main repository
-#	registryName <- '.NMFRegistry'
-#	registryEnv <- parent.env(environment())
-#	
-#	msg.addon <- if( exists(registryName) ) ' [reset]' else NULL
-#	sreg <- utils::capture.output(print(registryEnv))
-#	message("Create NMF main registry in ", sreg, msg.addon)		
-#	.NMFRegistry <<- new.env(parent=.NMFRegistry)
-#	
-#	# initialize all sub-registries
-#	sapply(nmfSubRegistry(), function(n) nmfSubRegistry(n, create=TRUE))
-	
-	return(invisible(TRUE))
-}
-
 ###% Return a method stored in the NMF registry.
 ###% 
 ###% @param name the key (a character string) of the method to be retrieved

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>predict. NMF 0.10.1</title>
+<title>predict. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -129,12 +133,12 @@
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>predict<code>signature(object = "NMF")</code>: Default
+      <p><ol>
+<li>predict<code>signature(object = "NMF")</code>: Default
   method for NMF models</p>
   
-      <p>predict<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>predict<code>signature(object = "NMFfitX")</code>:
   Returns the cluster membership index from an NMF model
   fitted with multiple runs.</p>
   
@@ -145,17 +149,23 @@
   runs.</p>
   
       <p>Argument <code>what</code> accepts the following extra types:
-  <span class='describe'> <code>'consensus'</code> returns the cluster
+  <ol>
+<li><code>'consensus'</code> returns the cluster
   membership based on the hierarchical clustering of the
   consensus matrix, as performed by
-  <code><a href='consensushc.html'>consensushc</a></code>. <code>'cmap'</code> same as
+  <code><a href='consensushc.html'>consensushc</a></code>. </li>
+<li><code>'cmap'</code> same as
   <code>'consensus'</code> but the levels of the membership index
   are re-labeled to match the order of the clusters as they
   would be displayed on the associated dendrogram, like on
   the default annotation track in consensus heatmap
-  produced by <code><a href='heatmaps.html'>consensusmap</a></code>. </span></p>
+  produced by <code><a href='heatmaps.html'>consensusmap</a></code>. </li>
+</ol></p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>Index. NMF 0.10.1</title>
+<title>Index. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,12 +24,11 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href=""><i class="icon-home icon-white"></i> Index</a></li>
        <li><a href="_MAN.html">Documentation</a></li>
-       <li><a href="_DEMOS.html">Demos</a></li>
        <li><a href="_REFERENCES.html">References</a></li>
        </ul>
    	  </div>
@@ -85,6 +88,9 @@ Development versions: </p>
 
     <h2>Help topics</h2>
 
+	<div id="cloud"></div>
+	
+	
     <h3></h3>
     
     
@@ -114,7 +120,7 @@ Development versions: </p>
         <code><a href="basiscor.html">basiscor</a></code>(basiscor,matrix,NMF-method, basiscor-methods, basiscor,NMF,matrix-method, basiscor,NMF,missing-method, basiscor,NMF,NMF-method, profcor, profcor,matrix,NMF-method, profcor-methods, profcor,NMF,matrix-method, profcor,NMF,missing-method, profcor,NMF,NMF-method)<br />Correlations in NMF Models</li>
             
       <li>
-        <code><a href="dimnames.html">basisnames</a></code>(basisnames&lt;-, basisnames&lt;-,ANY-method, basisnames,ANY-method, basisnames&lt;--methods, basisnames-methods, dimnames-NMF, dimnames&lt;-,NMF,ANY-method, dimnames,NMF-method)<br />Dimension names for NMF objects</li>
+        <code><a href="dimnames.html">basisnames</a></code>(basisnames&lt;-, basisnames&lt;-,ANY-method, basisnames,ANY-method, basisnames&lt;--methods, basisnames-methods, dimnames-NMF, dimnames&lt;-,NMF-method, dimnames,NMF-method)<br />Dimension names for NMF objects</li>
             
       <li>
         <code><a href="bioc.html">bioc-NMF</a></code>(.atrack,ExpressionSet-method, featureNames,NMFfitX-method, featureNames,NMF-method, metagenes, metagenes&lt;-, metaprofiles, metaprofiles&lt;-, nmeta, nmf,ExpressionSet,ANY,ANY-method, nmf,matrix,ExpressionSet,ANY-method, nmfModel,ANY,ExpressionSet-method, nmfModel,ExpressionSet,ANY-method, nneg,ExpressionSet-method, rnmf,ANY,ExpressionSet-method, rposneg,ExpressionSet-method, run,NMFStrategy,ExpressionSet,ANY-method, sampleNames,NMFfitX-method, sampleNames,NMF-method, seed,ExpressionSet,ANY,ANY-method)<br />Specific NMF Layer for Bioconductor</li>
@@ -193,9 +199,6 @@ Development versions: </p>
         <code><a href="nmfAlgorithm.html">nmfAlgorithm</a></code><br />Listing and Retrieving NMF Algorithms</li>
             
       <li>
-        <code><a href="subset-NMF.html">[,NMF,ANY,ANY,ANY-method</a></code><br />Sub-setting NMF Objects</li>
-            
-      <li>
         <code><a href="nmfApply.html">nmfApply</a></code><br />Apply Function for NMF Objects</li>
             
       <li>
@@ -230,6 +233,9 @@ Development versions: </p>
             
       <li>
         <code><a href="NMFList-class.html">NMFList-class</a></code><br />Class for Storing Heterogeneous NMF fits</li>
+            
+      <li>
+        <code><a href="subset-NMF.html">[,NMF-method</a></code><br />Sub-setting NMF Objects</li>
             
       <li>
         <code><a href="nmfModel.html">nmfModel</a></code>(nmfModel,data.frame,data.frame-method, nmfModel,formula,ANY-method, nmfModel,matrix,ANY-method, nmfModel,matrix,matrix-method, nmfModel-methods, nmfModel,missing,ANY-method, nmfModel,missing,missing-method, nmfModel,NULL,ANY-method, nmfModel,numeric,matrix-method, nmfModel,numeric,missing-method, nmfModel,numeric,numeric-method, nmfModels)<br />Factory Methods NMF Models</li>
@@ -415,25 +421,12 @@ Development versions: </p>
   </div>
   
   <div class="span3 offset1">
-    <h2>Vignettes</h2>
-    <ul>
-      <li><a href="vignettes/heatmaps.pdf">NMF: generating heatmaps</a></li>
-      <li><a href="vignettes/NMF-unitTests.pdf">NMF-unitTests</a></li>
-      <li><a href="vignettes/NMF-vignette.pdf">An introduction to the package NMF</a></li>
-    </ul>
-    
-    <h2>Demos</h2>
-    <ul>
-      <li><a href="demo-nmf.html">Using the main function nmf()</a></li>
-      <li><a href="demo-heatmaps.html">Heatmaps of NMF objects</a></li>
-      <li><a href="demo-aheatmap.html">Annotated heatmaps</a></li>
-    </ul>
-    
+        
     <h2>Dependencies</h2>
     <ul>
-      <li><strong>Depends</strong>: methods, stats, pkgmaker, rngtools, registry, digest, grid, bigmemory</li>
+      <li><strong>Depends</strong>: methods, stats, pkgmaker, rngtools, registry, digest, grid</li>
       <li><strong>Imports</strong>: graphics, rngtools, stringr, grDevices, gridBase, colorspace, RColorBrewer, iterators, foreach, doParallel</li>
-      <li><strong>Suggests</strong>: RcppOctave, Biobase, fastICA, doMPI, synchronicity, corpcor, xtable, devtools, knitr, RUnit, mail</li>
+      <li><strong>Suggests</strong>: RcppOctave, Biobase, fastICA, doMPI, bigmemory, synchronicity, corpcor, xtable, devtools, knitr, RUnit, mail</li>
       <li><strong>Extends</strong>: </li>
     </ul>
      

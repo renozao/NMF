@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>setNMFSeed. NMF 0.10.1</title>
+<title>setNMFSeed. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -55,11 +59,16 @@ NMFSeed(key, method, ...)</pre>
       <dt>method</dt>
       <dd>specification of the seeding method, as a
   function that takes at least the following arguments:
-  <span class='describe'> objectuninitialised/empty NMF model,
+  <ol>
+<li>objectuninitialised/empty NMF model,
   i.e. that it has 0 rows and columns, but has already the
   rank requested in the call to <code><a href='nmf.html'>nmf</a></code> or
-  <code><a href='seed.html'>seed</a></code>. xtarget matrix
-  ...extra arguments </span></dd>
+  <code><a href='seed.html'>seed</a></code>. </li>
+<li>xtarget matrix
+  </li>
+<li>...extra arguments </li>
+</ol>
+</dd>
       <dt>overwrite</dt>
       <dd>logical that indicates if any existing
   NMF method with the same name should be overwritten
@@ -87,18 +96,21 @@ NMFSeed(key, method, ...)</pre>
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>NMFSeed<code>signature(key = "character")</code>:
+      <p><ol>
+<li>NMFSeed<code>signature(key = "character")</code>:
   Default method simply calls <code><a href='http://www.inside-r.org/r-doc/methods/new'>new</a></code> with the
   same arguments.</p>
   
-      <p>NMFSeed<code>signature(key = "NMFSeed")</code>: Creates
+      <p></li>
+<li>NMFSeed<code>signature(key = "NMFSeed")</code>: Creates
   an <code>NMFSeed</code> based on a template object
   (Constructor-Copy), in particular it uses the
   <strong>same</strong> name.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
       </div>

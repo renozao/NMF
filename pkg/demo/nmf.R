@@ -74,7 +74,7 @@ res <- nmf(x, 3, nrun=10)
 res
 summary(res, class=groups)
 
-#' # run default algorithm multiple times keeping all the fits
+# run default algorithm multiple times keeping all the fits
 res <- nmf(x, 3, nrun=10, .options='k')
 res
 summary(res, class=groups)

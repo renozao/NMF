@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfitX-class. NMF 0.10.1</title>
+<title>NMFfitX-class. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -66,26 +70,28 @@
     <div class="Slots">
       <h2>Slots</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>runtime.allObject of class
+      <p><ol>
+<li>runtime.allObject of class
   <code><a href='http://www.inside-r.org/r-doc/base/proc.time'>proc_time</a></code> that contains CPU
   times required to perform all the runs.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>basismap<code>signature(object = "NMFfitX")</code>:
+      <p><ol>
+<li>basismap<code>signature(object = "NMFfitX")</code>:
   Plots a heatmap of the basis matrix of the best fit in
   <code>object</code>.</p>
   
-      <p>coefmap<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>coefmap<code>signature(object = "NMFfitX")</code>:
   Plots a heatmap of the coefficient matrix of the best fit
   in <code>object</code>.</p>
   
@@ -105,35 +111,42 @@
   </li>
 </ul></p>
   
-      <p>consensus<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>consensus<code>signature(object = "NMFfitX")</code>:
   Pure virtual method defined to ensure <code>consensus</code> is
   defined for sub-classes of <code>NMFfitX</code>. It throws an
   error if called.</p>
   
-      <p>consensushc<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>consensushc<code>signature(object = "NMFfitX")</code>:
   Compute the hierarchical clustering on the consensus
   matrix of <code>object</code>, or on the connectivity matrix of
   the best fit in <code>object</code>.</p>
   
-      <p>consensusmap<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>consensusmap<code>signature(object = "NMFfitX")</code>:
   Plots a heatmap of the consensus matrix obtained when
   fitting an NMF model with multiple runs.</p>
   
-      <p>cophcor<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>cophcor<code>signature(object = "NMFfitX")</code>:
   Computes the cophenetic correlation coefficient on the
   consensus matrix of <code>object</code>. All arguments in
   <code>...</code> are passed to the method
   <code>cophcor,matrix</code>.</p>
   
-      <p>deviance<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>deviance<code>signature(object = "NMFfitX")</code>:
   Returns the deviance achieved by the best fit object,
   i.e. the lowest deviance achieved across all NMF runs.</p>
   
-      <p>dispersion<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>dispersion<code>signature(object = "NMFfitX")</code>:
   Computes the dispersion on the consensus matrix obtained
   from multiple NMF runs.</p>
   
-      <p>fit<code>signature(object = "NMFfitX")</code>: Returns
+      <p></li>
+<li>fit<code>signature(object = "NMFfitX")</code>: Returns
   the model object that achieves the lowest residual
   approximation error across all the runs.</p>
   
@@ -141,19 +154,23 @@
   is defined for sub-classes of <code>NMFfitX</code>, which
   throws an error if called.</p>
   
-      <p>getRNG1<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>getRNG1<code>signature(object = "NMFfitX")</code>:
   Returns the RNG settings used for the first NMF run of
   multiple NMF runs.</p>
   
-      <p>ibterms<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>ibterms<code>signature(object = "NMFfitX")</code>:
   Method for multiple NMF fit objects, which returns the
   indexes of fixed basis terms from the best fitted model.</p>
   
-      <p>metaHeatmap<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>metaHeatmap<code>signature(object = "NMFfitX")</code>:
   Deprecated method subsituted by
   <code><a href='heatmaps.html'>consensusmap</a></code>.</p>
   
-      <p>minfit<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>minfit<code>signature(object = "NMFfitX")</code>:
   Returns the fit object that achieves the lowest residual
   approximation error across all the runs.</p>
   
@@ -161,15 +178,18 @@
   <code>minfit</code> is defined for sub-classes of
   <code>NMFfitX</code>, which throws an error if called.</p>
   
-      <p>nmf.equal<code>signature(x = "NMFfitX", y =
+      <p></li>
+<li>nmf.equal<code>signature(x = "NMFfitX", y =
   "NMF")</code>: Compares two NMF models when at least one comes
   from multiple NMF runs.</p>
   
-      <p>NMFfitX<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>NMFfitX<code>signature(object = "NMFfitX")</code>:
   Provides a way to aggregate <code>NMFfitXn</code> objects into
   an <code>NMFfitX1</code> object.</p>
   
-      <p>nrun<code>signature(object = "NMFfitX")</code>: Returns
+      <p></li>
+<li>nrun<code>signature(object = "NMFfitX")</code>: Returns
   the number of NMF runs performed to create <code>object</code>.</p>
   
       <p>It is a pure virtual method defined to ensure <code>nrun</code>
@@ -178,7 +198,8 @@
   
       <p>See <code><a href='algorithmic.html'>nrun,NMFfitX-method</a></code> for more details.</p>
   
-      <p>predict<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>predict<code>signature(object = "NMFfitX")</code>:
   Returns the cluster membership index from an NMF model
   fitted with multiple runs.</p>
   
@@ -191,19 +212,23 @@
       <p>See <code><a href='predict.html'>predict,NMFfitX-method</a></code> for more
   details.</p>
   
-      <p>residuals<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>residuals<code>signature(object = "NMFfitX")</code>:
   Returns the residuals achieved by the best fit object,
   i.e. the lowest residual approximation error achieved
   across all NMF runs.</p>
   
-      <p>runtime.all<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>runtime.all<code>signature(object = "NMFfitX")</code>:
   Returns the CPU time required to compute all the NMF
   runs. It returns <code>NULL</code> if no CPU data is available.</p>
   
-      <p>show<code>signature(object = "NMFfitX")</code>: Show
+      <p></li>
+<li>show<code>signature(object = "NMFfitX")</code>: Show
   method for objects of class <code>NMFfitX</code></p>
   
-      <p>summary<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>summary<code>signature(object = "NMFfitX")</code>:
   Computes a set of measures to help evaluate the quality
   of the <em>best fit</em> of the set. The result is similar
   to the result from the <code>summary</code> method of
@@ -214,7 +239,10 @@
   matrix are returned, as well as the total CPU time
   (<code><a href='algorithmic.html'>runtime.all</a></code>).</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
     
@@ -231,7 +259,7 @@
    407L, -10343344L, -1439855599L, 581371550L, 1102336647L, 404615452L, -967540883L 
   Total timing:
    user  system elapsed 
-  1.036   0.216   1.669 
+  1.048   0.224   4.418 
 </div><div class='input'></div><div class='input'># plot a heatmap of the consensus matrix</div><div class='input'>## <strong>Not run</strong>:  consensusmap(res) </div><div class='input'></div><div class='input'># perform multiple runs of one algorithm (keep all the fits)</div><div class='input'>res <- nmf(V, 3, nrun=3, .options='k')
 </div><div class='input'>res
 </div>
@@ -242,10 +270,10 @@
    407L, 1849749352L, -2054160823L, 1115772278L, 677277055L, -1934876236L, -2059329243L 
   Total timing:
    user  system elapsed 
-  1.460   0.352   1.442 
+  1.528   0.316   3.174 
   Sequential timing:
    user  system elapsed 
-  0.684   0.004   0.818 
+  0.732   0.016   1.953 
 </div></pre>
   </div>
   <div class="span4">

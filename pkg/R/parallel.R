@@ -771,12 +771,18 @@ setupBackend <- function(spec, optional, backend, verbose=FALSE){
 	# cancel backend restoration
 	on.exit()
 	TRUE
-} 
+}
 
 
+# add extra package bigmemory and synchronicity on Unix platforms
+if( .Platform$OS.type != 'windows' ){
+	packageExtra('install_missing', 'bigmemory', pkg='bigmemory')
+	packageExtra('install_missing', 'synchronicity', pkg='synchronicity')
+}
 # add new option: shared.memory that indicates if one should try using shared memory
-# to speed-up parallel computations. 
-.OPTIONS$newOptions(shared.memory=TRUE)
+# to speed-up parallel computations.
+.OPTIONS$newOptions(shared.memory = .Platform$OS.type != 'windows')
+
 
 #' \code{setupSharedMemory} checks if one can use the packages \emph{bigmemory} and \emph{sychronicity}
 #' to speed-up parallel computations when not keeping all the fits.
@@ -798,6 +804,11 @@ setupSharedMemory <- function(verbose){
 	# early exit if foreach backend is doMPI: it is not working, not sure why
 	if( isMPIBackend() ){
 		if( verbose > 1 ) message('SKIP [MPI cluster]')
+		return(FALSE)
+	}
+	# not on Windows
+	if( .Platform$OS.type == 'windows' ){
+		if( verbose > 1 ) message('SKIP [Windows OS]')
 		return(FALSE)
 	}
 	
@@ -982,21 +993,16 @@ gVariable <- function(init, shared=FALSE){
 		}
 		
 		if( missing(value) ){# READ ACCESS
-			
 			if( !shared ){
 				# initialise on first call if necessary
-#				if( !exists(DATA_DESC, envir=.GlobalEnv) )
-#					assign(DATA_DESC, init, envir=.GlobalEnv)
-#				# return variable
-#				get(DATA_DESC, envir=.GlobalEnv)
-				if( is.null(.VALUE) ) .VALUE <- init
+				if( is.null(.VALUE) ) .VALUE <<- init
+				# return variable
 				.VALUE
 			}else 
 				DATA[]
 			
 		}else{# WRITE ACCESS
-			
-			if( !shared ) .VALUE <<- value #assign(DATA_DESC, value, envir=.GlobalEnv) 
+			if( !shared ) .VALUE <<- value 
 			else DATA[] <- value
 			
 		}

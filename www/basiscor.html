@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>basiscor. NMF 0.10.1</title>
+<title>basiscor. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -84,41 +88,50 @@ profcor(x, y, ...)</pre>
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>basiscor<code>signature(x = "NMF", y =
+      <p><ol>
+<li>basiscor<code>signature(x = "NMF", y =
   "matrix")</code>: Computes the correlations between the basis
   vectors of <code>x</code> and the columns of <code>y</code>.</p>
   
-      <p>basiscor<code>signature(x = "matrix", y =
+      <p></li>
+<li>basiscor<code>signature(x = "matrix", y =
   "NMF")</code>: Computes the correlations between the columns of
   <code>x</code> and the the basis vectors of <code>y</code>.</p>
   
-      <p>basiscor<code>signature(x = "NMF", y = "NMF")</code>:
+      <p></li>
+<li>basiscor<code>signature(x = "NMF", y = "NMF")</code>:
   Computes the correlations between the basis vectors of
   <code>x</code> and <code>y</code>.</p>
   
-      <p>basiscor<code>signature(x = "NMF", y =
+      <p></li>
+<li>basiscor<code>signature(x = "NMF", y =
   "missing")</code>: Computes the correlations between the basis
   vectors of <code>x</code>.</p>
   
-      <p>profcor<code>signature(x = "NMF", y = "matrix")</code>:
+      <p></li>
+<li>profcor<code>signature(x = "NMF", y = "matrix")</code>:
   Computes the correlations between the basis profiles of
   <code>x</code> and the rows of <code>y</code>.</p>
   
-      <p>profcor<code>signature(x = "matrix", y = "NMF")</code>:
+      <p></li>
+<li>profcor<code>signature(x = "matrix", y = "NMF")</code>:
   Computes the correlations between the rows of <code>x</code>
   and the basis profiles of <code>y</code>.</p>
   
-      <p>profcor<code>signature(x = "NMF", y = "NMF")</code>:
+      <p></li>
+<li>profcor<code>signature(x = "NMF", y = "NMF")</code>:
   Computes the correlations between the basis profiles of
   <code>x</code> and <code>y</code>.</p>
   
-      <p>profcor<code>signature(x = "NMF", y =
+      <p></li>
+<li>profcor<code>signature(x = "NMF", y =
   "missing")</code>: Computes the correlations between the basis
   profiles of <code>x</code>.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
     
@@ -128,57 +141,57 @@ profcor(x, y, ...)</pre>
 </div><div class='input'></div><div class='input'># Compute auto-correlations</div><div class='input'>basiscor(a)
 </div>
 <div class='output'>           [,1]       [,2]       [,3]
-[1,] 1.00000000 0.04033741 0.07064423
-[2,] 0.04033741 1.00000000 0.07635260
-[3,] 0.07064423 0.07635260 1.00000000
+[1,] 1.00000000 0.01555413 0.08345781
+[2,] 0.01555413 1.00000000 0.12854571
+[3,] 0.08345781 0.12854571 1.00000000
 </div><div class='input'>profcor(a)
 </div>
-<div class='output'>            [,1]        [,2]        [,3]
-[1,]  1.00000000  0.02889598 -0.06215188
-[2,]  0.02889598  1.00000000 -0.15270472
-[3,] -0.06215188 -0.15270472  1.00000000
+<div class='output'>            [,1]         [,2]       [,3]
+[1,] 1.000000000  0.003681827  0.2220586
+[2,] 0.003681827  1.000000000 -0.2422496
+[3,] 0.222058603 -0.242249574  1.0000000
 </div><div class='input'># Compute correlations with b</div><div class='input'>basiscor(a, b)
 </div>
-<div class='output'>           [,1]        [,2]        [,3]
-[1,] 0.09981214 -0.05535481  0.02554282
-[2,] 0.05159729 -0.06778555 -0.07702691
-[3,] 0.12779870 -0.12923680  0.02929146
+<div class='output'>            [,1]        [,2]        [,3]
+[1,] -0.01434590 -0.09116445 0.049122129
+[2,] -0.24478585  0.20705468 0.107490539
+[3,] -0.05936088  0.03901771 0.005585385
 </div><div class='input'>profcor(a, b)
 </div>
-<div class='output'>            [,1]       [,2]        [,3]
-[1,] -0.01349968 -0.5790549 -0.30369310
-[2,] -0.41743374 -0.1102624 -0.06205303
-[3,]  0.02533057 -0.2440898 -0.37126036
+<div class='output'>            [,1]      [,2]        [,3]
+[1,] -0.05511311 0.2478370 -0.13218993
+[2,]  0.15942580 0.5404769  0.11493423
+[3,] -0.42700791 0.0501004 -0.03395038
 </div><div class='input'></div><div class='input'># try to recover the underlying NMF model 'a' from noisy data</div><div class='input'>res <- nmf(fitted(a) + rmatrix(a), 3)
 </div><div class='input'></div><div class='input'># Compute correlations with the true model</div><div class='input'>basiscor(a, res)
 </div>
-<div class='output'>              [,1]       [,2]       [,3]
-[1,]  0.9257698933 0.12483390 0.15207671
-[2,] -0.0345840279 0.06930171 0.94358068
-[3,]  0.0002613336 0.95835925 0.03371872
+<div class='output'>           [,1]        [,2]        [,3]
+[1,] 0.93833811 -0.02516365 -0.06293547
+[2,] 0.03711827  0.04746039  0.94855944
+[3,] 0.08197202  0.94134635  0.04893780
 </div><div class='input'>profcor(a, res)
 </div>
-<div class='output'>           [,1]       [,2]        [,3]
-[1,]  0.9524462 -0.1407907  0.01967887
-[2,] -0.1480619 -0.2041656  0.98880399
-[3,] -0.1561490  0.9782223 -0.19534961
+<div class='output'>            [,1]       [,2]       [,3]
+[1,]  0.98955548  0.1147971 -0.0603859
+[2,] -0.02458517 -0.2552323  0.9845230
+[3,]  0.23844798  0.9839802 -0.3267189
 </div><div class='input'></div><div class='input'># Compute correlations with a random compatible matrix</div><div class='input'>W <- rmatrix(basis(a))
 </div><div class='input'>basiscor(a, W)
 </div>
 <div class='output'>            [,1]        [,2]        [,3]
-[1,] -0.04121387  0.10158890 -0.07360566
-[2,] -0.04863983 -0.02896112 -0.09486946
-[3,] -0.18397965  0.03724525 -0.01558970
+[1,] -0.01891841  0.19128075 -0.01936845
+[2,]  0.16701818 -0.02753289 -0.02267782
+[3,]  0.18060027  0.02133330 -0.03907698
 </div><div class='input'>identical(basiscor(a, W), basiscor(W, a))
 </div>
 <div class='output'>[1] FALSE
 </div><div class='input'></div><div class='input'>H <- rmatrix(coef(a))
 </div><div class='input'>profcor(a, H)
 </div>
-<div class='output'>            [,1]        [,2]        [,3]
-[1,] -0.12158908 -0.32251202  0.08643020
-[2,] -0.58323027 -0.07409213  0.23598983
-[3,] -0.02253266  0.11818585 -0.03518463
+<div class='output'>           [,1]        [,2]        [,3]
+[1,] -0.2568063  0.14731128 -0.09902669
+[2,] -0.1557111 -0.14490475  0.17521302
+[3,]  0.4730359 -0.08471828 -0.14048102
 </div><div class='input'>identical(profcor(a, H), profcor(H, a))
 </div>
 <div class='output'>[1] FALSE

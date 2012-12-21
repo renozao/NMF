@@ -66,26 +66,41 @@ devnmf <- function(){
 	
 	pkgEnv <- pkgmaker::packageEnv()
 	
+	pkgmaker::runPostponedAction(group='extra')
+	
 	.init.sequence <- function(){
 	
 		## 0. INITIALIZE PACKAGE SPECFIC OPTIONS
 		#.init.nmf.options()
-		
-		## 1. INITIALIZE THE INTERNAL REGISTRY
-		.init.nmf.registry()
-		
-		## 2. INITIALIZE THE NMF MODELS
+				
+		## 1. INITIALIZE THE NMF MODELS
 		.init.nmf.models()		
 		
-		## 3. INITIALIZE BIOC LAYER
+		## 2. INITIALIZE BIOC LAYER
 		b <- body(.onLoad.nmf.bioc)
 		bioc.loaded <- eval(b, envir=pkgEnv)
 		if( is(bioc.loaded, 'try-error') )
-			packageStartupMessage("NMF - loading BioConductor layer ... ERROR")
+			packageStartupMessage("NMF - Loading BioConductor layer ... ERROR")
 		else if ( isTRUE(bioc.loaded) )
-			packageStartupMessage("NMF - loading BioConductor layer ... OK")
-		else
-			packageStartupMessage("NMF - loading BioConductor layer ... SKIPPED")
+			packageStartupMessage("NMF - Loading BioConductor layer ... OK")
+		else{
+			packageStartupMessage("NMF - Loading BioConductor layer ... NO [missing Biobase]")
+			packageStartupMessage("  To enable, try: install.extras('NMF') [with Bioconductor repository enabled]")
+		}
+		
+		# 3. SHARED MEMORY
+		if( .Platform$OS.type != 'windows' ){
+			packageStartupMessage("NMF - Checking shared memory capabilities ... ", appendLF=FALSE)
+			msg <- if( !require.quiet('bigmemory', character.only=TRUE) ) 'bigmemory'
+					else if( !require.quiet('synchronicity', character.only=TRUE) ) 'synchronicity'
+			
+			if( is.null(msg) ) packageStartupMessage('OK')
+			else{
+				packageStartupMessage(paste('NO [missing ', msg, ']', sep=''))
+				packageStartupMessage("  To enable, try: install.extras('NMF')")
+			}
+		}
+		#
 	}
 	
 	## LOAD compiled library if one is loading the package
@@ -93,8 +108,9 @@ devnmf <- function(){
 	if( !missing(libname) ) library.dynam('NMF', pkgname, libname)
 	
 	# run intialization sequence suppressing messages or not depending on verbosity options
-	if( getOption('verbose') ) .init.sequence()
-	else suppressMessages(.init.sequence())
+	.init.sequence()
+#	if( getOption('verbose') ) .init.sequence()
+#	else suppressMessages(.init.sequence())
 	
 	# Initialize the package: load NMF algorithms, seeding methods, etc...
 	.init.package()

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nneg. NMF 0.10.1</title>
+<title>nneg. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -64,10 +68,12 @@ rposneg(object, ...)
       <dt>method</dt>
       <dd>Name of the transformation method to use,
   that is partially matched against the following possible
-  methods: <span class='describe'> pmaxEach entry is constrained
+  methods: <ol>
+<li>pmaxEach entry is constrained
   to be above threshold <code>threshold</code>.
 
-  posnegThe matrix is split into its "positive" and
+  </li>
+<li>posnegThe matrix is split into its "positive" and
   "negative" parts, with the entries of each part
   constrained to be above threshold <code>threshold</code>. The
   result consists in these two parts stacked in rows (i.e.
@@ -75,14 +81,18 @@ rposneg(object, ...)
   double the number of rows of the input matrix
   <code>object</code>.
 
-  absoluteThe absolute value of each entry is
+  </li>
+<li>absoluteThe absolute value of each entry is
   constrained to be above threshold <code>threshold</code>.
 
-  minGlobal shift by adding the minimum entry to
+  </li>
+<li>minGlobal shift by adding the minimum entry to
   each entry, only if it is negative, and then apply
   threshold. 
 
-  </span></dd>
+  </li>
+</ol>
+</dd>
       <dt>threshold</dt>
       <dd>Nonnegative lower threshold value
   (single numeric). See argument <code>shit</code> for details on
@@ -133,25 +143,29 @@ rposneg(object, ...)
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>nneg<code>signature(object = "matrix")</code>:
+      <p><ol>
+<li>nneg<code>signature(object = "matrix")</code>:
   Transforms a mixed-sign matrix into a nonnegative matrix,
   optionally apply a lower threshold. This is the workhorse
   method, that is eventually called by all other methods
   defined in the <code><a href='NMF-package.html'>NMF</a></code> package.</p>
   
-      <p>nneg<code>signature(object = "NMF")</code>: Apply
+      <p></li>
+<li>nneg<code>signature(object = "NMF")</code>: Apply
   <code>nneg</code> to the basis matrix of an <code><a href='NMF-package.html'>NMF</a></code>
   object (i.e. <code>basis(object)</code>). All extra arguments
   in <code>...</code> are passed to the method
   <code>nneg,matrix</code>.</p>
   
-      <p>rposneg<code>signature(object = "NMF")</code>: Apply
+      <p></li>
+<li>rposneg<code>signature(object = "NMF")</code>: Apply
   <code>rposneg</code> to the basis matrix of an
   <code><a href='NMF-package.html'>NMF</a></code> object.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
     

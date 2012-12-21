@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>summary. NMF 0.10.1</title>
+<title>summary. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -97,46 +101,59 @@
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>summary<code>signature(object = "NMF")</code>: Computes
+      <p><ol>
+<li>summary<code>signature(object = "NMF")</code>: Computes
   summary measures for a single NMF model.</p>
   
       <p>The following measures are computed:</p>
   
-      <p><span class='describe'> sparsenessSparseness of the
+      <p><ol>
+<li>sparsenessSparseness of the
   factorization computed by the function
-  <code><a href='sparseness.html'>sparseness</a></code>. entropyPurity of the
+  <code><a href='sparseness.html'>sparseness</a></code>. </li>
+<li>entropyPurity of the
   clustering, with respect to known classes, computed by
   the function <code><a href='purity.html'>purity</a></code>.
-  entropyEntropy of the clustering, with respect to
+  </li>
+<li>entropyEntropy of the clustering, with respect to
   known classes, computed by the function
-  <code><a href='purity.html'>entropy</a></code>. RSSResidual Sum of
+  <code><a href='purity.html'>entropy</a></code>. </li>
+<li>RSSResidual Sum of
   Squares computed by the function <code><a href='rss.html'>rss</a></code>.
-  evarExplained variance computed by the function
-  <code><a href='rss.html'>evar</a></code>. </span></p>
+  </li>
+<li>evarExplained variance computed by the function
+  <code><a href='rss.html'>evar</a></code>. </li>
+</ol></p>
   
-      <p>summary<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>summary<code>signature(object = "NMFfit")</code>:
   Computes summary measures for a single fit from
   <code><a href='nmf.html'>nmf</a></code>.</p>
   
       <p>This method adds the following measures to the measures
   computed by the method <code>summary,NMF</code>:</p>
   
-      <p><span class='describe'> residualsResidual error as measured by
+      <p><ol>
+<li>residualsResidual error as measured by
   the objective function associated to the algorithm used
-  to fit the model. niterNumber of iterations
+  to fit the model. </li>
+<li>niterNumber of iterations
   performed to achieve convergence of the algorithm.
-  cpuTotal CPU time required for the fit.
-  cpu.allTotal CPU time required for the fit. For
+  </li>
+<li>cpuTotal CPU time required for the fit.
+  </li>
+<li>cpu.allTotal CPU time required for the fit. For
   <code>NMFfit</code> objects, this element is always equal to
   the value in &#147;cpu&#148;, but will be different for
-  multiple-run fits. nrunNumber of runs performed
+  multiple-run fits. </li>
+<li>nrunNumber of runs performed
   to fit the model. This is always equal to 1 for
   <code>NMFfit</code> objects, but will vary for multiple-run
-  fits. </span></p>
+  fits. </li>
+</ol></p>
   
-      <p>summary<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>summary<code>signature(object = "NMFfitX")</code>:
   Computes a set of measures to help evaluate the quality
   of the <em>best fit</em> of the set. The result is similar
   to the result from the <code>summary</code> method of
@@ -147,7 +164,10 @@
   matrix are returned, as well as the total CPU time
   (<code><a href='algorithmic.html'>runtime.all</a></code>).</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
     
@@ -156,19 +176,19 @@
 </div><div class='input'>summary(x)
 </div>
 <div class='output'>            rank sparseness.basis  sparseness.coef 
-       3.0000000        0.1812183        0.2739649 
+       3.0000000        0.1853006        0.2303860 
 </div><div class='input'>summary(x, gl(3, 4))
 </div>
 <div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy 
-       3.0000000        0.1812183        0.2739649        0.6666667        0.5707156 
+       3.0000000        0.1853006        0.2303860        0.4166667        0.9655606 
 </div><div class='input'>summary(x, target=rmatrix(x))
 </div>
 <div class='output'>            rank sparseness.basis  sparseness.coef              rss             evar 
-       3.0000000        0.1812183        0.2739649       73.7833080        0.7828714 
+       3.0000000        0.1853006        0.2303860       74.2851586        0.8109545 
 </div><div class='input'>summary(x, gl(3,4), target=rmatrix(x))
 </div>
 <div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar 
-       3.0000000        0.1812183        0.2739649        0.6666667        0.5707156       78.7058128        0.7740797 
+       3.0000000        0.1853006        0.2303860        0.4166667        0.9655606       79.1934279        0.8037293 
 </div><div class='input'># generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)</div><div class='input'>n <- 50; counts <- c(5, 5, 8);
 </div><div class='input'>V <- syntheticNMF(n, counts)
 </div><div class='input'>cl <- unlist(mapply(rep, 1:3, counts))
@@ -176,16 +196,16 @@
 </div><div class='input'>summary(x2, cl, V)
 </div>
 <div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals            niter              cpu 
-       2.0000000        0.3009217        0.6407126        0.7222222        0.4380081      427.5718159        0.5603840      326.4298574      450.0000000        0.2080000 
+       2.0000000        0.2724773        0.6476994        0.7222222        0.4714100      428.9392309        0.6198737      322.2541225      480.0000000        0.2280000 
          cpu.all             nrun 
-       0.2080000        1.0000000 
+       0.2280000        1.0000000 
 </div><div class='input'># perform default NMF with rank=2</div><div class='input'>x3 <- nmf(V, 3)
 </div><div class='input'>summary(x2, cl, V)
 </div>
 <div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals            niter              cpu 
-       2.0000000        0.3009217        0.6407126        0.7222222        0.4380081      427.5718159        0.5603840      326.4298574      450.0000000        0.2080000 
+       2.0000000        0.2724773        0.6476994        0.7222222        0.4714100      428.9392309        0.6198737      322.2541225      480.0000000        0.2280000 
          cpu.all             nrun 
-       0.2080000        1.0000000 
+       0.2280000        1.0000000 
 </div></pre>
   </div>
   <div class="span4">
