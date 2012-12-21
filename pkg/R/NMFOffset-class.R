@@ -89,7 +89,6 @@ setMethod('show', 'NMFOffset',
 #' @param offset optional numeric vector used to initialise slot \sQuote{offset}.
 #' 
 #' @rdname NMFOffset-class
-#' @export
 setMethod("initialize", 'NMFOffset', 
 		function(.Object, ..., offset){			
 			.Object <- callNextMethod()

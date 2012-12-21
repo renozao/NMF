@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>rmatrix. NMF 0.10.1</title>
+<title>rmatrix. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -79,9 +83,8 @@
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>rmatrix<code>signature(x = "numeric")</code>: Generates
+      <p><ol>
+<li>rmatrix<code>signature(x = "numeric")</code>: Generates
   a random matrix of given dimensions, whose entries are
   drawn using the distribution function <code>dist</code>.</p>
   
@@ -113,13 +116,15 @@
       <p>This is the case of all base random draw function such as
   <code><a href='http://www.inside-r.org/r-doc/stats/Normal'>rnorm</a></code>, <code><a href='http://www.inside-r.org/r-doc/stats/GammaDist'>rgamma</a></code>, etc...</p>
   
-      <p>rmatrix<code>signature(x = "ANY")</code>: Default
+      <p></li>
+<li>rmatrix<code>signature(x = "ANY")</code>: Default
   method which calls <code>rmatrix,vector</code> on the
   dimensions of <code>x</code> that is assumed to be returned by
   a suitable <code>dim</code> method: it is equivalent to
   <code>rmatrix(dim(x), y=NULL, ...)</code>.</p>
   
-      <p>rmatrix<code>signature(x = "NMF")</code>: Returns the
+      <p></li>
+<li>rmatrix<code>signature(x = "NMF")</code>: Returns the
   target matrix estimate of the NMF model <code>x</code>,
   perturbated by adding a random matrix generated using the
   default method of <code>rmatrix</code>: it is a equivalent to
@@ -131,7 +136,10 @@
   of NMF algorithms to the presence of certain types of
   noise in the data.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
     
@@ -166,12 +174,12 @@
 </div><div class='input'>summary(res)
 </div>
 <div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun 
-       3.0000000        0.2710007        0.5078447        1.6109761      470.0000000        0.1720000        0.1720000        1.0000000 
+       3.0000000        0.2710007        0.5078447        1.6109761      470.0000000        0.1760000        0.1760000        1.0000000 
 </div><div class='input'></div><div class='input'># add more noise to the true model (drawn from uniform [0,10])</div><div class='input'>res <- nmf(rmatrix(x, max=10), 3)
 </div><div class='input'>summary(res)
 </div>
 <div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun 
-       3.0000000        0.3853947        0.3687706       19.7067992      460.0000000        0.1720000        0.1720000        1.0000000 
+       3.0000000        0.3853947        0.3687706       19.7067992      460.0000000        0.1800000        0.1800000        1.0000000 
 </div></pre>
   </div>
   <div class="span4">

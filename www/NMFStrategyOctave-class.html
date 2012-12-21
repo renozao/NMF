@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFStrategyOctave-class. NMF 0.10.1</title>
+<title>NMFStrategyOctave-class. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -70,41 +74,45 @@
     <div class="Slots">
       <h2>Slots</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>algorithmcharacter string that gives the name of
+      <p><ol>
+<li>algorithmcharacter string that gives the name of
   the main Octave/Matlab function that implements the
   algorithm. The function must take at least two arguments:
   the target matrix and the initial NMF model, converted
   into an Octave list object, with elements corresponding
   to slots of the corresponding S4 class.</p>
   
-      <p>mfilescharacter vector that contains a set of
+      <p></li>
+<li>mfilescharacter vector that contains a set of
   path to .m files. These files are (re-)sourced every time
   the strategy is called, and must be present at runtime in
   the current directory or in a directory from Octave
   path.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>algorithm<code>signature(object =
+      <p><ol>
+<li>algorithm<code>signature(object =
   "NMFStrategyOctave")</code>: Returns the name of the
   Octave/Matlab function that implements the NMF algorithm
   -- as stored in slot <code>algorithm</code>.</p>
   
-      <p>algorithm<-<code>signature(object =
+      <p></li>
+<li>algorithm<-<code>signature(object =
   "NMFStrategyOctave", value = "character")</code>: Sets the name
   of the Octave/Matlab function that implements the NMF
   algorithm. It is stored in slot <code>algorithm</code>.</p>
   
-      <p>run<code>signature(object = "NMFStrategyOctave",
+      <p></li>
+<li>run<code>signature(object = "NMFStrategyOctave",
   y = "matrix", x = "NMFfit")</code>: Runs the NMF algorithms
   implemented by the Octave/Matlab function associated with
   the strategy -- and stored in slot <code>'algorithm'</code> of
@@ -115,7 +123,10 @@
   other details such as seeding the computation, handling
   RNG settings, or setting up parallel computations.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
       </div>

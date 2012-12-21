@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfApply. NMF 0.10.1</title>
+<title>nmfApply. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -96,15 +100,18 @@
   <code><a href='http://www.inside-r.org/r-doc/base/apply'>apply</a></code> or <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/lapply'>sapply</a></code> according to
   the value of argument <code>MARGIN</code> as follows:</p>
   
-      <p><span class='describe'> MARGIN=1 apply <code>FUN</code> to each
+      <p><ol>
+<li>MARGIN=1 apply <code>FUN</code> to each
   <em>row</em> of the basis matrix: <code>apply(basis(X), 1L,
   FUN, ...)</code>.</p>
   
-      <p>MARGIN=2 apply <code>FUN</code> to each <em>column</em>
+      <p></li>
+<li>MARGIN=2 apply <code>FUN</code> to each <em>column</em>
   of the coefficient matrix: <code>apply(coef(X), 2L, FUN,
   ...)</code>.</p>
   
-      <p>MARGIN=3 apply <code>FUN</code> to each <em>pair</em> of
+      <p></li>
+<li>MARGIN=3 apply <code>FUN</code> to each <em>pair</em> of
   associated basis component and basis profile: more or
   less <code>sapply(seq(nbasis(X)), function(i, ...)
   FUN(basis(X)[,i], coef(X)[i, ], ...), ...)</code>.</p>
@@ -113,15 +120,20 @@
   arguments, to which are passed each basis components and
   basis profiles respectively -- as numeric vectors.</p>
   
-      <p>MARGIN=4 apply <code>FUN</code> to each <em>column</em>
+      <p></li>
+<li>MARGIN=4 apply <code>FUN</code> to each <em>column</em>
   of the basis matrix, i.e. to each basis component:
   <code>apply(basis(X), 2L, FUN, ...)</code>.</p>
   
-      <p>MARGIN=5 apply <code>FUN</code> to each <em>row</em> of
+      <p></li>
+<li>MARGIN=5 apply <code>FUN</code> to each <em>row</em> of
   the coefficient matrix: <code>apply(coef(X), 1L, FUN,
   ...)</code>.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
       </div>

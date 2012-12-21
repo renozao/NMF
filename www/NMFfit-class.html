@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfit-class. NMF 0.10.1</title>
+<title>NMFfit-class. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -101,9 +105,8 @@
     <div class="Slots">
       <h2>Slots</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>fitAn object that inherits from class
+      <p><ol>
+<li>fitAn object that inherits from class
   <code><a href='NMF-class.html'>NMF-class</a></code>, and contains the fitted NMF
   model.</p>
   
@@ -111,7 +114,8 @@
   class for this slot is <code>NMFstd</code>, that implements the
   standard NMF model.</p>
   
-      <p>residualsA <code>numeric</code> vector that contains
+      <p></li>
+<li>residualsA <code>numeric</code> vector that contains
   the final residuals or the residuals track between the
   target matrix and its NMF estimate(s).  Default value is
   <code>numeric()</code>.</p>
@@ -120,41 +124,49 @@
   accessor methods and main interface <code><a href='nmf.html'>nmf</a></code> for
   details on how to compute NMF with residuals tracking.</p>
   
-      <p>methoda single <code>character</code> string that
+      <p></li>
+<li>methoda single <code>character</code> string that
   contains the name of the algorithm used to fit the model.
   Default value is <code>''</code>.</p>
   
-      <p>seeda single <code>character</code> string that
+      <p></li>
+<li>seeda single <code>character</code> string that
   contains the name of the seeding method used to seed the
   algorithm that fitted the NMF model. Default value is
   <code>''</code>.  See <code><a href='nmf.html'>nmf</a></code> for more details.</p>
   
-      <p>rngan object that contains the RNG settings used
+      <p></li>
+<li>rngan object that contains the RNG settings used
   for the fit. Currently the settings are stored as an
   integer vector, the value of <code><a href='http://www.inside-r.org/r-doc/base/Random'>.Random.seed</a></code>
   at the time the object is created. It is initialized by
   the <code>initialized</code> method. See <code><a href='http://www.inside-r.org/r-doc/rngtools/rng'>getRNG</a></code>
   for more details.</p>
   
-      <p>distanceeither a single <code>"character"</code> string
+      <p></li>
+<li>distanceeither a single <code>"character"</code> string
   that contains the name of the built-in objective
   function, or a <code>function</code> that measures the
   residuals between the target matrix and its NMF estimate.
   See <code><a href='algorithmic.html'>objective</a></code> and
   <code><a href='deviance.html'>deviance,NMF-method</a></code>.</p>
   
-      <p>parametersa <code>list</code> that contains the extra
+      <p></li>
+<li>parametersa <code>list</code> that contains the extra
   parameters -- usually specific to the algorithm -- that
   were used to fit the model.</p>
   
-      <p>runtimeobject of class <code>"proc_time"</code> that
+      <p></li>
+<li>runtimeobject of class <code>"proc_time"</code> that
   contains various measures of the time spent to fit the
   model. See <code><a href='http://www.inside-r.org/r-doc/base/system.time'>system.time</a></code></p>
   
-      <p>optionsa <code>list</code> that contains the options
+      <p></li>
+<li>optionsa <code>list</code> that contains the options
   used to compute the object.</p>
   
-      <p>extraa <code>list</code> that contains extra
+      <p></li>
+<li>extraa <code>list</code> that contains extra
   miscellaneous data for internal usage only. For example
   it can be used to store extra parameters or temporary
   data, without the need to explicitly extend the
@@ -167,23 +179,27 @@
   sets elements in the <code>list</code> slot <code>misc</code> -- that
   is inherited from class <code><a href='NMF-class.html'>NMF-class</a></code>.</p>
   
-      <p>callstored call to the last <code>nmf</code> method
+      <p></li>
+<li>callstored call to the last <code>nmf</code> method
   that generated the object.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>algorithm<code>signature(object = "NMFfit")</code>:
+      <p><ol>
+<li>algorithm<code>signature(object = "NMFfit")</code>:
   Returns the name of the algorithm that fitted the NMF
   model <code>object</code>.</p>
   
-      <p>.basis<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>.basis<code>signature(object = "NMFfit")</code>:
   Returns the basis matrix from an NMF model fitted with
   function <code><a href='nmf.html'>nmf</a></code>.</p>
   
@@ -191,7 +207,8 @@
   dispatching the call to the <code>.basis</code> method of the
   actual NMF model.</p>
   
-      <p>.basis<-<code>signature(object = "NMFfit", value
+      <p></li>
+<li>.basis<-<code>signature(object = "NMFfit", value
   = "matrix")</code>: Sets the the basis matrix of an NMF model
   fitted with function <code><a href='nmf.html'>nmf</a></code>.</p>
   
@@ -201,7 +218,8 @@
   except when developing NMF algorithms, to update the
   basis matrix of the seed object before returning it.</p>
   
-      <p>.coef<code>signature(object = "NMFfit")</code>: Returns
+      <p></li>
+<li>.coef<code>signature(object = "NMFfit")</code>: Returns
   the the coefficient matrix from an NMF model fitted with
   function <code><a href='nmf.html'>nmf</a></code>.</p>
   
@@ -209,7 +227,8 @@
   dispatching the call to the <code>.coef</code> method of the
   actual NMF model.</p>
   
-      <p>.coef<-<code>signature(object = "NMFfit", value =
+      <p></li>
+<li>.coef<-<code>signature(object = "NMFfit", value =
   "matrix")</code>: Sets the the coefficient matrix of an NMF
   model fitted with function <code><a href='nmf.html'>nmf</a></code>.</p>
   
@@ -220,10 +239,12 @@
   coefficient matrix in the seed object before returning
   it.</p>
   
-      <p>compare<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>compare<code>signature(object = "NMFfit")</code>:
   Compare multiple NMF fits passed as arguments.</p>
   
-      <p>deviance<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>deviance<code>signature(object = "NMFfit")</code>:
   Returns the deviance of a fitted NMF model.</p>
   
       <p>This method returns the final residual value if the
@@ -238,14 +259,17 @@
       <p>See <code><a href='deviance.html'>deviance,NMFfit-method</a></code> for more
   details.</p>
   
-      <p>fit<code>signature(object = "NMFfit")</code>: Returns
+      <p></li>
+<li>fit<code>signature(object = "NMFfit")</code>: Returns
   the NMF model object stored in slot <code>'fit'</code>.</p>
   
-      <p>fit<-<code>signature(object = "NMFfit", value =
+      <p></li>
+<li>fit<-<code>signature(object = "NMFfit", value =
   "NMF")</code>: Updates the NMF model object stored in slot
   <code>'fit'</code> with a new value.</p>
   
-      <p>fitted<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>fitted<code>signature(object = "NMFfit")</code>:
   Computes and return the estimated target matrix from an
   NMF model fitted with function <code><a href='nmf.html'>nmf</a></code>.</p>
   
@@ -253,35 +277,42 @@
   dispatching the call to the <code>fitted</code> method of the
   actual NMF model.</p>
   
-      <p>ibterms<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>ibterms<code>signature(object = "NMFfit")</code>:
   Method for single NMF fit objects, which returns the
   indexes of fixed basis terms from the fitted model.</p>
   
-      <p>icterms<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>icterms<code>signature(object = "NMFfit")</code>:
   Method for single NMF fit objects, which returns the
   indexes of fixed coefficient terms from the fitted model.</p>
   
-      <p>icterms<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>icterms<code>signature(object = "NMFfit")</code>:
   Method for multiple NMF fit objects, which returns the
   indexes of fixed coefficient terms from the best fitted
   model.</p>
   
-      <p>minfit<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>minfit<code>signature(object = "NMFfit")</code>:
   Returns the object its self, since there it is the result
   of a single NMF run.</p>
   
-      <p>modelname<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>modelname<code>signature(object = "NMFfit")</code>:
   Returns the type of a fitted NMF model. It is a shortcut
   for <code>modelname(fit(object)</code>.</p>
   
-      <p>niter<code>signature(object = "NMFfit")</code>: Returns
+      <p></li>
+<li>niter<code>signature(object = "NMFfit")</code>: Returns
   the number of iteration performed to fit an NMF model,
   typically with function <code><a href='nmf.html'>nmf</a></code>.</p>
   
       <p>Currently this data is stored in slot <code>'extra'</code>, but
   this might change in the future.</p>
   
-      <p>niter<-<code>signature(object = "NMFfit", value =
+      <p></li>
+<li>niter<-<code>signature(object = "NMFfit", value =
   "numeric")</code>: Sets the number of iteration performed to
   fit an NMF model.</p>
   
@@ -293,57 +324,70 @@
   returning it (see
   <code><a href='NMFStrategyFunction-class.html'>NMFStrategyFunction-class</a></code>).</p>
   
-      <p>nmf.equal<code>signature(x = "NMFfit", y =
+      <p></li>
+<li>nmf.equal<code>signature(x = "NMFfit", y =
   "NMF")</code>: Compares two NMF models when at least one comes
   from a NMFfit object, i.e. an object returned by a single
   run of <code><a href='nmf.html'>nmf</a></code>.</p>
   
-      <p>nmf.equal<code>signature(x = "NMFfit", y =
+      <p></li>
+<li>nmf.equal<code>signature(x = "NMFfit", y =
   "NMFfit")</code>: Compares two fitted NMF models, i.e. objects
   returned by single runs of <code><a href='nmf.html'>nmf</a></code>.</p>
   
-      <p>NMFfitX<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>NMFfitX<code>signature(object = "NMFfit")</code>:
   Creates an <code>NMFfitX1</code> object from a single fit. This
   is used in <code><a href='nmf.html'>nmf</a></code> when only the best fit is
   kept in memory or on disk.</p>
   
-      <p>nrun<code>signature(object = "NMFfit")</code>: This
+      <p></li>
+<li>nrun<code>signature(object = "NMFfit")</code>: This
   method always returns 1, since an <code>NMFfit</code> object is
   obtained from a single NMF run.</p>
   
-      <p>objective<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>objective<code>signature(object = "NMFfit")</code>:
   Returns the objective function associated with the
   algorithm that computed the fitted NMF model
   <code>object</code>, or the objective value with respect to a
   given target matrix <code>y</code> if it is supplied.</p>
   
-      <p>offset<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>offset<code>signature(object = "NMFfit")</code>:
   Returns the offset from the fitted model.</p>
   
-      <p>plot<code>signature(x = "NMFfit", y =
+      <p></li>
+<li>plot<code>signature(x = "NMFfit", y =
   "missing")</code>: Plots the residual track computed at regular
   interval during the fit of the NMF model <code>x</code>.</p>
   
-      <p>residuals<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>residuals<code>signature(object = "NMFfit")</code>:
   Returns the residuals -- track -- between the target
   matrix and the NMF fit <code>object</code>.</p>
   
-      <p>runtime<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>runtime<code>signature(object = "NMFfit")</code>:
   Returns the CPU time required to compute a single NMF
   fit.</p>
   
-      <p>runtime.all<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>runtime.all<code>signature(object = "NMFfit")</code>:
   Identical to <code>runtime</code>, since their is a single fit.</p>
   
-      <p>seeding<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>seeding<code>signature(object = "NMFfit")</code>:
   Returns the name of the seeding method that generated the
   starting point for the NMF algorithm that fitted the NMF
   model <code>object</code>.</p>
   
-      <p>show<code>signature(object = "NMFfit")</code>: Show
+      <p></li>
+<li>show<code>signature(object = "NMFfit")</code>: Show
   method for objects of class <code>NMFfit</code></p>
   
-      <p>summary<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>summary<code>signature(object = "NMFfit")</code>:
   Computes summary measures for a single fit from
   <code><a href='nmf.html'>nmf</a></code>.</p>
   
@@ -352,7 +396,10 @@
   
       <p>See <code><a href='assess.html'>summary,NMFfit-method</a></code> for more details.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
     
@@ -385,11 +432,11 @@ attr(,"package")
   Iterations: 670 
   Timing:
      user  system elapsed 
-    0.276   0.000   0.274 
+    0.304   0.004   0.361 
 </div><div class='input'></div><div class='input'># compute summary measures</div><div class='input'>summary(res, target=V)
 </div>
 <div class='output'>            rank sparseness.basis  sparseness.coef              rss             evar        residuals            niter              cpu          cpu.all             nrun 
-       3.0000000        0.1518974        0.4116923       64.1684436        0.8019828       73.6481924      670.0000000        0.2760000        0.2760000        1.0000000 
+       3.0000000        0.1518974        0.4116923       64.1684436        0.8019828       73.6481924      670.0000000        0.3040000        0.3040000        1.0000000 
 </div></pre>
   </div>
   <div class="span4">

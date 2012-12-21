@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>registerDoBackend. NMF 0.10.1</title>
+<title>registerDoBackend. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -116,53 +120,65 @@ getDoParNHosts(object)</pre>
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>ForeachBackend<code>signature(object = "ANY")</code>:
+      <p><ol>
+<li>ForeachBackend<code>signature(object = "ANY")</code>:
   Default method defined to throw an informative error
   message, when no other method was found.</p>
   
-      <p>ForeachBackend<code>signature(object =
+      <p></li>
+<li>ForeachBackend<code>signature(object =
   "character")</code>: Creates a foreach backend object based on
   its name.</p>
   
-      <p>ForeachBackend<code>signature(object =
+      <p></li>
+<li>ForeachBackend<code>signature(object =
   "missing")</code>: Creates a foreach backend object for the
   currently registered backend.</p>
   
-      <p>ForeachBackend<code>signature(object = "NULL")</code>:
+      <p></li>
+<li>ForeachBackend<code>signature(object = "NULL")</code>:
   Dummy method that returns <code>NULL</code>, defined for
   correct dispatch.</p>
   
-      <p>ForeachBackend<code>signature(object =
+      <p></li>
+<li>ForeachBackend<code>signature(object =
   "cluster")</code>: Creates a doParallel foreach backend that
   uses the cluster described in <code>object</code>.</p>
   
-      <p>ForeachBackend<code>signature(object =
+      <p></li>
+<li>ForeachBackend<code>signature(object =
   "numeric")</code>: Creates a doParallel foreach backend with
   <code>object</code> processes.</p>
   
-      <p>ForeachBackend<code>signature(object =
+      <p></li>
+<li>ForeachBackend<code>signature(object =
   "doParallel_backend")</code>: doParallel-specific backend
   factory</p>
   
-      <p>ForeachBackend<code>signature(object =
+      <p></li>
+<li>ForeachBackend<code>signature(object =
   "doPSOCK_backend")</code>: doSNOW-specific backend factory</p>
   
-      <p>ForeachBackend<code>signature(object =
+      <p></li>
+<li>ForeachBackend<code>signature(object =
   "mpicluster")</code>: Creates a doMPI foreach backend that uses
   the MPI cluster described in <code>object</code>.</p>
   
-      <p>ForeachBackend<code>signature(object =
+      <p></li>
+<li>ForeachBackend<code>signature(object =
   "doMPI_backend")</code>: doMPI-specific backend factory</p>
   
-      <p>getDoParHosts<code>signature(object = "ANY")</code>:
+      <p></li>
+<li>getDoParHosts<code>signature(object = "ANY")</code>:
   Default method that tries to heuristaically infer the
   number of hosts and in last resort temporarly register
   the backend and performs a foreach loop, to retrieve the
   nodename from each worker.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
       </div>

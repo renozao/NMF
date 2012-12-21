@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>featureScore. NMF 0.10.1</title>
+<title>featureScore. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -83,7 +87,8 @@ extractFeatures(object, ...)
   contributing features in each component.</dd>
       <dt>format</dt>
       <dd>output format. The following values are
-  accepted: <span class='describe'> &#145;list&#146;(default)
+  accepted: <ol>
+<li>&#145;list&#146;(default)
   returns a list with one element per column in
   <code>object</code>, each containing the indexes of the
   selected features, as an integer vector. If <code>object</code>
@@ -91,14 +96,18 @@ extractFeatures(object, ...)
   Components for which no feature were selected are
   assigned a <code>NA</code> value.
 
-  &#145;combine&#146; returns all indexes in a single
+  </li>
+<li>&#145;combine&#146; returns all indexes in a single
   vector. Duplicated indexes are made unique if
   <code>nodups=TRUE</code> (default).
 
-  &#145;subset&#146; returns an object of the same
+  </li>
+<li>&#145;subset&#146; returns an object of the same
   class as <code>object</code>, but subset with the selected
   indexes, so that it contains data only from
-  basis-specific features. </span></dd>
+  basis-specific features. </li>
+</ol>
+</dd>
       <dt>nodups</dt>
       <dd>logical that indicates if duplicated
   indexes, i.e. features selected on multiple basis
@@ -157,26 +166,31 @@ extractFeatures(object, ...)
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>extractFeatures<code>signature(object =
+      <p><ol>
+<li>extractFeatures<code>signature(object =
   "matrix")</code>: Select features on a given matrix, that
   contains the basis component in columns.</p>
   
-      <p>extractFeatures<code>signature(object = "NMF")</code>:
+      <p></li>
+<li>extractFeatures<code>signature(object = "NMF")</code>:
   Select basis-specific features from an NMF model, by
   applying the method <code>extractFeatures,matrix</code> to its
   basis matrix.</p>
   
-      <p>featureScore<code>signature(object = "matrix")</code>:
+      <p></li>
+<li>featureScore<code>signature(object = "matrix")</code>:
   Computes feature scores on a given matrix, that contains
   the basis component in columns.</p>
   
-      <p>featureScore<code>signature(object = "NMF")</code>:
+      <p></li>
+<li>featureScore<code>signature(object = "NMF")</code>:
   Computes feature scores on the basis matrix of an NMF
   model.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 
@@ -186,9 +200,8 @@ extractFeatures(object, ...)
       <p>The function <code>featureScore</code> can compute
   basis-specificity scores using the following methods:</p>
   
-      <p><span class='describe'></p>
-  
-      <p>&#145;kim&#146; Method defined by <cite>Kim et al. (2007)</cite>.</p>
+      <p><ol>
+<li>&#145;kim&#146; Method defined by <cite>Kim et al. (2007)</cite>.</p>
   
       <p>The score for feature <code class = 'eq'>i</code> is defined as: <pre class = 'eq'> S_i = 1 + 1/log2(k) sum_q [ p(i,q) log2( p(i,q)
   ) ] </code>,</p>
@@ -201,12 +214,16 @@ extractFeatures(object, ...)
   [0,1]. The higher the feature score the more
   basis-specific the corresponding feature.</p>
   
-      <p>&#145;max&#146;Method defined by
+      <p></li>
+<li>&#145;max&#146;Method defined by
   <cite>Carmona-Saez et al. (2006)</cite>.</p>
   
       <p>The feature scores are defined as the row maximums.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 
@@ -214,8 +231,8 @@ extractFeatures(object, ...)
       <h2>Feature selection</h2>
       
       <p>The function <code>extractFeatures</code> can select features
-  using the following methods: <span class='describe'>
-  &#145;kim&#146; uses <cite>Kim et al. (2007)</cite> scoring schema
+  using the following methods: <ol>
+<li>&#145;kim&#146; uses <cite>Kim et al. (2007)</cite> scoring schema
   and feature selection method.</p>
   
       <p>The features are first scored using the function
@@ -235,7 +252,8 @@ extractFeatures(object, ...)
   elements of W). </li>
 </ul></p>
   
-      <p>&#145;max&#146; uses the selection method used in
+      <p></li>
+<li>&#145;max&#146; uses the selection method used in
   the <code>bioNMF</code> software package and described in
   <cite>Carmona-Saez et al. (2006)</cite>.</p>
   
@@ -244,7 +262,10 @@ extractFeatures(object, ...)
   first consecutive features whose highest contribution in
   the basis matrix is effectively on the considered basis.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 

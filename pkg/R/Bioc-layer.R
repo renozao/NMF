@@ -52,6 +52,9 @@
 #' @aliases metaprofiles metaprofiles<-
 NULL
 
+# add extra package Biobase
+packageExtra('install_missing', 'Biobase', pkg='Biobase')
+
 .onLoad.nmf.bioc <- function(){
 	
 if( pkgmaker::require.quiet('Biobase') ){
@@ -156,7 +159,7 @@ if( pkgmaker::require.quiet('Biobase') ){
 	###% contains the phenotypic data (i.e. \code{pData(object)})
 	setMethod('.atrack', 'ExpressionSet', 
 		function(object, data=NULL, ...){
-			if( is.null(data) ) data <- exprs(object)
+			if( is.null(data) ) data <- t(exprs(object))
 			.atrack(pData(object), data=data, ...)	
 		}
 	)

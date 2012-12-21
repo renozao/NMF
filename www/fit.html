@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>fit. NMF 0.10.1</title>
+<title>fit. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -95,12 +99,12 @@ minfit(object, ...)</pre>
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>fit<code>signature(object = "NMFfit")</code>: Returns
+      <p><ol>
+<li>fit<code>signature(object = "NMFfit")</code>: Returns
   the NMF model object stored in slot <code>'fit'</code>.</p>
   
-      <p>fit<code>signature(object = "NMFfitX")</code>: Returns
+      <p></li>
+<li>fit<code>signature(object = "NMFfitX")</code>: Returns
   the model object that achieves the lowest residual
   approximation error across all the runs.</p>
   
@@ -108,7 +112,8 @@ minfit(object, ...)</pre>
   is defined for sub-classes of <code>NMFfitX</code>, which
   throws an error if called.</p>
   
-      <p>fit<code>signature(object = "NMFfitX1")</code>: Returns
+      <p></li>
+<li>fit<code>signature(object = "NMFfitX1")</code>: Returns
   the model object associated with the best fit, amongst
   all the runs performed when fitting <code>object</code>.</p>
   
@@ -116,20 +121,24 @@ minfit(object, ...)</pre>
   this method simply returns the NMF model fitted by
   <code>object</code> -- that is stored in slot &#145;fit&#146;.</p>
   
-      <p>fit<code>signature(object = "NMFfitXn")</code>: Returns
+      <p></li>
+<li>fit<code>signature(object = "NMFfitXn")</code>: Returns
   the best NMF fit object amongst all the fits stored in
   <code>object</code>, i.e. the fit that achieves the lowest
   estimation residuals.</p>
   
-      <p>fit<-<code>signature(object = "NMFfit", value =
+      <p></li>
+<li>fit<-<code>signature(object = "NMFfit", value =
   "NMF")</code>: Updates the NMF model object stored in slot
   <code>'fit'</code> with a new value.</p>
   
-      <p>minfit<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>minfit<code>signature(object = "NMFfit")</code>:
   Returns the object its self, since there it is the result
   of a single NMF run.</p>
   
-      <p>minfit<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>minfit<code>signature(object = "NMFfitX")</code>:
   Returns the fit object that achieves the lowest residual
   approximation error across all the runs.</p>
   
@@ -137,7 +146,8 @@ minfit(object, ...)</pre>
   <code>minfit</code> is defined for sub-classes of
   <code>NMFfitX</code>, which throws an error if called.</p>
   
-      <p>minfit<code>signature(object = "NMFfitX1")</code>:
+      <p></li>
+<li>minfit<code>signature(object = "NMFfitX1")</code>:
   Returns the fit object associated with the best fit,
   amongst all the runs performed when fitting
   <code>object</code>.</p>
@@ -146,13 +156,17 @@ minfit(object, ...)</pre>
   this method simply returns <code>object</code> coerced into an
   <code>NMFfit</code> object.</p>
   
-      <p>minfit<code>signature(object = "NMFfitXn")</code>:
+      <p></li>
+<li>minfit<code>signature(object = "NMFfitXn")</code>:
   Returns the best NMF model in the list, i.e. the run that
   achieved the lower estimation residuals.</p>
   
       <p>The model is selected based on its <code>deviance</code> value.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
       </div>

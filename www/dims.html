@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nbasis. NMF 0.10.1</title>
+<title>nbasis. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -107,23 +111,24 @@
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>dim<code>signature(x = "NMF")</code>: method for NMF
+      <p><ol>
+<li>dim<code>signature(x = "NMF")</code>: method for NMF
   objects for the base generic <code><a href='http://www.inside-r.org/r-doc/base/dim'>dim</a></code>. It
   returns all dimensions in a length-3 integer vector: the
   number of row and columns of the estimated target matrix,
   as well as the factorization rank (i.e. the number of
   basis components).</p>
   
-      <p>dim<code>signature(x = "NMFfitXn")</code>: Returns the
+      <p></li>
+<li>dim<code>signature(x = "NMFfitXn")</code>: Returns the
   dimension common to all fits.</p>
   
       <p>Since all fits have the same dimensions, it returns the
   dimension of the first fit. This method returns
   <code>NULL</code> if the object is empty.</p>
   
-      <p>nbasis<code>signature(x = "ANY")</code>: Default method
+      <p></li>
+<li>nbasis<code>signature(x = "ANY")</code>: Default method
   which returns the number of columns of the basis matrix
   extracted from <code>x</code> using a suitable method
   <code>basis</code>, or, if the latter is <code>NULL</code>, the value
@@ -132,14 +137,18 @@
       <p>For NMF models, this also corresponds to the number of
   rows in the coefficient matrix.</p>
   
-      <p>nbasis<code>signature(x = "NMFfitXn")</code>: Returns
+      <p></li>
+<li>nbasis<code>signature(x = "NMFfitXn")</code>: Returns
   the number of basis components common to all fits.</p>
   
       <p>Since all fits have been computed using the same rank, it
   returns the factorization rank of the first fit. This
   method returns <code>NULL</code> if the object is empty.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
       </div>

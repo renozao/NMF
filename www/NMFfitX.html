@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfitX. NMF 0.10.1</title>
+<title>NMFfitX. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -70,21 +74,25 @@
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>NMFfitX<code>signature(object = "list")</code>: Create
+      <p><ol>
+<li>NMFfitX<code>signature(object = "list")</code>: Create
   an <code>NMFfitX</code> object from a list of fits.</p>
   
-      <p>NMFfitX<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>NMFfitX<code>signature(object = "NMFfit")</code>:
   Creates an <code>NMFfitX1</code> object from a single fit. This
   is used in <code><a href='nmf.html'>nmf</a></code> when only the best fit is
   kept in memory or on disk.</p>
   
-      <p>NMFfitX<code>signature(object = "NMFfitX")</code>:
+      <p></li>
+<li>NMFfitX<code>signature(object = "NMFfitX")</code>:
   Provides a way to aggregate <code>NMFfitXn</code> objects into
   an <code>NMFfitX1</code> object.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
       </div>

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFStrategy. NMF 0.10.1</title>
+<title>NMFStrategy. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -115,9 +119,8 @@
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>NMFStrategy<code>signature(name = "character",
+      <p><ol>
+<li>NMFStrategy<code>signature(name = "character",
   method = "function")</code>: Creates an
   <code>NMFStrategyFunction</code> object that wraps the function
   <code>method</code> into a unified interface.</p>
@@ -126,16 +129,19 @@
   <code>(y="matrix", x="NMFfit", ...)</code>, and return an
   object of class <code><a href='NMFfit-class.html'>NMFfit-class</a></code>.</p>
   
-      <p>NMFStrategy<code>signature(name = "character",
+      <p></li>
+<li>NMFStrategy<code>signature(name = "character",
   method = "NMFStrategy")</code>: Creates an <code>NMFStrategy</code>
   object based on a template object (Constructor-Copy).</p>
   
-      <p>NMFStrategy<code>signature(name = "NMFStrategy",
+      <p></li>
+<li>NMFStrategy<code>signature(name = "NMFStrategy",
   method = "missing")</code>: Creates an <code>NMFStrategy</code> based
   on a template object (Constructor-Copy), in particular it
   uses the <strong>same</strong> name.</p>
   
-      <p>NMFStrategy<code>signature(name = "missing",
+      <p></li>
+<li>NMFStrategy<code>signature(name = "missing",
   method = "character")</code>: Creates an <code>NMFStrategy</code>
   based on a registered NMF algorithm that is used as a
   template (Constructor-Copy), in particular it uses the
@@ -145,17 +151,20 @@
   <code>NMFStrategy(nmfAlgorithm(method, exact=TRUE),
   ...)</code>.</p>
   
-      <p>NMFStrategy<code>signature(name = "NULL", method
+      <p></li>
+<li>NMFStrategy<code>signature(name = "NULL", method
   = "NMFStrategy")</code>: Creates an <code>NMFStrategy</code> based on
   a template object (Constructor-Copy) but using a randomly
   generated name.</p>
   
-      <p>NMFStrategy<code>signature(name = "character",
+      <p></li>
+<li>NMFStrategy<code>signature(name = "character",
   method = "character")</code>: Creates an <code>NMFStrategy</code>
   based on a registered NMF algorithm that is used as a
   template.</p>
   
-      <p>NMFStrategy<code>signature(name = "NULL", method
+      <p></li>
+<li>NMFStrategy<code>signature(name = "NULL", method
   = "character")</code>: Creates an <code>NMFStrategy</code> based on a
   registered NMF algorithm (Constructor-Copy) using a
   randomly generated name.</p>
@@ -163,7 +172,8 @@
       <p>It is a shortcut for <code>NMFStrategy(NULL,
   nmfAlgorithm(method), ...)</code>.</p>
   
-      <p>NMFStrategy<code>signature(name = "character",
+      <p></li>
+<li>NMFStrategy<code>signature(name = "character",
   method = "missing")</code>: Creates an NMFStrategy, determining
   its type from the extra arguments passed in <code>...</code>:
   if there is an argument named <code>Update</code> then an
@@ -172,18 +182,21 @@
   <code>NMFStrategyFunction</code> is created. Calls other than
   these generates an error.</p>
   
-      <p>run<code>signature(object = "NMFStrategy", y =
+      <p></li>
+<li>run<code>signature(object = "NMFStrategy", y =
   "matrix", x = "NMFfit")</code>: Pure virtual method defined for
   all NMF algorithms to ensure that a method <code>run</code> is
   defined by sub-classes of <code>NMFStrategy</code>.</p>
   
       <p>It throws an error if called directly.</p>
   
-      <p>run<code>signature(object = "NMFStrategy", y =
+      <p></li>
+<li>run<code>signature(object = "NMFStrategy", y =
   "matrix", x = "NMF")</code>: Method to run an NMF algorithm
   directly starting from a given NMF model.</p>
   
-      <p>run<code>signature(object =
+      <p></li>
+<li>run<code>signature(object =
   "NMFStrategyFunction", y = "matrix", x = "NMFfit")</code>: Runs
   the NMF algorithms implemented by the single R function
   -- and stored in slot <code>'algorithm'</code> of
@@ -196,12 +209,14 @@
   other details such as seeding the computation, handling
   RNG settings, or setting up parallelisation.</p>
   
-      <p>run<code>signature(object =
+      <p></li>
+<li>run<code>signature(object =
   "NMFStrategyIterative", y = "matrix", x = "NMFfit")</code>:
   Runs an NMF iterative algorithm on a target matrix
   <code>y</code>.</p>
   
-      <p>run<code>signature(object = "NMFStrategyOctave",
+      <p></li>
+<li>run<code>signature(object = "NMFStrategyOctave",
   y = "matrix", x = "NMFfit")</code>: Runs the NMF algorithms
   implemented by the Octave/Matlab function associated with
   the strategy -- and stored in slot <code>'algorithm'</code> of
@@ -212,7 +227,10 @@
   other details such as seeding the computation, handling
   RNG settings, or setting up parallel computations.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
       </div>

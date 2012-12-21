@@ -11,6 +11,15 @@ if( isNamespaceLoaded('NMF') ){
 
 library(stringr)
 
+shared_DEACTIVATED <- function(...){
+	msg <- NULL
+	if( .Platform$OS.type == 'windows' ) msg <- str_c(..., ' [OS: Windows]')
+	else if( !require.quiet(bigmemory) ) msg <- str_c(..., ' [missing: bigmemory]')
+	else if( !require.quiet(synchronicity) ) msg <- str_c(..., ' [missing: synchronicity]')
+	
+	if( !is.null(msg) ) DEACTIVATED(msg)
+}
+
 check_shared_memory <- function(.msg, libs=TRUE, seq=FALSE){
 	
 	.test <- function(.msg, mutex, libs, seq){
@@ -67,6 +76,8 @@ check_shared_memory <- function(.msg, libs=TRUE, seq=FALSE){
 	checkTrue( wtime[2] <  1 , mess("No mutex: Thread 2 does not wait at all (", wtime[2], ')'))
 	
 	# check mutex lock
+	shared_DEACTIVATED("NMF shared memory feature not available.")
+	
 	wtime <- .test(mess(), mutex=TRUE, libs, seq)
 	checkTrue( wtime[1] >= 2 , mess("With mutex : Thread 1 waits 2 seconds (", wtime[1], ')'))
 	if( !seq )
@@ -100,14 +111,13 @@ test.shared_memory_doParallel <- function(){
 }
 
 test.shared_memory_doMPI <- function(){
-	DEACTIVATED("NMF shared memory feature does not currently work with doMPI.")
+	DEACTIVATED("NMF shared memory feature does not currently work with doMPI.")	
+	if( !require(doMPI) ) DEACTIVATED("Package doMPI not available.")
 	# doMPI
-	library(doMPI)
 	cl_MPI <- startMPIcluster(2)
 	on.exit( closeCluster(cl_MPI), add=TRUE)
 	registerDoMPI(cl_MPI)
 	check_shared_memory('doMPI')
-	
 }
 
 test.setupBackend <- function(){
@@ -158,6 +168,8 @@ test.gVariable <- function(){
 			}
 		}
 		.test(FALSE)
+		
+		shared_DEACTIVATED("NMF global shared variables not available.")
 		.test(TRUE)
 	}
 	
@@ -177,7 +189,7 @@ test.gVariable <- function(){
 	.check('doParallel')
 		
 	# doMPI
-	library(doMPI)
+	if( !require(doMPI) ) DEACTIVATED("Package doMPI not available.")
 	cl_MPI <- startMPIcluster(2)
 	on.exit( closeCluster(cl_MPI), add=TRUE)
 	registerDoMPI(cl_MPI)
@@ -203,7 +215,7 @@ test.ForeachBackend <- function(){
 	b <- .check('doParallel', 2, cl)
 	
 	# doMPI
-	library(doMPI)
+	if( !require(doMPI) ) DEACTIVATED("Package doMPI not available.")
 	b <- .check('doMPI', 2, 'MPI', 2)
 	cl_MPI <- startMPIcluster(2)
 	on.exit( closeCluster(cl_MPI), add=TRUE)
@@ -226,7 +238,8 @@ test.nmf <- function(){
 		be <- getDoBackend()
 		checkTrue( isNMFfit(res2 <- nmf(a, 2, seed=123, nrun=3, .opt=str_c('v3', .options), ...)), str_c(msg, " works"))
 		checkTrue( nmf.equal(res, res2), str_c(msg, ": result is identical to default") )
-		checkIdentical( consensus(res, no.attrib=TRUE), consensus(res2, no.attrib=TRUE), str_c(msg, ": consensus matrice (no.attrib) is identical to default") )
+		checkIdentical( consensus(res, no.attrib=TRUE), consensus(res2, no.attrib=TRUE)
+					, str_c(msg, ": consensus matrice (no.attrib) is identical to default") )
 		checkIdentical( consensus(res), consensus(res2), str_c(msg, ": consensus matrice is identical to default") )
 		checkTrue( identical(be, getDoBackend()), str_c(msg, ": backend is restored") )
 	}
@@ -248,7 +261,7 @@ test.nmf <- function(){
 	.check('.pbackend=NULL + doParallel registered cluster', .pbackend=NULL)
 	
 	# MPI
-	library(doMPI)
+	if( !require(doMPI) ) DEACTIVATED("Package doMPI not available.")
 	cl_MPI <- startMPIcluster(2)
 	on.exit( closeCluster(cl_MPI), add=TRUE)
 	.check('.pbackend=cl_MPI + MPI cluster', .pbackend=cl_MPI)

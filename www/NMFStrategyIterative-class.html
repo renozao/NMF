@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFStrategyIterative-class. NMF 0.10.1</title>
+<title>NMFStrategyIterative-class. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -74,46 +78,54 @@
     <div class="Slots">
       <h2>Slots</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>onInitoptional function that performs some
+      <p><ol>
+<li>onInitoptional function that performs some
   initialisation or pre-processing on the model, before
   starting the iteration loop.</p>
   
-      <p>Updatemandatory function that implement the
+      <p></li>
+<li>Updatemandatory function that implement the
   update step, which computes new values for the model,
   based on its previous value. It is called at each
   iteration, until the stopping criterion is met or the
   maximum number of iteration is achieved.</p>
   
-      <p>Stopoptional function that implements the
+      <p></li>
+<li>Stopoptional function that implements the
   stopping criterion. It is called <strong>before</strong> each
   Update step. If not provided, the iterations are stopped
   after a fixed number of updates.</p>
   
-      <p>onReturnoptional function that wraps up the
+      <p></li>
+<li>onReturnoptional function that wraps up the
   result into an NMF object. It is called just before
   returning the</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>run<code>signature(object =
+      <p><ol>
+<li>run<code>signature(object =
   "NMFStrategyIterative", y = "matrix", x = "NMFfit")</code>:
   Runs an NMF iterative algorithm on a target matrix
   <code>y</code>.</p>
   
-      <p>show<code>signature(object =
+      <p></li>
+<li>show<code>signature(object =
   "NMFStrategyIterative")</code>: Show method for objects of
   class <code>NMFStrategyIterative</code></p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 

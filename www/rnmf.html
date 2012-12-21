@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>rnmf. NMF 0.10.1</title>
+<title>rnmf. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -186,9 +190,8 @@
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>rnmf<code>signature(x = "NMFOffset", target =
+      <p><ol>
+<li>rnmf<code>signature(x = "NMFOffset", target =
   "numeric")</code>: Generates a random NMF model with offset,
   from class <code>NMFOffset</code>.</p>
   
@@ -198,7 +201,8 @@
   suitable <code><a href='rnmf.html'>rnmf</a></code> method, which is the
   workhorse method <code>rnmf,NMF,numeric</code>.</p>
   
-      <p>rnmf<code>signature(x = "NMF", target =
+      <p></li>
+<li>rnmf<code>signature(x = "NMF", target =
   "numeric")</code>: Generates a random NMF model of the same
   class and rank as another NMF model.</p>
   
@@ -223,7 +227,8 @@
   argument <code>keep.names=FALSE</code>. See
   <code><a href='nmfModel.html'>nmfModel</a></code>.</p>
   
-      <p>rnmf<code>signature(x = "ANY", target =
+      <p></li>
+<li>rnmf<code>signature(x = "ANY", target =
   "matrix")</code>: Generates a random NMF model compatible and
   consistent with a target matrix.</p>
   
@@ -233,11 +238,13 @@
   
       <p>It returns an NMF model of the same class as <code>x</code>.</p>
   
-      <p>rnmf<code>signature(x = "ANY", target =
+      <p></li>
+<li>rnmf<code>signature(x = "ANY", target =
   "data.frame")</code>: Shortcut for <code>rnmf(x,
   as.matrix(target))</code>.</p>
   
-      <p>rnmf<code>signature(x = "NMF", target =
+      <p></li>
+<li>rnmf<code>signature(x = "NMF", target =
   "missing")</code>: Generates a random NMF model of the same
   dimension as another NMF model.</p>
   
@@ -245,7 +252,8 @@
   ...)</code>, which returns a random NMF model of the same class
   and dimensions as <code>x</code>.</p>
   
-      <p>rnmf<code>signature(x = "numeric", target =
+      <p></li>
+<li>rnmf<code>signature(x = "numeric", target =
   "missing")</code>: Generates a random NMF model of a given
   rank, with known basis and/or coefficient matrices.</p>
   
@@ -304,7 +312,8 @@
   method <code>rnmf,NMF,numeric</code> for details on the
   supported values for <code>dist</code>).</p>
   
-      <p>rnmf<code>signature(x = "missing", target =
+      <p></li>
+<li>rnmf<code>signature(x = "missing", target =
   "missing")</code>: Generates a random NMF model with known
   basis and coefficient matrices.</p>
   
@@ -318,7 +327,8 @@
   contains data to fit other than the basis and coefficient
   matrices, e.g. <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code>.</p>
   
-      <p>rnmf<code>signature(x = "numeric", target =
+      <p></li>
+<li>rnmf<code>signature(x = "numeric", target =
   "numeric")</code>: Generates a random standard NMF model of
   given dimensions.</p>
   
@@ -329,11 +339,15 @@
   vector, to specify a square or rectangular target matrix
   respectively. See <code><a href='nmfModel.html'>nmfModel</a></code>.</p>
   
-      <p>rnmf<code>signature(x = "formula", target =
+      <p></li>
+<li>rnmf<code>signature(x = "formula", target =
   "ANY")</code>: Generate a random formula-based NMF model, using
   the method <code><a href='nmfModel.html'>nmfModel,formula,ANY-method</a></code>.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
     

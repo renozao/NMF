@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>basisnames. NMF 0.10.1</title>
+<title>basisnames. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -47,7 +51,7 @@ basisnames(x, ...) <- value
 <span class="label label-important">S4</span> (NMF)
 `dimnames`(x)
 
-<span class="label label-important">S4</span> (NMF,ANY)
+<span class="label label-important">S4</span> (NMF)
 `dimnames`(x) <- value</pre>
     
     <h2>Arguments</h2>
@@ -119,21 +123,22 @@ basisnames(x, ...) <- value
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>basisnames<code>signature(x = "ANY")</code>: Default
+      <p><ol>
+<li>basisnames<code>signature(x = "ANY")</code>: Default
   method which returns the column names of the basis matrix
   extracted from <code>x</code>, using the <code>basis</code> method.</p>
   
       <p>For NMF objects these also correspond to the row names of
   the coefficient matrix.</p>
   
-      <p>basisnames<-<code>signature(x = "ANY")</code>: Default
+      <p></li>
+<li>basisnames<-<code>signature(x = "ANY")</code>: Default
   method which sets, respectively, the row and the column
   names of the basis matrix and coefficient matrix of
   <code>x</code> to <code>value</code>.</p>
   
-      <p>dimnames<code>signature(x = "NMF")</code>: Returns the
+      <p></li>
+<li>dimnames<code>signature(x = "NMF")</code>: Returns the
   dimension names of the NMF model <code>x</code>.</p>
   
       <p>It returns either NULL if no dimnames are set on the
@@ -142,9 +147,9 @@ basisnames(x, ...) <- value
   coefficient matrix, and the column names of the basis
   matrix (i.e. the names of the basis components).</p>
   
-      <p>dimnames<-<code>signature(x = "NMF", value =
-  "ANY")</code>: sets the dimension names of the NMF model
-  <code>x</code>.</p>
+      <p></li>
+<li>dimnames<-<code>signature(x = "NMF")</code>: sets the
+  dimension names of the NMF model <code>x</code>.</p>
   
       <p><code>value</code> can be <code>NULL</code> which resets all
   dimension names, or a 1, 2 or 3-length list providing
@@ -157,7 +162,10 @@ basisnames(x, ...) <- value
   column names of the basis matrix and the row names of the
   coefficient matrix.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
     
@@ -180,17 +188,17 @@ $basis
 </div>
 <div class='output'>        basis
 features        b1         b2
-      f1 0.5925909 0.04721161
-      f2 0.1383105 0.94545903
-      f3 0.6672828 0.65744962
-      f4 0.7501616 0.78361103
-      f5 0.7684828 0.77765310
+      f1 0.3725430 0.59864751
+      f2 0.4006752 0.07692793
+      f3 0.8507574 0.74489094
+      f4 0.4317092 0.26655261
+      f5 0.1709034 0.35839264
 </div><div class='input'>coef(a)
 </div>
 <div class='output'>     samples
 basis        s1        s2        s3
-   b1 0.4954773 0.2560254 0.5833145
-   b2 0.7252256 0.7429997 0.4038943
+   b1 0.8454821 0.9411675 0.9012471
+   b2 0.6200040 0.6636754 0.6741993
 </div><div class='input'></div><div class='input'># access the dimensions separately</div><div class='input'>rownames(a)
 </div>
 <div class='output'>[1] "f1" "f2" "f3" "f4" "f5"
@@ -216,17 +224,17 @@ NULL
 </div>
 <div class='output'>        
 features      [,1]       [,2]
-      f1 0.5925909 0.04721161
-      f2 0.1383105 0.94545903
-      f3 0.6672828 0.65744962
-      f4 0.7501616 0.78361103
-      f5 0.7684828 0.77765310
+      f1 0.3725430 0.59864751
+      f2 0.4006752 0.07692793
+      f3 0.8507574 0.74489094
+      f4 0.4317092 0.26655261
+      f5 0.1709034 0.35839264
 </div><div class='input'>coef(a)
 </div>
 <div class='output'>      
             [,1]      [,2]      [,3]
-  [1,] 0.4954773 0.2560254 0.5833145
-  [2,] 0.7252256 0.7429997 0.4038943
+  [1,] 0.8454821 0.9411675 0.9012471
+  [2,] 0.6200040 0.6636754 0.6741993
 </div><div class='input'></div><div class='input'># set only the two first dimensions (rows and columns of basis and coef respectively):</div><div class='input'># the basisnames are set to NULL</div><div class='input'>dimnames(a) <- dims[1:2]
 </div><div class='input'>dimnames(a)
 </div>
@@ -243,11 +251,11 @@ NULL
 </div>
 <div class='output'>        
 features      [,1]       [,2]
-      f1 0.5925909 0.04721161
-      f2 0.1383105 0.94545903
-      f3 0.6672828 0.65744962
-      f4 0.7501616 0.78361103
-      f5 0.7684828 0.77765310
+      f1 0.3725430 0.59864751
+      f2 0.4006752 0.07692793
+      f3 0.8507574 0.74489094
+      f4 0.4317092 0.26655261
+      f5 0.1709034 0.35839264
 </div><div class='input'></div><div class='input'># reset the dimensions</div><div class='input'>dimnames(a) <- NULL
 </div><div class='input'>dimnames(a)
 </div>
@@ -255,50 +263,50 @@ features      [,1]       [,2]
 </div><div class='input'>basis(a)
 </div>
 <div class='output'>          [,1]       [,2]
-[1,] 0.5925909 0.04721161
-[2,] 0.1383105 0.94545903
-[3,] 0.6672828 0.65744962
-[4,] 0.7501616 0.78361103
-[5,] 0.7684828 0.77765310
+[1,] 0.3725430 0.59864751
+[2,] 0.4006752 0.07692793
+[3,] 0.8507574 0.74489094
+[4,] 0.4317092 0.26655261
+[5,] 0.1709034 0.35839264
 </div><div class='input'>coef(a)
 </div>
 <div class='output'>          [,1]      [,2]      [,3]
-[1,] 0.4954773 0.2560254 0.5833145
-[2,] 0.7252256 0.7429997 0.4038943
+[1,] 0.8454821 0.9411675 0.9012471
+[2,] 0.6200040 0.6636754 0.6741993
 </div><div class='input'></div><div class='input'># set each dimensions separately</div><div class='input'>rownames(a) <- paste('X', 1:nrow(a), sep='') # only affect rows of basis
 </div><div class='input'>basis(a)
 </div>
 <div class='output'>        [,1]       [,2]
-X1 0.5925909 0.04721161
-X2 0.1383105 0.94545903
-X3 0.6672828 0.65744962
-X4 0.7501616 0.78361103
-X5 0.7684828 0.77765310
+X1 0.3725430 0.59864751
+X2 0.4006752 0.07692793
+X3 0.8507574 0.74489094
+X4 0.4317092 0.26655261
+X5 0.1709034 0.35839264
 </div><div class='input'></div><div class='input'>colnames(a) <- paste('Y', 1:ncol(a), sep='') # only affect columns of coef
 </div><div class='input'>coef(a)
 </div>
 <div class='output'>            Y1        Y2        Y3
-[1,] 0.4954773 0.2560254 0.5833145
-[2,] 0.7252256 0.7429997 0.4038943
+[1,] 0.8454821 0.9411675 0.9012471
+[2,] 0.6200040 0.6636754 0.6741993
 </div><div class='input'></div><div class='input'>basisnames(a) <- paste('Z', 1:nbasis(a), sep='') # affect both basis and coef matrices
 </div><div class='input'>basis(a)
 </div>
 <div class='output'>          Z1         Z2
-X1 0.5925909 0.04721161
-X2 0.1383105 0.94545903
-X3 0.6672828 0.65744962
-X4 0.7501616 0.78361103
-X5 0.7684828 0.77765310
+X1 0.3725430 0.59864751
+X2 0.4006752 0.07692793
+X3 0.8507574 0.74489094
+X4 0.4317092 0.26655261
+X5 0.1709034 0.35839264
 </div><div class='input'>coef(a)
 </div>
 <div class='output'>          Y1        Y2        Y3
-Z1 0.4954773 0.2560254 0.5833145
-Z2 0.7252256 0.7429997 0.4038943
+Z1 0.8454821 0.9411675 0.9012471
+Z2 0.6200040 0.6636754 0.6741993
 </div></pre>
   </div>
   <div class="span4">
     <!-- <ul>
-      <li>basisnames</li><li>basisnames&lt;-</li><li>basisnames&lt;-,ANY-method</li><li>basisnames,ANY-method</li><li>basisnames&lt;--methods</li><li>basisnames-methods</li><li>dimnames-NMF</li><li>dimnames&lt;-,NMF,ANY-method</li><li>dimnames,NMF-method</li>
+      <li>basisnames</li><li>basisnames&lt;-</li><li>basisnames&lt;-,ANY-method</li><li>basisnames,ANY-method</li><li>basisnames&lt;--methods</li><li>basisnames-methods</li><li>dimnames-NMF</li><li>dimnames&lt;-,NMF-method</li><li>dimnames,NMF-method</li>
     </ul>
     <ul>
       <li>methods</li>

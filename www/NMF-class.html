@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMF-class. NMF 0.10.1</title>
+<title>NMF-class. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -115,120 +119,141 @@
     <div class="Slots">
       <h2>Slots</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>miscA list that is used internally to temporarily
+      <p><ol>
+<li>miscA list that is used internally to temporarily
   store algorithm parameters during the computation.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
+      <p><ol>
+<li>[<code>signature(x = "NMF")</code>: This method
+  provides a convenient way of sub-setting objects of class
+  <code>NMF</code>, using a matrix-like syntax.</p>
   
-      <p>[<code>signature(x = "NMF", i = "ANY", j = "ANY",
-  drop = "ANY")</code>: This method provides a convenient way of
-  sub-setting objects of class <code>NMF</code>, using a
-  matrix-like syntax.</p>
+      <p>See <code><a href='subset-NMF.html'>[,NMF-method</a></code> for more details.</p>
   
-      <p>See <code><a href='subset-NMF.html'>[,NMF,ANY,ANY,ANY-method</a></code> for more
-  details.</p>
-  
-      <p>$<code>signature(x = "NMF")</code>: shortcut for
+      <p></li>
+<li>$<code>signature(x = "NMF")</code>: shortcut for
   <code>x@misc[[name, exact=TRUE]]</code> respectively.</p>
   
-      <p>$<code>signature(x = "NMF")</code>: shortcut for
+      <p></li>
+<li>$<code>signature(x = "NMF")</code>: shortcut for
   <code>x@misc[[name, exact=TRUE]]</code> respectively.</p>
   
-      <p>$<-<code>signature(x = "NMF")</code>: shortcut for
+      <p></li>
+<li>$<-<code>signature(x = "NMF")</code>: shortcut for
   <code>x@misc[[name]] <- value</code></p>
   
-      <p>$<-<code>signature(x = "NMF")</code>: shortcut for
+      <p></li>
+<li>$<-<code>signature(x = "NMF")</code>: shortcut for
   <code>x@misc[[name]] <- value</code></p>
   
-      <p>.basis<code>signature(object = "NMF")</code>: Pure
+      <p></li>
+<li>.basis<code>signature(object = "NMF")</code>: Pure
   virtual method for objects of class
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
   
-      <p>.basis<-<code>signature(object = "NMF", value =
+      <p></li>
+<li>.basis<-<code>signature(object = "NMF", value =
   "matrix")</code>: Pure virtual method for objects of class
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
   
-      <p>basiscor<code>signature(x = "NMF", y =
+      <p></li>
+<li>basiscor<code>signature(x = "NMF", y =
   "matrix")</code>: Computes the correlations between the basis
   vectors of <code>x</code> and the columns of <code>y</code>.</p>
   
-      <p>basiscor<code>signature(x = "NMF", y = "NMF")</code>:
+      <p></li>
+<li>basiscor<code>signature(x = "NMF", y = "NMF")</code>:
   Computes the correlations between the basis vectors of
   <code>x</code> and <code>y</code>.</p>
   
-      <p>basiscor<code>signature(x = "NMF", y =
+      <p></li>
+<li>basiscor<code>signature(x = "NMF", y =
   "missing")</code>: Computes the correlations between the basis
   vectors of <code>x</code>.</p>
   
-      <p>basismap<code>signature(object = "NMF")</code>: Plots a
+      <p></li>
+<li>basismap<code>signature(object = "NMF")</code>: Plots a
   heatmap of the basis matrix of the NMF model
   <code>object</code>. This method also works for fitted NMF
   models (i.e. <code>NMFfit</code> objects).</p>
   
-      <p>c<code>signature(x = "NMF")</code>: Binds compatible
+      <p></li>
+<li>c<code>signature(x = "NMF")</code>: Binds compatible
   matrices and NMF models together.</p>
   
-      <p>.coef<code>signature(object = "NMF")</code>: Pure
+      <p></li>
+<li>.coef<code>signature(object = "NMF")</code>: Pure
   virtual method for objects of class
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
   
-      <p>.coef<-<code>signature(object = "NMF", value =
+      <p></li>
+<li>.coef<-<code>signature(object = "NMF", value =
   "matrix")</code>: Pure virtual method for objects of class
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
   
-      <p>coefficients<code>signature(object = "NMF")</code>:
+      <p></li>
+<li>coefficients<code>signature(object = "NMF")</code>:
   Alias to <code>coef,NMF</code>, therefore also pure virtual.</p>
   
-      <p>coefmap<code>signature(object = "NMF")</code>: The
+      <p></li>
+<li>coefmap<code>signature(object = "NMF")</code>: The
   default method for NMF objects has special default values
   for some arguments of <code><a href='aheatmap.html'>aheatmap</a></code> (see
   argument description).</p>
   
-      <p>connectivity<code>signature(object = "NMF")</code>:
+      <p></li>
+<li>connectivity<code>signature(object = "NMF")</code>:
   Computes the connectivity matrix for an NMF model, for
   which cluster membership is given by the most
   contributing basis component in each sample. See
   <code><a href='predict.html'>predict,NMF-method</a></code>.</p>
   
-      <p>consensus<code>signature(object = "NMF")</code>: This
+      <p></li>
+<li>consensus<code>signature(object = "NMF")</code>: This
   method is provided for completeness and is identical to
   <code><a href='connectivity.html'>connectivity</a></code>, and returns the connectivity
   matrix, which, in the case of a single NMF model, is also
   the consensus matrix.</p>
   
-      <p>consensushc<code>signature(object = "NMF")</code>:
+      <p></li>
+<li>consensushc<code>signature(object = "NMF")</code>:
   Compute the hierarchical clustering on the connectivity
   matrix of <code>object</code>.</p>
   
-      <p>consensusmap<code>signature(object = "NMF")</code>:
+      <p></li>
+<li>consensusmap<code>signature(object = "NMF")</code>:
   Plots a heatmap of the connectivity matrix of an NMF
   model.</p>
   
-      <p>deviance<code>signature(object = "NMF")</code>:
+      <p></li>
+<li>deviance<code>signature(object = "NMF")</code>:
   Computes the distance between a matrix and the estimate
   of an <code>NMF</code> model.</p>
   
-      <p>dim<code>signature(x = "NMF")</code>: method for NMF
+      <p></li>
+<li>dim<code>signature(x = "NMF")</code>: method for NMF
   objects for the base generic <code><a href='http://www.inside-r.org/r-doc/base/dim'>dim</a></code>. It
   returns all dimensions in a length-3 integer vector: the
   number of row and columns of the estimated target matrix,
   as well as the factorization rank (i.e. the number of
   basis components).</p>
   
-      <p>dimnames<code>signature(x = "NMF")</code>: Returns the
+      <p></li>
+<li>dimnames<code>signature(x = "NMF")</code>: Returns the
   dimension names of the NMF model <code>x</code>.</p>
   
       <p>It returns either NULL if no dimnames are set on the
@@ -237,46 +262,53 @@
   coefficient matrix, and the column names of the basis
   matrix (i.e. the names of the basis components).</p>
   
-      <p>dimnames<-<code>signature(x = "NMF", value =
-  "ANY")</code>: sets the dimension names of the NMF model
-  <code>x</code>.</p>
+      <p></li>
+<li>dimnames<-<code>signature(x = "NMF")</code>: sets the
+  dimension names of the NMF model <code>x</code>.</p>
   
       <p><code>value</code> can be <code>NULL</code> which resets all
   dimension names, or a 1, 2 or 3-length list providing
   names at least for the rows of the basis matrix.</p>
   
-      <p>See <code><a href='dimnames.html'>dimnames<-,NMF,ANY-method</a></code> for more
-  details.</p>
+      <p>See <code><a href='dimnames.html'>dimnames<-,NMF-method</a></code> for more details.</p>
   
-      <p>.DollarNames<code>signature(x = "NMF")</code>:
+      <p></li>
+<li>.DollarNames<code>signature(x = "NMF")</code>:
   Auto-completion for <code><a href='NMF-class.html'>NMF-class</a></code> objects</p>
   
-      <p>.DollarNames<code>signature(x = "NMF")</code>:
+      <p></li>
+<li>.DollarNames<code>signature(x = "NMF")</code>:
   Auto-completion for <code><a href='NMF-class.html'>NMF-class</a></code> objects</p>
   
-      <p>extractFeatures<code>signature(object = "NMF")</code>:
+      <p></li>
+<li>extractFeatures<code>signature(object = "NMF")</code>:
   Select basis-specific features from an NMF model, by
   applying the method <code>extractFeatures,matrix</code> to its
   basis matrix.</p>
   
-      <p>featureScore<code>signature(object = "NMF")</code>:
+      <p></li>
+<li>featureScore<code>signature(object = "NMF")</code>:
   Computes feature scores on the basis matrix of an NMF
   model.</p>
   
-      <p>fitted<code>signature(object = "NMF")</code>: Pure
+      <p></li>
+<li>fitted<code>signature(object = "NMF")</code>: Pure
   virtual method for objects of class
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
   
-      <p>ibterms<code>signature(object = "NMF")</code>: Default
+      <p></li>
+<li>ibterms<code>signature(object = "NMF")</code>: Default
   pure virtual method that ensure a method is defined for
   concrete NMF model classes.</p>
   
-      <p>icterms<code>signature(object = "NMF")</code>: Default
+      <p></li>
+<li>icterms<code>signature(object = "NMF")</code>: Default
   pure virtual method that ensure a method is defined for
   concrete NMF model classes.</p>
   
-      <p>loadings<code>signature(x = "NMF")</code>: Method
+      <p></li>
+<li>loadings<code>signature(x = "NMF")</code>: Method
   loadings for NMF Models</p>
   
       <p>The method <code>loadings</code> is identical to <code>basis</code>,
@@ -284,48 +316,58 @@
   
       <p>See <code><a href='basis-coef-methods.html'>loadings,NMF-method</a></code> for more details.</p>
   
-      <p>metaHeatmap<code>signature(object = "NMF")</code>:
+      <p></li>
+<li>metaHeatmap<code>signature(object = "NMF")</code>:
   Deprecated method that is substituted by
   <code><a href='heatmaps.html'>coefmap</a></code> and <code><a href='heatmaps.html'>basismap</a></code>.</p>
   
-      <p>nmf.equal<code>signature(x = "NMF", y = "NMF")</code>:
+      <p></li>
+<li>nmf.equal<code>signature(x = "NMF", y = "NMF")</code>:
   Compares two NMF models.</p>
   
       <p>Arguments in <code>...</code> are used only when
   <code>identical=FALSE</code> and are passed to
   <code>all.equal</code>.</p>
   
-      <p>nmf.equal<code>signature(x = "NMF", y =
+      <p></li>
+<li>nmf.equal<code>signature(x = "NMF", y =
   "NMFfit")</code>: Compares two NMF models when at least one
   comes from a NMFfit object, i.e. an object returned by a
   single run of <code><a href='nmf.html'>nmf</a></code>.</p>
   
-      <p>nmf.equal<code>signature(x = "NMF", y =
+      <p></li>
+<li>nmf.equal<code>signature(x = "NMF", y =
   "NMFfitX")</code>: Compares two NMF models when at least one
   comes from multiple NMF runs.</p>
   
-      <p>nneg<code>signature(object = "NMF")</code>: Apply
+      <p></li>
+<li>nneg<code>signature(object = "NMF")</code>: Apply
   <code>nneg</code> to the basis matrix of an <code><a href='NMF-package.html'>NMF</a></code>
   object (i.e. <code>basis(object)</code>). All extra arguments
   in <code>...</code> are passed to the method
   <code>nneg,matrix</code>.</p>
   
-      <p>predict<code>signature(object = "NMF")</code>: Default
+      <p></li>
+<li>predict<code>signature(object = "NMF")</code>: Default
   method for NMF models</p>
   
-      <p>profcor<code>signature(x = "NMF", y = "matrix")</code>:
+      <p></li>
+<li>profcor<code>signature(x = "NMF", y = "matrix")</code>:
   Computes the correlations between the basis profiles of
   <code>x</code> and the rows of <code>y</code>.</p>
   
-      <p>profcor<code>signature(x = "NMF", y = "NMF")</code>:
+      <p></li>
+<li>profcor<code>signature(x = "NMF", y = "NMF")</code>:
   Computes the correlations between the basis profiles of
   <code>x</code> and <code>y</code>.</p>
   
-      <p>profcor<code>signature(x = "NMF", y =
+      <p></li>
+<li>profcor<code>signature(x = "NMF", y =
   "missing")</code>: Computes the correlations between the basis
   profiles of <code>x</code>.</p>
   
-      <p>rmatrix<code>signature(x = "NMF")</code>: Returns the
+      <p></li>
+<li>rmatrix<code>signature(x = "NMF")</code>: Returns the
   target matrix estimate of the NMF model <code>x</code>,
   perturbated by adding a random matrix generated using the
   default method of <code>rmatrix</code>: it is a equivalent to
@@ -337,7 +379,8 @@
   of NMF algorithms to the presence of certain types of
   noise in the data.</p>
   
-      <p>rnmf<code>signature(x = "NMF", target =
+      <p></li>
+<li>rnmf<code>signature(x = "NMF", target =
   "numeric")</code>: Generates a random NMF model of the same
   class and rank as another NMF model.</p>
   
@@ -351,7 +394,8 @@
       <p>See <code><a href='rnmf.html'>rnmf,NMF,numeric-method</a></code> for more
   details.</p>
   
-      <p>rnmf<code>signature(x = "NMF", target =
+      <p></li>
+<li>rnmf<code>signature(x = "NMF", target =
   "missing")</code>: Generates a random NMF model of the same
   dimension as another NMF model.</p>
   
@@ -359,14 +403,17 @@
   ...)</code>, which returns a random NMF model of the same class
   and dimensions as <code>x</code>.</p>
   
-      <p>rposneg<code>signature(object = "NMF")</code>: Apply
+      <p></li>
+<li>rposneg<code>signature(object = "NMF")</code>: Apply
   <code>rposneg</code> to the basis matrix of an
   <code><a href='NMF-package.html'>NMF</a></code> object.</p>
   
-      <p>show<code>signature(object = "NMF")</code>: Show method
+      <p></li>
+<li>show<code>signature(object = "NMF")</code>: Show method
   for objects of class <code>NMF</code></p>
   
-      <p>sparseness<code>signature(x = "NMF")</code>: Compute
+      <p></li>
+<li>sparseness<code>signature(x = "NMF")</code>: Compute
   the sparseness of an object of class <code>NMF</code>, as the
   sparseness of the basis and coefficient matrices computed
   separately.</p>
@@ -374,14 +421,18 @@
       <p>It returns the two values in a numeric vector with names
   &#145;basis&#146; and &#145;coef&#146;.</p>
   
-      <p>summary<code>signature(object = "NMF")</code>: Computes
+      <p></li>
+<li>summary<code>signature(object = "NMF")</code>: Computes
   summary measures for a single NMF model.</p>
   
       <p>The following measures are computed:</p>
   
       <p>See <code><a href='assess.html'>summary,NMF-method</a></code> for more details.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 
@@ -409,22 +460,27 @@
   
       <p></li>
 <li> Implement the following S4 methods for the new
-  class <code>myNMF</code>: <span class='describe'>
-  fitted<code>signature(object = "myNMF", value =
+  class <code>myNMF</code>: <ol>
+<li>fitted<code>signature(object = "myNMF", value =
   "matrix")</code>: Must return the estimated target matrix as
   fitted by the NMF model <code>object</code>.  
-  basis<code>signature(object = "myNMF")</code>: Must
+  </li>
+<li>basis<code>signature(object = "myNMF")</code>: Must
   return the basis matrix(e.g. the first matrix factor in
   the standard NMF model).  
-  basis<-<code>signature(object = "myNMF", value =
+  </li>
+<li>basis<-<code>signature(object = "myNMF", value =
   "matrix")</code>: Must return <code>object</code> with the basis
   matrix set to <code>value</code>.  
-  coef<code>signature(object = "myNMF")</code>: Must
+  </li>
+<li>coef<code>signature(object = "myNMF")</code>: Must
   return the matrix of mixture coefficients (e.g. the
   second matrix factor in the standard NMF model).  
-  coef<-<code>signature(object = "myNMF", value =
+  </li>
+<li>coef<-<code>signature(object = "myNMF", value =
   "matrix")</code>: Must return <code>object</code> with the matrix of
-  mixture coefficients set to <code>value</code>.   </span></p>
+  mixture coefficients set to <code>value</code>.   </li>
+</ol></p>
   
       <p>The <em>NMF</em> package provides "pure virtual"
   definitions of these methods for class <code>NMF</code> (i.e.

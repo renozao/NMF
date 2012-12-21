@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfModel. NMF 0.10.1</title>
+<title>nmfModel. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -168,16 +172,16 @@ nmfModels(builtin.only = FALSE)</pre>
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>nmfModel<code>signature(rank = "numeric", target
+      <p><ol>
+<li>nmfModel<code>signature(rank = "numeric", target
   = "numeric")</code>: Main factory method for NMF models</p>
   
       <p>This method is the workhorse method that is eventually
   called by all other methods. See section <em>Main
   factory method</em> for more details.</p>
   
-      <p>nmfModel<code>signature(rank = "numeric", target
+      <p></li>
+<li>nmfModel<code>signature(rank = "numeric", target
   = "missing")</code>: Creates an empty NMF model of a given
   rank.</p>
   
@@ -186,21 +190,24 @@ nmfModels(builtin.only = FALSE)</pre>
   a basis and mixture coefficient matrix of dimension 0 x
   <code>rank</code> and <code>rank</code> x 0 respectively.</p>
   
-      <p>nmfModel<code>signature(rank = "missing", target
+      <p></li>
+<li>nmfModel<code>signature(rank = "missing", target
   = "ANY")</code>: Creates an empty NMF model of null rank and a
   given dimension.</p>
   
       <p>This call is equivalent to <code>nmfModel(0, target,
   ...)</code>.</p>
   
-      <p>nmfModel<code>signature(rank = "NULL", target =
+      <p></li>
+<li>nmfModel<code>signature(rank = "NULL", target =
   "ANY")</code>: Creates an empty NMF model of null rank and
   given dimension.</p>
   
       <p>This call is equivalent to <code>nmfModel(0, target,
   ...)</code>, and is meant for internal usage only.</p>
   
-      <p>nmfModel<code>signature(rank = "missing", target
+      <p></li>
+<li>nmfModel<code>signature(rank = "missing", target
   = "missing")</code>: Creates an empty NMF model or from
   existing factors</p>
   
@@ -224,7 +231,8 @@ nmfModels(builtin.only = FALSE)</pre>
   
       <p>See the description of the appropriate method below.</p>
   
-      <p>nmfModel<code>signature(rank = "numeric", target
+      <p></li>
+<li>nmfModel<code>signature(rank = "numeric", target
   = "matrix")</code>: Creates an NMF model compatible with a
   target matrix.</p>
   
@@ -240,7 +248,8 @@ nmfModels(builtin.only = FALSE)</pre>
   names are set on the return NMF model if present in
   <code>target</code> and argument <code>use.names=TRUE</code>.</p>
   
-      <p>nmfModel<code>signature(rank = "matrix", target =
+      <p></li>
+<li>nmfModel<code>signature(rank = "matrix", target =
   "matrix")</code>: Creates an NMF model based on two existing
   factors.</p>
   
@@ -252,7 +261,8 @@ nmfModels(builtin.only = FALSE)</pre>
       <p>Note that an error is thrown if their dimensions are not
   compatible.</p>
   
-      <p>nmfModel<code>signature(rank = "data.frame",
+      <p></li>
+<li>nmfModel<code>signature(rank = "data.frame",
   target = "data.frame")</code>: Same as <code>nmfModel('matrix',
   'matrix')</code> but for <code>data.frame</code> objects, which are
   generally produced by <code><a href='http://www.inside-r.org/r-doc/utils/read.table'>read.delim</a></code>-like
@@ -261,7 +271,8 @@ nmfModels(builtin.only = FALSE)</pre>
       <p>The input <code>data.frame</code> objects are converted into
   matrices with <code><a href='http://www.inside-r.org/r-doc/base/matrix'>as.matrix</a></code>.</p>
   
-      <p>nmfModel<code>signature(rank = "matrix", target =
+      <p></li>
+<li>nmfModel<code>signature(rank = "matrix", target =
   "ANY")</code>: Creates an NMF model with arguments <code>rank</code>
   and <code>target</code> swapped.</p>
   
@@ -279,11 +290,15 @@ nmfModels(builtin.only = FALSE)</pre>
   mind first) and it still works as expected. </li>
 </ul></p>
   
-      <p>nmfModel<code>signature(rank = "formula", target
+      <p></li>
+<li>nmfModel<code>signature(rank = "formula", target
   = "ANY")</code>: Build a formula-based NMF model, that can
   incorporate fixed basis or coefficient terms.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 

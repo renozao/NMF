@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfitX1-class. NMF 0.10.1</title>
+<title>NMFfitX1-class. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -72,32 +76,36 @@
     <div class="Slots">
       <h2>Slots</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>consensusobject of class <code>matrix</code> used to
+      <p><ol>
+<li>consensusobject of class <code>matrix</code> used to
   store the consensus matrix based on all the runs.</p>
   
-      <p>nrunan <code>integer</code> that contains the number of
+      <p></li>
+<li>nrunan <code>integer</code> that contains the number of
   runs performed to compute the object.</p>
   
-      <p>rng1an object that contains RNG settings used for
+      <p></li>
+<li>rng1an object that contains RNG settings used for
   the first run. See <code><a href='RNG.html'>getRNG1</a></code>.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>consensus<code>signature(object = "NMFfitX1")</code>:
+      <p><ol>
+<li>consensus<code>signature(object = "NMFfitX1")</code>:
   The result is the matrix stored in slot
   &#145;consensus&#146;. This method returns <code>NULL</code> if
   the consensus matrix is empty.</p>
   
-      <p>fit<code>signature(object = "NMFfitX1")</code>: Returns
+      <p></li>
+<li>fit<code>signature(object = "NMFfitX1")</code>: Returns
   the model object associated with the best fit, amongst
   all the runs performed when fitting <code>object</code>.</p>
   
@@ -105,12 +113,14 @@
   this method simply returns the NMF model fitted by
   <code>object</code> -- that is stored in slot &#145;fit&#146;.</p>
   
-      <p>getRNG1<code>signature(object = "NMFfitX1")</code>:
+      <p></li>
+<li>getRNG1<code>signature(object = "NMFfitX1")</code>:
   Returns the RNG settings used to compute the first of all
   NMF runs, amongst which <code>object</code> was selected as the
   best fit.</p>
   
-      <p>minfit<code>signature(object = "NMFfitX1")</code>:
+      <p></li>
+<li>minfit<code>signature(object = "NMFfitX1")</code>:
   Returns the fit object associated with the best fit,
   amongst all the runs performed when fitting
   <code>object</code>.</p>
@@ -119,18 +129,24 @@
   this method simply returns <code>object</code> coerced into an
   <code>NMFfit</code> object.</p>
   
-      <p>nmf.equal<code>signature(x = "NMFfitX1", y =
+      <p></li>
+<li>nmf.equal<code>signature(x = "NMFfitX1", y =
   "NMFfitX1")</code>: Compares the NMF models fitted by multiple
   runs, that only kept the best fits.</p>
   
-      <p>nrun<code>signature(object = "NMFfitX1")</code>:
+      <p></li>
+<li>nrun<code>signature(object = "NMFfitX1")</code>:
   Returns the number of NMF runs performed, amongst which
   <code>object</code> was selected as the best fit.</p>
   
-      <p>show<code>signature(object = "NMFfitX1")</code>: Show
+      <p></li>
+<li>show<code>signature(object = "NMFfitX1")</code>: Show
   method for objects of class <code>NMFfitX1</code></p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
     
@@ -148,21 +164,21 @@
    407L, -329241596L, 1464038197L, -1055788430L, 1998647115L, 13725200L, -1201933615L 
   Total timing:
    user  system elapsed 
-  0.876   0.184   1.402 
+  0.960   0.196   4.146 
 </div><div class='input'></div><div class='input'># compute summary measures</div><div class='input'>summary(res)
 </div>
 <div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun       cophenetic       dispersion 
-       3.0000000        0.4652321        0.7740384       41.2847097      430.0000000        0.1720000        0.8760000        3.0000000        0.9529366        0.7866667 
+       3.0000000        0.4652321        0.7740384       41.2847097      430.0000000        0.1760000        0.9600000        3.0000000        0.9529366        0.7866667 
 </div><div class='input'># get more info</div><div class='input'>summary(res, target=V, class=groups)
 </div>
 <div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals            niter              cpu 
-       3.0000000        0.4652321        0.7740384        0.9000000        0.1738140       65.6360447        0.7445089       41.2847097      430.0000000        0.1720000 
+       3.0000000        0.4652321        0.7740384        0.9000000        0.1738140       65.6360447        0.7445089       41.2847097      430.0000000        0.1760000 
          cpu.all             nrun       cophenetic       dispersion 
-       0.8760000        3.0000000        0.9529366        0.7866667 
+       0.9600000        3.0000000        0.9529366        0.7866667 
 </div><div class='input'></div><div class='input'># show computational time</div><div class='input'>runtime.all(res)
 </div>
 <div class='output'>   user  system elapsed 
-  0.876   0.184   1.402 
+  0.960   0.196   4.146 
 </div><div class='input'></div><div class='input'># plot the consensus matrix, as stored (pre-computed) in the object</div><div class='input'>## <strong>Not run</strong>:  consensusmap(res, annCol=groups) </div></pre>
   </div>
   <div class="span4">

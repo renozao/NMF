@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>basis. NMF 0.10.1</title>
+<title>basis. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -173,31 +177,34 @@ scoef(object, ...)
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>basis<code>signature(object = "ANY")</code>: Default
+      <p><ol>
+<li>basis<code>signature(object = "ANY")</code>: Default
   method returns the value of S3 slot or attribute
   <code>'basis'</code>. It returns <code>NULL</code> if none of these
   are set.</p>
   
       <p>Arguments <code>...</code> are not used by this method.</p>
   
-      <p>basis<code>signature(object = "NMFfitXn")</code>:
+      <p></li>
+<li>basis<code>signature(object = "NMFfitXn")</code>:
   Returns the basis matrix of the best fit amongst all the
   fits stored in <code>object</code>. It is a shortcut for
   <code>basis(fit(object))</code>.</p>
   
-      <p>.basis<code>signature(object = "NMF")</code>: Pure
+      <p></li>
+<li>.basis<code>signature(object = "NMF")</code>: Pure
   virtual method for objects of class
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
   
-      <p>.basis<code>signature(object = "NMFstd")</code>: Get
+      <p></li>
+<li>.basis<code>signature(object = "NMFstd")</code>: Get
   the basis matrix in standard NMF models</p>
   
       <p>This function returns slot <code>W</code> of <code>object</code>.</p>
   
-      <p>.basis<code>signature(object = "NMFfit")</code>:
+      <p></li>
+<li>.basis<code>signature(object = "NMFfit")</code>:
   Returns the basis matrix from an NMF model fitted with
   function <code><a href='nmf.html'>nmf</a></code>.</p>
   
@@ -205,17 +212,20 @@ scoef(object, ...)
   dispatching the call to the <code>.basis</code> method of the
   actual NMF model.</p>
   
-      <p>.basis<-<code>signature(object = "NMF", value =
+      <p></li>
+<li>.basis<-<code>signature(object = "NMF", value =
   "matrix")</code>: Pure virtual method for objects of class
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
   
-      <p>.basis<-<code>signature(object = "NMFstd", value
+      <p></li>
+<li>.basis<-<code>signature(object = "NMFstd", value
   = "matrix")</code>: Set the basis matrix in standard NMF models</p>
   
       <p>This function sets slot <code>W</code> of <code>object</code>.</p>
   
-      <p>.basis<-<code>signature(object = "NMFfit", value
+      <p></li>
+<li>.basis<-<code>signature(object = "NMFfit", value
   = "matrix")</code>: Sets the the basis matrix of an NMF model
   fitted with function <code><a href='nmf.html'>nmf</a></code>.</p>
   
@@ -225,26 +235,31 @@ scoef(object, ...)
   except when developing NMF algorithms, to update the
   basis matrix of the seed object before returning it.</p>
   
-      <p>basis<-<code>signature(object = "ANY")</code>: Default
+      <p></li>
+<li>basis<-<code>signature(object = "ANY")</code>: Default
   methods that calls <code>.basis<-</code> and check the validity
   of the updated object.</p>
   
-      <p>coef<code>signature(object = "NMFfitXn")</code>:
+      <p></li>
+<li>coef<code>signature(object = "NMFfitXn")</code>:
   Returns the coefficient matrix of the best fit amongst
   all the fits stored in <code>object</code>. It is a shortcut
   for <code>coef(fit(object))</code>.</p>
   
-      <p>.coef<code>signature(object = "NMF")</code>: Pure
+      <p></li>
+<li>.coef<code>signature(object = "NMF")</code>: Pure
   virtual method for objects of class
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
   
-      <p>.coef<code>signature(object = "NMFstd")</code>: Get the
+      <p></li>
+<li>.coef<code>signature(object = "NMFstd")</code>: Get the
   mixture coefficient matrix in standard NMF models</p>
   
       <p>This function returns slot <code>H</code> of <code>object</code>.</p>
   
-      <p>.coef<code>signature(object = "NMFfit")</code>: Returns
+      <p></li>
+<li>.coef<code>signature(object = "NMFfit")</code>: Returns
   the the coefficient matrix from an NMF model fitted with
   function <code><a href='nmf.html'>nmf</a></code>.</p>
   
@@ -252,18 +267,21 @@ scoef(object, ...)
   dispatching the call to the <code>.coef</code> method of the
   actual NMF model.</p>
   
-      <p>.coef<-<code>signature(object = "NMF", value =
+      <p></li>
+<li>.coef<-<code>signature(object = "NMF", value =
   "matrix")</code>: Pure virtual method for objects of class
   <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
   sub-classes, and throws an error if called.</p>
   
-      <p>.coef<-<code>signature(object = "NMFstd", value =
+      <p></li>
+<li>.coef<-<code>signature(object = "NMFstd", value =
   "matrix")</code>: Set the mixture coefficient matrix in
   standard NMF models</p>
   
       <p>This function sets slot <code>H</code> of <code>object</code>.</p>
   
-      <p>.coef<-<code>signature(object = "NMFfit", value =
+      <p></li>
+<li>.coef<-<code>signature(object = "NMFfit", value =
   "matrix")</code>: Sets the the coefficient matrix of an NMF
   model fitted with function <code><a href='nmf.html'>nmf</a></code>.</p>
   
@@ -274,14 +292,17 @@ scoef(object, ...)
   coefficient matrix in the seed object before returning
   it.</p>
   
-      <p>coef<-<code>signature(object = "ANY")</code>: Default
+      <p></li>
+<li>coef<-<code>signature(object = "ANY")</code>: Default
   methods that calls <code>.coef<-</code> and check the validity
   of the updated object.</p>
   
-      <p>coefficients<code>signature(object = "NMF")</code>:
+      <p></li>
+<li>coefficients<code>signature(object = "NMF")</code>:
   Alias to <code>coef,NMF</code>, therefore also pure virtual.</p>
   
-      <p>loadings<code>signature(x = "NMF")</code>: Method
+      <p></li>
+<li>loadings<code>signature(x = "NMF")</code>: Method
   loadings for NMF Models</p>
   
       <p>The method <code>loadings</code> is identical to <code>basis</code>,
@@ -293,7 +314,10 @@ scoef(object, ...)
   similarities between NMF and PCA or factorial analysis
   (see <code><a href='http://www.inside-r.org/r-doc/stats/loadings'>loadings</a></code>).</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
     
@@ -301,36 +325,36 @@ scoef(object, ...)
     <pre class="examples"><div class='input'># Scaled coefficient matrix</div><div class='input'>x <- rnmf(3, 10, 5)
 </div><div class='input'>scoef(x)
 </div>
-<div class='output'>          [,1]      [,2]      [,3]      [,4]     [,5]
-[1,] 0.3150486 0.5124899 0.3100705 0.5522595 0.360257
-[2,] 0.3039321 0.1340396 0.2543077 0.3410990 0.395144
-[3,] 0.3810193 0.3534705 0.4356219 0.1066415 0.244599
+<div class='output'>          [,1]      [,2]      [,3]      [,4]      [,5]
+[1,] 0.4728780 0.4326210 0.1036508 0.1532142 0.3898634
+[2,] 0.2240124 0.1767666 0.3659122 0.5487274 0.3985638
+[3,] 0.3031095 0.3906123 0.5304370 0.2980584 0.2115728
 </div><div class='input'>scoef(x, 100)
 </div>
-<div class='output'>         [,1]     [,2]     [,3]     [,4]    [,5]
-[1,] 31.50486 51.24899 31.00705 55.22595 36.0257
-[2,] 30.39321 13.40396 25.43077 34.10990 39.5144
-[3,] 38.10193 35.34705 43.56219 10.66415 24.4599
+<div class='output'>         [,1]     [,2]     [,3]     [,4]     [,5]
+[1,] 47.28780 43.26210 10.36508 15.32142 38.98634
+[2,] 22.40124 17.67666 36.59122 54.87274 39.85638
+[3,] 30.31095 39.06123 53.04370 29.80584 21.15728
 </div><div class='input'># random standard NMF model</div><div class='input'>x <- rnmf(3, 10, 5)
 </div><div class='input'>basis(x)
 </div>
-<div class='output'>             [,1]       [,2]       [,3]
- [1,] 0.551555614 0.66794515 0.84804168
- [2,] 0.826328839 0.01377463 0.28222740
- [3,] 0.886118395 0.23934840 0.03576217
- [4,] 0.593378677 0.77364947 0.96811241
- [5,] 0.007584995 0.07925967 0.44757247
- [6,] 0.607410070 0.68161707 0.43667717
- [7,] 0.255800406 0.38144307 0.67335707
- [8,] 0.184677493 0.61636279 0.57681050
- [9,] 0.346069047 0.65428167 0.28949557
-[10,] 0.855370360 0.87605034 0.82366409
+<div class='output'>            [,1]       [,2]       [,3]
+ [1,] 0.83151271 0.04255434 0.63809826
+ [2,] 0.36955629 0.98654999 0.62246000
+ [3,] 0.37379241 0.65121908 0.80347332
+ [4,] 0.52603762 0.12477417 0.62015572
+ [5,] 0.48881567 0.39712940 0.17066838
+ [6,] 0.56653726 0.56217882 0.00640155
+ [7,] 0.93696713 0.60812388 0.40135973
+ [8,] 0.05677528 0.83573653 0.99617021
+ [9,] 0.68787543 0.24802392 0.54481437
+[10,] 0.78949061 0.12072974 0.42058449
 </div><div class='input'>coef(x)
 </div>
-<div class='output'>          [,1]       [,2]      [,3]        [,4]      [,5]
-[1,] 0.2241577 0.07897364 0.6841355 0.005165035 0.7684410
-[2,] 0.9151231 0.10788703 0.5113267 0.514683079 0.4900433
-[3,] 0.4039690 0.62131451 0.3755731 0.068350184 0.2759242
+<div class='output'>          [,1]      [,2]      [,3]      [,4]      [,5]
+[1,] 0.2323562 0.3321315 0.5842800 0.3898726 0.4587969
+[2,] 0.5908404 0.5171698 0.8381953 0.4614763 0.5581364
+[3,] 0.3459597 0.8644819 0.9169240 0.9714570 0.8139990
 </div><div class='input'></div><div class='input'># set matrix factors</div><div class='input'>basis(x) <- matrix(1, nrow(x), nbasis(x))
 </div><div class='input'>coef(x) <- matrix(1, nbasis(x), ncol(x))
 </div><div class='input'># set random factors</div><div class='input'>basis(x) <- rmatrix(basis(x))

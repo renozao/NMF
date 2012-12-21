@@ -76,13 +76,11 @@
 \section{Methods}{
   \describe{
 
-  \item{[}{\code{signature(x = "NMF", i = "ANY", j = "ANY",
-  drop = "ANY")}: This method provides a convenient way of
-  sub-setting objects of class \code{NMF}, using a
-  matrix-like syntax.
+  \item{[}{\code{signature(x = "NMF")}: This method
+  provides a convenient way of sub-setting objects of class
+  \code{NMF}, using a matrix-like syntax.
 
-  See \code{\link{[,NMF,ANY,ANY,ANY-method}} for more
-  details. }
+  See \code{\link{[,NMF-method}} for more details. }
 
   \item{$}{\code{signature(x = "NMF")}: shortcut for
   \code{x@misc[[name, exact=TRUE]]} respectively. }
@@ -184,16 +182,15 @@
   coefficient matrix, and the column names of the basis
   matrix (i.e. the names of the basis components). }
 
-  \item{dimnames<-}{\code{signature(x = "NMF", value =
-  "ANY")}: sets the dimension names of the NMF model
-  \code{x}.
+  \item{dimnames<-}{\code{signature(x = "NMF")}: sets the
+  dimension names of the NMF model \code{x}.
 
   \code{value} can be \code{NULL} which resets all
   dimension names, or a 1, 2 or 3-length list providing
   names at least for the rows of the basis matrix.
 
-  See \code{\link{dimnames<-,NMF,ANY-method}} for more
-  details. }
+  See \code{\link{dimnames<-,NMF-method}} for more details.
+  }
 
   \item{.DollarNames}{\code{signature(x = "NMF")}:
   Auto-completion for \code{\linkS4class{NMF}} objects }

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFStrategyFunction-class. NMF 0.10.1</title>
+<title>NMFStrategyFunction-class. NMF 0.10.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -10,6 +10,10 @@
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/highlight.css" rel="stylesheet">
 <link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
 
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.1</a>
+      <a class="brand" href="index.html">NMF 0.10.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -52,9 +56,8 @@
     <div class="Slots">
       <h2>Slots</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>algorithma function that implements an NMF
+      <p><ol>
+<li>algorithma function that implements an NMF
   algorithm. It must have signature <code>(y='matrix',
   x='NMFfit')</code>, where <code>y</code> is the target matrix to
   approximate and <code>x</code> is the NMF model assumed to be
@@ -64,26 +67,30 @@
       <p>Note that argument names currently do not matter, but it
   is recommended to name them as specified above.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
 
     <div class="Methods">
       <h2>Methods</h2>
       
-      <p><span class='describe'></p>
-  
-      <p>algorithm<code>signature(object =
+      <p><ol>
+<li>algorithm<code>signature(object =
   "NMFStrategyFunction")</code>: Returns the single R function
   that implements the NMF algorithm -- as stored in slot
   <code>algorithm</code>.</p>
   
-      <p>algorithm<-<code>signature(object =
+      <p></li>
+<li>algorithm<-<code>signature(object =
   "NMFStrategyFunction", value = "function")</code>: Sets the
   function that implements the NMF algorithm, stored in
   slot <code>algorithm</code>.</p>
   
-      <p>run<code>signature(object =
+      <p></li>
+<li>run<code>signature(object =
   "NMFStrategyFunction", y = "matrix", x = "NMFfit")</code>: Runs
   the NMF algorithms implemented by the single R function
   -- and stored in slot <code>'algorithm'</code> of
@@ -96,7 +103,10 @@
   other details such as seeding the computation, handling
   RNG settings, or setting up parallelisation.</p>
   
-      <p></span></p>
+      <p></li>
+</ol></p>
+  
+      <p></p>
   
     </div>
       </div>
