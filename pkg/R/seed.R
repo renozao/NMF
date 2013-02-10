@@ -4,7 +4,8 @@ NULL
 
 # create sub-registry for seeding methods
 setPackageRegistry('seed', "NMFSeed"
-				, description="Seeding methods for NMF algorithms")
+				, description = "Initialization methods for NMF algorithms"
+				, entrydesc = 'NMF seeding method')
 
 #' Base class that defines the interface for NMF seeding methods.
 #' 
@@ -102,7 +103,7 @@ setReplaceMethod('algorithm', signature(object='NMFSeed', value='function'),
 #' 
 nmfSeed <- function(name=NULL, ...){
 	
-	nmfGet(name, registry.name='seed', ...)
+	nmfGet('seed', name, ...)
 	
 }
 
@@ -115,10 +116,17 @@ nmfSeed <- function(name=NULL, ...){
 #' @export
 existsNMFSeed <- function(name, exact=TRUE){	
 	
-	res <- !is.null( nmfGet(name, registry.name='seed', error=FALSE, exact=exact) )
+	res <- !is.null( nmfSeed(name, error=FALSE, exact=exact) )
 	return(res)
 	
 }
+
+# specific register method for registering NMFSeed objects
+setMethod('nmfRegister', signature(key='NMFSeed', method='missing'), 
+	function(key, method, ...){
+		nmfRegister(name(key), key, ..., registry.name='seed')
+	}
+)
 
 #' Registering NMF Seeding Methods
 #' 
@@ -132,34 +140,11 @@ existsNMFSeed <- function(name, exact=TRUE){
 #' @export
 setNMFSeed <- function(..., overwrite=isLoadingNamespace(), verbose=TRUE){
 	
-	library(pkgmaker)
-	lverbose <- verbose 
-	
+	library(pkgmaker)	
 	# wrap function method into a new NMFSeed object
 	method <- NMFSeed(...)
-	parent.method <- attr(method, 'parent')
-	key <- name(method)[1]
-	
-	if( lverbose ){
-		tmpl <- if( !is.null(parent.method) && parent.method != key )
-			str_c(" based on template '", parent.method, "'")
-		
-		pkg <- packageSlot(method)
-		message("Registering NMF seeding method '", pkg, '::', key,"'", tmpl,"... ", appendLF=FALSE)
-	}
-	
 	# register the newly created object
-	res <- nmfRegister(method, key, registry.name='seed'
-			, overwrite=overwrite, verbose=verbose>1L)
-	
-	if( !is.null(res) && res > 0L ){
-		if( lverbose ) message( if(res == 1L) "OK" else "UPDATED" )
-		method
-	}else{
-		if( lverbose ) message( "ERROR" )
-		NULL
-	}
-	
+	res <- nmfRegister(method, overwrite=overwrite, verbose=verbose)	
 }
 
 nmfRegisterSeed <- setNMFSeed

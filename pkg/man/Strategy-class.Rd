@@ -24,7 +24,7 @@
   \item{value}{replacement value}
 
   \item{all}{a logical that indicates if all the names
-  associated with a strategy should be return
+  associated with a strategy should be returned
   (\code{TRUE}), or only the first (primary) one
   (\code{FALSE}).}
 }

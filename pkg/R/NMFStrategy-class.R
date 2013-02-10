@@ -48,7 +48,7 @@ setClass('Strategy'
 setGeneric('name', function(object, ...) standardGeneric('name'))
 #' Returns the name of an algorithm
 #' @param all a logical that indicates if all the names associated with a strategy 
-#' should be return (\code{TRUE}), or only the first (primary) one (\code{FALSE}).
+#' should be returned (\code{TRUE}), or only the first (primary) one (\code{FALSE}).
 setMethod('name', signature(object='Strategy'),
 	function(object, all=FALSE){
 		n <- slot(object, 'name')
@@ -83,7 +83,7 @@ defaultArgument <- function(name, object, value, force=FALSE){
 #' Virtual Interface for NMF Algorithms
 #' 
 #' This class partially implements the generic interface defined for general 
-#' algorithms defined in the package NMF (see \code{\link{algorithmic-NMF}}).
+#' algorithms defined in the \pkg{NMF} package (see \code{\link{algorithmic-NMF}}).
 #'  
 #' @slot objective the objective function associated with the algorithm (Frobenius, Kullback-Leibler, etc...). 
 #'  It is either an access key of a registered objective function or a function definition. 
@@ -180,8 +180,9 @@ setMethod('NMFStrategy', signature(name='character', method='function'),
 setMethod('NMFStrategy', signature(name='character', method='NMFStrategy'), 
 		function(name, method, ...){
 			
+			package <- topns_name()
 			# build an NMFStrategy object based on template object
-			strategy <- new(class(method), method, name=name, ..., package=topns_name())
+			strategy <- new(class(method), method, name=name, ..., package=package)
 			
 			# valid the new strategy
 			validObject(strategy)
@@ -260,13 +261,14 @@ setMethod('NMFStrategy', signature(name='NULL', method='character'),
 setMethod('NMFStrategy', signature(name='character', method='missing'), 
 		function(name, method, ...){
 			
+			package <- topns_name()
 			# check iterative strategy
 			if( hasArg2('Update') ){ # create a new NMFStrategyIterative object
-				new('NMFStrategyIterative', name=name, ..., package=topns_name())
+				new('NMFStrategyIterative', name=name, ..., package=package)
 			}else if( hasArg2('mfiles') ){
-				new('NMFStrategyOctave', name=name, ..., package=topns_name())
+				new('NMFStrategyOctave', name=name, ..., package=package)
 			}else if( hasArg2('algorithm') ){
-				new('NMFStrategyFunction', name=name, ..., package=topns_name())
+				new('NMFStrategyFunction', name=name, ..., package=package)
 			}else{
 				stop('NMFStrategy - Could not infer the type of NMF strategy to instantiate.')
 			}
@@ -374,7 +376,16 @@ is.mixed <-	function(object){
 ###########################################################################
 
 # create sub-registry for NMF algorithm
-setPackageRegistry('algorithm', "NMFStrategy", description="NMF algorithms") 
+setPackageRegistry('algorithm', "NMFStrategy"
+					, description = "Algorithms to solve MF optimisation problems"
+					, entrydesc = "NMF algorithm") 
+
+# specific register method for registering NMFStrategy objects
+setMethod('nmfRegister', signature(key='NMFStrategy', method='missing'), 
+	function(key, method, ...){
+		nmfRegister(name(key), key, ..., registry.name='algorithm')
+	}
+)
 
 #' Registering NMF Algorithms
 #' 
@@ -382,21 +393,34 @@ setPackageRegistry('algorithm', "NMFStrategy", description="NMF algorithms")
 #' Nonnegative Matrix Factorization.
 #'  
 #' @inheritParams NMFStrategy
+#' @param ... arguments passed to the factory function \code{\link{NMFStrategy}},
+#' which instantiate the \code{\linkS4class{NMFStrategy}} object that is stored
+#' in registry. 
 #' @param overwrite logical that indicates if any existing NMF method with the 
 #' same name should be overwritten (\code{TRUE}) or not (\code{FALSE}), 
 #' in which case an error is thrown.
 #' @param verbose a logical that indicates if information about the registration 
 #' should be printed (\code{TRUE}) or not (\code{FALSE}).
-#' @param ... arguments passed to the factory function \code{\link{NMFStrategy}},
-#' which instantiate the \code{\linkS4class{NMFStrategy}} object that is stored
-#' in registry. 
 #' 
 #' @export
+#' @examples 
+#' 
+#' # define/regsiter a new -- dummy -- NMF algorithm with the minimum arguments
+#' # y: target matrix
+#' # x: initial NMF model (i.e. the seed)
+#' # NB: this algorithm simply return the seed unchanged 
+#' setNMFMethod('mynmf', function(y, x, ...){ x })
+#' 
+#' # check algorithm on toy data
+#' res <- nmfCheck('mynmf')
+#' # the NMF seed is not changed
+#' stopifnot( nmf.equal(res, nmfCheck('mynmf', seed=res)) ) 
+#' 
 setNMFMethod <- function(name, method, ..., overwrite=isLoadingNamespace(), verbose=TRUE){
 	
 	library(pkgmaker)
 	
-	# build call to constructor
+	# build call to NMFStrategy constructor
 	call_const <- match.call(NMFStrategy)
 	call_const[[1]] <- as.name('NMFStrategy')
 	call_const$verbose <- NULL
@@ -409,30 +433,8 @@ setNMFMethod <- function(name, method, ..., overwrite=isLoadingNamespace(), verb
 	# build the NMFStrategy object (in the parent frame to get the package slot right)
 	e <- parent.frame()
 	method <- eval(call_const, envir=e)
-
-	parent.method <- attr(method, 'parent')
-	key <- match.fun('name')(method)[1]
-
-	if( verbose ){
-		tmpl <- 
-		if( !is.null(parent.method) && parent.method != key )
-			str_c(" based on template '", parent.method, "'")
-	
-		pkg <- packageSlot(method)
-		message("Registering NMF algorithm '", pkg, '::', key,"'", tmpl,"... ", appendLF=FALSE)
-	}
-	
 	# add to the algorithm registry
-	res <- nmfRegister(method, key, registry.name='algorithm'
-					, overwrite=overwrite, verbose=verbose>1L)
-	
-	if( !is.null(res) && res > 0L ){
-		if( verbose ) message( if(res == 1L) "OK" else "UPDATED" )
-		invisible(method)
-	}else{
-		if( verbose ) message( "ERROR" )
-		invisible(NULL)
-	}
+	res <- nmfRegister(method, overwrite=overwrite, verbose=verbose)
 }
 
 #' \code{nmfRegisterAlgorithm} is an alias to \code{setNMFMethod} for backward
@@ -577,7 +579,7 @@ selectNMFMethod <- function(name, model, load=FALSE, exact=FALSE, all=FALSE, qui
 #' 
 #' @export
 #' @rdname registry-algorithm
-getNMFMethod <- function(...) nmfGet(..., registry.name='algorithm', msg='NMF algorithm')
+getNMFMethod <- function(...) nmfGet(..., registry.name='algorithm')
 
 #' Listing and Retrieving NMF Algorithms
 #' 

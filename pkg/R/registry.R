@@ -26,9 +26,8 @@ nmfRegistry <- function(...) pkgmaker::packageRegistry(...)
 ###%
 nmfGet <- function(registry.name, name=NULL, ...){
 	
-	# retrieve the required sub-registry
-	registry <- nmfRegistry(registry.name)
-	pkgmaker::regfetch(registry, key=name, ...)
+	# retrieve from the given package's sub-registry
+	pkgmaker::pkgregfetch(registry.name, key=name, ...)
 	
 }
 
@@ -45,48 +44,17 @@ nmfGet <- function(registry.name, name=NULL, ...){
 ###%
 ###% @seealso nmf
 ###%
-setGeneric('nmfRegister', function(method, key, ...) standardGeneric('nmfRegister') )
-setMethod('nmfRegister', signature(method='ANY', key='character'), 
-		function(method, key, registry.name, overwrite=FALSE, verbose=FALSE){		
-			#TODO: add functionality to save the registered strategy into a file for use is other R sessions
-						
-			# check if the name provided is not empty
-			if( nchar(key) == 0 ) stop('parameter <key> cannot be an empty string')
-			
-			# for a method given as a NMFStrategy, if the name is empty then use the key as a name
-			if( inherits(method, 'NMFStrategy') ){
-				if( is.null(method@name) || method@name=='' ){
-					stop("Unexpected error: nmfRegister(method=NMFStrategy) with no method name")
-					method@name <- key
-				}
-				#else if( method@name != key ) stop("NMFStrategy slot <name> does not match parameter <key> ['", method@name, "' != '", key, "']")
-			}
-			# check if the object is already registered
-			reg.method <- nmfGet(key, registry.name=registry.name, exact=TRUE, error=FALSE)
-			
-			# add the strategy to the registry		
-			if( is.null(reg.method) || overwrite ){ # add or overwrite if necessary
-				# retrieve the NMFStrategy registry
-				registry <- nmfRegistry(registry.name)
-				# add the method to the registry
-				action <- if( is.null(reg.method) ) 'Register' 
-				else{
-					registry$delete_entry(key)
-					'Overwrite'
-				}
-				if( verbose ) message("NMF:", registry.name, ": ", action, " method '", key, "'")
-				registry$set_entry(key=key, object=method)
-				#assign(key, method, envir=registry)
-			}
-			else stop("Cannot register NMF method '", key, "' [a method with the same key is already registered].")
-			
-			# setup deferred registering: when loading a namespace other than NMF
-			packageNMFObject(key, method)
-			#
-			
-			# return set/update code invisibly
-			invisible( if( !is.null(reg.method) )  2L else 1L )
+setGeneric('nmfRegister', function(key, method, ...) standardGeneric('nmfRegister') )
+setMethod('nmfRegister', signature(key='character'), 
+	function(key, method, registry.name, ...){		
+		#TODO: add functionality to save the registered strategy into a file for use is other R sessions
+		
+		parent.method <- attr(method, 'parent')
+		tmpl <- if( !is.null(parent.method) && parent.method != key ){
+			str_c(" based on template '", parent.method, "'")
 		}
+		pkgmaker:::setPackageRegistryEntry(key, registry.name, method, ..., where='NMF', msg=tmpl)
+	}
 )
 
 ###% Unregister a NMF method.

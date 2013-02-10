@@ -27,8 +27,8 @@
 }
 \description{
   This class partially implements the generic interface
-  defined for general algorithms defined in the package NMF
-  (see \code{\link{algorithmic-NMF}}).
+  defined for general algorithms defined in the \pkg{NMF}
+  package (see \code{\link{algorithmic-NMF}}).
 
   \code{is.mixed} tells if an NMF algorithm works on
   mixed-sign data.
