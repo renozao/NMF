@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfAlgorithm. NMF 0.10.2</title>
+<title>nmfAlgorithm. NMF 0.10.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -24,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.2</a>
+      <a class="brand" href="index.html">NMF 0.10.5</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -103,11 +103,13 @@
     <h2 id="examples">Examples</h2>
     <pre class="examples"><div class='input'># list all main algorithms</div><div class='input'>nmfAlgorithm()
 </div>
-<div class='output'> [1] "brunet"    "KL"        "lee"       "Frobenius" "offset"    "nsNMF"     "ls-nmf"    "pe-nmf"    "snmf/r"    "snmf/l"    "siNMF"    
+<div class='output'> [1] "brunet"    "KL"        "lee"       "Frobenius" "offset"    "nsNMF"    
+ [7] "ls-nmf"    "pe-nmf"    "snmf/r"    "snmf/l"    "siNMF"    
 </div><div class='input'># list all versions of algorithms</div><div class='input'>nmfAlgorithm(all=TRUE)
 </div>
-<div class='output'> [1] ".R#brunet" "brunet"    "KL"        ".R#lee"    "lee"       "Frobenius" ".R#offset" "offset"    ".R#nsNMF"  "nsNMF"     ".M#brunet" "ls-nmf"    "pe-nmf"    "snmf/r"   
-[15] "snmf/l"    ".siNMF"    "siNMF"    
+<div class='output'> [1] ".R#brunet" "brunet"    "KL"        ".R#lee"    "lee"       "Frobenius"
+ [7] ".R#offset" "offset"    ".R#nsNMF"  "nsNMF"     ".M#brunet" "ls-nmf"   
+[13] "pe-nmf"    "snmf/r"    "snmf/l"    ".siNMF"    "siNMF"    
 </div><div class='input'># list all plain R versions</div><div class='input'>nmfAlgorithm(version='R')
 </div>
 <div class='output'>     brunet         lee      offset       nsNMF 

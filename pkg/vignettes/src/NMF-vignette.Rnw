@@ -1,6 +1,6 @@
 % 
 \documentclass[a4paper]{article}
-\usepackage{Sweave}
+%\usepackage{Sweave}
 
 %\usepackage[OT1]{fontenc}
 \usepackage[colorlinks]{hyperref} % for hyperlinks

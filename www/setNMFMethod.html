@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>setNMFMethod. NMF 0.10.2</title>
+<title>setNMFMethod. NMF 0.10.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -24,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.2</a>
+      <a class="brand" href="index.html">NMF 0.10.5</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -50,6 +50,11 @@ nmfRegisterAlgorithm(name, method, ..., overwrite = isLoadingNamespace(), verbos
     
     <h2>Arguments</h2>
     <dl>
+      <dt>...</dt>
+      <dd>arguments passed to the factory function
+  <code><a href='NMFStrategy.html'>NMFStrategy</a></code>, which instantiate the
+  <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code> object that is stored in
+  registry.</dd>
       <dt>overwrite</dt>
       <dd>logical that indicates if any existing
   NMF method with the same name should be overwritten
@@ -59,11 +64,6 @@ nmfRegisterAlgorithm(name, method, ..., overwrite = isLoadingNamespace(), verbos
       <dd>a logical that indicates if information
   about the registration should be printed (<code>TRUE</code>) or
   not (<code>FALSE</code>).</dd>
-      <dt>...</dt>
-      <dd>arguments passed to the factory function
-  <code><a href='NMFStrategy.html'>NMFStrategy</a></code>, which instantiate the
-  <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code> object that is stored in
-  registry.</dd>
       <dt>name</dt>
       <dd>name/key of an NMF algorithm.</dd>
       <dt>method</dt>
@@ -80,7 +80,15 @@ nmfRegisterAlgorithm(name, method, ..., overwrite = isLoadingNamespace(), verbos
   <code>setNMFMethod</code> for backward compatibility.</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># define/regsiter a new -- dummy -- NMF algorithm with the minimum arguments</div><div class='input'># y: target matrix</div><div class='input'># x: initial NMF model (i.e. the seed)</div><div class='input'># NB: this algorithm simply return the seed unchanged</div><div class='input'>setNMFMethod('mynmf', function(y, x, ...){ x })
+</div>
+<strong class='message'>Registering NMF algorithm 'mynmf' [NMFStrategyFunction] ... </strong>
+<strong class='message'>OK</strong><div class='input'></div><div class='input'># check algorithm on toy data</div><div class='input'>res <- nmfCheck('mynmf')
+</div><div class='input'># the NMF seed is not changed</div><div class='input'>stopifnot( nmf.equal(res, nmfCheck('mynmf', seed=res)) )
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
       <li>nmfRegisterAlgorithm</li><li>setNMFMethod</li>

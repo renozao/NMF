@@ -55,7 +55,7 @@
 \newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
 
 \usepackage{alltt}
-\usepackage{Sweave}
+%\usepackage{Sweave}
 
 %\usepackage[OT1]{fontenc}
 \usepackage[colorlinks]{hyperref} % for hyperlinks
@@ -130,7 +130,7 @@
 , maxbibnames=15
 , backref=true]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
-\bibliography{/tmp/tmp.fxRR6COmp3/NMF/REFERENCES}
+\bibliography{/home/renaud/Documents/projects/NMF/pkg/vignettes/tmplib/NMF/REFERENCES}
 
 
 \bibliography{Rpackages}
@@ -180,7 +180,7 @@
 
 
 \title{An introduction to NMF package\\\small Version
-0.10}
+0.10.5}
 \author{Renaud Gaujoux, \url{renaud@cbio.uct.ac.za}}
 % \\Address Computational Biology - University of Cape Town, South Africa,
 
@@ -583,7 +583,7 @@ t <- \hlfunctioncall{sapply}(res, runtime)[3, ]
 
 
 % latex table generated in R 2.15.2 by xtable 1.7-0 package
-% Mon Dec 17 16:51:05 2012
+% Sun Feb 10 23:42:22 2013
 \begin{table}[ht]
 \begin{center}
 \begin{tabular}{rrrr}
@@ -1847,7 +1847,7 @@ V <- \hlfunctioncall{syntheticNMF}(n, r, p, noise = TRUE)
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_2eb9616fd87a 
+##   algorithm:  nmf_1bcf59ec9ca3 
 ##   seed:  random 
 ##   RNG: 403L, 172L, ..., 1280296329L [f11f4336959dbb0d633a75745dda3b35]
 ##   distance metric:  'euclidean' 
@@ -1855,7 +1855,7 @@ V <- \hlfunctioncall{syntheticNMF}(n, r, p, noise = TRUE)
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.008
+##     0.008   0.000   0.047
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1879,7 +1879,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_2eb91d9b6080 
+##   algorithm:  nmf_1bcf56d7e878 
 ##   seed:  random 
 ##   RNG: 403L, 382L, ..., 1280296329L [40c9d89082672b624bf61a9723044992]
 ##   distance metric:  'KL' 
@@ -1887,7 +1887,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.006
+##     0.004   0.000   0.004
 \end{verbatim}
 \begin{alltt}
 \hlcomment{# based on custom distance metric}
@@ -1906,7 +1906,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_2eb95fc17b57 
+##   algorithm:  nmf_1bcf65967bf9 
 ##   seed:  random 
 ##   RNG: 403L, 592L, ..., 1280296329L [b2ca9850bf32b6d9a03f59dd36a3bba9]
 ##   distance metric:  <function> 
@@ -1914,7 +1914,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.006
+##     0.004   0.000   0.004
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1954,7 +1954,7 @@ V.neg[1, ] <- -1
 \end{alltt}
 
 
-{\ttfamily\noindent\bfseries\textcolor{errorcolor}{\#\# Error: NMF::nmf - Input matrix x contains some negative entries.}}\begin{alltt}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: NMF::nmf - Input matrix x contains some negative entries.}}\begin{alltt}
 
 \hlcomment{# this runs my.algorithm without error}
 \hlfunctioncall{nmf}(V.neg, 3, my.algorithm, mixed = TRUE, scale.factor = 10)
@@ -1967,7 +1967,7 @@ V.neg[1, ] <- -1
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_2eb9350a6d8c 
+##   algorithm:  nmf_1bcf662dae07 
 ##   seed:  random 
 ##   RNG: 403L, 178L, ..., -818492466L [d8c5d857673ef895e42fdb30f26b009f]
 ##   distance metric:  'euclidean' 
@@ -1975,7 +1975,7 @@ V.neg[1, ] <- -1
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.005
+##     0.004   0.000   0.003
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2055,7 +2055,7 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   samples: 20 
 ##   offset: [ 0.7753 0.722 0.3148 1.049 1.107 ... ]
 ##  # Details:
-##   algorithm:  nmf_2eb920ba5429 
+##   algorithm:  nmf_1bcf61907b3c 
 ##   seed:  random 
 ##   RNG: 403L, 388L, ..., -818492466L [ba905d5003280d7b56582b321f3281ac]
 ##   distance metric:  'euclidean' 
@@ -2063,7 +2063,7 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.008   0.000   0.006
+##     0.004   0.000   0.005
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2113,14 +2113,14 @@ To use the new seeding method:
 ##   samples: 20 
 ##  # Details:
 ##   algorithm:  snmf/r 
-##   seed:  NMF.seed.2eb926f4477f 
+##   seed:  NMF.seed.1bcf658d03c 
 ##   RNG: 403L, 24L, ..., -1308220775L [1d3a94aa2d7b0646ecb06c2434029097]
 ##   distance metric:  <function> 
 ##   residuals:  205.3 
 ##   Iterations: 65 
 ##   Timing:
 ##      user  system elapsed 
-##     0.296   0.000   0.296
+##     0.224   0.000   0.226
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2184,19 +2184,20 @@ debug & FALSE & Toggle debug mode, which is an extended verbose mode.\\
 \section{Session Info}
 \begin{itemize}\raggedright
   \item R version 2.15.2 (2012-10-26), \verb|i686-pc-linux-gnu|
-  \item Locale: \verb|LC_CTYPE=en_ZA.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_ZA.UTF-8|, \verb|LC_COLLATE=en_ZA.UTF-8|, \verb|LC_MONETARY=en_ZA.UTF-8|, \verb|LC_MESSAGES=en_ZA.UTF-8|, \verb|LC_PAPER=C|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_ZA.UTF-8|, \verb|LC_IDENTIFICATION=C|
+  \item Locale: \verb|LC_CTYPE=en_US.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_US.UTF-8|, \verb|LC_COLLATE=en_US.UTF-8|, \verb|LC_MONETARY=en_US.UTF-8|, \verb|LC_MESSAGES=en_US.UTF-8|, \verb|LC_PAPER=C|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_US.UTF-8|, \verb|LC_IDENTIFICATION=C|
   \item Base packages: base, datasets, graphics,
     grDevices, grid, methods, stats, utils
   \item Other packages: bigmemory~4.3.0,
     bigmemory.sri~0.1.2, Biobase~2.16.0,
-    BiocGenerics~0.2.0, digest~0.5.2, knitr~0.9,
-    NMF~0.10, pkgmaker~0.10.2, RColorBrewer~1.0-5,
-    registry~0.2, rngtools~1.1, xtable~1.7-0
+    BiocGenerics~0.2.0, digest~0.6.2, knitr~1.0.5,
+    NMF~0.10.5, pkgmaker~0.11.1, RColorBrewer~1.0-5,
+    registry~0.2, rngtools~1.1.1,
+    synchronicity~1.1.0, xtable~1.7-0
   \item Loaded via a namespace (and not attached):
-    codetools~0.2-8, colorspace~1.2-0,
+    codetools~0.2-8, colorspace~1.2-1,
     doParallel~1.0.1, evaluate~0.4.3, foreach~1.4.0,
-    formatR~0.6, gridBase~0.4-5, iterators~1.0.6,
-    plyr~1.7.1, stringr~0.6.1, tools~2.15.2
+    formatR~0.7, gridBase~0.4-6, iterators~1.0.6,
+    stringr~0.6.2, tools~2.15.2
 \end{itemize}
 
 

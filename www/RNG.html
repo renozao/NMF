@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>getRNG1. NMF 0.10.2</title>
+<title>getRNG1. NMF 0.10.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -24,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.2</a>
+      <a class="brand" href="index.html">NMF 0.10.5</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -111,10 +111,12 @@
 </div><div class='input'>res <- nmf(V, 3, nrun=4)
 </div><div class='input'># RNG used for the best fit</div><div class='input'>getRNG(res)
 </div>
-<div class='output'>[1]         407 -1095383638  1851156330   771553762  -227471793  2129111752 -1286920462
+<div class='output'>[1]         407 -1095383638  1851156330   771553762  -227471793  2129111752
+[7] -1286920462
 </div><div class='input'># RNG used for the first of all fits</div><div class='input'>getRNG1(res)
 </div>
-<div class='output'>[1]         407  1254024653  1918266922  1626888611 -1659892088 -1524593943  1829114262
+<div class='output'>[1]         407  1254024653  1918266922  1626888611 -1659892088 -1524593943
+[7]  1829114262
 </div><div class='input'># they may differ if the best fit is not the first one</div><div class='input'>rng.equal(res, getRNG1(res))
 </div>
 <div class='output'>[1] FALSE

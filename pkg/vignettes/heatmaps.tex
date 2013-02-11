@@ -55,8 +55,8 @@
 \newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
 
 \usepackage{alltt}
-\usepackage{Sweave}
-
+%\usepackage{Sweave}
+%\SweaveOpts{keep.source=TRUE}
 
 %\usepackage[OT1]{fontenc}
 \usepackage[colorlinks]{hyperref}
@@ -168,7 +168,7 @@
 
 
 \title{Generating heatmaps for Nonnegative Matrix Factorization\\
-\small Package \nmfpack\ - Version 0.10.2}
+\small Package \nmfpack\ - Version 0.10.5}
 \author{Renaud Gaujoux}
 % \VignetteIndexEntry{NMF: generating heatmaps}
 % \VignetteDepends{NMF,RColorBrewer}
@@ -291,6 +291,8 @@ covariates <- \hlfunctioncall{data.frame}(a, X$pData, c)
 \end{knitrout}
 
 
+%\SweaveOpts{fig.width=14,fig.height=7}
+
 
 Note that in the code above, the object \code{X} returned by \code{syntheticNMF} \emph{really is} a matrix object, but wrapped through the function \code{ExposedAttribute} object, which exposes its attributes via a more friendly and access controlled interface \code{\$}.
 Of particular interests are attributes \code{'pData'} and \code{'fData'}, which are lists that contain a factor named \code{'Group'} that indicates the true underlying clusters.
@@ -327,7 +329,7 @@ res
 ##    407L, 1836648330L, -690549885L, 21815016L, -792180791L, -1546669834L, 1782788863L 
 ##   Total timing:
 ##    user  system elapsed 
-##   2.448   0.100   8.767
+##   3.520   0.204   1.889
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -698,18 +700,18 @@ These demos and the plots they generate can also be browsed online at \url{http:
 \section{Session Info}
 \begin{itemize}\raggedright
   \item R version 2.15.2 (2012-10-26), \verb|i686-pc-linux-gnu|
-  \item Locale: \verb|LC_CTYPE=en_ZA.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_ZA.UTF-8|, \verb|LC_COLLATE=en_ZA.UTF-8|, \verb|LC_MONETARY=en_ZA.UTF-8|, \verb|LC_MESSAGES=en_ZA.UTF-8|, \verb|LC_PAPER=C|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_ZA.UTF-8|, \verb|LC_IDENTIFICATION=C|
+  \item Locale: \verb|LC_CTYPE=en_US.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_US.UTF-8|, \verb|LC_COLLATE=en_US.UTF-8|, \verb|LC_MONETARY=en_US.UTF-8|, \verb|LC_MESSAGES=en_US.UTF-8|, \verb|LC_PAPER=C|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_US.UTF-8|, \verb|LC_IDENTIFICATION=C|
   \item Base packages: base, datasets, graphics, grDevices, grid,
-    methods, stats, utils
+    methods, parallel, stats, utils
   \item Other packages: bigmemory~4.3.0, bigmemory.sri~0.1.2,
-    Biobase~2.16.0, BiocGenerics~0.2.0, digest~0.5.2, knitr~0.9,
-    NMF~0.10.2, pkgmaker~0.10.2, RColorBrewer~1.0-5, registry~0.2,
-    rngtools~1.1, synchronicity~1.1.0
+    Biobase~2.16.0, BiocGenerics~0.2.0, digest~0.6.2,
+    doParallel~1.0.1, foreach~1.4.0, iterators~1.0.6, knitr~1.0.5,
+    NMF~0.10.5, pkgmaker~0.11.1, RColorBrewer~1.0-5, registry~0.2,
+    rngtools~1.1.1, synchronicity~1.1.0
   \item Loaded via a namespace (and not attached):
-    codetools~0.2-8, colorspace~1.2-0, doParallel~1.0.1,
-    evaluate~0.4.3, foreach~1.4.0, formatR~0.6, gridBase~0.4-5,
-    iterators~1.0.6, plyr~1.7.1, stringr~0.6.1, tools~2.15.2,
-    xtable~1.7-0
+    codetools~0.2-8, colorspace~1.2-1, compiler~2.15.2,
+    evaluate~0.4.3, formatR~0.7, gridBase~0.4-6, stringr~0.6.2,
+    tools~2.15.2, xtable~1.7-0
 \end{itemize}
 
 

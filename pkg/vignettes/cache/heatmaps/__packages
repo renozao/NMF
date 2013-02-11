@@ -1,14 +1,14 @@
-synchronicity
 doParallel
 parallel
 iterators
 foreach
 RColorBrewer
 NMF
-Biobase
-BiocGenerics
+synchronicity
 bigmemory
 bigmemory.sri
+Biobase
+BiocGenerics
 grid
 digest
 registry

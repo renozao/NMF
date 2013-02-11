@@ -1,7 +1,7 @@
 % 
 \documentclass[a4paper]{article}
-\usepackage{Sweave}
-\SweaveOpts{keep.source=TRUE}
+%\usepackage{Sweave}
+%\SweaveOpts{keep.source=TRUE}
 
 %\usepackage[OT1]{fontenc}
 \usepackage[colorlinks]{hyperref}
@@ -190,7 +190,10 @@ c <- rnorm(p)
 covariates <- data.frame(a, X$pData, c)
 @
 
-\SweaveOpts{fig.width=14,fig.height=7}
+%\SweaveOpts{fig.width=14,fig.height=7}
+<<figoptions, include=FALSE>>=
+opts_chunk$set(fig.width=14, fig.height=7)
+@
 Note that in the code above, the object \code{X} returned by \code{syntheticNMF} \emph{really is} a matrix object, but wrapped through the function \code{ExposedAttribute} object, which exposes its attributes via a more friendly and access controlled interface \code{\$}.
 Of particular interests are attributes \code{'pData'} and \code{'fData'}, which are lists that contain a factor named \code{'Group'} that indicates the true underlying clusters.
 These are respectively defined as each sample's most contrbuting basis component and the basis component to which each feature contributes the most.

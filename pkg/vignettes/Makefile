@@ -4,9 +4,9 @@
 ifneq (${R_HOME},)
 RSCRIPT=$(R_HOME)/bin/Rscript
 else 
-RSCRIPT=`which R`script
+RSCRIPT=`echo R`script
 endif
 
-MK=$(shell $(RSCRIPT) --vanilla -e "pkgmaker::vignetteMakefile('renaud', 'NMF')")
+MK=$(shell $(RSCRIPT) --vanilla -e "pkgmaker::vignetteMakefile('NMF')")
 
 include $(MK)
