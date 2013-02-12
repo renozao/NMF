@@ -107,6 +107,11 @@ nmfSeed <- function(name=NULL, ...){
 	
 }
 
+#' \code{getNMFSeed} is an alias for \code{nmfSeed}.
+#' @rdname nmfSeed
+#' @export
+getNMFSeed <- nmfSeed
+
 #' \code{existsNMFSeed} tells if a given seeding method exists in the registry.
 #' 
 #' @param exact a logical that indicates if the access key should be matched 
@@ -116,7 +121,7 @@ nmfSeed <- function(name=NULL, ...){
 #' @export
 existsNMFSeed <- function(name, exact=TRUE){	
 	
-	res <- !is.null( nmfSeed(name, error=FALSE, exact=exact) )
+	res <- !is.null( getNMFSeed(name, error=FALSE, exact=exact) )
 	return(res)
 	
 }
@@ -124,7 +129,7 @@ existsNMFSeed <- function(name, exact=TRUE){
 # specific register method for registering NMFSeed objects
 setMethod('nmfRegister', signature(key='NMFSeed', method='missing'), 
 	function(key, method, ...){
-		nmfRegister(name(key), key, ..., registry.name='seed')
+		nmfRegister(name(key), key, ..., regname='seed')
 	}
 )
 

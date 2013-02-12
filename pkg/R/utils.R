@@ -1060,11 +1060,3 @@ CI.Rsq <- function (rsq, n, k, level = 0.95)
 	mat <- data.frame(Rsq = rsq, SErsq = sersq, LCL = lcl, UCL = ucl)
 	return(mat)
 }
-
-# install extra packages if not already installed
-packageExtraHandler('install_missing', function(pkg, ..., force=FALSE){
-	if( force || !require.quiet(pkg, character.only=TRUE) ){
-		install.packages(pkg, ...)
-		require(pkg, character.only=TRUE)
-	}else message("Loaded extra package: ", pkg)
-})

@@ -776,8 +776,8 @@ setupBackend <- function(spec, optional, backend, verbose=FALSE){
 
 # add extra package bigmemory and synchronicity on Unix platforms
 if( .Platform$OS.type != 'windows' ){
-	packageExtra('install_missing', 'bigmemory', pkg='bigmemory')
-	packageExtra('install_missing', 'synchronicity', pkg='synchronicity')
+	setPackageExtra('install.packages', 'bigmemory', pkgs='bigmemory')
+	setPackageExtra('install.packages', 'synchronicity', pkgs='synchronicity')
 }
 # add new option: shared.memory that indicates if one should try using shared memory
 # to speed-up parallel computations.

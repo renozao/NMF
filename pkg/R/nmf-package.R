@@ -65,9 +65,7 @@ devnmf <- function(){
 .onLoad <- function(libname, pkgname=NULL) {
 	
 	pkgEnv <- pkgmaker::packageEnv()
-	
-	pkgmaker::runPostponedAction(group='extra')
-	
+		
 	.init.sequence <- function(){
 	
 		## 0. INITIALIZE PACKAGE SPECFIC OPTIONS

@@ -383,7 +383,7 @@ setPackageRegistry('algorithm', "NMFStrategy"
 # specific register method for registering NMFStrategy objects
 setMethod('nmfRegister', signature(key='NMFStrategy', method='missing'), 
 	function(key, method, ...){
-		nmfRegister(name(key), key, ..., registry.name='algorithm')
+		nmfRegister(name(key), key, ..., regname='algorithm')
 	}
 )
 
@@ -575,11 +575,11 @@ selectNMFMethod <- function(name, model, load=FALSE, exact=FALSE, all=FALSE, qui
 
 #' \code{getNMFMethod} retrieves NMF algorithm objects from the registry.
 #' 
-#' @param ... extra arguments passed to \code{\link[pkgmaker]{regfetch}}.
+#' @param ... extra arguments passed to \code{\link[pkgmaker]{pkgregfetch}}.
 #' 
 #' @export
 #' @rdname registry-algorithm
-getNMFMethod <- function(...) nmfGet(..., registry.name='algorithm')
+getNMFMethod <- function(...) nmfGet('algorithm', ...)
 
 #' Listing and Retrieving NMF Algorithms
 #' 

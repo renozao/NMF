@@ -53,7 +53,7 @@
 NULL
 
 # add extra package Biobase
-packageExtra('install_missing', 'Biobase', pkg='Biobase')
+setPackageExtra('install.packages', 'Biobase', pkgs='Biobase')
 
 .onLoad.nmf.bioc <- function(){
 	
@@ -302,4 +302,3 @@ if( pkgmaker::require.quiet('Biobase') ){
 }
 
 }
-

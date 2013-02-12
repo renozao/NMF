@@ -18,16 +18,16 @@ nmfRegistry <- function(...) pkgmaker::packageRegistry(...)
 ###% Return a method stored in the NMF registry.
 ###% 
 ###% @param name the key (a character string) of the method to be retrieved
-###% @param registry.name the name of the sub-registry where to look for the \code{key}
+###% @param regname the name of the sub-registry where to look for the \code{key}
 ###% @param exact a boolean. When set to \code{TRUE} the key is searched exactly, otherwise (default) the key
 ###% is matched partially with the keys registered in the registry.
 ###% @param error a boolean. When set to \code{TRUE} (default) the function will raise an error if the key is not found.
 ###% Otherwise it will not raise any error and return \code{NULL}.
 ###%
-nmfGet <- function(registry.name, name=NULL, ...){
+nmfGet <- function(regname, name=NULL, ...){
 	
 	# retrieve from the given package's sub-registry
-	pkgmaker::pkgregfetch(registry.name, key=name, ...)
+	pkgmaker::pkgregfetch(regname, key=name, ...)
 	
 }
 
@@ -46,14 +46,14 @@ nmfGet <- function(registry.name, name=NULL, ...){
 ###%
 setGeneric('nmfRegister', function(key, method, ...) standardGeneric('nmfRegister') )
 setMethod('nmfRegister', signature(key='character'), 
-	function(key, method, registry.name, ...){		
+	function(key, method, regname, ...){		
 		#TODO: add functionality to save the registered strategy into a file for use is other R sessions
 		
 		parent.method <- attr(method, 'parent')
 		tmpl <- if( !is.null(parent.method) && parent.method != key ){
 			str_c(" based on template '", parent.method, "'")
 		}
-		pkgmaker:::setPackageRegistryEntry(key, registry.name, method, ..., where='NMF', msg=tmpl)
+		setPackageRegistryEntry(regname, key, method, ..., where='NMF', msg=tmpl)
 	}
 )
 
@@ -61,16 +61,16 @@ setMethod('nmfRegister', signature(key='character'),
 ###%
 ###% @param name the key of the method to unregister [character string]
 ###%
-nmfUnregister <- function(name, registry.name){				
+nmfUnregister <- function(name, regname){				
 	
 	# add the strategy to the registry
-	strategy <- nmfGet(name, registry.name=registry.name, exact=TRUE, error=FALSE)
+	strategy <- nmfGet(name, exact=TRUE, error=FALSE, regname=regname)
 	if( !is.null(strategy) ){
 		
 		# get the method registry and the method's fullname
-		registry <- nmfRegistry(registry.name)
+		registry <- nmfRegistry(regname)
 		name <- attr(strategy, 'name')
-		message("NMF: Remove method '", name, "' from registry '", registry.name, "'")
+		message("NMF: Remove method '", name, "' from registry '", regname, "'")
 		registry$delete_entry(name)
 		
 		# cancel deferred registering: when loading a namespace other than NMF
