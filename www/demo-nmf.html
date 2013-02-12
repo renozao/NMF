@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>Using the main function nmf(). NMF 0.10.5</title>
+<title>Using the main function nmf(). NMF 0.10.6</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -24,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.5</a>
+      <a class="brand" href="index.html">NMF 0.10.6</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_DEMOS.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -71,7 +71,7 @@ Length: 3
 Method(s): brunet, lee, nsNMF 
 Total timing:
    user  system elapsed 
-  0.952   0.000   0.954 
+  0.988   0.004   0.995 
 </div><div class='input'>summary(res, class=groups)
 </div>
 <div class='output'>       method   seed rng    metric rank sparseness.basis sparseness.coef purity
@@ -79,8 +79,8 @@ brunet brunet random   1        KL    2        0.4118778       0.7477902    0.8
 lee       lee random   1 euclidean    2        0.4584158       0.6203033    0.8
 nsNMF   nsNMF random   1        KL    2        0.4467015       0.8332739    0.8
          entropy residuals niter   cpu cpu.all nrun
-brunet 0.3063008  62.88535   420 0.108   0.108    1
-lee    0.4508149  38.55727   430 0.164   0.164    1
+brunet 0.3063008  62.88535   420 0.112   0.112    1
+lee    0.4508149  38.55727   430 0.168   0.168    1
 nsNMF  0.3063008  73.37104   440 0.228   0.228    1
 </div><div class='input'></div><div class='input'># plot the track of the residual errors</div><div class='input'>plot(res)
 </div><p><img src='nmf-demo1.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># specify algorithm by its name</div><div class='input'>res <- nmf(x, 3, 'nsNMF', seed=123) # nonsmooth NMF
@@ -98,7 +98,7 @@ start
 </div><div class='input'></div><div class='input'>res <- nmf(x, 2, myfun, alpha=3)
 </div><div class='input'>algorithm(res)
 </div>
-<div class='output'>[1] "nmf_1fa11514fa59"
+<div class='output'>[1] "nmf_68081e2b3459"
 </div><div class='input'># error: alpha missing</div><div class='input'>try( nmf(x, 2, myfun) )
 </div>
 <div class='output'><Object of class: NMFfit>
@@ -108,14 +108,14 @@ start
   basis/rank: 2 
   samples: 10 
  # Details:
-  algorithm:  nmf_1fa13ae15420 
+  algorithm:  nmf_680839b7bd9f 
   seed:  random 
   RNG: 403L, 13L, ..., -1275215471L [8e2a164c6d1d362c542412465f05c4f0]
   distance metric:  'euclidean' 
   residuals:  273356.2 
   Timing:
      user  system elapsed 
-    0.000   0.000   0.002 
+    0.004   0.000   0.001 
 </div><div class='input'></div><div class='input'># possibly the algorithm fits a non-standard NMF model, e.g. NMFns model</div><div class='input'>res <- nmf(x, 2, myfun, alpha=3, model='NMFns')
 </div><div class='input'>modelname(res)
 </div>
@@ -168,9 +168,9 @@ start
 <div class='output'>            rank sparseness.basis  sparseness.coef           purity 
        2.0000000        0.4066691        0.8069521        0.8000000 
          entropy        residuals            niter              cpu 
-       0.3811979       59.8266436      430.0000000        0.1040000 
+       0.3811979       59.8266436      430.0000000        0.1080000 
          cpu.all             nrun 
-       0.1040000        1.0000000 
+       0.1080000        1.0000000 
 </div><div class='input'></div><div class='input'># run default algorithm multiple times (only keep the best fit)</div><div class='input'>res <- nmf(x, 3, nrun=10)
 </div><div class='input'>res
 </div>
@@ -181,7 +181,7 @@ start
    407L, -971897534L, -1946906661L, 234901856L, -1950152223L, -594520530L, 1243830487L 
   Total timing:
    user  system elapsed 
-  3.172   0.420   1.815 
+  3.448   0.400   2.039 
 </div><div class='input'>summary(res, class=groups)
 </div>
 <div class='output'>            rank sparseness.basis  sparseness.coef           purity 
@@ -189,7 +189,7 @@ start
          entropy        residuals            niter              cpu 
        0.0000000       43.5355376      420.0000000        0.2040000 
          cpu.all             nrun       cophenetic       dispersion 
-       3.1720000       10.0000000        0.9691177        0.7152000 
+       3.4480000       10.0000000        0.9691177        0.7152000 
 </div><div class='input'></div><div class='input'># run default algorithm multiple times keeping all the fits</div><div class='input'>res <- nmf(x, 3, nrun=10, .options='k')
 </div><div class='input'>res
 </div>
@@ -200,18 +200,18 @@ start
    407L, -1151196792L, 718324201L, -1527964522L, 954827295L, -256391724L, -569823547L 
   Total timing:
    user  system elapsed 
-  4.384   0.528   1.405 
+  4.697   0.484   1.566 
   Sequential timing:
    user  system elapsed 
-  1.972   0.004   1.979 
+  2.092   0.004   2.288 
 </div><div class='input'>summary(res, class=groups)
 </div>
 <div class='output'>            rank sparseness.basis  sparseness.coef           purity 
        3.0000000        0.4936647        0.8770943        1.0000000 
          entropy        residuals            niter              cpu 
-       0.0000000       43.5344313      490.0000000        0.2280000 
+       0.0000000       43.5344313      490.0000000        0.2200000 
          cpu.all             nrun       cophenetic       dispersion 
-       4.3840000       10.0000000        0.9936881        0.6928000 
+       4.6970000       10.0000000        0.9936881        0.6928000 
 </div><div class='input'></div><div class='input'>## Note: one could have equivalently done</div><div class='input'># res <- nmf(V, 3, nrun=10, .options=list(keep.all=TRUE))</div><div class='input'></div><div class='input'># use a method that fit different model</div><div class='input'>res <- nmf(x, 2, 'nsNMF')
 </div><div class='input'>fit(res)
 </div>
@@ -293,7 +293,7 @@ theta: 0.1
   Iterations: 430 
   Timing:
      user  system elapsed 
-    0.112   0.000   0.110 
+    0.108   0.000   0.109 
 </div><div class='input'></div><div class='input'># to run nsNMF algorithm with an explicit starting point, this one</div><div class='input'># needs to follow the 'NMFns' model:</div><div class='input'>start.ns <- nmfModel(model='NMFns', W=matrix(0.5, n, 3), H=matrix(0.2, 3, p))
 </div><div class='input'>nmf(x, start.ns)
 </div>
@@ -313,7 +313,7 @@ theta: 0.1
   Iterations: 430 
   Timing:
      user  system elapsed 
-    0.216   0.000   0.216 
+    0.224   0.000   0.223 
 </div><div class='input'># Note: the method name does not need to be specified as it is infered from the</div><div class='input'># when there is only one algorithm defined for the model.</div><div class='input'></div><div class='input'># if the model is not appropriate (as defined by the algorihtm) an error is thrown</div><div class='input'># [cf. the standard model doesn't include a smoothing parameter used in nsNMF]</div><div class='input'>try( nmf(x, start.std, method='nsNMF') )
 </div><div class='input'></div><div class='input'>## Callback functions</div><div class='input'># Pass a callback function to only save summary measure of each run</div><div class='input'>res <- nmf(x, 3, nrun=3, .callback=summary)
 </div><div class='input'># the callback results are simplified into a matrix</div><div class='input'>res$.callback
@@ -324,8 +324,8 @@ sparseness.basis   0.4944835   0.4944835   0.4840998
 sparseness.coef    0.8859355   0.8797291   0.7571591
 residuals         43.5357386  43.5357383  46.1936322
 niter            430.0000000 430.0000000 460.0000000
-cpu                0.2040000   0.2000000   0.1400000
-cpu.all            0.2040000   0.2000000   0.1400000
+cpu                0.1760000   0.1720000   0.1360000
+cpu.all            0.1760000   0.1720000   0.1360000
 nrun               1.0000000   1.0000000   1.0000000
 </div><div class='input'>res <- nmf(x, 3, nrun=3, .callback=summary, .opt='-S')
 </div><div class='input'># the callback results are simplified into a matrix</div><div class='input'>res$.callback
@@ -334,19 +334,19 @@ nrun               1.0000000   1.0000000   1.0000000
             rank sparseness.basis  sparseness.coef        residuals 
        3.0000000        0.4936737        0.8763867       43.5344537 
            niter              cpu          cpu.all             nrun 
-     440.0000000        0.1960000        0.1960000        1.0000000 
+     440.0000000        0.2000000        0.2000000        1.0000000 
 
 [[2]]
             rank sparseness.basis  sparseness.coef        residuals 
        3.0000000        0.4576692        0.7944182       45.6090785 
            niter              cpu          cpu.all             nrun 
-     480.0000000        0.2120000        0.2120000        1.0000000 
+     480.0000000        0.2280000        0.2280000        1.0000000 
 
 [[3]]
             rank sparseness.basis  sparseness.coef        residuals 
        3.0000000        0.4735453        0.8202547       43.9513721 
            niter              cpu          cpu.all             nrun 
-     730.0000000        0.2880000        0.2880000        1.0000000 
+     730.0000000        0.3040000        0.3040000        1.0000000 
 
 </div><div class='input'></div><div class='input'># Pass a custom callback function</div><div class='input'>cb <- function(obj, i){ if( i %% 2 ) sparseness(obj) >= 0.5 }
 </div><div class='input'>res <- nmf(x, 3, nrun=3, .callback=cb)

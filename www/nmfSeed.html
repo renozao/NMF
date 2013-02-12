@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfSeed. NMF 0.10.5</title>
+<title>nmfSeed. NMF 0.10.6</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -24,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.5</a>
+      <a class="brand" href="index.html">NMF 0.10.6</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -46,6 +46,8 @@
     <h2>Usage</h2>
     <pre>nmfSeed(name = NULL, ...)
 
+getNMFSeed(name = NULL, ...)
+
 existsNMFSeed(name, exact = TRUE)</pre>
     
     <h2>Arguments</h2>
@@ -65,6 +67,8 @@ existsNMFSeed(name, exact = TRUE)</pre>
       <h2>Description</h2>
       
       <p><code>nmfSeed</code> lists and retrieves NMF seeding methods.</p>
+  
+      <p><code>getNMFSeed</code> is an alias for <code>nmfSeed</code>.</p>
   
       <p><code>existsNMFSeed</code> tells if a given seeding method
   exists in the registry.</p>
@@ -137,7 +141,7 @@ method:	 <function>
   </div>
   <div class="span4">
     <!-- <ul>
-      <li>existsNMFSeed</li><li>nmfSeed</li>
+      <li>existsNMFSeed</li><li>getNMFSeed</li><li>nmfSeed</li>
     </ul>
     <ul>
       
