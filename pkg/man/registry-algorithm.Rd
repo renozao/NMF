@@ -31,7 +31,7 @@
   is not the default algorithm.}
 
   \item{...}{extra arguments passed to
-  \code{\link[pkgmaker]{regfetch}}.}
+  \code{\link[pkgmaker]{pkgregfetch}}.}
 
   \item{exact}{a logical that indicates if the access key
   should be matched exactly (\code{TRUE}) or partially

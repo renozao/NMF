@@ -1,9 +1,12 @@
 \name{nmfSeed}
 \alias{existsNMFSeed}
+\alias{getNMFSeed}
 \alias{nmfSeed}
 \title{Seeding Strategies for NMF Algorithms}
 \usage{
   nmfSeed(name = NULL, ...)
+
+  getNMFSeed(name = NULL, ...)
 
   existsNMFSeed(name, exact = TRUE)
 }
@@ -19,6 +22,8 @@
 }
 \description{
   \code{nmfSeed} lists and retrieves NMF seeding methods.
+
+  \code{getNMFSeed} is an alias for \code{nmfSeed}.
 
   \code{existsNMFSeed} tells if a given seeding method
   exists in the registry.
