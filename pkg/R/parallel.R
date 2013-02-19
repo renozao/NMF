@@ -11,10 +11,6 @@
 #' @import doParallel
 NULL
 
-# registry of cluster objects
-.clusterObjects <- simpleRegistry('.clusterObjects', verbose=TRUE)
-#.clusterObjects <- new.env()
-
 # returns the number of cores to use in all NMF computation when no number is
 # specified by the user
 getMaxCores <- function(limit=TRUE){
@@ -67,94 +63,81 @@ getDoBackend <- function(){
 	
 	c(foreach:::getDoPar() # this returns the registered %dopar% function + associated data
 		# -> add info function from foreach internal environment
-		, info= if( exists("info", where = fe, inherits = FALSE) ) 
-					fe$info else function(data, item) NULL)
+		, info= if( exists("info", where = fe, inherits = FALSE) ){
+					get('info', fe, inherits=FALSE) 
+				}else{
+					function(data, item) NULL
+				}
+		, cleanup = if( exists("cleanup", where = fe, inherits = FALSE) ){
+			get('cleanup', fe, inherits=FALSE)
+		}
+	)
 }
 #' \code{setDoBackend} is identical to \code{\link[foreach]{setDoPar}}, but 
 #' returns the internal of the previously registered backend.
 #' 
 #' @param data internal data of a foreach \%dopar\% backend.
+#' @param cleanup logical that indicates if the previous
+#' backend's cleanup procedure should be run, \strong{before} 
+#' setting the new backend.
 #' 
 #' @export
 #' @rdname foreach
-setDoBackend <- function(data){
+setDoBackend <- function(data, cleanup=FALSE){
+	
+	# get old backend data
 	ob <- getDoBackend()
+	ofb <- ForeachBackend()
+	# cleanup old backend if requested
+	if( cleanup ){
+		doBackendCleanup(ofb)
+	}
+	
 	if( !is.null(data) ){
-		if( is.backend(data) )	data <- data[!names(data) %in% 'name']
+		bdata <- data
+		if( is.backend(data) )	data <- data[!names(data) %in% c('name', 'cleanup')]
 		do.call('setDoPar', data)
+		setBackendCleanup(bdata)
 	}else{
 		do.call('setDoPar', list(NULL))
 		fe <- foreach:::.foreachGlobals
 		if (exists("fun", envir = fe, inherits = FALSE))
 			remove("fun", envir = fe)
+		setBackendCleanup(NULL)
 	}
+	# return old backend
 	invisible(ob)
 }
 
-
-#.doParCleanup <- new.env()
-#doBackendCleanup <- function(object, fun, ..., run=TRUE, verbose=TRUE){
-#	
-#	# setup environment
-##	if( !exists('.doParCleanup', envir=.GlobalEnv) )
-##			assign('.doParCleanup', new.env(), envir=.GlobalEnv)
-##	e <- get('.doParCleanup', envir=.GlobalEnv)
-#	e <- .doParCleanup
-#		
-#	if( missing(object) ){
-#		f <- ls(e, all.names=TRUE)
-#		sapply(f, function(f){
-#					fun <- e[[f]]
-#					if( run ) fun()
-#					else fun
-#			})
-#		invisible()
-#	}
-#	else if( is.null(object) ) return()
-#	else if( missing(fun) ){
-#		if( exists(object$name, envir=e) ){ 
-#			fun <- get(object$name, envir=e)
-#			if( run ){
-#				if( verbose ) message("# Cleaning up '", object$name, "'... ", appendLF=FALSE)
-#				res <- fun(object, ...)
-#				if( verbose ) message('OK', if( !is.null(res) ) str_c(' [', res,']'))
-#			}else fun
-#		}
-#	}else if( is.null(fun) ){
-#		rm(list=object$name, envir=e)
-#	}else if( is.function(fun) ){
-#		assign(object$name, fun, envir=e)
-#	}
-#}
-
-doBackendCleanup <- function(object, fun, ..., run=TRUE, verbose=TRUE){
+# setup cleanup procedure for the current backend
+setBackendCleanup <- function(object, fun, verbose=FALSE){
 	
-	.cleanup <- function(name, ...){
-		obj <- .clusterObjects$get(name)
-		fun <- obj$cleanup
-		if( run ){
-			if( verbose ) message("# Cleaning up '", name, "'... ", appendLF=FALSE)
-			if( res <- fun(...) )
-				.clusterObjects$set(name, NULL)
-			if( verbose ) message('OK', if( !is.null(res) ) str_c(' [', res,']'))
-		}else fun
+	fe <- foreach:::.foreachGlobals
+	name <- getDoParName()
+	if( !is.null(fun <- object$cleanup) ){
+		if( verbose ) message("# Registering cleaning up function for '", name, "'... ", appendLF=FALSE)
+		assign('cleanup', fun, fe)
+		if( verbose ) message("OK")
+	}else if (exists("cleanup", envir = fe, inherits = FALSE)){
+		if( verbose ) message("# Removing cleaning up function for '", name, "'... ", appendLF=FALSE)
+		remove("cleanup", envir = fe)
+		if( verbose ) message("OK")
 	}
+	invisible(object)
+}
+
+# run cleanup procedure for a given backend object
+doBackendCleanup <- function(object, ..., run=TRUE, verbose=FALSE){
 	
-	if( missing(object) ){
-		f <- .clusterObjects$names()
-		sapply(f, .cleanup, ...)
-		invisible()
+	name <- object$name
+	if( !is.null(fun <- object$cleanup) ){
+		if( verbose ) message("# Cleaning up '", name, "'... ", appendLF=FALSE)
+		res <- try(fun(), silent=TRUE) 
+		if( verbose ) message(if( is(res, 'try-error') ) 'ERROR' else 'OK')
+		if( isTRUE(res) ) object$cleanup <- NULL
+		if( verbose ) message('OK', if( !is.null(res) ) str_c(' [', res,']'))
 	}
-	else if( is.null(object) ) return()
-	else if( missing(fun) ){
-		if( .clusterObjects$has(object$name) ){ 
-			.cleanup(object$name, ...)
-		}
-	}else if( is.null(fun) ){
-		.clusterObjects$set(object$name, NULL)
-	}else if( is.function(fun) ){
-		.clusterObjects$set(object$name, list(cleanup=fun, ...))
-	}
+	invisible(object)
 }
 
 #' \code{register} is a generic function that register objects.
@@ -184,6 +167,8 @@ register.foreach_backend <- function(x, ...){
 	else regfun()
 	# throw an error if not successful (foreach::setDoPar do not throw errors!!)
 	if( is(res, 'simpleError') ) stop(res)
+	# set cleanup procedure if any
+	setBackendCleanup(x)
 	# return result
 	invisible(res)
 }
@@ -261,11 +246,11 @@ setMethod('ForeachBackend', 'missing',
 	function(object, ...){
 		be <- getDoParName()
 		data <- getDoBackend()
-		data <- data$data
-		if( !is.null(data) )
-			do.call(ForeachBackend, c(list(be, data), ...))
-		else 
-			ForeachBackend(be, ...)
+		bdata <- data$data
+		res <- if( !is.null(bdata) ) do.call(ForeachBackend, c(list(be, bdata), ...))
+		else ForeachBackend(be, ...)
+		if( !is.null(data$cleanup) ) res$cleanup <- data$cleanup
+		res
 	}
 )
 #' Dummy method that returns \code{NULL}, defined for correct dispatch.
@@ -289,7 +274,7 @@ setMethod('ForeachBackend', 'numeric',
 		if( object <= 0 )
 			stop("invalid negative number of cores [", object, "] specified for backend 'doParallel'")
 		
-		ForeachBackend('doParallel', cl=object)
+		ForeachBackend('doParallel', cl=object, ...)
 	}
 )
 ###############
@@ -375,13 +360,11 @@ setMethod('ForeachBackend', 'doPSOCK_backend',
 	TRUE
 } 
 
-cleanupCluster <- function(x, cl){
+cleanupCluster <- function(x, cl, stopFun=NULL){
 	
-	function(force=FALSE){
+	function(){
 		
 		if( is(x, 'doParallel_backend') ){
-			# do not cleanup if current backend is the same (TODO: improve this)
-			if( !force && identical(getDoParName(), 'doParallel') ) return(FALSE)
 			
 			# on Windows: stop cluster stored in global variable `.revoDoParCluster`
 			if( .Platform$OS.type == "windows" ){
@@ -389,8 +372,9 @@ cleanupCluster <- function(x, cl){
 			}
 		}
 		
+		if( is.null(stopFun) ) stopFun <- parallel::stopCluster 
 		# stop cluster
-		try( parallel::stopCluster(cl), silent=TRUE)
+		stopFun(cl)
 		TRUE
 	}
 }
@@ -401,17 +385,14 @@ register.doParallel_backend <- function(x, ...){
 	# start cluster if numeric specification and type is defined
 	cl <- x$data[[1]]
 	if( is.numeric(cl) && !is.null(x$data$type) ){
-		# cleanup first
-		message('Force doPar cleanup')
-		doBackendCleanup(x, force=TRUE, verbose=TRUE)
+		names(x$data)[1L] <- 'spec'
 		# start cluster
 		clObj <- do.call(parallel::makeCluster, x$data)
 		x$data <- list(clObj)
-		# add global variable to enable closing the cluster when registering 
-		# another backend
-#		assign('.doParPSOCKCluster', clObj, envir = .clusterObjects)
-		doBackendCleanup(x, cleanupCluster(x, clObj))
+		# setup cleanup procedure
+		x$cleanup <- cleanupCluster(x, clObj)
 	}
+	# register
 	register.foreach_backend(x, ...)
 }
 
@@ -432,17 +413,12 @@ isMPIBackend <- function(x, ...){
 register.doMPI_backend <- function(x, ...){
 	
 	if( length(x$data) && isNumber(cl <- x$data[[1]]) ){
-		# cleanup first
-		message('Force MPI cleanup')
-		doBackendCleanup(x, verbose=FALSE)
-		
-		cl <- doMPI::startMPIcluster(cl)
-		x$data[[1]] <- cl
-		# add global variable to enable closing the cluster when registering 
-		# another backend
-		doBackendCleanup(x, cleanupCluster(x, cl))
-#		assign('.doMPICluster', cl, envir = .GlobalEnv)
+		clObj <- doMPI::startMPIcluster(cl)
+		x$data[[1]] <- clObj
+		# setup cleanup procedure
+		x$cleanup <- cleanupCluster(x, clObj, doMPI::closeCluster)
 	}
+	# register
 	register.foreach_backend(x, ...)
 }
 
@@ -462,19 +438,7 @@ setMethod('ForeachBackend', 'doMPI_backend',
 		
 		# use all available cores if not otherwise specified
 		if( missing(cl) ) cl <- getMaxCores()
-		
-#		if ( is.numeric(cl) ) {
-##			doBackendCleanup(object, function(x){
-##				gvname <- ".doMPICluster"
-##				# get cluster object from global variable `.doMPICluster`
-##				if( !exists(gvname, envir = .GlobalEnv) ) return()				
-##				cl <- get(gvname, envir = .GlobalEnv)
-##				doMPI::closeCluster(cl)
-##				rm(list=gvname, envir = .GlobalEnv)
-##				TRUE
-##			})
-#		}
-		
+				
 		# required registration data
 		object$fun <- doMPI:::doMPI
 		object$info <- doMPI:::info
@@ -622,23 +586,27 @@ getDoParNHosts <- function(object){
 #' @description
 #' Functions used internally to setup the computational environment.
 #' 
-#' \code{setupBackend} sets up the foreach backend.
+#' \code{setupBackend} sets up a foreach backend given some specifications.
 #' 
 #' @param spec target parallel specification: either \code{TRUE} or \code{FALSE},
 #' or a single numeric value that specifies the number of cores to setup. 
+#' @param backend value from argument \code{.pbackend} of \code{nmf}.
 #' @param optional a logical that indicates if the specification must be fully 
 #' satisfied, throwing an error if it is not, or if one can switch back to 
 #' sequential, only outputting a verbose message.
-#' @param backend value from argument \code{.pbackend} of \code{nmf}.
 #' @param verbose logical or integer level of verbosity for message outputs.
 #' 
+#' @return Returns \code{FALSE} if no foreach backend is to be used, \code{NA} if the currently 
+#' registered backend is to be used, or, if this function call registered a new backend, 
+#' the previously registered backend as a \code{foreach} object, so that it can be restored 
+#' after the computation is over.
 #' @keywords internals
 #' @rdname setup
-setupBackend <- function(spec, optional, backend, verbose=FALSE){
+setupBackend <- function(spec, backend, optional=FALSE, verbose=FALSE){
 
 	pbackend <- backend
 	str_backend <- quick_str(pbackend)
-	# early exit: specifications or backend mean no foreach at all
+	# early exit: FALSE specification or NA backend means not using foreach at all
 	if( isFALSE(spec) || isNA(pbackend) ) return(FALSE)
 	# use doParallel with number of cores if specified in backend
 	if( is.numeric(pbackend) ){
@@ -668,17 +636,21 @@ setupBackend <- function(spec, optional, backend, verbose=FALSE){
 	
 	# check current backend if backend is NULL
 	if( is.null(pbackend) ){
-		if( verbose > 1 ) message("# Check current backend ... ", appendLF=FALSE)
+		if( verbose > 1 ){
+			message("# Using current backend ... ", appendLF=FALSE)
+		}
 		ok <- tryCatch({
-			if( is.null(getDoParName()) )
-				stop(".pbackend is NULL but there is no registered backend")
+			if( is.null(parname <- getDoParName()) )
+				stop("argument '.pbackend' is NULL but there is no registered backend")
+			if( verbose > 1 ) message('OK [', parname, ']')
 			TRUE
 		}, error = errorFun())
 		if( !ok ) return(FALSE)
-		if( verbose > 1 ) message('OK')
 		# exit now since there is nothing to setup, nothing should change
-		return(TRUE)
+		# return NULL so that the backend is not restored on.exit of the parent call.
+		return(NA)
 	}
+	##
 	
 	# test if requested number of cores is actually available
 	NCORES <- getMaxCores(limit=FALSE)
@@ -704,18 +676,18 @@ setupBackend <- function(spec, optional, backend, verbose=FALSE){
 	
 	# create backend object
 	if( verbose > 2 ) message("# Loading backend for specification `", str_backend, "` ... ", appendLF=FALSE)
-	b <- tryCatch({
+	newBackend <- tryCatch({
 			# NB: limit to the number of cores available on the host 
 			if( !doSEQ ) ForeachBackend(pbackend, min(ncores, NCORES))
 			else ForeachBackend(pbackend)
 		}, error = errorFun(level=3))
-	if( isFALSE(b) ) return(FALSE)
+	if( isFALSE(newBackend) ) return(FALSE)
 	if( verbose > 2 ) message('OK')
 	
 	if( verbose > 1 ) message("# Check host compatibility ... ", appendLF=FALSE)
 	ok <- tryCatch({
 		# check if we're not running on MAC from GUI
-		if( is.Mac(check.gui=TRUE) && (b$name == 'doMC' || (b$name == 'doParallel' && is.numeric(b$data[[1]]))) ){
+		if( is.Mac(check.gui=TRUE) && (newBackend$name == 'doMC' || (newBackend$name == 'doParallel' && is.numeric(newBackend$data[[1]]))) ){
 			# error only if the parallel computation was explicitly asked by the user
 			stop("multicore parallel computations are not safe from R.app on Mac OS X."
 					, "\n  -> Use a terminal session, starting R from the command line.")
@@ -725,15 +697,18 @@ setupBackend <- function(spec, optional, backend, verbose=FALSE){
 	if( !ok ) return(FALSE)
 	if( verbose > 1 ) message('OK')
 	
-	if( verbose > 1 ) message("# Setting up `", b$name, "` ... ", appendLF=FALSE)
+	if( verbose > 1 ) message("# Registering backend `", newBackend$name, "` ... ", appendLF=FALSE)
 	# try registering the backend
 	oldBackend <- getDoBackend()
 	# setup retoration of backend in case of an error
-	on.exit( setDoBackend(oldBackend) )
+	# NB: the new backend cleanup will happens only 
+	# if regsitration succeeds, since the cleanup routine is 
+	# setup after the registration by the suitable register S3 method. 
+	on.exit( setDoBackend(oldBackend, cleanup=TRUE) )
 	
 	ov <- lverbose(verbose)
 	ok <- tryCatch({
-			registerDoBackend(b)
+			registerDoBackend(newBackend)
 			TRUE
 		}
 		, error ={
@@ -744,33 +719,31 @@ setupBackend <- function(spec, optional, backend, verbose=FALSE){
 	if( !ok ) return(FALSE)
 	if( verbose > 1 ) message('OK')
 	
-	# early exit if doSEQ backend
-	if( b$name == 'doSEQ' ){
-		on.exit()
-		return(TRUE)
-	}
-	
-	# test allocated number of cores
-	if( verbose > 2 ) message("# Check allocated cores ... ", appendLF=FALSE)
-	wcores <- getDoParWorkers()
-	if( ncores > 0L && wcores < ncores ){
-		if( !optional ){
-			errorFun(level=3)("only ", wcores, " core(s) available [requested ", ncores ," core(s)]")
-		}else if( verbose > 2 ){
-			message('NOTE [', wcores, '/', ncores, ']')
-			message("# NOTE: using only ", wcores,
-					" core(s) [requested ", ncores ," core(s)]")
+	# check allocated cores if not doSEQ backend
+	if( newBackend$name != 'doSEQ' ){
+		# test allocated number of cores
+		if( verbose > 2 ) message("# Check allocated cores ... ", appendLF=FALSE)
+		wcores <- getDoParWorkers()
+		if( ncores > 0L && wcores < ncores ){
+			if( !optional ){
+				errorFun(level=3)("only ", wcores, " core(s) available [requested ", ncores ," core(s)]")
+			}else if( verbose > 2 ){
+				message('NOTE [', wcores, '/', ncores, ']')
+				message("# NOTE: using only ", wcores,
+						" core(s) [requested ", ncores ," core(s)]")
+			}
 		}
-	}
-	else if( verbose > 2 ){
-		message('OK [', wcores, '/', ncores
-				, if(ncores != NCORES ) str_c(' out of ', NCORES)
-				, ']')
+		else if( verbose > 2 ){
+			message('OK [', wcores, '/', ncores
+					, if(ncores != NCORES ) str_c(' out of ', NCORES)
+					, ']')
+		}
 	}
 	
 	# cancel backend restoration
 	on.exit()
-	TRUE
+	# return old backend
+	oldBackend
 }
 
 
@@ -848,6 +821,7 @@ setupTempDirectory <- function(verbose){
 		nmf_stop('nmf', "could not create temporary result directory '", NMF_TMPDIR, "'")
 	}
 	
+	on.exit( unlink(NMF_TMPDIR, recursive=TRUE) )
 	# ensure that all workers can see the temporary directory
 	wd <- times(getDoParWorkers()) %dopar% {
 		if( !file_test('-d', NMF_TMPDIR) )
@@ -860,7 +834,7 @@ setupTempDirectory <- function(verbose){
 		nmf_stop('nmf', "could not create/see temporary result directory '", NMF_TMPDIR, "' on worker nodes ", str_out(which(!wd), Inf))	
 	}
 	if( verbose > 2 ) message('OK')
-	
+	on.exit()
 	NMF_TMPDIR
 }
 

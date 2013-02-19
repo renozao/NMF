@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfitXn-class. NMF 0.10.6</title>
+<title>NMFfitXn-class. NMF 0.10.7</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -24,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.6</a>
+      <a class="brand" href="index.html">NMF 0.10.7</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -242,16 +242,16 @@
    407L, -847510264L, -577147031L, -1376809962L, -16364641L, -712990380L, 562459717L 
   Total timing:
    user  system elapsed 
-  2.364   0.416   1.167 
+  2.440   0.360   1.141 
   Sequential timing:
    user  system elapsed 
-  0.580   0.000   0.585 
+  0.516   0.000   0.517 
 </div><div class='input'></div><div class='input'>summary(res)
 </div>
 <div class='output'>            rank sparseness.basis  sparseness.coef        residuals 
        3.0000000        0.5255522        0.7351538       45.8571336 
            niter              cpu          cpu.all             nrun 
-     430.0000000        0.1760000        2.3640000        3.0000000 
+     430.0000000        0.1280000        2.4400000        3.0000000 
       cophenetic       dispersion 
        1.0000000        1.0000000 
 </div><div class='input'># get more info</div><div class='input'>summary(res, target=V, class=groups)
@@ -261,17 +261,17 @@
          entropy              rss             evar        residuals 
        0.0000000       55.0723794        0.7954913       45.8571336 
            niter              cpu          cpu.all             nrun 
-     430.0000000        0.1760000        2.3640000        3.0000000 
+     430.0000000        0.1280000        2.4400000        3.0000000 
       cophenetic       dispersion 
        1.0000000        1.0000000 
 </div><div class='input'></div><div class='input'># compute/show computational times</div><div class='input'>runtime.all(res)
 </div>
 <div class='output'>   user  system elapsed 
-  2.364   0.416   1.167 
+  2.440   0.360   1.141 
 </div><div class='input'>seqtime(res)
 </div>
 <div class='output'>   user  system elapsed 
-  0.580   0.000   0.585 
+  0.516   0.000   0.517 
 </div><div class='input'></div><div class='input'># plot the consensus matrix, computed on the fly</div><div class='input'>## <strong>Not run</strong>:  consensusmap(res, annCol=groups) </div></pre>
   </div>
   <div class="span4">

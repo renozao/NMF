@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>setupBackend. NMF 0.10.6</title>
+<title>setupBackend. NMF 0.10.7</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -24,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.6</a>
+      <a class="brand" href="index.html">NMF 0.10.7</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -44,7 +44,7 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre>setupBackend(spec, optional, backend, verbose = FALSE)
+    <pre>setupBackend(spec, backend, optional = FALSE, verbose = FALSE)
 
 setupSharedMemory(verbose)
 
@@ -60,14 +60,14 @@ setupRNG(seed, n, verbose = FALSE)</pre>
       <dd>target parallel specification: either
   <code>TRUE</code> or <code>FALSE</code>, or a single numeric value
   that specifies the number of cores to setup.</dd>
+      <dt>backend</dt>
+      <dd>value from argument <code>.pbackend</code> of
+  <code>nmf</code>.</dd>
       <dt>optional</dt>
       <dd>a logical that indicates if the
   specification must be fully satisfied, throwing an error
   if it is not, or if one can switch back to sequential,
   only outputting a verbose message.</dd>
-      <dt>backend</dt>
-      <dd>value from argument <code>.pbackend</code> of
-  <code>nmf</code>.</dd>
       <dt>verbose</dt>
       <dd>logical or integer level of verbosity for
   message outputs.</dd>
@@ -80,13 +80,26 @@ setupRNG(seed, n, verbose = FALSE)</pre>
       <dd>number of RNG seeds to generate</dd>
     </dl>
     
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>Returns <code>FALSE</code> if no foreach backend is to be used,
+  <code>NA</code> if the currently registered backend is to be
+  used, or, if this function call registered a new backend,
+  the previously registered backend as a <code>foreach</code>
+  object, so that it can be restored after the computation
+  is over.</p>
+  
+    </div>
+
     <div class="Description">
       <h2>Description</h2>
       
       <p>Functions used internally to setup the computational
   environment.</p>
   
-      <p><code>setupBackend</code> sets up the foreach backend.</p>
+      <p><code>setupBackend</code> sets up a foreach backend given some
+  specifications.</p>
   
       <p><code>setupSharedMemory</code> checks if one can use the
   packages <em>bigmemory</em> and <em>sychronicity</em> to

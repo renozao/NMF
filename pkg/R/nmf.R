@@ -1322,22 +1322,25 @@ function(x, rank, method
 				message("# Setting up requested `foreach` environment: "
 						, if( opt.parallel.required ) 'require-parallel' else 'try-parallel'
 						, ' [', quick_str(.pbackend) , ']')
-			# setup backend restoration if not using the current one
-			if( !is.null(.pbackend) ){
-				
-				# switch doMC backend to doParallel
-				if( is.character(.pbackend) && identical(toupper(.pbackend), 'MC') ) 
-					.pbackend <- 'par'
-
-				oldBackend <- getDoBackend()
-				on.exit({
-					if( verbose > 2 ) message("# Restoring foreach backend ... ", appendLF=FALSE)
-					setDoBackend(oldBackend)
-					if( verbose > 2 ) message('OK')
-				}, add=TRUE)
+			
+			
+			# switch doMC backend to doParallel
+			if( isString(.pbackend, 'MC', ignore.case=TRUE) ){ 
+				.pbackend <- 'par'
 			}
 			# try setting up parallel foreach backend
-			opt.parallel <- setupBackend(opt.parallel.spec, !opt.parallel.required, .pbackend, verbose=verbose)
+			oldBackend <- setupBackend(opt.parallel.spec, .pbackend, !opt.parallel.required, verbose=verbose)
+			opt.parallel <- !isFALSE(oldBackend)
+			# setup backend restoration if using one different from the current one
+			if( opt.parallel && !isNA(oldBackend) ){
+				on.exit({
+						if( verbose > 2 ){
+							message("# Restoring previous foreach backend ... ", appendLF=FALSE)
+						}
+						setDoBackend(oldBackend, cleanup=TRUE)
+						if( verbose > 2 ) message('OK')
+					}, add=TRUE)
+			}#
 			
 			# From this point, the backend is registered
 			# => one knows if we'll run a sequential or parallel foreach loop

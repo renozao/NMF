@@ -6,7 +6,8 @@
 \alias{setupTempDirectory}
 \title{Computational Setup Functions}
 \usage{
-  setupBackend(spec, optional, backend, verbose = FALSE)
+  setupBackend(spec, backend, optional = FALSE,
+    verbose = FALSE)
 
   setupSharedMemory(verbose)
 
@@ -21,13 +22,13 @@
   \code{TRUE} or \code{FALSE}, or a single numeric value
   that specifies the number of cores to setup.}
 
+  \item{backend}{value from argument \code{.pbackend} of
+  \code{nmf}.}
+
   \item{optional}{a logical that indicates if the
   specification must be fully satisfied, throwing an error
   if it is not, or if one can switch back to sequential,
   only outputting a verbose message.}
-
-  \item{backend}{value from argument \code{.pbackend} of
-  \code{nmf}.}
 
   \item{verbose}{logical or integer level of verbosity for
   message outputs.}
@@ -39,11 +40,20 @@
 
   \item{n}{number of RNG seeds to generate}
 }
+\value{
+  Returns \code{FALSE} if no foreach backend is to be used,
+  \code{NA} if the currently registered backend is to be
+  used, or, if this function call registered a new backend,
+  the previously registered backend as a \code{foreach}
+  object, so that it can be restored after the computation
+  is over.
+}
 \description{
   Functions used internally to setup the computational
   environment.
 
-  \code{setupBackend} sets up the foreach backend.
+  \code{setupBackend} sets up a foreach backend given some
+  specifications.
 
   \code{setupSharedMemory} checks if one can use the
   packages \emph{bigmemory} and \emph{sychronicity} to

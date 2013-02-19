@@ -26,7 +26,7 @@
 
   getDoBackend()
 
-  setDoBackend(data)
+  setDoBackend(data, cleanup = FALSE)
 
   register(x, ...)
 
@@ -53,6 +53,10 @@
 
   \item{data}{internal data of a foreach \%dopar\%
   backend.}
+
+  \item{cleanup}{logical that indicates if the previous
+  backend's cleanup procedure should be run,
+  \strong{before} setting the new backend.}
 
   \item{x}{specification of a foreach backend}
 

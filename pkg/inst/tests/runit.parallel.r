@@ -125,10 +125,10 @@ test.setupBackend <- function(){
 	# restore backend on.exit
 	on.exit( registerDoSEQ() )
 	
-	checkException( setupBackend(-1, TRUE, 'par'), "Invalid number of cores (optional)")
-	checkException( setupBackend(-1, FALSE, 'par'), "Invalid number of cores (required)")
-	checkException( setupBackend(10, FALSE, 'par'), "Required too many cores")
-	checkException( setupBackend(1, FALSE, 'toto'), "Required unknown backend")
+	checkException( setupBackend(-1, 'par', TRUE), "Invalid number of cores (optional)")
+	checkException( setupBackend(-1, 'par', FALSE), "Invalid number of cores (required)")
+	checkException( setupBackend(10, 'par', FALSE), "Required too many cores")
+	checkException( setupBackend(1, 'toto', FALSE), "Required unknown backend")
 	
 }
 
@@ -242,6 +242,11 @@ test.nmf <- function(){
 					, str_c(msg, ": consensus matrice (no.attrib) is identical to default") )
 		checkIdentical( consensus(res), consensus(res2), str_c(msg, ": consensus matrice is identical to default") )
 		checkTrue( identical(be, getDoBackend()), str_c(msg, ": backend is restored") )
+		
+		# check restoration on error
+		checkException( nmf(a, 2, method=function(...) 1L, seed=123, nrun=3, .opt=str_c('v3', .options), ...), str_c(msg, " throw error if bad method"))
+		checkTrue( identical(be, getDoBackend()), str_c(msg, ": backend is restored after error") )
+		
 	}
 	
 	library(parallel)
@@ -250,15 +255,25 @@ test.nmf <- function(){
 		.check('P2', .options='P2')
 	
 	# SNOW-type from char spec
-	.check('.pbackend="psock"', .options='P2', .pbackend='psock')
+	.check('.pbackend="psock"', .options='P2', .pbackend='PSOCK')
 	
 	# SNOW-type
 	cl <- makeCluster(2)
 	on.exit( stopCluster(cl), add=TRUE)
 	.check('.pbackend=cl + SNOW-like cluster', .pbackend=cl)
+	stopCluster(cl)
 	library(doParallel)
+	cl <- makeCluster(2)
 	registerDoParallel(cl)
+	cl_loaded <- function(){
+		unique(unlist(foreach(i=1:2) %dopar% { loadedNamespaces() }))
+	}
+	lpkg <- cl_loaded()
+	
+	.check('doParallel registered cluster + P2 [should not use registered cluster]', .opt='P2')
+	checkIdentical(lpkg, cl_loaded(), "Registered cluster was not used if .opt='P2'")
 	.check('.pbackend=NULL + doParallel registered cluster', .pbackend=NULL)
+	checkTrue(length(setdiff(cl_loaded(), lpkg))>0, "Registered cluster was used if .pbackend=NULL")
 	
 	# MPI
 	if( !require(doMPI) ) DEACTIVATED("Package doMPI not available.")
@@ -266,5 +281,5 @@ test.nmf <- function(){
 	on.exit( closeCluster(cl_MPI), add=TRUE)
 	.check('.pbackend=cl_MPI + MPI cluster', .pbackend=cl_MPI)
 	registerDoMPI(cl_MPI)
-	.check('.pbackend=NULL + doMPI registered MPI cluster', .pbackend=NULL)
+	.check('.pbackend=NULL + doMPI registered MPI cluster', .pbackend=NULL)	
 }
