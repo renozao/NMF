@@ -387,7 +387,7 @@ setMethod('basismap', signature(object='NMF'),
 
 # check if an object contains some value
 anyValue <- function(x){
-	length(x) > 0L && !isNA(x) 
+	length(x) > 0L && !is_NA(x) 
 }
 
 grep_track <- function(x){

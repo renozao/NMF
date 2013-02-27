@@ -330,7 +330,7 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
 		stop("NMF::profplot - Invalid argument `annotation`:: length should be equal to the number of columns in ", xvar, " [=", ncol(x),"]")
 	
 	# reorder the columns if requested
-	if( !missing(Colv) && !isNA(Colv) ){
+	if( !missing(Colv) && !is_NA(Colv) ){
 		
 		ord <- if( length(Colv) == 1 ){
 			if( !is.numeric(Colv) || abs(Colv) > nrow(x) )
@@ -351,7 +351,7 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
 		# reorder all relevant quantities
 		x <- x[,ord]
 		labels <- labels[ord]		
-		if( !missing(annotation) && !isNA(annotation) )
+		if( !missing(annotation) && !is_NA(annotation) )
 			annotation <- annotation[ord]
 	}
 	
@@ -394,7 +394,7 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
 	
 	voffset <- 1
 	# add sample annotation
-	if( !missing(annotation) && !isNA(annotation) && is.factor(annotation) ){
+	if( !missing(annotation) && !is_NA(annotation) && is.factor(annotation) ){
 		
 		grid.rect(x = unit(px, "native"), unit(-voffset, "lines")
 			, width = unit(1, 'native'), height = unit(1, "lines")
@@ -403,7 +403,7 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
 	}
 	
 	# add labels
-	if( !isNA(labels) ){
+	if( !is_NA(labels) ){
 		# setup grid-base mixed graphic
 		#library(gridBase)
 		#vps <- baseViewports()

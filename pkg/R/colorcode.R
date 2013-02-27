@@ -41,11 +41,11 @@ ccPalette <- function(x, n=NA, verbose=FALSE){
 	if( length(x)==1 ){
 	
 		# shortcut for single colors
-		if( (isNA(n) || n==1) && length(x) > 1L && all(grepl("^#", x)) ) return(x)
+		if( (is_NA(n) || n==1) && length(x) > 1L && all(grepl("^#", x)) ) return(x)
 		
 		sp <- ccSpec(x)
 		x <- sp$palette
-		if( isNA(n) )
+		if( is_NA(n) )
 			n <- sp$n
 		
 		a <- attributes(x)
@@ -78,7 +78,7 @@ ccPalette <- function(x, n=NA, verbose=FALSE){
 					x <- cpal[i]
 					
 					# use default value of 10 for n if not specified
-					np <- if( isNA(n) ) 10 else n
+					np <- if( is_NA(n) ) 10 else n
 					
 					x <- switch(x
 							, RdYlBu2 = c("#D73027", "#FC8D59", "#FEE090", "#FFFFBF", "#E0F3F8", "#91BFDB", "#4575B4")
@@ -107,7 +107,7 @@ ccPalette <- function(x, n=NA, verbose=FALSE){
 	}
 	
 	# limit to the requested length
-	if( !isNA(n) )
+	if( !is_NA(n) )
 		x <- x[1:n]
 		
 	# return converted palette
@@ -163,14 +163,14 @@ ccSpec <- function(x){
 			
 			# extract length for string
 			sm <- str_match(x, "([^:]+):([0-9]+).*")[1,]
-			if( !isNA(sm[1]) ){
+			if( !is_NA(sm[1]) ){
 				n <- as.integer(sm[3])
 				x <- sm[2]
 			}
 			
 			# convert to a colour code if possible
 			# use maximum colour number of brewer sets 
-			if( isNA(n) && isString(x) && require.quiet('RColorBrewer') && x %in% rownames(brewer.pal.info) ){
+			if( is_NA(n) && isString(x) && require.quiet('RColorBrewer') && x %in% rownames(brewer.pal.info) ){
 				n <- brewer.pal.info[x,'maxcolors']
 			}else if( grepl("^[1-8]$", x) ){# integer code between 1 and 8: R basic colour
 				x <- palette()[as.integer(x)]
@@ -213,7 +213,7 @@ ccRamp <- function(x, n=NA, ...){ #breaks, data, ...){
 	x <- sp$palette
 	if( missing(n) ){
 		n <- sp$n
-		if( isNA(n) ) n <- 50		
+		if( is_NA(n) ) n <- 50		
 	}
 	
 	# create a palette from specification x
@@ -233,7 +233,7 @@ ccRamp <- function(x, n=NA, ...){ #breaks, data, ...){
 #		ccBreaks(data, n)
 #	}
 
-	if( isNA(n) )
+	if( is_NA(n) )
 		n <- length(x)
 
 	# return ramp from palette

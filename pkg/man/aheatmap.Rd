@@ -5,7 +5,7 @@
   aheatmap(x, color = "-RdYlBu2:100", breaks = NA,
     border_color = NA, cellwidth = NA, cellheight = NA,
     scale = "none", Rowv = TRUE, Colv = TRUE,
-    revC = identical(Colv, "Rowv") || isNA(Rowv) || (is.integer(Rowv) && length(Rowv) > 1),
+    revC = identical(Colv, "Rowv") || is_NA(Rowv) || (is.integer(Rowv) && length(Rowv) > 1),
     distfun = "euclidean", hclustfun = "complete",
     reorderfun = function(d, w) reorder(d, w),
     treeheight = 50, legend = TRUE, annCol = NA,

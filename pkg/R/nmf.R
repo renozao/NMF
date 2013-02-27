@@ -1312,10 +1312,10 @@ function(x, rank, method
 					# option require-parallel implies and takes precedence over option try-parallel
 					.options$parallel.required
 				}else if( !is.null(.options$parallel) ) .options$parallel # priority over .pbackend
-				else !isNA(.pbackend) # required only if backend is not trivial
+				else !is_NA(.pbackend) # required only if backend is not trivial
 
 		# determine if one should run in parallel at all: TRUE or numeric != 0, .pbackend not NA
-		opt.parallel <- !isNA(.pbackend) && (isTRUE(opt.parallel.spec) || opt.parallel.spec)
+		opt.parallel <- !is_NA(.pbackend) && (isTRUE(opt.parallel.spec) || opt.parallel.spec)
 		##
 		if( opt.parallel ){
 			if( verbose > 1 )
@@ -1332,7 +1332,7 @@ function(x, rank, method
 			oldBackend <- setupBackend(opt.parallel.spec, .pbackend, !opt.parallel.required, verbose=verbose)
 			opt.parallel <- !isFALSE(oldBackend)
 			# setup backend restoration if using one different from the current one
-			if( opt.parallel && !isNA(oldBackend) ){
+			if( opt.parallel && !is_NA(oldBackend) ){
 				on.exit({
 						if( verbose > 2 ){
 							message("# Restoring previous foreach backend ... ", appendLF=FALSE)

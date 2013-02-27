@@ -1374,7 +1374,7 @@ RNGseed <- function(seed, verbose=FALSE){
 		}
 		else if( length(seed) != 6 )
 			stop("RNGseed - Invalid numeric seed: should be a numeric of length 1 or 6")		
-	}else if( !isNA(seed) )
+	}else if( !is_NA(seed) )
 		stop("RNGseed - Invalid seed value: should be a single numeric, NULL or NA")
 	
 	if( verbose ) message("# Setting RNGstream random seed to: ", paste(seed, collapse=', '), " ... ", appendLF=FALSE)

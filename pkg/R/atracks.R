@@ -261,7 +261,7 @@ setMethod('.atrack', signature(object='ANY'),
 		
 		# recursive on list
 		if( is.list(object) ){
-			object <- object[!sapply(object, function(x) length(x) == 0 || isNA(x) )]
+			object <- object[!sapply(object, function(x) length(x) == 0 || is_NA(x) )]
 			res <- 
 					if( length(object) == 0 ) NULL
 					else{
@@ -270,7 +270,7 @@ setMethod('.atrack', signature(object='ANY'),
 					}
 			return(res)
 			
-		}else if( is.null(object) || isNA(object) || is.atrack(object) ) object
+		}else if( is.null(object) || is_NA(object) || is.atrack(object) ) object
 		else{
 			# extend to match the data
 			object <- match_atrack(object, data)
@@ -394,12 +394,12 @@ atrack <- function(..., order = NULL, enforceNames=FALSE, .SPECIAL=NA, .DATA = N
 		#print(l)
 		lapply(seq_along(l), function(i){
 					x <- l[[i]]
-					if( isNA(x) || is.null(x) )
+					if( is_NA(x) || is.null(x) )
 						return()
 					
 					xa <- .atrack(x, data=.DATA)
 					
-					if( isNA(xa) || is.null(xa) )
+					if( is_NA(xa) || is.null(xa) )
 						return()
 					
 					n <- names(object)
@@ -408,7 +408,7 @@ atrack <- function(..., order = NULL, enforceNames=FALSE, .SPECIAL=NA, .DATA = N
 						xa <- setNames(list(xa), names(l)[i])
 							
 					# remove NA and NULL elements
-					if( is.null(xa) || isNA(xa) ) return()
+					if( is.null(xa) || is_NA(xa) ) return()
 					# cbind with previous tracks
 					if( is.null(object) ) object <<- xa
 					else object <<- c(object, xa)
@@ -462,7 +462,7 @@ atrack <- function(..., order = NULL, enforceNames=FALSE, .SPECIAL=NA, .DATA = N
 						sapply(i_spe, function(i){
 							x <- object[[i]]
 							if( names(object)[i] == '' 
-								&& !isNA(j <- match(x, .CACHE_SPE)) 
+								&& !is_NA(j <- match(x, .CACHE_SPE)) 
 								&& names(.CACHE_SPE)[j] != ''){
 								names(object)[i] <<- names(.CACHE_SPE)[j]
 							}
@@ -519,7 +519,7 @@ annotationTrack <- function(x = list()){
 #	function(object, value){
 #		# if the annotation track is not NA: convert it into a atrack 
 #		# and set the value
-#		if( !isNA(object) && length(value) > 0 ){
+#		if( !is_NA(object) && length(value) > 0 ){
 #			object <- atrack(object, value)
 #		}
 #		object

@@ -31,7 +31,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	
 	gp = list(fontsize = fontsize, ...)
 	# Legend position
-	if( !isNA(legend) ){
+	if( !is_NA(legend) ){
 		longest_break = which.max(nchar(as.character(legend)))
 		longest_break = unit(1.1, "grobwidth", textGrob(as.character(legend)[longest_break], gp = do.call(gpar, gp)))
 		# minimum fixed width: plan for 2 decimals and a sign 
@@ -60,7 +60,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	}
 	
 	# Column annotations
-	if( !isNA(annotation) ){
+	if( !is_NA(annotation) ){
 		# Column annotation height		
 		annot_height = unit(ncol(annotation) * (8 + 2) + 2, "bigpts")
 	}
@@ -69,7 +69,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	}
 	
 	# add a viewport for the row annotations
-	if ( !isNA(row_annotation) ) {
+	if ( !is_NA(row_annotation) ) {
 		# Row annotation width		
 		row_annot_width = unit(ncol(row_annotation) * (8 + 2) + 2, "bigpts")
 	}
@@ -79,7 +79,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	
 	# Width of the annotation legend
 	annot_legend_width <- 
-		if( annotation_legend && !isNA(annotation_colors) ){ 
+		if( annotation_legend && !is_NA(annotation_colors) ){ 
 			.annLegend.dim(annotation_colors, fontsize)
 		}else unit(0, "bigpts")
 
@@ -624,7 +624,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	if(mindim < 3) border_color = NA
 
 	# Draw tree for the columns
-	if (!isNA(tree_col) &&  treeheight_col != 0){
+	if (!is_NA(tree_col) &&  treeheight_col != 0){
 		#vplayout(1, 2)
 		vplayout('ctree')
 		draw_dendrogram(tree_col, horizontal = T)
@@ -632,7 +632,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	}
 
 	# Draw tree for the rows
-	if(!isNA(tree_row) && treeheight_row !=0){
+	if(!is_NA(tree_row) && treeheight_row !=0){
 		#vplayout(3, 1)
 		vplayout('rtree')
 		draw_dendrogram(tree_row, horizontal = F)
@@ -666,7 +666,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	}
 
 	# Draw annotation tracks
-	if( !isNA(annotation) ){
+	if( !is_NA(annotation) ){
 		#vplayout(2, 2)
 		vplayout('cann')
 		draw_annotations(annotation, border_color)
@@ -674,14 +674,14 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	}	
 	
 	# add row annotations if necessary	
-	if ( !isNA(row_annotation) ) {
+	if ( !is_NA(row_annotation) ) {
 		vplayout('rann')
 		draw_annotations(row_annotation, border_color, horizontal=FALSE)
 		upViewport()
 	}
 	
 	# Draw annotation legend
-	if( annotation_legend && !isNA(annotation_colors) ){
+	if( annotation_legend && !is_NA(annotation_colors) ){
 		#vplayout(3, 5)
 		vplayout('aleg')
 		draw_annotation_legend(annotation_colors, border_color, fontsize = fontsize, ...)
@@ -689,7 +689,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	}
 
 	# Draw legend
-	if(!isNA(legend)){
+	if(!is_NA(legend)){
 		#vplayout(3, 4)
 		vplayout('leg')
 		draw_legend(color, breaks, legend, fontsize = fontsize, ...)
@@ -731,7 +731,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 }
 
 generate_breaks = function(x, n, center=NA){
-	if( missing(center) || isNA(center) )
+	if( missing(center) || is_NA(center) )
 		seq(min(x, na.rm = T), max(x, na.rm = T), length.out = n + 1)
 	else{ # center the breaks on the requested value
 		n2 <- ceiling((n+0.5)/2)
@@ -933,7 +933,7 @@ cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, s
 			
 			av <- c("correlation", "euclidean", "maximum", "manhattan", "canberra", "binary", "minkowski")
 			i <- pmatch(distfun, av)
-			if( isNA(i) )			
+			if( is_NA(i) )			
 				stop("aheatmap - Invalid dissimilarity method, must be one of: ", paste("'", av, "'", sep='', collapse=', '))
 			
 			distfun <- av[i]
@@ -990,7 +990,7 @@ scale_mat = function(x, scale, na.rm=TRUE){
 	
 	av <- c("none", "row", "column", 'r1', 'c1')
 	i <- pmatch(scale, av)	
-	if( isNA(i) )
+	if( is_NA(i) )
 		stop("scale argument shoud take values: 'none', 'row' or 'column'")
 	scale <- av[i]
 		
@@ -1026,7 +1026,7 @@ round.pretty <- function(x, min=2){
 }
 
 generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE){
-	if( isNA(annotation_colors) ){
+	if( is_NA(annotation_colors) ){
 		annotation_colors = list()
 	}
 	# use names from annotations if necessary/possible
@@ -1153,7 +1153,7 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 
 # Create row/column names
 generate_dimnames <- function(x, n, ref){
-	if( isNA(x) ) NULL
+	if( is_NA(x) ) NULL
 	else if( length(x) == n ) x
 	else if( identical(x, 1) || identical(x, 1L) ) 1L:n
 	else if( isString(x) ){
@@ -1194,12 +1194,12 @@ renderAnnotations <- function(annCol, annRow, annotation_colors, verbose=getOpti
 	
 	# concatenate both col and row annotation
 	annotation <- list()
-	if( isNA(annotation_colors) ) annotation_colors <- list() 
+	if( is_NA(annotation_colors) ) annotation_colors <- list() 
 	nc <- length(annCol)
 	nr <- length(annRow)
 	flag <- function(x, f){ if( missing(f) ) attr(x, 'flag') else{ attr(x, 'flag') <- f; x} }
-	if( !isNA(annCol) ) annotation <- c(annotation, sapply(as.list(annCol), flag, 'col', simplify=FALSE))
-	if( !isNA(annRow) ) annotation <- c(annotation, sapply(as.list(annRow), flag, 'row', simplify=FALSE))
+	if( !is_NA(annCol) ) annotation <- c(annotation, sapply(as.list(annCol), flag, 'col', simplify=FALSE))
+	if( !is_NA(annRow) ) annotation <- c(annotation, sapply(as.list(annRow), flag, 'row', simplify=FALSE))
 		
 	if( length(annotation) == 0 ) return( list(annCol=NA, annRow=NA, colors=NA) )
 	
@@ -1214,14 +1214,14 @@ renderAnnotations <- function(annCol, annRow, annotation_colors, verbose=getOpti
 		m <- str_match(cnames, "^@([^{]+)\\{([^}]+)\\}")		
 		apply(m, 1L, function(x){
 			# skip unmatched names
-			if( isNA(x[1]) ) return()
+			if( is_NA(x[1]) ) return()
 			
 			acol <- annotation_colors[[x[1]]]
 			# rename both annotation and annotation_colors if necessary
 			if( x[2] != x[3] ){
 				annotation[[x[3]]] <<- annotation[[x[2]]]				
 				annotation[[x[2]]] <<- NULL
-				if( !isNA(acol) )
+				if( !is_NA(acol) )
 					annotation_colors[[x[3]]] <<- acol
 				annotation_colors[[x[1]]] <<- NULL
 			}
@@ -1686,7 +1686,7 @@ subset_index <- function(x, margin, subset){
 aheatmap = function(x
 , color = '-RdYlBu2:100'
 , breaks = NA, border_color=NA, cellwidth = NA, cellheight = NA, scale = "none"
-, Rowv=TRUE, Colv=TRUE, revC = identical(Colv, "Rowv") || isNA(Rowv) || (is.integer(Rowv) && length(Rowv) > 1)
+, Rowv=TRUE, Colv=TRUE, revC = identical(Colv, "Rowv") || is_NA(Rowv) || (is.integer(Rowv) && length(Rowv) > 1)
 , distfun = "euclidean", hclustfun = "complete", reorderfun = function(d,w) reorder(d,w)
 , treeheight = 50
 , legend = TRUE, annCol = NA, annRow = NA, annColors = NA, annLegend = TRUE
@@ -1760,7 +1760,7 @@ aheatmap = function(x
 	
 	## CLUSTERING
 	# Do row clustering	
-	tree_row <- if( !isNA(Rowv) ){
+	tree_row <- if( !is_NA(Rowv) ){
 		if( verbose ) message("Cluster rows")
 		# single numeric Rowv means treeheight
 		if( isReal(Rowv) ){
@@ -1781,7 +1781,7 @@ aheatmap = function(x
 		treeheight_row <- 0
 	
 	# Do col clustering
-	tree_col <- if( !isNA(Colv) ){
+	tree_col <- if( !is_NA(Colv) ){
 		if( identical(Colv,"Rowv") ){ # use row indexing if requested
 			if( ncol(mat) != nrow(mat) )
 				stop("aheatmap - Colv='Rowv' but cannot treat columns and rows symmetrically: input matrix is not square.")
@@ -1809,7 +1809,7 @@ aheatmap = function(x
 		treeheight_col <- 0
 	
 	## ORDER THE DATA
-	if( !isNA(tree_row) ){
+	if( !is_NA(tree_row) ){
 		
 		# revert the row order if requested
 		if( revC ){
@@ -1846,7 +1846,7 @@ aheatmap = function(x
 		mat <- mat[if( is.null(subInd) ) res$rowInd else subInd, , drop=FALSE]
 	}
 	
-	if( !isNA(tree_col) ){		
+	if( !is_NA(tree_col) ){		
 		# store the column order and tree if possible
 		if( is_treedef(tree_col) ){
 			res$Colv <- tree_col$dendrogram
@@ -1901,7 +1901,7 @@ aheatmap = function(x
 	color <- ccRamp(color)
 	
 	# generate breaks if necessary
-	if( isNA(breaks) || isNumber(breaks) ){
+	if( is_NA(breaks) || isNumber(breaks) ){
 		if( verbose ) message("Generate breaks")
 		# if a single number: center the breaks on this value
 		cbreaks <- if( isNumber(breaks) ) breaks else NA

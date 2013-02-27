@@ -607,7 +607,7 @@ setupBackend <- function(spec, backend, optional=FALSE, verbose=FALSE){
 	pbackend <- backend
 	str_backend <- quick_str(pbackend)
 	# early exit: FALSE specification or NA backend means not using foreach at all
-	if( isFALSE(spec) || isNA(pbackend) ) return(FALSE)
+	if( isFALSE(spec) || is_NA(pbackend) ) return(FALSE)
 	# use doParallel with number of cores if specified in backend
 	if( is.numeric(pbackend) ){
 		spec <- pbackend
