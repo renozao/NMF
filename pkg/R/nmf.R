@@ -1407,7 +1407,7 @@ function(x, rank, method
 								," [version ", getDoParVersion(),"]")
 				# show number of processes
 				if( getDoParWorkers() == 1 ) message("Mode: sequential [foreach:",getDoParName(),"]")
-				else message("Mode: parallel", str_c("(", getDoParWorkers(), '/', parallel::detectCores()," core(s))"))
+				else message("Mode: parallel ", str_c("(", getDoParWorkers(), '/', parallel::detectCores()," core(s))"))
 			}
 			
 			# check shared memory capability
@@ -1462,8 +1462,7 @@ function(x, rank, method
 				# ensure that the package NMF is in each worker's search path
 				.packages <- setupLibPaths('NMF', verbose>3)
 				# export dev environment if in dev mode 
-				.export <- if( isDevNamespace('NMF') && !is.doSEQ() ) 
-								ls(asNamespace('NMF'))
+#				.export <- if( isDevNamespace('NMF') && !is.doSEQ() ) ls(asNamespace('NMF'))
 				
 				# in parallel mode: verbose message from each run are only shown in debug mode
 				.options$verbose <- FALSE 
@@ -1494,8 +1493,8 @@ function(x, rank, method
 								, .verbose = debug
 								, .errorhandling = 'pass'
 								, .packages = .packages
-								, .export = .export
-								#, .options.RNG=.RNG.seed
+#								, .export = .export
+#								, .options.RNG=.RNG.seed
 								) %dopar% { #START_FOREACH_LOOP
 				
 					# Pass options from master process
