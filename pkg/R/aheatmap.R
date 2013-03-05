@@ -1176,7 +1176,7 @@ generate_dimnames <- function(x, n, ref){
 .make_annotation <- function(x, ord=NULL){
 	# convert into a data.frame if necessary
 	if( !is.data.frame(x) ){
-		x <- if( is(x, 'ExpressionSet') ) pData(x)
+		x <- if( is(x, 'ExpressionSet') ) Biobase::pData(x)
 				else if( is.factor(x) || is.character(x) ) data.frame(Factor=x)
 				else if( is.numeric(x) ) data.frame(Variable=x)
 				else
@@ -1705,7 +1705,7 @@ aheatmap = function(x
 	if( is(x, 'ExpressionSet') ){
 		library(Biobase)
 		if( isTRUE(annCol) ) annCol <- atrack(x)
-		x <- exprs(x)
+		x <- Biobase::exprs(x)
 	}
 
 	# rename to old parameter name

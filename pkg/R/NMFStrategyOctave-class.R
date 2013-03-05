@@ -87,10 +87,10 @@ setMethod('run', signature(object='NMFStrategyOctave', y='matrix', x='NMFfit'),
 		}
 			
 		mdirs <- unique(c(dirname(mfiles), tempdir(), packagePath('matlab', package=packageSlot(object))))
-		inp <- sapply(mdirs, o_inpath)
+		inp <- sapply(mdirs, RcppOctave::o_inpath)
 		added <- sapply(mdirs, function(p){
-			if( !o_inpath(p) ){
-				o_addpath(p)
+			if( !RcppOctave::o_inpath(p) ){
+				RcppOctave::o_addpath(p)
 				TRUE
 			}else FALSE
 		})
@@ -129,7 +129,7 @@ setMethod('algorithm', signature(object='NMFStrategyOctave'),
 				fstop("Main function is not defined for NMF algorithm '", name(object), "'.")
 			
 			# return wrapped into a function
-			.main <- o_get(f)
+			.main <- RcppOctave::o_get(f)
 			function(y, x, ...){
 				.main(y, r=nbasis(x), W=basis(x), H=coef(x), ...)
 			}

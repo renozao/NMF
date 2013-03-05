@@ -93,7 +93,7 @@ if( pkgmaker::require.quiet('Biobase') ){
 			# replace missing values by NULL values for correct dispatch
 			if( missing(method) ) method <- NULL
 			
-			nmf(x, exprs(rank), method, ...)
+			nmf(x, Biobase::exprs(rank), method, ...)
 		}
 	)
 	
@@ -135,14 +135,14 @@ if( pkgmaker::require.quiet('Biobase') ){
 			function(rank, target, ...){
 				if( missing(rank) ) rank <- NULL
 				# call nmfModel on the expression matrix
-				nmfModel(rank, exprs(target), ...)
+				nmfModel(rank, Biobase::exprs(target), ...)
 			}	
 	)
 	setMethod('nmfModel', signature(rank='ExpressionSet', target='ANY'),
 			function(rank, target, ...){
 				if( missing(target) ) target <- NULL
 				# call nmfModel on the expression matrix
-				nmfModel(exprs(rank), target, ...)
+				nmfModel(Biobase::exprs(rank), target, ...)
 			}	
 	)	
 	
@@ -151,7 +151,7 @@ if( pkgmaker::require.quiet('Biobase') ){
 	###% 
 	setMethod('rnmf', signature(x='ANY', target='ExpressionSet'), 
 		function(x, target, ...){
-			rnmf(x, exprs(target), ...)
+			rnmf(x, Biobase::exprs(target), ...)
 		}
 	)
 	
@@ -159,8 +159,8 @@ if( pkgmaker::require.quiet('Biobase') ){
 	###% contains the phenotypic data (i.e. \code{pData(object)})
 	setMethod('.atrack', 'ExpressionSet', 
 		function(object, data=NULL, ...){
-			if( is.null(data) ) data <- t(exprs(object))
-			.atrack(pData(object), data=data, ...)	
+			if( is.null(data) ) data <- t(Biobase::exprs(object))
+			.atrack(Biobase::pData(object), data=data, ...)	
 		}
 	)
 	
@@ -176,7 +176,7 @@ if( pkgmaker::require.quiet('Biobase') ){
 	#' 
 	setMethod('nneg', 'ExpressionSet'
 			, function(object, ...){
-				exprs(object) <- nneg(exprs(object), ...)
+				Biobase::exprs(object) <- nneg(Biobase::exprs(object), ...)
 				object
 			}
 	)
@@ -193,7 +193,7 @@ if( pkgmaker::require.quiet('Biobase') ){
 	#' 
 	setMethod('rposneg', 'ExpressionSet'
 			, function(object, ...){
-				exprs(object) <- rposneg(exprs(object), ...)
+				Biobase::exprs(object) <- rposneg(Biobase::exprs(object), ...)
 				object
 			}
 	)

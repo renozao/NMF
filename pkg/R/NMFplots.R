@@ -215,7 +215,7 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
 			if( is.null(rownames(x)) )
 				rownames(x) <- paste("basis", 1:nrow(x), sep='_')
 		}else if( is(x, 'ExpressionSet') ){
-			x <- exprs(x)
+			x <- Biobase::exprs(x)
 			gpar <- .set.list.defaults(gpar
 					, main="Expression profile correlations"
 					, xlab=paste("ExpressionSet", xvar))
@@ -240,7 +240,7 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
 					, ylab=paste("NMF model", yvar))			
 			y <- coef(y)
 		}else if( is(y, 'ExpressionSet') ){
-			y <- exprs(y)
+			y <- Biobase::exprs(y)
 			gpar <- .set.list.defaults(gpar
 					, main="Expression profile correlations"
 					, ylab=paste("ExpressionSet", yvar))
@@ -301,7 +301,7 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
 		gpar <- .set.list.defaults(gpar, main="Mixture coefficient profiles")
 		x <- coef(x)
 	}else if( is(x, 'ExpressionSet') ){
-		x <- exprs(x)
+		x <- Biobase::exprs(x)
 		gpar <- .set.list.defaults(gpar, main="Expression profiles")
 	}
 	

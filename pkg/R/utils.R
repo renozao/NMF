@@ -372,7 +372,7 @@ more <- function(x, step.size=10, width=20, header=FALSE, pattern=NULL){
 #' 
 randomize <- function(x, ...){
 	
-	if( is(x, 'ExpressionSet') ) x <- exprs(x)
+	if( is(x, 'ExpressionSet') ) x <- Biobase::exprs(x)
 		
 	# resample the columns
 	apply(x, 2, function(c, ...) sample(c, size=length(c), ...), ...)

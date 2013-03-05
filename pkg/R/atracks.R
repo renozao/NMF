@@ -100,7 +100,7 @@ anames <- function(x, default.margin){
 		if( is.null(m) && !missing(default.margin) ) m <- default.margin
 		
 		# special case for ExpressionSet  objects whose dimnames method returns NULL
-		if( is(x, 'ExpressionSet') ) x <- exprs(x)
+		if( is(x, 'ExpressionSet') ) x <- Biobase::exprs(x)
 		
 		if( !is.null(m) ) dimnames(x)[[m]]
 		else NULL
@@ -278,8 +278,8 @@ setMethod('.atrack', signature(object='ANY'),
 			# apply convertion rules for standard classes
 			if( is.logical(object) ) aname(as.factor(ifelse(object, 1, NA)), "Flag")
 			else if( is.integer(object) ){
-				if( anyMissing(object) )
-					aname(as.factor(ifelse(!is.na(object), 1,NA)), "Flag")
+				if( any(wna <- is.na(object)) )
+					aname(as.factor(ifelse(!wna, 1,NA)), "Flag")
 				else 
 					aname(as.numeric(object), "Level")
 			} 
