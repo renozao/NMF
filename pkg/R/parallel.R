@@ -384,7 +384,7 @@ register.doParallel_backend <- function(x, ...){
 	
 	# start cluster if numeric specification and type is defined
 	cl <- x$data[[1]]
-	if( is.numeric(cl) && !is.null(x$data$type) ){
+  if( is.numeric(cl) && (.Platform$OS.type == 'windows' || !is.null(x$data$type)) ){
 		names(x$data)[1L] <- 'spec'
 		# start cluster
 		clObj <- do.call(parallel::makeCluster, x$data)
@@ -813,7 +813,7 @@ is.doSEQ <- function(){
 setupTempDirectory <- function(verbose){
 	
 	# - Create a temporary directory to store the best fits computed on each host
-	NMF_TMPDIR <- tempfile('NMF_', '.')
+	NMF_TMPDIR <- tempfile('NMF_', getwd())
 	if( verbose > 2 ) message("# Setup temporary directory: '", NMF_TMPDIR, "' ... ", appendLF=FALSE)
 	dir.create(NMF_TMPDIR)
 	if( !is.dir(NMF_TMPDIR) ){
@@ -1013,17 +1013,22 @@ setupLibPaths <- function(pkg='NMF', verbose=FALSE){
 		pkg
 	}else if( getDoParName() != 'doParallel' || !isNumber(getDoBackend()$data) ){ 
 		# devmode: load the package + depends
+		if( verbose ){ message("[devtools::load_all] ", appendLF=FALSE) }
 		times(getDoParWorkers()) %dopar% {
 			capture.output({
 				suppressMessages({
 					library(devtools)
 					library(bigmemory)
 					library(rngtools)
-					#load_all(p)
+					load_all(p)
 				})
 			})
 		}
+		if( verbose ){ message("OK") }
 		c('bigmemory', 'rngtools')
+	}
+	else if( verbose ){
+		message("OK")
 	}
 }
 
