@@ -9,3 +9,5 @@ vignettes/Rpackages\.bib
 vignettes/.*\.tex
 ^makefile$
 tests-results$
+^.*\.Rproj$
+^\.Rproj\.user$

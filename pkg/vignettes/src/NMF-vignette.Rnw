@@ -1,4 +1,8 @@
-% 
+%\VignetteIndexEntry{An introduction to the package NMF}
+%\VignetteDepends{utils,NMF,Biobase,bigmemory,xtable,RColorBrewer}
+%\VignetteKeyword{math}
+%\VignetteCompiler{knitr}
+ 
 \documentclass[a4paper]{article}
 %\usepackage{Sweave}
 
@@ -28,7 +32,8 @@ pkgmaker::latex_preamble()
 , url=true
 , maxnames=1
 , maxbibnames=15
-, backref=true]{biblatex}
+, backref=true
+, backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 <<bibliofile, echo=FALSE, results='asis'>>=
 pkgmaker::latex_bibliography('NMF')
@@ -74,18 +79,14 @@ set.seed(123456)
 \setkeys{Gin}{width=0.95\textwidth}
 
 \begin{document}
-%\VignetteIndexEntry{An introduction to the package NMF}
-%\VignetteDepends{NMF,Biobase,bigmemory,xtable,RColorBrewer}
-%\VignetteKeyword{math}
-%\VignetteCompiler{knitr}
 
 <<load_library, echo=FALSE, include=FALSE>>=
 # Load
 library(NMF)
 @
 
-\title{An introduction to NMF package\\\small Version
-\Sexpr{utils::packageVersion('NMF')}}
+\title{An introduction to NMF package\\
+\small Version \Sexpr{utils::packageVersion('NMF')}}
 \author{Renaud Gaujoux, \url{renaud@cbio.uct.ac.za}}
 % \\Address Computational Biology - University of Cape Town, South Africa,
 

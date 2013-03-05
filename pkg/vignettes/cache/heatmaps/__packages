@@ -11,9 +11,9 @@ Biobase
 BiocGenerics
 grid
 digest
-registry
 rngtools
 pkgmaker
+registry
 knitr
 methods
 stats

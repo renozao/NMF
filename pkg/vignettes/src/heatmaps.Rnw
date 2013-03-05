@@ -1,4 +1,7 @@
-% 
+%\VignetteIndexEntry{NMF: generating heatmaps}
+%\VignetteDepends{utils,NMF,RColorBrewer}
+%\VignetteKeyword{aplot}
+%\VignetteCompiler{knitr}
 \documentclass[a4paper]{article}
 %\usepackage{Sweave}
 %\SweaveOpts{keep.source=TRUE}
@@ -24,7 +27,8 @@ pkgmaker::latex_preamble()
 , url=true
 , maxnames=1
 , maxbibnames=15
-, backref=true]{biblatex}
+, backref=true
+, backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 <<bibliofile, echo=FALSE, results='asis'>>=
 pkgmaker::latex_bibliography('NMF')	
@@ -73,12 +77,8 @@ library(NMF)
 @
 
 \title{Generating heatmaps for Nonnegative Matrix Factorization\\
-\small Package \nmfpack\ - Version \Sexpr{NMF:::nmfInfo()}}
+\small Package \nmfpack\ - Version \Sexpr{utils::packageVersion('NMF')}}
 \author{Renaud Gaujoux}
-% \VignetteIndexEntry{NMF: generating heatmaps}
-% \VignetteDepends{NMF,RColorBrewer}
-% \VignetteKeyword{aplot}
-% \VignetteCompiler{knitr}
 
 \maketitle
 
@@ -86,7 +86,7 @@ library(NMF)
 This vignette describes how to produce different informative heatmaps from NMF objects, 
 such as returned by the function \code{nmf} in the \citeCRANpkg{NMF}.
 The main drawing engine is implemented by the function \code{aheatmap}, which is 
-a highly enhanced modification of the function \code{pheatmap} from the \citeCRANpkg{pheatmap},
+a highly enhanced modification of the function \code{pheatmap} from the \CRANpkg{pheatmap},
 and provides convenient and quick ways of producing high quality and customizable annotated heatmaps.
 Currently this function is part of the package \nmfpack, but may eventually 
 compose a separate package on its own.
