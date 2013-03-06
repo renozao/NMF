@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>aheatmap. NMF 0.10.7</title>
+<title>aheatmap. NMF 0.13</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="
   Original version of &lt;code&gt;pheatmap&lt;/code&gt;: Raivo Kolde
@@ -28,7 +28,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.7</a>
+      <a class="brand" href="index.html">NMF 0.13</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -50,7 +50,7 @@
     <h2>Usage</h2>
     <pre>aheatmap(x, color = "-RdYlBu2:100", breaks = NA, border_color = NA, cellwidth = NA, 
   cellheight = NA, scale = "none", Rowv = TRUE, Colv = TRUE, revC = identical(Colv, 
-          "Rowv") || isNA(Rowv) || (is.integer(Rowv) && length(Rowv) > 1), distfun = "euclidean", 
+          "Rowv") || is_NA(Rowv) || (is.integer(Rowv) && length(Rowv) > 1), distfun = "euclidean", 
       hclustfun = "complete", reorderfun = function(d, w) reorder(d, w), treeheight = 50, 
       legend = TRUE, annCol = NA, annRow = NA, annColors = NA, annLegend = TRUE, labRow = NULL, 
       labCol = NULL, subsetRow = NULL, subsetCol = NULL, fontsize = 10, cexRow = min(0.2 + 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>setNMFSeed. NMF 0.10.7</title>
+<title>NMFSeed. NMF 0.13</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -24,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.7</a>
+      <a class="brand" href="index.html">NMF 0.13</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -39,21 +39,18 @@
         
       </header>
       
-      <h1>Registering NMF Seeding Methods</h1>
+      <h1><code>NMFSeed</code> is a constructor method that instantiate
+<code><a href='NMFSeed-class.html'>NMFSeed-class</a></code> objects.</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre>setNMFSeed(..., overwrite = isLoadingNamespace(), verbose = TRUE)
+    <pre>NMFSeed(key, method, ...)
 
-NMFSeed(key, method, ...)</pre>
+setNMFSeed(..., overwrite = isLoadingNamespace(), verbose = TRUE)</pre>
     
     <h2>Arguments</h2>
     <dl>
-      <dt>...</dt>
-      <dd>arguments passed to <code>NMFSeed</code> and used to
-  initialise slots in the <code><a href='NMFSeed-class.html'>NMFSeed-class</a></code>
-  object.</dd>
       <dt>key</dt>
       <dd>access key as a single character string</dd>
       <dt>method</dt>
@@ -69,6 +66,10 @@ NMFSeed(key, method, ...)</pre>
 <li>...extra arguments </li>
 </ol>
 </dd>
+      <dt>...</dt>
+      <dd>arguments passed to <code>NMFSeed</code> and used to
+  initialise slots in the <code><a href='NMFSeed-class.html'>NMFSeed-class</a></code>
+  object.</dd>
       <dt>overwrite</dt>
       <dd>logical that indicates if any existing
   NMF method with the same name should be overwritten
@@ -83,13 +84,13 @@ NMFSeed(key, method, ...)</pre>
     <div class="Description">
       <h2>Description</h2>
       
+      <p><code>NMFSeed</code> is a constructor method that instantiate
+  <code><a href='NMFSeed-class.html'>NMFSeed-class</a></code> objects.</p>
+  
       <p>NMF seeding methods are registered via the function
   <code>setNMFSeed</code>, which stores them as
   <code><a href='NMFSeed-class.html'>NMFSeed-class</a></code> objects in a dedicated
   registry.</p>
-  
-      <p><code>NMFSeed</code> is a constructor method that instantiate
-  <code><a href='NMFSeed-class.html'>NMFSeed-class</a></code> objects.</p>
   
     </div>
 

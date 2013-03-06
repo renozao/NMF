@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>compare-NMF. NMF 0.10.7</title>
+<title>compare-NMF. NMF 0.13</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -24,7 +24,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.10.7</a>
+      <a class="brand" href="index.html">NMF 0.13</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -241,20 +241,14 @@
 </div><div class='input'>res2 <- nmf(x, 2, 'lee')
 </div><div class='input'></div><div class='input'># compare arguments</div><div class='input'>compare(res, res2, target=x)
 </div>
-<div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef      rss
-1 brunet random   2        KL    3        0.1913757       0.4893218 7.725276
-2    lee random   1 euclidean    2        0.1482867       0.3525821 9.984544
-       evar residuals niter  cpu cpu.all nrun
-1 0.8838218  8.625343   760 0.18    0.18    1
-2 0.8498453  4.992272   550 0.20    0.20    1
+<div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef       rss      evar residuals niter   cpu cpu.all nrun
+1 brunet random   1        KL    3        0.2179114       0.4747831  9.341647 0.8642896  9.942599   480 0.124   0.124    1
+2    lee random   2 euclidean    2        0.1718556       0.3225467 11.121712 0.8384298  5.560856   460 0.176   0.176    1
 </div><div class='input'># compare elements of a list</div><div class='input'>compare(list(res, res2), target=x)
 </div>
-<div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef      rss
-1 brunet random   2        KL    3        0.1913757       0.4893218 7.725276
-2    lee random   1 euclidean    2        0.1482867       0.3525821 9.984544
-       evar residuals niter  cpu cpu.all nrun
-1 0.8838218  8.625343   760 0.18    0.18    1
-2 0.8498453  4.992272   550 0.20    0.20    1
+<div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef       rss      evar residuals niter   cpu cpu.all nrun
+1 brunet random   1        KL    3        0.2179114       0.4747831  9.341647 0.8642896  9.942599   480 0.124   0.124    1
+2    lee random   2 euclidean    2        0.1718556       0.3225467 11.121712 0.8384298  5.560856   460 0.176   0.176    1
 </div></pre>
   </div>
   <div class="span4">
