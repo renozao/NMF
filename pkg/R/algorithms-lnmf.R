@@ -3,7 +3,7 @@
 # @author Renaud Gaujoux
 # @created 21 Jul 2009
 
-#' @include NMFStrategyIterative-class.R
+#' @include registry-algorithms.R
 NULL
 
 ###% \item{\sQuote{lnmf}}{ Local Nonnegative Matrix Factorization. Based on a 

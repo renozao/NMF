@@ -4,6 +4,7 @@
 #' @import stats
 NULL
 library(digest)
+library(pkgmaker)
 
 #' Defunct Functions and Classes in the NMF Package
 #' 
@@ -62,6 +63,9 @@ devnmf <- function(){
 	compile_src(.LOCAL_PKG_NAME)
 }
 
+# local config info
+nmfConfig <- mkoptions()
+
 .onLoad <- function(libname, pkgname=NULL) {
 	
 	pkgEnv <- pkgmaker::packageEnv()
@@ -77,34 +81,37 @@ devnmf <- function(){
 		## 2. INITIALIZE BIOC LAYER
 		b <- body(.onLoad.nmf.bioc)
 		bioc.loaded <- eval(b, envir=pkgEnv)
-		if( is(bioc.loaded, 'try-error') )
-			packageStartupMessage("NMF - Loading BioConductor layer ... ERROR")
-		else if ( isTRUE(bioc.loaded) )
-			packageStartupMessage("NMF - Loading BioConductor layer ... OK")
-		else{
-			packageStartupMessage("NMF - Loading BioConductor layer ... NO [missing Biobase]")
-			packageStartupMessage("  To enable, try: install.extras('NMF') [with Bioconductor repository enabled]")
-		}
+		nmfConfig(bioc=bioc.loaded)
+#		if( is(bioc.loaded, 'try-error') )
+#			message("NMF - Loading BioConductor layer ... ERROR")
+#		else if ( isTRUE(bioc.loaded) )
+#			message("NMF - Loading BioConductor layer ... OK")
+#		else{
+#			message("NMF - Loading BioConductor layer ... NO [missing Biobase]")
+#			message("  To enable, try: install.extras('NMF') [with Bioconductor repository enabled]")
+#		}
 		
 		# 3. SHARED MEMORY
 		if( .Platform$OS.type != 'windows' ){
-			packageStartupMessage("NMF - Checking shared memory capabilities ... ", appendLF=FALSE)
+#			message("NMF - Checking shared memory capabilities ... ", appendLF=FALSE)
 			msg <- if( !require.quiet('bigmemory', character.only=TRUE) ) 'bigmemory'
 					else if( !require.quiet('synchronicity', character.only=TRUE) ) 'synchronicity'
+					else TRUE
 			
-			if( is.null(msg) ) packageStartupMessage('OK')
-			else{
-				packageStartupMessage(paste('NO [missing ', msg, ']', sep=''))
-				packageStartupMessage("  To enable, try: install.extras('NMF')")
-			}
+			nmfConfig(shared.memory=msg)
+#			if( isTRUE(msg) ) message('OK')
+#			else{
+#				message(paste('NO [missing ', msg, ']', sep=''))
+#				message("  To enable, try: install.extras('NMF')")
+#			}
 		}
 		#
 	}
 		
 	# run intialization sequence suppressing messages or not depending on verbosity options
 	.init.sequence()
-#	if( getOption('verbose') ) .init.sequence()
-#	else suppressMessages(.init.sequence())
+	if( getOption('verbose') ) .init.sequence()
+	else suppressMessages(.init.sequence())
 	
 	
 	return(invisible())
@@ -120,5 +127,28 @@ devnmf <- function(){
 }
 
 .onAttach <- function(libname, pkgname){
+	
+	## 2. CHECK BIOC LAYER
+	bioc.loaded <- nmfConfig('bioc')[[1L]]
+	if( is(bioc.loaded, 'try-error') )
+		packageStartupMessage("NMF - BioConductor layer ... ERROR")
+	else if ( isTRUE(bioc.loaded) )
+		packageStartupMessage("NMF - BioConductor layer ... OK")
+	else{
+		packageStartupMessage("NMF - BioConductor layer ... NO [missing Biobase]")
+		packageStartupMessage("  To enable, try: install.extras('NMF') [with Bioconductor repository enabled]")
+	}
+	
+	# 3. SHARED MEMORY
+	if( .Platform$OS.type != 'windows' ){
+		packageStartupMessage("NMF - Shared memory capabilities ... ", appendLF=FALSE)
+		msg <- nmfConfig('shared.memory')[[1L]]
+		if( isTRUE(msg) ) packageStartupMessage('OK')
+		else{
+			packageStartupMessage(paste('NO [missing ', msg, ']', sep=''))
+			packageStartupMessage("  To enable, try: install.extras('NMF')")
+		}
+	}
+	#
 }
 

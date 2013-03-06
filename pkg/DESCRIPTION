@@ -1,7 +1,7 @@
 Package: NMF
 Type: Package
 Title: Algorithms and framework for Nonnegative Matrix Factorization (NMF).
-Version: 0.12
+Version: 0.13
 Date: 2013-02-27
 Author: Renaud Gaujoux
 Maintainer: Renaud Gaujoux <renaud@mancala.cbio.uct.ac.za>
@@ -18,7 +18,7 @@ Depends:
     R (>= 2.15.2),
     methods,
     stats,
-    pkgmaker (>= 0.12),
+    pkgmaker (>= 0.13),
     rngtools,
     registry,
     digest,
@@ -76,9 +76,12 @@ Collate:
     'NMFStrategyFunction-class.R'
     'NMFStrategyIterative-class.R'
     'NMFStrategyOctave-class.R'
+    'registry-algorithms.R'
     'algorithms-base.R'
     'algorithms-brunet.R'
-    'seed.R'
+    'NMFSeed-class.R'
+    'registry-seed.R'
+    'seed-base.R'
     'parallel.R'
     'nmf.R'
     'Bioc-layer.R'

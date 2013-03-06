@@ -1,4 +1,4 @@
-#' @include NMFStrategyIterative-class.R
+#' @include registry-algorithms.R
 NULL
 
 ###% NMF Algorithm: Pattern Expression NMF

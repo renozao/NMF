@@ -4,6 +4,8 @@
 # Creation: 09 Jul 2012
 ###############################################################################
 
+#' @include registry-algorithms.R
+NULL
 
 siNMF_R <- function(i, v, data, beta0=1, scale=TRUE, ...){
 	

@@ -1,4 +1,4 @@
-#' @include seed.R
+#' @include registry-seed.R
 NULL
 
 ###% Seeding method: Nonnegative Double Singular Value Decomposition

@@ -43,13 +43,21 @@
 #' @aliases .atrack,ExpressionSet-method
 #' 
 #' @aliases sampleNames,NMF-method
+#' @aliases sampleNames<-,NMF,ANY-method
 #' @aliases sampleNames,NMFfitX-method
 #' @aliases featureNames,NMF-method
+#' @aliases featureNames<-,NMF-method
 #' @aliases featureNames,NMFfitX-method
 #' 
 #' @aliases nmeta
 #' @aliases metagenes metagenes<-
 #' @aliases metaprofiles metaprofiles<-
+#' 
+#' @exportPattern ^featureNames
+#' @exportPattern ^sampleNames
+#' @exportPattern ^metagenes
+#' @exportPattern ^metaprofiles
+#' @exportPattern ^nmeta
 NULL
 
 # add extra package Biobase
@@ -290,12 +298,15 @@ if( pkgmaker::require.quiet('Biobase') ){
 		}
 	)
 
-	# Export layer-specific methods [only if one is loading a namespace]
-	ns <- pkgmaker::addNamespaceExport(c("nmeta"
-						,"featureNames", "featureNames<-"
-						,"sampleNames", "sampleNames<-"
-						,"metagenes", "metagenes<-"
-						,"metaprofiles", "metaprofiles<-"))
+#	# Export layer-specific methods [only if one is loading a namespace]
+#	# NB: Only for R < 3.0.0
+#	if( pkgmaker::testRversion("2.15.3", -1L) ){
+#		ns <- pkgmaker::addNamespaceExport(c("nmeta"
+#							,"featureNames", "featureNames<-"
+#							,"sampleNames", "sampleNames<-"
+#							,"metagenes", "metagenes<-"
+#							,"metaprofiles", "metaprofiles<-"))
+#	}
 	
 	# return TRUE
 	TRUE

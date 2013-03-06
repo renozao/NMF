@@ -2,6 +2,7 @@
 \alias{.atrack,ExpressionSet-method}
 \alias{bioc-NMF}
 \alias{featureNames,NMFfitX-method}
+\alias{featureNames<-,NMF-method}
 \alias{featureNames,NMF-method}
 \alias{metagenes}
 \alias{metagenes<-}
@@ -16,6 +17,7 @@
 \alias{rnmf,ANY,ExpressionSet-method}
 \alias{rposneg,ExpressionSet-method}
 \alias{run,NMFStrategy,ExpressionSet,ANY-method}
+\alias{sampleNames<-,NMF,ANY-method}
 \alias{sampleNames,NMFfitX-method}
 \alias{sampleNames,NMF-method}
 \alias{seed,ExpressionSet,ANY,ANY-method}

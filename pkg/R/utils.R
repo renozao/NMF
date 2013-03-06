@@ -468,7 +468,7 @@ clone <- function(x){
 # deep-clone an object
 clone2 <- function(x){
 	if( is.environment(x) ){
-		y <- copyEnv(x)
+		y <- Biobase::copyEnv(x)
 		eapply(ls(x, all.names=TRUE), 
 			function(n){
 				if( is.environment(x[[n]]) ){

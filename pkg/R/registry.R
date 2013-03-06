@@ -72,74 +72,9 @@ nmfUnregister <- function(name, regname){
 		name <- attr(strategy, 'name')
 		message("NMF: Remove method '", name, "' from registry '", regname, "'")
 		registry$delete_entry(name)
-		
-		# cancel deferred registering: when loading a namespace other than NMF
-		packageNMFObject(name, NULL)
-		#
 	}
 	
 	# return TRUE invisibly
 	invisible(TRUE)
 }
 nmfUnregister <- Vectorize(nmfUnregister, 'name')
-
-packageNMFObject <- function(key, method){
-
-	library(pkgmaker)
-	# do nothing if 
-	# - not loading a namespace
-	# - loading the NMF namespace
-	if( !isLoadingNamespace(nodev=TRUE) || isLoadingNamespace('NMF') ){
-		return()
-	}
-	# do nothing if the namespace is already completely loaded
-	ns <- getLoadingNamespace(env=TRUE)
-	ns_name <- getLoadingNamespace()
-#	ca <- match.call()
-#	message('Call: ', capture.output(print(ca)), ' - ', ns_name , ' - ', capture.output(ns)
-#			, paste(pkgmaker:::pkg_calls(), collapse=', '))
-	
-	# auxiliary function to access the package's registered methods 
-	pkgMethods <- simpleRegistry('.__NMFmethods__', ns)
-	
-	# retrieve method
-	if( missing(method) ){
-		return( pkgMethods$get(key) )
-	}
-
-	# build access key
-	lkey <- str_c(packageSlot(method), '::', key)
-	
-	# removing method
-	if( is.null(method) ){
-		pkgMethods$set(lkey, NULL)
-		# cancel deferred loading
-		postponeAction(NULL, lkey, group='NMF')
-		return()
-	}
-	
-	# adding a new method
-	#message("Adding local NMF method '", lkey,"' to package '", ns_name, "'")
-	pkgMethods$set(lkey, method)
-	# defer loading (will be executed in the NMF namespace)
-	f <- function(...){
-		setNMFObject(packageNMFObject(lkey), verbose=getOption('verbose'))
-	}
-	e <- topenv()
-	postponeAction(f, lkey, envir=e, group='NMF')
-	#
-	
-	return()
-}
-
-setNMFObject <- function(object, ...){
-	
-	# use this as common interface for registering NMF algorithms, seeding methods, etc..
-	if( is(object, 'NMFSeed') ){
-		return( setNMFSeed(object, ...) )
-	}else if( is(object, 'NMFStrategy') ){
-		return( setNMFMethod(object, ...) )
-	}else
-		stop("Unexpected error: objects of class '", class(object), "' are not supported.")
-	
-}

@@ -1,4 +1,4 @@
-#' @include NMFStrategyFunction-class.R
+#' @include registry-algorithms.R
 NULL
 
 #' Fast Combinatorial Nonnegative Least-Square

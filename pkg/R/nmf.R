@@ -1,7 +1,7 @@
 #' @include NMFstd-class.R
 #' @include NMFSet-class.R
-#' @include NMFStrategy-class.R
-#' @include seed.R
+#' @include registry-seed.R
+#' @include registry-algorithms.R
 #' @include parallel.R
 NULL
 

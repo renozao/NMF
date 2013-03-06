@@ -9,7 +9,7 @@
 # Creation: 09 Nov 2011
 ###############################################################################
 
-#' @include NMFStrategyIterative-class.R
+#' @include registry-algorithms.R
 NULL
 
 #' Multiplicative Updates for LS-NMF

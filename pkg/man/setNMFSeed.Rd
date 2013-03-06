@@ -1,22 +1,19 @@
 \docType{methods}
-\name{setNMFSeed}
+\name{NMFSeed}
 \alias{NMFSeed}
 \alias{NMFSeed,character-method}
 \alias{NMFSeed-methods}
 \alias{NMFSeed,NMFSeed-method}
 \alias{setNMFSeed}
-\title{Registering NMF Seeding Methods}
+\title{\code{NMFSeed} is a constructor method that instantiate
+\code{\linkS4class{NMFSeed}} objects.}
 \usage{
+  NMFSeed(key, method, ...)
+
   setNMFSeed(..., overwrite = isLoadingNamespace(),
     verbose = TRUE)
-
-  NMFSeed(key, method, ...)
 }
 \arguments{
-  \item{...}{arguments passed to \code{NMFSeed} and used to
-  initialise slots in the \code{\linkS4class{NMFSeed}}
-  object.}
-
   \item{key}{access key as a single character string}
 
   \item{method}{specification of the seeding method, as a
@@ -26,6 +23,10 @@
   rank requested in the call to \code{\link{nmf}} or
   \code{\link{seed}}.} \item{x}{target matrix}
   \item{...}{extra arguments} }}
+
+  \item{...}{arguments passed to \code{NMFSeed} and used to
+  initialise slots in the \code{\linkS4class{NMFSeed}}
+  object.}
 
   \item{overwrite}{logical that indicates if any existing
   NMF method with the same name should be overwritten
@@ -37,13 +38,13 @@
   not (\code{FALSE}).}
 }
 \description{
+  \code{NMFSeed} is a constructor method that instantiate
+  \code{\linkS4class{NMFSeed}} objects.
+
   NMF seeding methods are registered via the function
   \code{setNMFSeed}, which stores them as
   \code{\linkS4class{NMFSeed}} objects in a dedicated
   registry.
-
-  \code{NMFSeed} is a constructor method that instantiate
-  \code{\linkS4class{NMFSeed}} objects.
 }
 \section{Methods}{
   \describe{

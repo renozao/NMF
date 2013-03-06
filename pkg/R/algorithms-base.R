@@ -4,10 +4,10 @@
 # Creation: 30 Apr 2012
 ###############################################################################
 
-#' @include NMFStrategyIterative-class.R
 #' @include NMFstd-class.R
 #' @include NMFOffset-class.R
 #' @include NMFns-class.R
+#' @include registry-algorithms.R
 NULL
 
 
