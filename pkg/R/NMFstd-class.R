@@ -115,8 +115,8 @@ setClass('NMFstd'
 		)
 		
 		, prototype = prototype(
-				W = matrix(NA, 0, 0),
-				H = matrix(NA, 0, 0)
+				W = matrix(as.numeric(NA), 0, 0),
+				H = matrix(as.numeric(NA), 0, 0)
 		)
 		
 		, validity = function(object){

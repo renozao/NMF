@@ -561,7 +561,7 @@ setClass('NMFfitX1'
 	)
 	, contains=c('NMFfitX', 'NMFfit')
 	, prototype=prototype(
-			consensus =	matrix(NA,0,0)
+			consensus =	matrix(as.numeric(NA),0,0)
 			, nrun = as.integer(0)
 	)
 )
@@ -1199,7 +1199,7 @@ setMethod('NMFfitX', 'list',
 				warning("NMF::NMFfitX - the value of 'consensus' was discarded as slot 'consensus' is computed internally")
 			extra$consensus <- NULL
 									
-			consensus <- matrix(NA, 0, 0)
+			consensus <- matrix(as.numeric(NA), 0, 0)
 			best.res <- Inf		
 			best.fit <- NULL
 			sapply(object.list, function(x){

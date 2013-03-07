@@ -2604,7 +2604,7 @@ nmfEstimateRank <- function(x, range, method=nmf.getOption('default.algorithm')
 			
 			# build a NA matrix for all the results
 			n <- nrow(measures.ok)
-			tmp.res <- matrix(NA, n, length(range))
+			tmp.res <- matrix(as.numeric(NA), n, length(range))
 			rownames(tmp.res) <- rownames(measures.ok)
 			
 			# set the results that are ok

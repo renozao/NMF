@@ -178,7 +178,7 @@ setMethod('nmfModel', signature(rank='numeric', target='numeric'),
 		# build dummy compatible W and H if necessary
 		W.was.missing <- FALSE
 		if( missing(W) ){
-			W <- matrix(NA, n, r)
+			W <- matrix(as.numeric(NA), n, r)
 			W.was.missing <- TRUE
 		}
 		else{
@@ -219,7 +219,7 @@ setMethod('nmfModel', signature(rank='numeric', target='numeric'),
 		}
 		
 		if( missing(H) ) 
-			H <- matrix(NA, ncol(W), m)
+			H <- matrix(as.numeric(NA), ncol(W), m)
 		else{
 			# convert numerical vectors into a matrix
 			if( is.vector(H) )
@@ -239,7 +239,7 @@ setMethod('nmfModel', signature(rank='numeric', target='numeric'),
 			}
 			else if( r > nrow(H) ) stop("nmfModel - Objective rank [",r,"] is greater than the number of rows in H [",nrow(H),"]")
 			# force dummy W to be at least compatible with H
-			if( W.was.missing ) W <- matrix(NA, n, r)
+			if( W.was.missing ) W <- matrix(as.numeric(NA), n, r)
 
 			# resolve consistency with target
 			if( m == 0 ) m <- ncol(H)
