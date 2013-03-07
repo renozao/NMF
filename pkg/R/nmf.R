@@ -2088,34 +2088,26 @@ function(x, rank, method
 	## RUN NMF METHOD:
 	# call the strategy's run method [and time it]
 	t <- system.time({				
-		res <- if( !dry.run )
-					do.call('run', parameters.run)
-				else
-					seed
+		res <- if( !dry.run ){
+				do.call('run', parameters.run)
+				
+			}else{ 
+				seed
+			}
 	})
 
-	## CHECK RESULT
-	# check the result is of the right type
-	if( !isTRUE(err <- checkResult(res, seed)) ){ 
-		fstop(err)			
+	## WRAP/CHECK RESULT
+	res <- .wrapResult(x, res, seed, method=method, seed.method=seed.method, t)
+	if( !isNMFfit(res) ){ # stop if error
+		fstop(res)
 	}
-
-	## ENSURE SOME SLOTS ARE STILL CORRECTLY SET
-	# slot 'method'
-	algorithm(res) <- name(method)	
-	# slot 'distance'
-	res@distance <- objective(method)	
-	# slot 'seed'
-	if( seed.method != '' ) seeding(res) <- seed.method
-	# slot 'parameters'
-	if( length(res@parameters) == 0L && length(parameters.method)>0L )
-		res@parameters <- parameters.method
-	# set dimnames of the result only if necessary
-	if( is.null(dimnames(res)) )
-		dimnames(res) <- dimnames(seed)
+	##
 	
 	## CLEAN-UP + EXTRAS:
 	# add extra information to the object
+	# slot 'parameters'
+	if( length(res@parameters) == 0L && length(parameters.method)>0L )
+		res@parameters <- parameters.method
 	# last residuals
 	if( length(residuals(res)) == 0 && !is.partial.nmf(seed) ){
 		parameters.run$x <- res
@@ -2134,8 +2126,57 @@ function(x, rank, method
 	exitSuccess(res)
 })
 
+# wrap result
+.wrapResult <- function(x, res, seed, method, seed.method, t){
+	
+	## wrap into an NMFfit object (update seed)
+	if( !isNMFfit(res) ){
+		# extract expression data if necessary
+		if( is(res, 'ExpressionSet') ) res <- exprs(res)
+		if( is(x, 'ExpressionSet') ) x <- exprs(x)
+		# wrap
+		if( is.matrix(res) ){
+			if( ncol(res) == ncol(x) ){# partial fit: coef
+				# force dimnames
+				colnames(res) <- colnames(x)
+				res <- nmfModel(H=res)
+			}else if( nrow(res) == nrow(x) ){# partial fit: basis
+				# force dimnames
+				rownames(res) <- rownames(x)
+				res <- nmfModel(W=res)
+			}
+		}else if( is.list(res) ){ # build NMF model from result list
+			res <- do.call('nmfModel', res)
+		}
+		
+		# substitute model in fit object
+		if( is.nmf(res) ){
+			tmp <- seed
+			fit(tmp) <- res
+			tmp@runtime <- t
+			res <- tmp
+		}
+	}
+	
+	## check result
+	if( !isTRUE(err <- .checkResult(res, seed)) ) return(err) 
+	
+	## Enforce some slot values
+	# slot 'method'
+	algorithm(res) <- name(method)	
+	# slot 'distance'
+	res@distance <- objective(method)	
+	# slot 'seed'
+	if( seed.method != '' ) seeding(res) <- seed.method
+	# set dimnames of the result only if necessary
+	if( is.null(dimnames(res)) )
+		dimnames(res) <- dimnames(seed)
+	
+	res
+}
+
 # check result
-checkResult <- function(fit, seed){
+.checkResult <- function(fit, seed){
 	# check the result is of the right type
 	if( !inherits(fit, 'NMFfit') ){ 
 		return(str_c("NMF algorithms should return an instance of class 'NMFfit' [returned class:", class(fit), "]"))
