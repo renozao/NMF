@@ -27,7 +27,7 @@ nmfRegistry <- function(...) pkgmaker::packageRegistry(...)
 nmfGet <- function(regname, name=NULL, ...){
 	
 	# retrieve from the given package's sub-registry
-	pkgmaker::pkgregfetch(regname, key=name, ...)
+	pkgmaker::pkgreg_fetch(regname, key=name, ...)
 	
 }
 
@@ -57,24 +57,34 @@ setMethod('nmfRegister', signature(key='character'),
 	}
 )
 
-###% Unregister a NMF method.
-###%
-###% @param name the key of the method to unregister [character string]
-###%
-nmfUnregister <- function(name, regname){				
-	
-	# add the strategy to the registry
-	strategy <- nmfGet(name, exact=TRUE, error=FALSE, regname=regname)
-	if( !is.null(strategy) ){
-		
-		# get the method registry and the method's fullname
-		registry <- nmfRegistry(regname)
-		name <- attr(strategy, 'name')
-		message("NMF: Remove method '", name, "' from registry '", regname, "'")
-		registry$delete_entry(name)
-	}
-	
-	# return TRUE invisibly
-	invisible(TRUE)
-}
-nmfUnregister <- Vectorize(nmfUnregister, 'name')
+####% Unregister a NMF method.
+####%
+####% @param name the key of the method to unregister [character string]
+####%
+#nmfUnregister <- function(name, regname, quiet=FALSE){				
+#	
+#	return( pkgreg_remove(regname, key=name, quiet=quiet) )
+#	# add the strategy to the registry
+#	obj <- nmfGet(name, exact=TRUE, error=FALSE, regname=regname)
+#	regentry <- nmfRegistry(regname, entry=TRUE)
+#	registry <- regentry$regobj
+#	objtype <- regentry$entrydesc
+#	
+#	if( !is.null(obj) ){
+#		# get the method registry and the method's fullname
+#		name <- attr(strategy, 'name')
+#		
+#		if( !quiet ){
+#			msg <- paste0("Removing ", objtype," '", name, "' from registry '", regname, "' [", class(obj), ']')
+#			message(msg, ' ... ', appendLF=FALSE)
+#		}
+#		# delete from registry
+#		registry$delete_entry(name)
+#		if( !quiet ) message('OK')
+#		TRUE
+#	}else{
+#		if( !quiet )
+#			warning("Could not remove ", objtype, " '", name, "': no matching registry entry.", call.=FALSE)
+#		FALSE
+#	}
+#}

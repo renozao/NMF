@@ -94,7 +94,7 @@ setMethod('nmfRegister', signature(key='NMFSeed', method='missing'),
 #' stores them as \code{\linkS4class{NMFSeed}} objects in a dedicated registry.
 #' 
 #' @param ... arguments passed to \code{NMFSeed} and used to initialise slots
-#' in the \code{\linkS4class{NMFSeed}} object.
+#' in the \code{\linkS4class{NMFSeed}} object, or to \code{\link[pkgmaker]{pkgreg_remove}}.
 #' @inheritParams setNMFMethod
 #' 
 #' @export
@@ -108,4 +108,15 @@ setNMFSeed <- function(..., overwrite=isLoadingNamespace(), verbose=TRUE){
 }
 
 nmfRegisterSeed <- setNMFSeed
+
+
+#' \code{removeNMFSeed} removes an NMF seeding method from the registry.
+#' 
+#' @param name name of the seeding method.
+#' 
+#' @export
+#' @rdname setNMFSeed
+removeNMFSeed <- function(name, ...){
+	pkgreg_remove('seed', key=name, ...)
+}
 
