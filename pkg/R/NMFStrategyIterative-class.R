@@ -317,20 +317,23 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 	
 	#Vc# initialize the strategy
 	# check validity of arguments if possible
+	init.args <- if( is.function(strategy@onInit) ) formals(strategy@onInit) 
 	update.args <- formals(strategy@Update)
 	stop.args <- formals(strategy@Stop)
-	internal.args <- names(c(update.args[1:3], stop.args[1:4]))
-	expected.args <- c(update.args[-(1:3)], stop.args[-(1:4)])
+	internal.args <- names(c(init.args[1:3], update.args[1:3], stop.args[1:4]))
+	expected.args <- c(init.args[-(1:3)], update.args[-(1:3)], stop.args[-(1:4)])
 	passed.args <- names(list(...))
 	forbidden.args <- is.element(passed.args, c(internal.args))
-	if( any(forbidden.args) )
+	if( any(forbidden.args) ){
 		stop("NMF::run - Update/Stop method : formal argument(s) "
 			, paste( paste("'", passed.args[forbidden.args],"'", sep=''), collapse=', ')
 			, " already set internally.", call.=FALSE)
+	}
 	# !is.element('...', expected.args) && 
-	if( any(t <- !pmatch(passed.args, names(expected.args), nomatch=FALSE)) )
-		stop("NMF::run - Update/Stop method for algorithm '", name(strategy),"': unused argument(s) "
+	if( any(t <- !pmatch(passed.args, names(expected.args), nomatch=FALSE)) ){
+		stop("NMF::run - onInit/Update/Stop method for algorithm '", name(strategy),"': unused argument(s) "
 			, paste( paste("'", passed.args[t],"'", sep=''), collapse=', '), call.=FALSE)
+	}
 	# check for required arguments
 	required.args <- sapply(expected.args, function(x){ x <- as.character(x); length(x) == 1 && nchar(x) == 0 } )
 	required.args <- names(expected.args[required.args])
@@ -370,7 +373,12 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 	
 	showNIter.step <- 50L
 	showNIter <- verbose && maxIter >= showNIter.step
-	if( showNIter ) cat('Iterations:')
+	if( showNIter ){
+		ndIter <- nchar(as.character(maxIter))
+		itMsg <- paste0('Iterations: %', ndIter, 'i', "/", maxIter)
+		cat(itMsgBck <- sprintf(itMsg, 0))
+		itMsgBck <- nchar(itMsgBck)
+	}
 	i <- 0L
 	while( TRUE ){
 		
@@ -384,7 +392,9 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 		# increment i
 		i <- i+1L
 		
-		if( showNIter && (i==1L || i %% showNIter.step == 0L) ) cat('', i)
+		if( showNIter && (i==1L || i %% showNIter.step == 0L) ){
+			cat(paste0(rep("\r", itMsgBck), sprintf(itMsg, i)))
+		}
 		
 		#Vc# update the matrices
 		nmfFit <- updateFun(i, v, nmfFit, ...)
