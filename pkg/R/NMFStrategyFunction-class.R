@@ -40,6 +40,13 @@ setMethod('run', signature(object='NMFStrategyFunction', y='matrix', x='NMFfit')
 	}
 )
 
+#' @S3class nmfFormals NMFStrategyFunction
+nmfFormals.NMFStrategyFunction <- function(x, ...){
+	args <- formals(x@algorithm)
+	args[-(1:2)]
+}
+	
+
 #' Returns the single R function that implements the NMF algorithm -- as stored in 
 #' slot \code{algorithm}.
 setMethod('algorithm', signature(object='NMFStrategyFunction'),

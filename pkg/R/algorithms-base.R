@@ -134,13 +134,13 @@ nmf_update.brunet <- function(i, v, x, copy=FALSE, eps=.Machine$double.eps, ...)
 #' @aliases Rbrunet-nmf
 #' @name brunet-nmf
 NULL
-setNMFMethod('.R#brunet'
+nmfAlgorithm.brunet_R <- setNMFMethod('.R#brunet'
 		, objective='KL' 
 		, Update=nmf_update.brunet_R
 		, Stop='connectivity')
 
 # Optimised version
-setNMFMethod('brunet', '.R#brunet', Update=nmf_update.brunet)
+nmfAlgorithm.brunet <- setNMFMethod('brunet', '.R#brunet', Update=nmf_update.brunet)
 
 #' Algorithm \sQuote{KL} provides an NMF algorithm based on the C++-optimised version of 
 #' the updates from \cite{Brunet2004}, but using the stationarity of the objective value 
@@ -148,7 +148,7 @@ setNMFMethod('brunet', '.R#brunet', Update=nmf_update.brunet)
 #' @rdname KL-nmf
 #' @name KL-nmf
 NULL 
-setNMFMethod('KL'
+nmfAlgorithm.KL <- setNMFMethod('KL'
 		, objective='KL' 
 		, Update=nmf_update.brunet
 		, Stop='stationary')
@@ -259,12 +259,12 @@ nmf_update.lee <- function(i, v, x, rescale=TRUE, copy=FALSE, eps=10^-9, weight=
 #' @aliases Rlee-nmf
 #' @name lee-nmf
 NULL
-setNMFMethod('.R#lee', objective='euclidean'
+nmfAlgorithm.lee_R <- setNMFMethod('.R#lee', objective='euclidean'
 		, Update=nmf_update.lee_R
 		, Stop='connectivity')	
 
-# Optmised version
-setNMFMethod('lee', '.R#lee', Update=nmf_update.lee)
+# Optimised version
+nmfAlgorithm.lee <- setNMFMethod('lee', '.R#lee', Update=nmf_update.lee)
 
 #' Algorithm \sQuote{Frobenius} provides an NMF algorithm based on the C++-optimised version of 
 #' the updates from \cite{Lee2001}, but uses the stopping criterion based on the 
@@ -273,7 +273,7 @@ setNMFMethod('lee', '.R#lee', Update=nmf_update.lee)
 #' @rdname Frobenius-nmf
 #' @name Frobenius-nmf
 NULL
-setNMFMethod('Frobenius', objective='euclidean'
+nmfAlgorithm.Frobenius <- setNMFMethod('Frobenius', objective='euclidean'
 		, Update=nmf_update.lee
 		, Stop='stationary')
 
@@ -392,13 +392,13 @@ nmf_update.offset <- function(i, v, x, copy=FALSE, eps=10^-9, ...)
 #' @aliases Roffset-nmf
 #' @name offset-nmf
 NULL
-setNMFMethod('.R#offset', objective='euclidean'
+nmfAlgorithm.offset_R <- setNMFMethod('.R#offset', objective='euclidean'
 		, model = 'NMFOffset'
 		, Update=nmf_update.offset_R
 		, Stop='connectivity')
 
 # NMF with offset (optimised version)
-setNMFMethod('offset', '.R#offset', Update=nmf_update.offset)
+nmfAlgorithm.offset <- setNMFMethod('offset', '.R#offset', Update=nmf_update.offset)
 
 ################################################################################
 # Non-smooth NMF (KL-based NMF) [Pascual-Montano (2006)]
@@ -497,10 +497,10 @@ nmf_update.ns_R <- function(i, v, x, ...)
 #' @aliases RnsNMF-nmf
 #' @name nsNMF-nmf
 NULL
-setNMFMethod('.R#nsNMF', objective='KL'
+nmfAlgorithm.nsNMF_R <- setNMFMethod('.R#nsNMF', objective='KL'
 		, model='NMFns'
 		, Update=nmf_update.ns_R
 		, Stop='connectivity')
 
 # Optmized version
-setNMFMethod('nsNMF', '.R#nsNMF', Update=nmf_update.ns)
+nmfAlgorithm.nsNMF <- setNMFMethod('nsNMF', '.R#nsNMF', Update=nmf_update.ns)

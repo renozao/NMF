@@ -119,4 +119,4 @@ siNMF <- function(i, v, data, beta0=1, scale=TRUE, eps=10^-9, ...){
     data
 }
 
-setNMFMethod('siNMF', 'lee', Update=siNMF)
+nmfAlgorithm.siNMF <- setNMFMethod('siNMF', 'lee', Update=siNMF)

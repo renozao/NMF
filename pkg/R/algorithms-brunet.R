@@ -18,7 +18,7 @@ NULL
 #' @aliases Mbrunet-nmf
 #' @name Mbrunet-nmf
 NULL
-setNMFMethod('.M#brunet',
+nmfAlgorithm.brunet_M <- setNMFMethod('.M#brunet',
 	, objective= 'KL'
 	, mfiles='brunet.m'
 	, algorithm = function (y, x, verbose=nmf.getOption('verbose')){

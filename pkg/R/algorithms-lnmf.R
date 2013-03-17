@@ -80,9 +80,9 @@ nmf_update.lnmf <- function(i, v, data, ...){
 }
 
 # register the LNMF algorithm
-#setNMFMethod('.R#lnmf', objective='KL'
+#nmfAlgorithm.lnmf_R <- setNMFMethod('.R#lnmf', objective='KL'
 #		, Update=nmf_update_R.lnmf
 #		, Stop='connectivity')
 #
-#setNMFMethod('lnmf', '.R#lnmf', Update=nmf_update.lnmf)
+#nmfAlgorithm.lnmf <- setNMFMethod('lnmf', '.R#lnmf', Update=nmf_update.lnmf)
 				

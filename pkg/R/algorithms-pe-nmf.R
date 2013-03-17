@@ -62,7 +62,7 @@ nmf_update.penmf <- function(i, x, data, alpha, beta, ...){
 }
 
 # register PE-NMF
-setNMFMethod('pe-nmf', objective = penmf.objective
+nmfAlgorithm.peNMF <- setNMFMethod('pe-nmf', objective = penmf.objective
 		, model='NMFstd'
 		, Update= nmf_update.penmf
 		, Stop='stationary')

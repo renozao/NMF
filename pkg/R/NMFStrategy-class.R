@@ -375,3 +375,27 @@ setMethod('modelname', signature(object='NMFStrategy'),
 is.mixed <-	function(object){
 	return( slot(object, 'mixed') )
 }
+
+#' Showing Arguments of NMF Algorithms
+#' 
+#' This function returns the extra arguments that can be passed
+#' to a given NMF algorithm in call to \code{\link{nmf}}.
+#' 
+#' @param x algorithm specification
+#' 
+#' @export
+nmfFormals <- function(x, ...){
+	UseMethod('nmfFormals')
+}
+
+#' @S3class nmfFormals character
+nmfFormals.character <- function(x, ...){
+	s <- nmfAlgorithm(x)
+	nmfFormals(s, ...)
+}
+
+#' @S3class nmfFormals NMFStrategy
+nmfFormals.NMFStrategy <- function(x, ...){
+	m <- getMethod('run', signature(object='NMFStrategy', y='matrix', x='NMFfit'))
+	formals(m)
+}

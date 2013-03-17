@@ -596,5 +596,5 @@ snmf.objective <- function(x, y, eta=-1, beta=0.01){
 }
 
 # internal function to register the methods
-setNMFMethod('snmf/r', .snmf, objective=snmf.objective)
-setNMFMethod('snmf/l', .snmf, objective=snmf.objective)
+nmfAlgorithm.SNMF_R <- setNMFMethod('snmf/r', .snmf, objective=snmf.objective)
+nmfAlgorithm.SNMF_L <- setNMFMethod('snmf/l', .snmf, objective=snmf.objective)

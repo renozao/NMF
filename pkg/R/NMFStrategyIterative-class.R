@@ -137,7 +137,7 @@ setClass('NMFStrategyIterativeX'
 
 
 ###% Creates a NMFStrategyIterativeX object from a NMFStrategyIterative object.
-xifyStrategy <- function(strategy, workspace){	
+xifyStrategy <- function(strategy, workspace=new.env(emptyenv())){	
 	
 	# first check the strategy's validity
 	if( is.character(err <- validObject(strategy, test=TRUE)) ){
@@ -425,6 +425,32 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 	nmf.debug('NMFStrategyIterativeX::run', 'Done')
 	invisible(nmfData)
 })
+
+
+#' @S3class nmfFormals NMFStrategyIterative
+nmfFormals.NMFStrategyIterative <- function(x, runtime=FALSE, ...){
+	
+	strategy <- xifyStrategy(x)
+	# from run method
+	m <- getMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit'))
+	run.args <- formals(m)[-(1:3)]
+	# onInit
+	init.args <- if( is.function(strategy@onInit) ) formals(strategy@onInit)
+	# Update
+	update.args <- formals(strategy@Update)
+	# Stop
+	stop.args <- formals(strategy@Stop)
+	# spplit internals and 
+	internal.args <- names(c(init.args[1:3], update.args[1:3], stop.args[1:4]))
+	expected.args <- c(init.args[-(1:3)], update.args[-(1:3)], stop.args[-(1:4)])
+	
+	if( runtime ){
+		list(internal=internal.args, user=expected.args)
+	}else{
+		args <- c(run.args, expected.args)
+		expand_list(strategy@defaults, args)
+	}
+}
 
 ################################################################################################
 # INITIALIZATION METHODS

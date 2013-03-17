@@ -71,7 +71,7 @@ wrss <- function(object, X, weight){
 }
 
 # Registration of LS-NMF
-setNMFMethod('ls-nmf', objective=wrss
+nmfAlgorithm.lsNMF <- setNMFMethod('ls-nmf', objective=wrss
 			, Update=nmf_update.lsnmf
 			, Stop='stationary')
 	

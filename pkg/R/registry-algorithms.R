@@ -70,6 +70,8 @@ setNMFMethod <- function(name, method, ..., overwrite=isLoadingNamespace(), verb
 	method <- eval(call_const, envir=e)
 	# add to the algorithm registry
 	res <- nmfRegister(method, overwrite=overwrite, verbose=verbose)
+	# return wrapper function invisibly
+	wrap <- nmfWrapper(method)
 }
 
 #' \code{nmfRegisterAlgorithm} is an alias to \code{setNMFMethod} for backward
@@ -422,9 +424,15 @@ nmfWrapper <- function(method, ..., .FIXED=FALSE){
 		e <- parent.frame()
 		eval(.call, envir=e)
 	}
+	
 	# add default arguments to signature
-	if( length(.defaults) )
-		formals(fwrap) <- c(formals(fwrap), as.list(.call[.defaults]))
+	if( length(.defaults) ){
+		formals(fwrap) <- expand_list(formals(fwrap), as.list(.call[.defaults]))
+	}
+	# add arguments from the NMF algorithm
+	if( length(meth <- nmfFormals(.method)) ){
+		formals(fwrap) <- expand_list(formals(fwrap), meth)
+	}
 	
 	return( fwrap )
 	
