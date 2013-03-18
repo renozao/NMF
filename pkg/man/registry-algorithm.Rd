@@ -2,6 +2,7 @@
 \alias{existsNMFMethod}
 \alias{getNMFMethod}
 \alias{methods-NMF}
+\alias{removeNMFMethod}
 \alias{selectNMFMethod}
 \title{Registry for NMF Algorithms}
 \usage{
@@ -11,6 +12,8 @@
   getNMFMethod(...)
 
   existsNMFMethod(name, exact = TRUE)
+
+  removeNMFMethod(name, ...)
 }
 \arguments{
   \item{name}{name of a registered NMF algorithm}
@@ -26,12 +29,13 @@
   that can fit \code{model} should be returned or only the
   default or first found.}
 
-  \item{quiet}{a logical that indicates if warnings or
-  errors should be thrown in case of the selected algorithm
-  is not the default algorithm.}
+  \item{quiet}{a logical that indicates if the operation
+  should be performed quietly, without throwing errors or
+  warnings.}
 
   \item{...}{extra arguments passed to
-  \code{\link[pkgmaker]{pkgregfetch}}.}
+  \code{\link[pkgmaker]{pkgreg_fetch}} or
+  \code{\link[pkgmaker]{pkgreg_remove}}.}
 
   \item{exact}{a logical that indicates if the access key
   should be matched exactly (\code{TRUE}) or partially
@@ -53,5 +57,8 @@
 
   \code{existsNMFMethod} tells if an NMF algorithm is
   registered under the
+
+  \code{removeNMFMethod} removes an NMF algorithm from the
+  registry.
 }
 

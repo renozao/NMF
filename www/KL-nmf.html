@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf_update.brunet_R. NMF 0.13</title>
+<title>nmf_update.brunet_R. NMF 0.14.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="
   Original implementation in MATLAB: Jean-Philippe Brunet
@@ -11,11 +11,17 @@
   Port to R and optimisation in C++: Renaud Gaujoux
 ">
 
+<!-- bootstrap css -->
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
 <link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
 
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <!-- d3 word cloud -->
 <script src="js/d3.v2.min.js"></script>
 <script src="js/d3.layout.cloud.js"></script>
@@ -29,7 +35,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.13</a>
+      <a class="brand" href="index.html">NMF 0.14.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -51,7 +57,18 @@
     <h2>Usage</h2>
     <pre>nmf_update.brunet_R(i, v, x, eps = .Machine$double.eps, ...)
 
-nmf_update.brunet(i, v, x, copy = FALSE, eps = .Machine$double.eps, ...)</pre>
+nmf_update.brunet(i, v, x, copy = FALSE, eps = .Machine$double.eps, ...)
+
+nmfAlgorithm.brunet_R(..., maxIter = 2000, eps = .Machine$double.eps, stopconv = 40, 
+  check.interval = 10)
+
+nmfAlgorithm.brunet(..., maxIter = 2000, copy = FALSE, eps = .Machine$double.eps, 
+      stopconv = 40, check.interval = 10)
+
+nmfAlgorithm.KL(..., maxIter = 2000, copy = FALSE, eps = .Machine$double.eps, stationary.th = .Machine$double.eps, 
+      check.interval = 5 * check.niter, check.niter = 10L)
+
+nmfAlgorithm.brunet_M(..., object, y, x)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -70,7 +87,8 @@ nmf_update.brunet(i, v, x, copy = FALSE, eps = .Machine$double.eps, ...)</pre>
       <dd>extra arguments. These are generally not used
   and present only to allow other arguments from the main
   call to be passed to the initialisation and stopping
-  criterion functions.</dd>
+  criterion functions (slots <code>onInit</code> and <code>Stop</code>
+  respectively).</dd>
       <dt>copy</dt>
       <dd>logical that indicates if the update should
   be made on the original matrix directly (<code>FALSE</code>) or
@@ -79,6 +97,27 @@ nmf_update.brunet(i, v, x, copy = FALSE, eps = .Machine$double.eps, ...)</pre>
   be achieved in the case of big matrices. However, greater
   care should be taken due the side effect. We recommend
   that only experienced users use <code>copy=TRUE</code>.</dd>
+      <dt>maxIter</dt>
+      <dd>maximum number of iterations to perform.</dd>
+      <dt>object</dt>
+      <dd>an object computed using some algorithm, or
+  that describes an algorithm itself.</dd>
+      <dt>y</dt>
+      <dd>data object, e.g. a target matrix</dd>
+      <dt>stopconv</dt>
+      <dd>number of iterations intervals over which
+  the connectivity matrix must not change for stationarity
+  to be achieved.</dd>
+      <dt>check.interval</dt>
+      <dd>interval (in number of iterations)
+  on which the stopping criterion is computed.</dd>
+      <dt>stationary.th</dt>
+      <dd>maximum absolute value of the
+  gradient, for the objective function to be considered
+  stationary.</dd>
+      <dt>check.niter</dt>
+      <dd>number of successive iteration used to
+  compute the stationnary criterion.</dd>
     </dl>
     
     <div class="Source">
@@ -104,15 +143,14 @@ nmf_update.brunet(i, v, x, copy = FALSE, eps = .Machine$double.eps, ...)</pre>
     <div class="Description">
       <h2>Description</h2>
       
-      <p>The built-in NMF algorithms &#145;KL&#146; and
-  &#145;brunet&#146; minimise the Kullback-Leibler divergence
-  (KL) between an NMF model and a target matrix. They use
-  the updates for the basis and coefficient matrices
-  (<code class = 'eq'>W</code> and <code class = 'eq'>H</code>) defined by <cite>Brunet et al.
-  (2004)</cite>, which are essentially those from <cite>Lee et
-  al. (2001)</cite>, with an stabilisation step that shift up all
-  entries from zero every 10 iterations, to a very small
-  positive value.</p>
+      <p>The built-in NMF algorithms described here minimise the
+  Kullback-Leibler divergence (KL) between an NMF model and
+  a target matrix. They use the updates for the basis and
+  coefficient matrices (<code class = 'eq'>W</code> and <code class = 'eq'>H</code>) defined by
+  <cite>Brunet et al. (2004)</cite>, which are essentially those
+  from <cite>Lee et al. (2001)</cite>, with an stabilisation step
+  that shift up all entries from zero every 10 iterations,
+  to a very small positive value.</p>
   
       <p><code>nmf_update.brunet</code> implements in C++ an optimised
   version of the single update step.</p>
@@ -125,8 +163,12 @@ nmf_update.brunet(i, v, x, copy = FALSE, eps = .Machine$double.eps, ...)</pre>
   
       <p>Algorithm &#145;KL&#146; provides an NMF algorithm based on
   the C++-optimised version of the updates from
-  <cite>Brunet et al. (2004)</cite>, but using the stationarity
-  of the objective value as a stopping criterion.</p>
+  <cite>Brunet et al. (2004)</cite>, which uses the stationarity
+  of the objective value as a stopping criterion
+  <code><a href='stop-NMF.html'>nmf.stop.stationary</a></code>, instead of the
+  stationarity of the connectivity matrix
+  <code><a href='stop-NMF.html'>nmf.stop.connectivity</a></code> as used by
+  &#145;brunet&#146;.</p>
   
       <p><code>file.show(system.file('matlab', 'brunet.m',
   package='NMF'))</code></p>
@@ -136,13 +178,6 @@ nmf_update.brunet(i, v, x, copy = FALSE, eps = .Machine$double.eps, ...)</pre>
     <div class="Details">
       <h2>Details</h2>
       
-      <p>The only difference between algorithms &#145;KL&#146; and
-  &#145;brunet&#146; is that &#145;KL&#146; uses the stopping
-  criterion based on the stationarity of the objective
-  value <code><a href='stop-NMF.html'>nmf.stop.stationary</a></code>, whereas
-  &#145;brunet&#146; uses the stationarity of the connectivity
-  matrix <code><a href='stop-NMF.html'>nmf.stop.connectivity</a></code>.</p>
-  
       <p><code>nmf_update.brunet_R</code> implements in pure R a single
   update step, i.e. it updates both matrices.</p>
   
@@ -168,7 +203,7 @@ nmf_update.brunet(i, v, x, copy = FALSE, eps = .Machine$double.eps, ...)</pre>
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>brunet-nmf</li><li>KL-nmf</li><li>Mbrunet-nmf</li><li>nmf_update.brunet</li><li>nmf_update.brunet_R</li><li>Rbrunet-nmf</li>
+      <li>brunet_M-nmf</li><li>brunet-nmf</li><li>brunet_R-nmf</li><li>KL-nmf</li><li>nmfAlgorithm.brunet</li><li>nmfAlgorithm.brunet_M</li><li>nmfAlgorithm.brunet_R</li><li>nmfAlgorithm.KL</li><li>nmf_update.brunet</li><li>nmf_update.brunet_R</li>
     </ul>
     <ul>
       

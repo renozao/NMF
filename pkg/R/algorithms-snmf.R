@@ -400,7 +400,7 @@ print.fcnnls <- function(x, ...){
 ###%
 ###% 
 #function [W,H,i] 
-nmf_snmf <- function(A, x, eta=-1, beta=0.01, bi_conv=c(0, 10), eps_conv=1e-4, maxIter=20000L, version=c('R', 'L'), verbose=FALSE){
+nmf_snmf <- function(A, x, maxIter=20000L, eta=-1, beta=0.01, bi_conv=c(0, 10), eps_conv=1e-4, version=c('R', 'L'), verbose=FALSE){
 #nmfsh_comb <- function(A, k, param, verbose=FALSE, bi_conv=c(0, 10), eps_conv=1e-4, version=c('R', 'L')){
 	
 	# depending on the version: 
@@ -581,20 +581,86 @@ snmf.objective <- function(x, y, eta=-1, beta=0.01){
 
 ###% Wrapper function to use the SNMF/R algorithm with the NMF package.
 ###%
-.snmf <- function(target, seed, ...){	
+.snmf <- function(target, seed, maxIter=20000L, eta=-1, beta=0.01, bi_conv=c(0, 10), eps_conv=1e-4, ...){	
 	
 	# retrieve the version of SNMF algorithm from its name: 
 	# it is defined by the last letter in the method's name (in upper case)
 	name <- algorithm(seed)
 	version <- toupper(substr(name, nchar(name), nchar(name)))
 	
-	# perform factorization using Kim and Park's algorithm 
-	sol <- nmf_snmf(target, seed, ..., version = version, verbose = verbose(seed))
+	# perform factorization using Kim and Park's algorithm
+	ca <- match.call()
+	ca[[1L]] <- as.name('nmf_snmf')
+	# target
+	ca[['A']] <- ca[['target']]
+	ca[['target']] <- NULL
+	# seed
+	ca[['x']] <- ca[['seed']]
+	ca[['seed']] <- NULL
+	# version 
+	ca[['version']] <- version
+	# verbose
+	ca[['verbose']] <- verbose(seed)
+	e <- parent.frame()
+	sol <- eval(ca, envir=e)
+#	nmf_snmf(target, seed, ..., version = version, verbose = verbose(seed))
 		
 	# return solution
 	return(sol)
 }
 
-# internal function to register the methods
+#' NMF Algorithm - Sparse NMF via Alternating NNLS
+#' 
+#' NMF algorithms proposed by \cite{KimH2007} that enforces sparsity 
+#' constraint on the basis matrix (algorithm \sQuote{SNMF/L}) or the 
+#' mixture coefficient matrix (algorithm \sQuote{SNMF/R}).
+#' 
+#' The algorithm \sQuote{SNMF/R} solves the following NMF optimization problem on 
+#' a given target matrix \eqn{A} of dimension \eqn{n \times p}{n x p}:
+#' \deqn{
+#' \begin{array}{ll}
+#' & \min_{W,H} \frac{1}{2} \left(|| A - WH ||_F^2 + \eta ||W||_F^2 
+#' 	               + \beta (\sum_{j=1}^p ||H_{.j}||_1^2)\right)\\
+#'                 s.t. & W\geq 0, H\geq 0
+#' \end{array}
+#' }{
+#' min_{W,H} 1/2 (|| A - WH ||_F^2 + eta ||W||_F^2 
+#' 	               + beta (sum_j ||H[,j]||_1^2))
+#' 
+#'                 s.t. W>=0, H>=0 
+#' }
+#' 
+#' The algorithm \sQuote{SNMF/L} solves a similar problem on the transposed target matrix \eqn{A},
+#' where \eqn{H} and \eqn{W} swap roles, i.e. with sparsity constraints applied to \code{W}. 
+#' 
+#' @param maxIter maximum number of iterations. 
+#' @param eta parameter to suppress/bound the L2-norm of \code{W} and in 
+#' \code{H} in \sQuote{SNMF/R} and \sQuote{SNMF/L} respectively.
+#' 
+#' If \code{eta < 0}, then it is set to the maximum value in the target matrix is used.   
+#' @param beta regularisation parameter for sparsity control, which 
+#' balances the trade-off between the accuracy of the approximation and the 
+#' sparseness of \code{H} and \code{W} in \sQuote{SNMF/R} and \sQuote{SNMF/L} respectively.
+#' 
+#' Larger beta generates higher sparseness on \code{H} (resp. \code{W}).
+#' Too large beta is not recommended.
+#' @param bi_conv parameter of the biclustering convergence test.
+#' It must be a size 2 numeric vector \code{bi_conv=c(wminchange, iconv)}, 
+#' with:
+#' \describe{
+#' \item{\code{wminchange}:}{the minimal allowance of change in row-clusters.}
+#' \item{\code{iconv}:}{ decide convergence if row-clusters 
+#' (within the allowance of \code{wminchange})
+#' and column-clusters have not changed for \code{iconv} convergence checks.}
+#' } 
+#' 
+#' Convergence checks are performed every 5 iterations.
+#' @param eps_conv threshold for the KKT convergence test. 
+#' @param ... extra argument not used.
+#' 
+#' @rdname SNMF-nmf
+#' @aliases SNMF/R-nmf
 nmfAlgorithm.SNMF_R <- setNMFMethod('snmf/r', .snmf, objective=snmf.objective)
+#' @aliases SNMF/L-nmf
+#' @rdname SNMF-nmf
 nmfAlgorithm.SNMF_L <- setNMFMethod('snmf/l', .snmf, objective=snmf.objective)

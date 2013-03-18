@@ -2,15 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>basiscor. NMF 0.13</title>
+<title>basiscor. NMF 0.14.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
+<!-- bootstrap css -->
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
 <link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
 
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <!-- d3 word cloud -->
 <script src="js/d3.v2.min.js"></script>
 <script src="js/d3.layout.cloud.js"></script>
@@ -24,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.13</a>
+      <a class="brand" href="index.html">NMF 0.14.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -140,58 +146,58 @@ profcor(x, y, ...)</pre>
 </div><div class='input'>b <- rnmf(3, 100, 20)
 </div><div class='input'></div><div class='input'># Compute auto-correlations</div><div class='input'>basiscor(a)
 </div>
-<div class='output'>            [,1]        [,2]        [,3]
-[1,]  1.00000000  0.02330099 -0.02481937
-[2,]  0.02330099  1.00000000 -0.09634854
-[3,] -0.02481937 -0.09634854  1.00000000
+<div class='output'>            [,1]         [,2]         [,3]
+[1,]  1.00000000  0.075239831 -0.135369716
+[2,]  0.07523983  1.000000000 -0.005719116
+[3,] -0.13536972 -0.005719116  1.000000000
 </div><div class='input'>profcor(a)
 </div>
-<div class='output'>            [,1]        [,2]        [,3]
-[1,]  1.00000000 -0.04075767  0.20952723
-[2,] -0.04075767  1.00000000 -0.03326793
-[3,]  0.20952723 -0.03326793  1.00000000
+<div class='output'>           [,1]       [,2]        [,3]
+[1,]  1.0000000 0.28762678 -0.11705309
+[2,]  0.2876268 1.00000000  0.01932876
+[3,] -0.1170531 0.01932876  1.00000000
 </div><div class='input'># Compute correlations with b</div><div class='input'>basiscor(a, b)
 </div>
-<div class='output'>           [,1]        [,2]       [,3]
-[1,] -0.1168139 -0.03346679 0.08183404
-[2,] -0.1209226  0.09603385 0.06918367
-[3,] -0.1792735 -0.09467431 0.14201970
+<div class='output'>            [,1]        [,2]        [,3]
+[1,]  0.07139383 -0.03046362  0.12031603
+[2,] -0.09792189  0.12824202  0.15539756
+[3,] -0.11718844 -0.10515348 -0.01617177
 </div><div class='input'>profcor(a, b)
 </div>
-<div class='output'>            [,1]      [,2]         [,3]
-[1,] -0.53477809 0.4309980 -0.004180953
-[2,]  0.06324894 0.3396666 -0.205696136
-[3,]  0.03218469 0.1041179 -0.133999899
+<div class='output'>           [,1]        [,2]      [,3]
+[1,] 0.28420556 -0.28838376 0.3593125
+[2,] 0.38007383 -0.19649326 0.0295629
+[3,] 0.02573143  0.08513552 0.0519777
 </div><div class='input'></div><div class='input'># try to recover the underlying NMF model 'a' from noisy data</div><div class='input'>res <- nmf(fitted(a) + rmatrix(a), 3)
 </div><div class='input'></div><div class='input'># Compute correlations with the true model</div><div class='input'>basiscor(a, res)
 </div>
-<div class='output'>            [,1]        [,2]       [,3]
-[1,]  0.09094378  0.02189924  0.9311012
-[2,]  0.92262053 -0.08102696  0.1691689
-[3,] -0.18225965  0.91302265 -0.1227829
+<div class='output'>            [,1]       [,2]       [,3]
+[1,]  0.90576529 0.11230402 -0.1689992
+[2,]  0.06788728 0.92011876 -0.1457086
+[3,] -0.29037692 0.08028857  0.9311134
 </div><div class='input'>profcor(a, res)
 </div>
-<div class='output'>            [,1]        [,2]        [,3]
-[1,] -0.34258566  0.25134020  0.96707563
-[2,]  0.93572345 -0.02259826 -0.15296276
-[3,] -0.06258793  0.98848467  0.06948643
+<div class='output'>           [,1]       [,2]        [,3]
+[1,]  0.9572046 0.24351957 -0.14608484
+[2,]  0.1851074 0.96881190 -0.06398656
+[3,] -0.2624509 0.08411754  0.98028847
 </div><div class='input'></div><div class='input'># Compute correlations with a random compatible matrix</div><div class='input'>W <- rmatrix(basis(a))
 </div><div class='input'>basiscor(a, W)
 </div>
-<div class='output'>            [,1]        [,2]       [,3]
-[1,] -0.05619413 -0.06427199 0.10545334
-[2,] -0.14764392 -0.10591519 0.14133099
-[3,] -0.14913356 -0.02859100 0.04972099
+<div class='output'>            [,1]         [,2]       [,3]
+[1,] -0.09544069 -0.004393492 0.10813332
+[2,] -0.06606461 -0.145275167 0.03218871
+[3,]  0.22825234 -0.134143128 0.01746086
 </div><div class='input'>identical(basiscor(a, W), basiscor(W, a))
 </div>
 <div class='output'>[1] FALSE
 </div><div class='input'></div><div class='input'>H <- rmatrix(coef(a))
 </div><div class='input'>profcor(a, H)
 </div>
-<div class='output'>          [,1]       [,2]        [,3]
-[1,] 0.1268997 0.20722207 -0.01839754
-[2,] 0.0480428 0.05564234  0.32609131
-[3,] 0.1321871 0.22004219  0.09650030
+<div class='output'>            [,1]        [,2]         [,3]
+[1,] -0.02566007 -0.04384134 -0.171087307
+[2,] -0.22244420  0.32906609  0.002936016
+[3,]  0.22024592  0.06671669  0.263997253
 </div><div class='input'>identical(profcor(a, H), profcor(H, a))
 </div>
 <div class='output'>[1] FALSE

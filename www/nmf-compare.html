@@ -2,15 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>compare-NMF. NMF 0.13</title>
+<title>compare-NMF. NMF 0.14.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
+<!-- bootstrap css -->
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
 <link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
 
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <!-- d3 word cloud -->
 <script src="js/d3.v2.min.js"></script>
 <script src="js/d3.layout.cloud.js"></script>
@@ -24,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.13</a>
+      <a class="brand" href="index.html">NMF 0.14.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -242,13 +248,13 @@
 </div><div class='input'></div><div class='input'># compare arguments</div><div class='input'>compare(res, res2, target=x)
 </div>
 <div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef       rss      evar residuals niter   cpu cpu.all nrun
-1 brunet random   1        KL    3        0.2179114       0.4747831  9.341647 0.8642896  9.942599   480 0.124   0.124    1
-2    lee random   2 euclidean    2        0.1718556       0.3225467 11.121712 0.8384298  5.560856   460 0.176   0.176    1
+1 brunet random   2        KL    3        0.2422305       0.4858309  8.541287 0.8557359  10.00753   530 0.132   0.132    1
+2    lee random   1 euclidean    2        0.1558373       0.4096368 10.981939 0.8145128   5.49097   810 0.276   0.276    1
 </div><div class='input'># compare elements of a list</div><div class='input'>compare(list(res, res2), target=x)
 </div>
 <div class='output'>  method   seed rng    metric rank sparseness.basis sparseness.coef       rss      evar residuals niter   cpu cpu.all nrun
-1 brunet random   1        KL    3        0.2179114       0.4747831  9.341647 0.8642896  9.942599   480 0.124   0.124    1
-2    lee random   2 euclidean    2        0.1718556       0.3225467 11.121712 0.8384298  5.560856   460 0.176   0.176    1
+1 brunet random   2        KL    3        0.2422305       0.4858309  8.541287 0.8557359  10.00753   530 0.132   0.132    1
+2    lee random   1 euclidean    2        0.1558373       0.4096368 10.981939 0.8145128   5.49097   810 0.276   0.276    1
 </div></pre>
   </div>
   <div class="span4">

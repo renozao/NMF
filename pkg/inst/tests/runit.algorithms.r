@@ -29,7 +29,7 @@ checkData <- function(meth, ...){
 		r <- 3; V <- .testData(r=r)
 		n <- nrow(V); m <- ncol(V);
 		
-		res <- nmf(V, r, meth, ...)
+		res <- nmf(V, r, meth, ..., rng=1234)
 		
 		# check the consistency of the result
 		checkTrue( validObject(res), 'Returned object is valid')
@@ -37,6 +37,10 @@ checkData <- function(meth, ...){
 		checkEquals(nbasis(res), r, 'Result has correct rank', checkNames=FALSE)
 		checkEquals(ncol(res), m, 'H has correct number of columns', checkNames=FALSE)
 		checkEquals(algorithm(res), meth, "Algorithm's name is correctly set", checkNames=FALSE)
+		
+		wr <- nmfWrapper(meth)
+		checkTrue( isNMFfit(resWrapper <- wr(V, r, ..., rng=1234)), 'Wrapper call works')
+		checkTrue( nmf.equal(res, resWrapper), 'Wrapper call gives identical result')
 		
 		# check heatmaps
 		checkNMFPlot(V, res, 'Synthetic [noise]')

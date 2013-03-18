@@ -1,10 +1,15 @@
 Package: NMF
 Type: Package
 Title: Algorithms and framework for Nonnegative Matrix Factorization (NMF).
-Version: 0.13
+Version: 0.14.1
 Date: 2013-02-27
-Author: Renaud Gaujoux
+Author: Renaud Gaujoux, Cathal Seoighe
 Maintainer: Renaud Gaujoux <renaud@mancala.cbio.uct.ac.za>
+Authors@R: c( person("Renaud", "Gaujoux", role=c('aut', 'cre'),
+    email='renaud@mancala.cbio.uct.ac.za') , person("Cathal", "Seoighe",
+    role='ths') , person("P.", "Brunet", role = "ctb", comment='method: brunet
+    (Matlab original version)') , person("H.", "Kim", role = "ctb",
+    comment='methods: snmf/r(l) (Matlab original version)') )
 Description: This package provides a framework to perform Non-negative Matrix
     Factorization (NMF). It implements a set of already published algorithms
     and seeding methods, and provides a framework to test, develop and plug
@@ -18,7 +23,7 @@ Depends:
     R (>= 2.15.2),
     methods,
     stats,
-    pkgmaker (>= 0.13),
+    pkgmaker (>= 0.14),
     rngtools,
     registry,
     digest,
@@ -61,6 +66,7 @@ Collate:
     'grid.R'
     'aheatmap.R'
     'NMF-class.R'
+    'extractFeatures.R'
     'setNMFClass.R'
     'NMFstd-class.R'
     'fixed-terms.R'

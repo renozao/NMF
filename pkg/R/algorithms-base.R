@@ -17,17 +17,12 @@ NULL
 
 #' NMF Algorithm/Updates for Kullback-Leibler Divergence
 #' 
-#' The built-in NMF algorithms \sQuote{KL} and \sQuote{brunet} minimise 
+#' The built-in NMF algorithms described here minimise 
 #' the Kullback-Leibler divergence (KL) between an NMF model and a target matrix. 
 #' They use the updates for the basis and coefficient matrices (\eqn{W} and \eqn{H}) 
 #' defined by \cite{Brunet2004}, which are essentially those from \cite{Lee2001}, 
 #' with an stabilisation step that shift up all entries from zero every 10 iterations, 
 #' to a very small positive value.
-#' 
-#' The only difference between algorithms \sQuote{KL} and \sQuote{brunet} is that 
-#' \sQuote{KL} uses the stopping criterion based on the stationarity of the objective 
-#' value \code{\link{nmf.stop.stationary}}, whereas \sQuote{brunet} uses the 
-#' stationarity of the connectivity matrix \code{\link{nmf.stop.connectivity}}. 
 #' 
 #' @param i current iteration number.
 #' @param v target matrix.
@@ -36,7 +31,8 @@ NULL
 #' entries from zero to this fixed value.
 #' @param ... extra arguments. These are generally not used and present
 #' only to allow other arguments from the main call to be passed to the 
-#' initialisation and stopping criterion functions. 
+#' initialisation and stopping criterion functions (slots \code{onInit} and 
+#' \code{Stop} respectively). 
 #' @inheritParams nmf_update.KL.h
 #' 
 #' @author 
@@ -66,6 +62,7 @@ NULL
 #' 
 #' @export
 #' @rdname KL-nmf
+#' @aliases KL-nmf
 nmf_update.brunet_R <- function(i, v, x, eps=.Machine$double.eps, ...)
 {
 	# retrieve each factor
@@ -130,24 +127,30 @@ nmf_update.brunet <- function(i, v, x, copy=FALSE, eps=.Machine$double.eps, ...)
 #' using the C++-optimised and pure R updates \code{\link{nmf_update.brunet}} and \code{\link{nmf_update.brunet_R}} 
 #' respectively.
 #' 
+#' @inheritParams run,NMFStrategyIterative,matrix,NMFfit-method
+#' @inheritParams nmf.stop.connectivity
+#' 
 #' @rdname KL-nmf
-#' @aliases Rbrunet-nmf
-#' @name brunet-nmf
-NULL
+#' @aliases brunet_R-nmf
 nmfAlgorithm.brunet_R <- setNMFMethod('.R#brunet'
 		, objective='KL' 
 		, Update=nmf_update.brunet_R
 		, Stop='connectivity')
 
 # Optimised version
+#' @rdname KL-nmf
+#' @aliases brunet-nmf
 nmfAlgorithm.brunet <- setNMFMethod('brunet', '.R#brunet', Update=nmf_update.brunet)
 
 #' Algorithm \sQuote{KL} provides an NMF algorithm based on the C++-optimised version of 
-#' the updates from \cite{Brunet2004}, but using the stationarity of the objective value 
-#' as a stopping criterion.
+#' the updates from \cite{Brunet2004}, which uses the stationarity of the objective value 
+#' as a stopping criterion \code{\link{nmf.stop.stationary}}, instead of the  
+#' stationarity of the connectivity matrix \code{\link{nmf.stop.connectivity}} as used by 
+#' \sQuote{brunet}.
+#' 
+#' @inheritParams nmf.stop.stationarity
+#' 
 #' @rdname KL-nmf
-#' @name KL-nmf
-NULL 
 nmfAlgorithm.KL <- setNMFMethod('KL'
 		, objective='KL' 
 		, Update=nmf_update.brunet
@@ -159,15 +162,10 @@ nmfAlgorithm.KL <- setNMFMethod('KL'
 
 #' NMF Algorithm/Updates for Frobenius Norm
 #' 
-#' The built-in NMF algorithms \sQuote{Frobenius} and \sQuote{lee} minimise 
+#' The built-in NMF algorithms described here minimise 
 #' the Frobenius norm (Euclidean distance) between an NMF model and a target matrix. 
 #' They use the updates for the basis and coefficient matrices (\eqn{W} and \eqn{H}) 
 #' defined by \cite{Lee2001}.
-#' 
-#' The only difference between algorithms \sQuote{Frobenius} and \sQuote{lee} is that 
-#' \sQuote{Frobenius} uses the stopping criterion based on the stationarity of the objective 
-#' value \code{\link{nmf.stop.stationary}}, whereas \sQuote{lee} uses the 
-#' stationarity of the connectivity matrix \code{\link{nmf.stop.connectivity}}. 
 #' 
 #' @inheritParams nmf_update.brunet
 #' @inheritParams nmf_update.euclidean.h
@@ -185,6 +183,7 @@ nmfAlgorithm.KL <- setNMFMethod('KL'
 #' 
 #' @export
 #' @rdname Frobenius-nmf
+#' @aliases Frobenius-nmf
 nmf_update.lee_R <- function(i, v, x, rescale=TRUE, eps=10^-9, ...)
 {
 	# retrieve each factor
@@ -255,24 +254,29 @@ nmf_update.lee <- function(i, v, x, rescale=TRUE, copy=FALSE, eps=10^-9, weight=
 #' using the C++-optimised and pure R updates \code{\link{nmf_update.lee}} and \code{\link{nmf_update.lee_R}}
 #' respectively.
 #' 
+#' @inheritParams run,NMFStrategyIterative,matrix,NMFfit-method
+#' @inheritParams nmf.stop.connectivity
+#' 
 #' @rdname Frobenius-nmf
-#' @aliases Rlee-nmf
-#' @name lee-nmf
-NULL
+#' @aliases lee_R-nmf
 nmfAlgorithm.lee_R <- setNMFMethod('.R#lee', objective='euclidean'
 		, Update=nmf_update.lee_R
 		, Stop='connectivity')	
 
 # Optimised version
+#' @rdname Frobenius-nmf
+#' @aliases lee-nmf
 nmfAlgorithm.lee <- setNMFMethod('lee', '.R#lee', Update=nmf_update.lee)
 
 #' Algorithm \sQuote{Frobenius} provides an NMF algorithm based on the C++-optimised version of 
-#' the updates from \cite{Lee2001}, but uses the stopping criterion based on the 
-#' stationarity of the objective value.
+#' the updates from \cite{Lee2001}, which uses the stationarity of the objective value 
+#' as a stopping criterion \code{\link{nmf.stop.stationary}}, instead of the  
+#' stationarity of the connectivity matrix \code{\link{nmf.stop.connectivity}} as used by 
+#' \sQuote{lee}.
+#' 
+#' @inheritParams nmf.stop.stationary
 #' 
 #' @rdname Frobenius-nmf
-#' @name Frobenius-nmf
-NULL
 nmfAlgorithm.Frobenius <- setNMFMethod('Frobenius', objective='euclidean'
 		, Update=nmf_update.lee
 		, Stop='stationary')
@@ -388,16 +392,18 @@ nmf_update.offset <- function(i, v, x, copy=FALSE, eps=10^-9, ...)
 #' from \cite{Badea2008}, using the C++-optimised and pure R updates \code{\link{nmf_update.offset}} 
 #' and \code{\link{nmf_update.offset_R}} respectively.
 #' 
+#' @inheritParams run,NMFStrategyIterative,matrix,NMFfit-method
+#' @inheritParams nmf.stop.connectivity
+#' 
 #' @rdname offset-nmf
-#' @aliases Roffset-nmf
-#' @name offset-nmf
-NULL
+#' @aliases offset_R-nmf
 nmfAlgorithm.offset_R <- setNMFMethod('.R#offset', objective='euclidean'
 		, model = 'NMFOffset'
 		, Update=nmf_update.offset_R
 		, Stop='connectivity')
 
 # NMF with offset (optimised version)
+#' @rdname offset-nmf
 nmfAlgorithm.offset <- setNMFMethod('offset', '.R#offset', Update=nmf_update.offset)
 
 ################################################################################
@@ -493,14 +499,16 @@ nmf_update.ns_R <- function(i, v, x, ...)
 #' respectively.
 #' The stopping criterion is based on the stationarity of the connectivity matrix.
 #' 
+#' @inheritParams run,NMFStrategyIterative,matrix,NMFfit-method
+#' @inheritParams nmf.stop.connectivity
+#' 
 #' @rdname nsNMF-nmf
-#' @aliases RnsNMF-nmf
-#' @name nsNMF-nmf
-NULL
+#' @aliases nsNMF_R-nmf
 nmfAlgorithm.nsNMF_R <- setNMFMethod('.R#nsNMF', objective='KL'
 		, model='NMFns'
 		, Update=nmf_update.ns_R
 		, Stop='connectivity')
 
 # Optmized version
+#' @rdname nsNMF-nmf
 nmfAlgorithm.nsNMF <- setNMFMethod('nsNMF', '.R#nsNMF', Update=nmf_update.ns)

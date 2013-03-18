@@ -47,7 +47,7 @@
   stationary.}
 
   \item{check.interval}{interval (in number of iterations)
-  on which stationarity is computed.}
+  on which the stopping criterion is computed.}
 
   \item{check.niter}{number of successive iteration used to
   compute the stationnary criterion.}

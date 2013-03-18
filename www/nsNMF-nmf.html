@@ -2,15 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf_update.ns. NMF 0.13</title>
+<title>nmf_update.ns. NMF 0.14.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
+<!-- bootstrap css -->
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
 <link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
 
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <!-- d3 word cloud -->
 <script src="js/d3.v2.min.js"></script>
 <script src="js/d3.layout.cloud.js"></script>
@@ -24,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.13</a>
+      <a class="brand" href="index.html">NMF 0.14.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -46,7 +52,11 @@
     <h2>Usage</h2>
     <pre>nmf_update.ns(i, v, x, copy = FALSE, ...)
 
-nmf_update.ns_R(i, v, x, ...)</pre>
+nmf_update.ns_R(i, v, x, ...)
+
+nmfAlgorithm.nsNMF_R(..., maxIter = 2000, stopconv = 40, check.interval = 10)
+
+nmfAlgorithm.nsNMF(..., maxIter = 2000, copy = FALSE, stopconv = 40, check.interval = 10)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -69,7 +79,17 @@ nmf_update.ns_R(i, v, x, ...)</pre>
       <dd>extra arguments. These are generally not used
   and present only to allow other arguments from the main
   call to be passed to the initialisation and stopping
-  criterion functions.</dd>
+  criterion functions (slots <code>onInit</code> and <code>Stop</code>
+  respectively).</dd>
+      <dt>maxIter</dt>
+      <dd>maximum number of iterations to perform.</dd>
+      <dt>stopconv</dt>
+      <dd>number of iterations intervals over which
+  the connectivity matrix must not change for stationarity
+  to be achieved.</dd>
+      <dt>check.interval</dt>
+      <dd>interval (in number of iterations)
+  on which the stopping criterion is computed.</dd>
     </dl>
     
     <div class="Value">
@@ -141,7 +161,7 @@ nmf_update.ns_R(i, v, x, ...)</pre>
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>nmf_update.ns</li><li>nmf_update.ns_R</li><li>nsNMF-nmf</li><li>RnsNMF-nmf</li>
+      <li>nmfAlgorithm.nsNMF</li><li>nmfAlgorithm.nsNMF_R</li><li>nmf_update.ns</li><li>nmf_update.ns_R</li><li>nsNMF_R-nmf</li>
     </ul>
     <ul>
       

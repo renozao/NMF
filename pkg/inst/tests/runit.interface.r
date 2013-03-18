@@ -9,7 +9,7 @@ checkIdenticalRNG <- checkRNG
 # make the internal functions/objects visible
 if( isNamespaceLoaded('NMF') ){
 	seed <- NMF:::seed
-	nmfUnregister <- NMF:::nmfUnregister	
+#	nmfUnregister <- NMF:::nmfUnregister	
 	name <- NMF:::name
 	`name<-` <- NMF:::`name<-`
 }
@@ -25,14 +25,15 @@ test.registry <- function(){
 	dummy.method <- function(){}
 		
 		# methods that don't exist
-		checkException(nmfUnregister('algo.tata'), 'Unregister a method without specifying the registry name')
-		checkTrue(nmfUnregister('algo.tata', 'algorithm'), 'Unregister a method that does not exist: should not generate an error')
+#		checkException(nmfUnregister('algo.tata'), 'Unregister a method without specifying the registry name')
+#		checkTrue(nmfUnregister('algo.tata', 'algorithm'), 'Unregister a method that does not exist: should not generate an error')
+		checkIdentical(removeNMFMethod('algo.tata'), FALSE, 'removeNMFMethod a method that does not exist: should not generate an error')
 		checkException( nmfAlgorithm('algo.toto'), 'Try to access a method that does not exist: should generate an error')
 		checkTrue(is.null(nmfAlgorithm('algo.toto', error=FALSE)), 'Try to access a method that does not exist with error=FALSE: should NOT generate an error and return NULL')
 		
 	# Registration of new methods		
 		# force un-registration of 'dummy' on exit
-		on.exit({nmfUnregister('dummy', 'algorithm')}, add=TRUE)
+		on.exit({removeNMFMethod('dummy')}, add=TRUE)
 		checkNotNull(setNMFMethod('dummy', dummy.method), 'Register works on dummy -- empty -- method')
 		checkException(setNMFMethod('dummy', dummy.method), 'Try to register an algorithm with an existing name')
 		checkNotNull(setNMFMethod('dummy', dummy.method, overwrite=TRUE), 'Overwrite an existing algorithm ')		

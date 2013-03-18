@@ -2,15 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfWrapper. NMF 0.13</title>
+<title>nmfWrapper. NMF 0.14.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
+<!-- bootstrap css -->
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
 <link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
 
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <!-- d3 word cloud -->
 <script src="js/d3.v2.min.js"></script>
 <script src="js/d3.layout.cloud.js"></script>
@@ -24,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.13</a>
+      <a class="brand" href="index.html">NMF 0.14.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -90,30 +96,26 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'># wrap Lee & Seung algorithm into a function</div><div class='input'>lee <- nmfWrapper('lee')
-</div><div class='input'>lee
+    <pre class="examples"><div class='input'># wrap Lee & Seung algorithm into a function</div><div class='input'>lee <- nmfWrapper('lee', seed=12345)
+</div><div class='input'>args(lee)
 </div>
-<div class='output'>function (..., method = "lee") 
-{
-    ca <- match.call()
-    nm <- names(ca)[-1L]
-    if (any(fnm <- nm %in% .fixedargs)) {
-        warning("Discarding fixed arguments from wrapped call to ", 
-            .call[1L], " [", str_out(nm[fnm], Inf), "].", immediate. = TRUE)
-        ca <- ca[!c(FALSE, fnm)]
-    }
-    defaults <- formals()[-1L]
-    .call <- expand_list(ca, defaults, .exact = FALSE)
-    .call[[1L]] <- as.name("nmf")
-    .call <- as.call(.call)
-    e <- parent.frame()
-    eval(.call, envir = e)
-}
-<environment: 0xe7d7540>
+<div class='output'>function (..., seed = 12345, maxIter = 2000, rescale = TRUE, 
+    copy = FALSE, eps = 10^-9, stopconv = 40, check.interval = 10) 
+NULL
 </div><div class='input'></div><div class='input'># test on random data</div><div class='input'>x <- rmatrix(100,20)
 </div><div class='input'>res <- nmf(x, 3, 'lee', seed=12345)
-</div><div class='input'>res2 <- lee(x, 3, seed=12345)
+</div><div class='input'>res2 <- lee(x, 3)
 </div><div class='input'>nmf.equal(res, res2)
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'>res3 <- lee(x, 3, seed=123)
+</div><div class='input'>nmf.equal(res, res3)
+</div>
+<div class='output'>[1] FALSE
+</div><div class='input'></div><div class='input'></div><div class='input'></div><div class='input'># argument 'method' has no effect</div><div class='input'>res4 <- lee(x, 3, method='brunet')
+</div>
+<strong class='warning'>Warning message:
+Discarding fixed arguments from wrapped call to nmfWrapper ['method'].</strong><div class='input'>nmf.equal(res, res4)
 </div>
 <div class='output'>[1] TRUE
 </div><div class='input'></div><div class='input'></div></pre>

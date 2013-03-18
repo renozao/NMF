@@ -38,16 +38,29 @@
 }
 \examples{
 # wrap Lee & Seung algorithm into a function
-lee <- nmfWrapper('lee')
-lee
+lee <- nmfWrapper('lee', seed=12345)
+args(lee)
 
 # test on random data
 x <- rmatrix(100,20)
 res <- nmf(x, 3, 'lee', seed=12345)
-res2 <- lee(x, 3, seed=12345)
+res2 <- lee(x, 3)
 nmf.equal(res, res2)
+res3 <- lee(x, 3, seed=123)
+nmf.equal(res, res3)
 
-\dontshow{ stopifnot(nmf.equal(res, res2)) }
+\dontshow{
+stopifnot(nmf.equal(res, res2))
+stopifnot( !nmf.equal(res, res3))
+}
+
+# argument 'method' has no effect
+res4 <- lee(x, 3, method='brunet')
+nmf.equal(res, res4)
+
+\dontshow{
+stopifnot(nmf.equal(res, res4))
+}
 }
 \seealso{
   \code{\link{nmfAlgorithm}}, \code{\link{nmf}}

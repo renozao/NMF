@@ -382,20 +382,23 @@ is.mixed <-	function(object){
 #' to a given NMF algorithm in call to \code{\link{nmf}}.
 #' 
 #' @param x algorithm specification
+#' @param ... extra argument to allow extension
 #' 
 #' @export
 nmfFormals <- function(x, ...){
 	UseMethod('nmfFormals')
 }
 
-#' @S3class nmfFormals character
+#' @S3method nmfFormals character
 nmfFormals.character <- function(x, ...){
 	s <- nmfAlgorithm(x)
 	nmfFormals(s, ...)
 }
 
-#' @S3class nmfFormals NMFStrategy
+#' @S3method nmfFormals NMFStrategy
 nmfFormals.NMFStrategy <- function(x, ...){
 	m <- getMethod('run', signature(object='NMFStrategy', y='matrix', x='NMFfit'))
-	formals(m)
+	args <- allFormals(m)
+	# prepend registered default arguments
+	expand_list(x@defaults, args)
 }

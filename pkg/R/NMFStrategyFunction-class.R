@@ -40,7 +40,7 @@ setMethod('run', signature(object='NMFStrategyFunction', y='matrix', x='NMFfit')
 	}
 )
 
-#' @S3class nmfFormals NMFStrategyFunction
+#' @S3method nmfFormals NMFStrategyFunction
 nmfFormals.NMFStrategyFunction <- function(x, ...){
 	args <- formals(x@algorithm)
 	args[-(1:2)]

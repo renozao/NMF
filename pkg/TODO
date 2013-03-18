@@ -1,20 +1,18 @@
-Interface:
-    o change plot.NMFrankestimate to screeplot, remove class NMFrankestimate, 
-    change it to normal NMFlist
-    
-Functions:
-
-    o extractFeature should return the rownames if present.
-    o incorporate pheatmap functions to produce nicer heatmaps
-    o define a NMFsampler-class for MCMC based NMF
-    o define NMFStrategyOctave
-    o Store options as an environment in .GlobalEnv 
+Features:
+    o handle missing data in target matrix
+    o NMF model/algorithm class for MCMC based NMF
+    o function/option to run standard consensus clustering, 
+    i.e. with a different set sample for each run. 
+    Possibly also use subsets of features and consensus matrix for them (memory issue).
+    o incorporate silhouette values/plots, notably in heatmaps
+    o support for other type of matrix-like objects (e.g., bigmatrix, Matrix)
+    o import/export functions
 
 Documentation:
-    o improve vignettes
-    o migrate to roxygen2 generated man pages
-
-Ideas:
-
+    o improve/update vignettes
+    
+Technical/Internals:
+    o change plot.NMFrankestimate to screeplot, remove class NMFrankestimate, 
+    change it to normal NMFlist
     o Switch to the interface defined in the package modeltools
-    o handle missing data in target matrix
+    

@@ -2,15 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>. NMF 0.13</title>
+<title>. NMF 0.14.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="author" content="">
+<meta name="author" content="Renaud Gaujoux">
 
+<!-- bootstrap css -->
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
 <link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
 
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <!-- d3 word cloud -->
 <script src="js/d3.v2.min.js"></script>
 <script src="js/d3.layout.cloud.js"></script>
@@ -24,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.13</a>
+      <a class="brand" href="index.html">NMF 0.14.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href=""><i class="icon-home icon-white"></i> Index</a></li>
@@ -140,7 +146,7 @@
     <code><a href="match_atrack.html">match_atrack</a></code><br />Extending Annotation Vectors</li>
 
   <li>
-    <code><a href="registry-algorithm.html">methods-NMF</a></code>(existsNMFMethod, getNMFMethod, selectNMFMethod)<br />Registry for NMF Algorithms</li>
+    <code><a href="registry-algorithm.html">methods-NMF</a></code>(existsNMFMethod, getNMFMethod, removeNMFMethod, selectNMFMethod)<br />Registry for NMF Algorithms</li>
 
   <li>
     <code><a href="dims.html">nbasis</a></code>(dim-NMF, dim,NMFfitXn-method, dim,NMF-method, nbasis,ANY-method, nbasis-methods, nbasis,NMFfitXn-method)<br />Dimension of NMF Objects</li>
@@ -150,6 +156,9 @@
 
   <li>
     <code><a href="nmfAlgorithm.html">nmfAlgorithm</a></code><br />Listing and Retrieving NMF Algorithms</li>
+
+  <li>
+    <code><a href="SNMF-nmf.html">nmfAlgorithm.SNMF_R</a></code>(nmfAlgorithm.SNMF_L, SNMF/L-nmf, SNMF/R-nmf)<br />NMF Algorithm - Sparse NMF via Alternating NNLS</li>
 
   <li>
     <code><a href="nmfApply.html">nmfApply</a></code><br />Apply Function for NMF Objects</li>
@@ -185,6 +194,9 @@
     <code><a href="NMFfitXn-class.html">NMFfitXn-class</a></code><br />Structure for Storing All Fits from Multiple NMF Runs</li>
 
   <li>
+    <code><a href="nmfFormals.html">nmfFormals</a></code><br />Showing Arguments of NMF Algorithms</li>
+
+  <li>
     <code><a href="NMFList-class.html">NMFList-class</a></code><br />Class for Storing Heterogeneous NMF fits</li>
 
   <li>
@@ -212,7 +224,7 @@
     <code><a href="nmfSeed.html">nmfSeed</a></code>(existsNMFSeed, getNMFSeed)<br />Seeding Strategies for NMF Algorithms</li>
 
   <li>
-    <code><a href="setNMFSeed.html">NMFSeed</a></code>(NMFSeed,character-method, NMFSeed-methods, NMFSeed,NMFSeed-method, setNMFSeed)<br />NMFSeed</li>
+    <code><a href="setNMFSeed.html">NMFSeed</a></code>(NMFSeed,character-method, NMFSeed-methods, NMFSeed,NMFSeed-method, removeNMFSeed, setNMFSeed)<br />NMFSeed</li>
 
   <li>
     <code><a href="NMFSeed-class.html">NMFSeed-class</a></code><br />Base class that defines the interface for NMF seeding methods.</li>
@@ -236,25 +248,25 @@
     <code><a href="NMFStrategyOctave-class.html">NMFStrategyOctave-class</a></code>(show,NMFStrategyOctave-method)<br />S4 Interface for Octave-Matlab NMF Algorithms</li>
 
   <li>
-    <code><a href="KL-nmf.html">nmf_update.brunet_R</a></code>(brunet-nmf, KL-nmf, Mbrunet-nmf, nmf_update.brunet, Rbrunet-nmf)<br />NMF Algorithm/Updates for Kullback-Leibler Divergence</li>
+    <code><a href="KL-nmf.html">nmf_update.brunet_R</a></code>(brunet_M-nmf, brunet-nmf, brunet_R-nmf, KL-nmf, nmfAlgorithm.brunet, nmfAlgorithm.brunet_M, nmfAlgorithm.brunet_R, nmfAlgorithm.KL, nmf_update.brunet)<br />NMF Algorithm/Updates for Kullback-Leibler Divergence</li>
 
   <li>
     <code><a href="nmf_update_euclidean.html">nmf_update.euclidean.h</a></code>(nmf_update.euclidean, nmf_update.euclidean.h_R, nmf_update.euclidean.w, nmf_update.euclidean.w_R)<br />NMF Multiplicative Updates for Euclidean Distance</li>
 
   <li>
-    <code><a href="offset-nmf.html">nmf_update.euclidean_offset.h</a></code>(nmf_update.euclidean_offset.w, nmf_update.offset, nmf_update.offset_R, offset-nmf, Roffset-nmf)<br />NMF Multiplicative Update for NMF with Offset Models</li>
+    <code><a href="offset-nmf.html">nmf_update.euclidean_offset.h</a></code>(nmfAlgorithm.offset, nmfAlgorithm.offset_R, nmf_update.euclidean_offset.w, nmf_update.offset, nmf_update.offset_R, offset_R-nmf)<br />NMF Multiplicative Update for NMF with Offset Models</li>
 
   <li>
     <code><a href="nmf_update_KL.html">nmf_update.KL.h</a></code>(nmf_update.KL, nmf_update.KL.h_R, nmf_update.KL.w, nmf_update.KL.w_R)<br />NMF Multiplicative Updates for Kullback-Leibler Divergence</li>
 
   <li>
-    <code><a href="Frobenius-nmf.html">nmf_update.lee_R</a></code>(Frobenius-nmf, lee-nmf, nmf_update.lee, Rlee-nmf)<br />NMF Algorithm/Updates for Frobenius Norm</li>
+    <code><a href="Frobenius-nmf.html">nmf_update.lee_R</a></code>(Frobenius-nmf, lee-nmf, lee_R-nmf, nmfAlgorithm.Frobenius, nmfAlgorithm.lee, nmfAlgorithm.lee_R, nmf_update.lee)<br />NMF Algorithm/Updates for Frobenius Norm</li>
 
   <li>
-    <code><a href="lsnmf.html">nmf_update.lsnmf</a></code>(lsnmf-nmf, wrss)<br />Multiplicative Updates for LS-NMF</li>
+    <code><a href="lsNMF-nmf.html">nmf_update.lsnmf</a></code>(lsNMF-nmf, nmfAlgorithm.lsNMF, wrss)<br />Multiplicative Updates for LS-NMF</li>
 
   <li>
-    <code><a href="nsNMF-nmf.html">nmf_update.ns</a></code>(nmf_update.ns_R, nsNMF-nmf, RnsNMF-nmf)<br />NMF Multiplicative Update for Nonsmooth Nonnegative Matrix Factorization (nsNMF).</li>
+    <code><a href="nsNMF-nmf.html">nmf_update.ns</a></code>(nmfAlgorithm.nsNMF, nmfAlgorithm.nsNMF_R, nmf_update.ns_R, nsNMF_R-nmf)<br />NMF Multiplicative Update for Nonsmooth Nonnegative Matrix Factorization (nsNMF).</li>
 
   <li>
     <code><a href="nneg.html">nneg</a></code>(nneg,matrix-method, nneg-methods, nneg,NMF-method, posneg, rposneg, rposneg,matrix-method, rposneg-methods, rposneg,NMF-method)<br />Transforming from Mixed-sign to Nonnegative Data</li>

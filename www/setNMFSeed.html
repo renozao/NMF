@@ -2,15 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFSeed. NMF 0.13</title>
+<title>NMFSeed. NMF 0.14.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
+<!-- bootstrap css -->
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
 <link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
 
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <!-- d3 word cloud -->
 <script src="js/d3.v2.min.js"></script>
 <script src="js/d3.layout.cloud.js"></script>
@@ -24,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.13</a>
+      <a class="brand" href="index.html">NMF 0.14.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -47,7 +53,9 @@
     <h2>Usage</h2>
     <pre>NMFSeed(key, method, ...)
 
-setNMFSeed(..., overwrite = isLoadingNamespace(), verbose = TRUE)</pre>
+setNMFSeed(..., overwrite = isLoadingNamespace(), verbose = TRUE)
+
+removeNMFSeed(name, ...)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -69,7 +77,9 @@ setNMFSeed(..., overwrite = isLoadingNamespace(), verbose = TRUE)</pre>
       <dt>...</dt>
       <dd>arguments passed to <code>NMFSeed</code> and used to
   initialise slots in the <code><a href='NMFSeed-class.html'>NMFSeed-class</a></code>
-  object.</dd>
+  object, or to <code><a href='http://www.inside-r.org/r-doc/pkgmaker/regfetch'>pkgreg_remove</a></code>.</dd>
+      <dt>name</dt>
+      <dd>name of the seeding method.</dd>
       <dt>overwrite</dt>
       <dd>logical that indicates if any existing
   NMF method with the same name should be overwritten
@@ -91,6 +101,9 @@ setNMFSeed(..., overwrite = isLoadingNamespace(), verbose = TRUE)</pre>
   <code>setNMFSeed</code>, which stores them as
   <code><a href='NMFSeed-class.html'>NMFSeed-class</a></code> objects in a dedicated
   registry.</p>
+  
+      <p><code>removeNMFSeed</code> removes an NMF seeding method from
+  the registry.</p>
   
     </div>
 
@@ -117,7 +130,7 @@ setNMFSeed(..., overwrite = isLoadingNamespace(), verbose = TRUE)</pre>
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>NMFSeed</li><li>NMFSeed,character-method</li><li>NMFSeed-methods</li><li>NMFSeed,NMFSeed-method</li><li>setNMFSeed</li>
+      <li>NMFSeed</li><li>NMFSeed,character-method</li><li>NMFSeed-methods</li><li>NMFSeed,NMFSeed-method</li><li>removeNMFSeed</li><li>setNMFSeed</li>
     </ul>
     <ul>
       <li>methods</li>

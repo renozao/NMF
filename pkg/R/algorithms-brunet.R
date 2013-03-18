@@ -15,13 +15,11 @@ NULL
 #' \code{file.show(system.file('matlab', 'brunet.m', package='NMF'))}
 #' 
 #' @rdname KL-nmf
-#' @aliases Mbrunet-nmf
-#' @name Mbrunet-nmf
-NULL
+#' @aliases brunet_M-nmf
 nmfAlgorithm.brunet_M <- setNMFMethod('.M#brunet',
 	, objective= 'KL'
 	, mfiles='brunet.m'
 	, algorithm = function (y, x, verbose=nmf.getOption('verbose')){
-		.CallOctave('brunet', y, nbasis(x), verbose, basis(x), coef(x));
+		RcppOctave::.CallOctave('brunet', y, nbasis(x), verbose, basis(x), coef(x));
 	}
 )
