@@ -402,3 +402,17 @@ nmfFormals.NMFStrategy <- function(x, ...){
 	# prepend registered default arguments
 	expand_list(x@defaults, args)
 }
+
+#' \code{nmfArgs} is a shortcut for \code{args(nmfWrapper(x))}, to 
+#' display the arguments of a given NMF algorithm.
+#' 
+#' @rdname nmfFormals
+#' @export
+#' @examples 
+#' 
+#' # show arguments of an NMF algorithm
+#' nmfArgs('brunet')
+#' nmfArgs('snmf/r')
+nmfArgs <- function(x){
+	args(nmfWrapper(x))
+}
