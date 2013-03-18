@@ -399,12 +399,10 @@ nmfWrapper <- function(method, ..., .FIXED=FALSE){
 	}
 	# store in local environment
 	.method <- method
-	# define wrapper function
-	fwrap <- function(...){
-		
+	
+	.checkArgs <- function(ca, args){
 		# check for fixed arguments passed in the call that need
 		# to be discarded
-		ca <- match.call()
 		nm <- names(ca)[-1L]
 		if( any(fnm <- !is.na(pmatch(nm, .fixedargs))) ){
 			warning("Discarding fixed arguments from wrapped call to ", .call[1L]
@@ -414,13 +412,20 @@ nmfWrapper <- function(method, ..., .FIXED=FALSE){
 		#
 		
 		# set values of default arguments
-		defaults <- formals()[-1L] # skip first argument `...`
+		defaults <- args[-1L] # skip first argument `...`
 		.call <- expand_list(ca, defaults, .exact=FALSE)
 		# change into a call to nmf
 		.call[[1L]] <- as.name('nmf')
 		.call[['method']] <- force(.method)
-		.call <- as.call(.call)
-		# eval
+		as.call(.call)
+	}
+	
+	# define wrapper function
+	fwrap <- function(...){
+		ca <- match.call()
+		args <- formals()
+		.call <- .checkArgs(ca, args)
+		# eval in parent environment
 		e <- parent.frame()
 		eval(.call, envir=e)
 	}
