@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfWrapper. NMF 0.14.1</title>
+<title>nmfWrapper. NMF 0.15</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.14.1</a>
+      <a class="brand" href="index.html">NMF 0.15</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -99,8 +99,9 @@
     <pre class="examples"><div class='input'># wrap Lee & Seung algorithm into a function</div><div class='input'>lee <- nmfWrapper('lee', seed=12345)
 </div><div class='input'>args(lee)
 </div>
-<div class='output'>function (..., seed = 12345, maxIter = 2000, rescale = TRUE, 
-    copy = FALSE, eps = 10^-9, stopconv = 40, check.interval = 10) 
+<div class='output'>function (..., seed = 12345, .stop = NULL, maxIter = 2000, rescale = TRUE, 
+    copy = FALSE, eps = 10^-9, weight = NULL, stopconv = 40, 
+    check.interval = 10) 
 NULL
 </div><div class='input'></div><div class='input'># test on random data</div><div class='input'>x <- rmatrix(100,20)
 </div><div class='input'>res <- nmf(x, 3, 'lee', seed=12345)

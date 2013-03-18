@@ -30,25 +30,25 @@ NULL
 #' @examples
 #' 
 #' ## Testing results of fits
-#' 	# generate a random
-#' 	V <- rmatrix(20, 10)
-#' 	
-#' 	# single run -- using maxIter to speed up the example 
-#' 	res <- nmf(V, 3, maxIter=3L)
-#' 	isNMFfit(res)
-#' 	
-#' 	# multiple runs - keeping single fit
-#' 	resm <- nmf(V, 3, nrun=3, maxIter=3L)
-#' 	isNMFfit(resm)
-#' 	
-#' 	# multiple runs - keeping all fits
-#' 	resM <- nmf(V, 3, nrun=3, .opt='k', maxIter=3L) 
-#' 	isNMFfit(resM)
-#' 	
-#' 	# with a list of results
-#' 	isNMFfit(list(res, resm, resM, 'not a result'))
-#' 	isNMFfit(list(res, list(resm, resM), 'not a result')) # list of list
-#' 	isNMFfit(list(res, resm, resM, 'not a result'), recursive=FALSE)
+#' # generate a random
+#' V <- rmatrix(20, 10)
+#' 
+#' # single run -- using maxIter to speed up the example 
+#' res <- nmf(V, 3, maxIter=3L)
+#' isNMFfit(res)
+#' 
+#' # multiple runs - keeping single fit
+#' resm <- nmf(V, 3, nrun=3, maxIter=3L)
+#' isNMFfit(resm)
+#' 
+#' # multiple runs - keeping all fits
+#' resM <- nmf(V, 3, nrun=3, .opt='k', maxIter=3L) 
+#' isNMFfit(resM)
+#' 
+#' # with a list of results
+#' isNMFfit(list(res, resm, resM, 'not a result'))
+#' isNMFfit(list(res, list(resm, resM), 'not a result')) # list of list
+#' isNMFfit(list(res, resm, resM, 'not a result'), recursive=FALSE)
 #' 	 
 isNMFfit <- function(object, recursive=TRUE){
 	res <- is(object, 'NMFfit') || is(object, 'NMFfitX')

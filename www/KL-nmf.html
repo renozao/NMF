@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf_update.brunet_R. NMF 0.14.1</title>
+<title>nmf_update.brunet_R. NMF 0.15</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="
   Original implementation in MATLAB: Jean-Philippe Brunet
@@ -35,7 +35,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.14.1</a>
+      <a class="brand" href="index.html">NMF 0.15</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -59,14 +59,14 @@
 
 nmf_update.brunet(i, v, x, copy = FALSE, eps = .Machine$double.eps, ...)
 
-nmfAlgorithm.brunet_R(..., maxIter = 2000, eps = .Machine$double.eps, stopconv = 40, 
-  check.interval = 10)
+nmfAlgorithm.brunet_R(..., .stop = NULL, maxIter = 2000, eps = .Machine$double.eps, 
+  stopconv = 40, check.interval = 10)
 
-nmfAlgorithm.brunet(..., maxIter = 2000, copy = FALSE, eps = .Machine$double.eps, 
+nmfAlgorithm.brunet(..., .stop = NULL, maxIter = 2000, copy = FALSE, eps = .Machine$double.eps, 
       stopconv = 40, check.interval = 10)
 
-nmfAlgorithm.KL(..., maxIter = 2000, copy = FALSE, eps = .Machine$double.eps, stationary.th = .Machine$double.eps, 
-      check.interval = 5 * check.niter, check.niter = 10L)
+nmfAlgorithm.KL(..., .stop = NULL, maxIter = 2000, copy = FALSE, eps = .Machine$double.eps, 
+      stationary.th = .Machine$double.eps, check.interval = 5 * check.niter, check.niter = 10L)
 
 nmfAlgorithm.brunet_M(..., object, y, x)</pre>
     
@@ -97,6 +97,30 @@ nmfAlgorithm.brunet_M(..., object, y, x)</pre>
   be achieved in the case of big matrices. However, greater
   care should be taken due the side effect. We recommend
   that only experienced users use <code>copy=TRUE</code>.</dd>
+      <dt>.stop</dt>
+      <dd>specification of a stopping criterion, that
+  is used instead of the one associated to the NMF
+  algorithm. It may be specified as: <ul>
+<li> the
+  access key of a registered stopping criterion; </li>
+<li> a
+  single integer that specifies the exact number of
+  iterations to perform, which will be honoured unless a
+  lower value is explicitly passed in argument
+  <code>maxIter</code>. </li>
+<li> a single numeric value that
+  specifies the stationnarity threshold for the objective
+  function, used in with <code><a href='stop-NMF.html'>nmf.stop.stationary</a></code>;
+  </li>
+<li> a function with signature
+  <code>(object="NMFStrategy", i="integer", y="matrix",
+  x="NMF", ...)</code>, where <code>object</code> is the
+  <code>NMFStrategy</code> object that describes the algorithm
+  being run, <code>i</code> is the current iteration, <code>y</code> is
+  the target matrix and <code>x</code> is the current value of
+  the NMF model. </li>
+</ul>
+</dd>
       <dt>maxIter</dt>
       <dd>maximum number of iterations to perform.</dd>
       <dt>object</dt>

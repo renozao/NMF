@@ -135,7 +135,7 @@
 , backref=true
 , backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
-\bibliography{/tmp/Rpkglib_f1a5cd70dfe/NMF/REFERENCES}
+\bibliography{/tmp/Rpkglib_52c01e64c2ed/NMF/REFERENCES}
 
 
 \bibliography{Rpackages}
@@ -181,7 +181,7 @@
 
 
 \title{An introduction to NMF package\\
-\small Version 0.14.1}
+\small Version 0.15}
 \author{Renaud Gaujoux, \url{renaud@cbio.uct.ac.za}}
 % \\Address Computational Biology - University of Cape Town, South Africa,
 
@@ -584,7 +584,7 @@ t <- \hlfunctioncall{sapply}(res, runtime)[3, ]
 
 
 % latex table generated in R 2.15.3 by xtable 1.7-1 package
-% Mon Mar 18 10:55:51 2013
+% Mon Mar 18 15:59:34 2013
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrr}
@@ -1844,7 +1844,7 @@ V <- \hlfunctioncall{syntheticNMF}(n, r, p, noise = TRUE)
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_fe6732e45b3 
+##   algorithm:  nmf_53da21a1d1d 
 ##   seed:  random 
 ##   RNG: 403L, 172L, ..., 1280296329L [f11f4336959dbb0d633a75745dda3b35]
 ##   distance metric:  'euclidean' 
@@ -1852,7 +1852,7 @@ V <- \hlfunctioncall{syntheticNMF}(n, r, p, noise = TRUE)
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.008   0.000   0.016
+##     0.008   0.000   0.007
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1876,7 +1876,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_fe6d964772 
+##   algorithm:  nmf_53da1511ae5c 
 ##   seed:  random 
 ##   RNG: 403L, 382L, ..., 1280296329L [40c9d89082672b624bf61a9723044992]
 ##   distance metric:  'KL' 
@@ -1903,7 +1903,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_fe648d2b3d0 
+##   algorithm:  nmf_53da44920730 
 ##   seed:  random 
 ##   RNG: 403L, 592L, ..., 1280296329L [b2ca9850bf32b6d9a03f59dd36a3bba9]
 ##   distance metric:  <function> 
@@ -1964,7 +1964,7 @@ V.neg[1, ] <- -1
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_fe61ae56928 
+##   algorithm:  nmf_53da96461d5 
 ##   seed:  random 
 ##   RNG: 403L, 178L, ..., -818492466L [d8c5d857673ef895e42fdb30f26b009f]
 ##   distance metric:  'euclidean' 
@@ -2052,7 +2052,7 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   samples: 20 
 ##   offset: [ 0.7753 0.722 0.3148 1.049 1.107 ... ]
 ##  # Details:
-##   algorithm:  nmf_fe6774aa8bf 
+##   algorithm:  nmf_53da6d38bfc0 
 ##   seed:  random 
 ##   RNG: 403L, 388L, ..., -818492466L [ba905d5003280d7b56582b321f3281ac]
 ##   distance metric:  'euclidean' 
@@ -2060,7 +2060,7 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.008   0.000   0.005
+##     0.004   0.000   0.005
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2101,10 +2101,23 @@ To use the new seeding method:
 \begin{alltt}
 \hlfunctioncall{nmf}(V, 3, \hlstring{"snmf/r"}, seed = my.seeding.method)
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: unused argument(s) (target = y, seed = x)}}\begin{verbatim}
-## Timing stopped at: 0.004 0 0.002
+\begin{verbatim}
+## <Object of class: NMFfit>
+##  # Model:
+##   <Object of class:NMFstd>
+##   features: 50 
+##   basis/rank: 3 
+##   samples: 20 
+##  # Details:
+##   algorithm:  snmf/r 
+##   seed:  NMF.seed.53dad67a29a 
+##   RNG: 403L, 24L, ..., -1308220775L [1d3a94aa2d7b0646ecb06c2434029097]
+##   distance metric:  <function> 
+##   residuals:  205.3 
+##   Iterations: 65 
+##   Timing:
+##      user  system elapsed 
+##     0.236   0.004   0.239
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2174,7 +2187,7 @@ debug & FALSE & Toggle debug mode, which is an extended verbose mode.\\
   \item Other packages: BH~1.51.0-0, bigmemory~4.4.0,
     bigmemory.sri~0.1.2, Biobase~2.18.0,
     BiocGenerics~0.4.0, digest~0.6.3, knitr~1.1,
-    NMF~0.14.1, pkgmaker~0.14, RColorBrewer~1.0-5,
+    NMF~0.15, pkgmaker~0.15, RColorBrewer~1.0-5,
     registry~0.2, rngtools~1.2, synchronicity~1.1.0,
     xtable~1.7-1
   \item Loaded via a namespace (and not attached):

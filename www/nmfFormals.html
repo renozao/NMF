@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfFormals. NMF 0.14.1</title>
+<title>nmfFormals. NMF 0.15</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.14.1</a>
+      <a class="brand" href="index.html">NMF 0.15</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -50,7 +50,9 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre>nmfFormals(x, ...)</pre>
+    <pre>nmfFormals(x, ...)
+
+nmfArgs(x)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -67,11 +69,28 @@
   passed to a given NMF algorithm in call to
   <code><a href='nmf.html'>nmf</a></code>.</p>
   
+      <p><code>nmfArgs</code> is a shortcut for
+  <code>args(nmfWrapper(x))</code>, to display the arguments of a
+  given NMF algorithm.</p>
+  
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># show arguments of an NMF algorithm</div><div class='input'>nmfArgs('brunet')
+</div>
+<div class='output'>function (..., .stop = NULL, maxIter = 2000, copy = FALSE, eps = .Machine$double.eps, 
+    stopconv = 40, check.interval = 10) 
+NULL
+</div><div class='input'>nmfArgs('snmf/r')
+</div>
+<div class='output'>function (..., maxIter = 20000L, eta = -1, beta = 0.01, bi_conv = c(0, 
+    10), eps_conv = 1e-04) 
+NULL
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
-      <li>nmfFormals</li>
+      <li>nmfArgs</li><li>nmfFormals</li>
     </ul>
     <ul>
       
