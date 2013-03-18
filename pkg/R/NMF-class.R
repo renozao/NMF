@@ -964,8 +964,11 @@ setReplaceMethod('dimnames', 'NMF',
 		else if( length(value)!=3 ) # check length of value
 			stop("NMF::dimnames - invalid argument 'value' [a 2 or 3-length list is expected]")
 		
-		dimnames(.basis(x)) <- value[c(1,3)]		
-		dimnames(.coef(x)) <- value[c(3,2)]		
+		# only set relevant dimensions
+		if( length(w <- which(dim(.basis(x))[1:2]>0)) )
+			dimnames(.basis(x))[w] <- value[c(1,3)][w]
+		if( length(w <- which(dim(.coef(x))[1:2]>0)) ) 
+			dimnames(.coef(x))[w] <- value[c(3,2)][w]		
 		x	
 	}
 )
