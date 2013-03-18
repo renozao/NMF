@@ -1882,7 +1882,7 @@ function(x, rank, method
 	if( min(rowSums(x)) == 0) fstop('Input matrix ', substitute(x),' contains at least one null row.');	
 
 	# a priori the parameters for the run are all the one in '...'
-	# => expand with the strategy's defaults
+	# => expand with the strategy's defaults (e.g., maxIter)
 	parameters.method <- expand_list(list(...), .method_defaults)
 	#
 	
