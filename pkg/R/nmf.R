@@ -1171,6 +1171,11 @@ function(x, rank, method
 				else if( !is.null(.options$verbose) ) .options$verbose
 				else nmf.getOption('verbose')
 	
+	# show call in debug mode
+	if( debug ){
+		.ca <- match.call()
+		message('# NMF call: ', paste(capture.output(print(.ca)), collapse="\n  "))
+	}
 	# nmf over a range of values: pass the call to nmfEstimateRank
 	if( length(rank) > 1 ){
 		if( verbose <= 1 )
