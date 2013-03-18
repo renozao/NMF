@@ -411,10 +411,13 @@ nmfWrapper <- function(method, ..., .FIXED=FALSE){
 		}
 		#
 		
-		# set values of default arguments
-		# defaults <- args[-1L] # skip first argument `...` # NOT WORKING and already set in args any ways
-		#.call <- expand_list(ca, defaults, .exact=FALSE)
+		# start with complete call
 		.call <- ca
+		# set values of wrapper default arguments if any
+		if( length(.defaults) ){
+			defaults <- args[.defaults]
+			.call <- expand_list(ca, defaults, .exact=FALSE)
+		}
 		# change into a call to nmf
 		.call[[1L]] <- as.name('nmf')
 		.call[['method']] <- force(.method)
