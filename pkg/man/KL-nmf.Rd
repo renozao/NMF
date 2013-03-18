@@ -33,16 +33,16 @@
   nmf_update.brunet(i, v, x, copy = FALSE,
     eps = .Machine$double.eps, ...)
 
-  nmfAlgorithm.brunet_R(..., maxIter = 2000,
+  nmfAlgorithm.brunet_R(..., .stop = NULL, maxIter = 2000,
     eps = .Machine$double.eps, stopconv = 40,
     check.interval = 10)
 
-  nmfAlgorithm.brunet(..., maxIter = 2000, copy = FALSE,
-    eps = .Machine$double.eps, stopconv = 40,
+  nmfAlgorithm.brunet(..., .stop = NULL, maxIter = 2000,
+    copy = FALSE, eps = .Machine$double.eps, stopconv = 40,
     check.interval = 10)
 
-  nmfAlgorithm.KL(..., maxIter = 2000, copy = FALSE,
-    eps = .Machine$double.eps,
+  nmfAlgorithm.KL(..., .stop = NULL, maxIter = 2000,
+    copy = FALSE, eps = .Machine$double.eps,
     stationary.th = .Machine$double.eps,
     check.interval = 5 * check.niter, check.niter = 10L)
 
@@ -73,6 +73,24 @@
   be achieved in the case of big matrices. However, greater
   care should be taken due the side effect. We recommend
   that only experienced users use \code{copy=TRUE}.}
+
+  \item{.stop}{specification of a stopping criterion, that
+  is used instead of the one associated to the NMF
+  algorithm. It may be specified as: \itemize{ \item the
+  access key of a registered stopping criterion; \item a
+  single integer that specifies the exact number of
+  iterations to perform, which will be honoured unless a
+  lower value is explicitly passed in argument
+  \code{maxIter}. \item a single numeric value that
+  specifies the stationnarity threshold for the objective
+  function, used in with \code{\link{nmf.stop.stationary}};
+  \item a function with signature
+  \code{(object="NMFStrategy", i="integer", y="matrix",
+  x="NMF", ...)}, where \code{object} is the
+  \code{NMFStrategy} object that describes the algorithm
+  being run, \code{i} is the current iteration, \code{y} is
+  the target matrix and \code{x} is the current value of
+  the NMF model. }}
 
   \item{maxIter}{maximum number of iterations to perform.}
 
