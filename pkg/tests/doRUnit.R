@@ -27,10 +27,13 @@ if( length(resfile) ){
 		# collapse
 		msg <- paste(msg, collapse="\n")
 		# subject
-		subject <- paste("NMF: unit test results"
+		subject <- paste("Package NMF: unit test results"
 						, "-", basename(f), "-"
 						, "[", if( is(tests, 'try-error') ) 'ERROR' else "OK", "]"
 						, sep='')
+		if( isCRANcheck() ){
+			subject <- paste('CRAN check -', subject)
+		}
 		# try send email
 		if( !userIs('renaud') ) try( sendmail('renaud@cbio.uct.ac.za', subject, msg) )
 		else write(msg, file=file.path(testdir, paste("check_", basename(f), sep='')))
