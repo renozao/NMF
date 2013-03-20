@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfitX1-class. NMF 0.15</title>
+<title>NMFfitX1-class. NMF 0.15.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.15</a>
+      <a class="brand" href="index.html">NMF 0.15.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -170,11 +170,11 @@
    407L, -329241596L, 1464038197L, -1055788430L, 1998647115L, 13725200L, -1201933615L 
   Total timing:
    user  system elapsed 
-  2.608   0.424   3.103 
+  2.032   0.340   1.509 
 </div><div class='input'></div><div class='input'># compute summary measures</div><div class='input'>summary(res)
 </div>
 <div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun 
-       3.0000000        0.4652321        0.7740384       41.2847097      430.0000000        0.2280000        2.6080000        3.0000000 
+       3.0000000        0.4652321        0.7740384       41.2847097      430.0000000        0.2440000        2.0320000        3.0000000 
       cophenetic       dispersion 
        0.9529366        0.7866667 
 </div><div class='input'># get more info</div><div class='input'>summary(res, target=V, class=groups)
@@ -182,11 +182,11 @@
 <div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy              rss             evar        residuals 
        3.0000000        0.4652321        0.7740384        0.9000000        0.1738140       65.6360447        0.7445089       41.2847097 
            niter              cpu          cpu.all             nrun       cophenetic       dispersion 
-     430.0000000        0.2280000        2.6080000        3.0000000        0.9529366        0.7866667 
+     430.0000000        0.2440000        2.0320000        3.0000000        0.9529366        0.7866667 
 </div><div class='input'></div><div class='input'># show computational time</div><div class='input'>runtime.all(res)
 </div>
 <div class='output'>   user  system elapsed 
-  2.608   0.424   3.103 
+  2.032   0.340   1.509 
 </div><div class='input'></div><div class='input'># plot the consensus matrix, as stored (pre-computed) in the object</div><div class='input'>## <strong>Not run</strong>:  consensusmap(res, annCol=groups) </div></pre>
   </div>
   <div class="span4">
