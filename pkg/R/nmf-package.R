@@ -70,6 +70,17 @@ nmfConfig <- mkoptions()
 	
 	pkgEnv <- pkgmaker::packageEnv()
 		
+	# set default number of cores
+	if( pkgmaker::isCRANcheck() ){
+		options(cores=2)
+	}else{
+		if( nchar(nc <- Sys.getenv('_R_NMF_CORES_')) > 0 ){
+			try({
+				nmf.options(cores=as.numeric(nc))
+			})
+		}
+	}
+	
 	.init.sequence <- function(){
 	
 		## 0. INITIALIZE PACKAGE SPECFIC OPTIONS
@@ -128,27 +139,43 @@ nmfConfig <- mkoptions()
 
 .onAttach <- function(libname, pkgname){
 	
-	## 2. CHECK BIOC LAYER
+	# build startup message
+	msg <- NULL
+	details <- NULL
+	## 1. CHECK BIOC LAYER
 	bioc.loaded <- nmfConfig('bioc')[[1L]]
-	if( is(bioc.loaded, 'try-error') )
-		packageStartupMessage("NMF - BioConductor layer ... ERROR")
-	else if ( isTRUE(bioc.loaded) )
-		packageStartupMessage("NMF - BioConductor layer ... OK")
+	msg <- paste0(msg, 'BioConductor layer')
+	if( is(bioc.loaded, 'try-error') ) msg <- paste0(msg, ' [ERROR]')
+	else if ( isTRUE(bioc.loaded) ) msg <- paste0(msg, ' [OK]')
 	else{
-		packageStartupMessage("NMF - BioConductor layer ... NO [missing Biobase]")
-		packageStartupMessage("  To enable, try: install.extras('NMF') [with Bioconductor repository enabled]")
+		msg <- paste0(msg, ' [NO: missing Biobase]')
+		details <- c(details, "  To enable the Bioconductor layer, try: install.extras('NMF') [with Bioconductor repository enabled]")
 	}
 	
-	# 3. SHARED MEMORY
+	# 2. SHARED MEMORY
+	msg <- paste0(msg, ' | Shared memory capabilities')
 	if( .Platform$OS.type != 'windows' ){
-		packageStartupMessage("NMF - Shared memory capabilities ... ", appendLF=FALSE)
-		msg <- nmfConfig('shared.memory')[[1L]]
-		if( isTRUE(msg) ) packageStartupMessage('OK')
+		conf <- nmfConfig('shared.memory')[[1L]]
+		if( isTRUE(conf) ) msg <- paste0(msg, ' [OK]')
 		else{
-			packageStartupMessage(paste('NO [missing ', msg, ']', sep=''))
-			packageStartupMessage("  To enable, try: install.extras('NMF')")
+			msg <- paste0(msg, ' [NO: ', conf, ']')
+			details <- c(details, "  To enable shared memory capabilities, try: install.extras('NMF')")
 		}
+	}else msg <- paste0(msg, ' [NO: windows]')
+	#
+	
+	# 3. NUMBER OF CORES
+	msg <- paste0(msg, ' | Cores ', getMaxCores(), '/', getMaxCores(limit=FALSE))
+	#
+	
+	# FINAL. CRAN FLAG
+	if( pkgmaker::isCRANcheck() ){
+		msg <- paste0(msg, ' | CRAN check')
 	}
 	#
+	packageStartupMessage('NMF - ', msg)
+	if( !is.null(details) ){
+		packageStartupMessage(paste(details, collapse="\n"))
+	}
 }
 
