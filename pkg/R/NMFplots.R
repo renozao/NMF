@@ -34,7 +34,7 @@ corplot <- function(x, y, legend=TRUE, confint=TRUE, ..., add=FALSE){
 	# add perfect match line
 	abline(a=0, b=1)	
 	
-	gco <- lm(as.numeric(y) ~ -1 + as.numeric(x))
+	gco <- lm(as.numeric(y) ~ as.numeric(x))
 	rsq <- CI.Rsqlm(gco)
 	gco <- cor.test( as.numeric(x), as.numeric(y) )
 	
@@ -42,7 +42,7 @@ corplot <- function(x, y, legend=TRUE, confint=TRUE, ..., add=FALSE){
 	if( legend ){
 		# separate correlations
 		lco <- t(sapply(1:ncol(x), function(i){
-				co <- lm(y[,i] ~ -1 + x[,i])
+				co <- lm(y[,i] ~ x[,i])
 				rsq <- CI.Rsqlm(co)
 				return(round(c(Rsq=rsq$Rsq, int=rsq$UCL - rsq$Rsq), 2))
 #				z <- as.numeric(cor.test(x[,i], y[,i])[c('estimate', 'p.value')])
