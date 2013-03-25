@@ -203,6 +203,16 @@ print.fcnnls <- function(x, ...){
 #'  
 #' @export
 .fcnnls <- function(x, y, verbose=FALSE, pseudo=FALSE, eps=0){
+	
+	# check arguments
+	if( any(dim(y) == 0L) ){
+		stop("Empty target matrix 'y' [", paste(dim(y), collapse=' x '), "]")
+	}
+	if( any(dim(x) == 0L) ){
+		stop("Empty regression variable matrix 'x' [", paste(dim(x), collapse=' x '), "]")
+	}
+	
+	# map arguments
 	C <- x
 	A <- y
 # NNLS using normal equations and the fast combinatorial strategy
