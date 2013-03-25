@@ -225,19 +225,27 @@ staticVar <- local({
 		
 		# return last workspace
 		if( missing(name) ) return(.Workspace)			
-		else if( is.environment(name) ){ # setup up static environment			
+		else if( is.null(name) ){ # reset workspace
+			.Workspace <<- NULL
+			return()
+		} else if( is.environment(name) ){ # setup up static environment			
 			nmf.debug('Strategy Workspace', "initialize static workspace: ", capture.output(.Workspace), "=", capture.output(name))
 			.Workspace <<- name
-		}else if( missing(value) ){
-			get(name, envir=.Workspace, inherits=FALSE)
-		}else{
-			if( !init || !exists(name, envir=.Workspace, inherits=FALSE) )
-			{
-				if( init ) nmf.debug('Strategy Workspace', "initialize variable '", name, "'")
-				assign(name, value, envir=.Workspace)
+		}else if( isString(name) && is.environment(.Workspace) ){
+			if( missing(value) ){
+				get(name, envir=.Workspace, inherits=FALSE)
+			}else{
+				if( !init || !exists(name, envir=.Workspace, inherits=FALSE) )
+				{
+					if( init ) nmf.debug('Strategy Workspace', "initialize variable '", name, "'")
+					assign(name, value, envir=.Workspace)
+				}
+				# return current value
+				get(name, envir=.Workspace, inherits=FALSE)
 			}
-			# return current value
-			get(name, envir=.Workspace, inherits=FALSE)
+		}else{
+			stop("Invalid NMF workspace query: .Workspace=", class(.Workspace), '| name=', name
+				, if( !missing(value) ) paste0(' | value=', class(value)))
 		}
 		
 	}
@@ -286,6 +294,7 @@ setMethod('run', signature(object='NMFStrategyIterative', y='matrix', x='NMFfit'
 	# variables that are persistent within the strategy's workspace
 	.Workspace <- new.env()	
 	staticVar(.Workspace)
+	on.exit( staticVar(NULL) )
 		
 	# runtime resolution of the strategy's functions by their names if necessary
 	strategyX = xifyStrategy(method, .Workspace)
@@ -404,7 +413,10 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 		nmfData <- trackError(nmfData, deviance(strategy, nmfFit, v, ...), niter=i)
 				
 	}
-	if( showNIter ) cat("\nDONE (stopped at ",i,'/', maxIter," iterations)\n", sep='')
+	if( showNIter ){
+		ended <- if( stop.signal ) 'converged' else 'stopped' 
+		cat("\nDONE (", ended, " at ",i,'/', maxIter," iterations)\n", sep='')
+	}
 	
 	# force to compute last error if not already done
 	nmfData <- trackError(nmfData, deviance(strategy, nmfFit, v, ...), niter=i, force=TRUE)
