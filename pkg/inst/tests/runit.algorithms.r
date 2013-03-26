@@ -12,6 +12,9 @@ library(rngtools)
 }
 
 checkNMFPlot <- function(V, res, prefix=''){
+	
+	if( isCRANcheck() ) return()
+	
 	# check heatmaps of the target matrix, the metaprofiles and the metagenes
 	checkPlot( aheatmap(V), paste(prefix, ': Target'))
 	checkPlot( coefmap(res), paste(prefix, ': Metaprofiles'))

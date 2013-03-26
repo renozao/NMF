@@ -42,8 +42,8 @@
     method, seed = nmf.getOption("default.seed"),
     rng = NULL, nrun = if (length(rank) > 1) 30 else 1,
     model = NULL, .options = list(),
-    .pbackend = nmf.getOption("backend"), .callback = NULL,
-    ...)
+    .pbackend = nmf.getOption("pbackend"),
+    .callback = NULL, ...)
 }
 \arguments{
   \item{x}{target data to fit, i.e. a matrix-like object}
@@ -349,7 +349,7 @@
   precedence over any option specified in \code{.options}:
   e.g. \code{nmf(..., .options='P10', .pbackend=NA)}
   performs all runs sequentially using \code{sapply}. Use
-  \code{nmf.options(backend=NA)} to completely disable
+  \code{nmf.options(pbackend=NA)} to completely disable
   foreach/parallel computations for all subsequent
   \code{nmf} calls.}
 

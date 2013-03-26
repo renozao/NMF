@@ -229,7 +229,7 @@ test.nmf <- function(){
 	
 	set.seed(123456)
 	a <- rmatrix(20,10)
-	nmf.options(backend=2)
+	nmf.options(pbackend=2)
 	
 	checkTrue( isNMFfit(res <- nmf(a, 2, seed=123, nrun=3, .opt='v3')), "Default works")
 	
@@ -262,6 +262,7 @@ test.nmf <- function(){
 	on.exit( stopCluster(cl), add=TRUE)
 	.check('.pbackend=cl + SNOW-like cluster', .pbackend=cl)
 	stopCluster(cl)
+	
 	library(doParallel)
 	cl <- makeCluster(2)
 	registerDoParallel(cl)

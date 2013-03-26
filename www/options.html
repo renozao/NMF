@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf.options. NMF 0.15.1</title>
+<title>options-NMF. NMF 0.15.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.15.1</a>
+      <a class="brand" href="index.html">NMF 0.15.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -88,6 +88,8 @@ nmf.printOptions()</pre>
     <div class="Description">
       <h2>Description</h2>
       
+      <p>NMF Package Specific Options</p>
+  
       <p><code>nmf.options</code> sets/get single or multiple options,
   that are specific to the NMF package. It behaves in the
   same way as <code><a href='http://www.inside-r.org/r-doc/base/options'>options</a></code>.</p>
@@ -104,6 +106,72 @@ nmf.printOptions()</pre>
   way.</p>
   
     </div>
+
+    <div class="Available options">
+      <h2>Available options</h2>
+      
+      <p><ol>
+<li>default.algorithmDefault NMF algorithm used by
+  the <code>nmf</code> function when argument <code>method</code> is
+  missing. The value should the key of one of the
+  registered NMF algorithms or a valid specification of an
+  NMF algorithm. See <code>?nmfAlgorithm</code>.</p>
+  
+      <p></li>
+<li>default.seedDefault seeding method used by the
+  <code>nmf</code> function when argument <code>seed</code> is missing.
+  The value should the key of one of the registered seeding
+  methods or a vallid specification of a seeding method.
+  See <code>?nmfSeed</code>.</p>
+  
+      <p></li>
+<li>trackToggle default residual tracking. When
+  <code>TRUE</code>, the <code>nmf</code> function compute and store
+  the residual track in the result -- if not otherwise
+  specified in argument <code>.options</code>. Note that tracking
+  may significantly slow down the computations.</p>
+  
+      <p></li>
+<li>track.intervalNumber of iterations between two
+  points in the residual track. This option is relevant
+  only when residual tracking is enabled. See <code>?nmf</code>.</p>
+  
+      <p></li>
+<li>error.trackthis is a symbolic link to option
+  <code>track</code> for backward compatibility.</p>
+  
+      <p></li>
+<li>pbackendDefault loop/parallel foreach backend
+  used by the <code>nmf</code> function when argument
+  <code>.pbackend</code> is missing. Currently the following
+  values are supported: <code>'par'</code> for multicore,
+  <code>'seq'</code> for sequential, <code>NA</code> for standard
+  <code>sapply</code> (i.e. do not use a foreach loop),
+  <code>NULL</code> for using the currently registered foreach
+  backend.</p>
+  
+      <p></li>
+<li>parallel.backendthis is a symbolic link to option
+  <code>pbackend</code> for backward compatibility.</p>
+  
+      <p></li>
+<li>gcInterval/frequency (in number of runs) at which
+  garbage collection is performed.</p>
+  
+      <p></li>
+<li>verboseDefault level of verbosity.</p>
+  
+      <p></li>
+<li>debugToogles debug mode. In this mode the console
+  output may be very -- very -- messy, and is aimed at
+  debugging only.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
     
     <h2 id="examples">Examples</h2>
     <pre class="examples"><div class='input'># show all NMF specific options</div><div class='input'>nmf.printOptions()
@@ -114,23 +182,23 @@ Options <as default>:
 List of 11
  $ default.algorithm: chr "brunet"
  $ default.seed     : chr "random"
- $ error.track      : logi FALSE
+ $ error.track      :Class 'option_symlink'  chr "track"
+ $ track            : logi FALSE
  $ track.interval   : num 30
  $ gc               : num 50
- $ parallel.backend :Class 'option_symlink'  chr "backend"
- $ backend          : chr "par"
- $ reproducible     : logi TRUE
+ $ parallel.backend :Class 'option_symlink'  chr "pbackend"
+ $ pbackend         : chr "par"
  $ verbose          : logi FALSE
  $ debug            : logi FALSE
  $ shared.memory    : logi TRUE
 </div><div class='input'></div><div class='input'># get some options</div><div class='input'>nmf.getOption('verbose')
 </div>
 <div class='output'>[1] FALSE
-</div><div class='input'>nmf.getOption('backend')
+</div><div class='input'>nmf.getOption('pbackend')
 </div>
 <div class='output'>[1] "par"
 </div><div class='input'># set new values</div><div class='input'>nmf.options(verbose=TRUE)
-</div><div class='input'>nmf.options(backend='mc', default.algorithm='lee')
+</div><div class='input'>nmf.options(pbackend='mc', default.algorithm='lee')
 </div><div class='input'>nmf.printOptions()
 </div>
 <div class='output'><Package specific options: package:NMF>
@@ -139,12 +207,12 @@ Options:
 List of 11
  $ default.algorithm: chr "lee"
  $ default.seed     : chr "random"
- $ error.track      : logi FALSE
+ $ error.track      :Class 'option_symlink'  chr "track"
+ $ track            : logi FALSE
  $ track.interval   : num 30
  $ gc               : num 50
- $ parallel.backend :Class 'option_symlink'  chr "backend"
- $ backend          : chr "mc"
- $ reproducible     : logi TRUE
+ $ parallel.backend :Class 'option_symlink'  chr "pbackend"
+ $ pbackend         : chr "mc"
  $ verbose          : logi TRUE
  $ debug            : logi FALSE
  $ shared.memory    : logi TRUE
@@ -152,12 +220,12 @@ Defaults:
 List of 11
  $ default.algorithm: chr "brunet"
  $ default.seed     : chr "random"
- $ error.track      : logi FALSE
+ $ error.track      :Class 'option_symlink'  chr "track"
+ $ track            : logi FALSE
  $ track.interval   : num 30
  $ gc               : num 50
- $ parallel.backend :Class 'option_symlink'  chr "backend"
- $ backend          : chr "par"
- $ reproducible     : logi TRUE
+ $ parallel.backend :Class 'option_symlink'  chr "pbackend"
+ $ pbackend         : chr "par"
  $ verbose          : logi FALSE
  $ debug            : logi FALSE
  $ shared.memory    : logi TRUE
@@ -170,12 +238,12 @@ Options <as default>:
 List of 11
  $ default.algorithm: chr "brunet"
  $ default.seed     : chr "random"
- $ error.track      : logi FALSE
+ $ error.track      :Class 'option_symlink'  chr "track"
+ $ track            : logi FALSE
  $ track.interval   : num 30
  $ gc               : num 50
- $ parallel.backend :Class 'option_symlink'  chr "backend"
- $ backend          : chr "par"
- $ reproducible     : logi TRUE
+ $ parallel.backend :Class 'option_symlink'  chr "pbackend"
+ $ pbackend         : chr "par"
  $ verbose          : logi FALSE
  $ debug            : logi FALSE
  $ shared.memory    : logi TRUE
@@ -183,7 +251,7 @@ List of 11
   </div>
   <div class="span4">
     <!-- <ul>
-      <li>nmf.getOption</li><li>nmf.options</li><li>nmf.printOptions</li><li>nmf.resetOptions</li>
+      <li>nmf.getOption</li><li>nmf.options</li><li>nmf.printOptions</li><li>nmf.resetOptions</li><li>options-NMF</li>
     </ul>
     <ul>
       

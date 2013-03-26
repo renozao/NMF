@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf. NMF 0.15.1</title>
+<title>nmf. NMF 0.15.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.15.1</a>
+      <a class="brand" href="index.html">NMF 0.15.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -73,7 +73,7 @@
 
 <span class="label label-important">S4</span> (matrix,numeric,NMFStrategy)
 `nmf`(x, rank, method, seed = nmf.getOption("default.seed"), rng = NULL, 
-      nrun = if (length(rank) > 1) 30 else 1, model = NULL, .options = list(), .pbackend = nmf.getOption("backend"), 
+      nrun = if (length(rank) > 1) 30 else 1, model = NULL, .options = list(), .pbackend = nmf.getOption("pbackend"), 
       .callback = NULL, ...)</pre>
     
     <h2>Arguments</h2>
@@ -401,7 +401,7 @@
   precedence over any option specified in <code>.options</code>:
   e.g. <code>nmf(..., .options='P10', .pbackend=NA)</code>
   performs all runs sequentially using <code>sapply</code>. Use
-  <code>nmf.options(backend=NA)</code> to completely disable
+  <code>nmf.options(pbackend=NA)</code> to completely disable
   foreach/parallel computations for all subsequent
   <code>nmf</code> calls.
 
@@ -866,7 +866,7 @@
 <strong class='message'>NMF algorithm: 'brunet'</strong>
 <strong class='message'>NMF seeding method: random</strong>
 <div class='output'>Iterations:    0/2000Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000 Iterations:    1/2000Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000 Iterations:   50/2000Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000 Iterations:  100/2000Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000 Iterations:  150/2000Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000 Iterations:  200/2000Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000 Iterations:  250/2000Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000 Iterations:  300/2000Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000 Iterations:  350/2000Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000 Iterations:  400/2000Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000 Iterations:  450/2000Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000 Iterations:  500/2000Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000 Iterations:  550/2000Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000 Iterations:  600/2000Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000 Iterations:  650/2000
-DONE (stopped at 670/2000 iterations)
+DONE (converged at 670/2000 iterations)
 </div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># # more messages</div><div class='input'># res <- nmf(x, 2, .options='v2')</div><div class='input'># # even more</div><div class='input'># res <- nmf(x, 2, .options='v3')</div><div class='input'># # and so on ...</div><div class='input'># ## <strong>End(Not run)</strong></div></pre>
   </div>
   <div class="span4">

@@ -112,25 +112,25 @@ is.empty.nmf( nmfModel(3) )
 is.empty.nmf( nmfModel(3, 10, 0) )
 is.empty.nmf( rnmf(3, 10, 5) )
 ## Testing results of fits
-	# generate a random
-	V <- rmatrix(20, 10)
+# generate a random
+V <- rmatrix(20, 10)
 
-	# single run -- using maxIter to speed up the example
-	res <- nmf(V, 3, maxIter=3L)
-	isNMFfit(res)
+# single run -- using maxIter to speed up the example
+res <- nmf(V, 3, maxIter=3L)
+isNMFfit(res)
 
-	# multiple runs - keeping single fit
-	resm <- nmf(V, 3, nrun=3, maxIter=3L)
-	isNMFfit(resm)
+# multiple runs - keeping single fit
+resm <- nmf(V, 3, nrun=3, maxIter=3L)
+isNMFfit(resm)
 
-	# multiple runs - keeping all fits
-	resM <- nmf(V, 3, nrun=3, .opt='k', maxIter=3L)
-	isNMFfit(resM)
+# multiple runs - keeping all fits
+resM <- nmf(V, 3, nrun=3, .opt='k', maxIter=3L)
+isNMFfit(resM)
 
-	# with a list of results
-	isNMFfit(list(res, resm, resM, 'not a result'))
-	isNMFfit(list(res, list(resm, resM), 'not a result')) # list of list
-	isNMFfit(list(res, resm, resM, 'not a result'), recursive=FALSE)
+# with a list of results
+isNMFfit(list(res, resm, resM, 'not a result'))
+isNMFfit(list(res, list(resm, resM), 'not a result')) # list of list
+isNMFfit(list(res, resm, resM, 'not a result'), recursive=FALSE)
 }
 \seealso{
   \code{\linkS4class{NMFfit}},

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>basisnames. NMF 0.15.1</title>
+<title>basisnames. NMF 0.15.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.15.1</a>
+      <a class="brand" href="index.html">NMF 0.15.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -193,18 +193,18 @@ $basis
 </div><div class='input'>basis(a)
 </div>
 <div class='output'>        basis
-features        b1           b2
-      f1 0.5658820 0.2502202608
-      f2 0.2078947 0.0004392692
-      f3 0.8440604 0.1125210230
-      f4 0.9256835 0.2220374311
-      f5 0.7539406 0.3546088678
+features        b1         b2
+      f1 0.6751805 0.42196409
+      f2 0.6279038 0.90031573
+      f3 0.9497877 0.01821395
+      f4 0.9462559 0.89380585
+      f5 0.9747984 0.81638574
 </div><div class='input'>coef(a)
 </div>
 <div class='output'>     samples
-basis        s1         s2        s3
-   b1 0.7972503 0.02979204 0.5516061
-   b2 0.7273318 0.09419651 0.0210728
+basis         s1        s2        s3
+   b1 0.06871017 0.2552576 0.8150621
+   b2 0.83594116 0.1508757 0.6835896
 </div><div class='input'></div><div class='input'># access the dimensions separately</div><div class='input'>rownames(a)
 </div>
 <div class='output'>[1] "f1" "f2" "f3" "f4" "f5"
@@ -229,18 +229,18 @@ NULL
 </div><div class='input'>basis(a)
 </div>
 <div class='output'>        
-features      [,1]         [,2]
-      f1 0.5658820 0.2502202608
-      f2 0.2078947 0.0004392692
-      f3 0.8440604 0.1125210230
-      f4 0.9256835 0.2220374311
-      f5 0.7539406 0.3546088678
+features      [,1]       [,2]
+      f1 0.6751805 0.42196409
+      f2 0.6279038 0.90031573
+      f3 0.9497877 0.01821395
+      f4 0.9462559 0.89380585
+      f5 0.9747984 0.81638574
 </div><div class='input'>coef(a)
 </div>
 <div class='output'>      
-            [,1]       [,2]      [,3]
-  [1,] 0.7972503 0.02979204 0.5516061
-  [2,] 0.7273318 0.09419651 0.0210728
+             [,1]      [,2]      [,3]
+  [1,] 0.06871017 0.2552576 0.8150621
+  [2,] 0.83594116 0.1508757 0.6835896
 </div><div class='input'></div><div class='input'># set only the two first dimensions (rows and columns of basis and coef respectively):</div><div class='input'># the basisnames are set to NULL</div><div class='input'>dimnames(a) <- dims[1:2]
 </div><div class='input'>dimnames(a)
 </div>
@@ -256,58 +256,58 @@ NULL
 </div><div class='input'>basis(a)
 </div>
 <div class='output'>        
-features      [,1]         [,2]
-      f1 0.5658820 0.2502202608
-      f2 0.2078947 0.0004392692
-      f3 0.8440604 0.1125210230
-      f4 0.9256835 0.2220374311
-      f5 0.7539406 0.3546088678
+features      [,1]       [,2]
+      f1 0.6751805 0.42196409
+      f2 0.6279038 0.90031573
+      f3 0.9497877 0.01821395
+      f4 0.9462559 0.89380585
+      f5 0.9747984 0.81638574
 </div><div class='input'></div><div class='input'># reset the dimensions</div><div class='input'>dimnames(a) <- NULL
 </div><div class='input'>dimnames(a)
 </div>
 <div class='output'>NULL
 </div><div class='input'>basis(a)
 </div>
-<div class='output'>          [,1]         [,2]
-[1,] 0.5658820 0.2502202608
-[2,] 0.2078947 0.0004392692
-[3,] 0.8440604 0.1125210230
-[4,] 0.9256835 0.2220374311
-[5,] 0.7539406 0.3546088678
+<div class='output'>          [,1]       [,2]
+[1,] 0.6751805 0.42196409
+[2,] 0.6279038 0.90031573
+[3,] 0.9497877 0.01821395
+[4,] 0.9462559 0.89380585
+[5,] 0.9747984 0.81638574
 </div><div class='input'>coef(a)
 </div>
-<div class='output'>          [,1]       [,2]      [,3]
-[1,] 0.7972503 0.02979204 0.5516061
-[2,] 0.7273318 0.09419651 0.0210728
+<div class='output'>           [,1]      [,2]      [,3]
+[1,] 0.06871017 0.2552576 0.8150621
+[2,] 0.83594116 0.1508757 0.6835896
 </div><div class='input'></div><div class='input'># set each dimensions separately</div><div class='input'>rownames(a) <- paste('X', 1:nrow(a), sep='') # only affect rows of basis
 </div><div class='input'>basis(a)
 </div>
-<div class='output'>        [,1]         [,2]
-X1 0.5658820 0.2502202608
-X2 0.2078947 0.0004392692
-X3 0.8440604 0.1125210230
-X4 0.9256835 0.2220374311
-X5 0.7539406 0.3546088678
+<div class='output'>        [,1]       [,2]
+X1 0.6751805 0.42196409
+X2 0.6279038 0.90031573
+X3 0.9497877 0.01821395
+X4 0.9462559 0.89380585
+X5 0.9747984 0.81638574
 </div><div class='input'></div><div class='input'>colnames(a) <- paste('Y', 1:ncol(a), sep='') # only affect columns of coef
 </div><div class='input'>coef(a)
 </div>
-<div class='output'>            Y1         Y2        Y3
-[1,] 0.7972503 0.02979204 0.5516061
-[2,] 0.7273318 0.09419651 0.0210728
+<div class='output'>             Y1        Y2        Y3
+[1,] 0.06871017 0.2552576 0.8150621
+[2,] 0.83594116 0.1508757 0.6835896
 </div><div class='input'></div><div class='input'>basisnames(a) <- paste('Z', 1:nbasis(a), sep='') # affect both basis and coef matrices
 </div><div class='input'>basis(a)
 </div>
-<div class='output'>          Z1           Z2
-X1 0.5658820 0.2502202608
-X2 0.2078947 0.0004392692
-X3 0.8440604 0.1125210230
-X4 0.9256835 0.2220374311
-X5 0.7539406 0.3546088678
+<div class='output'>          Z1         Z2
+X1 0.6751805 0.42196409
+X2 0.6279038 0.90031573
+X3 0.9497877 0.01821395
+X4 0.9462559 0.89380585
+X5 0.9747984 0.81638574
 </div><div class='input'>coef(a)
 </div>
-<div class='output'>          Y1         Y2        Y3
-Z1 0.7972503 0.02979204 0.5516061
-Z2 0.7273318 0.09419651 0.0210728
+<div class='output'>           Y1        Y2        Y3
+Z1 0.06871017 0.2552576 0.8150621
+Z2 0.83594116 0.1508757 0.6835896
 </div></pre>
   </div>
   <div class="span4">

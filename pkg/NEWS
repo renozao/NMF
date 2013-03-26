@@ -1,5 +1,5 @@
 *************************************************************************
-*                       Changes in version 0.8.??                       *
+*                       Changes in version 0.15.2                       *
 *************************************************************************
 
 NEW FEATURES
@@ -24,6 +24,10 @@ CHANGES
     o the function selectMethodNMF was renamed into selectNMFMethod to 
     be consistent with the other related *NMFMethod functions (get, set, etc..)
 
+FIXES
+
+    o Fix computation of R-squared in profplot/corplot: now compute from 
+    a linear fit that includes an intercept.
 
 *************************************************************************
 *                       Changes in version 0.8.6                        *
