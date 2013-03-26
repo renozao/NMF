@@ -4,7 +4,10 @@
 # Creation: 18 Nov 2011
 ###############################################################################
 
-
+checkPlot <- function(...){
+	if( isCRANcheck() ) return()
+	pkgmaker::checkPlot(...)
+}
 
 test.mfrow <- function(){
 	

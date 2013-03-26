@@ -140,25 +140,25 @@ test.lnmf <- function(){
 	checkData('lnmf')
 }
 
-#' Tests multiple runs of NMF, using Brunet algorithm Golub data.
-atest.zzz.runs <- function(){
-	
-	# define the number of runs
-	N <- 3
-	r <- 3
-	
-	# load data 
-	data(esGolub)
-	eset <- esGolub[1:50, ]
-	
-	# run nmf N times	
-	set.seed(.TestSeed)
-	res <- nmf(eset, r, 'brunet', nrun=N)
-	
-	# check the consensus matrix
-	checkPlot( basicHM(connectivity(res)), 'Consensus matrix')
-	
-}
+##' Tests multiple runs of NMF, using Brunet algorithm Golub data.
+#atest.zzz.runs <- function(){
+#	
+#	# define the number of runs
+#	N <- 3
+#	r <- 3
+#	
+#	# load data 
+#	data(esGolub)
+#	eset <- esGolub[1:50, ]
+#	
+#	# run nmf N times	
+#	set.seed(.TestSeed)
+#	res <- nmf(eset, r, 'brunet', nrun=N)
+#	
+#	# check the consensus matrix
+#	checkPlot( basicHM(connectivity(res)), 'Consensus matrix')
+#	
+#}
 
 #' Unit test for identical results if NMF algorithms
 check.algos <- function(algo1, algo2, identical=FALSE){

@@ -18,6 +18,11 @@ checkOnlyNAs <- function(x, msg){
 
 basicHM <- aheatmap
 
+checkPlot <- function(...){
+	if( isCRANcheck() ) return()
+	pkgmaker::checkPlot(...)
+}
+
 #' checks the validity of a NMF object: dimensions
 check.object <- function(obj, n, m, r, title='Check NMF object', class='NMFstd'){
 	
