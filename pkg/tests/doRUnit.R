@@ -5,6 +5,10 @@
 ###############################################################################
 
 library(pkgmaker)
+
+# skip tests on CRAN checks
+if( !isCRANcheck() ){
+
 tests <- try( utest('package:NMF', quiet=FALSE) )
 
 testdir <- pkgmaker:::utestPath(package='package:NMF')
@@ -44,3 +48,5 @@ if( length(resfile) ){
 if( userIs('renaud') && is(tests, 'try-error') ){
 	stop(tests)
 }
+
+} # end if NOT CRAN check
