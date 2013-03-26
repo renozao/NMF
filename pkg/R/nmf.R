@@ -981,7 +981,7 @@ checkErrors <- function(object, element=NULL){
 #' but takes precedence over any option specified in \code{.options}: 
 #' e.g. \code{nmf(..., .options='P10', .pbackend=NA)} performs all runs sequentially 
 #' using \code{sapply}.
-#' Use \code{nmf.options(backend=NA)} to completely disable foreach/parallel computations 
+#' Use \code{nmf.options(pbackend=NA)} to completely disable foreach/parallel computations 
 #' for all subsequent \code{nmf} calls.}
 #' 
 #' \item{\sQuote{mc}}{ identical to \sQuote{par} and defined to ensure backward 
@@ -1133,7 +1133,7 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='NMFStrategy'),
 function(x, rank, method
 		, seed=nmf.getOption('default.seed'), rng = NULL
 		, nrun=if( length(rank) > 1L ) 30 else 1, model=NULL, .options=list()
-		, .pbackend=nmf.getOption('backend')
+		, .pbackend=nmf.getOption('pbackend')
 		, .callback=NULL #callback function called after a run  
 		, ...)
 {
@@ -1192,7 +1192,7 @@ function(x, rank, method
 	
 	# tracking of objective value
 	.OPTIONS$track <- if( !is.null(.options$track) ) .options$track 
-					else nmf.getOption('error.track')
+					else nmf.getOption('track')
 	# dry run
 	dry.run <- .options$dry.run %||% FALSE 
 	# call the garbage collector regularly

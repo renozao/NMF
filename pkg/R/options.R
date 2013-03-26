@@ -9,30 +9,72 @@
 library(pkgmaker)
 
 # define functions nmf.options and nmf.getOptions
+#' NMF Package Specific Options
+#'
+#' @section Available options:
+#' \describe{
+#' 
+#' \item{default.algorithm}{Default NMF algorithm used by the \code{nmf} function when argument 
+#' \code{method} is missing. 
+#' The value should the key of one of the registered NMF algorithms or a valid specification of an NMF algorithm.
+#' See \code{?nmfAlgorithm}.}
+#' 
+#' \item{default.seed}{Default seeding method used by the \code{nmf} function when argument \code{seed} is missing.
+#' The value should the key of one of the registered seeding methods or a vallid specification of a seeding method. 
+#' See \code{?nmfSeed}.}
+#' 
+#' \item{track}{Toggle default residual tracking. 
+#' When \code{TRUE}, the \code{nmf} function compute and store the residual track in the result -- if not otherwise specified in argument \code{.options}.
+#' Note that tracking may significantly slow down the computations.}
+#' 
+#' \item{track.interval}{Number of iterations between two points in the residual track. 
+#' This option is relevant only when residual tracking is enabled. 
+#' See \code{?nmf}.}
+#' 
+#' \item{error.track}{this is a symbolic link to option \code{track} for backward compatibility.}
+#' 
+#' \item{pbackend}{Default loop/parallel foreach backend used by the \code{nmf} function when 
+#' argument \code{.pbackend} is missing.
+#' Currently the following values are supported: \code{'par'} for multicore, 
+#' \code{'seq'} for sequential, \code{NA} for standard \code{sapply} (i.e. do not use a foreach loop), 
+#' \code{NULL} for using the currently registered foreach backend.}
+#' 
+#' \item{parallel.backend}{this is a symbolic link to option \code{pbackend} for backward compatibility.}
+#' 
+#' \item{gc}{Interval/frequency (in number of runs) at which garbage collection is performed.}
+#' 
+#' \item{verbose}{Default level of verbosity.}
+#' 
+#' \item{debug}{Toogles debug mode.
+#' In this mode the console output may be very -- very -- messy, and is aimed at debugging only.}
+#' 
+#' } % end description
+#' 
+#' 
+#' @rdname options
+#' @name options-NMF
+NULL
 .OPTIONS <- setupPackageOptions(
 	# default algorithm
 	default.algorithm='brunet'
 	# default seeding method
 	, default.seed='random'
 	# track error during NMF updates
-	, error.track=FALSE
+	, error.track = option_symlink('track') # for backward compatibility
+	, track=FALSE
 	# define the tracking interval
 	, track.interval=30
 	# define garbage collection interval
 	, gc=50
 	# define default parallel backend 
-	, parallel.backend= option_symlink('backend') # for backward compatibility
-	, backend= if( parallel::detectCores() > 1 ) 'par' else 'seq'
-	# define default RNG mode
-	, reproducible=TRUE
+	, parallel.backend= option_symlink('pbackend') # for backward compatibility
+	, pbackend= if( parallel::detectCores() > 1 ) 'par' else 'seq'
 	# toogle verbosity
 	, verbose=FALSE
 	# toogle debug mode
 	, debug=FALSE
 , RESET=TRUE)
 
-#' NMF Package Specific Options
-#' 
 #' \code{nmf.options} sets/get single or multiple options, that are specific
 #' to the NMF package. 
 #' It behaves in the same way as \code{\link[base]{options}}.
@@ -54,10 +96,10 @@ library(pkgmaker)
 #' 
 #' # get some options
 #' nmf.getOption('verbose')
-#' nmf.getOption('backend')
+#' nmf.getOption('pbackend')
 #' # set new values
 #' nmf.options(verbose=TRUE)
-#' nmf.options(backend='mc', default.algorithm='lee')
+#' nmf.options(pbackend='mc', default.algorithm='lee')
 #' nmf.printOptions()
 #' 
 #' # reset to default

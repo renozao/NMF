@@ -712,7 +712,7 @@ memory and mutex objects from the \citeCRANpkg{bigmemory} and the
 
 \subsubsection{Parallel foreach backends}
 The default parallel backend used by the \code{nmf} function is defined by the
-package specific option \code{'backend'}, which defaults to \code{'par'} -- for
+package specific option \code{'pbackend'}, which defaults to \code{'par'} -- for
 \code{doParallel}.
 The backend can also be set on runtime via argument \code{.pbackend}.
 
@@ -1244,35 +1244,46 @@ nmf.options()
 
 Currently the following options are available:
 
-% latex table generated in R 2.10.1 by xtable 1.5-6 package
-% Wed Apr  7 15:27:05 2010
-\begin{table}[ht]
-\begin{center}
-\begin{tabularx}{\textwidth}{>{\ttfamily}rlX}
-  \hline
-Option & Default value & Description\\ 
-\hline
-default.algorithm & brunet & Default NMF algorithm used by the \code{nmf} function when argument \code{method} is missing.
-The value should the key of one of the available NMF algorithms. 
-See \code{?nmfAlgorithm}.\\ 
-track.interval & 30 & Number of iterations between two points in the residual track. 
-This option is relevant only when residual tracking is enabled. 
-See \code{?nmf}.\\ 
-error.track & FALSE & Toggle default residual tracking. 
-When \code{TRUE}, the \code{nmf} function compute and store the residual track in the result -- if not otherwise specified in argument \code{.options}.
-Note that tracking may significantly slow down the computations.\\ 
-default.seed & random & Default seeding method used by the \code{nmf} function when argument \code{seed} is missing.
-The value should the key of one of the available seeding methods. 
-See \code{?nmfSeed}.\\
-backend & mc & Default parallel backend used used by the \code{nmf} function when argument \code{.pbackend} is missing.
-Currently the following values are supported: \code{'mc'} for multicore, \code{'seq'} for sequential, \code{''} for \code{sapply}.\\
-verbose & FALSE & Toggle verbosity.\\ 
-debug & FALSE & Toggle debug mode, which is an extended verbose mode.\\ 
-\hline
-\end{tabularx}
-\end{center}
-\caption{}
-\end{table}
+<<nmf_options, echo=FALSE, results='asis'>>=
+pkgmaker:::RdSection2latex('nmf.options', package='NMF')
+@
+
+The default/current values of each options can be displayed using the function
+\code{nmf.printOptions}:
+
+<<print_options>>=
+nmf.printOptions()
+@
+
+%% latex table generated in R 2.10.1 by xtable 1.5-6 package
+%% Wed Apr  7 15:27:05 2010
+%\begin{table}[ht]
+%\begin{center}
+%\begin{tabularx}{\textwidth}{>{\ttfamily}rlX}
+%  \hline
+%Option & Default value & Description\\ 
+%\hline
+%default.algorithm & brunet & Default NMF algorithm used by the \code{nmf} function when argument \code{method} is missing.
+%The value should the key of one of the available NMF algorithms. 
+%See \code{?nmfAlgorithm}.\\ 
+%track.interval & 30 & Number of iterations between two points in the residual track. 
+%This option is relevant only when residual tracking is enabled. 
+%See \code{?nmf}.\\ 
+%error.track & FALSE & Toggle default residual tracking. 
+%When \code{TRUE}, the \code{nmf} function compute and store the residual track in the result -- if not otherwise specified in argument \code{.options}.
+%Note that tracking may significantly slow down the computations.\\ 
+%default.seed & random & Default seeding method used by the \code{nmf} function when argument \code{seed} is missing.
+%The value should the key of one of the available seeding methods. 
+%See \code{?nmfSeed}.\\
+%backend & mc & Default parallel backend used used by the \code{nmf} function when argument \code{.pbackend} is missing.
+%Currently the following values are supported: \code{'mc'} for multicore, \code{'seq'} for sequential, \code{''} for \code{sapply}.\\
+%verbose & FALSE & Toggle verbosity.\\ 
+%debug & FALSE & Toggle debug mode, which is an extended verbose mode.\\ 
+%\hline
+%\end{tabularx}
+%\end{center}
+%\caption{}
+%\end{table}
 
 \pagebreak 
 \section{Session Info}
