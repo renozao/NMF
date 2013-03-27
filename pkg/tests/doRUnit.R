@@ -44,8 +44,8 @@ if( length(resfile) ){
 	})
 }
 
-# stop if testing locally
-if( userIs('renaud') && is(tests, 'try-error') ){
+# stop if error
+if( is(tests, 'try-error') ){
 	stop(tests)
 }
 
