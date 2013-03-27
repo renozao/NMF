@@ -34,17 +34,29 @@ corplot <- function(x, y, legend=TRUE, confint=TRUE, ..., add=FALSE){
 	# add perfect match line
 	abline(a=0, b=1)	
 	
+	# initialise result
+	res <- list(global=list())
 	gco <- lm(as.numeric(y) ~ as.numeric(x))
-	rsq <- CI.Rsqlm(gco)
-	gco <- cor.test( as.numeric(x), as.numeric(y) )
+	res$global$lm <- gco
+	grsq <- CI.Rsqlm(gco)
+	res$global$cortest <- cor.test( as.numeric(x), as.numeric(y) )
+	grsq$rho <- res$global$cortest$estimate
+	grsq$alpha <- res$global$lm$coef[2L]
 	
 	# add legend if requested
 	if( legend ){
 		# separate correlations
+		res$local <- list(lm=list(), cortest=list())
 		lco <- t(sapply(1:ncol(x), function(i){
 				co <- lm(y[,i] ~ x[,i])
+				res$local$lm[[i]] <<- co
+				cotest <- cor.test( as.numeric(x[, i]), as.numeric(y[, i]) )
+				res$local$cortest[[i]] <<- cotest
 				rsq <- CI.Rsqlm(co)
-				return(round(c(Rsq=rsq$Rsq, int=rsq$UCL - rsq$Rsq), 2))
+				return(round(c(Rsq=rsq$Rsq
+							, confint=rsq$UCL - rsq$Rsq
+							, rho=cotest$estimate
+							, alpha=co$coef[2L]), 2))
 #				z <- as.numeric(cor.test(x[,i], y[,i])[c('estimate', 'p.value')])
 #				z[1] <- round.pretty(z[1], 2)
 #				z[2] <- round.pretty(z[2], 3)
@@ -57,13 +69,15 @@ corplot <- function(x, y, legend=TRUE, confint=TRUE, ..., add=FALSE){
 		lpar$pt.cex <- lpar$cex
 		lpar$cex <- 1
 		do.call('legend', c(list(x='topleft', legend=paste(colnames(x)
-				, ' (', sprintf("%0.2f", lco[,1])
-						, if( confint ) str_c(' +/- ', lco[,2])
+				, ' (', lco[,4] # local alpha
+						, ' | ', lco[,3] # local correlation
+						, ' | ', sprintf("%0.2f", lco[,1]) # local R-square
+						, if( confint ) str_c(' +/- ', lco[,2]) # local R-square conf int
 					, ')', sep='')), lpar))
-		ci <- if( confint ) str_c(' +/- ', round(rsq$UCL - rsq$Rsq, 2)) else ''
-		legend("bottomright", legend=bquote(R^2 == .(sprintf("%0.2f%s", rsq$Rsq, ci))))
+		ci <- if( confint ) str_c(' +/- ', round(grsq$UCL - grsq$Rsq, 2)) else ''
+		legend("bottomright", legend=bquote(alpha == .(sprintf("%0.2f | ", grsq$alpha)) ~ rho == .(sprintf("%0.2f | ", grsq$rho)) ~ R^2 == .(sprintf("%0.2f%s", grsq$Rsq, ci))))
 	}
-	invisible(gco)
+	invisible(res)
 }
 
 #setMethod('corplot', signature(x='NMFfitXn', y='NMF')
