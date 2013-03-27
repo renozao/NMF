@@ -965,7 +965,7 @@ gVariable <- function(init, shared=FALSE){
 	function(value){
 		
 		# load packages once
-		if( .loadpkg ){
+		if( shared && .loadpkg ){
 			library(bigmemory)
 			.loadpkg <<- FALSE	
 		}
