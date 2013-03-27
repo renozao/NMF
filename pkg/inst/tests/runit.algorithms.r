@@ -84,9 +84,19 @@ test.brunet <- function(){
 	checkData('brunet')
 }
 
+#' Tests KL algorithm
+test.KL <- function(){
+	checkData('KL')
+}
+
 #' Tests Lee algorithm
 test.lee <- function(){
 	checkData('lee')
+}
+
+#' Tests Frobenius algorithm
+test.frobenius <- function(){
+	checkData('Frobenius')
 }
 
 #' Test NMF with offset
