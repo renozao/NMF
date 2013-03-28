@@ -148,7 +148,7 @@ nmfAlgorithm.brunet <- setNMFMethod('brunet', '.R#brunet', Update=nmf_update.bru
 #' stationarity of the connectivity matrix \code{\link{nmf.stop.connectivity}} as used by 
 #' \sQuote{brunet}.
 #' 
-#' @inheritParams nmf.stop.stationarity
+#' @inheritParams nmf.stop.stationary
 #' 
 #' @rdname KL-nmf
 nmfAlgorithm.KL <- setNMFMethod('KL'

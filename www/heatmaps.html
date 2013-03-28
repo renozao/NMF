@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>heatmap-NMF. NMF 0.16.1</title>
+<title>heatmap-NMF. NMF 0.16.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.1</a>
+      <a class="brand" href="index.html">NMF 0.16.2</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -476,10 +476,17 @@ consensusmap(object, ...)
     
     <h2 id="examples">Examples</h2>
     <pre class="examples"><div class='input'>## More examples are provided in demo `heatmaps`</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># demo(heatmaps)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'>##</div><div class='input'></div><div class='input'># random data with underlying NMF model</div><div class='input'>v <- syntheticNMF(20, 3, 10)
-</div><div class='input'># estimate a model</div><div class='input'>x <- nmf(v, 3)
-</div><div class='input'># show basis matrix</div><div class='input'>basismap(x)
-</div><p><img src='heatmaps-ex1.png' alt='' width='400' height='400' /></p><div class='input'>## <strong>Not run</strong>: </div><div class='input'># # without the default annotation tracks</div><div class='input'># basismap(x, tracks=NA)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'># coefficient matrix</div><div class='input'>coefmap(x)
-</div><p><img src='heatmaps-ex2.png' alt='' width='400' height='400' /></p><div class='input'>## <strong>Not run</strong>: </div><div class='input'># # without the default annotation tracks</div><div class='input'># coefmap(x, tracks=NA)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># res <- nmf(x, 3, nrun=3)</div><div class='input'># consensusmap(res)</div><div class='input'># ## <strong>End(Not run)</strong></div></pre>
+</div>
+<strong class='error'>Error in H[i, (tmp + 1):(tmp + g[i])] <- 1: subscript out of bounds</strong><div class='input'># estimate a model</div><div class='input'>x <- nmf(v, 3)
+</div>
+<strong class='error'>Error in nmf(v, 3): error in evaluating the argument 'x' in selecting a method for function 'nmf': Error: object 'v' not found
+</strong><div class='input'># show basis matrix</div><div class='input'>basismap(x)
+</div>
+<strong class='error'>Error in basismap(x): error in evaluating the argument 'object' in selecting a method for function 'basismap': Error: object 'x' not found
+</strong><div class='input'>## <strong>Not run</strong>: </div><div class='input'># # without the default annotation tracks</div><div class='input'># basismap(x, tracks=NA)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'># coefficient matrix</div><div class='input'>coefmap(x)
+</div>
+<strong class='error'>Error in coefmap(x): error in evaluating the argument 'object' in selecting a method for function 'coefmap': Error: object 'x' not found
+</strong><div class='input'>## <strong>Not run</strong>: </div><div class='input'># # without the default annotation tracks</div><div class='input'># coefmap(x, tracks=NA)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># res <- nmf(x, 3, nrun=3)</div><div class='input'># consensusmap(res)</div><div class='input'># ## <strong>End(Not run)</strong></div></pre>
   </div>
   <div class="span4">
     <!-- <ul>

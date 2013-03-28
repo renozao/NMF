@@ -18,10 +18,11 @@ The NMF package helps realize the potential of Nonnegative Matrix Factorization,
 
 Documentation, source code and sample data are available from:
 
-Latest stable release: CRAN at http://cran.r-project.org/package=NMF.
-Development versions: 
-* R-Forge at http://r-forge.r-project.org/projects/nmf.
-* MyCRAN repository at http://web.cbio.uct.ac.za/~renaud/CRAN
+* ![](img/r-icon.jpg) Latest stable release from CRAN: http://cran.r-project.org/package=NMF
 
-__IMPORTANT__: The NMF package has currently been archived on CRAN, but should return shortly. Please use the myCRAN repository to install in the meantime.
+* Development versions: 
+	* ![](img/r-forge-icon.png) project: http://r-forge.r-project.org/projects/nmf<br />
+_NOTE: due to some unknown problem on R-forge build system, the package is not being built. Please use the MyCRAN repository until the issue is fixed._<br /><br />
+	* MyCRAN: personal CRAN-like repository at http://web.cbio.uct.ac.za/~renaud/CRAN
+
 
