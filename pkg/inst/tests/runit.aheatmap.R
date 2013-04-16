@@ -5,7 +5,7 @@
 ###############################################################################
 
 checkPlot <- function(...){
-	if( isCRANcheck() ) return()
+	if( isCHECK() ) return()
 	pkgmaker::checkPlot(...)
 }
 

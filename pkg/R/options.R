@@ -14,6 +14,12 @@ library(pkgmaker)
 #' @section Available options:
 #' \describe{
 #' 
+#' \item{cores}{Default number of cores to use to perform parallel NMF computations.
+#' Note that this option is effectively used only if the global option \code{'cores'} is 
+#' not set.
+#' Moreover, the number of cores can also be set at runtime, in the call to \code{\link{nmf}}, 
+#' via arguments \code{.pbackend} or \code{.options} (see \code{\link{nmf}} for more details).}
+#' 
 #' \item{default.algorithm}{Default NMF algorithm used by the \code{nmf} function when argument 
 #' \code{method} is missing. 
 #' The value should the key of one of the registered NMF algorithms or a valid specification of an NMF algorithm.

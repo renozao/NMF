@@ -229,27 +229,40 @@ test.nmf <- function(){
 	
 	set.seed(123456)
 	a <- rmatrix(20,10)
-	nmf.options(pbackend=2)
+	nmf.options(cores=2)
 	
-	checkTrue( isNMFfit(res <- nmf(a, 2, seed=123, nrun=3, .opt='v3')), "Default works")
+	checkTrue( isNMFfit(resREF <- nmf(a, 2, seed=123, nrun=3, .opt='v3')), "Default works")
 	
-	.check <- function(msg, .options=NULL, ...){
+	cl_loadedNamespaces <- function(cl=NULL){
+		if( is_NA(cl) ) return()
+		if( is.null(cl) ) unique(unlist(foreach(i=1:2) %dopar% { loadedNamespaces() }))
+		else unique(unlist(clusterApplyLB(cl, 1:2, function(i){ loadedNamespaces() })))
+	}
+	
+	.check <- function(msg, .options=NULL, ..., LOADED_NAMESPACES=NA){
 		
 		be <- getDoBackend()
 		checkTrue( isNMFfit(res2 <- nmf(a, 2, seed=123, nrun=3, .opt=str_c('v3', .options), ...)), str_c(msg, " works"))
-		checkTrue( nmf.equal(res, res2), str_c(msg, ": result is identical to default") )
-		checkIdentical( consensus(res, no.attrib=TRUE), consensus(res2, no.attrib=TRUE)
+		# retrieve namespaces on dopar processes if necessary
+		ns <- if( !is_NA(LOADED_NAMESPACES) ) cl_loadedNamespaces(LOADED_NAMESPACES)
+		
+		checkTrue( nmf.equal(resREF, res2), str_c(msg, ": result is identical to default") )
+		checkIdentical( consensus(resREF, no.attrib=TRUE), consensus(res2, no.attrib=TRUE)
 					, str_c(msg, ": consensus matrice (no.attrib) is identical to default") )
-		checkIdentical( consensus(res), consensus(res2), str_c(msg, ": consensus matrice is identical to default") )
+		checkIdentical( consensus(resREF), consensus(res2), str_c(msg, ": consensus matrice is identical to default") )
 		checkTrue( identical(be, getDoBackend()), str_c(msg, ": backend is restored") )
 		
 		# check restoration on error
 		checkException( nmf(a, 2, method=function(...) 1L, seed=123, nrun=3, .opt=str_c('v3', .options), ...), str_c(msg, " throw error if bad method"))
 		checkTrue( identical(be, getDoBackend()), str_c(msg, ": backend is restored after error") )
 		
+		# return loaded namespaces
+		ns
 	}
 	
 	library(parallel)
+	
+	.check('SEQ', .pbackend='SEQ')
 	# Multicore
 	if( parallel::detectCores() > 1 ) 
 		.check('P2', .options='P2')
@@ -260,21 +273,25 @@ test.nmf <- function(){
 	# SNOW-type
 	cl <- makeCluster(2)
 	on.exit( stopCluster(cl), add=TRUE)
-	.check('.pbackend=cl + SNOW-like cluster', .pbackend=cl)
+	lpkg0 <- cl_loadedNamespaces(cl)
+	lpkg1 <- .check('.pbackend=cl + SNOW-like cluster', .pbackend=cl, LOADED_NAMESPACES=cl)
+#	if( !isCHECK() ){ #TODO: investigate why this test does not work in R CMD check
+#		checkTrue(length(setdiff(lpkg1, lpkg0)) > 0, "Provided cluster was used if .pbackend=cl")
+#	}
 	stopCluster(cl)
 	
 	library(doParallel)
 	cl <- makeCluster(2)
 	registerDoParallel(cl)
-	cl_loaded <- function(){
-		unique(unlist(foreach(i=1:2) %dopar% { loadedNamespaces() }))
-	}
-	lpkg <- cl_loaded()
-	
-	.check('doParallel registered cluster + P2 [should not use registered cluster]', .opt='P2')
-	checkIdentical(lpkg, cl_loaded(), "Registered cluster was not used if .opt='P2'")
-	.check('.pbackend=NULL + doParallel registered cluster', .pbackend=NULL)
-	checkTrue(length(setdiff(cl_loaded(), lpkg))>0, "Registered cluster was used if .pbackend=NULL")
+	lpkg0 <- cl_loadedNamespaces(NULL)
+	# no .pbackend => use registered cluster
+	lpkg1 <- .check('doParallel registered cluster + P2 [should not use registered cluster]', .opt='P2'
+					, LOADED_NAMESPACES=NULL)
+	checkIdentical(lpkg0, lpkg1, "Registered cluster was not used if .opt='P2'")
+	# .pbackend=NULL
+	lpkg1 <- .check('.pbackend=NULL + doParallel registered cluster', .pbackend=NULL
+					, LOADED_NAMESPACES=NULL)
+	checkTrue(length(setdiff(lpkg1, lpkg0))>0, "Registered cluster was used if .pbackend=NULL")
 	
 	# MPI
 	if( !require(doMPI) ) DEACTIVATED("Package doMPI not available.")

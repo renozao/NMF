@@ -24,7 +24,7 @@ getMaxCores <- function(limit=TRUE){
 		else if( n > 2 ) n <- n - 1L # leave one core free if possible
 	}
 	# forces limiting maximum number of cores to 2 during CRAN checks
-	if( n > 2 && isCRANcheck() ){
+	if( n > 2 && isCHECK() ){
 		message("# NOTE - CRAN check detected: limiting maximum number of cores [2/", nt, "]")
 		n <- 2L
 	}

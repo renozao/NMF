@@ -10,8 +10,8 @@
 
 \usepackage[colorlinks]{hyperref}
 \author{Renaud Gaujoux, Cathal Seoighe}
-\title{\texttt{NMF}: Unit testing results\footnote{Vignette computed  on Thu Mar 28 07:35:05 2013}}
-\date{\texttt{NMF} version 0.16.2 as of March 28, 2013}
+\title{\texttt{NMF}: Unit testing results\footnote{Vignette computed  on Tue Apr 16 16:59:21 2013}}
+\date{\texttt{NMF} version 0.16.4 as of April 16, 2013}
 \usepackage{Sweave}
 \begin{document}
 \maketitle
@@ -19,7 +19,7 @@
 \section{Details}
 \begin{verbatim}
 
-RUNIT TEST PROTOCOL -- Thu Mar 28 07:35:05 2013 
+RUNIT TEST PROTOCOL -- Tue Apr 16 16:59:21 2013 
 *********************************************** 
 Number of test functions: 81 
 Number of deactivated test functions: 4 
@@ -38,123 +38,123 @@ Test Suite: package:NMF
 Test function regexp: ^test. 
 Test file regexp: ^runit.*.[rR]$ 
 Involved directory: 
-/tmp/Rpkglib_b99606a706d/NMF/tests 
+/tmp/Rpkglib_290d6bae72f0/NMF/tests 
 --------------------------- 
-Test file: /tmp/Rpkglib_b99606a706d/NMF/tests/runit.aheatmap.R 
-test.mfrow: (1 checks) ... OK (0.55 seconds)
+Test file: /tmp/Rpkglib_290d6bae72f0/NMF/tests/runit.aheatmap.R 
+test.mfrow: (1 checks) ... OK (0.46 seconds)
 --------------------------- 
-Test file: /tmp/Rpkglib_b99606a706d/NMF/tests/runit.algorithms.r 
-test.brunet: (16 checks) ... OK (3.85 seconds)
-test.cversions.brunet: (1 checks) ... OK (1.33 seconds)
-test.cversions.lee: (1 checks) ... OK (1.31 seconds)
+Test file: /tmp/Rpkglib_290d6bae72f0/NMF/tests/runit.algorithms.r 
+test.brunet: (16 checks) ... OK (3.94 seconds)
+test.cversions.brunet: (1 checks) ... OK (1.21 seconds)
+test.cversions.lee: (1 checks) ... OK (1.86 seconds)
 test.cversions.lnmf : DEACTIVATED, Algorithm 'lnmf' is not fully working.
-test.cversions.ns: (1 checks) ... OK (1.72 seconds)
-test.cversions.offset: (1 checks) ... OK (4.47 seconds)
-test.frobenius: (16 checks) ... OK (6.38 seconds)
-test.KL: (16 checks) ... OK (5.43 seconds)
-test.lee: (16 checks) ... OK (3.77 seconds)
+test.cversions.ns: (1 checks) ... OK (1.6 seconds)
+test.cversions.offset: (1 checks) ... OK (5.79 seconds)
+test.frobenius: (16 checks) ... OK (5.69 seconds)
+test.KL: (16 checks) ... OK (4.78 seconds)
+test.lee: (16 checks) ... OK (3.56 seconds)
 test.lnmf : DEACTIVATED, Algorithm 'lnmf' is not fully working.
-test.ns: (16 checks) ... OK (3.96 seconds)
-test.offset: (16 checks) ... OK (4.26 seconds)
-test.port_brunet: (9 checks) ... OK (5.52 seconds)
-test.snmf: (44 checks) ... OK (9.83 seconds)
+test.ns: (16 checks) ... OK (3.88 seconds)
+test.offset: (16 checks) ... OK (4.75 seconds)
+test.port_brunet: (9 checks) ... OK (5.16 seconds)
+test.snmf: (44 checks) ... OK (9.84 seconds)
 --------------------------- 
-Test file: /tmp/Rpkglib_b99606a706d/NMF/tests/runit.bioc.r 
+Test file: /tmp/Rpkglib_290d6bae72f0/NMF/tests/runit.bioc.r 
 test.access: (26 checks) ... OK (0.02 seconds)
 --------------------------- 
-Test file: /tmp/Rpkglib_b99606a706d/NMF/tests/runit.distance.r 
-test.KL: (9 checks) ... OK (1.27 seconds)
+Test file: /tmp/Rpkglib_290d6bae72f0/NMF/tests/runit.distance.r 
+test.KL: (9 checks) ... OK (1.2 seconds)
 test.rss: (4 checks) ... OK (0.08 seconds)
 --------------------------- 
-Test file: /tmp/Rpkglib_b99606a706d/NMF/tests/runit.interface.r 
-test.compare: (5 checks) ... OK (9.39 seconds)
-test.nmf.callback: (22 checks) ... OK (12.13 seconds)
+Test file: /tmp/Rpkglib_290d6bae72f0/NMF/tests/runit.interface.r 
+test.compare: (5 checks) ... OK (8 seconds)
+test.nmf.callback: (22 checks) ... OK (11.18 seconds)
 test.nmf.custom: (87 checks) ... OK (1.23 seconds)
-test.nmf.default: (8 checks) ... OK (0.21 seconds)
-test.nmf.dots: (11 checks) ... OK (0.71 seconds)
-test.nmf.method: (24 checks) ... OK (5.24 seconds)
-test.nmf.model: (22 checks) ... OK (0.66 seconds)
-test.nmf.multirank: (10 checks) ... OK (3.77 seconds)
-test.nmf.options: (18 checks) ... OK (4.27 seconds)
-test.nmf.parameters: (53 checks) ... OK (0.67 seconds)
-test.nmf.seed.argument: (127 checks) ... OK (7.04 seconds)
-test.nmf.seed.equivalent: (11 checks) ... OK (8.31 seconds)
-test.nmf.seed.fault: (4 checks) ... OK (1.63 seconds)
-test.nmf.seed.repro: (8 checks) ... OK (9.73 seconds)
-test.nmf.stop: (6 checks) ... OK (2.42 seconds)
-test.parallel: (6 checks) ... OK (9.21 seconds)
-test.registry: (9 checks) ... OK (0.18 seconds)
-test.seed: (33 checks) ... OK (0.16 seconds)
-test.summary: (3 checks) ... OK (1.92 seconds)
+test.nmf.default: (8 checks) ... OK (0.22 seconds)
+test.nmf.dots: (11 checks) ... OK (0.73 seconds)
+test.nmf.method: (24 checks) ... OK (5.1 seconds)
+test.nmf.model: (22 checks) ... OK (0.67 seconds)
+test.nmf.multirank: (10 checks) ... OK (3.63 seconds)
+test.nmf.options: (18 checks) ... OK (3.74 seconds)
+test.nmf.parameters: (53 checks) ... OK (0.66 seconds)
+test.nmf.seed.argument: (127 checks) ... OK (6.16 seconds)
+test.nmf.seed.equivalent: (11 checks) ... OK (7.69 seconds)
+test.nmf.seed.fault: (4 checks) ... OK (1.57 seconds)
+test.nmf.seed.repro: (8 checks) ... OK (9.66 seconds)
+test.nmf.stop: (6 checks) ... OK (2.4 seconds)
+test.parallel: (6 checks) ... OK (8.49 seconds)
+test.registry: (9 checks) ... OK (0.17 seconds)
+test.seed: (33 checks) ... OK (0.15 seconds)
+test.summary: (3 checks) ... OK (2.03 seconds)
 --------------------------- 
-Test file: /tmp/Rpkglib_b99606a706d/NMF/tests/runit.NMFclass.r 
+Test file: /tmp/Rpkglib_290d6bae72f0/NMF/tests/runit.NMFclass.r 
 test.basis: (2 checks) ... OK (0 seconds)
-test.class.NMFns: (65 checks) ... OK (0.04 seconds)
+test.class.NMFns: (65 checks) ... OK (0.03 seconds)
 test.class.NMFstd: (28 checks) ... OK (0.01 seconds)
 test.coef: (2 checks) ... OK (0 seconds)
 test.connectivity: (3 checks) ... OK (0.01 seconds)
 test.deviance: (9 checks) ... OK (0.01 seconds)
 test.dimensions: (4 checks) ... OK (0 seconds)
-test.dimnames: (173 checks) ... OK (0.09 seconds)
+test.dimnames: (173 checks) ... OK (0.06 seconds)
 test.entropy: (5 checks) ... OK (0 seconds)
 test.misc: (9 checks) ... OK (0 seconds)
-test.nmfModel: (363 checks) ... OK (0.14 seconds)
-test.NMF.rnmf: (93 checks) ... OK (1.24 seconds)
+test.nmfModel: (363 checks) ... OK (0.12 seconds)
+test.NMF.rnmf: (93 checks) ... OK (1.07 seconds)
 test.predict: (10 checks) ... OK (0.01 seconds)
 test.purity: (5 checks) ... OK (0 seconds)
 test.sparseness: (13 checks) ... OK (0.01 seconds)
-test.subset: (51 checks) ... OK (0.05 seconds)
-test.syntheticNMF: (5 checks) ... OK (1.31 seconds)
+test.subset: (51 checks) ... OK (0.04 seconds)
+test.syntheticNMF: (5 checks) ... OK (1.33 seconds)
 --------------------------- 
-Test file: /tmp/Rpkglib_b99606a706d/NMF/tests/runit.NMFfit-class.r 
+Test file: /tmp/Rpkglib_290d6bae72f0/NMF/tests/runit.NMFfit-class.r 
 test.deviance: (0 checks) ... OK (0 seconds)
-test.isNMFfit: (6 checks) ... OK (2.02 seconds)
-test.niter: (4 checks) ... OK (1.09 seconds)
-test.nmf.equal: (304 checks) ... OK (2.07 seconds)
+test.isNMFfit: (6 checks) ... OK (2.06 seconds)
+test.niter: (4 checks) ... OK (0.96 seconds)
+test.nmf.equal: (304 checks) ... OK (1.95 seconds)
 --------------------------- 
-Test file: /tmp/Rpkglib_b99606a706d/NMF/tests/runit.NMFSet.r 
-test.fit: (9 checks) ... OK (2.27 seconds)
-test.interface: (6 checks) ... OK (1.17 seconds)
-test.join.multipleAndSingleRunsMethods: (2 checks) ... OK (2.56 seconds)
-test.join.multipleRuns: (2 checks) ... OK (2.65 seconds)
-test.join.singleRuns: (7 checks) ... OK (0.66 seconds)
-test.multipleruns: (2 checks) ... OK (1.13 seconds)
+Test file: /tmp/Rpkglib_290d6bae72f0/NMF/tests/runit.NMFSet.r 
+test.fit: (9 checks) ... OK (2.32 seconds)
+test.interface: (6 checks) ... OK (1.13 seconds)
+test.join.multipleAndSingleRunsMethods: (2 checks) ... OK (2.4 seconds)
+test.join.multipleRuns: (2 checks) ... OK (2.81 seconds)
+test.join.singleRuns: (7 checks) ... OK (0.7 seconds)
+test.multipleruns: (2 checks) ... OK (1.25 seconds)
 --------------------------- 
-Test file: /tmp/Rpkglib_b99606a706d/NMF/tests/runit.NMFStrategy-class.r 
+Test file: /tmp/Rpkglib_290d6bae72f0/NMF/tests/runit.NMFStrategy-class.r 
 test.accessors: (26 checks) ... OK (0.04 seconds)
-test.constructor: (16 checks) ... OK (0.05 seconds)
-test.constructorMethod: (3 checks) ... OK (0.05 seconds)
+test.constructor: (16 checks) ... OK (0.04 seconds)
+test.constructorMethod: (3 checks) ... OK (0.02 seconds)
 --------------------------- 
-Test file: /tmp/Rpkglib_b99606a706d/NMF/tests/runit.options.r 
+Test file: /tmp/Rpkglib_290d6bae72f0/NMF/tests/runit.options.r 
 test.nmf.getOption: (2 checks) ... OK (0 seconds)
 test.nmf.options: (9 checks) ... OK (0 seconds)
 --------------------------- 
-Test file: /tmp/Rpkglib_b99606a706d/NMF/tests/runit.parallel.r 
-test.ForeachBackend: (4 checks) ... OK (1.4 seconds)
-test.gVariable: (11 checks) ... OK (9.72 seconds)
-test.nmf: (52 checks) ... OK (31.06 seconds)
-test.setupBackend: (4 checks) ... OK (0.08 seconds)
+Test file: /tmp/Rpkglib_290d6bae72f0/NMF/tests/runit.parallel.r 
+test.ForeachBackend: (4 checks) ... OK (2.29 seconds)
+test.gVariable: (11 checks) ... OK (8.94 seconds)
+test.nmf: (59 checks) ... OK (32.15 seconds)
+test.setupBackend: (4 checks) ... OK (0.07 seconds)
 test.shared_memory_doMC: (12 checks) ... OK (6.11 seconds)
 test.shared_memory_doMPI : DEACTIVATED, NMF shared memory feature does not currently work with doMPI.
-test.shared_memory_doParallel: (12 checks) ... OK (8.79 seconds)
-test.shared_memory_doSEQ: (11 checks) ... OK (6.49 seconds)
+test.shared_memory_doParallel: (12 checks) ... OK (8.73 seconds)
+test.shared_memory_doSEQ: (11 checks) ... OK (6.48 seconds)
 --------------------------- 
-Test file: /tmp/Rpkglib_b99606a706d/NMF/tests/runit.seed.r 
-test.nndsvd: (10 checks) ... OK (0.15 seconds)
+Test file: /tmp/Rpkglib_290d6bae72f0/NMF/tests/runit.seed.r 
+test.nndsvd: (10 checks) ... OK (0.03 seconds)
 test.none: (6 checks) ... OK (0.04 seconds)
 test.random: (26 checks) ... OK (0.14 seconds)
 test.restore : DEACTIVATED, The option 'restore.seed' is deprecated. Related tests are now in test.seed.effect
-test.seed.effect: (15 checks) ... OK (11.92 seconds)
-test.zzz.all: (297 checks) ... OK (17.95 seconds)
+test.seed.effect: (15 checks) ... OK (11.95 seconds)
+test.zzz.all: (297 checks) ... OK (16.78 seconds)
 --------------------------- 
-Test file: /tmp/Rpkglib_b99606a706d/NMF/tests/runit.utils.r 
-test.nmfWrapper: (16 checks) ... OK (0.77 seconds)
+Test file: /tmp/Rpkglib_290d6bae72f0/NMF/tests/runit.utils.r 
+test.nmfWrapper: (16 checks) ... OK (0.75 seconds)
 test.rmatrix: (16 checks) ... OK (0.01 seconds)
 
 Total execution time
 ***************************
    user  system elapsed 
-232.889  32.649 251.653 
+223.481  33.301 245.833 
 
 \end{verbatim}
 
@@ -164,12 +164,12 @@ Total execution time
   \item Locale: \verb|LC_CTYPE=en_US.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_US.UTF-8|, \verb|LC_COLLATE=en_US.UTF-8|, \verb|LC_MONETARY=en_US.UTF-8|, \verb|LC_MESSAGES=en_US.UTF-8|, \verb|LC_PAPER=C|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_US.UTF-8|, \verb|LC_IDENTIFICATION=C|
   \item Base packages: base, datasets, graphics, grDevices, grid,
     methods, parallel, stats, utils
-  \item Other packages: BH~1.51.0-0, bigmemory~4.4.0,
+  \item Other packages: BH~1.51.0-0, bigmemory~4.4.3,
     bigmemory.sri~0.1.2, Biobase~2.18.0, BiocGenerics~0.4.0,
     digest~0.6.3, doMPI~0.1-5, doParallel~1.0.1, fastICA~1.1-16,
-    foreach~1.4.0, iterators~1.0.6, NMF~0.16.2, pkgmaker~0.15.2,
+    foreach~1.4.0, iterators~1.0.6, NMF~0.16.4, pkgmaker~0.15.4,
     RColorBrewer~1.0-5, Rcpp~0.10.3, RcppOctave~0.9, registry~0.2,
-    Rmpi~0.6-2, rngtools~1.2, RUnit~0.4.26, stringr~0.6.2,
+    Rmpi~0.6-3, rngtools~1.2, RUnit~0.4.26, stringr~0.6.2,
     synchronicity~1.1.0
   \item Loaded via a namespace (and not attached): codetools~0.2-8,
     colorspace~1.2-1, compiler~2.15.3, gridBase~0.4-6, tools~2.15.3,

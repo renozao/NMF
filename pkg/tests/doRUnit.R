@@ -7,10 +7,11 @@
 library(pkgmaker)
 
 # skip tests on CRAN checks
-if( !isCRANcheck() ){
-
+#if( !isCRANcheck() ){
+	
 tests <- try( utest('package:NMF', quiet=FALSE) )
 
+if( FALSE ){
 testdir <- pkgmaker:::utestPath(package='package:NMF')
 
 resfile <- list.files(testdir, pattern=".+\\.txt", full.names=TRUE)
@@ -42,11 +43,12 @@ if( length(resfile) ){
 		if( !userIs('renaud') ) try( sendmail('renaud@cbio.uct.ac.za', subject, msg) )
 		else write(msg, file=file.path(testdir, paste("check_", basename(f), sep='')))
 	})
+
 }
+
+} # end if NOT CRAN check
 
 # stop if error
 if( is(tests, 'try-error') ){
 	stop(tests)
 }
-
-} # end if NOT CRAN check

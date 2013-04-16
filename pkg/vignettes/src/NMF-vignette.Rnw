@@ -1231,7 +1231,7 @@ nmf(V, 3, 'snmf/r', seed=my.seeding.method)
 The package specific options can be retieved or changed using the \code{nmf.getOption} and \code{nmf.options} functions. 
 These behave similarly as the \code{getOption} and \code{nmf.options} base functions:
 
-<<options_algo, eval=FALSE>>=
+<<options_algo, eval=1:6>>=
 #show default algorithm and seeding method
 nmf.options('default.algorithm', 'default.seed')
 
