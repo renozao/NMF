@@ -173,7 +173,10 @@ nmfConfig <- mkoptions()
 		msg <- paste0(msg, ' | CRAN check')
 	}
 	#
-	packageStartupMessage('NMF - ', msg)
+	
+	# print startup message
+	ver <- packageVersion('NMF')
+	packageStartupMessage('NMF [', ver, '] - ', msg)
 	if( !is.null(details) ){
 		packageStartupMessage(paste(details, collapse="\n"))
 	}
