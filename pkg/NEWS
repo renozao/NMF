@@ -1,4 +1,17 @@
 *************************************************************************
+Changes in version 0.16.5
+*************************************************************************
+CHANGES
+    o Now depends on pkgmaker 0.16
+    o Disabled shared memory on Mac machines by default, due to un-resolved
+    bug that occurs with big-matrix descriptors.
+    It can be restored using nmf.options(shared.memory=TRUE)
+    o Package version is now shown on startup message
+    o Re-enabled unit test checks on CRAN, using the new function 
+    pkgmaker::isCHECK, that definitely identifies if tests are run 
+    under R CMD check.
+
+*************************************************************************
 *                       Changes in version 0.15.2                       *
 *************************************************************************
 
