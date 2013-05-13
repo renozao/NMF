@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>rmatrix. NMF 0.16.2</title>
+<title>rmatrix. NMF 0.16.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -13,6 +13,9 @@
 <link href="css/highlight.css" rel="stylesheet">
 <!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 <!-- bootstrap javascript -->
 <script src="js/jquery.min.js"></script>
@@ -27,10 +30,10 @@
   </head>
 
   <body>
-    <div class="navbar">
+    <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.2</a>
+      <a class="brand" href="index.html">NMF 0.16.5</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -49,6 +52,17 @@
 
 <div class="row">
   <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,The S4 generic <code>rmatrix</code> generates a random matrix
+  from a given object. Methods are provided to generate
+  matrices with entries drawn from any given random
+  distribution function, e.g. <code><a href='http://www.inside-r.org/r-doc/stats/Uniform'>runif</a></code> or
+  <code><a href='http://www.inside-r.org/r-doc/stats/Normal'>rnorm</a></code>.</p>
+  
+    </div>
+    
     <h2>Usage</h2>
     <pre>rmatrix(x, ...)
 
@@ -75,17 +89,6 @@
   function <code>dist</code>.</dd>
     </dl>
     
-    <div class="Description">
-      <h2>Description</h2>
-      
-      <p>The S4 generic <code>rmatrix</code> generates a random matrix
-  from a given object. Methods are provided to generate
-  matrices with entries drawn from any given random
-  distribution function, e.g. <code><a href='http://www.inside-r.org/r-doc/stats/Uniform'>runif</a></code> or
-  <code><a href='http://www.inside-r.org/r-doc/stats/Normal'>rnorm</a></code>.</p>
-  
-    </div>
-
     <div class="Methods">
       <h2>Methods</h2>
       
@@ -150,43 +153,95 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'>## Generate a random matrix of a given size</div><div class='input'>rmatrix(5, 3)
-</div>
-<div class='output'>           [,1]      [,2]      [,3]
-[1,] 0.06243016 0.1101419 0.8997295
-[2,] 0.90294478 0.5133422 0.3080472
-[3,] 0.02825208 0.8322932 0.5568540
-[4,] 0.32196286 0.4457090 0.9991947
-[5,] 0.12814938 0.7559115 0.2020942
-</div><div class='input'></div><div class='input'></div><div class='input'>## Generate a random matrix of the same dimension of a template matrix</div><div class='input'>a <- matrix(1, 3, 4)
-</div><div class='input'>rmatrix(a)
-</div>
-<div class='output'>            [,1]       [,2]       [,3]      [,4]
-[1,] 0.005399961 0.02837716 0.93087594 0.8358895
-[2,] 0.304086372 0.87260267 0.04652877 0.5589668
-[3,] 0.496753415 0.93407865 0.83542936 0.8811505
-</div><div class='input'></div><div class='input'></div><div class='input'>## Specificy the distribution to use</div><div class='input'></div><div class='input'># the default is uniform</div><div class='input'>a <- rmatrix(1000, 50)
-</div><div class='input'>## <strong>Not run</strong>:  hist(a) </div><div class='input'></div><div class='input'># use normal ditribution</div><div class='input'>a <- rmatrix(1000, 50, rnorm)
-</div><div class='input'>## <strong>Not run</strong>:  hist(a) </div><div class='input'></div><div class='input'># extra arguments can be passed to the random variate generation function</div><div class='input'>a <- rmatrix(1000, 50, rnorm, mean=2, sd=0.5)
-</div><div class='input'>## <strong>Not run</strong>:  hist(a) </div><div class='input'># random matrix of the same dimension as another matrix</div><div class='input'>x <- matrix(3,4)
-</div><div class='input'>dim(rmatrix(x))
-</div>
-<div class='output'>[1] 4 1
-</div><div class='input'># generate noisy fitted target from an NMF model (the true model)</div><div class='input'>gr <- as.numeric(mapply(rep, 1:3, 3))
-</div><div class='input'>h <- outer(1:3, gr, '==') + 0
-</div><div class='input'>x <- rnmf(10, H=h)
-</div><div class='input'>y <- rmatrix(x)
-</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># # show heatmap of the noisy target matrix: block patterns should be clear</div><div class='input'># aheatmap(y)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'></div><div class='input'></div><div class='input'># test NMF algorithm on noisy data</div><div class='input'># add some noise to the true model (drawn from uniform [0,1])</div><div class='input'>res <- nmf(rmatrix(x), 3)
-</div><div class='input'>summary(res)
-</div>
-<div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun 
-       3.0000000        0.2710007        0.5078447        1.6109761      470.0000000        0.1400000        0.1400000        1.0000000 
-</div><div class='input'></div><div class='input'># add more noise to the true model (drawn from uniform [0,10])</div><div class='input'>res <- nmf(rmatrix(x, max=10), 3)
-</div><div class='input'>summary(res)
-</div>
-<div class='output'>            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun 
-       3.0000000        0.3853947        0.3687706       19.7067992      460.0000000        0.1240000        0.1240000        1.0000000 
-</div></pre>
+    <pre><code class="r">
+## Generate a random matrix of a given size
+rmatrix(5, 3)
+</code></pre>
+
+<pre><code>##         [,1]   [,2]   [,3]
+## [1,] 0.06243 0.1101 0.8997
+## [2,] 0.90294 0.5133 0.3080
+## [3,] 0.02825 0.8323 0.5569
+## [4,] 0.32196 0.4457 0.9992
+## [5,] 0.12815 0.7559 0.2021
+</code></pre>
+
+<pre><code class="r">## Don&#39;t show: 
+ stopifnot( identical(dim(rmatrix(5, 3)), c(5L,3L)) ) 
+## End Don&#39;t show
+
+## Generate a random matrix of the same dimension of a template matrix
+a &lt;- matrix(1, 3, 4)
+rmatrix(a)
+</code></pre>
+
+<pre><code>##        [,1]   [,2]   [,3]   [,4]
+## [1,] 0.5755 0.1902 0.5678 0.3842
+## [2,] 0.4891 0.8384 0.3627 0.5724
+## [3,] 0.2043 0.8881 0.2311 0.5999
+</code></pre>
+
+<pre><code class="r">## Don&#39;t show: 
+ stopifnot( identical(dim(rmatrix(a)), c(3L,4L)) ) 
+## End Don&#39;t show
+
+## Specificy the distribution to use
+
+# the default is uniform
+a &lt;- rmatrix(1000, 50)
+## Not run:  hist(a) 
+
+# use normal ditribution
+a &lt;- rmatrix(1000, 50, rnorm)
+## Not run:  hist(a) 
+
+# extra arguments can be passed to the random variate generation function
+a &lt;- rmatrix(1000, 50, rnorm, mean=2, sd=0.5)
+## Not run:  hist(a) 
+# random matrix of the same dimension as another matrix
+x &lt;- matrix(3,4)
+dim(rmatrix(x))
+</code></pre>
+
+<pre><code>## [1] 4 1
+</code></pre>
+
+<pre><code class="r"># generate noisy fitted target from an NMF model (the true model)
+gr &lt;- as.numeric(mapply(rep, 1:3, 3))
+h &lt;- outer(1:3, gr, &#39;==&#39;) + 0
+x &lt;- rnmf(10, H=h)
+y &lt;- rmatrix(x)
+## Not run: 
+##D # show heatmap of the noisy target matrix: block patterns should be clear
+##D aheatmap(y)
+## End(Not run)
+## Don&#39;t show: 
+ stopifnot( identical(dim(y), dim(x)[1:2]) ) 
+## End Don&#39;t show
+
+# test NMF algorithm on noisy data
+# add some noise to the true model (drawn from uniform [0,1])
+res &lt;- nmf(rmatrix(x), 3)
+summary(res)
+</code></pre>
+
+<pre><code>## Length  Class   Mode 
+##      1 NMFfit     S4
+</code></pre>
+
+<pre><code class="r">
+# add more noise to the true model (drawn from uniform [0,10])
+res &lt;- nmf(rmatrix(x, max=10), 3)
+summary(res)
+</code></pre>
+
+<pre><code>## Length  Class   Mode 
+##      1 NMFfit     S4
+</code></pre>
+
+<pre><code class="r">
+</code></pre>
+
   </div>
   <div class="span4">
     <!-- <ul>
@@ -202,7 +257,7 @@
       
       <footer>
       <p class="pull-right"><a href="#">Back to top</a></p>
-<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
     </div>
   </body>

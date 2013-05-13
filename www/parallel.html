@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>parallel-NMF. NMF 0.16.2</title>
+<title>parallel-NMF. NMF 0.16.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -13,6 +13,9 @@
 <link href="css/highlight.css" rel="stylesheet">
 <!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 <!-- bootstrap javascript -->
 <script src="js/jquery.min.js"></script>
@@ -27,10 +30,10 @@
   </head>
 
   <body>
-    <div class="navbar">
+    <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.2</a>
+      <a class="brand" href="index.html">NMF 0.16.5</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -49,6 +52,15 @@
 
 <div class="row">
   <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,c("Utilities for Parallel Computations", "<code>ts_eval</code> generates a thread safe version of\n  <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/eval'>eval</a></code>. It uses boost mutexes provided by the\n  <code><a href='http://www.inside-r.org/r-doc/synchronicity/synchronicity-package'>synchronicity</a></code> package. The\n  generated function has arguments <code>expr</code> and\n  <code>envir</code>, which are passed to <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/eval'>eval</a></code>.", 
+"<code>ts_tempfile</code> generates a <em>unique</em> temporary\n  filename that includes the name of the host machine\n  and/or the caller's process id, so that it is thread\n  safe.", "<code>hostfile</code> generates a temporary filename composed\n  with the name of the host machine and/or the current\n  process id.", "<code>gVariable</code> generates a function that access a\n  global static variable, possibly in shared memory (only\n  for numeric matrix-coercible data in this case). It is\n  used primarily in parallel computations, to preserve data\n  accross computations that are performed by the same\n  process."
+)</p>
+  
+    </div>
+    
     <h2>Usage</h2>
     <pre>ts_eval(mutex = synchronicity::boost.mutex(), verbose = FALSE)
 
@@ -92,36 +104,7 @@ gVariable(init, shared = FALSE)</pre>
       <dd>a non-empty character vector giving the
   file extension</dd>
     </dl>
-    
-    <div class="Description">
-      <h2>Description</h2>
-      
-      <p>Utilities for Parallel Computations</p>
-  
-      <p><code>ts_eval</code> generates a thread safe version of
-  <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/eval'>eval</a></code>. It uses boost mutexes provided by the
-  <code><a href='http://www.inside-r.org/r-doc/synchronicity/synchronicity-package'>synchronicity</a></code> package. The
-  generated function has arguments <code>expr</code> and
-  <code>envir</code>, which are passed to <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/eval'>eval</a></code>.</p>
-  
-      <p><code>ts_tempfile</code> generates a <em>unique</em> temporary
-  filename that includes the name of the host machine
-  and/or the caller's process id, so that it is thread
-  safe.</p>
-  
-      <p><code>hostfile</code> generates a temporary filename composed
-  with the name of the host machine and/or the current
-  process id.</p>
-  
-      <p><code>gVariable</code> generates a function that access a
-  global static variable, possibly in shared memory (only
-  for numeric matrix-coercible data in this case). It is
-  used primarily in parallel computations, to preserve data
-  accross computations that are performed by the same
-  process.</p>
-  
-    </div>
-      </div>
+          </div>
   <div class="span4">
     <!-- <ul>
       <li>gVariable</li><li>hostfile</li><li>parallel-NMF</li><li>ts_eval</li><li>ts_tempfile</li>
@@ -136,7 +119,7 @@ gVariable(init, shared = FALSE)</pre>
       
       <footer>
       <p class="pull-right"><a href="#">Back to top</a></p>
-<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
     </div>
   </body>

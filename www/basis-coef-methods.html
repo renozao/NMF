@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>basis. NMF 0.16.2</title>
+<title>basis. NMF 0.16.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -13,6 +13,9 @@
 <link href="css/highlight.css" rel="stylesheet">
 <!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 <!-- bootstrap javascript -->
 <script src="js/jquery.min.js"></script>
@@ -27,10 +30,10 @@
   </head>
 
   <body>
-    <div class="navbar">
+    <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.2</a>
+      <a class="brand" href="index.html">NMF 0.16.5</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -49,6 +52,15 @@
 
 <div class="row">
   <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,c("<code>basis</code> and <code>basis<-</code> are S4 generic functions\n  which respectively extract and set the matrix of basis\n  components of an NMF model (i.e. the first matrix\n  factor).", "The methods <code>.basis</code>, <code>.coef</code> and their\n  replacement versions are implemented as pure virtual\n  methods for the interface class <code>NMF</code>, meaning that\n  concrete NMF models must provide a definition for their\n  corresponding class (i.e. sub-classes of class\n  <code>NMF</code>). See <code><a href='NMF-class.html'>NMF-class</a></code> for more\n  details.", 
+"<code>coef</code> and <code>coef<-</code> respectively extract and\n  set the coefficient matrix of an NMF model (i.e. the\n  second matrix factor). For example, in the case of the\n  standard NMF model <code class = 'eq'>V ~ W H</code>, the method\n  <code>coef</code> will return the matrix <code class = 'eq'>H</code>.", "<code>.coef</code> and <code>.coef<-</code> are low-level S4 generics\n  that simply return/set coefficient data in an object,\n  leaving some common processing to be performed in\n  <code>coef</code> and <code>coef<-</code>.", 
+"Methods <code>coefficients</code> and <code>coefficients<-</code> are\n  simple aliases for methods <code>coef</code> and <code>coef<-</code>\n  respectively.", "<code>scoef</code> is similar to <code>coef</code>, but returns the\n  mixture coefficient matrix of an NMF model, with the\n  columns scaled so that they sum up to a given value (1 by\n  default).")</p>
+  
+    </div>
+    
     <h2>Usage</h2>
     <pre>basis(object, ...)
 
@@ -115,44 +127,6 @@ scoef(object, ...)
   of such an object.</dd>
     </dl>
     
-    <div class="Description">
-      <h2>Description</h2>
-      
-      <p><code>basis</code> and <code>basis<-</code> are S4 generic functions
-  which respectively extract and set the matrix of basis
-  components of an NMF model (i.e. the first matrix
-  factor).</p>
-  
-      <p>The methods <code>.basis</code>, <code>.coef</code> and their
-  replacement versions are implemented as pure virtual
-  methods for the interface class <code>NMF</code>, meaning that
-  concrete NMF models must provide a definition for their
-  corresponding class (i.e. sub-classes of class
-  <code>NMF</code>). See <code><a href='NMF-class.html'>NMF-class</a></code> for more
-  details.</p>
-  
-      <p><code>coef</code> and <code>coef<-</code> respectively extract and
-  set the coefficient matrix of an NMF model (i.e. the
-  second matrix factor). For example, in the case of the
-  standard NMF model <code class = 'eq'>V ~ W H</code>, the method
-  <code>coef</code> will return the matrix <code class = 'eq'>H</code>.</p>
-  
-      <p><code>.coef</code> and <code>.coef<-</code> are low-level S4 generics
-  that simply return/set coefficient data in an object,
-  leaving some common processing to be performed in
-  <code>coef</code> and <code>coef<-</code>.</p>
-  
-      <p>Methods <code>coefficients</code> and <code>coefficients<-</code> are
-  simple aliases for methods <code>coef</code> and <code>coef<-</code>
-  respectively.</p>
-  
-      <p><code>scoef</code> is similar to <code>coef</code>, but returns the
-  mixture coefficient matrix of an NMF model, with the
-  columns scaled so that they sum up to a given value (1 by
-  default).</p>
-  
-    </div>
-
     <div class="Details">
       <h2>Details</h2>
       
@@ -326,50 +300,7 @@ scoef(object, ...)
       <p></p>
   
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'># Scaled coefficient matrix</div><div class='input'>x <- rnmf(3, 10, 5)
-</div><div class='input'>scoef(x)
-</div>
-<div class='output'>          [,1]      [,2]      [,3]        [,4]      [,5]
-[1,] 0.3077032 0.3951572 0.3446491 0.773603219 0.1621989
-[2,] 0.3232308 0.3758076 0.2908042 0.006060888 0.4116773
-[3,] 0.3690661 0.2290352 0.3645467 0.220335893 0.4261238
-</div><div class='input'>scoef(x, 100)
-</div>
-<div class='output'>         [,1]     [,2]     [,3]       [,4]     [,5]
-[1,] 30.77032 39.51572 34.46491 77.3603219 16.21989
-[2,] 32.32308 37.58076 29.08042  0.6060888 41.16773
-[3,] 36.90661 22.90352 36.45467 22.0335893 42.61238
-</div><div class='input'># random standard NMF model</div><div class='input'>x <- rnmf(3, 10, 5)
-</div><div class='input'>basis(x)
-</div>
-<div class='output'>            [,1]      [,2]       [,3]
- [1,] 0.93416466 0.4619930 0.05320793
- [2,] 0.73859233 0.1817438 0.23222902
- [3,] 0.43272382 0.5762472 0.07160964
- [4,] 0.80655829 0.7990288 0.95724589
- [5,] 0.61398281 0.9073582 0.48506046
- [6,] 0.53974125 0.1402845 0.89362862
- [7,] 0.46508606 0.3135082 0.15103904
- [8,] 0.61688081 0.5304722 0.04922796
- [9,] 0.04311086 0.7425132 0.77587054
-[10,] 0.58249016 0.2676835 0.69990859
-</div><div class='input'>coef(x)
-</div>
-<div class='output'>          [,1]      [,2]      [,3]        [,4]      [,5]
-[1,] 0.6237411 0.3726038 0.7870696 0.003820335 0.9095705
-[2,] 0.5945115 0.8182971 0.3960694 0.848796803 0.4705653
-[3,] 0.5217403 0.9992186 0.4575439 0.453431413 0.6859123
-</div><div class='input'></div><div class='input'># set matrix factors</div><div class='input'>basis(x) <- matrix(1, nrow(x), nbasis(x))
-</div><div class='input'>coef(x) <- matrix(1, nbasis(x), ncol(x))
-</div><div class='input'># set random factors</div><div class='input'>basis(x) <- rmatrix(basis(x))
-</div><div class='input'>coef(x) <- rmatrix(coef(x))
-</div><div class='input'></div><div class='input'># incompatible matrices generate an error:</div><div class='input'>try( coef(x) <- matrix(1, nbasis(x)-1, nrow(x)) )
-</div><div class='input'># but the low-level method allow it</div><div class='input'>.coef(x) <- matrix(1, nbasis(x)-1, nrow(x))
-</div><div class='input'>try( validObject(x) )
-</div></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
       <li>basis</li><li>.basis</li><li>.basis&lt;-</li><li>basis&lt;-</li><li>basis&lt;-,ANY-method</li><li>basis,ANY-method</li><li>.basis&lt;--methods</li><li>.basis-methods</li><li>basis&lt;--methods</li><li>basis-methods</li><li>.basis&lt;-,NMFfit,matrix-method</li><li>.basis,NMFfit-method</li><li>basis,NMFfitXn-method</li><li>.basis&lt;-,NMF,matrix-method</li><li>.basis,NMF-method</li><li>basis,NMF-method</li><li>.basis&lt;-,NMFstd,matrix-method</li><li>.basis,NMFstd-method</li><li>coef</li><li>.coef</li><li>.coef&lt;-</li><li>coef&lt;-</li><li>coef&lt;-,ANY-method</li><li>coefficients</li><li>coefficients-methods</li><li>coefficients,NMF-method</li><li>.coef&lt;--methods</li><li>.coef-methods</li><li>coef&lt;--methods</li><li>coef-methods</li><li>.coef&lt;-,NMFfit,matrix-method</li><li>.coef,NMFfit-method</li><li>coef,NMFfitXn-method</li><li>.coef&lt;-,NMF,matrix-method</li><li>.coef,NMF-method</li><li>coef,NMF-method</li><li>.coef&lt;-,NMFstd,matrix-method</li><li>.coef,NMFstd-method</li><li>loadings,NMF-method</li><li>scoef</li><li>scoef,matrix-method</li><li>scoef-methods</li><li>scoef,NMF-method</li>
@@ -393,7 +324,7 @@ scoef(object, ...)
       
       <footer>
       <p class="pull-right"><a href="#">Back to top</a></p>
-<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
     </div>
   </body>

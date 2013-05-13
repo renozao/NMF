@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>.fcnnls. NMF 0.16.2</title>
+<title>.fcnnls. NMF 0.16.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -13,6 +13,9 @@
 <link href="css/highlight.css" rel="stylesheet">
 <!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 <!-- bootstrap javascript -->
 <script src="js/jquery.min.js"></script>
@@ -27,10 +30,10 @@
   </head>
 
   <body>
-    <div class="navbar">
+    <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.2</a>
+      <a class="brand" href="index.html">NMF 0.16.5</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -49,6 +52,14 @@
 
 <div class="row">
   <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,c("This is the workhorse function for the higher-level\n  function <code><a href='fcnnls.html'>fcnnls</a></code>, which implements the fast\n  nonnegative least-square algorithm for multiple\n  right-hand-sides from <cite>Van Benthem et al. (2004)</cite> to\n  solve the following problem:", "<pre class = 'eq'>min ||Y - X K||_F, s.t. K>=0</code>", "where <code class = 'eq'>Y</code> and <code class = 'eq'>X</code> are two real matrices of\n  dimension <code class = 'eq'>n x p</code> and <code class = 'eq'>n\n  x r</code> respectively, and <code class = 'eq'>|.|_F</code> is the\n  Frobenius norm.", 
+"The algorithm is very fast compared to other approaches,\n  as it is optimised for handling multiple right-hand\n  sides.")</p>
+  
+    </div>
+    
     <h2>Usage</h2>
     <pre>.fcnnls(x, y, verbose = FALSE, pseudo = FALSE, eps = 0)</pre>
     
@@ -88,28 +99,6 @@
   
     </div>
 
-    <div class="Description">
-      <h2>Description</h2>
-      
-      <p>This is the workhorse function for the higher-level
-  function <code><a href='fcnnls.html'>fcnnls</a></code>, which implements the fast
-  nonnegative least-square algorithm for multiple
-  right-hand-sides from <cite>Van Benthem et al. (2004)</cite> to
-  solve the following problem:</p>
-  
-      <p><pre class = 'eq'>min ||Y - X K||_F, s.t. K>=0</code></p>
-  
-      <p>where <code class = 'eq'>Y</code> and <code class = 'eq'>X</code> are two real matrices of
-  dimension <code class = 'eq'>n x p</code> and <code class = 'eq'>n
-  x r</code> respectively, and <code class = 'eq'>|.|_F</code> is the
-  Frobenius norm.</p>
-  
-      <p>The algorithm is very fast compared to other approaches,
-  as it is optimised for handling multiple right-hand
-  sides.</p>
-  
-    </div>
-
     <div class="References">
       <h2>References</h2>
       
@@ -136,7 +125,7 @@
       
       <footer>
       <p class="pull-right"><a href="#">Back to top</a></p>
-<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
     </div>
   </body>

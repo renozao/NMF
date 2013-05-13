@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfEstimateRank. NMF 0.16.2</title>
+<title>nmfEstimateRank. NMF 0.16.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -13,6 +13,9 @@
 <link href="css/highlight.css" rel="stylesheet">
 <!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 <!-- bootstrap javascript -->
 <script src="js/jquery.min.js"></script>
@@ -27,10 +30,10 @@
   </head>
 
   <body>
-    <div class="navbar">
+    <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.2</a>
+      <a class="brand" href="index.html">NMF 0.16.5</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -49,6 +52,18 @@
 
 <div class="row">
   <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,A critical parameter in NMF algorithms is the
+  factorization rank <code class = 'eq'>r</code>. It defines the number of
+  basis effects used to approximate the target matrix.
+  Function <code>nmfEstimateRank</code> helps in choosing an
+  optimal rank by implementing simple approaches proposed
+  in the literature.</p>
+  
+    </div>
+    
     <h2>Usage</h2>
     <pre>nmfEstimateRank(x, range, method = nmf.getOption("default.algorithm"), nrun = 30, 
   model = NULL, ..., verbose = FALSE, stop = FALSE)
@@ -149,18 +164,6 @@
   
     </div>
 
-    <div class="Description">
-      <h2>Description</h2>
-      
-      <p>A critical parameter in NMF algorithms is the
-  factorization rank <code class = 'eq'>r</code>. It defines the number of
-  basis effects used to approximate the target matrix.
-  Function <code>nmfEstimateRank</code> helps in choosing an
-  optimal rank by implementing simple approaches proposed
-  in the literature.</p>
-  
-    </div>
-
     <div class="Details">
       <h2>Details</h2>
       
@@ -210,10 +213,32 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'>set.seed(123456)
-</div><div class='input'>n <- 50; r <- 3; m <- 20
-</div><div class='input'>V <- syntheticNMF(n, r, m)
-</div><div class='input'></div><div class='input'># Use a seed that will be set before each first run</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># res <- nmfEstimateRank(V, seq(2,5), method='brunet', nrun=10, seed=123456)</div><div class='input'># # or equivalently</div><div class='input'># res <- nmf(V, seq(2,5), method='brunet', nrun=10, seed=123456)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'></div><div class='input'># plot all the measures</div><div class='input'>## <strong>Not run</strong>: plot(res)</div><div class='input'># or only one: e.g. the cophenetic correlation coefficient</div><div class='input'>## <strong>Not run</strong>: plot(res, 'cophenetic')</div><div class='input'></div><div class='input'># run same estimation on randomized data</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># rV <- randomize(V)</div><div class='input'># rand <- nmfEstimateRank(rV, seq(2,5), method='brunet', nrun=10, seed=123456)</div><div class='input'># plot(res, rand)</div><div class='input'># ## <strong>End(Not run)</strong></div></pre>
+    <pre><code class="r">
+set.seed(123456)
+n &lt;- 50; r &lt;- 3; m &lt;- 20
+V &lt;- syntheticNMF(n, r, m)
+
+# Use a seed that will be set before each first run
+## Not run: 
+##D res &lt;- nmfEstimateRank(V, seq(2,5), method=&#39;brunet&#39;, nrun=10, seed=123456)
+##D # or equivalently
+##D res &lt;- nmf(V, seq(2,5), method=&#39;brunet&#39;, nrun=10, seed=123456)
+## End(Not run)
+
+# plot all the measures
+## Not run: plot(res)
+# or only one: e.g. the cophenetic correlation coefficient
+## Not run: plot(res, &#39;cophenetic&#39;)
+
+# run same estimation on randomized data
+## Not run: 
+##D rV &lt;- randomize(V)
+##D rand &lt;- nmfEstimateRank(rV, seq(2,5), method=&#39;brunet&#39;, nrun=10, seed=123456)
+##D plot(res, rand)
+## End(Not run)
+
+</code></pre>
+
   </div>
   <div class="span4">
     <!-- <ul>
@@ -229,7 +254,7 @@
       
       <footer>
       <p class="pull-right"><a href="#">Back to top</a></p>
-<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
     </div>
   </body>

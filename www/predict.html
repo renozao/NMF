@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>predict. NMF 0.16.2</title>
+<title>predict. NMF 0.16.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -13,6 +13,9 @@
 <link href="css/highlight.css" rel="stylesheet">
 <!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 <!-- bootstrap javascript -->
 <script src="js/jquery.min.js"></script>
@@ -27,10 +30,10 @@
   </head>
 
   <body>
-    <div class="navbar">
+    <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.2</a>
+      <a class="brand" href="index.html">NMF 0.16.5</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -49,6 +52,16 @@
 
 <div class="row">
   <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,The methods <code>predict</code> for NMF models return the
+  cluster membership of each sample or each feature.
+  Currently the classification/prediction of new data is
+  not implemented.</p>
+  
+    </div>
+    
     <h2>Usage</h2>
     <pre>predict(object, ...)
 
@@ -79,16 +92,6 @@
   produced.</dd>
     </dl>
     
-    <div class="Description">
-      <h2>Description</h2>
-      
-      <p>The methods <code>predict</code> for NMF models return the
-  cluster membership of each sample or each feature.
-  Currently the classification/prediction of new data is
-  not implemented.</p>
-  
-    </div>
-
     <div class="Details">
       <h2>Details</h2>
       
@@ -194,36 +197,55 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'># random target matrix</div><div class='input'>v <- rmatrix(20, 10)
-</div><div class='input'># fit an NMF model</div><div class='input'>x <- nmf(v, 5)
-</div><div class='input'></div><div class='input'># predicted column and row clusters</div><div class='input'>predict(x)
-</div>
-<div class='output'> [1] 2 1 3 3 2 2 4 3 5 5
-Levels: 1 2 3 4 5
-</div><div class='input'>predict(x, 'rows')
-</div>
-<div class='output'> [1] 4 3 3 1 2 1 3 2 2 4 5 2 2 5 2 2 2 3 5 1
-Levels: 1 2 3 4 5
-</div><div class='input'></div><div class='input'># with relative contributions of each basis component</div><div class='input'>predict(x, prob=TRUE)
-</div>
-<div class='output'>$predict
- [1] 2 1 3 3 2 2 4 3 5 5
-Levels: 1 2 3 4 5
+    <pre><code class="r">
+# random target matrix
+v &lt;- rmatrix(20, 10)
+# fit an NMF model
+x &lt;- nmf(v, 5)
 
-$prob
- [1] 0.6548911 0.5736570 0.3991033 0.4738792 0.7041045 0.3985352 0.7131128 0.4525372 0.5564594 0.4987524
+# predicted column and row clusters
+predict(x)
+</code></pre>
 
-</div><div class='input'>predict(x, 'rows', prob=TRUE)
-</div>
-<div class='output'>$predict
- [1] 4 3 3 1 2 1 3 2 2 4 5 2 2 5 2 2 2 3 5 1
-Levels: 1 2 3 4 5
+<pre><code>##  [1] 2 1 3 3 2 2 4 3 5 5
+## Levels: 1 2 3 4 5
+</code></pre>
 
-$prob
- [1] 0.3316286 0.4483612 0.4585225 0.3756082 0.5058462 0.4518340 0.7303948 0.3822813 0.4583829 0.4653933 0.7779704 0.4404912 0.3925128
-[14] 0.4034469 0.4019369 0.5154141 0.4928875 0.3634886 0.3868426 0.7014758
+<pre><code class="r">predict(x, &#39;rows&#39;)
+</code></pre>
 
-</div></pre>
+<pre><code>##  [1] 4 3 3 1 2 1 3 2 2 4 5 2 2 5 2 2 2 3 5 1
+## Levels: 1 2 3 4 5
+</code></pre>
+
+<pre><code class="r">
+# with relative contributions of each basis component
+predict(x, prob=TRUE)
+</code></pre>
+
+<pre><code>## $predict
+##  [1] 2 1 3 3 2 2 4 3 5 5
+## Levels: 1 2 3 4 5
+## 
+## $prob
+##  [1] 0.6549 0.5737 0.3991 0.4739 0.7041 0.3985 0.7131 0.4525 0.5565 0.4988
+</code></pre>
+
+<pre><code class="r">predict(x, &#39;rows&#39;, prob=TRUE)
+</code></pre>
+
+<pre><code>## $predict
+##  [1] 4 3 3 1 2 1 3 2 2 4 5 2 2 5 2 2 2 3 5 1
+## Levels: 1 2 3 4 5
+## 
+## $prob
+##  [1] 0.3316 0.4484 0.4585 0.3756 0.5058 0.4518 0.7304 0.3823 0.4584 0.4654
+## [11] 0.7780 0.4405 0.3925 0.4034 0.4019 0.5154 0.4929 0.3635 0.3868 0.7015
+</code></pre>
+
+<pre><code class="r">
+</code></pre>
+
   </div>
   <div class="span4">
     <!-- <ul>
@@ -239,7 +261,7 @@ $prob
       
       <footer>
       <p class="pull-right"><a href="#">Back to top</a></p>
-<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
     </div>
   </body>

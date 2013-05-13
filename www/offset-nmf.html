@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf_update.euclidean_offset.h. NMF 0.16.2</title>
+<title>nmf_update.euclidean_offset.h. NMF 0.16.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="
   Original update definition: Liviu Badea
@@ -17,6 +17,9 @@
 <link href="css/highlight.css" rel="stylesheet">
 <!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 <!-- bootstrap javascript -->
 <script src="js/jquery.min.js"></script>
@@ -31,10 +34,10 @@
   </head>
 
   <body>
-    <div class="navbar">
+    <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.2</a>
+      <a class="brand" href="index.html">NMF 0.16.5</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -53,6 +56,14 @@
 
 <div class="row">
   <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,c("These update rules proposed by <cite>Badea (2008)</cite> are\n  modified version of the updates from <cite>Lee et al.\n  (2001)</cite>, that include an offset/intercept vector, which\n  models a common baseline for each feature accross all\n  samples: <pre class = 'eq'>V \\approx W H + I</code>", "<code>nmf_update.offset_R</code> implements a complete single\n  update step, using plain R updates.", "<code>nmf_update.offset</code> implements a complete single\n  update step, using C++-optimised updates.", 
+"Algorithms &#145;offset&#146; and &#145;.R#offset&#146; provide\n  the complete NMF-with-offset algorithm from <cite>Badea\n  (2008)</cite>, using the C++-optimised and pure R updates\n  <code><a href='offset-nmf.html'>nmf_update.offset</a></code> and\n  <code><a href='offset-nmf.html'>nmf_update.offset_R</a></code> respectively.")</p>
+  
+    </div>
+    
     <h2>Usage</h2>
     <pre>nmf_update.euclidean_offset.h(v, w, h, offset, eps = 10^-9, copy = TRUE)
 
@@ -145,29 +156,6 @@ nmfAlgorithm.offset(..., .stop = NULL, maxIter = 2000, copy = FALSE, eps = 10^-9
   
     </div>
 
-    <div class="Description">
-      <h2>Description</h2>
-      
-      <p>These update rules proposed by <cite>Badea (2008)</cite> are
-  modified version of the updates from <cite>Lee et al.
-  (2001)</cite>, that include an offset/intercept vector, which
-  models a common baseline for each feature accross all
-  samples: <pre class = 'eq'>V \approx W H + I</code></p>
-  
-      <p><code>nmf_update.offset_R</code> implements a complete single
-  update step, using plain R updates.</p>
-  
-      <p><code>nmf_update.offset</code> implements a complete single
-  update step, using C++-optimised updates.</p>
-  
-      <p>Algorithms &#145;offset&#146; and &#145;.R#offset&#146; provide
-  the complete NMF-with-offset algorithm from <cite>Badea
-  (2008)</cite>, using the C++-optimised and pure R updates
-  <code><a href='offset-nmf.html'>nmf_update.offset</a></code> and
-  <code><a href='offset-nmf.html'>nmf_update.offset_R</a></code> respectively.</p>
-  
-    </div>
-
     <div class="Details">
       <h2>Details</h2>
       
@@ -224,7 +212,7 @@ nmfAlgorithm.offset(..., .stop = NULL, maxIter = 2000, copy = FALSE, eps = 10^-9
       
       <footer>
       <p class="pull-right"><a href="#">Back to top</a></p>
-<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
     </div>
   </body>

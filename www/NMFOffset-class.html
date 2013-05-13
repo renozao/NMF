@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFOffset-class. NMF 0.16.2</title>
+<title>NMFOffset-class. NMF 0.16.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -13,6 +13,9 @@
 <link href="css/highlight.css" rel="stylesheet">
 <!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 <!-- bootstrap javascript -->
 <script src="js/jquery.min.js"></script>
@@ -27,10 +30,10 @@
   </head>
 
   <body>
-    <div class="navbar">
+    <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.2</a>
+      <a class="brand" href="index.html">NMF 0.16.5</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -49,6 +52,15 @@
 
 <div class="row">
   <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,This class implements the <em>Nonnegative Matrix
+  Factorization with Offset</em> model, required by the NMF
+  with Offset algorithm.</p>
+  
+    </div>
+    
     <h2>Usage</h2>
     <pre><span class="label label-important">S4</span> (NMFOffset)
 `initialize`(.Object, ..., offset)</pre>
@@ -67,15 +79,6 @@
   class extends.</dd>
     </dl>
     
-    <div class="Description">
-      <h2>Description</h2>
-      
-      <p>This class implements the <em>Nonnegative Matrix
-  Factorization with Offset</em> model, required by the NMF
-  with Offset algorithm.</p>
-  
-    </div>
-
     <div class="Details">
       <h2>Details</h2>
       
@@ -175,32 +178,52 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'># create a completely empty NMF object</div><div class='input'>new('NMFOffset')
-</div>
-<div class='output'><Object of class:NMFOffset>
-features: 0 
-basis/rank: 0 
-samples: 0 
-offset: none
-</div><div class='input'></div><div class='input'># create a NMF object based on random (compatible) matrices</div><div class='input'>n <- 50; r <- 3; p <- 20
-</div><div class='input'>w <- rmatrix(n, r)
-</div><div class='input'>h <- rmatrix(r, p)
-</div><div class='input'>nmfModel(model='NMFOffset', W=w, H=h, offset=rep(0.5, nrow(w)))
-</div>
-<div class='output'><Object of class:NMFOffset>
-features: 50 
-basis/rank: 3 
-samples: 20 
-offset: none
-</div><div class='input'></div><div class='input'># apply Nonsmooth NMF algorithm to a random target matrix</div><div class='input'>V <- rmatrix(n, p)
-</div><div class='input'>## <strong>Not run</strong>: nmf(V, r, 'offset')</div><div class='input'></div><div class='input'># random NMF model with offset</div><div class='input'>rnmf(3, 10, 5, model='NMFOffset')
-</div>
-<div class='output'><Object of class:NMFOffset>
-features: 10 
-basis/rank: 3 
-samples: 5 
-offset: [ 0.4340462 0.6775427 0.224064 0.5037214 0.7155789 ... ]
-</div></pre>
+    <pre><code class="r">
+# create a completely empty NMF object
+new(&#39;NMFOffset&#39;)
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFOffset&gt;
+## features: 0 
+## basis/rank: 0 
+## samples: 0 
+## offset: none
+</code></pre>
+
+<pre><code class="r">
+# create a NMF object based on random (compatible) matrices
+n &lt;- 50; r &lt;- 3; p &lt;- 20
+w &lt;- rmatrix(n, r)
+h &lt;- rmatrix(r, p)
+nmfModel(model=&#39;NMFOffset&#39;, W=w, H=h, offset=rep(0.5, nrow(w)))
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFOffset&gt;
+## features: 50 
+## basis/rank: 3 
+## samples: 20 
+## offset: none
+</code></pre>
+
+<pre><code class="r">
+# apply Nonsmooth NMF algorithm to a random target matrix
+V &lt;- rmatrix(n, p)
+## Not run: nmf(V, r, &#39;offset&#39;)
+
+# random NMF model with offset
+rnmf(3, 10, 5, model=&#39;NMFOffset&#39;)
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFOffset&gt;
+## features: 10 
+## basis/rank: 3 
+## samples: 5 
+## offset: [ 0.434 0.6775 0.2241 0.5037 0.7156 ... ]
+</code></pre>
+
+<pre><code class="r">
+</code></pre>
+
   </div>
   <div class="span4">
     <!-- <ul>
@@ -221,7 +244,7 @@ offset: [ 0.4340462 0.6775427 0.224064 0.5037214 0.7155789 ... ]
       
       <footer>
       <p class="pull-right"><a href="#">Back to top</a></p>
-<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
     </div>
   </body>

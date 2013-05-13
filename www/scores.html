@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>featureScore. NMF 0.16.2</title>
+<title>featureScore. NMF 0.16.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -13,6 +13,9 @@
 <link href="css/highlight.css" rel="stylesheet">
 <!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 <!-- bootstrap javascript -->
 <script src="js/jquery.min.js"></script>
@@ -27,10 +30,10 @@
   </head>
 
   <body>
-    <div class="navbar">
+    <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.2</a>
+      <a class="brand" href="index.html">NMF 0.16.5</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -49,6 +52,13 @@
 
 <div class="row">
   <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,c("The function <code>featureScore</code> implements different\n  methods to computes basis-specificity scores for each\n  feature in the data.", "The function <code>extractFeatures</code> implements different\n  methods to select the most basis-specific features of\n  each basis component.")</p>
+  
+    </div>
+    
     <h2>Usage</h2>
     <pre>featureScore(object, ...)
 
@@ -133,19 +143,6 @@ extractFeatures(object, ...)
   list of indexes, a single integer vector or an object of
   the same class as <code>object</code> that only contains the
   selected features.</p>
-  
-    </div>
-
-    <div class="Description">
-      <h2>Description</h2>
-      
-      <p>The function <code>featureScore</code> implements different
-  methods to computes basis-specificity scores for each
-  feature in the data.</p>
-  
-      <p>The function <code>extractFeatures</code> implements different
-  methods to select the most basis-specific features of
-  each basis component.</p>
   
     </div>
 
@@ -278,14 +275,6 @@ extractFeatures(object, ...)
     <div class="References">
       <h2>References</h2>
       
-      <p>Kim H and Park H (2007). "Sparse non-negative matrix
-  factorizations via alternating non-negativity-constrained
-  least squares for microarray data analysis."
-  _Bioinformatics (Oxford, England)_, *23*(12), pp.
-  1495-502. ISSN 1460-2059, <URL:
-  http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
-  
       <p>Carmona-Saez P, Pascual-Marqui RD, Tirado F, Carazo JM
   and Pascual-Montano A (2006). "Biclustering of gene
   expression data by Non-smooth Non-negative Matrix
@@ -294,77 +283,16 @@ extractFeatures(object, ...)
   http://dx.doi.org/10.1186/1471-2105-7-78>, <URL:
   http://www.ncbi.nlm.nih.gov/pubmed/16503973>.</p>
   
+      <p>Kim H and Park H (2007). "Sparse non-negative matrix
+  factorizations via alternating non-negativity-constrained
+  least squares for microarray data analysis."
+  _Bioinformatics (Oxford, England)_, *23*(12), pp.
+  1495-502. ISSN 1460-2059, <URL:
+  http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
+  
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'># random NMF model</div><div class='input'>x <- rnmf(3, 50,20)
-</div><div class='input'></div><div class='input'># probably no feature is selected</div><div class='input'>extractFeatures(x)
-</div>
-<div class='output'>[[1]]
-[1] 35
-
-[[2]]
-[1] 43
-
-[[3]]
-[1] 10 46  8
-
-attr(,"method")
-[1] "kim"
-</div><div class='input'># extract top 5 for each basis</div><div class='input'>extractFeatures(x, 5L)
-</div>
-<div class='output'>[[1]]
-[1] 35  1 25 40 27
-
-[[2]]
-[1] 12 21 45 23 43
-
-[[3]]
-[1] 42 45  8 20 26
-
-attr(,"method")
-[1] 5 5 5
-</div><div class='input'># extract features that have a relative basis contribution above a threshold</div><div class='input'>extractFeatures(x, 0.5)
-</div>
-<div class='output'>[[1]]
-[1]  1  9 16 22 32 35 38 49
-
-[[2]]
-[1]  2  7 12 21 37 43 47
-
-[[3]]
-[1]  8 10 13 15 20 46
-
-attr(,"method")
-[1] 0.5 0.5 0.5
-</div><div class='input'># ambiguity?</div><div class='input'>extractFeatures(x, 1) # means relative contribution above 100%
-</div>
-<div class='output'>[[1]]
-[1] NA
-
-[[2]]
-[1] NA
-
-[[3]]
-[1] NA
-
-attr(,"method")
-[1] 1 1 1
-</div><div class='input'>extractFeatures(x, 1L) # means top contributing feature in each component
-</div>
-<div class='output'>[[1]]
-[1] 35
-
-[[2]]
-[1] 12
-
-[[3]]
-[1] 42
-
-attr(,"method")
-[1] 1 1 1
-</div></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
       <li>extractFeatures</li><li>extractFeatures,matrix-method</li><li>extractFeatures-methods</li><li>extractFeatures,NMF-method</li><li>featureScore</li><li>featureScore,matrix-method</li><li>featureScore-methods</li><li>featureScore,NMF-method</li>
@@ -379,7 +307,7 @@ attr(,"method")
       
       <footer>
       <p class="pull-right"><a href="#">Back to top</a></p>
-<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
     </div>
   </body>

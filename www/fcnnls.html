@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>fcnnls. NMF 0.16.2</title>
+<title>fcnnls. NMF 0.16.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="
   Original MATLAB code : Van Benthem and Keenan
@@ -19,6 +19,9 @@
 <link href="css/highlight.css" rel="stylesheet">
 <!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 <!-- bootstrap javascript -->
 <script src="js/jquery.min.js"></script>
@@ -33,10 +36,10 @@
   </head>
 
   <body>
-    <div class="navbar">
+    <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.2</a>
+      <a class="brand" href="index.html">NMF 0.16.5</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -55,6 +58,16 @@
 
 <div class="row">
   <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,This function solves the following nonnegative least
+  square linear problem using normal equations and the fast
+  combinatorial strategy from <cite>Van Benthem et al.
+  (2004)</cite>:</p>
+  
+    </div>
+    
     <h2>Usage</h2>
     <pre>fcnnls(x, y, ...)
 
@@ -100,16 +113,6 @@
   (i.e. strictly positive). pseudo a logical that
   is <code>TRUE</code> if the computation was performed using the
   pseudoinverse. See argument <code>pseudo</code>.</p>
-  
-    </div>
-
-    <div class="Description">
-      <h2>Description</h2>
-      
-      <p>This function solves the following nonnegative least
-  square linear problem using normal equations and the fast
-  combinatorial strategy from <cite>Van Benthem et al.
-  (2004)</cite>:</p>
   
     </div>
 
@@ -188,13 +191,6 @@
   slightly modified by H. Kim:
   <a href = 'http://www.cc.gatech.edu/~hpark/software/fcnnls.m'>http://www.cc.gatech.edu/~hpark/software/fcnnls.m</a></p>
   
-      <p>Van Benthem M and Keenan MR (2004). "Fast algorithm for
-  the solution of large-scale non-negativity-constrained
-  least squares problems." _Journal of Chemometrics_,
-  *18*(10), pp. 441-450. ISSN 0886-9383, <URL:
-  http://dx.doi.org/10.1002/cem.889>, <URL:
-  http://doi.wiley.com/10.1002/cem.889>.</p>
-  
       <p>Kim H and Park H (2007). "Sparse non-negative matrix
   factorizations via alternating non-negativity-constrained
   least squares for microarray data analysis."
@@ -203,18 +199,36 @@
   http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
   http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
   
+      <p>Van Benthem M and Keenan MR (2004). "Fast algorithm for
+  the solution of large-scale non-negativity-constrained
+  least squares problems." _Journal of Chemometrics_,
+  *18*(10), pp. 441-450. ISSN 0886-9383, <URL:
+  http://dx.doi.org/10.1002/cem.889>, <URL:
+  http://doi.wiley.com/10.1002/cem.889>.</p>
+  
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'>## Define a random nonnegative matrix matrix</div><div class='input'>n <- 200; p <- 20; r <- 3
-</div><div class='input'>V <- rmatrix(n, p)
-</div><div class='input'></div><div class='input'>## Compute the optimal matrix K for a given X matrix</div><div class='input'>X <- rmatrix(n, r)
-</div><div class='input'>res <- fcnnls(X, V)
-</div><div class='input'></div><div class='input'>## Compute the same thing using the Moore-Penrose generalized pseudoinverse</div><div class='input'>res <- fcnnls(X, V, pseudo=TRUE)
-</div><div class='input'></div><div class='input'>## It also works in the case of single vectors</div><div class='input'>y <- runif(n)
-</div><div class='input'>res <- fcnnls(X, y)
-</div><div class='input'># or</div><div class='input'>res <- fcnnls(X[,1], y)
-</div></pre>
+    <pre><code class="r">
+## Define a random nonnegative matrix matrix
+n &lt;- 200; p &lt;- 20; r &lt;- 3
+V &lt;- rmatrix(n, p)
+
+## Compute the optimal matrix K for a given X matrix
+X &lt;- rmatrix(n, r)
+res &lt;- fcnnls(X, V)
+
+## Compute the same thing using the Moore-Penrose generalized pseudoinverse
+res &lt;- fcnnls(X, V, pseudo=TRUE)
+
+## It also works in the case of single vectors
+y &lt;- runif(n)
+res &lt;- fcnnls(X, y)
+# or
+res &lt;- fcnnls(X[,1], y)
+
+</code></pre>
+
   </div>
   <div class="span4">
     <!-- <ul>
@@ -243,7 +257,7 @@
       
       <footer>
       <p class="pull-right"><a href="#">Back to top</a></p>
-<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
     </div>
   </body>

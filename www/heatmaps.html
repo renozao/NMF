@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>heatmap-NMF. NMF 0.16.2</title>
+<title>heatmap-NMF. NMF 0.16.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -13,6 +13,9 @@
 <link href="css/highlight.css" rel="stylesheet">
 <!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 <!-- bootstrap javascript -->
 <script src="js/jquery.min.js"></script>
@@ -27,10 +30,10 @@
   </head>
 
   <body>
-    <div class="navbar">
+    <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.2</a>
+      <a class="brand" href="index.html">NMF 0.16.5</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -49,6 +52,14 @@
 
 <div class="row">
   <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,c("The NMF package ships an advanced heatmap engine\n  implemented by the function <code><a href='aheatmap.html'>aheatmap</a></code>. Some\n  convenience heatmap functions have been implemented for\n  NMF models, which redefine default values for some of the\n  arguments of <code><a href='aheatmap.html'>aheatmap</a></code>, hence tuning the\n  output specifically for NMF models.", "<code>basimap</code> draws an annotated heatmap of the basis\n  matrix.", "<code>coefmap</code> draws an annotated heatmap of the\n  coefficient matrix.", 
+"<code>consensusmap</code> plots heatmaps of consensus matrices.")</p>
+  
+    </div>
+    
     <h2>Usage</h2>
     <pre>basismap(object, ...)
 
@@ -301,26 +312,6 @@ consensusmap(object, ...)
 </dd>
     </dl>
     
-    <div class="Description">
-      <h2>Description</h2>
-      
-      <p>The NMF package ships an advanced heatmap engine
-  implemented by the function <code><a href='aheatmap.html'>aheatmap</a></code>. Some
-  convenience heatmap functions have been implemented for
-  NMF models, which redefine default values for some of the
-  arguments of <code><a href='aheatmap.html'>aheatmap</a></code>, hence tuning the
-  output specifically for NMF models.</p>
-  
-      <p><code>basimap</code> draws an annotated heatmap of the basis
-  matrix.</p>
-  
-      <p><code>coefmap</code> draws an annotated heatmap of the
-  coefficient matrix.</p>
-  
-      <p><code>consensusmap</code> plots heatmaps of consensus matrices.</p>
-  
-    </div>
-
     <div class="Details">
       <h2>Details</h2>
       
@@ -473,21 +464,7 @@ consensusmap(object, ...)
       <p></p>
   
     </div>
-    
-    <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'>## More examples are provided in demo `heatmaps`</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># demo(heatmaps)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'>##</div><div class='input'></div><div class='input'># random data with underlying NMF model</div><div class='input'>v <- syntheticNMF(20, 3, 10)
-</div>
-<strong class='error'>Error in H[i, (tmp + 1):(tmp + g[i])] <- 1: subscript out of bounds</strong><div class='input'># estimate a model</div><div class='input'>x <- nmf(v, 3)
-</div>
-<strong class='error'>Error in nmf(v, 3): error in evaluating the argument 'x' in selecting a method for function 'nmf': Error: object 'v' not found
-</strong><div class='input'># show basis matrix</div><div class='input'>basismap(x)
-</div>
-<strong class='error'>Error in basismap(x): error in evaluating the argument 'object' in selecting a method for function 'basismap': Error: object 'x' not found
-</strong><div class='input'>## <strong>Not run</strong>: </div><div class='input'># # without the default annotation tracks</div><div class='input'># basismap(x, tracks=NA)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'># coefficient matrix</div><div class='input'>coefmap(x)
-</div>
-<strong class='error'>Error in coefmap(x): error in evaluating the argument 'object' in selecting a method for function 'coefmap': Error: object 'x' not found
-</strong><div class='input'>## <strong>Not run</strong>: </div><div class='input'># # without the default annotation tracks</div><div class='input'># coefmap(x, tracks=NA)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># res <- nmf(x, 3, nrun=3)</div><div class='input'># consensusmap(res)</div><div class='input'># ## <strong>End(Not run)</strong></div></pre>
-  </div>
+      </div>
   <div class="span4">
     <!-- <ul>
       <li>basismap</li><li>basismap-methods</li><li>basismap,NMFfitX-method</li><li>basismap,NMF-method</li><li>coefmap</li><li>coefmap-methods</li><li>coefmap,NMFfitX-method</li><li>coefmap,NMF-method</li><li>consensusmap</li><li>consensusmap,matrix-method</li><li>consensusmap-methods</li><li>consensusmap,NMFfitX-method</li><li>consensusmap,NMF-method</li><li>heatmap-NMF</li>
@@ -502,7 +479,7 @@ consensusmap(object, ...)
       
       <footer>
       <p class="pull-right"><a href="#">Back to top</a></p>
-<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
     </div>
   </body>

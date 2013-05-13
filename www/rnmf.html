@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>rnmf. NMF 0.16.2</title>
+<title>rnmf. NMF 0.16.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -13,6 +13,9 @@
 <link href="css/highlight.css" rel="stylesheet">
 <!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 <!-- bootstrap javascript -->
 <script src="js/jquery.min.js"></script>
@@ -27,10 +30,10 @@
   </head>
 
   <body>
-    <div class="navbar">
+    <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.2</a>
+      <a class="brand" href="index.html">NMF 0.16.5</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -49,6 +52,18 @@
 
 <div class="row">
   <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,Generates NMF models with random values drawn from a
+  uniform distribution. It returns an NMF model with basis
+  and mixture coefficient matrices filled with random
+  values. The main purpose of the function <code>rnmf</code> is
+  to provide a common interface to generate random seeds
+  used by the <code><a href='nmf.html'>nmf</a></code> function.</p>
+  
+    </div>
+    
     <h2>Usage</h2>
     <pre>rnmf(x, target, ...)
 
@@ -150,18 +165,6 @@
       
       <p>An NMF model, i.e. an object that inherits from class
   <code><a href='NMF-class.html'>NMF-class</a></code>.</p>
-  
-    </div>
-
-    <div class="Description">
-      <h2>Description</h2>
-      
-      <p>Generates NMF models with random values drawn from a
-  uniform distribution. It returns an NMF model with basis
-  and mixture coefficient matrices filled with random
-  values. The main purpose of the function <code>rnmf</code> is
-  to provide a common interface to generate random seeds
-  used by the <code><a href='nmf.html'>nmf</a></code> function.</p>
   
     </div>
 
@@ -358,157 +361,265 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'># random NMF model with offset</div><div class='input'>x <- rnmf(2, 3, model='NMFOffset')
-</div><div class='input'>x
-</div>
-<div class='output'><Object of class:NMFOffset>
-features: 3 
-basis/rank: 2 
-samples: 3 
-offset: [ 0.8983055 0.6117098 0.1522899 ]
-</div><div class='input'>offset(x)
-</div>
-<div class='output'>[1] 0.8983055 0.6117098 0.1522899
-</div><div class='input'># from a matrix</div><div class='input'>x <- rnmf(2, rmatrix(5,3, max=10), model='NMFOffset')
-</div><div class='input'>offset(x)
-</div>
-<div class='output'>[1] 7.4380865 5.5510365 6.3154884 0.9334809 3.3296369
-</div><div class='input'>## random NMF of same class and rank as another model</div><div class='input'></div><div class='input'>x <- nmfModel(3, 10, 5)
-</div><div class='input'>x
-</div>
-<div class='output'><Object of class:NMFstd>
-features: 10 
-basis/rank: 3 
-samples: 5 
-</div><div class='input'>rnmf(x, 20) # square
-</div>
-<div class='output'><Object of class:NMFstd>
-features: 20 
-basis/rank: 3 
-samples: 20 
-</div><div class='input'>rnmf(x, 20, 13)
-</div>
-<div class='output'><Object of class:NMFstd>
-features: 20 
-basis/rank: 3 
-samples: 13 
-</div><div class='input'>rnmf(x, c(20, 13))
-</div>
-<div class='output'><Object of class:NMFstd>
-features: 20 
-basis/rank: 3 
-samples: 13 
-</div><div class='input'></div><div class='input'># using another distribution</div><div class='input'>rnmf(x, 20, dist=rnorm)
-</div>
-<div class='output'><Object of class:NMFstd>
-features: 20 
-basis/rank: 3 
-samples: 20 
-</div><div class='input'></div><div class='input'># other than standard model</div><div class='input'>y <- rnmf(3, 50, 10, model='NMFns')
-</div><div class='input'>y
-</div>
-<div class='output'><Object of class:NMFns>
-features: 50 
-basis/rank: 3 
-samples: 10 
-theta: 0.5 
-</div><div class='input'></div><div class='input'></div><div class='input'># random NMF compatible with a target matrix</div><div class='input'>x <- nmfModel(3, 10, 5)
-</div><div class='input'>y <- rmatrix(20, 13)
-</div><div class='input'>rnmf(x, y) # rank of x
-</div>
-<div class='output'><Object of class:NMFstd>
-features: 20 
-basis/rank: 3 
-samples: 13 
-</div><div class='input'>rnmf(2, y) # rank 2
-</div>
-<div class='output'><Object of class:NMFstd>
-features: 20 
-basis/rank: 2 
-samples: 13 
-</div><div class='input'>## random NMF from another model</div><div class='input'></div><div class='input'>a <- nmfModel(3, 100, 20)
-</div><div class='input'>b <- rnmf(a)
-</div><div class='input'></div><div class='input'># random NMF model with known basis matrix</div><div class='input'>x <- rnmf(5, W=matrix(1:18, 6)) # 6 x 5 model with rank=3
-</div><div class='input'>basis(x) # fixed
-</div>
-<div class='output'>     [,1] [,2] [,3]
-[1,]    1    7   13
-[2,]    2    8   14
-[3,]    3    9   15
-[4,]    4   10   16
-[5,]    5   11   17
-[6,]    6   12   18
-</div><div class='input'>coef(x) # random
-</div>
-<div class='output'>          [,1]      [,2]       [,3]      [,4]       [,5]
-[1,] 0.8805585 0.4532274 0.04644324 0.8477308 0.42310852
-[2,] 0.9184100 0.3496678 0.51638697 0.1350656 0.44135770
-[3,] 0.1939135 0.7271714 0.21518275 0.4946042 0.09297938
-</div><div class='input'></div><div class='input'># random NMF model with known coefficient matrix</div><div class='input'>x <- rnmf(5, H=matrix(1:18, 3)) # 5 x 6 model with rank=3
-</div><div class='input'>basis(x) # random
-</div>
-<div class='output'>          [,1]       [,2]      [,3]
-[1,] 0.9471275 0.16472981 0.5448994
-[2,] 0.5006919 0.53300625 0.6893319
-[3,] 0.3936598 0.38294418 0.6795247
-[4,] 0.1061375 0.95448827 0.5374103
-[5,] 0.8147603 0.01543244 0.5053225
-</div><div class='input'>coef(x) # fixed
-</div>
-<div class='output'>     [,1] [,2] [,3] [,4] [,5] [,6]
-[1,]    1    4    7   10   13   16
-[2,]    2    5    8   11   14   17
-[3,]    3    6    9   12   15   18
-</div><div class='input'></div><div class='input'># random model other than standard NMF</div><div class='input'>x <- rnmf(5, H=matrix(1:18, 3), model='NMFOffset')
-</div><div class='input'>basis(x) # random
-</div>
-<div class='output'>          [,1]       [,2]      [,3]
-[1,] 0.1503380 0.87615562 0.1714693
-[2,] 0.1251271 0.09845075 0.3730296
-[3,] 0.6581856 0.70169917 0.1074344
-[4,] 0.3957717 0.58286562 0.9331310
-[5,] 0.6013794 0.27455079 0.1370097
-</div><div class='input'>coef(x) # fixed
-</div>
-<div class='output'>     [,1] [,2] [,3] [,4] [,5] [,6]
-[1,]    1    4    7   10   13   16
-[2,]    2    5    8   11   14   17
-[3,]    3    6    9   12   15   18
-</div><div class='input'>offset(x) # random
-</div>
-<div class='output'>[1]  4.881957 15.677995  7.921313 12.817020 13.966676
-</div><div class='input'># random model other than standard NMF</div><div class='input'>x <- rnmf(W=matrix(1:18, 6), H=matrix(21:38, 3), model='NMFOffset')
-</div><div class='input'>basis(x) # fixed
-</div>
-<div class='output'>     [,1] [,2] [,3]
-[1,]    1    7   13
-[2,]    2    8   14
-[3,]    3    9   15
-[4,]    4   10   16
-[5,]    5   11   17
-[6,]    6   12   18
-</div><div class='input'>coef(x) # fixed
-</div>
-<div class='output'>     [,1] [,2] [,3] [,4] [,5] [,6]
-[1,]   21   24   27   30   33   36
-[2,]   22   25   28   31   34   37
-[3,]   23   26   29   32   35   38
-</div><div class='input'>offset(x) # random
-</div>
-<div class='output'>[1] 29.019634 22.716203  2.113359 34.757287 12.209705 28.794173
-</div><div class='input'>## random standard NMF of given dimensions</div><div class='input'></div><div class='input'># generate a random NMF model with rank 3 that fits a 100x20 matrix</div><div class='input'>rnmf(3, 100, 20)
-</div>
-<div class='output'><Object of class:NMFstd>
-features: 100 
-basis/rank: 3 
-samples: 20 
-</div><div class='input'></div><div class='input'># generate a random NMF model with rank 3 that fits a 100x100 matrix</div><div class='input'>rnmf(3, 100)
-</div>
-<div class='output'><Object of class:NMFstd>
-features: 100 
-basis/rank: 3 
-samples: 100 
-</div><div class='input'></div></pre>
+    <pre><code class="r">
+# random NMF model with offset
+x &lt;- rnmf(2, 3, model=&#39;NMFOffset&#39;)
+x
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFOffset&gt;
+## features: 3 
+## basis/rank: 2 
+## samples: 3 
+## offset: [ 0.8593 0.4552 0.1415 ]
+</code></pre>
+
+<pre><code class="r">offset(x)
+</code></pre>
+
+<pre><code>## [1] 0.8593 0.4552 0.1415
+</code></pre>
+
+<pre><code class="r"># from a matrix
+x &lt;- rnmf(2, rmatrix(5,3, max=10), model=&#39;NMFOffset&#39;)
+offset(x)
+</code></pre>
+
+<pre><code>## [1] 0.1676 1.4397 0.0907 1.6305 8.4577
+</code></pre>
+
+<pre><code class="r">## random NMF of same class and rank as another model
+
+x &lt;- nmfModel(3, 10, 5)
+x
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 10 
+## basis/rank: 3 
+## samples: 5
+</code></pre>
+
+<pre><code class="r">rnmf(x, 20) # square
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 20 
+## basis/rank: 3 
+## samples: 20
+</code></pre>
+
+<pre><code class="r">rnmf(x, 20, 13)
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 20 
+## basis/rank: 3 
+## samples: 13
+</code></pre>
+
+<pre><code class="r">rnmf(x, c(20, 13))
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 20 
+## basis/rank: 3 
+## samples: 13
+</code></pre>
+
+<pre><code class="r">
+# using another distribution
+rnmf(x, 20, dist=rnorm)
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 20 
+## basis/rank: 3 
+## samples: 20
+</code></pre>
+
+<pre><code class="r">
+# other than standard model
+y &lt;- rnmf(3, 50, 10, model=&#39;NMFns&#39;)
+y
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFns&gt;
+## features: 50 
+## basis/rank: 3 
+## samples: 10 
+## theta: 0.5
+</code></pre>
+
+<pre><code class="r">## Don&#39;t show: 
+ stopifnot( identical(dim(y), c(50L,10L,3L)) ) 
+## End Don&#39;t show
+## Don&#39;t show: 
+ stopifnot( is(y, &#39;NMFns&#39;) ) 
+## End Don&#39;t show
+# random NMF compatible with a target matrix
+x &lt;- nmfModel(3, 10, 5)
+y &lt;- rmatrix(20, 13)
+rnmf(x, y) # rank of x
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 20 
+## basis/rank: 3 
+## samples: 13
+</code></pre>
+
+<pre><code class="r">rnmf(2, y) # rank 2
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 20 
+## basis/rank: 2 
+## samples: 13
+</code></pre>
+
+<pre><code class="r">## random NMF from another model
+
+a &lt;- nmfModel(3, 100, 20)
+b &lt;- rnmf(a)
+## Don&#39;t show: 
+ stopifnot( !nmf.equal(a,b) ) 
+## End Don&#39;t show
+# random NMF model with known basis matrix
+x &lt;- rnmf(5, W=matrix(1:18, 6)) # 6 x 5 model with rank=3
+basis(x) # fixed
+</code></pre>
+
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    7   13
+## [2,]    2    8   14
+## [3,]    3    9   15
+## [4,]    4   10   16
+## [5,]    5   11   17
+## [6,]    6   12   18
+</code></pre>
+
+<pre><code class="r">coef(x) # random
+</code></pre>
+
+<pre><code>##         [,1]   [,2]   [,3]   [,4]   [,5]
+## [1,] 0.66625 0.5059 0.2495 0.2319 0.1443
+## [2,] 0.56969 0.2239 0.1809 0.4358 0.8978
+## [3,] 0.06515 0.6946 0.9902 0.7095 0.7371
+</code></pre>
+
+<pre><code class="r">
+# random NMF model with known coefficient matrix
+x &lt;- rnmf(5, H=matrix(1:18, 3)) # 5 x 6 model with rank=3
+basis(x) # random
+</code></pre>
+
+<pre><code>##         [,1]    [,2]   [,3]
+## [1,] 0.92839 0.73168 0.1459
+## [2,] 0.30243 0.74252 0.4800
+## [3,] 0.58870 0.46922 0.4528
+## [4,] 0.90568 0.32728 0.4540
+## [5,] 0.01955 0.05723 0.7322
+</code></pre>
+
+<pre><code class="r">coef(x) # fixed
+</code></pre>
+
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
+## [1,]    1    4    7   10   13   16
+## [2,]    2    5    8   11   14   17
+## [3,]    3    6    9   12   15   18
+</code></pre>
+
+<pre><code class="r">
+# random model other than standard NMF
+x &lt;- rnmf(5, H=matrix(1:18, 3), model=&#39;NMFOffset&#39;)
+basis(x) # random
+</code></pre>
+
+<pre><code>##         [,1]    [,2]    [,3]
+## [1,] 0.33448 0.30402 0.17421
+## [2,] 0.95253 0.08696 0.21987
+## [3,] 0.29234 0.86826 0.33064
+## [4,] 0.24446 0.26103 0.83145
+## [5,] 0.08534 0.14251 0.07539
+</code></pre>
+
+<pre><code class="r">coef(x) # fixed
+</code></pre>
+
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
+## [1,]    1    4    7   10   13   16
+## [2,]    2    5    8   11   14   17
+## [3,]    3    6    9   12   15   18
+</code></pre>
+
+<pre><code class="r">offset(x) # random
+</code></pre>
+
+<pre><code>## [1]  6.757  5.272  1.035 15.726 15.844
+</code></pre>
+
+<pre><code class="r"># random model other than standard NMF
+x &lt;- rnmf(W=matrix(1:18, 6), H=matrix(21:38, 3), model=&#39;NMFOffset&#39;)
+basis(x) # fixed
+</code></pre>
+
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    7   13
+## [2,]    2    8   14
+## [3,]    3    9   15
+## [4,]    4   10   16
+## [5,]    5   11   17
+## [6,]    6   12   18
+</code></pre>
+
+<pre><code class="r">coef(x) # fixed
+</code></pre>
+
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
+## [1,]   21   24   27   30   33   36
+## [2,]   22   25   28   31   34   37
+## [3,]   23   26   29   32   35   38
+</code></pre>
+
+<pre><code class="r">offset(x) # random
+</code></pre>
+
+<pre><code>## [1]  1.139  9.845  7.353 31.626  1.325 32.649
+</code></pre>
+
+<pre><code class="r">## random standard NMF of given dimensions
+
+# generate a random NMF model with rank 3 that fits a 100x20 matrix
+rnmf(3, 100, 20)
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 100 
+## basis/rank: 3 
+## samples: 20
+</code></pre>
+
+<pre><code class="r">## Don&#39;t show: 
+ stopifnot( identical(dim(rnmf(3, 100, 20)), c(100L,20L,3L)) ) 
+## End Don&#39;t show
+# generate a random NMF model with rank 3 that fits a 100x100 matrix
+rnmf(3, 100)
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 100 
+## basis/rank: 3 
+## samples: 100
+</code></pre>
+
+<pre><code class="r">## Don&#39;t show: 
+ stopifnot( identical(dim(rnmf(3, 100)), c(100L,100L,3L)) ) 
+## End Don&#39;t show
+
+</code></pre>
+
   </div>
   <div class="span4">
     <!-- <ul>
@@ -539,7 +650,7 @@ samples: 100
       
       <footer>
       <p class="pull-right"><a href="#">Back to top</a></p>
-<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
     </div>
   </body>

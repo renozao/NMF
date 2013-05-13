@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMF-class. NMF 0.16.2</title>
+<title>NMF-class. NMF 0.16.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -13,6 +13,9 @@
 <link href="css/highlight.css" rel="stylesheet">
 <!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 <!-- bootstrap javascript -->
 <script src="js/jquery.min.js"></script>
@@ -27,10 +30,10 @@
   </head>
 
   <body>
-    <div class="navbar">
+    <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.2</a>
+      <a class="brand" href="index.html">NMF 0.16.5</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -49,6 +52,14 @@
 
 <div class="row">
   <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,c("The class <code>NMF</code> is a <em>virtual class</em> that\n  defines a common interface to handle Nonnegative Matrix\n  Factorization models (NMF models) in a generic way.\n  Provided a minimum set of generic methods is implemented\n  by concrete model classes, these benefit from a whole set\n  of functions and utilities to perform common computations\n  and tasks in the context of Nonnegative Matrix\n  Factorization.", "The function <code>misc</code> provides access to miscellaneous\n  data members stored in slot <code>misc</code> (as a\n  <code>list</code>), which allow extensions of NMF models to be\n  implemented, without defining a new S4 class."
+)</p>
+  
+    </div>
+    
     <h2>Usage</h2>
     <pre>misc(object, ...)
 
@@ -84,25 +95,6 @@
   names are returned.  </dd>
     </dl>
     
-    <div class="Description">
-      <h2>Description</h2>
-      
-      <p>The class <code>NMF</code> is a <em>virtual class</em> that
-  defines a common interface to handle Nonnegative Matrix
-  Factorization models (NMF models) in a generic way.
-  Provided a minimum set of generic methods is implemented
-  by concrete model classes, these benefit from a whole set
-  of functions and utilities to perform common computations
-  and tasks in the context of Nonnegative Matrix
-  Factorization.</p>
-  
-      <p>The function <code>misc</code> provides access to miscellaneous
-  data members stored in slot <code>misc</code> (as a
-  <code>list</code>), which allow extensions of NMF models to be
-  implemented, without defining a new S4 class.</p>
-  
-    </div>
-
     <div class="Details">
       <h2>Details</h2>
       
@@ -554,33 +546,57 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'># show all the NMF models available (i.e. the classes that inherit from class NMF)</div><div class='input'>nmfModels()
-</div>
-<div class='output'>[1] "NMFstd"    "NMFOffset" "NMFns"    
-</div><div class='input'># show all the built-in NMF models available</div><div class='input'>nmfModels(builtin.only=TRUE)
-</div>
-<div class='output'>[1] "NMFstd"    "NMFOffset" "NMFns"    
-</div><div class='input'></div><div class='input'># class NMF is a virtual class so cannot be instantiated:</div><div class='input'>try( new('NMF') )
-</div><div class='input'></div><div class='input'># To instantiate an NMF model, use the factory method nmfModel. see ?nmfModel</div><div class='input'>nmfModel()
-</div>
-<div class='output'><Object of class:NMFstd>
-features: 0 
-basis/rank: 0 
-samples: 0 
-</div><div class='input'>nmfModel(3)
-</div>
-<div class='output'><Object of class:NMFstd>
-features: 0 
-basis/rank: 3 
-samples: 0 
-</div><div class='input'>nmfModel(3, model='NMFns')
-</div>
-<div class='output'><Object of class:NMFns>
-features: 0 
-basis/rank: 3 
-samples: 0 
-theta: 0.5 
-</div></pre>
+    <pre><code class="r">
+# show all the NMF models available (i.e. the classes that inherit from class NMF)
+nmfModels()
+</code></pre>
+
+<pre><code>## [1] &quot;NMFstd&quot;    &quot;NMFOffset&quot; &quot;NMFns&quot;
+</code></pre>
+
+<pre><code class="r"># show all the built-in NMF models available
+nmfModels(builtin.only=TRUE)
+</code></pre>
+
+<pre><code>## [1] &quot;NMFstd&quot;    &quot;NMFOffset&quot; &quot;NMFns&quot;
+</code></pre>
+
+<pre><code class="r">
+# class NMF is a virtual class so cannot be instantiated:
+try( new(&#39;NMF&#39;) )
+
+# To instantiate an NMF model, use the factory method nmfModel. see ?nmfModel
+nmfModel()
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 0 
+## basis/rank: 0 
+## samples: 0
+</code></pre>
+
+<pre><code class="r">nmfModel(3)
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 0 
+## basis/rank: 3 
+## samples: 0
+</code></pre>
+
+<pre><code class="r">nmfModel(3, model=&#39;NMFns&#39;)
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFns&gt;
+## features: 0 
+## basis/rank: 3 
+## samples: 0 
+## theta: 0.5
+</code></pre>
+
+<pre><code class="r">
+</code></pre>
+
   </div>
   <div class="span4">
     <!-- <ul>
@@ -616,7 +632,7 @@ theta: 0.5
       
       <footer>
       <p class="pull-right"><a href="#">Back to top</a></p>
-<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
     </div>
   </body>

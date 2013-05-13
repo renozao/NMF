@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>basiscor. NMF 0.16.2</title>
+<title>basiscor. NMF 0.16.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -13,6 +13,9 @@
 <link href="css/highlight.css" rel="stylesheet">
 <!-- custom css -->
 <link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 <!-- bootstrap javascript -->
 <script src="js/jquery.min.js"></script>
@@ -27,10 +30,10 @@
   </head>
 
   <body>
-    <div class="navbar">
+    <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.2</a>
+      <a class="brand" href="index.html">NMF 0.16.5</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -49,6 +52,13 @@
 
 <div class="row">
   <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,c("<code>basiscor</code> computes the correlation matrix between\n  basis vectors, i.e. the <em>columns</em> of its basis\n  matrix -- which is the model's first matrix factor.", "<code>profcor</code> computes the correlation matrix between\n  basis profiles, i.e. the <em>rows</em> of the coefficient\n  matrix -- which is the model's second matrix factor.")</p>
+  
+    </div>
+    
     <h2>Usage</h2>
     <pre>basiscor(x, y, ...)
 
@@ -68,19 +78,6 @@ profcor(x, y, ...)</pre>
       <dd>extra arguments passed to <code><a href='http://www.inside-r.org/r-doc/stats/cor'>cor</a></code>.</dd>
     </dl>
     
-    <div class="Description">
-      <h2>Description</h2>
-      
-      <p><code>basiscor</code> computes the correlation matrix between
-  basis vectors, i.e. the <em>columns</em> of its basis
-  matrix -- which is the model's first matrix factor.</p>
-  
-      <p><code>profcor</code> computes the correlation matrix between
-  basis profiles, i.e. the <em>rows</em> of the coefficient
-  matrix -- which is the model's second matrix factor.</p>
-  
-    </div>
-
     <div class="Details">
       <h2>Details</h2>
       
@@ -142,66 +139,110 @@ profcor(x, y, ...)</pre>
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'># generate two random NMF models</div><div class='input'>a <- rnmf(3, 100, 20)
-</div><div class='input'>b <- rnmf(3, 100, 20)
-</div><div class='input'></div><div class='input'># Compute auto-correlations</div><div class='input'>basiscor(a)
-</div>
-<div class='output'>            [,1]        [,2]       [,3]
-[1,]  1.00000000 -0.03974198  0.1789670
-[2,] -0.03974198  1.00000000 -0.2544029
-[3,]  0.17896701 -0.25440288  1.0000000
-</div><div class='input'>profcor(a)
-</div>
-<div class='output'>           [,1]       [,2]        [,3]
-[1,] 1.00000000  0.2086779  0.02927104
-[2,] 0.20867795  1.0000000 -0.31049688
-[3,] 0.02927104 -0.3104969  1.00000000
-</div><div class='input'># Compute correlations with b</div><div class='input'>basiscor(a, b)
-</div>
-<div class='output'>            [,1]        [,2]        [,3]
-[1,] -0.12497184 -0.04611872  0.04885596
-[2,]  0.15765514  0.21499517 -0.03577399
-[3,] -0.09187394 -0.32731133  0.11182221
-</div><div class='input'>profcor(a, b)
-</div>
-<div class='output'>            [,1]        [,2]        [,3]
-[1,] -0.08675579 -0.02435376 -0.29980860
-[2,]  0.26231609  0.41862020 -0.25562372
-[3,]  0.09299672 -0.43172058 -0.09149187
-</div><div class='input'></div><div class='input'># try to recover the underlying NMF model 'a' from noisy data</div><div class='input'>res <- nmf(fitted(a) + rmatrix(a), 3)
-</div><div class='input'></div><div class='input'># Compute correlations with the true model</div><div class='input'>basiscor(a, res)
-</div>
-<div class='output'>           [,1]       [,2]       [,3]
-[1,]  0.2364291  0.8880063 -0.3071991
-[2,] -0.3571756  0.2388818  0.9023734
-[3,]  0.9596457 -0.0160250 -0.2613216
-</div><div class='input'>profcor(a, res)
-</div>
-<div class='output'>            [,1]       [,2]       [,3]
-[1,]  0.06823362  0.9666298 -0.1071879
-[2,] -0.40255701  0.3787830  0.9397324
-[3,]  0.98374752 -0.1338891 -0.3037637
-</div><div class='input'></div><div class='input'># Compute correlations with a random compatible matrix</div><div class='input'>W <- rmatrix(basis(a))
-</div><div class='input'>basiscor(a, W)
-</div>
-<div class='output'>            [,1]        [,2]        [,3]
-[1,]  0.03653920 -0.08806851 -0.05300323
-[2,] -0.07691195 -0.32485778 -0.02123310
-[3,]  0.05596109  0.14569616 -0.07399857
-</div><div class='input'>identical(basiscor(a, W), basiscor(W, a))
-</div>
-<div class='output'>[1] FALSE
-</div><div class='input'></div><div class='input'>H <- rmatrix(coef(a))
-</div><div class='input'>profcor(a, H)
-</div>
-<div class='output'>           [,1]         [,2]       [,3]
-[1,] -0.2194385 -0.003846117  0.1280989
-[2,] -0.3687089 -0.043307867 -0.0918676
-[3,]  0.1942988  0.134237086  0.4243300
-</div><div class='input'>identical(profcor(a, H), profcor(H, a))
-</div>
-<div class='output'>[1] FALSE
-</div></pre>
+    <pre><code class="r">
+# generate two random NMF models
+a &lt;- rnmf(3, 100, 20)
+b &lt;- rnmf(3, 100, 20)
+
+# Compute auto-correlations
+basiscor(a)
+</code></pre>
+
+<pre><code>##          [,1]     [,2]     [,3]
+## [1,]  1.00000 -0.10646 -0.05467
+## [2,] -0.10646  1.00000  0.07616
+## [3,] -0.05467  0.07616  1.00000
+</code></pre>
+
+<pre><code class="r">profcor(a)
+</code></pre>
+
+<pre><code>##          [,1]      [,2]      [,3]
+## [1,]  1.00000 -0.012178 -0.491228
+## [2,] -0.01218  1.000000 -0.002353
+## [3,] -0.49123 -0.002353  1.000000
+</code></pre>
+
+<pre><code class="r"># Compute correlations with b
+basiscor(a, b)
+</code></pre>
+
+<pre><code>##          [,1]      [,2]     [,3]
+## [1,]  0.04686  0.008775 -0.06157
+## [2,] -0.29802 -0.056070 -0.05652
+## [3,]  0.11878 -0.137068 -0.09362
+</code></pre>
+
+<pre><code class="r">profcor(a, b)
+</code></pre>
+
+<pre><code>##          [,1]    [,2]     [,3]
+## [1,]  0.08244 0.04487 -0.18232
+## [2,] -0.08242 0.32467 -0.05814
+## [3,] -0.22555 0.31619  0.48511
+</code></pre>
+
+<pre><code class="r">
+# try to recover the underlying NMF model &#39;a&#39; from noisy data
+res &lt;- nmf(fitted(a) + rmatrix(a), 3)
+
+# Compute correlations with the true model
+basiscor(a, res)
+</code></pre>
+
+<pre><code>##         [,1]    [,2]    [,3]
+## [1,]  0.2180  0.9702 -0.3466
+## [2,]  0.8556 -0.1174  0.2940
+## [3,] -0.2317 -0.1167  0.8895
+</code></pre>
+
+<pre><code class="r">profcor(a, res)
+</code></pre>
+
+<pre><code>##         [,1]    [,2]    [,3]
+## [1,]  0.1172  0.9159 -0.5098
+## [2,]  0.9522 -0.3187  0.2196
+## [3,] -0.2667 -0.2457  0.9656
+</code></pre>
+
+<pre><code class="r">
+# Compute correlations with a random compatible matrix
+W &lt;- rmatrix(basis(a))
+basiscor(a, W)
+</code></pre>
+
+<pre><code>##          [,1]      [,2]    [,3]
+## [1,] -0.02591 -0.164467  0.1436
+## [2,] -0.13012  0.009577  0.0106
+## [3,] -0.01252 -0.043714 -0.0955
+</code></pre>
+
+<pre><code class="r">identical(basiscor(a, W), basiscor(W, a))
+</code></pre>
+
+<pre><code>## [1] FALSE
+</code></pre>
+
+<pre><code class="r">
+H &lt;- rmatrix(coef(a))
+profcor(a, H)
+</code></pre>
+
+<pre><code>##          [,1]     [,2]     [,3]
+## [1,] -0.06582  0.21715 -0.25354
+## [2,] -0.27805  0.11565 -0.19513
+## [3,]  0.20565 -0.06154  0.07645
+</code></pre>
+
+<pre><code class="r">identical(profcor(a, H), profcor(H, a))
+</code></pre>
+
+<pre><code>## [1] FALSE
+</code></pre>
+
+<pre><code class="r">
+</code></pre>
+
   </div>
   <div class="span4">
     <!-- <ul>
@@ -217,7 +258,7 @@ profcor(x, y, ...)</pre>
       
       <footer>
       <p class="pull-right"><a href="#">Back to top</a></p>
-<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
     </div>
   </body>
