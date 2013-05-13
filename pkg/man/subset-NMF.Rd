@@ -107,7 +107,9 @@ rownames(a) <- paste('f', 1:nrow(a), sep='')
 colnames(a) <- paste('s', 1:ncol(a), sep='')
 
 # or alternatively:
-# dimnames(a) <- list( features=paste('f', 1:nrow(a), sep=''), samples=paste('s', 1:ncol(a), sep=''), basis=paste('b', 1:nbasis(a)) )
+# dimnames(a) <- list( features=paste('f', 1:nrow(a), sep='')
+#					, samples=paste('s', 1:ncol(a), sep='')
+#					, basis=paste('b', 1:nbasis(a)) )
 
 # look at the resulting NMF object
 a

@@ -1622,7 +1622,7 @@ subset_index <- function(x, margin, subset){
 #' aheatmap(x, Rowv = "man") # partially matched to 'manhattan'
 #' aheatmap(x, Rowv = "man", Colv="binary")
 #' 
-#' #' # Generate column annotations
+#' # Generate column annotations
 #' annotation = data.frame(Var1 = factor(1:p %% 2 == 0, labels = c("Class1", "Class2")), Var2 = 1:10)
 #' aheatmap(x, annCol = annotation)
 #' 

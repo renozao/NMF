@@ -41,7 +41,9 @@ NULL
 #' 
 #' @bibliography ~/Documents/articles/library.bib
 #' @references
-#' \url{http://www.r-project.org/}
+#' \url{http://cran.r-project.org/}
+#' 
+#' \url{http://nmf.r-forge.project.org}
 #' @keywords package
 #' @seealso \code{\link{nmf}}
 #' @examples
@@ -66,7 +68,7 @@ devnmf <- function(){
 # local config info
 nmfConfig <- mkoptions()
 
-.onLoad <- function(libname, pkgname=NULL) {
+.onLoad <- function(libname, pkgname) {
 	
 	pkgEnv <- pkgmaker::packageEnv()
 		
@@ -93,28 +95,14 @@ nmfConfig <- mkoptions()
 		b <- body(.onLoad.nmf.bioc)
 		bioc.loaded <- eval(b, envir=pkgEnv)
 		nmfConfig(bioc=bioc.loaded)
-#		if( is(bioc.loaded, 'try-error') )
-#			message("NMF - Loading BioConductor layer ... ERROR")
-#		else if ( isTRUE(bioc.loaded) )
-#			message("NMF - Loading BioConductor layer ... OK")
-#		else{
-#			message("NMF - Loading BioConductor layer ... NO [missing Biobase]")
-#			message("  To enable, try: install.extras('NMF') [with Bioconductor repository enabled]")
-#		}
 		
 		# 3. SHARED MEMORY
 		if( .Platform$OS.type != 'windows' ){
-#			message("NMF - Checking shared memory capabilities ... ", appendLF=FALSE)
 			msg <- if( !require.quiet('bigmemory', character.only=TRUE) ) 'bigmemory'
 					else if( !require.quiet('synchronicity', character.only=TRUE) ) 'synchronicity'
 					else TRUE
 			
 			nmfConfig(shared.memory=msg)
-#			if( isTRUE(msg) ) message('OK')
-#			else{
-#				message(paste('NO [missing ', msg, ']', sep=''))
-#				message("  To enable, try: install.extras('NMF')")
-#			}
 		}
 		#
 	}
@@ -149,7 +137,7 @@ nmfConfig <- mkoptions()
 	else if ( isTRUE(bioc.loaded) ) msg <- paste0(msg, ' [OK]')
 	else{
 		msg <- paste0(msg, ' [NO: missing Biobase]')
-		details <- c(details, "  To enable the Bioconductor layer, try: install.extras('NMF') [with Bioconductor repository enabled]")
+		details <- c(details, "  To enable the Bioconductor layer, try: install.extras('", pkgname, "') [with Bioconductor repository enabled]")
 	}
 	
 	# 2. SHARED MEMORY
@@ -159,7 +147,7 @@ nmfConfig <- mkoptions()
 		if( isTRUE(conf) ) msg <- paste0(msg, ' [OK]')
 		else{
 			msg <- paste0(msg, ' [NO: ', conf, ']')
-			details <- c(details, "  To enable shared memory capabilities, try: install.extras('NMF')")
+			details <- c(details, "  To enable shared memory capabilities, try: install.extras('", pkgname, "')")
 		}
 	}else msg <- paste0(msg, ' [NO: windows]')
 	#
@@ -175,8 +163,12 @@ nmfConfig <- mkoptions()
 	#
 	
 	# print startup message
-	ver <- packageVersion('NMF')
-	packageStartupMessage('NMF [', ver, '] - ', msg)
+	ver <- if( isDevNamespace() ){
+		paste0(' [', utils::packageVersion(pkgname), '-devel', ']') 
+	}#else{
+#		utils::packageVersion(pkgname, lib.loc = libname)
+#	}
+	packageStartupMessage(pkgname, ver, ' - ', msg)
 	if( !is.null(details) ){
 		packageStartupMessage(paste(details, collapse="\n"))
 	}

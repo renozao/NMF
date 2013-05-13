@@ -5,8 +5,9 @@
   aheatmap(x, color = "-RdYlBu2:100", breaks = NA,
     border_color = NA, cellwidth = NA, cellheight = NA,
     scale = "none", Rowv = TRUE, Colv = TRUE,
-    revC = identical(Colv, "Rowv") || is_NA(Rowv) || (is.integer(Rowv) && length(Rowv) > 1),
-    distfun = "euclidean", hclustfun = "complete",
+    revC = identical(Colv, "Rowv") || is_NA(Rowv) || (is.integer(Rowv) && 
+        length(Rowv) > 1), distfun = "euclidean",
+    hclustfun = "complete",
     reorderfun = function(d, w) reorder(d, w),
     treeheight = 50, legend = TRUE, annCol = NA,
     annRow = NA, annColors = NA, annLegend = TRUE,
@@ -324,7 +325,7 @@ aheatmap(x, Rowv = "correlation")
 aheatmap(x, Rowv = "man") # partially matched to 'manhattan'
 aheatmap(x, Rowv = "man", Colv="binary")
 
-#' # Generate column annotations
+# Generate column annotations
 annotation = data.frame(Var1 = factor(1:p \%\% 2 == 0, labels = c("Class1", "Class2")), Var2 = 1:10)
 aheatmap(x, annCol = annotation)
 }

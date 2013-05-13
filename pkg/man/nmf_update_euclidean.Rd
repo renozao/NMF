@@ -86,7 +86,7 @@
   H^T)_ik, eps) / ( (W H H^T)_ik + eps ) }
 }
 \author{
-  Update definitions by \cite{Lee et al. (2001)}.
+  Update definitions by \cite{Lee2001}.
 
   C++ optimised implementation by Renaud Gaujoux.
 }

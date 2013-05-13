@@ -76,7 +76,7 @@
   sum_u [H_kl A_il / (WH)_il ] ) / ( sum_l H_kl ) }
 }
 \author{
-  Update definitions by \cite{Lee et al. (2001)}.
+  Update definitions by \cite{Lee2001}.
 
   C++ optimised implementation by Renaud Gaujoux.
 }

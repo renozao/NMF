@@ -725,6 +725,13 @@ res <- nmf(x, 2, .options='v3')
 }
 }
 \references{
+  Badea L (2008). "Extracting gene expression profiles
+  common to colon and pancreatic adenocarcinoma using
+  simultaneous nonnegative matrix factorization." _Pacific
+  Symposium on Biocomputing. Pacific Symposium on
+  Biocomputing_, *290*, pp. 267-78. ISSN 1793-5091, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
+
   Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).
   "Metagenes and molecular pattern discovery using matrix
   factorization." _Proceedings of the National Academy of
@@ -732,30 +739,6 @@ res <- nmf(x, 2, .options='v3')
   4164-9. ISSN 0027-8424, <URL:
   http://dx.doi.org/10.1073/pnas.0308531101>, <URL:
   http://www.ncbi.nlm.nih.gov/pubmed/15016911>.
-
-  Lee DD and Seung H (2001). "Algorithms for non-negative
-  matrix factorization." _Advances in neural information
-  processing systems_. <URL:
-  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
-
-  Wang G, Kossenkov AV and Ochs MF (2006). "LS-NMF: a
-  modified non-negative matrix factorization algorithm
-  utilizing uncertainty estimates." _BMC bioinformatics_,
-  *7*, pp. 175. ISSN 1471-2105, <URL:
-  http://dx.doi.org/10.1186/1471-2105-7-175>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/16569230>.
-
-  Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and
-  Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix
-  factorization (nsNMF)." _IEEE Trans. Pattern Anal. Mach.
-  Intell_, *28*, pp. 403-415.
-
-  Badea L (2008). "Extracting gene expression profiles
-  common to colon and pancreatic adenocarcinoma using
-  simultaneous nonnegative matrix factorization." _Pacific
-  Symposium on Biocomputing. Pacific Symposium on
-  Biocomputing_, *290*, pp. 267-78. ISSN 1793-5091, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
 
   Kim H and Park H (2007). "Sparse non-negative matrix
   factorizations via alternating non-negativity-constrained
@@ -765,12 +748,29 @@ res <- nmf(x, 2, .options='v3')
   http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
   http://www.ncbi.nlm.nih.gov/pubmed/17483501>.
 
+  Lee DD and Seung H (2001). "Algorithms for non-negative
+  matrix factorization." _Advances in neural information
+  processing systems_. <URL:
+  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
+
+  Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and
+  Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix
+  factorization (nsNMF)." _IEEE Trans. Pattern Anal. Mach.
+  Intell_, *28*, pp. 403-415.
+
   Van Benthem M and Keenan MR (2004). "Fast algorithm for
   the solution of large-scale non-negativity-constrained
   least squares problems." _Journal of Chemometrics_,
   *18*(10), pp. 441-450. ISSN 0886-9383, <URL:
   http://dx.doi.org/10.1002/cem.889>, <URL:
   http://doi.wiley.com/10.1002/cem.889>.
+
+  Wang G, Kossenkov AV and Ochs MF (2006). "LS-NMF: a
+  modified non-negative matrix factorization algorithm
+  utilizing uncertainty estimates." _BMC bioinformatics_,
+  *7*, pp. 175. ISSN 1471-2105, <URL:
+  http://dx.doi.org/10.1186/1471-2105-7-175>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/16569230>.
 }
 \seealso{
   \code{\link{nmfAlgorithm}}

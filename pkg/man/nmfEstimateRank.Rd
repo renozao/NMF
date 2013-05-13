@@ -8,7 +8,8 @@
     model = NULL, ..., verbose = FALSE, stop = FALSE)
 
   \method{plot}{NMF.rank} (x, y = NULL,
-    what = c("all", "cophenetic", "rss", "residuals", "dispersion", "evar", "sparseness", "sparseness.basis", "sparseness.coef"),
+    what = c("all", "cophenetic", "rss", "residuals", "dispersion", "evar", 
+        "sparseness", "sparseness.basis", "sparseness.coef"),
     na.rm = FALSE, ...)
 }
 \arguments{

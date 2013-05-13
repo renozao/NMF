@@ -15,7 +15,7 @@ There is no such information for the AML samples. It is a
 
 }}
 \source{
-  Web page for \cite{Brunet et al. (2004)}:\cr
+  Web page for \cite{Brunet2004}:\cr
   \url{http://www.broadinstitute.org/publications/broad872}
 
   Original data from Golub et al.:\cr
@@ -52,14 +52,6 @@ esGolub
 \dontrun{pData(esGolub)}
 }
 \references{
-  Golub TR, Slonim DK, Tamayo P, Huard C, Gaasenbeek M,
-  Mesirov JP, Coller H, Loh ML, Downing JR, Caligiuri Ma,
-  Bloomfield CD and Lander ES (1999). "Molecular
-  classification of cancer: class discovery and class
-  prediction by gene expression monitoring." _Science (New
-  York, N.Y.)_, *286*(5439), pp. 531-7. ISSN 0036-8075,
-  <URL: http://www.ncbi.nlm.nih.gov/pubmed/10521349>.
-
   Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).
   "Metagenes and molecular pattern discovery using matrix
   factorization." _Proceedings of the National Academy of
@@ -67,6 +59,14 @@ esGolub
   4164-9. ISSN 0027-8424, <URL:
   http://dx.doi.org/10.1073/pnas.0308531101>, <URL:
   http://www.ncbi.nlm.nih.gov/pubmed/15016911>.
+
+  Golub TR, Slonim DK, Tamayo P, Huard C, Gaasenbeek M,
+  Mesirov JP, Coller H, Loh ML, Downing JR, Caligiuri Ma,
+  Bloomfield CD and Lander ES (1999). "Molecular
+  classification of cancer: class discovery and class
+  prediction by gene expression monitoring." _Science (New
+  York, N.Y.)_, *286*(5439), pp. 531-7. ISSN 0036-8075,
+  <URL: http://www.ncbi.nlm.nih.gov/pubmed/10521349>.
 }
 \keyword{datasets}
 

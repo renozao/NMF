@@ -85,4 +85,3 @@ nmf_update.lnmf <- function(i, v, data, ...){
 #		, Stop='connectivity')
 #
 #nmfAlgorithm.lnmf <- setNMFMethod('lnmf', '.R#lnmf', Update=nmf_update.lnmf)
-				

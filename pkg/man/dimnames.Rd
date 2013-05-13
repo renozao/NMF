@@ -119,7 +119,9 @@
 a <- rnmf(2, 5, 3)
 
 # set dimensions
-dims <- list( features=paste('f', 1:nrow(a), sep=''), samples=paste('s', 1:ncol(a), sep=''), basis=paste('b', 1:nbasis(a), sep='') )
+dims <- list( features=paste('f', 1:nrow(a), sep='')
+				, samples=paste('s', 1:ncol(a), sep='')
+				, basis=paste('b', 1:nbasis(a), sep='') )
 dimnames(a) <- dims
 dimnames(a)
 basis(a)
