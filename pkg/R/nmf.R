@@ -1789,7 +1789,7 @@ function(x, rank, method
 						else if( verbose )
 							cat('%')
 						
-						gc(verbose= .MODE_SEQ && verbose > 3)
+						gc(verbose = verbose > 3)
 					}
 					
 					if( verbose > 1 ) cat("## DONE\n")

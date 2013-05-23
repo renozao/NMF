@@ -4,7 +4,13 @@ Changes in version 0.17.1
 CHANGES
     o Computations seeded with an NMF object now set slot @seed to 'NMF'
     o Added unit tests on seeding with an NMF object
-    o Removed some obsolete comments        
+    o Removed some obsolete comments
+    
+BUG FIXES
+    o an error was thrown when running multiple sequential NMF 
+    computations with nrun>=50: object '.MODE_SEQ' not found. 
+    (reported by Kenneth Lopiano) 
+        
     
 *************************************************************************
 Changes in version 0.16.5
