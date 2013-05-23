@@ -1619,6 +1619,7 @@ function(x, rank, method
 					res
 				}				
 				## END_FOREACH_LOOP
+				
 				if( verbose && !debug ){
 					if( verbose >= 2 ) cat(" ... DONE\n")
 					else{
@@ -1902,7 +1903,7 @@ function(x, rank, method
 			seed <- fit(seed)
 		
 		# Wrap up the seed into a NMFfit object
-		seed <- NMFfit(fit=seed, seed='none')
+		seed <- NMFfit(fit=seed, seed='NMF')
 	}
 	else if( !inherits(seed, 'NMFfit') ){
 		

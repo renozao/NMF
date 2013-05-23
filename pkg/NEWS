@@ -1,4 +1,12 @@
 *************************************************************************
+Changes in version 0.17.1
+*************************************************************************
+CHANGES
+    o Computations seeded with an NMF object now set slot @seed to 'NMF'
+    o Added unit tests on seeding with an NMF object
+    o Removed some obsolete comments        
+    
+*************************************************************************
 Changes in version 0.16.5
 *************************************************************************
 CHANGES

@@ -371,11 +371,15 @@ test.nmf.seed.argument <- function(){
 	checkIdenticalRNG( res2, res, msg("The best fit's RNG is the same as when keeping all the fits"))
 	checkIdenticalRNG( getRNG1(res2), sRNG[[1]], msg("The first RNG used in the computation of the NMFfitX1 object is given by getRNG1"))
 		
-	# TODO: run nmf with NMF object seed	
-	#obj.s <- nmfModel(r, V)
-	#obj.s <- rnmf(obj.s)
-	#res <- nmf(V, r, seed=obj.s)
-	#check.res('Call with only a NMF object seed', res, V, r, 'NMFstd', 'brunet', 'NMF object')
+    # Seeding with NMF object
+	obj.s <- rnmf(r, V)
+    rngRef <- getRNG()
+	res <- nmf(V, obj.s)
+	check.res('Call with rank = <NMF object>', res, V, r, 'NMFstd', 'brunet', 'NMF', rngref = rngRef)
+    checkTrue( nmf.equal(res, nmf(V, obj.s)), 'Run with rank=<NMF object> is deterministic')
+    res.s <- nmf(V, seed = obj.s)
+    check.res('Call with seed = <NMF object>', res, V, r, 'NMFstd', 'brunet', 'NMF', rngref = rngRef)
+    checkTrue( nmf.equal(res, res.s), 'Run with rank=<NMF object> returns identical result as with seed=<NMF object>')
 	
 	# run nmf with only a seeding method name and some extra parameters 
 	check.res('Call with only a seeding method name and some extra parameters (element method first and not named)'
