@@ -32,7 +32,6 @@ nmfGet <- function(regname, name=NULL, ...){
 }
 
 ###% Register a NMF method so that it is accessible via the common interface defined by the \code{nmf} function.
-###% TODO: rewrite the doc (obsolete)
 ###% @param method an NMFStrategy object or a function that defines the method
 ###% @param key a non-empty character string that will be used as an identifier to access the method
 ###% @param overwrite a boolean that specify if an existing method (i.e. with exactly the same \code{key}) should be overwritten or not.

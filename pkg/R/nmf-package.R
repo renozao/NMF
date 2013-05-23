@@ -118,7 +118,6 @@ nmfConfig <- mkoptions()
 
 .onUnload <- function(libpath) {
 	
-	# TODO: pkgmaker::onUnload(libpath)
 	# unload compiled library
 	dlls <- names(base::getLoadedDLLs())
 	if ( 'NMF' %in%  dlls )

@@ -353,10 +353,6 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 		stop("NMF::run - Update/Stop method for algorithm '", name(strategy),"': missing required argument(s) "
 			, paste( paste("'", required.args[t],"'", sep=''), collapse=', '), call.=FALSE)
 	
-	# set default value for missing argument TODO
-	missing.args <- expected.args[!pmatch(names(expected.args), passed.args, nomatch=FALSE)]
-	
-	
 	#Vc# Start iterations
 	nmfData <- seed
 	# cache verbose level
