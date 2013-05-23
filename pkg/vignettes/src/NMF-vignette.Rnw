@@ -1,10 +1,9 @@
 %\VignetteIndexEntry{An introduction to the package NMF}
-%\VignetteDepends{utils,NMF,Biobase,bigmemory,xtable,RColorBrewer}
+%\VignetteDepends{utils,NMF,Biobase,bigmemory,xtable,RColorBrewer,knitr,bibtex}
 %\VignetteKeyword{math}
 %\VignetteCompiler{knitr}
  
 \documentclass[a4paper]{article}
-%\usepackage{Sweave}
 
 %\usepackage[OT1]{fontenc}
 \usepackage[colorlinks]{hyperref} % for hyperlinks

@@ -1,10 +1,9 @@
 %\VignetteIndexEntry{NMF: generating heatmaps}
-%\VignetteDepends{utils,NMF,RColorBrewer}
+%\VignetteDepends{utils,NMF,RColorBrewer,knitr,bibtex}
 %\VignetteKeyword{aplot}
 %\VignetteCompiler{knitr}
+
 \documentclass[a4paper]{article}
-%\usepackage{Sweave}
-%\SweaveOpts{keep.source=TRUE}
 
 %\usepackage[OT1]{fontenc}
 \usepackage[colorlinks]{hyperref}
@@ -72,7 +71,6 @@ pkgmaker::latex_bibliography('NMF')
 #options(prompt=' ')
 #options(continue=' ')
 set.seed(123456)
-if( Sys.info()['user'] == 'renaud' ) .libPaths(c('./loclib', .libPaths()))
 library(NMF)
 @
 
@@ -426,7 +424,7 @@ value of the rank in range $\ldbrack 2, 7\rdbrack]$.
 The method of \code{consensusmap} defined for class \code{'NMF.rank'}, 
 which plots all the consensus matrices on the same plot: 
 
-<<consensusmap_estimate>>=
+<<consensusmap_estimate, fig.keep='last'>>=
 consensusmap(res2_7)
 @
 
@@ -455,7 +453,7 @@ is essentially a named list, that contains each fits and the CPU time required
 by the whole computation.
 As previously, the sequence of consensus matrices is plotted with \code{consensusmap}:
 
-<<consensusmap_methods, fig.width=10, fig.height=7>>=
+<<consensusmap_methods, fig.width=10, fig.height=7, fig.keep='last'>>=
 consensusmap(res_methods)	
 @
 

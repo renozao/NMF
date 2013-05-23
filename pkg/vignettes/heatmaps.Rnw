@@ -1,6 +1,6 @@
 \documentclass[10pt]{article}
 %\VignetteIndexEntry{NMF: generating heatmaps}
-%\VignetteDepends{utils,NMF,RColorBrewer}
+%\VignetteDepends{utils,NMF,RColorBrewer,knitr,bibtex}
 %\VignetteKeyword{aplot}
 %\VignetteCompiler{knitr}
 \usepackage{url}
