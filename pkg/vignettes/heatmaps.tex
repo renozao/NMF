@@ -2,6 +2,8 @@
 %\VignetteDepends{utils,NMF,RColorBrewer,knitr,bibtex}
 %\VignetteKeyword{aplot}
 %\VignetteCompiler{knitr}
+%\VignetteEngine{knitr::knitr}
+
 \documentclass[a4paper]{article}\usepackage{graphicx, color}
 %% maxwidth is the original width if it is less than linewidth
 %% otherwise use linewidth (to make sure the graphics do not exceed the margin)
@@ -57,8 +59,6 @@
 \newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
 
 \usepackage{alltt}
-%\usepackage{Sweave}
-%\SweaveOpts{keep.source=TRUE}
 
 %\usepackage[OT1]{fontenc}
 \usepackage[colorlinks]{hyperref}
@@ -129,7 +129,7 @@
 , backref=true
 , backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
-\bibliography{/home/renaud/Documents/projects/NMF/pkg/vignettes/tmplib/NMF/REFERENCES}
+\bibliography{/tmp/Rpkglib_5262444594b7/NMF/REFERENCES}
 
 
 \bibliography{Rpackages}
@@ -705,7 +705,7 @@ These demos and the plots they generate can also be browsed online at \url{http:
     methods, parallel, stats, utils
   \item Other packages: BH~1.51.0-0, bigmemory~4.4.3,
     bigmemory.sri~0.1.2, Biobase~2.20.0, BiocGenerics~0.6.0,
-    digest~0.6.3, knitr~1.2, NMF~0.17.1, pkgmaker~0.16.2,
+    digest~0.6.3, knitr~1.2, NMF~0.17.1, pkgmaker~0.16.3,
     RColorBrewer~1.0-5, registry~0.2, rngtools~1.2,
     synchronicity~1.1.0
   \item Loaded via a namespace (and not attached):

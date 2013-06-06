@@ -1,7 +1,8 @@
 %\VignetteIndexEntry{An introduction to the package NMF}
-%\VignetteDepends{utils,NMF,Biobase,bigmemory,xtable,RColorBrewer}
+%\VignetteDepends{utils,NMF,Biobase,bigmemory,xtable,RColorBrewer,knitr,bibtex}
 %\VignetteKeyword{math}
 %\VignetteCompiler{knitr}
+%\VignetteEngine{knitr::knitr}
  
 \documentclass[a4paper]{article}\usepackage{graphicx, color}
 %% maxwidth is the original width if it is less than linewidth
@@ -58,7 +59,6 @@
 \newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
 
 \usepackage{alltt}
-%\usepackage{Sweave}
 
 %\usepackage[OT1]{fontenc}
 \usepackage[colorlinks]{hyperref} % for hyperlinks
@@ -134,7 +134,7 @@
 , backref=true
 , backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
-\bibliography{/home/renaud/Documents/projects/NMF/pkg/vignettes/tmplib/NMF/REFERENCES}
+\bibliography{/tmp/Rpkglib_57ba87c6f78/NMF/REFERENCES}
 
 
 \bibliography{Rpackages}
@@ -197,6 +197,13 @@ If you use the package \nmfpack in your analysis and publications please cite:
 
 \bigskip
 \todo[inline, backgroundcolor=blue!10!white]{\fullcite{Rpackage:NMF}}
+
+Note that the \nmfpack includes several NMF algorithms, published by different
+authors.
+Please make sure to also cite the paper(s) associated with the algorithm(s)
+you used.
+Citations for those can be found in \cref{tab:algo} and in the dedicated help
+pages \code{?gedAlgorithm.<algorithm>}, e.g., \code{?gedAlgorithm.SNMF\_R}.
 
 \bigskip
 \paragraph{Installation:} The latest stable version of the package can be installed from any
@@ -584,7 +591,7 @@ t <- \hlfunctioncall{sapply}(res, runtime)[3, ]
 
 
 % latex table generated in R 3.0.1 by xtable 1.7-1 package
-% Thu May 23 10:17:31 2013
+% Thu May 23 15:06:26 2013
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrr}
@@ -1844,7 +1851,7 @@ V <- \hlfunctioncall{syntheticNMF}(n, r, p, noise = TRUE)
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_4a4d46f9b2cf 
+##   algorithm:  nmf_58385aed59e9 
 ##   seed:  random 
 ##   RNG: 403L, 173L, ..., 1280296329L [0d87fde5bf092083bd059bcc33d58a3e]
 ##   distance metric:  'euclidean' 
@@ -1852,7 +1859,7 @@ V <- \hlfunctioncall{syntheticNMF}(n, r, p, noise = TRUE)
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.012   0.000   0.013
+##     0.004   0.000   0.005
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1876,7 +1883,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_4a4d5e086fe0 
+##   algorithm:  nmf_58382e4c0af5 
 ##   seed:  random 
 ##   RNG: 403L, 383L, ..., 1280296329L [2f2572f5c6b643d37859d97079951964]
 ##   distance metric:  'KL' 
@@ -1884,7 +1891,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.004
+##     0.004   0.000   0.003
 \end{verbatim}
 \begin{alltt}
 \hlcomment{# based on custom distance metric}
@@ -1903,7 +1910,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_4a4d409ac3d3 
+##   algorithm:  nmf_5838b0f369d 
 ##   seed:  random 
 ##   RNG: 403L, 593L, ..., 1280296329L [7ed64fa772a4b1e68cebc0bfed3cb018]
 ##   distance metric:  <function> 
@@ -1911,7 +1918,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.000   0.000   0.003
+##     0.004   0.000   0.003
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1947,11 +1954,7 @@ V.neg <- V
 V.neg[1, ] <- -1
 
 \hlcomment{# this generates an error}
-\hlfunctioncall{nmf}(V.neg, 3, my.algorithm, scale.factor = 10)
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: NMF::nmf - Input matrix x contains some negative entries.}}\begin{alltt}
+\hlfunctioncall{try}(\hlfunctioncall{nmf}(V.neg, 3, my.algorithm, scale.factor = 10))
 
 \hlcomment{# this runs my.algorithm without error}
 \hlfunctioncall{nmf}(V.neg, 3, my.algorithm, mixed = TRUE, scale.factor = 10)
@@ -1964,7 +1967,7 @@ V.neg[1, ] <- -1
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_4a4d772939fd 
+##   algorithm:  nmf_5838189187a0 
 ##   seed:  random 
 ##   RNG: 403L, 179L, ..., -818492466L [850b670d66e22c6d00f5d79570d1ce8a]
 ##   distance metric:  'euclidean' 
@@ -1972,7 +1975,7 @@ V.neg[1, ] <- -1
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.003
+##     0.004   0.000   0.004
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2052,7 +2055,7 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   samples: 20 
 ##   offset: [ 0.3677 0.9383 1.347 1.019 0.6695 ... ]
 ##  # Details:
-##   algorithm:  nmf_4a4d1fb215d8 
+##   algorithm:  nmf_58385768ee73 
 ##   seed:  random 
 ##   RNG: 403L, 389L, ..., -818492466L [7d13c1cc60f9b6390bf7ebfc74dce591]
 ##   distance metric:  'euclidean' 
@@ -2110,14 +2113,14 @@ To use the new seeding method:
 ##   samples: 20 
 ##  # Details:
 ##   algorithm:  snmf/r 
-##   seed:  NMF.seed.4a4d37fd71dd 
+##   seed:  NMF.seed.58383b4796bc 
 ##   RNG: 403L, 25L, ..., -1308220775L [e0cc5847b800083c2460eb9eaa25bd4e]
 ##   distance metric:  <function> 
 ##   residuals:  195.6 
 ##   Iterations: 105 
 ##   Timing:
 ##      user  system elapsed 
-##     0.272   0.004   0.274
+##     0.284   0.000   0.281
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2292,7 +2295,7 @@ The default/current values of each options can be displayed using the function
   \item Other packages: BH~1.51.0-0, bigmemory~4.4.3,
     bigmemory.sri~0.1.2, Biobase~2.20.0,
     BiocGenerics~0.6.0, digest~0.6.3, knitr~1.2,
-    NMF~0.17.1, pkgmaker~0.16.2, RColorBrewer~1.0-5,
+    NMF~0.17.1, pkgmaker~0.16.3, RColorBrewer~1.0-5,
     registry~0.2, rngtools~1.2, synchronicity~1.1.0,
     xtable~1.7-1
   \item Loaded via a namespace (and not attached):
