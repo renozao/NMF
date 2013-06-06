@@ -15,6 +15,13 @@
 #' @import registry
 nmfRegistry <- function(...) pkgmaker::packageRegistry(...)
 
+# Returns the names of all the packages that contibute to all or a given
+# package's primary registry  
+registryContributors <- function(package, regname = NULL){
+    regs <- packageRegistries(regname = regname, package = package, primary = TRUE)
+    if( length(regs) ) unique(names(unlist(lapply(paste0(package, '::', regs), packageRegistries))))
+}
+
 ###% Return a method stored in the NMF registry.
 ###% 
 ###% @param name the key (a character string) of the method to be retrieved

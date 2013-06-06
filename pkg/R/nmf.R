@@ -1466,6 +1466,15 @@ function(x, rank, method
 				## 2. RUN
 				# ensure that the package NMF is in each worker's search path
 				.packages <- setupLibPaths('NMF', verbose>3)
+                
+                # export all packages that contribute to NMF registries, 
+                # e.g., algorithms or seeding methods.
+                # This is important so that these can be found in worker nodes
+                # for non-fork clusters.
+                if( !is.null(contribs <- registryContributors(package = 'NMF')) ){
+                    .packages <- c(pkg, contribs)
+                }
+                
 				# export dev environment if in dev mode 
 #				.export <- if( isDevNamespace('NMF') && !is.doSEQ() ) ls(asNamespace('NMF'))
 				

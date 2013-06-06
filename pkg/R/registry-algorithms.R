@@ -11,9 +11,15 @@
 NULL
 
 # create sub-registry for NMF algorithm
-setPackageRegistry('algorithm', "NMFStrategy"
+.registryAlgorithm <- setPackageRegistry('algorithm', "NMFStrategy"
 		, description = "Algorithms to solve MF optimisation problems"
 		, entrydesc = "NMF algorithm") 
+
+nmfAlgorithmInfo <- function(show=TRUE){
+    obj <- .registryAlgorithm
+    if( show ) print(obj)
+    invisible(obj)
+}
 
 # specific register method for registering NMFStrategy objects
 setMethod('nmfRegister', signature(key='NMFStrategy', method='missing'), 

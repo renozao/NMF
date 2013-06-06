@@ -8,9 +8,15 @@
 NULL
 
 # create sub-registry for seeding methods
-setPackageRegistry('seed', "NMFSeed"
+.registrySeed <- setPackageRegistry('seed', "NMFSeed"
 		, description = "Initialization methods for NMF algorithms"
 		, entrydesc = 'NMF seeding method')
+
+nmfSeedInfo <- function(show=TRUE){
+    obj <- .registrySeed
+    if( show ) print(obj)
+    invisible(obj)
+}
 
 #' Seeding Strategies for NMF Algorithms
 #' 
