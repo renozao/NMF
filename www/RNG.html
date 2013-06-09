@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>getRNG1. NMF 0.16.5</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Extracting RNG Data from NMF Objects</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,The <code><a href='nmf.html'>nmf</a></code> function returns objects that
+  contain embedded RNG data, that can be used to exactly
+  reproduce any computation. These data can be extracted
+  using dedicated methods for the S4 generics
+  <code><a href='http://www.inside-r.org/r-doc/rngtools/rng'>getRNG</a></code> and
+  <code><a href='http://www.inside-r.org/r-doc/rngtools/rng'>getRNG1</a></code>.</p>
+  
+    </div>
+    
+    <h2>Usage</h2>
+    <pre>getRNG1(object, ...)
+
+.getRNG(object, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>an R object from which RNG settings can be
+  extracted, e.g. an integer vector containing a suitable
+  value for <code>.Random.seed</code> or embedded RNG data, e.g.,
+  in S3/S4 slot <code>rng</code> or <code>rng$noise</code>.</dd>
+      <dt>...</dt>
+      <dd>extra arguments to allow extension and passed
+  to a suitable S4 method <code>.getRNG</code> or
+  <code>.setRNG</code>.</dd>
+    </dl>
+    
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>.getRNG<code>signature(object = "NMFfitXn")</code>:
+  Returns the RNG settings used for the best fit.</p>
+  
+      <p>This method throws an error if the object is empty.</p>
+  
+      <p></li>
+<li>getRNG1<code>signature(object = "NMFfitX")</code>:
+  Returns the RNG settings used for the first NMF run of
+  multiple NMF runs.</p>
+  
+      <p></li>
+<li>getRNG1<code>signature(object = "NMFfitX1")</code>:
+  Returns the RNG settings used to compute the first of all
+  NMF runs, amongst which <code>object</code> was selected as the
+  best fit.</p>
+  
+      <p></li>
+<li>getRNG1<code>signature(object = "NMFfitXn")</code>:
+  Returns the RNG settings used for the first run.</p>
+  
+      <p>This method throws an error if the object is empty.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>.getRNG</li><li>getRNG1</li><li>getRNG1-methods</li><li>getRNG1,NMFfitX1-method</li><li>getRNG1,NMFfitX-method</li><li>getRNG1,NMFfitXn-method</li><li>.getRNG-methods</li><li>.getRNG,NMFfitXn-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

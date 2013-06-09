@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>NMFList-class. NMF 0.16.5</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Class for Storing Heterogeneous NMF fits</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,c("This class wraps a list of NMF fit objects, which may\n  come from different runs of the function\n  <code><a href='nmf.html'>nmf</a></code>, using different parameters, methods,\n  etc.. These can be either from a single run (NMFfit) or\n  multiple runs (NMFfitX).", "Note that its definition/interface is very likely to\n  change in the future.")</p>
+  
+    </div>
+    
+    
+    
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>algorithm<code>signature(object = "NMFList")</code>:
+  Returns the method names used to compute the NMF fits in
+  the list. It returns <code>NULL</code> if the list is empty.</p>
+  
+      <p></li>
+<li>runtime<code>signature(object = "NMFList")</code>:
+  Returns the CPU time required to compute all NMF fits in
+  the list. It returns <code>NULL</code> if the list is empty. If
+  no timing data are available, the sequential time is
+  returned.</p>
+  
+      <p></li>
+<li>seqtime<code>signature(object = "NMFList")</code>:
+  Returns the CPU time that would be required to
+  sequentially compute all NMF fits stored in
+  <code>object</code>.</p>
+  
+      <p>This method calls the function <code>runtime</code> on each fit
+  and sum up the results. It returns <code>NULL</code> on an
+  empty object.</p>
+  
+      <p></li>
+<li>show<code>signature(object = "NMFList")</code>: Show
+  method for objects of class <code>NMFList</code></p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>NMFList-class</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

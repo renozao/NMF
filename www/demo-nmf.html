@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>Using the main function nmf(). NMF 0.16.5</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_DEMOS.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Using the main function nmf()</h1><br />
+
+<div class="row"><div class="span8">
+  <pre>
+  <div class='input'># generate a synthetic dataset with known classes: 50 features, 23 samples (10+5+8)</div><div class='input'>n <- 20; counts <- c(5, 3, 2);
+</div><div class='input'>p <- sum(counts)
+</div><div class='input'>x <- syntheticNMF(n, counts)
+</div><div class='input'>dim(x)
+</div>
+<div class='output'>[1] 20 10
+</div><div class='input'></div><div class='input'># build the true cluster membership</div><div class='input'>groups <- unlist(mapply(rep, seq(counts), counts))
+</div><div class='input'></div><div class='input'># run on a data.frame</div><div class='input'>res <- nmf(data.frame(x), 3)
+</div><div class='input'></div><div class='input'># missing method: use algorithm suitable for seed</div><div class='input'>res <- nmf(x, 2, seed=rnmf(2, x))
+</div><div class='input'>algorithm(res)
+</div>
+<div class='output'>[1] "brunet"
+</div><div class='input'>res <- nmf(x, 2, seed=rnmf(2, x, model='NMFns'))
+</div><div class='input'>algorithm(res)
+</div>
+<div class='output'>[1] "nsNMF"
+</div><div class='input'></div><div class='input'># compare some NMF algorithms (tracking the approximation error)</div><div class='input'>res <- nmf(x, 2, list('brunet', 'lee', 'nsNMF'), .options='t')
+</div>
+<div class='output'>Compute NMF method 'brunet' [1/3] ... OK
+Compute NMF method 'lee' [2/3] ... OK
+Compute NMF method 'nsNMF' [3/3] ... OK
+</div><div class='input'>res
+</div>
+<div class='output'><Object of class: NMFList >
+Length: 3 
+Method(s): brunet, lee, nsNMF 
+Total timing:
+   user  system elapsed 
+   0.96    0.00    0.96 
+</div><div class='input'>summary(res, class=groups)
+</div>
+<div class='output'>       method   seed rng    metric rank sparseness.basis sparseness.coef purity   entropy residuals niter   cpu cpu.all nrun
+brunet brunet random   1        KL    2        0.3357316       0.7432652    0.8 0.3063008  63.08396   420 0.116   0.116    1
+lee       lee random   1 euclidean    2        0.3026147       0.7857537    0.8 0.3063008  50.90511   420 0.172   0.172    1
+nsNMF   nsNMF random   1        KL    2        0.3720474       0.9984808    0.8 0.3063008  73.65260   420 0.228   0.228    1
+</div><div class='input'></div><div class='input'># plot the track of the residual errors</div><div class='input'>plot(res)
+</div><p><img src='nmf-demo1.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># specify algorithm by its name</div><div class='input'>res <- nmf(x, 3, 'nsNMF', seed=123) # nonsmooth NMF
+</div><div class='input'># names are partially matched so this also works</div><div class='input'>identical(res, nmf(x, 3, 'ns', seed=123))
+</div>
+<div class='output'>[1] FALSE
+</div><div class='input'></div><div class='input'>res <- nmf(x, 3, 'offset') # NMF with offset
+</div><div class='input'></div><div class='input'># run a custom algorithm defined as a standard function</div><div class='input'>myfun <- function(x, start, alpha){
+# update starting point
+# ...
+basis(start) <- 3 * basis(start)
+# return updated point
+start
+}
+</div><div class='input'></div><div class='input'>res <- nmf(x, 2, myfun, alpha=3)
+</div><div class='input'>algorithm(res)
+</div>
+<div class='output'>[1] "nmf_40c1ebcd732"
+</div><div class='input'># error: alpha missing</div><div class='input'>try( nmf(x, 2, myfun) )
+</div>
+<div class='output'><Object of class: NMFfit>
+ # Model:
+  <Object of class:NMFstd>
+  features: 20 
+  basis/rank: 2 
+  samples: 10 
+ # Details:
+  algorithm:  nmf_40c17e77c2a1 
+  seed:  random 
+  RNG: 403L, 586L, ..., -2053526145L [7947c66de03e3ef1a3cf54b6e3aa48d3]
+  distance metric:  'euclidean' 
+  residuals:  179758.4 
+  Timing:
+     user  system elapsed 
+    0.000   0.000   0.002 
+</div><div class='input'></div><div class='input'># possibly the algorithm fits a non-standard NMF model, e.g. NMFns model</div><div class='input'>res <- nmf(x, 2, myfun, alpha=3, model='NMFns')
+</div><div class='input'>modelname(res)
+</div>
+<div class='output'>[1] "NMFns"
+</div><div class='input'></div><div class='input'># assume a known NMF model compatible with the matrix `x`</div><div class='input'>y <- rnmf(3, x)
+</div><div class='input'># fits an NMF model (with default method) on some data using y as a starting point</div><div class='input'>res <- nmf(x, y)
+</div><div class='input'># the fit can be reproduced using the same starting point</div><div class='input'>nmf.equal(nmf(x, y), res)
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'></div><div class='input'># missing method: use default algorithm</div><div class='input'>res <- nmf(x, 3)
+</div><div class='input'></div><div class='input'># Fit a 3-rank model providing an initial value for the basis matrix</div><div class='input'>nmf(x, rmatrix(nrow(x), 3), 'snmf/r')
+</div>
+<div class='output'><Object of class: NMFfit>
+ # Model:
+  <Object of class:NMFstd>
+  features: 20 
+  basis/rank: 3 
+  samples: 10 
+ # Details:
+  algorithm:  snmf/r 
+  seed:  none 
+  RNG: 403L, 322L, ..., -1275215471L [2fab710afef97df5fc8c667128943f31]
+  distance metric:  <function> 
+  residuals:  40.73365 
+  Iterations: 60 
+  Timing:
+     user  system elapsed 
+    0.156   0.000   0.157 
+</div><div class='input'></div><div class='input'># Fit a 3-rank model providing an initial value for the mixture coefficient matrix</div><div class='input'>nmf(x, rmatrix(3, ncol(x)), 'snmf/l')
+</div>
+<div class='output'><Object of class: NMFfit>
+ # Model:
+  <Object of class:NMFstd>
+  features: 20 
+  basis/rank: 3 
+  samples: 10 
+ # Details:
+  algorithm:  snmf/l 
+  seed:  none 
+  RNG: 403L, 388L, ..., -1275215471L [15e42d598c1605010d76a4827b22ae9b]
+  distance metric:  <function> 
+  residuals:  41.22293 
+  Iterations: 60 
+  Timing:
+     user  system elapsed 
+    0.164   0.000   0.163 
+</div><div class='input'></div><div class='input'># default fit</div><div class='input'>res <- nmf(x, 2)
+</div><div class='input'>summary(res, class=groups)
+</div>
+<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy        residuals            niter              cpu 
+       2.0000000        0.3357312        0.7720300        0.8000000        0.3063008       63.0839595      420.0000000        0.1120000 
+         cpu.all             nrun 
+       0.1120000        1.0000000 
+</div><div class='input'></div><div class='input'># run default algorithm multiple times (only keep the best fit)</div><div class='input'>res <- nmf(x, 3, nrun=10)
+</div><div class='input'>res
+</div>
+<div class='output'><Object of class: NMFfitX1 >
+  Method: brunet 
+  Runs:  10 
+  RNG:
+   407L, -1741689033L, 1019173388L, -1227245667L, 843579834L, -310782989L, 776278168L 
+  Total timing:
+   user  system elapsed 
+  2.916   0.328   2.181 
+</div><div class='input'>summary(res, class=groups)
+</div>
+<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy        residuals            niter              cpu 
+       3.0000000        0.4504751        0.7138897        1.0000000        0.0000000       40.1717065      480.0000000        0.2360000 
+         cpu.all             nrun       cophenetic       dispersion 
+       2.9160000       10.0000000        1.0000000        0.9136000 
+</div><div class='input'></div><div class='input'># run default algorithm multiple times keeping all the fits</div><div class='input'>res <- nmf(x, 3, nrun=10, .options='k')
+</div><div class='input'>res
+</div>
+<div class='output'><Object of class: NMFfitXn >
+  Method: brunet 
+  Runs:  10 
+  RNG:
+   407L, -201927413L, -1165678384L, 1216626321L, 128218910L, -270669561L, 1116730780L 
+  Total timing:
+   user  system elapsed 
+  4.344   0.420   1.611 
+  Sequential timing:
+   user  system elapsed 
+  2.012   0.000   2.062 
+</div><div class='input'>summary(res, class=groups)
+</div>
+<div class='output'>            rank sparseness.basis  sparseness.coef           purity          entropy        residuals            niter              cpu 
+       3.0000000        0.4505017        0.7561047        1.0000000        0.0000000       40.1716786      420.0000000        0.2240000 
+         cpu.all             nrun       cophenetic       dispersion 
+       4.3440000       10.0000000        0.9989663        0.8032000 
+</div><div class='input'></div><div class='input'>## Note: one could have equivalently done</div><div class='input'># res <- nmf(V, 3, nrun=10, .options=list(keep.all=TRUE))</div><div class='input'></div><div class='input'># use a method that fit different model</div><div class='input'>res <- nmf(x, 2, 'nsNMF')
+</div><div class='input'>fit(res)
+</div>
+<div class='output'><Object of class:NMFns>
+features: 20 
+basis/rank: 2 
+samples: 10 
+theta: 0.5 
+</div><div class='input'></div><div class='input'># pass parameter theta to the model via `...`</div><div class='input'>res <- nmf(x, 2, 'nsNMF', theta=0.2)
+</div><div class='input'>fit(res)
+</div>
+<div class='output'><Object of class:NMFns>
+features: 20 
+basis/rank: 2 
+samples: 10 
+theta: 0.2 
+</div><div class='input'></div><div class='input'>## handling arguments in `...` and model parameters</div><div class='input'>myfun <- function(x, start, theta=100){ cat("theta in myfun=", theta, "\n\n"); start }
+</div><div class='input'># no conflict: default theta</div><div class='input'>fit( nmf(x, 2, myfun) )
+</div>
+<div class='output'>theta in myfun= 100 
+
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 20 
+basis/rank: 2 
+samples: 10 
+</div><div class='input'># no conlfict: theta is passed to the algorithm</div><div class='input'>fit( nmf(x, 2, myfun, theta=1) )
+</div>
+<div class='output'>theta in myfun= 1 
+
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 20 
+basis/rank: 2 
+samples: 10 
+</div><div class='input'># conflict: theta is used as model parameter</div><div class='input'>fit( nmf(x, 2, myfun, model='NMFns', theta=0.1) )
+</div>
+<div class='output'>theta in myfun= 100 
+
+</div>
+<div class='output'><Object of class:NMFns>
+features: 20 
+basis/rank: 2 
+samples: 10 
+theta: 0.1 
+</div><div class='input'># conflict solved: can pass different theta to model and algorithm</div><div class='input'>fit( nmf(x, 2, myfun, model=list('NMFns', theta=0.1), theta=5) )
+</div>
+<div class='output'>theta in myfun= 5 
+
+</div>
+<div class='output'><Object of class:NMFns>
+features: 20 
+basis/rank: 2 
+samples: 10 
+theta: 0.1 
+</div><div class='input'></div><div class='input'>## USING SEEDING METHODS</div><div class='input'></div><div class='input'># run default algorithm with the Non-negative Double SVD seeding method ('nndsvd')</div><div class='input'>res <- nmf(x, 3, seed='nndsvd')
+</div><div class='input'></div><div class='input'>## Note: partial match also works</div><div class='input'>identical(res, nmf(x, 3, seed='nn'))
+</div>
+<div class='output'>[1] FALSE
+</div><div class='input'></div><div class='input'># run nsNMF algorithm, fixing the seed of the random number generator</div><div class='input'>res <- nmf(x, 3, 'nsNMF', seed=123456)
+</div><div class='input'>nmf.equal(nmf(x, 3, 'nsNMF', seed=123456), res)
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'></div><div class='input'># run default algorithm specifying the starting point following the NMF standard model</div><div class='input'>start.std <- nmfModel(W=matrix(0.5, n, 3), H=matrix(0.2, 3, p))
+</div><div class='input'>nmf(x, start.std)
+</div>
+<div class='output'><Object of class: NMFfit>
+ # Model:
+  <Object of class:NMFstd>
+  features: 20 
+  basis/rank: 3 
+  samples: 10 
+ # Details:
+  algorithm:  brunet 
+  seed:  none 
+  RNG: 403L, 208L, ..., 1925646142L [2dafe45cf61afa4f0108e79b96be5698]
+  distance metric:  'KL' 
+  residuals:  63.08396 
+  Iterations: 460 
+  Timing:
+     user  system elapsed 
+    0.116   0.000   0.118 
+</div><div class='input'></div><div class='input'># to run nsNMF algorithm with an explicit starting point, this one</div><div class='input'># needs to follow the 'NMFns' model:</div><div class='input'>start.ns <- nmfModel(model='NMFns', W=matrix(0.5, n, 3), H=matrix(0.2, 3, p))
+</div><div class='input'>nmf(x, start.ns)
+</div>
+<div class='output'><Object of class: NMFfit>
+ # Model:
+  <Object of class:NMFns>
+  features: 20 
+  basis/rank: 3 
+  samples: 10 
+  theta: 0.5 
+ # Details:
+  algorithm:  nsNMF 
+  seed:  none 
+  RNG: 403L, 208L, ..., 1925646142L [2dafe45cf61afa4f0108e79b96be5698]
+  distance metric:  'KL' 
+  residuals:  103.5996 
+  Iterations: 420 
+  Timing:
+     user  system elapsed 
+    0.236   0.000   0.236 
+</div><div class='input'># Note: the method name does not need to be specified as it is infered from the</div><div class='input'># when there is only one algorithm defined for the model.</div><div class='input'></div><div class='input'># if the model is not appropriate (as defined by the algorihtm) an error is thrown</div><div class='input'># [cf. the standard model doesn't include a smoothing parameter used in nsNMF]</div><div class='input'>try( nmf(x, start.std, method='nsNMF') )
+</div><div class='input'></div><div class='input'>## Callback functions</div><div class='input'># Pass a callback function to only save summary measure of each run</div><div class='input'>res <- nmf(x, 3, nrun=3, .callback=summary)
+</div><div class='input'># the callback results are simplified into a matrix</div><div class='input'>res$.callback
+</div>
+<div class='output'>                        [,1]        [,2]        [,3]
+rank               3.0000000   3.0000000   3.0000000
+sparseness.basis   0.4504994   0.4610962   0.4612122
+sparseness.coef    0.7297651   0.7067052   0.7019497
+residuals         40.1716788  40.2256892  40.2234128
+niter            420.0000000 430.0000000 430.0000000
+cpu                0.1360000   0.2000000   0.2000000
+cpu.all            0.1360000   0.2000000   0.2000000
+nrun               1.0000000   1.0000000   1.0000000
+</div><div class='input'>res <- nmf(x, 3, nrun=3, .callback=summary, .opt='-S')
+</div><div class='input'># the callback results are simplified into a matrix</div><div class='input'>res$.callback
+</div>
+<div class='output'>[[1]]
+            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun 
+       3.0000000        0.4612122        0.7198389       40.2234106      420.0000000        0.1840000        0.1840000        1.0000000 
+
+[[2]]
+            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun 
+       3.0000000        0.4612121        0.7547306       40.2233922      430.0000000        0.1400000        0.1400000        1.0000000 
+
+[[3]]
+            rank sparseness.basis  sparseness.coef        residuals            niter              cpu          cpu.all             nrun 
+       3.0000000        0.4612109        0.7084354       40.2233989      420.0000000        0.1800000        0.1800000        1.0000000 
+
+</div><div class='input'></div><div class='input'># Pass a custom callback function</div><div class='input'>cb <- function(obj, i){ if( i %% 2 ) sparseness(obj) >= 0.5 }
+</div><div class='input'>res <- nmf(x, 3, nrun=3, .callback=cb)
+</div><div class='input'>res$.callback
+</div>
+<div class='output'>[[1]]
+basis  coef 
+FALSE  TRUE 
+
+[[2]]
+NULL
+
+[[3]]
+basis  coef 
+FALSE  TRUE 
+
+</div><div class='input'></div><div class='input'># Passs a callback function which throws an error</div><div class='input'>cb <- function(){ i<-0; function(object){ i <<- i+1; if( i == 1 ) stop('SOME BIG ERROR'); summary(object) }}
+</div><div class='input'>res <- nmf(x, 3, nrun=3, .callback=cb())
+</div>
+<strong class='warning'>Warning message:
+NMF::nmf - All NMF fits were successful but 3/3 callback call(s) threw an error.
+# Callback error(s) thrown:
+  - run #1: SOME BIG ERROR</strong><div class='input'></div><div class='input'>## PARALLEL COMPUTATIONS</div><div class='input'># try using 3 cores, but use sequential if not possible</div><div class='input'>res <- nmf(x, 3, nrun=3, .options='p3')
+</div><div class='input'></div><div class='input'># force using 3 cores, error if not possible</div><div class='input'>res <- nmf(x, 3, nrun=3, .options='P3')
+</div><div class='input'></div><div class='input'># use externally defined cluster</div><div class='input'>library(parallel)
+</div><div class='input'>cl <- makeCluster(6)
+</div><div class='input'>res <- nmf(x, 3, nrun=3, .pbackend=cl)
+</div><div class='input'></div><div class='input'># use externally registered backend</div><div class='input'>registerDoParallel(cl)
+</div><div class='input'>res <- nmf(x, 3, nrun=3, .pbackend=NULL)</div>
+  </pre>
+</div></div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

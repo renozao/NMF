@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>NMFfitX. NMF 0.16.5</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Factory Method for Multiple NMF Run Objects</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,Factory Method for Multiple NMF Run Objects</p>
+  
+    </div>
+    
+    <h2>Usage</h2>
+    <pre>NMFfitX(object, ...)
+
+<span class="label label-important">S4</span> (list)
+`NMFfitX`(object, ..., .merge = FALSE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>an object from which is created an
+  <code>NMFfitX</code> object</dd>
+      <dt>...</dt>
+      <dd>extra arguments used to pass values for slots</dd>
+      <dt>.merge</dt>
+      <dd>a logical that indicates if the fits should
+  be aggregated, only keeping the best fit, and return an
+  <code>NMFfitX1</code> object. If <code>FALSE</code>, an
+  <code>NMFfitXn</code> object containing the data of all the
+  fits is returned.</dd>
+    </dl>
+    
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>NMFfitX<code>signature(object = "list")</code>: Create
+  an <code>NMFfitX</code> object from a list of fits.</p>
+  
+      <p></li>
+<li>NMFfitX<code>signature(object = "NMFfit")</code>:
+  Creates an <code>NMFfitX1</code> object from a single fit. This
+  is used in <code><a href='nmf.html'>nmf</a></code> when only the best fit is
+  kept in memory or on disk.</p>
+  
+      <p></li>
+<li>NMFfitX<code>signature(object = "NMFfitX")</code>:
+  Provides a way to aggregate <code>NMFfitXn</code> objects into
+  an <code>NMFfitX1</code> object.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>NMFfitX</li><li>NMFfitX,list-method</li><li>NMFfitX-methods</li><li>NMFfitX,NMFfit-method</li><li>NMFfitX,NMFfitX-method</li>
+    </ul>
+    <ul>
+      <li>internal</li><li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

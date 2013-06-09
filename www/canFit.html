@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>canFit. NMF 0.16.5</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Testing Compatibility of Algorithm and Models</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p>Description,<code>canFit</code> is an S4 generic that tests if an algorithm
+  can fit a particular model.</p>
+  
+    </div>
+    
+    <h2>Usage</h2>
+    <pre>canFit(x, y, ...)
+
+<span class="label label-important">S4</span> (NMFStrategy,character)
+`canFit`(x, y, exact = FALSE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>an object that describes an algorithm</dd>
+      <dt>y</dt>
+      <dd>an object that describes a model</dd>
+      <dt>...</dt>
+      <dd>extra arguments to allow extension</dd>
+      <dt>exact</dt>
+      <dd>for logical that indicates if an algorithm
+  is considered able to fit only the models that it
+  explicitly declares (<code>TRUE</code>), or if it should be
+  considered able to also fit models that extend models
+  that it explicitly fits.</dd>
+    </dl>
+    
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>canFit<code>signature(x = "NMFStrategy", y =
+  "character")</code>: Tells if an NMF algorithm can fit a given
+  class of NMF models</p>
+  
+      <p></li>
+<li>canFit<code>signature(x = "NMFStrategy", y =
+  "NMF")</code>: Tells if an NMF algorithm can fit the same class
+  of models as <code>y</code></p>
+  
+      <p></li>
+<li>canFit<code>signature(x = "character", y =
+  "ANY")</code>: Tells if a registered NMF algorithm can fit a
+  given NMF model</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>canFit</li><li>canFit,character,ANY-method</li><li>canFit-methods</li><li>canFit,NMFStrategy,character-method</li><li>canFit,NMFStrategy,NMF-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  Other regalgo: <code><a href='nmfAlgorithm.html'>nmfAlgorithm</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
