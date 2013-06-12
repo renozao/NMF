@@ -879,7 +879,10 @@ cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, s
 			
 		}else # EXIT: return treedef
 			return(res)
-	}
+	}else if( is(param, 'silhouette') ){ # use silhouette order 
+        si <- sortSilhouette(param)
+        param <- attr(si, 'iOrd')
+    }
 
 	# index vectors are honoured
 	if( is.integer(param) && length(param) > 1 ){
@@ -974,7 +977,7 @@ cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, s
 			dh <- cutdendro(dh, param)						
 		else if( is.numeric(param) && length(param)==nrow(mat) ) # reorder the dendrogram if necessary
 			dh <- reorderfun(dh, param)
-				
+		
 		# wrap up into a aheatmap_treedef object
 		as_treedef(dh, dist.method=hc$dist.method, method=hc$method)
 	}
@@ -1686,7 +1689,9 @@ subset_index <- function(x, margin, subset){
 aheatmap = function(x
 , color = '-RdYlBu2:100'
 , breaks = NA, border_color=NA, cellwidth = NA, cellheight = NA, scale = "none"
-, Rowv=TRUE, Colv=TRUE, revC = identical(Colv, "Rowv") || is_NA(Rowv) || (is.integer(Rowv) && length(Rowv) > 1)
+, Rowv=TRUE, Colv=TRUE
+, revC = identical(Colv, "Rowv") || is_NA(Rowv) || (is.integer(Rowv) && length(Rowv) > 1)
+    || is(Rowv, 'silhouette')
 , distfun = "euclidean", hclustfun = "complete", reorderfun = function(d,w) reorder(d,w)
 , treeheight = 50
 , legend = TRUE, annCol = NA, annRow = NA, annColors = NA, annLegend = TRUE
