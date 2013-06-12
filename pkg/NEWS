@@ -1,4 +1,26 @@
 *************************************************************************
+Changes in version 0.17.3
+*************************************************************************
+NEW FEATURES
+    o add silhouette computation for NMF results, which can be performed on 
+    samples, features or consensus matrix.
+    The average silhouette width is also computed by the summary methods.
+    This feature was long requested by researchers from the TCGA in Vancouver 
+    (thanks to Gordon Robertson for reminding this to me).
+    
+    o New runtime option 'shared.memory' (or 'm') for toggling usage of shared 
+    memory (requires package synchronicity).
+    
+CHANGES
+    o some plots are -- finally -- generated using ggplot2
+    This adds an Imports dependency to ggplot2 and reshape2.
+    
+BUG FIXES
+    o fix a bug when running parallel NMF computation with 
+    algorithms defined in other packages (this most probably only affected my 
+    own packages, e.g., CellMix)
+
+*************************************************************************
 Changes in version 0.17.1
 *************************************************************************
 CHANGES

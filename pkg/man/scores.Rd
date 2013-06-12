@@ -210,14 +210,6 @@ extractFeatures(x, 1) # means relative contribution above 100\%
 extractFeatures(x, 1L) # means top contributing feature in each component
 }
 \references{
-  Carmona-Saez P, Pascual-Marqui RD, Tirado F, Carazo JM
-  and Pascual-Montano A (2006). "Biclustering of gene
-  expression data by Non-smooth Non-negative Matrix
-  Factorization." _BMC bioinformatics_, *7*, pp. 78. ISSN
-  1471-2105, <URL:
-  http://dx.doi.org/10.1186/1471-2105-7-78>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/16503973>.
-
   Kim H and Park H (2007). "Sparse non-negative matrix
   factorizations via alternating non-negativity-constrained
   least squares for microarray data analysis."
@@ -225,6 +217,14 @@ extractFeatures(x, 1L) # means top contributing feature in each component
   1495-502. ISSN 1460-2059, <URL:
   http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
   http://www.ncbi.nlm.nih.gov/pubmed/17483501>.
+
+  Carmona-Saez P, Pascual-Marqui RD, Tirado F, Carazo JM
+  and Pascual-Montano A (2006). "Biclustering of gene
+  expression data by Non-smooth Non-negative Matrix
+  Factorization." _BMC bioinformatics_, *7*, pp. 78. ISSN
+  1471-2105, <URL:
+  http://dx.doi.org/10.1186/1471-2105-7-78>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/16503973>.
 }
 \keyword{methods}
 

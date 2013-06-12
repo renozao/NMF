@@ -4,6 +4,7 @@ bigmemory
 bigmemory.sri
 Biobase
 BiocGenerics
+cluster
 digest
 doParallel
 foreach

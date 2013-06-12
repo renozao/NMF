@@ -140,6 +140,13 @@ res <- fcnnls(X[,1], y)
   slightly modified by H. Kim:\cr
   \url{http://www.cc.gatech.edu/~hpark/software/fcnnls.m}
 
+  Van Benthem M and Keenan MR (2004). "Fast algorithm for
+  the solution of large-scale non-negativity-constrained
+  least squares problems." _Journal of Chemometrics_,
+  *18*(10), pp. 441-450. ISSN 0886-9383, <URL:
+  http://dx.doi.org/10.1002/cem.889>, <URL:
+  http://doi.wiley.com/10.1002/cem.889>.
+
   Kim H and Park H (2007). "Sparse non-negative matrix
   factorizations via alternating non-negativity-constrained
   least squares for microarray data analysis."
@@ -147,13 +154,6 @@ res <- fcnnls(X[,1], y)
   1495-502. ISSN 1460-2059, <URL:
   http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
   http://www.ncbi.nlm.nih.gov/pubmed/17483501>.
-
-  Van Benthem M and Keenan MR (2004). "Fast algorithm for
-  the solution of large-scale non-negativity-constrained
-  least squares problems." _Journal of Chemometrics_,
-  *18*(10), pp. 441-450. ISSN 0886-9383, <URL:
-  http://dx.doi.org/10.1002/cem.889>, <URL:
-  http://doi.wiley.com/10.1002/cem.889>.
 }
 \seealso{
   \code{\link{nmf}}

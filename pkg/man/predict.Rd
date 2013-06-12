@@ -10,11 +10,11 @@
 
   \S4method{predict}{NMF}(object,
     what = c("columns", "rows", "samples", "features"),
-    prob = FALSE)
+    prob = FALSE, dmatrix = FALSE)
 
   \S4method{predict}{NMFfitX}(object,
     what = c("columns", "rows", "samples", "features", "consensus", "cmap"),
-    ...)
+    dmatrix = FALSE, ...)
 }
 \arguments{
   \item{object}{an NMF model}
@@ -29,6 +29,11 @@
   \item{prob}{logical that indicates if the relative
   contributions of/to the dominant basis component should
   be computed and returned. See \emph{Details}.}
+
+  \item{dmatrix}{logical that indicates if a dissimiliarity
+  matrix should be attached to the result. This is notably
+  used internally when computing NMF clustering
+  silhouettes.}
 
   \item{...}{additional arguments affecting the predictions
   produced.}
