@@ -322,7 +322,7 @@ setMethod('consensushc', 'matrix',
 		
 		# convert into a dendrogram if requested
 		if( dendrogram ) as.dendrogram(hc)
-		else hc
+        else hc
 	}
 )
 #' Compute the hierarchical clustering on the connectivity matrix of \code{object}.
@@ -362,28 +362,30 @@ setMethod('consensushc', 'NMFfitX',
 #' 
 #' Argument \code{what} accepts the following extra types:
 #' \describe{
-#' \item{\code{'consensus'}}{ returns the cluster membership based on the 
+#' \item{\code{'chc'}}{ returns the cluster membership based on the 
 #' hierarchical clustering of the consensus matrix, as performed by 
-#' \code{\link{consensushc}}.} 
-#' \item{\code{'cmap'}}{ same as \code{'consensus'} but the levels of the membership 
+#' \code{\link{consensushc}}.}
+#' \item{\code{'consensus'}}{ same as \code{'chc'} but the levels of the membership 
 #' index are re-labeled to match the order of the clusters as they would be displayed on the 
-#' associated dendrogram, like on the default annotation track in consensus 
+#' associated dendrogram, as re-ordered on the default annotation track in consensus 
 #' heatmap produced by \code{\link{consensusmap}}.}
 #' }
 #' 
 setMethod('predict', signature(object='NMFfitX'),
-	function(object, what=c('columns', 'rows', 'samples', 'features', 'consensus', 'cmap'), dmatrix = FALSE, ...){
+	function(object, what=c('columns', 'rows', 'samples', 'features', 'consensus', 'chc'), dmatrix = FALSE, ...){
 		# determine which prediction to do
 		what <- match.arg(what)
-		if( what=='consensus' || what=='cmap' ){
+		res <- if( what %in% c('consensus', 'chc') ){
 			# build the tree from consensus matrix
 			h <- consensushc(object, what='consensus', dendrogram=FALSE)
 			# extract membership from the tree
 			cl <- cutree(h, k=nbasis(object))
 			
-			# reorder the levels in the case of consensus map
-			if( what=='cmap' ){
-				cl <- setNames(match(cl, unique(cl[h$order])), names(cl))
+			# rename the cluster ids in the case of a consensus map
+			if( what != 'chc' ){
+                dr <- as.dendrogram(h)
+                o <- order.dendrogram(reorder(dr, rowMeans(consensus(object), na.rm=TRUE)))
+				cl <- setNames(match(cl, unique(cl[o])), names(cl))
             }
             
 			res <- as.factor(cl)
@@ -391,9 +393,14 @@ setMethod('predict', signature(object='NMFfitX'),
             if( dmatrix ){
                 attr(res, 'dmatrix') <- 1 - consensus(object) 
             }
+            if( what != 'chc' ) attr(res, 'iOrd') <- o
+            
+            # return
             res
 		}
 		else predict(fit(object), what=what, ..., dmatrix = dmatrix)
+        attr(res, 'what') <- what
+        res
 	}
 )
 
@@ -1701,7 +1708,7 @@ setMethod('consensusmap', 'NMFfitX',
 		# set special annotation handler
 		ahandlers <- list(
 			basis = function() predict(object)
-			, consensus = function() predict(object, what='cmap')
+			, consensus = function() predict(object, what='consensus')
 		)
 		specialAnnotation(1L, ahandlers)
 		specialAnnotation(2L, ahandlers)
@@ -1824,7 +1831,7 @@ setMethod('basismap', signature(object='NMFfitX'),
 #' \itemize{
 #' \item an extra special column annotation track for multi-run NMF fits,
 #' \code{'consensus:'}, that shows the consensus cluster associated to each sample.
-#' \item a column sorting schema \code{'consensus'} (or \code{'cmap'}) that can be passed
+#' \item a column sorting schema \code{'consensus'} that can be passed
 #' to argument \code{Colv} and orders the columns using the hierarchical clustering of the 
 #' consensus matrix with average linkage, as returned by \code{\link{consensushc}(object)}.
 #' This is also the ordering that is used by default for the heatmap of the consensus matrix 
@@ -1844,13 +1851,13 @@ setMethod('coefmap', signature(object='NMFfitX'),
 		annRow <- ptracks$row 
 		annCol <- ptracks$col
 		# set special annotation handler
-		specialAnnotation(2L, 'consensus', function() predict(object, what='cmap'))
+		specialAnnotation(2L, 'consensus', function() predict(object, what='consensus'))
 		# row track handler is added in coefmap,NMF
 		#
 		
 		## process ordering
 		if( isString(Colv) ){
-			if( Colv %in% c('consensus','cmap') )
+			if( Colv %in% c('consensus', 'cmap') )
 				Colv <- consensushc(object, 'consensus')
 		}
 		##
