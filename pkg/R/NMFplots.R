@@ -4,6 +4,8 @@
 # Creation: 16 Aug 2011
 ###############################################################################
 
+#' @include NMFSet-class.R
+NULL
 
 # Scales a matrix so that its columns sum up to one. 
 sum2one <- function(x){
@@ -501,3 +503,53 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
 #			profplot(minfit(x), y, ...)
 #		}
 #)
+
+#' Silhouette of NMF Clustering
+#' 
+#' @param x an NMF object, as returned by \code{\link{nmf}}.
+#' @param what defines the type of clustering the computed silhouettes are 
+#' meant to assess: \code{'samples'} for the clustering of samples 
+#' (i.e. the columns of the target matrix),
+#' \code{'features'} for the clustering of features (i.e. the rows of the
+#' target matrix), \code{'consensus'} for the consensus clustering of samples, 
+#' and \code{'cmap'} for the consensus clustering of samples but ordered has in 
+#' the default hierarchical clustering used by \code{\link{consensusmap}} when 
+#' plotting the heatmap of the consensus matrix (for multi-run NMF fits). 
+#' @param ... extra arguments not used.  
+#' 
+#' @seealso \code{\link[NMF]{predict}}
+#' @S3method silhouette NMF
+#' @import cluster
+#' @examples 
+#' 
+#' res <- nmfCheck(nrun = 5)
+#' 
+#' # sample clustering from best fit
+#' plot(silhouette(res))
+#' 
+#' # from consensus
+#' plot(silhouette(res, what = 'consensus'))
+#' 
+#' # feature clustering
+#' plot(silhouette(res, what = 'features')) 
+#' 
+#' # average silhouette are computed in summary measures
+#' summary(res)
+#' 
+silhouette.NMF <- function(x, what = NULL, ...){
+    
+    # compute prediction
+    p <- predict(x, what = what, dmatrix = TRUE)
+    # compute silhouette
+    si <- silhouette(as.numeric(p), dmatrix = attr(p, 'dmatrix'))
+    # fix rownames if necessary
+    if( is.null(rownames(si)) )
+        rownames(si) <- names(p)
+    
+    si
+}
+
+#' @S3method silhouette NMFfitX
+silhouette.NMFfitX <- function(x, ...){
+    silhouette.NMF(x, ...)
+}

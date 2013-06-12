@@ -372,7 +372,7 @@ setMethod('consensushc', 'NMFfitX',
 #' }
 #' 
 setMethod('predict', signature(object='NMFfitX'),
-	function(object, what=c('columns', 'rows', 'samples', 'features', 'consensus', 'cmap'), ...){
+	function(object, what=c('columns', 'rows', 'samples', 'features', 'consensus', 'cmap'), dmatrix = FALSE, ...){
 		# determine which prediction to do
 		what <- match.arg(what)
 		if( what=='consensus' || what=='cmap' ){
@@ -382,11 +382,18 @@ setMethod('predict', signature(object='NMFfitX'),
 			cl <- cutree(h, k=nbasis(object))
 			
 			# reorder the levels in the case of consensus map
-			if( what=='cmap' )
-				cl <- match(cl, unique(cl[h$order]))
-			as.factor(cl)
+			if( what=='cmap' ){
+				cl <- setNames(match(cl, unique(cl[h$order])), names(cl))
+            }
+            
+			res <- as.factor(cl)
+            # add dissimilarity matrix if requested
+            if( dmatrix ){
+                attr(res, 'dmatrix') <- 1 - consensus(object) 
+            }
+            res
 		}
-		else predict(fit(object), what=what, ...)
+		else predict(fit(object), what=what, ..., dmatrix = dmatrix)
 	}
 )
 
@@ -1356,6 +1363,10 @@ setMethod('summary', signature(object='NMFfitX'),
 		C <- consensus(object)
 		s <- c(s, cophenetic=cophcor(C), dispersion=dispersion(C))
 		
+        # compute mean consensus silhouette width
+        si <- summary(silhouette(object, what = 'consensus'))
+        s <- c(s, silhouette.consensus = si$avg.width)
+        
 		# return result
 		s
 	}
@@ -1480,7 +1491,9 @@ setMethod('summary', signature(object='NMFList'),
 							, residuals=FALSE, cpu=FALSE, purity=TRUE, nrun=FALSE, cpu.all=FALSE
 							, cophenetic=TRUE, dispersion=TRUE #NMFfitX only
 							, entropy=FALSE, sparseness.basis=TRUE, sparseness.coef=TRUE, rank=FALSE, rss=FALSE
-							, niter=FALSE, evar=TRUE)
+							, niter=FALSE, evar=TRUE
+                            , silhouette.coef = TRUE, silhouette.basis = TRUE
+                            , silhouette.consensus = TRUE)
 				
 		# for each result compute the summary measures
 		measure.matrix <- sapply(object, summary, ...)		

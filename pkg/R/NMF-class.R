@@ -1487,7 +1487,7 @@ setMethod('summary', signature(object='NMF'),
 			res <- numeric()
 			
 			## IMPORTANT: if adding a summary measure also add it in the sorting 
-			## schema of method NMFfitX::compare to allow ordering on it
+			## schema of method NMFList::summary to allow ordering on it
 			
 			# rank
 			res <- c(res, rank=nbasis(object))
@@ -1509,6 +1509,12 @@ setMethod('summary', signature(object='NMF'),
 				# explained variance
 				res <- c(res, evar=evar(object, target))
 			}
+            
+            # compute mean silhouette width
+            siS <- summary(silhouette(object, what = 'samples'))
+            siF <- summary(silhouette(object, what = 'features'))
+            res <- c(res, silhouette.coef = siS$avg.width
+                    , silhouette.basis = siF$avg.width)
 			
 			# return result
 			return(res)
@@ -1905,6 +1911,9 @@ setGeneric('predict', package='stats')
 #' and \sQuote{rows} respectively.
 #' @param prob logical that indicates if the relative contributions of/to the dominant 
 #' basis component should be computed and returned. See \emph{Details}.
+#' @param dmatrix logical that indicates if a dissimiliarity matrix should be 
+#' attached to the result.
+#' This is notably used internally when computing NMF clustering silhouettes.
 #' 
 #' @examples
 #'
@@ -1922,13 +1931,18 @@ setGeneric('predict', package='stats')
 #' predict(x, 'rows', prob=TRUE)
 #' 
 setMethod('predict', 'NMF',
-		function(object, what=c('columns', 'rows', 'samples', 'features'), prob=FALSE){
+		function(object, what=c('columns', 'rows', 'samples', 'features'), prob=FALSE, dmatrix = FALSE){
 			# determine which matrix to use for the prediction
 			what <- match.arg(what)
 			x <- if( what %in% c('features', 'rows') ) basis(object, all=FALSE) else t(coef(object, all=FALSE))
 			
 			# compute the indice of the dominant row for each column
-			return( .predict.nmf(x, prob) )
+            res <- .predict.nmf(x, prob)
+            # attach dissimilarity matrix if requested
+            if( dmatrix ){
+                attr(res, 'dmatrix') <- 1 - cor(t(x))
+            }
+			return( res )
 		}
 )
 

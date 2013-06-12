@@ -4,7 +4,7 @@
 %\VignetteCompiler{knitr}
 %\VignetteEngine{knitr::knitr}
  
-\documentclass[a4paper]{article}\usepackage{graphicx, color}
+\documentclass[a4paper]{article}\usepackage[]{graphicx}\usepackage[]{color}
 %% maxwidth is the original width if it is less than linewidth
 %% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
@@ -134,7 +134,7 @@
 , backref=true
 , backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
-\bibliography{/tmp/Rpkglib_57ba87c6f78/NMF/REFERENCES}
+\bibliography{/tmp/Rpkglib_117019e1fc6b/NMF/REFERENCES}
 
 
 \bibliography{Rpackages}
@@ -181,7 +181,7 @@
 
 
 \title{An introduction to NMF package\\
-\small Version 0.17.1}
+\small Version 0.17.3}
 \author{Renaud Gaujoux, \url{renaud@cbio.uct.ac.za}}
 % \\Address Computational Biology - University of Cape Town, South Africa,
 
@@ -591,17 +591,17 @@ t <- \hlfunctioncall{sapply}(res, runtime)[3, ]
 
 
 % latex table generated in R 3.0.1 by xtable 1.7-1 package
-% Thu May 23 15:06:26 2013
+% Wed Jun 12 22:23:51 2013
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrr}
   \hline
  & C & R & Speed.up \\ 
   \hline
-brunet & 2.94 & 10.66 & 3.62 \\ 
-  lee & 3.44 & 14.88 & 4.32 \\ 
-  offset & 5.38 & 20.39 & 3.79 \\ 
-  nsNMF & 5.84 & 21.06 & 3.61 \\ 
+brunet & 3.18 & 13.45 & 4.23 \\ 
+  lee & 3.24 & 13.18 & 4.06 \\ 
+  offset & 5.86 & 20.17 & 3.44 \\ 
+  nsNMF & 5.48 & 19.31 & 3.52 \\ 
    \hline
 \end{tabular}
 \caption{Performance speed up achieved by the optimized C++ implementation for some of the NMF algorithms.} 
@@ -721,7 +721,7 @@ res
 ##   Iterations: 510 
 ##   Timing:
 ##      user  system elapsed 
-##     0.260   0.000   0.261
+##     0.272   0.004   0.279
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -996,7 +996,7 @@ res
 ##   Iterations: 2000 
 ##   Timing:
 ##      user  system elapsed 
-##     1.060   0.000   1.063
+##     1.172   0.000   1.174
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1067,7 +1067,7 @@ res
 ##   Iterations: 1090 
 ##   Timing:
 ##      user  system elapsed 
-##     0.536   0.000   0.536
+##     0.544   0.000   0.545
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1175,7 +1175,7 @@ res.multirun
 ##    407L, 1997333926L, -492612625L, 469522788L, -1828607723L, 1996453586L, -1167273941L 
 ##   Total timing:
 ##    user  system elapsed 
-##   1.840   0.172   1.423
+##   2.252   0.180   2.006
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1207,10 +1207,10 @@ res
 ##    407L, 479565376L, 313168193L, 758619662L, -1499576521L, -1114385908L, 588631965L 
 ##   Total timing:
 ##    user  system elapsed 
-##   3.040   0.216   1.430 
+##   3.516   0.224   1.765 
 ##   Sequential timing:
 ##    user  system elapsed 
-##   2.368   0.020   2.402
+##   2.180   0.016   2.212
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1393,15 +1393,11 @@ res1 <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"vp2"}, seed
 \end{alltt}
 
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Multiple runs: 5}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Mode: parallel (2/4 core(s))}}\begin{verbatim}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'\\\#\# Multiple runs: 5\\\#\# Mode: parallel (2/4 core(s))}}\begin{verbatim}
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   1.204   0.096   1.629
+##   1.596   0.088   2.135
 \end{verbatim}
 \begin{alltt}
 
@@ -1410,15 +1406,11 @@ res2 <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"vp1"}, seed
 \end{alltt}
 
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Multiple runs: 5}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Mode: sequential [foreach:doParallel]}}\begin{verbatim}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'\\\#\# Multiple runs: 5\\\#\# Mode: sequential [foreach:doParallel]}}\begin{verbatim}
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |========                                          |  17%Runs: |                                                        Runs: |=================                                 |  33%Runs: |                                                        Runs: |=========================                         |  50%Runs: |                                                        Runs: |=================================                 |  67%Runs: |                                                        Runs: |==========================================        |  83%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   2.124   0.016   2.145
+##   2.548   0.036   2.589
 \end{verbatim}
 \begin{alltt}
 
@@ -1428,15 +1420,11 @@ res3 <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"v-p"}, seed
 \end{alltt}
 
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Multiple runs: 5}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Mode: sequential [sapply]}}\begin{verbatim}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'\\\#\# Multiple runs: 5\\\#\# Mode: sequential [sapply]}}\begin{verbatim}
 ## Runs: 1* 2* 3* 4 5 ... DONE
 ## System time:
 ##    user  system elapsed 
-##   1.864   0.004   1.871
+##   2.020   0.000   2.026
 \end{verbatim}
 \begin{alltt}
 res4 <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"v"}, .pbackend = NA, 
@@ -1444,15 +1432,11 @@ res4 <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"v"}, .pback
 \end{alltt}
 
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Multiple runs: 5}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Mode: sequential [sapply]}}\begin{verbatim}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'\\\#\# Multiple runs: 5\\\#\# Mode: sequential [sapply]}}\begin{verbatim}
 ## Runs: 1* 2* 3* 4 5 ... DONE
 ## System time:
 ##    user  system elapsed 
-##   1.884   0.000   1.887
+##   1.964   0.008   1.992
 \end{verbatim}
 \begin{alltt}
 
@@ -1462,15 +1446,11 @@ res5 <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"v"}, .pback
 \end{alltt}
 
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Multiple runs: 5}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Mode: sequential [foreach:doSEQ]}}\begin{verbatim}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'\\\#\# Multiple runs: 5\\\#\# Mode: sequential [foreach:doSEQ]}}\begin{verbatim}
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |========                                          |  17%Runs: |                                                        Runs: |=================                                 |  33%Runs: |                                                        Runs: |=========================                         |  50%Runs: |                                                        Runs: |=================================                 |  67%Runs: |                                                        Runs: |==========================================        |  83%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   2.104   0.012   2.119
+##   2.980   0.020   3.012
 \end{verbatim}
 \begin{alltt}
 
@@ -1611,10 +1591,14 @@ Passing the result to method \code{compare} produces a \code{data.frame} that co
 ## brunet brunet random   1        KL    3           0.6393
 ## lee       lee random   1 euclidean    3           0.7269
 ## nsNMF   nsNMF random   1        KL    3           0.6777
-##        sparseness.coef residuals niter   cpu cpu.all nrun
-## brunet          0.6218    543536   510 0.276   0.276    1
-## lee             0.4466 673513121  1780 0.912   0.912    1
-## nsNMF           0.7350    585106   970 0.796   0.796    1
+##        sparseness.coef silhouette.coef silhouette.basis
+## brunet          0.6218          0.8126           0.7488
+## lee             0.4466          0.7148           0.6764
+## nsNMF           0.7350          0.8654           0.7946
+##        residuals niter   cpu cpu.all nrun
+## brunet    543536   510 0.280   0.280    1
+## lee    673513121  1780 0.992   0.992    1
+## nsNMF     585106   970 0.828   0.828    1
 \end{verbatim}
 \begin{alltt}
 
@@ -1626,14 +1610,14 @@ Passing the result to method \code{compare} produces a \code{data.frame} that co
 ## brunet brunet random   1        KL    3           0.6393
 ## lee       lee random   1 euclidean    3           0.7269
 ## nsNMF   nsNMF random   1        KL    3           0.6777
-##        sparseness.coef purity entropy residuals niter   cpu
-## brunet          0.6218 0.8158  0.3927    543536   510 0.276
-## lee             0.4466 0.5789  0.7231 673513121  1780 0.912
-## nsNMF           0.7350 0.7895  0.4691    585106   970 0.796
-##        cpu.all nrun
-## brunet   0.276    1
-## lee      0.912    1
-## nsNMF    0.796    1
+##        sparseness.coef purity entropy silhouette.coef
+## brunet          0.6218 0.8158  0.3927          0.8126
+## lee             0.4466 0.5789  0.7231          0.7148
+## nsNMF           0.7350 0.7895  0.4691          0.8654
+##        silhouette.basis residuals niter   cpu cpu.all nrun
+## brunet           0.7488    543536   510 0.280   0.280    1
+## lee              0.6764 673513121  1780 0.992   0.992    1
+## nsNMF            0.7946    585106   970 0.828   0.828    1
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1851,7 +1835,7 @@ V <- \hlfunctioncall{syntheticNMF}(n, r, p, noise = TRUE)
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_58385aed59e9 
+##   algorithm:  nmf_1feb6316c75d 
 ##   seed:  random 
 ##   RNG: 403L, 173L, ..., 1280296329L [0d87fde5bf092083bd059bcc33d58a3e]
 ##   distance metric:  'euclidean' 
@@ -1859,7 +1843,7 @@ V <- \hlfunctioncall{syntheticNMF}(n, r, p, noise = TRUE)
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.005
+##     0.008   0.000   0.006
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1883,7 +1867,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_58382e4c0af5 
+##   algorithm:  nmf_1feb14ce6fa5 
 ##   seed:  random 
 ##   RNG: 403L, 383L, ..., 1280296329L [2f2572f5c6b643d37859d97079951964]
 ##   distance metric:  'KL' 
@@ -1891,7 +1875,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.003
+##     0.004   0.000   0.004
 \end{verbatim}
 \begin{alltt}
 \hlcomment{# based on custom distance metric}
@@ -1910,7 +1894,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_5838b0f369d 
+##   algorithm:  nmf_1feb6e51afc4 
 ##   seed:  random 
 ##   RNG: 403L, 593L, ..., 1280296329L [7ed64fa772a4b1e68cebc0bfed3cb018]
 ##   distance metric:  <function> 
@@ -1918,7 +1902,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.003
+##     0.000   0.000   0.004
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1967,7 +1951,7 @@ V.neg[1, ] <- -1
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_5838189187a0 
+##   algorithm:  nmf_1feb27214ce0 
 ##   seed:  random 
 ##   RNG: 403L, 179L, ..., -818492466L [850b670d66e22c6d00f5d79570d1ce8a]
 ##   distance metric:  'euclidean' 
@@ -2055,7 +2039,7 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   samples: 20 
 ##   offset: [ 0.3677 0.9383 1.347 1.019 0.6695 ... ]
 ##  # Details:
-##   algorithm:  nmf_58385768ee73 
+##   algorithm:  nmf_1feb64a45c3e 
 ##   seed:  random 
 ##   RNG: 403L, 389L, ..., -818492466L [7d13c1cc60f9b6390bf7ebfc74dce591]
 ##   distance metric:  'euclidean' 
@@ -2063,7 +2047,7 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.005
+##     0.004   0.000   0.004
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2113,14 +2097,14 @@ To use the new seeding method:
 ##   samples: 20 
 ##  # Details:
 ##   algorithm:  snmf/r 
-##   seed:  NMF.seed.58383b4796bc 
+##   seed:  NMF.seed.1feb5d9bc445 
 ##   RNG: 403L, 25L, ..., -1308220775L [e0cc5847b800083c2460eb9eaa25bd4e]
 ##   distance metric:  <function> 
 ##   residuals:  195.6 
 ##   Iterations: 105 
 ##   Timing:
 ##      user  system elapsed 
-##     0.284   0.000   0.281
+##     0.304   0.004   0.310
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2292,17 +2276,21 @@ The default/current values of each options can be displayed using the function
   \item Locale: \verb|LC_CTYPE=en_US.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_US.UTF-8|, \verb|LC_COLLATE=en_US.UTF-8|, \verb|LC_MONETARY=en_US.UTF-8|, \verb|LC_MESSAGES=en_US.UTF-8|, \verb|LC_PAPER=C|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_US.UTF-8|, \verb|LC_IDENTIFICATION=C|
   \item Base packages: base, datasets, graphics,
     grDevices, grid, methods, parallel, stats, utils
-  \item Other packages: BH~1.51.0-0, bigmemory~4.4.3,
+  \item Other packages: BH~1.51.0-1, bigmemory~4.4.3,
     bigmemory.sri~0.1.2, Biobase~2.20.0,
-    BiocGenerics~0.6.0, digest~0.6.3, knitr~1.2,
-    NMF~0.17.1, pkgmaker~0.16.3, RColorBrewer~1.0-5,
-    registry~0.2, rngtools~1.2, synchronicity~1.1.0,
-    xtable~1.7-1
+    BiocGenerics~0.6.0, cluster~1.14.4, digest~0.6.3,
+    doParallel~1.0.3, foreach~1.4.1, iterators~1.0.6,
+    knitr~1.2.9, NMF~0.17.3, pkgmaker~0.16.4,
+    RColorBrewer~1.0-5, registry~0.2, rngtools~1.2,
+    synchronicity~1.1.0, xtable~1.7-1
   \item Loaded via a namespace (and not attached):
     codetools~0.2-8, colorspace~1.2-2,
-    doParallel~1.0.1, evaluate~0.4.3, foreach~1.4.0,
-    formatR~0.7, gridBase~0.4-6, iterators~1.0.6,
-    stringr~0.6.2, tools~3.0.1
+    compiler~3.0.1, dichromat~2.0-0, evaluate~0.4.3,
+    formatR~0.7, ggplot2~0.9.3.1, gridBase~0.4-6,
+    gtable~0.1.2, labeling~0.1, MASS~7.3-26,
+    munsell~0.4, plyr~1.8, proto~0.3-10,
+    reshape2~1.2.2, scales~0.2.3, stringr~0.6.2,
+    tools~3.0.1
 \end{itemize}
 
 
