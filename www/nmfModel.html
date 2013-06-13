@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfModel. NMF 0.16.5</title>
+<title>nmfModel. NMF 0.17.4</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -33,7 +33,7 @@
     <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <a class="brand" href="index.html">NMF 0.17.4</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -55,8 +55,15 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p>Description,c("<code>nmfModel</code> is a S4 generic function which provides a\n  convenient way to build NMF models. It implements a\n  unified interface for creating <code>NMF</code> objects from\n  any NMF models, which is designed to resolve potential\n  dimensions inconsistencies.", "<code>nmfModels</code> lists all available NMF models currently\n  defined that can be used to create NMF objects, i.e. --\n  more or less -- all S4 classes that inherit from class\n  <code><a href='NMF-class.html'>NMF-class</a></code>."
-)</p>
+      <p><p><code>nmfModel</code> is a S4 generic function which provides a
+  convenient way to build NMF models. It implements a
+  unified interface for creating <code>NMF</code> objects from
+  any NMF models, which is designed to resolve potential
+  dimensions inconsistencies.</p>
+<p><code>nmfModels</code> lists all available NMF models currently
+  defined that can be used to create NMF objects, i.e. --
+  more or less -- all S4 classes that inherit from class
+  <code><a href='NMF-class.html'>NMF-class</a></code>.</p></p>
   
     </div>
     
@@ -437,11 +444,9 @@ nmfModel(r, W=w, H=h)
 </code></pre>
 
 <pre><code>## Warning: nmfModel - Number of rows in target is lower than the number of
-## rows in W [20]: only the first 19 rows of W will be used
-</code></pre>
-
-<pre><code>## Warning: nmfModel - Objective rank [3] is lower than the number of rows in
-## H [4]: only the first 3 rows of H will be used
+## rows in W [20]: only the first 19 rows of W will be used Warning: nmfModel
+## - Objective rank [3] is lower than the number of rows in H [4]: only the
+## first 3 rows of H will be used
 </code></pre>
 
 <pre><code>## &lt;Object of class:NMFstd&gt;

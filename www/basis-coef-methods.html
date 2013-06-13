@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>basis. NMF 0.16.5</title>
+<title>basis. NMF 0.17.4</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -33,7 +33,7 @@
     <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <a class="brand" href="index.html">NMF 0.17.4</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -55,9 +55,33 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p>Description,c("<code>basis</code> and <code>basis<-</code> are S4 generic functions\n  which respectively extract and set the matrix of basis\n  components of an NMF model (i.e. the first matrix\n  factor).", "The methods <code>.basis</code>, <code>.coef</code> and their\n  replacement versions are implemented as pure virtual\n  methods for the interface class <code>NMF</code>, meaning that\n  concrete NMF models must provide a definition for their\n  corresponding class (i.e. sub-classes of class\n  <code>NMF</code>). See <code><a href='NMF-class.html'>NMF-class</a></code> for more\n  details.", 
-"<code>coef</code> and <code>coef<-</code> respectively extract and\n  set the coefficient matrix of an NMF model (i.e. the\n  second matrix factor). For example, in the case of the\n  standard NMF model <code class = 'eq'>V ~ W H</code>, the method\n  <code>coef</code> will return the matrix <code class = 'eq'>H</code>.", "<code>.coef</code> and <code>.coef<-</code> are low-level S4 generics\n  that simply return/set coefficient data in an object,\n  leaving some common processing to be performed in\n  <code>coef</code> and <code>coef<-</code>.", 
-"Methods <code>coefficients</code> and <code>coefficients<-</code> are\n  simple aliases for methods <code>coef</code> and <code>coef<-</code>\n  respectively.", "<code>scoef</code> is similar to <code>coef</code>, but returns the\n  mixture coefficient matrix of an NMF model, with the\n  columns scaled so that they sum up to a given value (1 by\n  default).")</p>
+      <p><p><code>basis</code> and <code>basis<-</code> are S4 generic functions
+  which respectively extract and set the matrix of basis
+  components of an NMF model (i.e. the first matrix
+  factor).</p>
+<p>The methods <code>.basis</code>, <code>.coef</code> and their
+  replacement versions are implemented as pure virtual
+  methods for the interface class <code>NMF</code>, meaning that
+  concrete NMF models must provide a definition for their
+  corresponding class (i.e. sub-classes of class
+  <code>NMF</code>). See <code><a href='NMF-class.html'>NMF-class</a></code> for more
+  details.</p>
+<p><code>coef</code> and <code>coef<-</code> respectively extract and
+  set the coefficient matrix of an NMF model (i.e. the
+  second matrix factor). For example, in the case of the
+  standard NMF model <code class = 'eq'>V ~ W H</code>, the method
+  <code>coef</code> will return the matrix <code class = 'eq'>H</code>.</p>
+<p><code>.coef</code> and <code>.coef<-</code> are low-level S4 generics
+  that simply return/set coefficient data in an object,
+  leaving some common processing to be performed in
+  <code>coef</code> and <code>coef<-</code>.</p>
+<p>Methods <code>coefficients</code> and <code>coefficients<-</code> are
+  simple aliases for methods <code>coef</code> and <code>coef<-</code>
+  respectively.</p>
+<p><code>scoef</code> is similar to <code>coef</code>, but returns the
+  mixture coefficient matrix of an NMF model, with the
+  columns scaled so that they sum up to a given value (1 by
+  default).</p></p>
   
     </div>
     

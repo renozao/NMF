@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfitX-class. NMF 0.16.5</title>
+<title>NMFfitX-class. NMF 0.17.4</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -33,7 +33,7 @@
     <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <a class="brand" href="index.html">NMF 0.17.4</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -55,9 +55,9 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p>Description,This class defines a common interface to handle the
+      <p><p>This class defines a common interface to handle the
   results from multiple runs of a single NMF algorithm,
-  performed with the <code><a href='nmf.html'>nmf</a></code> method.</p>
+  performed with the <code><a href='nmf.html'>nmf</a></code> method.</p></p>
   
     </div>
     
@@ -111,14 +111,13 @@
   <code>'consensus:'</code>, that shows the consensus cluster
   associated to each sample. </li>
 <li> a column sorting schema
-  <code>'consensus'</code> (or <code>'cmap'</code>) that can be passed
-  to argument <code>Colv</code> and orders the columns using the
-  hierarchical clustering of the consensus matrix with
-  average linkage, as returned by
-  <code><a href='consensushc.html'>consensushc</a>(object)</code>. This is also the
-  ordering that is used by default for the heatmap of the
-  consensus matrix as ploted by <code><a href='heatmaps.html'>consensusmap</a></code>.
-  </li>
+  <code>'consensus'</code> that can be passed to argument
+  <code>Colv</code> and orders the columns using the hierarchical
+  clustering of the consensus matrix with average linkage,
+  as returned by <code><a href='consensushc.html'>consensushc</a>(object)</code>. This is
+  also the ordering that is used by default for the heatmap
+  of the consensus matrix as ploted by
+  <code><a href='heatmaps.html'>consensusmap</a></code>. </li>
 </ul></p>
   
       <p></li>
@@ -274,7 +273,7 @@ res
 ##    407L, -10343344L, -1439855599L, 581371550L, 1102336647L, 404615452L, -967540883L 
 ##   Total timing:
 ##    user  system elapsed 
-##   2.084   0.288   1.521
+##   3.696   0.380   2.765
 </code></pre>
 
 <pre><code class="r">
@@ -293,10 +292,10 @@ res
 ##    407L, 1849749352L, -2054160823L, 1115772278L, 677277055L, -1934876236L, -2059329243L 
 ##   Total timing:
 ##    user  system elapsed 
-##   1.740   0.304   1.170 
+##   4.624   0.496   2.385 
 ##   Sequential timing:
 ##    user  system elapsed 
-##   0.536   0.000   0.533
+##   0.776   0.008   0.803
 </code></pre>
 
 <pre><code class="r">

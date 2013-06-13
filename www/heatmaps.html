@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>heatmap-NMF. NMF 0.16.5</title>
+<title>heatmap-NMF. NMF 0.17.4</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -33,7 +33,7 @@
     <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <a class="brand" href="index.html">NMF 0.17.4</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -55,8 +55,17 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p>Description,c("The NMF package ships an advanced heatmap engine\n  implemented by the function <code><a href='aheatmap.html'>aheatmap</a></code>. Some\n  convenience heatmap functions have been implemented for\n  NMF models, which redefine default values for some of the\n  arguments of <code><a href='aheatmap.html'>aheatmap</a></code>, hence tuning the\n  output specifically for NMF models.", "<code>basimap</code> draws an annotated heatmap of the basis\n  matrix.", "<code>coefmap</code> draws an annotated heatmap of the\n  coefficient matrix.", 
-"<code>consensusmap</code> plots heatmaps of consensus matrices.")</p>
+      <p><p>The NMF package ships an advanced heatmap engine
+  implemented by the function <code><a href='aheatmap.html'>aheatmap</a></code>. Some
+  convenience heatmap functions have been implemented for
+  NMF models, which redefine default values for some of the
+  arguments of <code><a href='aheatmap.html'>aheatmap</a></code>, hence tuning the
+  output specifically for NMF models.</p>
+<p><code>basimap</code> draws an annotated heatmap of the basis
+  matrix.</p>
+<p><code>coefmap</code> draws an annotated heatmap of the
+  coefficient matrix.</p>
+<p><code>consensusmap</code> plots heatmaps of consensus matrices.</p></p>
   
     </div>
     
@@ -433,14 +442,13 @@ consensusmap(object, ...)
   <code>'consensus:'</code>, that shows the consensus cluster
   associated to each sample. </li>
 <li> a column sorting schema
-  <code>'consensus'</code> (or <code>'cmap'</code>) that can be passed
-  to argument <code>Colv</code> and orders the columns using the
-  hierarchical clustering of the consensus matrix with
-  average linkage, as returned by
-  <code><a href='consensushc.html'>consensushc</a>(object)</code>. This is also the
-  ordering that is used by default for the heatmap of the
-  consensus matrix as ploted by <code><a href='heatmaps.html'>consensusmap</a></code>.
-  </li>
+  <code>'consensus'</code> that can be passed to argument
+  <code>Colv</code> and orders the columns using the hierarchical
+  clustering of the consensus matrix with average linkage,
+  as returned by <code><a href='consensushc.html'>consensushc</a>(object)</code>. This is
+  also the ordering that is used by default for the heatmap
+  of the consensus matrix as ploted by
+  <code><a href='heatmaps.html'>consensusmap</a></code>. </li>
 </ul></p>
   
       <p></li>
