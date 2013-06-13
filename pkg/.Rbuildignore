@@ -6,6 +6,7 @@ vignettes/tmplib$
 vignettes/figure$
 vignettes/cache$
 vignettes/.*\.tex
+vignettes/.*\.Rnw
 vignettes/Rplots.pdf$
 .*\.mk
 ^makefile$

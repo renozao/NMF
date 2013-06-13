@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf_update.brunet_R. NMF 0.16.5</title>
+<title>nmf_update.brunet_R. NMF 0.17.4</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="
   Original implementation in MATLAB: Jean-Philippe Brunet
@@ -38,7 +38,7 @@
     <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <a class="brand" href="index.html">NMF 0.17.4</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -60,9 +60,31 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p>Description,c("The built-in NMF algorithms described here minimise the\n  Kullback-Leibler divergence (KL) between an NMF model and\n  a target matrix. They use the updates for the basis and\n  coefficient matrices (<code class = 'eq'>W</code> and <code class = 'eq'>H</code>) defined by\n  <cite>Brunet et al. (2004)</cite>, which are essentially those\n  from <cite>Lee et al. (2001)</cite>, with an stabilisation step\n  that shift up all entries from zero every 10 iterations,\n  to a very small positive value.", 
-"<code>nmf_update.brunet</code> implements in C++ an optimised\n  version of the single update step.", "Algorithms &#145;brunet&#146; and &#145;.R#brunet&#146; provide\n  the complete NMF algorithm from <cite>Brunet et al.\n  (2004)</cite>, using the C++-optimised and pure R updates\n  <code><a href='KL-nmf.html'>nmf_update.brunet</a></code> and\n  <code><a href='KL-nmf.html'>nmf_update.brunet_R</a></code> respectively.", "Algorithm &#145;KL&#146; provides an NMF algorithm based on\n  the C++-optimised version of the updates from\n  <cite>Brunet et al. (2004)</cite>, which uses the stationarity\n  of the objective value as a stopping criterion\n  <code><a href='stop-NMF.html'>nmf.stop.stationary</a></code>, instead of the\n  stationarity of the connectivity matrix\n  <code><a href='stop-NMF.html'>nmf.stop.connectivity</a></code> as used by\n  &#145;brunet&#146;.", 
-"<code>file.show(system.file('matlab', 'brunet.m',\n  package='NMF'))</code>")</p>
+      <p><p>The built-in NMF algorithms described here minimise the
+  Kullback-Leibler divergence (KL) between an NMF model and
+  a target matrix. They use the updates for the basis and
+  coefficient matrices (<code class = 'eq'>W</code> and <code class = 'eq'>H</code>) defined by
+  <cite>Brunet et al. (2004)</cite>, which are essentially those
+  from <cite>Lee et al. (2001)</cite>, with an stabilisation step
+  that shift up all entries from zero every 10 iterations,
+  to a very small positive value.</p>
+<p><code>nmf_update.brunet</code> implements in C++ an optimised
+  version of the single update step.</p>
+<p>Algorithms &#145;brunet&#146; and &#145;.R#brunet&#146; provide
+  the complete NMF algorithm from <cite>Brunet et al.
+  (2004)</cite>, using the C++-optimised and pure R updates
+  <code><a href='KL-nmf.html'>nmf_update.brunet</a></code> and
+  <code><a href='KL-nmf.html'>nmf_update.brunet_R</a></code> respectively.</p>
+<p>Algorithm &#145;KL&#146; provides an NMF algorithm based on
+  the C++-optimised version of the updates from
+  <cite>Brunet et al. (2004)</cite>, which uses the stationarity
+  of the objective value as a stopping criterion
+  <code><a href='stop-NMF.html'>nmf.stop.stationary</a></code>, instead of the
+  stationarity of the connectivity matrix
+  <code><a href='stop-NMF.html'>nmf.stop.connectivity</a></code> as used by
+  &#145;brunet&#146;.</p>
+<p><code>file.show(system.file('matlab', 'brunet.m',
+  package='NMF'))</code></p></p>
   
     </div>
     

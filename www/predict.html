@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>predict. NMF 0.16.5</title>
+<title>predict. NMF 0.17.4</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -33,7 +33,7 @@
     <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <a class="brand" href="index.html">NMF 0.17.4</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -55,10 +55,10 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p>Description,The methods <code>predict</code> for NMF models return the
+      <p><p>The methods <code>predict</code> for NMF models return the
   cluster membership of each sample or each feature.
   Currently the classification/prediction of new data is
-  not implemented.</p>
+  not implemented.</p></p>
   
     </div>
     
@@ -66,11 +66,12 @@
     <pre>predict(object, ...)
 
 <span class="label label-important">S4</span> (NMF)
-`predict`(object, what = c("columns", "rows", "samples", "features"), prob = FALSE)
+`predict`(object, what = c("columns", "rows", "samples", "features"), prob = FALSE, 
+  dmatrix = FALSE)
 
 <span class="label label-important">S4</span> (NMFfitX)
 `predict`(object, what = c("columns", "rows", "samples", "features", "consensus", 
-  "cmap"), ...)</pre>
+      "chc"), dmatrix = FALSE, ...)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -87,6 +88,11 @@
       <dd>logical that indicates if the relative
   contributions of/to the dominant basis component should
   be computed and returned. See <em>Details</em>.</dd>
+      <dt>dmatrix</dt>
+      <dd>logical that indicates if a dissimiliarity
+  matrix should be attached to the result. This is notably
+  used internally when computing NMF clustering
+  silhouettes.</dd>
       <dt>...</dt>
       <dd>additional arguments affecting the predictions
   produced.</dd>
@@ -159,16 +165,17 @@
   
       <p>Argument <code>what</code> accepts the following extra types:
   <ol>
-<li><code>'consensus'</code> returns the cluster
+<li><code>'chc'</code> returns the cluster
   membership based on the hierarchical clustering of the
   consensus matrix, as performed by
   <code><a href='consensushc.html'>consensushc</a></code>. </li>
-<li><code>'cmap'</code> same as
-  <code>'consensus'</code> but the levels of the membership index
-  are re-labeled to match the order of the clusters as they
-  would be displayed on the associated dendrogram, like on
-  the default annotation track in consensus heatmap
-  produced by <code><a href='heatmaps.html'>consensusmap</a></code>. </li>
+<li><code>'consensus'</code>
+  same as <code>'chc'</code> but the levels of the membership
+  index are re-labeled to match the order of the clusters
+  as they would be displayed on the associated dendrogram,
+  as re-ordered on the default annotation track in
+  consensus heatmap produced by
+  <code><a href='heatmaps.html'>consensusmap</a></code>. </li>
 </ol></p>
   
       <p></li>

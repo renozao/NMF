@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>setNMFMethod. NMF 0.16.5</title>
+<title>setNMFMethod. NMF 0.17.4</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -33,7 +33,7 @@
     <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <a class="brand" href="index.html">NMF 0.17.4</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -55,7 +55,10 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p>Description,c("Adds a new algorithm to the registry of algorithms that\n  perform Nonnegative Matrix Factorization.", "<code>nmfRegisterAlgorithm</code> is an alias to\n  <code>setNMFMethod</code> for backward compatibility.")</p>
+      <p><p>Adds a new algorithm to the registry of algorithms that
+  perform Nonnegative Matrix Factorization.</p>
+<p><code>nmfRegisterAlgorithm</code> is an alias to
+  <code>setNMFMethod</code> for backward compatibility.</p></p>
   
     </div>
     
@@ -95,10 +98,7 @@ nmfRegisterAlgorithm(name, method, ..., overwrite = isLoadingNamespace(), verbos
 setNMFMethod(&#39;mynmf&#39;, function(y, x, ...){ x })
 </code></pre>
 
-<pre><code>## Registering NMF algorithm &#39;mynmf&#39; [NMFStrategyFunction] ...
-</code></pre>
-
-<pre><code>## OK
+<pre><code>## Registering NMF algorithm &#39;mynmf&#39; [NMFStrategyFunction] ... OK
 </code></pre>
 
 <pre><code class="r">

@@ -529,7 +529,7 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
 #' @examples 
 #' 
 #' x <- rmatrix(100, 20, dimnames = list(paste0('a', 1:100), letters[1:20]))
-#' res <- nmfCheck(x = x, nrun = 5)
+#' res <- nmf(x, 4, nrun = 5)
 #' 
 #' # sample clustering from best fit
 #' plot(silhouette(res))
@@ -543,20 +543,27 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
 #' # average silhouette are computed in summary measures
 #' summary(res)
 #' 
-#' # order consensus silhouettes as on consensusmap heatmap
+#' # consensus silhouettes are ordered as on default consensusmap heatmap
+#' op <- par(mfrow = c(1,2))
 #' consensusmap(res)
 #' si <- silhouette(res, what = 'consensus')
 #' plot(si)
+#' par(op)
 #' 
-#' # if the order is custom
-#' cm <- consensusmap(res, Rowv = sample(ncol(res)))
+#' # if the order is based on some custom numeric weights
+#' op <- par(mfrow = c(1,2))
+#' cm <- consensusmap(res, Rowv = runif(ncol(res)))
 #' # NB: use reverse order because silhouettes are plotted top-down
 #' si <- silhouette(res, what = 'consensus', order = rev(cm$rowInd))
 #' plot(si)
+#' par(op)
 #' 
 #' # do the reverse: order the heatmap as a set of silhouettes
-#' si <- silhouette(res[1:20, ], what = 'features')
-#' basismap(res, Rowv = si, subset = 1:20)
+#' si <- silhouette(res, what = 'features')
+#' op <- par(mfrow = c(1,2)) 
+#' basismap(res, Rowv = si)
+#' plot(si)
+#' par(op)
 #' 
 silhouette.NMF <- function(x, what = NULL, order = NULL, ...){
     

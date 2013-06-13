@@ -337,14 +337,13 @@
   annotation track for multi-run NMF fits,
   \code{'consensus:'}, that shows the consensus cluster
   associated to each sample. \item a column sorting schema
-  \code{'consensus'} (or \code{'cmap'}) that can be passed
-  to argument \code{Colv} and orders the columns using the
-  hierarchical clustering of the consensus matrix with
-  average linkage, as returned by
-  \code{\link{consensushc}(object)}. This is also the
-  ordering that is used by default for the heatmap of the
-  consensus matrix as ploted by \code{\link{consensusmap}}.
-  } }
+  \code{'consensus'} that can be passed to argument
+  \code{Colv} and orders the columns using the hierarchical
+  clustering of the consensus matrix with average linkage,
+  as returned by \code{\link{consensushc}(object)}. This is
+  also the ordering that is used by default for the heatmap
+  of the consensus matrix as ploted by
+  \code{\link{consensusmap}}. } }
 
   \item{consensusmap}{\code{signature(object = "NMFfitX")}:
   Plots a heatmap of the consensus matrix obtained when

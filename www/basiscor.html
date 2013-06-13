@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>basiscor. NMF 0.16.5</title>
+<title>basiscor. NMF 0.17.4</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -33,7 +33,7 @@
     <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <a class="brand" href="index.html">NMF 0.17.4</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -55,7 +55,12 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p>Description,c("<code>basiscor</code> computes the correlation matrix between\n  basis vectors, i.e. the <em>columns</em> of its basis\n  matrix -- which is the model's first matrix factor.", "<code>profcor</code> computes the correlation matrix between\n  basis profiles, i.e. the <em>rows</em> of the coefficient\n  matrix -- which is the model's second matrix factor.")</p>
+      <p><p><code>basiscor</code> computes the correlation matrix between
+  basis vectors, i.e. the <em>columns</em> of its basis
+  matrix -- which is the model's first matrix factor.</p>
+<p><code>profcor</code> computes the correlation matrix between
+  basis profiles, i.e. the <em>rows</em> of the coefficient
+  matrix -- which is the model's second matrix factor.</p></p>
   
     </div>
     
@@ -148,38 +153,38 @@ b &lt;- rnmf(3, 100, 20)
 basiscor(a)
 </code></pre>
 
-<pre><code>##          [,1]     [,2]     [,3]
-## [1,]  1.00000 -0.10646 -0.05467
-## [2,] -0.10646  1.00000  0.07616
-## [3,] -0.05467  0.07616  1.00000
+<pre><code>##          [,1]     [,2]    [,3]
+## [1,]  1.00000 -0.22539 0.04746
+## [2,] -0.22539  1.00000 0.01396
+## [3,]  0.04746  0.01396 1.00000
 </code></pre>
 
 <pre><code class="r">profcor(a)
 </code></pre>
 
-<pre><code>##          [,1]      [,2]      [,3]
-## [1,]  1.00000 -0.012178 -0.491228
-## [2,] -0.01218  1.000000 -0.002353
-## [3,] -0.49123 -0.002353  1.000000
+<pre><code>##          [,1]     [,2]     [,3]
+## [1,]  1.00000 -0.15633  0.07961
+## [2,] -0.15633  1.00000 -0.01011
+## [3,]  0.07961 -0.01011  1.00000
 </code></pre>
 
 <pre><code class="r"># Compute correlations with b
 basiscor(a, b)
 </code></pre>
 
-<pre><code>##          [,1]      [,2]     [,3]
-## [1,]  0.04686  0.008775 -0.06157
-## [2,] -0.29802 -0.056070 -0.05652
-## [3,]  0.11878 -0.137068 -0.09362
+<pre><code>##          [,1]     [,2]     [,3]
+## [1,]  0.13918  0.18983 -0.21230
+## [2,] -0.02359 -0.12293  0.11838
+## [3,]  0.07774  0.05237  0.06242
 </code></pre>
 
 <pre><code class="r">profcor(a, b)
 </code></pre>
 
-<pre><code>##          [,1]    [,2]     [,3]
-## [1,]  0.08244 0.04487 -0.18232
-## [2,] -0.08242 0.32467 -0.05814
-## [3,] -0.22555 0.31619  0.48511
+<pre><code>##         [,1]    [,2]     [,3]
+## [1,] -0.1245  0.2783 -0.11670
+## [2,]  0.2344  0.1143 -0.03819
+## [3,]  0.2888 -0.4145  0.18809
 </code></pre>
 
 <pre><code class="r">
@@ -190,19 +195,19 @@ res &lt;- nmf(fitted(a) + rmatrix(a), 3)
 basiscor(a, res)
 </code></pre>
 
-<pre><code>##         [,1]    [,2]    [,3]
-## [1,]  0.2180  0.9702 -0.3466
-## [2,]  0.8556 -0.1174  0.2940
-## [3,] -0.2317 -0.1167  0.8895
+<pre><code>##          [,1]     [,2]    [,3]
+## [1,] -0.21476 -0.08249  0.9150
+## [2,]  0.94672  0.23391 -0.4014
+## [3,] -0.03902  0.92432  0.2603
 </code></pre>
 
 <pre><code class="r">profcor(a, res)
 </code></pre>
 
-<pre><code>##         [,1]    [,2]    [,3]
-## [1,]  0.1172  0.9159 -0.5098
-## [2,]  0.9522 -0.3187  0.2196
-## [3,] -0.2667 -0.2457  0.9656
+<pre><code>##          [,1]     [,2]     [,3]
+## [1,] -0.02423 -0.19351  0.99094
+## [2,]  0.92600  0.06939 -0.20129
+## [3,] -0.31095  0.94392  0.07301
 </code></pre>
 
 <pre><code class="r">
@@ -211,10 +216,10 @@ W &lt;- rmatrix(basis(a))
 basiscor(a, W)
 </code></pre>
 
-<pre><code>##          [,1]      [,2]    [,3]
-## [1,] -0.02591 -0.164467  0.1436
-## [2,] -0.13012  0.009577  0.0106
-## [3,] -0.01252 -0.043714 -0.0955
+<pre><code>##           [,1]     [,2]      [,3]
+## [1,] -0.003359 -0.01087  0.179082
+## [2,] -0.135339  0.27243 -0.083516
+## [3,] -0.045671 -0.05013  0.008125
 </code></pre>
 
 <pre><code class="r">identical(basiscor(a, W), basiscor(W, a))
@@ -228,10 +233,10 @@ H &lt;- rmatrix(coef(a))
 profcor(a, H)
 </code></pre>
 
-<pre><code>##          [,1]     [,2]     [,3]
-## [1,] -0.06582  0.21715 -0.25354
-## [2,] -0.27805  0.11565 -0.19513
-## [3,]  0.20565 -0.06154  0.07645
+<pre><code>##          [,1]    [,2]    [,3]
+## [1,]  0.01558 -0.2946  0.1403
+## [2,] -0.08800  0.5352 -0.1909
+## [3,]  0.14349  0.2588 -0.2547
 </code></pre>
 
 <pre><code class="r">identical(profcor(a, H), profcor(H, a))
