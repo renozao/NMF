@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>connectivity. NMF 0.16.5</title>
+<title>connectivity. NMF 0.17.4</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -33,7 +33,7 @@
     <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <a class="brand" href="index.html">NMF 0.17.4</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -55,8 +55,15 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p>Description,c("<code>connectivity</code> is an S4 generic that computes the\n  connectivity matrix based on the clustering of samples\n  obtained from a model's <code><a href='predict.html'>predict</a></code> method.", "The consensus matrix has been proposed by <cite>Brunet et\n  al. (2004)</cite> to help visualising and measuring the\n  stability of the clusters obtained by NMF approaches. For\n  objects of class <code>NMF</code> (e.g. results of a single NMF\n  run, or NMF models), the consensus matrix reduces to the\n  connectivity matrix."
-)</p>
+      <p><p><code>connectivity</code> is an S4 generic that computes the
+  connectivity matrix based on the clustering of samples
+  obtained from a model's <code><a href='predict.html'>predict</a></code> method.</p>
+<p>The consensus matrix has been proposed by <cite>Brunet et
+  al. (2004)</cite> to help visualising and measuring the
+  stability of the clusters obtained by NMF approaches. For
+  objects of class <code>NMF</code> (e.g. results of a single NMF
+  run, or NMF models), the consensus matrix reduces to the
+  connectivity matrix.</p></p>
   
     </div>
     
@@ -189,16 +196,16 @@ connectivity(cutree(h, 2))
 </code></pre>
 
 <pre><code>##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-##  [1,]    1    0    0    1    0    1    1    0    1     1
-##  [2,]    0    1    1    0    1    0    0    1    0     0
-##  [3,]    0    1    1    0    1    0    0    1    0     0
-##  [4,]    1    0    0    1    0    1    1    0    1     1
-##  [5,]    0    1    1    0    1    0    0    1    0     0
-##  [6,]    1    0    0    1    0    1    1    0    1     1
-##  [7,]    1    0    0    1    0    1    1    0    1     1
-##  [8,]    0    1    1    0    1    0    0    1    0     0
-##  [9,]    1    0    0    1    0    1    1    0    1     1
-## [10,]    1    0    0    1    0    1    1    0    1     1
+##  [1,]    1    1    1    0    1    0    0    0    0     0
+##  [2,]    1    1    1    0    1    0    0    0    0     0
+##  [3,]    1    1    1    0    1    0    0    0    0     0
+##  [4,]    0    0    0    1    0    1    1    1    1     1
+##  [5,]    1    1    1    0    1    0    0    0    0     0
+##  [6,]    0    0    0    1    0    1    1    1    1     1
+##  [7,]    0    0    0    1    0    1    1    1    1     1
+##  [8,]    0    0    0    1    0    1    1    1    1     1
+##  [9,]    0    0    0    1    0    1    1    1    1     1
+## [10,]    0    0    0    1    0    1    1    1    1     1
 </code></pre>
 
 <pre><code class="r">connectivity(gl(2, 4))

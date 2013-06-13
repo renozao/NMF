@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf. NMF 0.16.5</title>
+<title>nmf. NMF 0.17.4</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -33,7 +33,7 @@
     <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <a class="brand" href="index.html">NMF 0.17.4</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -55,7 +55,14 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p>Description,c("The function <code>nmf</code> is a S4 generic defines the main\n  interface to run NMF algorithms within the framework\n  defined in package <code>NMF</code>. It has many methods that\n  facilitates applying, developing and testing NMF\n  algorithms.", "The package vignette <code>vignette('NMF')</code> contains an\n  introduction to the interface, through a sample data\n  analysis.")</p>
+      <p><p>The function <code>nmf</code> is a S4 generic defines the main
+  interface to run NMF algorithms within the framework
+  defined in package <code>NMF</code>. It has many methods that
+  facilitates applying, developing and testing NMF
+  algorithms.</p>
+<p>The package vignette <code>vignette('NMF')</code> contains an
+  introduction to the interface, through a sample data
+  analysis.</p></p>
   
     </div>
     
@@ -349,6 +356,11 @@
 <li>parallel.required - P Same as <code>p</code>, but an
   error is thrown if the computation cannot be performed in
   parallel or with the specified number of processors.
+
+  </li>
+<li>shared.memory - m toggle usage of shared memory
+  (requires the <span class = "pkg">synchronicity</span> package). Default is as
+  defined by <code>nmf.getOption('shared.memory')</code>.
 
   </li>
 <li>restore.seed - r deprecated option since version
@@ -803,13 +815,6 @@
     <div class="References">
       <h2>References</h2>
       
-      <p>Badea L (2008). "Extracting gene expression profiles
-  common to colon and pancreatic adenocarcinoma using
-  simultaneous nonnegative matrix factorization." _Pacific
-  Symposium on Biocomputing. Pacific Symposium on
-  Biocomputing_, *290*, pp. 267-78. ISSN 1793-5091, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/18229692>.</p>
-  
       <p>Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).
   "Metagenes and molecular pattern discovery using matrix
   factorization." _Proceedings of the National Academy of
@@ -817,6 +822,30 @@
   4164-9. ISSN 0027-8424, <URL:
   http://dx.doi.org/10.1073/pnas.0308531101>, <URL:
   http://www.ncbi.nlm.nih.gov/pubmed/15016911>.</p>
+  
+      <p>Lee DD and Seung H (2001). "Algorithms for non-negative
+  matrix factorization." _Advances in neural information
+  processing systems_. <URL:
+  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
+  
+      <p>Wang G, Kossenkov AV and Ochs MF (2006). "LS-NMF: a
+  modified non-negative matrix factorization algorithm
+  utilizing uncertainty estimates." _BMC bioinformatics_,
+  *7*, pp. 175. ISSN 1471-2105, <URL:
+  http://dx.doi.org/10.1186/1471-2105-7-175>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/16569230>.</p>
+  
+      <p>Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and
+  Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix
+  factorization (nsNMF)." _IEEE Trans. Pattern Anal. Mach.
+  Intell_, *28*, pp. 403-415.</p>
+  
+      <p>Badea L (2008). "Extracting gene expression profiles
+  common to colon and pancreatic adenocarcinoma using
+  simultaneous nonnegative matrix factorization." _Pacific
+  Symposium on Biocomputing. Pacific Symposium on
+  Biocomputing_, *290*, pp. 267-78. ISSN 1793-5091, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/18229692>.</p>
   
       <p>Kim H and Park H (2007). "Sparse non-negative matrix
   factorizations via alternating non-negativity-constrained
@@ -826,29 +855,12 @@
   http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
   http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
   
-      <p>Lee DD and Seung H (2001). "Algorithms for non-negative
-  matrix factorization." _Advances in neural information
-  processing systems_. <URL:
-  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
-  
-      <p>Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and
-  Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix
-  factorization (nsNMF)." _IEEE Trans. Pattern Anal. Mach.
-  Intell_, *28*, pp. 403-415.</p>
-  
       <p>Van Benthem M and Keenan MR (2004). "Fast algorithm for
   the solution of large-scale non-negativity-constrained
   least squares problems." _Journal of Chemometrics_,
   *18*(10), pp. 441-450. ISSN 0886-9383, <URL:
   http://dx.doi.org/10.1002/cem.889>, <URL:
   http://doi.wiley.com/10.1002/cem.889>.</p>
-  
-      <p>Wang G, Kossenkov AV and Ochs MF (2006). "LS-NMF: a
-  modified non-negative matrix factorization algorithm
-  utilizing uncertainty estimates." _BMC bioinformatics_,
-  *7*, pp. 175. ISSN 1471-2105, <URL:
-  http://dx.doi.org/10.1186/1471-2105-7-175>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/16569230>.</p>
   
     </div>
     
@@ -873,10 +885,7 @@ res &lt;- nmf(x, 2, &#39;lee&#39;)
 res &lt;- nmf(x, 2, .options=&#39;v&#39;)
 </code></pre>
 
-<pre><code>## NMF algorithm: &#39;brunet&#39;
-</code></pre>
-
-<pre><code>## NMF seeding method: random
+<pre><code>## NMF algorithm: &#39;brunet&#39; NMF seeding method: random
 </code></pre>
 
 <pre><code>## Iterations:    0/2000

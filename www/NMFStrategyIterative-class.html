@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFStrategyIterative-class. NMF 0.16.5</title>
+<title>NMFStrategyIterative-class. NMF 0.17.4</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -33,7 +33,7 @@
     <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <a class="brand" href="index.html">NMF 0.17.4</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -55,9 +55,29 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p>Description,c("This class provides a specific implementation for the\n  generic function <code>run</code> -- concretising the virtual\n  interface class <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code>, for NMF\n  algorithms that conform to the following iterative schema\n  (starred numbers indicate mandatory steps):", "<ul>\n<li> 1. Initialisation </li>\n<li> 2*. Update the\n  model at each iteration </li>\n<li> 3. Stop if some criterion\n  is satisfied </li>\n<li> 4. Wrap up </li>\n</ul>", 
-"This schema could possibly apply to all NMF algorithms,\n  since these are essentially optimisation algorithms,\n  almost all of which use iterative methods to approximate\n  a solution of the optimisation problem. The main\n  advantage is that it allows to implement updates and\n  stopping criterion separately, and combine them in\n  different ways. In particular, many NMF algorithms are\n  based on multiplicative updates, following the approach\n  from <cite>Lee et al. (2001)</cite>, which are specially\n  suitable to be cast into this simple schema."
-)</p>
+      <p><p>This class provides a specific implementation for the
+  generic function <code>run</code> -- concretising the virtual
+  interface class <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code>, for NMF
+  algorithms that conform to the following iterative schema
+  (starred numbers indicate mandatory steps):</p>
+<p><ul>
+<li> 1. Initialisation </li>
+<li> 2*. Update the
+  model at each iteration </li>
+<li> 3. Stop if some criterion
+  is satisfied </li>
+<li> 4. Wrap up </li>
+</ul></p>
+<p>This schema could possibly apply to all NMF algorithms,
+  since these are essentially optimisation algorithms,
+  almost all of which use iterative methods to approximate
+  a solution of the optimisation problem. The main
+  advantage is that it allows to implement updates and
+  stopping criterion separately, and combine them in
+  different ways. In particular, many NMF algorithms are
+  based on multiplicative updates, following the approach
+  from <cite>Lee et al. (2001)</cite>, which are specially
+  suitable to be cast into this simple schema.</p></p>
   
     </div>
     

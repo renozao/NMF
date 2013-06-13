@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf_update.ns. NMF 0.16.5</title>
+<title>nmf_update.ns. NMF 0.17.4</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -33,7 +33,7 @@
     <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <a class="brand" href="index.html">NMF 0.17.4</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -55,8 +55,20 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p>Description,c("These update rules, defined for the\n  <code><a href='NMFns-class.html'>NMFns-class</a></code> model <code class = 'eq'>V \\approx W S H</code>\n  from <cite>Pascual-Montano et al. (2006)</cite>, that\n  introduces an intermediate smoothing matrix to enhance\n  sparsity of the factors.", "<code>nmf_update.ns_R</code> implements the same updates in\n  <em>plain R</em>.", "Algorithms &#145;nsNMF&#146; and &#145;.R#nsNMF&#146; provide\n  the complete NMF algorithm from <cite>Pascual-Montano et\n  al. (2006)</cite>, using the C++-optimised and plain R updates\n  <code><a href='KL-nmf.html'>nmf_update.brunet</a></code> and\n  <code><a href='KL-nmf.html'>nmf_update.brunet_R</a></code> respectively. The\n  stopping criterion is based on the stationarity of the\n  connectivity matrix."
-)</p>
+      <p><p>These update rules, defined for the
+  <code><a href='NMFns-class.html'>NMFns-class</a></code> model <code class = 'eq'>V \approx W S H</code>
+  from <cite>Pascual-Montano et al. (2006)</cite>, that
+  introduces an intermediate smoothing matrix to enhance
+  sparsity of the factors.</p>
+<p><code>nmf_update.ns_R</code> implements the same updates in
+  <em>plain R</em>.</p>
+<p>Algorithms &#145;nsNMF&#146; and &#145;.R#nsNMF&#146; provide
+  the complete NMF algorithm from <cite>Pascual-Montano et
+  al. (2006)</cite>, using the C++-optimised and plain R updates
+  <code><a href='KL-nmf.html'>nmf_update.brunet</a></code> and
+  <code><a href='KL-nmf.html'>nmf_update.brunet_R</a></code> respectively. The
+  stopping criterion is based on the stationarity of the
+  connectivity matrix.</p></p>
   
     </div>
     
@@ -158,6 +170,11 @@ nmfAlgorithm.nsNMF(..., .stop = NULL, maxIter = 2000, copy = FALSE, stopconv = 4
     <div class="References">
       <h2>References</h2>
       
+      <p>Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and
+  Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix
+  factorization (nsNMF)." _IEEE Trans. Pattern Anal. Mach.
+  Intell_, *28*, pp. 403-415.</p>
+  
       <p>Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).
   "Metagenes and molecular pattern discovery using matrix
   factorization." _Proceedings of the National Academy of
@@ -165,11 +182,6 @@ nmfAlgorithm.nsNMF(..., .stop = NULL, maxIter = 2000, copy = FALSE, stopconv = 4
   4164-9. ISSN 0027-8424, <URL:
   http://dx.doi.org/10.1073/pnas.0308531101>, <URL:
   http://www.ncbi.nlm.nih.gov/pubmed/15016911>.</p>
-  
-      <p>Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and
-  Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix
-  factorization (nsNMF)." _IEEE Trans. Pattern Anal. Mach.
-  Intell_, *28*, pp. 403-415.</p>
   
     </div>
       </div>

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFStop. NMF 0.16.5</title>
+<title>NMFStop. NMF 0.17.4</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -33,7 +33,7 @@
     <div class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">NMF 0.16.5</a>
+      <a class="brand" href="index.html">NMF 0.17.4</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -55,9 +55,31 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p>Description,c("The function documented here implement\n  stopping/convergence criteria commonly used in NMF\n  algorithms.", "<code>nmf.stop.iteration</code> generates a function that\n  implements the stopping criterion that limits the number\n  of iterations to a maximum of <code>n</code>), i.e. that\n  returns <code>TRUE</code> if <code>i>=n</code>, <code>FALSE</code>\n  otherwise.", "<code>nmf.stop.threshold</code> generates a function that\n  implements the stopping criterion that stops when a given\n  stationarity threshold is achieved by successive\n  iterations. The returned function is identical to\n  <code>nmf.stop.stationary</code>, but with the default\n  threshold set to <code>threshold</code>.", 
-"More precisely, the objective function is computed over\n  <code class = 'eq'>n</code> successive iterations (specified in argument\n  <code>check.niter</code>), every <code>check.interval</code>\n  iterations. The criterion stops when the absolute\n  difference between the maximum and the minimum objective\n  values over these iterations is lower than a given\n  threshold <code class = 'eq'>\\alpha</code> (specified in\n  <code>stationary.th</code>):", "<code>nmf.stop.connectivity</code> implements the stopping\n  criterion that is based on the stationarity of the\n  connectivity matrix."
-)</p>
+      <p><p>The function documented here implement
+  stopping/convergence criteria commonly used in NMF
+  algorithms.</p>
+<p><code>nmf.stop.iteration</code> generates a function that
+  implements the stopping criterion that limits the number
+  of iterations to a maximum of <code>n</code>), i.e. that
+  returns <code>TRUE</code> if <code>i>=n</code>, <code>FALSE</code>
+  otherwise.</p>
+<p><code>nmf.stop.threshold</code> generates a function that
+  implements the stopping criterion that stops when a given
+  stationarity threshold is achieved by successive
+  iterations. The returned function is identical to
+  <code>nmf.stop.stationary</code>, but with the default
+  threshold set to <code>threshold</code>.</p>
+<p>More precisely, the objective function is computed over
+  <code class = 'eq'>n</code> successive iterations (specified in argument
+  <code>check.niter</code>), every <code>check.interval</code>
+  iterations. The criterion stops when the absolute
+  difference between the maximum and the minimum objective
+  values over these iterations is lower than a given
+  threshold <code class = 'eq'>\alpha</code> (specified in
+  <code>stationary.th</code>):</p>
+<p><code>nmf.stop.connectivity</code> implements the stopping
+  criterion that is based on the stationarity of the
+  connectivity matrix.</p></p>
   
     </div>
     
