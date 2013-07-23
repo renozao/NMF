@@ -2779,7 +2779,7 @@ plot.NMF.rank <- function(x, y=NULL, what=c('all', 'cophenetic', 'rss', 'residua
         what <- c('cophenetic', 'rss', 'residuals', 'dispersion', 'evar', 'sparseness', 'silhouette')
     }
     
-    .getvals <- function(x){
+    .getvals <- function(x, xname){
     	measures <- x$measures
     	iwhat <- unlist(lapply(paste('^',what,sep=''), grep, colnames(measures)))
     	
@@ -2804,28 +2804,28 @@ plot.NMF.rank <- function(x, y=NULL, what=c('all', 'cophenetic', 'rss', 'residua
         pdata$Type <- measure.type[as.character(pdata$variable)]
         # define measure groups
         pdata$Measure <- gsub("^([^.]+).*", "\\1", pdata$variable)
+        pdata$Data <- xname
         pdata
     }
     
-    pdata <- .getvals(x)
+    pdata <- .getvals(x, xname)
     
     # add reference data
-    if( !missing(y) && is(y, 'NMF.rank') ){
-        pdata$Data <- xname
-        pdata.y <- .getvals(y) 
-        pdata.y$Data <- yname
+    if( is(y, 'NMF.rank') ){
+        pdata.y <- .getvals(y, yname)
         pdata <- rbind(pdata, pdata.y)
     }
     
-    p <- ggplot(pdata, aes_string(x = 'rank', y = 'value')) + theme_bw() +
+    p <- ggplot(pdata, aes_string(x = 'rank', y = 'value')) +
+            geom_line( aes_string(linetype = 'Data', colour = 'Type') ) +
+            geom_point(size = 2, aes_string(shape = 'Data', colour = 'Type') ) +
+            theme_bw() +
             scale_x_continuous(xlab, breaks = unique(pdata$rank)) +
             scale_y_continuous(ylab) +
             ggtitle(main)
-    # add reference layer
-    if( !missing(y) && is(y, 'NMF.rank') ){
-        p <- p + geom_line(aes_string(colour = 'Type', linetype = 'Data'))
-    }else{
-        p <- p + geom_line(aes_string(colour = 'Type'))
+    # remove legend if not necessary
+    if( !is(y, 'NMF.rank') ){
+        p <- p + scale_shape(guide = 'none') + scale_linetype(guide = 'none')
     }
     
     # use fix set of colors
@@ -2834,7 +2834,7 @@ plot.NMF.rank <- function(x, y=NULL, what=c('all', 'cophenetic', 'rss', 'residua
     p <- p + scale_colour_manual(name = "Measure type", values = myColors)
     
     # add facet
-    p <- p + facet_grid(Measure ~ ., scales = 'free')
+    p <- p + facet_wrap( ~ Measure, scales = 'free')
     
     # return plot
     p
