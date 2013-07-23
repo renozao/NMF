@@ -521,6 +521,54 @@ test.nmf.model <- function(){
 	checkEquals(fit(res)@theta, 0.6
 			, "Call algo:nsNMF with theta in argument 'model': argument correctly passed to model")				
 
+str_dim <- NMF:::str_dim
+
+test.nmfModel.formula <- function(){
+    
+    set.seed(123456)
+    r <- 3
+    V <- .testData(r = r)
+    w <- rmatrix(nrow(V), r)
+    h <- rmatrix(r, ncol(V))
+    cx <- runif(ncol(V))
+    bx <- runif(nrow(V))
+    
+    .check <- function(res, dims, msg, cterm = NULL, bterm = NULL){
+        .msg <- function(...) paste0(msg, ': ', ...)
+        checkTrue(isNMFfit(res), .msg('Result is an NMFfit object'))
+        checkEquals(dim(res), dims, .msg('Dimensions [', str_dim(res), '] are as expected [', str_dim(dims=dims), ']'))
+        
+        # check fixed terms don't change
+        if( !is.null(cterm) ){
+            if( is.null(dim(cterm)) ) cterm <- matrix(cterm, 1L)
+            else if( is.data.frame(cterm) ) t(as.matrix(cterm))
+            else if( !is.matrix(cterm) ) stop("Unexpected error: invalid data type [", class(cterm), ']')
+            n <- nrow(cterm)
+            ft <- coef(res)[tail(1:nbasis(res), n), , drop = FALSE]
+            dimnames(ft) <- NULL
+            checkIdentical(cterm, ft, "Fixed coef term don't change")
+        }
+        if( !is.null(bterm) ){
+            if( is.null(dim(bterm)) ) bterm <- matrix(bterm, ncol = 1L)
+            else if( is.data.frame(bterm) ) as.matrix(bterm)
+            else if( !is.matrix(cterm) ) stop("Unexpected error: invalid data type [", class(bterm), ']')
+            n <- ncol(bterm)
+            ft <- basis(res)[, tail(1:nbasis(res), n), drop = FALSE]
+            dimnames(ft) <- NULL
+            checkIdentical(bterm, ft, "Fixed basis term don't change")
+        }
+    }
+    
+    # coef terms
+    .check(nmf(V ~ cx), c(dim(V), 1L), cterm = cx, 'Single coef term')
+    .check(nmf(V ~ h), c(dim(V), nrow(h)), cterm = h, 'Matrix coef term')
+    .check(nmf(t(V) ~ t(w)), c(dim(t(V)), ncol(w)), cterm = t(w), 'Matrix coef term (transpose)')
+    .check(nmf(V ~ data.frame(t(h))), c(dim(V), nrow(h)), cterm = h, 'Data frame coef term')
+    # basis terms
+#    .check(nmf(V ~ bx), c(dim(V), 1L), bterm = bx, 'Single basis term')
+#    .check(nmf(V ~ w), c(dim(V), ncol(w)), bterm = w, 'Matrix basis term')
+#    .check(nmf(V ~ data.frame(w)), c(dim(V), ncol(w)), bterm = w, 'Data frame basis term')
+    
 }
 
 #' Unit test for the interface function 'nmf': argument '...'
