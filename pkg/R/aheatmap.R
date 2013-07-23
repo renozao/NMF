@@ -1020,6 +1020,7 @@ round.pretty <- function(x, min=2){
 	if( is.null(x) ) return(NULL)		
 	n <- 0
 	y <- round(sort(x), n)
+	if( all(diff(y)==0) ) return( round(x, min) ) 
 	while( any(diff(y)==0) ){
 		n <- n+1
 		y <- round(sort(x), n)
@@ -1103,7 +1104,9 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 			}
 			else{
 				h = round(runif(1) * 360)
-				setNames(rev(sequential_hcl(2, h, l = c(50, 95))), round.pretty(range(ann, na.rm=TRUE)))
+				rg <- range(ann, na.rm=TRUE)
+				if( rg[1] == rg[2] ) rg <- sort(c(0, rg[1]))
+				setNames(rev(sequential_hcl(2, h, l = c(50, 95))), round.pretty(rg))
 			}
 		
 		}else{
