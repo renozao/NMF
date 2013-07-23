@@ -248,7 +248,10 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='list'),
 		})
 		
 		# filter out bad results
-		ok <- sapply(res, isNMFfit)
+		ok <- sapply(res, function(x){
+					if( is(x, 'NMF.rank') ) all(sapply(x$fit, isNMFfit))
+					else isNMFfit(x)
+			})
 		if( any(!ok) ){ # throw warning if some methods raised an error
 			err <- lapply(which(!ok), function(i){ paste("'", method[[i]],"': ", res[[i]], sep='')})
 			warning("NMF::nmf - Incomplete results due to ", sum(!ok), " errors: \n- ", paste(err, collapse="- "), call.=FALSE)
@@ -257,8 +260,14 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='list'),
 		# TODO error if ok is empty
 
 		# add names to the result list
-		names(res) <- sapply(res, algorithm)
+		names(res) <- sapply(res, function(x){
+					if( is(x, 'NMF.rank') ) x <- x$fit[[1]]
+					algorithm(x)
+				})
 				
+		# return list as is if surveying multiple ranks 
+		if( length(rank) > 1 ) return(res)
+		
 		# wrap the result in a NMFList object
 		# DO NOT WRAP anymore here: NMFfitX objects are used only for results of multiple runs (single method)
 		# the user can still join on the result if he wants to
