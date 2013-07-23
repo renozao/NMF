@@ -1239,14 +1239,14 @@ is.empty.nmf <- function(x, ...){
 #' 
 #' @rdname types
 #' @export
-hasBasis <- function(x) nrow(basis(x)) != 0L
+hasBasis <- function(x) nbasis(x) && nrow(basis(x)) != 0L
 
 #' \code{hasBasis} tests whether an objects contains a coefficient matrix 
 #' -- returned by a suitable method \code{coef} -- with at least one column.
 #' 
 #' @rdname types
 #' @export
-hasCoef <- function(x) ncol(coef(x)) != 0L
+hasCoef <- function(x) nbasis(x) && ncol(coef(x)) != 0L
 
 #' \code{is.partial.nmf} tests whether an NMF model object contains either an empty 
 #' basis or coefficient matrix.
