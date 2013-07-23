@@ -1060,3 +1060,8 @@ CI.Rsq <- function (rsq, n, k, level = 0.95)
 	mat <- data.frame(Rsq = rsq, SErsq = sersq, LCL = lcl, UCL = ucl)
 	return(mat)
 }
+
+str_dim <- function(x, dims=dim(x)){
+    if( !is.null(dims) ) paste0(dims, collapse = ' x ')
+    else length(x)
+}
