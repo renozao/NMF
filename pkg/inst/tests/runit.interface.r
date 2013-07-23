@@ -520,6 +520,7 @@ test.nmf.model <- function(){
 			, V, r, 'NMFns', 'nsNMF')
 	checkEquals(fit(res)@theta, 0.6
 			, "Call algo:nsNMF with theta in argument 'model': argument correctly passed to model")				
+}
 
 str_dim <- NMF:::str_dim
 
