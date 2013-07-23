@@ -628,21 +628,21 @@ setMethod('nmf', signature(x='matrix', rank='matrix', method='ANY'),
 		}
 		# check compatibility of dimensions
 		newseed <- 
-		if( ncol(rank) == ncol(x) ){
-			# rank is the initial value for the mixture coefficients
-			if( length(model)==0L ) nmfModel(H=rank)
-			else{
-				model$H <- rank
-				do.call('nmfModel', model)
-			}
-		}else if( nrow(rank) == nrow(x) ){
+		if( nrow(rank) == nrow(x) ){
 			# rank is the initial value for the basis vectors
 			if( length(model)==0L ) nmfModel(W=rank)
 			else{
 				model$W <- rank
 				do.call('nmfModel', model)
 			}
-		}else
+		}else if( ncol(rank) == ncol(x) ){
+            # rank is the initial value for the mixture coefficients
+            if( length(model)==0L ) nmfModel(H=rank)
+            else{
+                model$H <- rank
+                do.call('nmfModel', model)
+            }
+        }else
 			stop("nmf - Invalid argument `rank`: matrix dimensions [",str_out(dim(x),sep=' x '),"]"
 				, " are incompatible with the target matrix [", str_out(dim(x),sep=' x '),"].\n"
 				, "  When `rank` is a matrix it must have the same number of rows or columns as the target matrix `x`.")
