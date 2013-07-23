@@ -1371,8 +1371,8 @@ setMethod('summary', signature(object='NMFfitX'),
 		s <- c(s, cophenetic=cophcor(C), dispersion=dispersion(C))
 		
         # compute mean consensus silhouette width
-        si <- summary(silhouette(object, what = 'consensus'))
-        s <- c(s, silhouette.consensus = si$avg.width)
+		si <- silhouette(object, what = 'consensus')
+		s <- c(s, silhouette.consensus = if( !is_NA(si) ) summary(si)$avg.width else NA)
         
 		# return result
 		s
@@ -1571,6 +1571,14 @@ setMethod('summary', signature(object='NMFList'),
 	}
 )
 
+#' @S3method summary NMF.rank 
+summary.NMF.rank <- function(x, ...){
+	s <- summary(new('NMFList', x$fit), ...)
+	# NB: sort measures in the same order as required in ...
+	i <- which(!names(s) %in% names(x$measures))
+	cbind(s[, i], x$measures[match(x$measures$rank, s$rank), ])
+}
+
 #' @details
 #' \code{plot} plot on a single graph the residuals tracks for each fit in \code{x}. 
 #' See function \code{\link{nmf}} for details on how to enable the tracking of residuals.
@@ -1686,7 +1694,7 @@ setGeneric('consensusmap', function(object, ...) standardGeneric('consensusmap')
 #' Plots a heatmap of the consensus matrix obtained when fitting an NMF model with multiple runs. 
 setMethod('consensusmap', 'NMFfitX', 
 	function(object, annRow=NA, annCol=NA
-			, tracks=c('basis:', 'consensus:')
+			, tracks=c('basis:', 'consensus:', 'silhouette:')
 			, main = 'Consensus matrix', info = FALSE
 			, ...){
 			
@@ -1709,6 +1717,11 @@ setMethod('consensusmap', 'NMFfitX',
 		ahandlers <- list(
 			basis = function() predict(object)
 			, consensus = function() predict(object, what='consensus')
+			, silhouette = function(){
+				si <- silhouette(object, what='consensus', order = NA)
+				if( is_NA(si) ) NA
+				else si[, 'sil_width']
+			}
 		)
 		specialAnnotation(1L, ahandlers)
 		specialAnnotation(2L, ahandlers)
@@ -1759,7 +1772,7 @@ setMethod('consensusmap', 'NMF.rank',
 	function(object, ...){
 
 		# plot the list of consensus matrix (set names to be used as default main titles)
-		consensusmap(setNames(object$consensus, paste("rank = ", lapply(object$fit, nbasis))), ...)
+		consensusmap(setNames(object$fit, paste("rank = ", lapply(object$fit, nbasis))), ...)
 	}
 )
 #' Draw a single plot with a heatmap of the consensus matrix of each element in the list \code{object}.
@@ -1800,7 +1813,7 @@ setMethod('consensusmap', 'list',
 		}
 		
 		graphics::layout(layout)
-		res <- sapply(seq_along(object), function(i){
+		res <- sapply(seq_along(object), function(i, ...){
 			x <- object[[i]]
 			
 			# set main title
@@ -1812,7 +1825,7 @@ setMethod('consensusmap', 'list',
 			
 			# call method for the fit
 			consensusmap(x, ..., Rowv=Rowv, main=main)
-		})
+		}, ...)
 		invisible(res)
 	}
 )

@@ -1511,10 +1511,10 @@ setMethod('summary', signature(object='NMF'),
 			}
             
             # compute mean silhouette width
-            siS <- summary(silhouette(object, what = 'samples'))
-            siF <- summary(silhouette(object, what = 'features'))
-            res <- c(res, silhouette.coef = siS$avg.width
-                    , silhouette.basis = siF$avg.width)
+            siS <- silhouette(object, what = 'samples')
+            siF <- silhouette(object, what = 'features')
+            res <- c(res, silhouette.coef = if( !is_NA(siS) ) summary(siS)$avg.width else NA
+                    , silhouette.basis = if( !is_NA(siF) ) summary(siF)$avg.width else NA)
 			
 			# return result
 			return(res)

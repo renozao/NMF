@@ -571,9 +571,13 @@ silhouette.NMF <- function(x, what = NULL, order = NULL, ...){
     p <- predict(x, what = what, dmatrix = TRUE)
     # compute silhouette
     si <- silhouette(as.numeric(p), dmatrix = attr(p, 'dmatrix'))
+	if( is_NA(si) ) return(NA)
     # fix rownames if necessary
-    if( is.null(rownames(si)) )
+    if( is.null(rownames(si)) ){
         rownames(si) <- names(p)
+		if( is.null(rownames(si)) )
+			rownames(si) <- 1:nrow(si)
+	}
     
     if( is.null(order) && !is.null(attr(p, 'iOrd')) ){
         # reorder as defined in prediction
@@ -581,7 +585,7 @@ silhouette.NMF <- function(x, what = NULL, order = NULL, ...){
     }
     
     # order the silhouette
-    if( !is.null(order) ){
+    if( !is.null(order) && !is_NA(order) ){
         si[1:nrow(si), ] <- si[order, , drop = FALSE]
         rownames(si) <- rownames(si)[order]
         attr(si, 'iOrd') <- order
