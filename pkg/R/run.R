@@ -7,6 +7,18 @@
 
 #' Run NMF Methods and Generate a Report
 #' 
+#' Generates an HTML report from running a set of method on a given 
+#' target matrix, for a set of factorization ranks.
+#' 
+#' The report is based on an .Rmd document \code{'report.Rmd'} stored in 
+#' the package installation sub-directory \code{scripts/}, and is compiled
+#' using \pkg{knitr}.
+#'  
+#' At the begining of the document, a file named \code{'functions.R'} is 
+#' looked for in the current directory, and sourced if present.
+#' This enables the definition of custom NMF methods (see \code{\link{setNMFMethod}}) 
+#' or setting global options.   
+#' 
 #' @param x target matrix
 #' @param rank factorization rank
 #' @param method list of methods to apply
