@@ -2,6 +2,7 @@
 
 ```{r setup, echo = FALSE}
 library(knitr)
+library(NMF)
 options(width = 300)
 opts_knit$set(root.dir = opts_knit$get('output.dir'))
 ```
@@ -41,7 +42,7 @@ summary(colClass)
 
 ```{r run}
 # run NMF for all ranks
-res <- nmf(x, rank, method, nrun = 3)
+res <- nmfRun(x, rank, method)
 ```
 
 # Results
