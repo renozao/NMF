@@ -15,7 +15,22 @@
 #' @param output output HTML file
 #' @param template template Rmd file
 #' 
-nmfReport <- function(x, rank, method, colClass = NULL, rowClass = NULL, ..., output = NULL, template = NULL){
+#' @return a list with the following elements:
+#' \item{fits}{the fit(s) for each method and each value of the rank.}
+#' \item{accuracy}{a data.frame that contains the summary assessment measures, 
+#' for each fit.} 
+#' 
+#' @export
+#' @examples 
+#' 
+#' \dontrun{
+#' 
+#' x <- rmatrix(20, 10)
+#' gr <- gl(2, 5)
+#' nmfReport(x, 2:4, method = list('br', 'lee'), colClass = gr, nrun = 5)
+#' 
+#' }
+nmfReport <- function(x, rank, method, colClass = NULL, ..., output = NULL, template = NULL){
 	
 	library(knitr)
 	if( is.null(template) )

@@ -172,7 +172,6 @@ plot(res, 'cophenetic')
 rV <- randomize(V)
 rand <- nmfEstimateRank(rV, seq(2,5), method='brunet', nrun=10, seed=123456)
 plot(res, rand)
-
 }
 }
 \references{

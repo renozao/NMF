@@ -34,7 +34,8 @@
   consensusmap(object, ...)
 
   \S4method{consensusmap}{NMFfitX}(object, annRow = NA,
-    annCol = NA, tracks = c("basis:", "consensus:"),
+    annCol = NA,
+    tracks = c("basis:", "consensus:", "silhouette:"),
     main = "Consensus matrix", info = FALSE, ...)
 
   \S4method{consensusmap}{matrix}(object,

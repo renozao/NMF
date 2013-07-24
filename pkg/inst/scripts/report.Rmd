@@ -3,6 +3,7 @@
 ```{r setup, echo = FALSE}
 library(knitr)
 options(width = 300)
+opts_knit$set(root.dir = opts_knit$get('output.dir'))
 ```
 
 # Input
@@ -33,7 +34,7 @@ rank
 unlist(method)
 
 # Reference class
-head(colClass)
+summary(colClass)
 ```
 
 # Run
@@ -41,7 +42,6 @@ head(colClass)
 ```{r run}
 # run NMF for all ranks
 res <- nmf(x, rank, method, nrun = 3)
-#knit_exit()
 ```
 
 # Results
