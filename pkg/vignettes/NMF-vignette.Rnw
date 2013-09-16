@@ -38,7 +38,6 @@ pkgmaker::latex_preamble()
 <<bibliofile, echo=FALSE, results='asis'>>=
 pkgmaker::latex_bibliography('NMF')
 @
-\bibliography{Rpackages}
 \newcommand{\citet}[1]{\textcite{#1}}
 \renewcommand{\cite}[1]{\parencite{#1}}
 \DefineBibliographyStrings{english}{%
@@ -1253,7 +1252,7 @@ nmf.options()
 Currently the following options are available:
 
 <<nmf_options, echo=FALSE, results='asis'>>=
-pkgmaker:::RdSection2latex('nmf.options', package='NMF')
+RdSection2latex('nmf.options', package='NMF')
 @
 
 The default/current values of each options can be displayed using the function
