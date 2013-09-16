@@ -56,6 +56,8 @@ nmfReport <- function(x, rank, method, colClass = NULL, ..., output = NULL, temp
 		str(args)
 		do.call(nmf, c(list(x, rank, method), args))
 	}
+    accuracy <- NA
+    res <- NA
 	knit2html(template)
 	res <- list(fits = res, accuracy = accuracy)
 	saveRDS(res, file = 'report_results.rds')
