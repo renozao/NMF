@@ -2,9 +2,11 @@
 \.settings
 ^sandbox$
 ^ressources/$
+^man-roxygen/
 vignettes/tmplib$
 vignettes/figure$
 vignettes/cache$
+vignettes/Rpackages.bib$
 vignettes/.*\.tex
 vignettes/.*\.Rnw
 vignettes/Rplots.pdf$
