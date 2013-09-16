@@ -6,8 +6,6 @@
 
 #.nmf.Options.Runtime <- character()
 
-library(pkgmaker)
-
 # define functions nmf.options and nmf.getOptions
 #' NMF Package Specific Options
 #'

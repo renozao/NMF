@@ -106,7 +106,6 @@ setMethod('nmfRegister', signature(key='NMFSeed', method='missing'),
 #' @export
 setNMFSeed <- function(..., overwrite=isLoadingNamespace(), verbose=TRUE){
 	
-	library(pkgmaker)	
 	# wrap function method into a new NMFSeed object
 	method <- NMFSeed(...)
 	# register the newly created object
