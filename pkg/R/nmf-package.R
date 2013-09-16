@@ -2,9 +2,9 @@
 #' @import digest
 #' @import stringr
 #' @import stats
+#' @import methods
 NULL
-library(digest)
-library(pkgmaker)
+#library(digest)
 
 #' Defunct Functions and Classes in the NMF Package
 #' 
@@ -69,20 +69,21 @@ devnmf <- function(){
 nmfConfig <- mkoptions()
 
 .onLoad <- function(libname, pkgname) {
-	
-	pkgEnv <- pkgmaker::packageEnv()
 		
 	# set default number of cores
 	if( pkgmaker::isCHECK() ){
 		options(cores=2)
 	}else{
-		if( nchar(nc <- Sys.getenv('_R_NMF_CORES_')) > 0 ){
+		if( nchar(nc <- Sys.getenv('R_PACKAGE_NMF_CORES')) > 0 ){
 			try({
 				nmf.options(cores=as.numeric(nc))
 			})
-		}
+		}   
 	}
-	
+    # use grid patch?
+    nmf.options(grid.patch = !isFALSE(Sys.getenv_value('R_PACKAGE_NMF_GRID_PATCH')))
+    
+    pkgEnv <- pkgmaker::packageEnv()
 	.init.sequence <- function(){
 	
 		## 0. INITIALIZE PACKAGE SPECFIC OPTIONS
