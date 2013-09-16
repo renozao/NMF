@@ -1,12 +1,28 @@
 *************************************************************************
+Changes in version 0.18
+*************************************************************************
+NEW FEATURES
+    o aheatmap gains distfun methods 'spearman', 'kendall', and, 
+    for completeness, 'pearson' (for which 'correlation' is now an alias), 
+    which specifies the correlation method to use when computing the 
+    distance matrix.
+    
+CHANGES
+    o In order to fully comply with CRAN policies, internals of the 
+    aheatmap function slightly changed. In particular, this brings an 
+    issue when directly plotting to PDF graphic devices, where a first 
+    blank page may appear. See the dedicated section in the man page 
+    ?aheatmap for a work around.
+    
+
+*************************************************************************
 Changes in version 0.17.3
 *************************************************************************
 NEW FEATURES
     o add silhouette computation for NMF results, which can be performed on 
     samples, features or consensus matrix.
     The average silhouette width is also computed by the summary methods.
-    This feature was long requested by researchers from the TCGA in Vancouver 
-    (thanks to Gordon Robertson for reminding this to me).
+    (Thanks to Gordon Robertson for this suggestion)
     
     o New runtime option 'shared.memory' (or 'm') for toggling usage of shared 
     memory (requires package synchronicity).
