@@ -1571,14 +1571,6 @@ setMethod('summary', signature(object='NMFList'),
 	}
 )
 
-#' @S3method summary NMF.rank 
-summary.NMF.rank <- function(x, ...){
-	s <- summary(new('NMFList', x$fit), ...)
-	# NB: sort measures in the same order as required in ...
-	i <- which(!names(s) %in% names(x$measures))
-	cbind(s[, i], x$measures[match(x$measures$rank, s$rank), ])
-}
-
 #' @details
 #' \code{plot} plot on a single graph the residuals tracks for each fit in \code{x}. 
 #' See function \code{\link{nmf}} for details on how to enable the tracking of residuals.
