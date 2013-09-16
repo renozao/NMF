@@ -67,11 +67,13 @@ registerDoBackend <- function(object, ...){
 #' @rdname foreach
 #' @export
 getDoBackend <- function(){
-	fe <- foreach:::.foreachGlobals
+    fe_ns <- asNamespace('foreach')
+	fe <- ns_get('.foreachGlobals', fe_ns)
 	if( !exists("fun", where = fe, inherits = FALSE) )
 		return(NULL)
 	
-	c(foreach:::getDoPar() # this returns the registered %dopar% function + associated data
+    getDoPar <- ns_get('getDoPar', fe_ns)
+	c(getDoPar() # this returns the registered %dopar% function + associated data
 		# -> add info function from foreach internal environment
 		, info= if( exists("info", where = fe, inherits = FALSE) ){
 					get('info', fe, inherits=FALSE) 
@@ -110,7 +112,7 @@ setDoBackend <- function(data, cleanup=FALSE){
 		setBackendCleanup(bdata)
 	}else{
 		do.call('setDoPar', list(NULL))
-		fe <- foreach:::.foreachGlobals
+		fe <- ns_get('.foreachGlobals', 'foreach')
 		if (exists("fun", envir = fe, inherits = FALSE))
 			remove("fun", envir = fe)
 		setBackendCleanup(NULL)
@@ -122,7 +124,7 @@ setDoBackend <- function(data, cleanup=FALSE){
 # setup cleanup procedure for the current backend
 setBackendCleanup <- function(object, fun, verbose=FALSE){
 	
-	fe <- foreach:::.foreachGlobals
+	fe <- ns_get('.foreachGlobals', 'foreach')
 	name <- getDoParName()
 	if( !is.null(fun <- object$cleanup) ){
 		if( verbose ) message("# Registering cleaning up function for '", name, "'... ", appendLF=FALSE)
@@ -1014,7 +1016,6 @@ setupLibPaths <- function(pkg='NMF', verbose=FALSE){
 				suppressMessages({
 					library(devtools)
 					library(bigmemory)
-					library(rngtools)
 					load_all(p)
 				})
 			})
