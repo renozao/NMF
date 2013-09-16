@@ -269,7 +269,12 @@ test.nmf.seed.argument <- function(){
 	checkException( nmf(V, r, seed=list('zzz')), "Throw an error when: inexistent seeding method name (passed as list)")
 	checkException( nmf(V, r, seed=list(method='zzz')), "Throw an error when: inexistent seeding method name (passed as named list)")
 	checkException( nmf(V, r, seed=list(toto=1, method='random')), "Throw an error when: unused argument is passed to seeding method")
-	checkException( nmf(V, r, seed=numeric()), "Throw an error when: seed argument is an empty numeric")
+    # In R-3.1.0, this does not throw an error anymore, but only a warning.
+    if( testRversion('>= 3.1.0') ){
+	    checkWarning( nmf(V, r, seed=numeric()), "\\.Random\\.seed.* is not a valid integer")
+    }else{ # previous versions threw an error
+	    checkException( nmf(V, r, seed=numeric()), "Throw an error when: seed argument is an empty numeric")
+    }
 	
 	checkException( nmf(V, r, seed=c(1,2)), "Throw an error when: seed argument is a numeric of invalid length (2)")
 	checkException( nmf(V, r, seed=rep(5,5)), "Throw an error when: seed argument is an invalid numeric value for .Random.seed (7)")
