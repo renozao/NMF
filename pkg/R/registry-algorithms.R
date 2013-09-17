@@ -58,9 +58,7 @@ setMethod('nmfRegister', signature(key='NMFStrategy', method='missing'),
 #' stopifnot( nmf.equal(res, nmfCheck('mynmf', seed=res)) ) 
 #' 
 setNMFMethod <- function(name, method, ..., overwrite=isLoadingNamespace(), verbose=TRUE){
-	
-	library(pkgmaker)
-	
+		
 	# build call to NMFStrategy constructor
 	call_const <- match.call(NMFStrategy)
 	call_const[[1]] <- as.name('NMFStrategy')

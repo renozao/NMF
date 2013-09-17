@@ -359,3 +359,18 @@ icoef <- function(object, ...){
 	else i
 }
 
+#' @S3method t NMFstd
+t.NMFstd <- function(x){
+    # transpose and swap factors
+    x <- t.NMF(x)
+    # swap fixed terms
+    bt <- bterms(x)
+    ibt <- ibterms(x)
+    x@bterms <- cterms(x)
+    x@ibterms <- icterms(x)
+    x@cterms <- bt
+    x@icterms <- ibt
+    
+    # returns
+    x
+}

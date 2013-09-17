@@ -357,11 +357,12 @@ draw_annotation_legend = function(annotation_colors, border_color, ...){
 vplayout <- function ()
 {
 	graphic.name <- NULL
-	
+	.index <- 0L
 	function(x, y, verbose = getOption('verbose') ){
 		# initialize the graph name
 		if( is.null(x) ){
-			graphic.name <<- grid:::vpAutoName()
+            .index <<- .index + 1L
+			graphic.name <<- paste0("AHEATMAP.VP.", .index) #grid:::vpAutoName()
 			return(graphic.name)
 		}
 		name <- NULL
@@ -432,50 +433,50 @@ gfile <- function(filename, width, height, ...){
 	do.call('f', args)	
 }
 
-gt <- function(){
-	
-	x <- rmatrix(20, 10)
-	z <- unit(0.1, "npc")
-	w <- unit(0.4, "npc")
-	h <- unit(0.3, "npc")
-	lo <- grid.layout(nrow = 7, ncol = 6
-			, widths = unit.c(z, z, w, z, z, z)
-			, heights = unit.c(z, z,  z, h, z, z, z))
-	
-	nvp <- 0
-	on.exit( upViewport(nvp) )
-	
-	u <- vplayout(NULL)
-	vname <- function(x) basename(tempfile(x))
+#gt <- function(){
+#	
+#	x <- rmatrix(20, 10)
+#	z <- unit(0.1, "npc")
+#	w <- unit(0.4, "npc")
+#	h <- unit(0.3, "npc")
+#	lo <- grid.layout(nrow = 7, ncol = 6
+#			, widths = unit.c(z, z, w, z, z, z)
+#			, heights = unit.c(z, z,  z, h, z, z, z))
+#	
+#	nvp <- 0
+#	on.exit( upViewport(nvp) )
+#	
+#	u <- vplayout(NULL)
+#	vname <- function(x) basename(tempfile(x))
+#
+#	hvp <- viewport( name=u, layout = lo)
+#	pushViewport(hvp)
+#	nvp <- nvp + 1
+#	
+#	pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 3, name='test'))
+#	#vplayout('mat')
+#	nvp <- nvp + 1
+#	
+#	grid.rect()
+#	NULL
+#}
 
-	hvp <- viewport( name=u, layout = lo)
-	pushViewport(hvp)
-	nvp <- nvp + 1
-	
-	pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 3, name='test'))
-	#vplayout('mat')
-	nvp <- nvp + 1
-	
-	grid.rect()
-	NULL
-}
-
-gt2 <- function(){
-	
-	x <- rmatrix(10, 5)
-	lo(NULL, NULL, nrow(x), ncol(x), cellheight = NA, cellwidth = NA
-			, treeheight_col=0, treeheight_row=0, legend=FALSE, main = NULL, sub = NULL, info = NULL
-			, annTracks=list(colors=NA, annRow=NA, annCol=NA), annotation_legend=FALSE
-			, fontsize=NULL, fontsize_row=NULL, fontsize_col=NULL)
-	
-	#vplayout('mat')
-	vname <- function(x) basename(tempfile(x))
-	pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 3, name=vname('test')))
-	print(current.vpPath())
-	grid.rect()
-	upViewport(2)
-	NULL
-}
+#gt2 <- function(){
+#	
+#	x <- rmatrix(10, 5)
+#	lo(NULL, NULL, nrow(x), ncol(x), cellheight = NA, cellwidth = NA
+#			, treeheight_col=0, treeheight_row=0, legend=FALSE, main = NULL, sub = NULL, info = NULL
+#			, annTracks=list(colors=NA, annRow=NA, annCol=NA), annotation_legend=FALSE
+#			, fontsize=NULL, fontsize_row=NULL, fontsize_col=NULL)
+#	
+#	#vplayout('mat')
+#	vname <- function(x) basename(tempfile(x))
+#	pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 3, name=vname('test')))
+#	print(current.vpPath())
+#	grid.rect()
+#	upViewport(2)
+#	NULL
+#}
 
 d <- function(x){
 	
@@ -536,7 +537,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	#NB: use custom function current.vpPath2 instead of official 
 	# grid::current.vpPath as this one creates a new page when called 
 	# on a fresh graphic device	
-	vpp <- current.vpPath2()
+	vpp <- current.vpPath_patched()
 	if( is.null(vpp) ){ # we are at the root viewport
 		if( verbose ) message("Detected path: [ROOT]")
 		mf <- par('mfrow')		
@@ -931,25 +932,34 @@ cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, s
 			stop("aheatmap - Invalid value for argument `", parg, "`. See ?aheatmap.")
 		
 		# compute distances
-		d <- if( is.character(distfun) ){
+		d <- if( isString(distfun) ){
 			distfun <- distfun[1]
 			
-			av <- c("correlation", "euclidean", "maximum", "manhattan", "canberra", "binary", "minkowski")
+            corr.methods <- c("pearson", "kendall", "spearman")
+			av <- c("correlation", corr.methods, "euclidean", "maximum", "manhattan", "canberra", "binary", "minkowski")
 			i <- pmatch(distfun, av)
 			if( is_NA(i) )			
-				stop("aheatmap - Invalid dissimilarity method, must be one of: ", paste("'", av, "'", sep='', collapse=', '))
+				stop("aheatmap - Invalid dissimilarity method, must be one of: ", str_out(av, Inf))
 			
 			distfun <- av[i]
-			if( verbose ) message("Using distance method: ", distfun)
-			if(distfun == "correlation"){ d <- dist(1 - cor(t(mat))); attr(d, 'method') <- 'correlation'; d }
-			else dist(mat, method = distfun)
+            if(distfun == "correlation") distfun <- 'pearson'
+			if(distfun %in% corr.methods){ # distance from correlation matrix 
+                if( verbose ) message("Using distance method: correlation (", distfun, ')')
+                d <- dist(1 - cor(t(mat), method = distfun))
+                attr(d, 'method') <- distfun
+                d 
+            }else{
+                if( verbose ) message("Using distance method: ", distfun)
+                dist(mat, method = distfun)
+            }
 	
 		}else if( is(distfun, "dist") ){
 			if( verbose ) message("Using dist object: ", distfun)
 			distfun
-		}else if( is.function(distfun) )
+		}else if( is.function(distfun) ){
+            if( verbose ) message("Using custom dist function")
 			distfun(mat)
-		else
+		}else
 			stop("aheatmap - Invalid dissimilarity function: must be a character string, an object of class 'dist', or a function")
 	
 		# do hierarchical clustering 
@@ -1020,6 +1030,7 @@ round.pretty <- function(x, min=2){
 	if( is.null(x) ) return(NULL)		
 	n <- 0
 	y <- round(sort(x), n)
+	if( all(diff(y)==0) ) return( round(x, min) ) 
 	while( any(diff(y)==0) ){
 		n <- n+1
 		y <- round(sort(x), n)
@@ -1103,7 +1114,9 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 			}
 			else{
 				h = round(runif(1) * 360)
-				setNames(rev(sequential_hcl(2, h, l = c(50, 95))), round.pretty(range(ann, na.rm=TRUE)))
+				rg <- range(ann, na.rm=TRUE)
+				if( rg[1] == rg[2] ) rg <- sort(c(0, rg[1]))
+				setNames(rev(sequential_hcl(2, h, l = c(50, 95))), round.pretty(rg))
 			}
 		
 		}else{
@@ -1374,6 +1387,17 @@ subset_index <- function(x, margin, subset){
 #' 
 #' Please read the associated vignette for more information and sample code.
 #' 
+#' @section PDF graphic devices: if plotting on a PDF graphic device -- started with \code{\link{pdf}}, 
+#' one may get generate a first blank page, due to internals of standard functions from 
+#' the \pkg{grid} package that are called by \code{aheatmap}.
+#' The \pkg{NMF} package ships a custom patch that fixes this issue.
+#' However, in order to comply with CRAN policies, the patch is \strong{not} applied by default 
+#' and the user must explicitly be enabled it.
+#' This can be achieved on runtime by either setting the NMF specific option 'grid.patch' 
+#' via \code{nmf.options(grid.patch=TRUE)}, or on load time if the environment variable 
+#' 'R_PACKAGE_NMF_GRID_PATCH' is defined and its value is something that is not equivalent 
+#' to \code{FALSE} (i.e. not '', 'false' nor 0).
+#' 
 #' @param x numeric matrix of the values to be plotted.
 #' An \code{\link[Biobase:ExpressionSet-class]{ExpressionSet}} objects can also 
 #' be passed, in which case the expression values are plotted (\code{exprs(x)}).
@@ -1389,8 +1413,8 @@ subset_index <- function(x, margin, subset){
 #' that gives the dominant colors. Numeric values are converted into a pallete  
 #' by \code{rev(sequential_hcl(2, h = x, l = c(50, 95)))}. Other values are 
 #' concatenated with the grey colour '#F1F1F1'.   
-#' \item one of RColorBrewer's palette name, or one of 'RdYlBu2', 'rainbow', 
-#' 'heat', 'topo', 'terrain', 'cm'.
+#' \item one of RColorBrewer's palette name (see \code{\link[RColorBrewer]{display.brewer.all}})
+#' , or one of 'RdYlBu2', 'rainbow', 'heat', 'topo', 'terrain', 'cm'.
 #' }
 #' When the coluor palette is specified with a single value, and is negative or 
 #' preceded a minus ('-'), the reversed palette is used.
@@ -1494,8 +1518,16 @@ subset_index <- function(x, margin, subset){
 #' @param distfun default distance measure used in clustering rows and columns. 
 #' Possible values are:
 #' \itemize{
-#' \item \code{"correlation"} and all the distances supported by \code{\link{dist}} 
-#' (e.g. \code{"euclidean"}).
+#' \item all the distance methods supported by \code{\link{dist}} 
+#' (e.g. "euclidean" or "maximum").
+#' 
+#' \item all correlation methods supported by \code{\link{cor}}, 
+#' such as \code{"pearson"} or \code{"spearman"}.
+#' The pairwise distances between rows/columns are then computed as 
+#' \code{d <- dist(1 - cor(..., method = distfun))}.
+#' 
+#' One may as well use the string "correlation" which is an alias for "pearson".
+#' 
 #' \item an object of class \code{dist} such as returned by \code{\link{dist}} or 
 #' \code{\link{as.dist}}.
 #' } 

@@ -654,20 +654,48 @@ setMethod('nmfModel', signature(rank='formula', target='ANY'),
 					r <- as.numeric(v)
 				}else{
 					warning("NMF::nmfModel - Discarding rank specified in the formula [", v,"]:"
-							, " using numeric value in argument `target` instead [", rank, "].")
+							, " using value specified in target rank instead [", rank, "].")
 				}
 			}else if( grepl("^[+-]$", v) ) next
 			else {
 				val <- eval(parse(text=v), data, enclos)
-				if( p==0L || length(val) ==  p ){
-					cterms[[v]] <- val
-					if( p==0L ) p <- length(val)
-				}else if( n==0L || length(val) ==  n ){
-					bterms[[v]] <- val
-					if( n==0L ) n <- length(val)
-				}else
-					stop("Invalid variable '", v, "': length must either be the number of target columns [", p, "]"
-							, " or rows [", n, "]")
+                .add_term <- function(v, val, type = NULL){
+    				if( p==0L || length(val) ==  p || identical(type, 'coef') ){
+    					cterms[[v]] <<- val
+    					if( p==0L ) p <<- length(val)
+    				}else if( n==0L || length(val) ==  n  || identical(type, 'basis') ){
+    					bterms[[v]] <<- val
+    					if( n==0L ) n <<- length(val)
+    				}else
+    					stop("Invalid", type," term '", v, "' length [", length(val), "]:"
+                                , " length must either be the number of target columns [", p, "]"
+    							, " or rows [", n, "]")
+                }
+                
+                if( is.null(dim(val)) ) .add_term(v, val)
+                else if( n == 0L || nrow(val) == n ){
+                    lapply(1:ncol(val), function(i){
+                        if( !is.null(cname <- colnames(val)[i]) && nzchar(cname) ) vname <- cname
+                        else vname <- paste0(v, i)
+                        .add_term(vname, val[, i], type = 'basis')   
+                    })
+                }else{
+                    # special handling of data.frames: 
+                    # -> coef terms are passed as column variables
+                    if( is.data.frame(val) && (p == 0L || nrow(val) == p)){
+                        val <- t(val)
+                    } 
+                    if( p == 0L || ncol(val) == p ){
+                    lapply(1:nrow(val), function(i){
+                        if( !is.null(cname <- rownames(val)[i]) && nzchar(cname) ) vname <- cname
+                        else vname <- paste0(v, i)
+                        .add_term(vname, val[i, ], type = 'coef')   
+                    })
+                    }else{
+                        stop("Incompatible matrix-like term '", v, "' dimensions [", str_dim(val), "]:"
+                                , " number of rows or columns must match the ones of the target matrix [", str_dim(X, dims = c(n, p)) ,"]")
+                    }                
+                }
 			}
 		}
 		# try to fixup X if possible

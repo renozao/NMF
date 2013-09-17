@@ -5,7 +5,6 @@ bigmemory.sri
 Biobase
 BiocGenerics
 cluster
-digest
 doParallel
 foreach
 iterators

@@ -1,34 +1,44 @@
-\name{grid.Call.graphics}
-\alias{current.vpPath}
-\alias{grid.Call}
-\alias{grid.Call.graphics}
+\name{tryViewport}
+\alias{current.vpPath_patched}
 \alias{tryViewport}
-\title{Grid Internal Functions}
+\alias{.use.grid.patch}
+\title{Internal Grid Extension}
 \usage{
-  grid.Call.graphics(fnname, ...)
-
-  grid.Call(fnname, ...)
-
-  current.vpPath()
-
   tryViewport(name, verbose = FALSE)
+
+  current.vpPath_patched()
+
+  .use.grid.patch()
 }
 \arguments{
-  \item{fnname}{native \code{grid} function name.}
-
   \item{name}{viewport name}
 
   \item{verbose}{toggle verbosity}
 }
 \description{
-  These functions are generally redefinitions of their
-  counter parts in the \code{grid} package, except that
-  they do not call \code{'L_gridDirty'}. This is to enable
-  mixing base and grid graphics in \code{\link{aheatmap}}.
+  These functions enable mixing base and grid graphics in
+  \code{\link{aheatmap}}, by avoiding calls to the grid
+  internal function \code{'L_gridDirty'}. They are not
+  exported (i.e. not tampering core functions) and are only
+  meant for internal use within the \pkg{NMF} package.
 
-  \code{tryViewport}It uses \code{\link[grid]{grid.ls}} and
+  \code{current.vpPath_patched} aims at substituting
+  \code{\link[grid]{current.vpPath}}, so that the graphic
+  engine is not reset. This is essentially to prevent
+  outputting a blank page at the beginning of PDF graphic
+  engines.
+
+  \code{.use.grid.patch} tells if the user enabled patching
+  grid.
+}
+\details{
+  \code{tryViewport} tries to go down to a viewport in the
+  current tree, given its name.
+
+  \code{tryViewport} uses \code{\link[grid]{grid.ls}} and
   not \code{\link{seekViewport}} as the latter would reset
-  the graphic device.
+  the graphic device and break the mix grid/base graphic
+  capability.
 }
 \keyword{internal}
 

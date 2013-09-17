@@ -34,7 +34,8 @@
   consensusmap(object, ...)
 
   \S4method{consensusmap}{NMFfitX}(object, annRow = NA,
-    annCol = NA, tracks = c("basis:", "consensus:"),
+    annCol = NA,
+    tracks = c("basis:", "consensus:", "silhouette:"),
     main = "Consensus matrix", info = FALSE, ...)
 
   \S4method{consensusmap}{matrix}(object,
@@ -104,7 +105,8 @@
   into a pallete by \code{rev(sequential_hcl(2, h = x, l =
   c(50, 95)))}. Other values are concatenated with the grey
   colour '#F1F1F1'. \item one of RColorBrewer's palette
-  name, or one of 'RdYlBu2', 'rainbow', 'heat', 'topo',
+  name (see \code{\link[RColorBrewer]{display.brewer.all}})
+  , or one of 'RdYlBu2', 'rainbow', 'heat', 'topo',
   'terrain', 'cm'. } When the coluor palette is specified
   with a single value, and is negative or preceded a minus
   ('-'), the reversed palette is used. The number of breaks
@@ -217,9 +219,15 @@
 
   \item{distfun}{default distance measure used in
   clustering rows and columns. Possible values are:
-  \itemize{ \item \code{"correlation"} and all the
-  distances supported by \code{\link{dist}} (e.g.
-  \code{"euclidean"}). \item an object of class \code{dist}
+  \itemize{ \item all the distance methods supported by
+  \code{\link{dist}} (e.g. "euclidean" or "maximum"). \item
+  all correlation methods supported by \code{\link{cor}},
+  such as \code{"pearson"} or \code{"spearman"}. The
+  pairwise distances between rows/columns are then computed
+  as \code{d <- dist(1 - cor(..., method = distfun))}.
+
+  One may as well use the string "correlation" which is an
+  alias for "pearson". \item an object of class \code{dist}
   such as returned by \code{\link{dist}} or
   \code{\link{as.dist}}. }}
 

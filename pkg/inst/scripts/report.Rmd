@@ -1,0 +1,91 @@
+
+
+```{r setup, echo = FALSE}
+library(knitr)
+library(NMF)
+options(width = 300)
+opts_knit$set(root.dir = opts_knit$get('output.dir'))
+```
+
+# Input
+
+## Method definition
+```{r load_custom}
+if( file.exists(f <- file.path(opts_knit$get('output.dir'), 'functions.R')) ){
+	cat("Sourcing custom definition in '", f,"' ... ", sep ='')
+	source(f)
+	cat('OK\n')
+}
+```
+
+## Data
+
+```{r data}
+# Target matrix
+class(x)
+dim(x)
+head(x[, 1:5])
+```
+## Parameters
+```{r args}
+# Factorisation ranks
+rank
+
+# Methods
+unlist(method)
+
+# Reference class
+summary(colClass)
+```
+
+# Run
+
+```{r run}
+# run NMF for all ranks
+res <- nmfRun(x, rank, method)
+```
+
+# Results
+
+## Plots
+
+```{r resplots, echo = FALSE, fig.width = 10, fig.height = 7}
+dummy <- lapply(names(res), function(x){
+	cat("##", x, "\n")
+	fit <- res[[x]]
+	# consensus map
+	consensusmap(fit, main = x, annCol = colClass)
+	# measures
+	if( length(rank) > 1){
+		p <- plot(fit)
+		print(p)
+	}
+})
+```
+
+## Accuracy
+
+```{r summary, echo = FALSE, fig.width = 15, fig.height = 8}
+# compute summary measures for all survey fits
+s <- lapply(names(res), function(x){
+	NMF::summary(res[[x]], class = colClass)
+})
+
+# complete missing measures
+snames <- unique(unlist(lapply(s, names)))
+s <- lapply(s, function(x){
+	if( any(i <- !snames %in% names(x)) ){
+		nas <- rep(NA, nrow(x))
+		x <- cbind(x, sapply(snames[i], function(x) nas))
+	}
+	x[, snames]
+})
+print(s_all <- do.call(rbind, s))
+library(reshape2)
+accuracy <- melt(s_all, id.vars = c('method', 'seed', 'rank', 'metric'))
+accuracy <- accuracy[!accuracy$variable %in% c('rng', 'nrun'),]
+ggplot(accuracy) + 
+  geom_bar(aes(x = rank, y = value, fill = method), position='dodge', stat='identity') + 
+  facet_wrap(~variable, scales = 'free') +
+  scale_x_discrete(breaks = unique(accuracy$rank))
+```

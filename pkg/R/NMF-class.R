@@ -1239,14 +1239,14 @@ is.empty.nmf <- function(x, ...){
 #' 
 #' @rdname types
 #' @export
-hasBasis <- function(x) nrow(basis(x)) != 0L
+hasBasis <- function(x) nbasis(x) && nrow(basis(x)) != 0L
 
 #' \code{hasBasis} tests whether an objects contains a coefficient matrix 
 #' -- returned by a suitable method \code{coef} -- with at least one column.
 #' 
 #' @rdname types
 #' @export
-hasCoef <- function(x) ncol(coef(x)) != 0L
+hasCoef <- function(x) nbasis(x) && ncol(coef(x)) != 0L
 
 #' \code{is.partial.nmf} tests whether an NMF model object contains either an empty 
 #' basis or coefficient matrix.
@@ -1511,10 +1511,10 @@ setMethod('summary', signature(object='NMF'),
 			}
             
             # compute mean silhouette width
-            siS <- summary(silhouette(object, what = 'samples'))
-            siF <- summary(silhouette(object, what = 'features'))
-            res <- c(res, silhouette.coef = siS$avg.width
-                    , silhouette.basis = siF$avg.width)
+            siS <- silhouette(object, what = 'samples')
+            siF <- silhouette(object, what = 'features')
+            res <- c(res, silhouette.coef = if( !is_NA(siS) ) summary(siS)$avg.width else NA
+                    , silhouette.basis = if( !is_NA(siF) ) summary(siF)$avg.width else NA)
 			
 			# return result
 			return(res)

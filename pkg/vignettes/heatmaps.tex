@@ -17,21 +17,16 @@
 }
 \makeatother
 
-\definecolor{fgcolor}{rgb}{0.2, 0.2, 0.2}
-\newcommand{\hlnumber}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hlfunctioncall}[1]{\textcolor[rgb]{0.501960784313725,0,0.329411764705882}{\textbf{#1}}}%
-\newcommand{\hlstring}[1]{\textcolor[rgb]{0.6,0.6,1}{#1}}%
-\newcommand{\hlkeyword}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
-\newcommand{\hlargument}[1]{\textcolor[rgb]{0.690196078431373,0.250980392156863,0.0196078431372549}{#1}}%
-\newcommand{\hlcomment}[1]{\textcolor[rgb]{0.180392156862745,0.6,0.341176470588235}{#1}}%
-\newcommand{\hlroxygencomment}[1]{\textcolor[rgb]{0.43921568627451,0.47843137254902,0.701960784313725}{#1}}%
-\newcommand{\hlformalargs}[1]{\textcolor[rgb]{0.690196078431373,0.250980392156863,0.0196078431372549}{#1}}%
-\newcommand{\hleqformalargs}[1]{\textcolor[rgb]{0.690196078431373,0.250980392156863,0.0196078431372549}{#1}}%
-\newcommand{\hlassignement}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
-\newcommand{\hlpackage}[1]{\textcolor[rgb]{0.588235294117647,0.709803921568627,0.145098039215686}{#1}}%
-\newcommand{\hlslot}[1]{\textit{#1}}%
-\newcommand{\hlsymbol}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hlprompt}[1]{\textcolor[rgb]{0.2,0.2,0.2}{#1}}%
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
 
 \usepackage{framed}
 \makeatletter
@@ -129,10 +124,10 @@
 , backref=true
 , backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
-\bibliography{/tmp/Rpkglib_117019e1fc6b/NMF/REFERENCES}
-
-
 \bibliography{Rpackages}
+\bibliography{/tmp/Rpkglib_45c34672d7c3/NMF/REFERENCES}
+
+
 \newcommand{\citet}[1]{\textcite{#1}}
 \renewcommand{\cite}[1]{\parencite{#1}}
 \DefineBibliographyStrings{english}{%
@@ -172,7 +167,7 @@
 
 
 \title{Generating heatmaps for Nonnegative Matrix Factorization\\
-\small Package \nmfpack\ - Version 0.17.3}
+\small Package \nmfpack\ - Version 0.17.9}
 \author{Renaud Gaujoux}
 
 \maketitle
@@ -268,24 +263,21 @@ random target matrix, as well as some annotations or covariates:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# random data that follow an 3-rank NMF model (with quite some noise:}
-\hlcomment{# sd=2)}
-X <- \hlfunctioncall{syntheticNMF}(100, 3, 20, noise = 2)
-
-\hlcomment{# row annotations and covariates}
-n <- \hlfunctioncall{nrow}(X)
-d <- \hlfunctioncall{rnorm}(n)
-e <- \hlfunctioncall{unlist}(\hlfunctioncall{mapply}(rep, \hlfunctioncall{c}(\hlstring{"X"}, \hlstring{"Y"}, \hlstring{"Z"}), 10))
-e <- \hlfunctioncall{c}(e, \hlfunctioncall{rep}(NA, n - \hlfunctioncall{length}(e)))
-rdata <- \hlfunctioncall{data.frame}(Var = d, Type = e)
-
-\hlcomment{# column annotations and covariates}
-p <- \hlfunctioncall{ncol}(X)
-a <- \hlfunctioncall{sample}(\hlfunctioncall{c}(\hlstring{"alpha"}, \hlstring{"beta"}, \hlstring{"gamma"}), p, replace = TRUE)
-\hlcomment{# define covariates: true groups and some numeric variable}
-c <- \hlfunctioncall{rnorm}(p)
-\hlcomment{# gather them in a data.frame}
-covariates <- \hlfunctioncall{data.frame}(a, X$pData, c)
+\hlcom{# random data that follow an 3-rank NMF model (with quite some noise: sd=2)}
+\hlstd{X} \hlkwb{<-} \hlkwd{syntheticNMF}\hlstd{(}\hlnum{100}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{20}\hlstd{,} \hlkwc{noise} \hlstd{=} \hlnum{2}\hlstd{)}
+\hlcom{# row annotations and covariates}
+\hlstd{n} \hlkwb{<-} \hlkwd{nrow}\hlstd{(X)}
+\hlstd{d} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(n)}
+\hlstd{e} \hlkwb{<-} \hlkwd{unlist}\hlstd{(}\hlkwd{mapply}\hlstd{(rep,} \hlkwd{c}\hlstd{(}\hlstr{"X"}\hlstd{,} \hlstr{"Y"}\hlstd{,} \hlstr{"Z"}\hlstd{),} \hlnum{10}\hlstd{))}
+\hlstd{e} \hlkwb{<-} \hlkwd{c}\hlstd{(e,} \hlkwd{rep}\hlstd{(}\hlnum{NA}\hlstd{, n} \hlopt{-} \hlkwd{length}\hlstd{(e)))}
+\hlstd{rdata} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{Var} \hlstd{= d,} \hlkwc{Type} \hlstd{= e)}
+\hlcom{# column annotations and covariates}
+\hlstd{p} \hlkwb{<-} \hlkwd{ncol}\hlstd{(X)}
+\hlstd{a} \hlkwb{<-} \hlkwd{sample}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"alpha"}\hlstd{,} \hlstr{"beta"}\hlstd{,} \hlstr{"gamma"}\hlstd{), p,} \hlkwc{replace} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlcom{# define covariates: true groups and some numeric variable}
+\hlstd{c} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(p)}
+\hlcom{# gather them in a data.frame}
+\hlstd{covariates} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(a, X}\hlopt{$}\hlstd{pData, c)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -303,9 +295,9 @@ As an example, one can conveniently visualize the target matrix as a heatmap, wi
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{par}(mfrow = \hlfunctioncall{c}(1, 2))
-\hlfunctioncall{aheatmap}(X, annCol = covariates, annRow = X$fData)
-\hlfunctioncall{aheatmap}(X)
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{))}
+\hlkwd{aheatmap}\hlstd{(X,} \hlkwc{annCol} \hlstd{= covariates,} \hlkwc{annRow} \hlstd{= X}\hlopt{$}\hlstd{fData)}
+\hlkwd{aheatmap}\hlstd{(X)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-heatmap_data} 
@@ -318,8 +310,8 @@ Then, we fit an NMF model using multiple runs, that will be used throughtout thi
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-res <- \hlfunctioncall{nmf}(X, 3, nrun = 10)
-res
+\hlstd{res} \hlkwb{<-} \hlkwd{nmf}\hlstd{(X,} \hlnum{3}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{10}\hlstd{)}
+\hlstd{res}
 \end{alltt}
 \begin{verbatim}
 ## <Object of class: NMFfitX1 >
@@ -329,7 +321,7 @@ res
 ##    407L, 1296956629L, -635484270L, -1992246805L, -332345296L, 1842947697L, 608732542L 
 ##   Total timing:
 ##    user  system elapsed 
-##   4.416   0.208   3.121
+##   4.768   0.244   3.146
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -355,16 +347,16 @@ only the clusters from the fit are displayed.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-opar <- \hlfunctioncall{par}(mfrow = \hlfunctioncall{c}(1, 2))
-\hlcomment{# coefmap from multiple run fit: includes a consensus track}
-\hlfunctioncall{coefmap}(res)
-\hlcomment{# coefmap of a single run fit: no consensus track}
-\hlfunctioncall{coefmap}(\hlfunctioncall{minfit}(res))
+\hlstd{opar} \hlkwb{<-} \hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{))}
+\hlcom{# coefmap from multiple run fit: includes a consensus track}
+\hlkwd{coefmap}\hlstd{(res)}
+\hlcom{# coefmap of a single run fit: no consensus track}
+\hlkwd{coefmap}\hlstd{(}\hlkwd{minfit}\hlstd{(res))}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-coefmap_res} 
 \begin{kframe}\begin{alltt}
-\hlfunctioncall{par}(opar)
+\hlkwd{par}\hlstd{(opar)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -394,11 +386,11 @@ settings translate as:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-Rowv = NA
-Colv = TRUE
-scale = \hlstring{"c1"}
-color = \hlstring{"YlOrRd:50"}
-annCol = \hlfunctioncall{predict}(object) + \hlfunctioncall{predict}(object, \hlstring{"consensus"})
+\hlstd{Rowv} \hlkwb{=} \hlnum{NA}
+\hlstd{Colv} \hlkwb{=} \hlnum{TRUE}
+\hlstd{scale} \hlkwb{=} \hlstr{"c1"}
+\hlstd{color} \hlkwb{=} \hlstr{"YlOrRd:50"}
+\hlstd{annCol} \hlkwb{=} \hlkwd{predict}\hlstd{(object)} \hlopt{+} \hlkwd{predict}\hlstd{(object,} \hlstr{"consensus"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -423,20 +415,20 @@ more details).
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-opar <- \hlfunctioncall{par}(mfrow=\hlfunctioncall{c}(1,2))
-\hlcomment{# removing all automatic annotation tracks}
-\hlfunctioncall{coefmap}(res, tracks=NA)
-\hlcomment{# customized plot}
-\hlfunctioncall{coefmap}(res, Colv = \hlstring{'euclidean'}
-	, main = \hlstring{"Metagene contributions in each sample"}, labCol = NULL
-	, annRow = \hlfunctioncall{list}(Metagene=\hlstring{':basis'}), annCol = \hlfunctioncall{list}(\hlstring{':basis'}, Class=a, Index=c)
-	, annColors = \hlfunctioncall{list}(Metagene=\hlstring{'Set2'})
-	, info = TRUE)
+\hlstd{opar} \hlkwb{<-} \hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{))}
+\hlcom{# removing all automatic annotation tracks}
+\hlkwd{coefmap}\hlstd{(res,} \hlkwc{tracks}\hlstd{=}\hlnum{NA}\hlstd{)}
+\hlcom{# customized plot}
+\hlkwd{coefmap}\hlstd{(res,} \hlkwc{Colv} \hlstd{=} \hlstr{'euclidean'}
+        \hlstd{,} \hlkwc{main} \hlstd{=} \hlstr{"Metagene contributions in each sample"}\hlstd{,} \hlkwc{labCol} \hlstd{=} \hlkwa{NULL}
+        \hlstd{,} \hlkwc{annRow} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{Metagene}\hlstd{=}\hlstr{':basis'}\hlstd{),} \hlkwc{annCol} \hlstd{=} \hlkwd{list}\hlstd{(}\hlstr{':basis'}\hlstd{,} \hlkwc{Class}\hlstd{=a,} \hlkwc{Index}\hlstd{=c)}
+        \hlstd{,} \hlkwc{annColors} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{Metagene}\hlstd{=}\hlstr{'Set2'}\hlstd{)}
+        \hlstd{,} \hlkwc{info} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-coefmap_custom} 
 \begin{kframe}\begin{alltt}
-\hlfunctioncall{par}(opar)
+\hlkwd{par}\hlstd{(opar)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -461,16 +453,16 @@ row annotations can be added using the same argument \code{annRow}.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-opar <- \hlfunctioncall{par}(mfrow = \hlfunctioncall{c}(1, 2))
-\hlcomment{# default plot}
-\hlfunctioncall{basismap}(res)
-\hlcomment{# customized plot: only use row special annotation track.}
-\hlfunctioncall{basismap}(res, main = \hlstring{"Metagenes"}, annRow = \hlfunctioncall{list}(d, e), tracks = \hlfunctioncall{c}(Metagene = \hlstring{":basis"}))
+\hlstd{opar} \hlkwb{<-} \hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{))}
+\hlcom{# default plot}
+\hlkwd{basismap}\hlstd{(res)}
+\hlcom{# customized plot: only use row special annotation track.}
+\hlkwd{basismap}\hlstd{(res,} \hlkwc{main} \hlstd{=} \hlstr{"Metagenes"}\hlstd{,} \hlkwc{annRow} \hlstd{=} \hlkwd{list}\hlstd{(d, e),} \hlkwc{tracks} \hlstd{=} \hlkwd{c}\hlstd{(}\hlkwc{Metagene} \hlstd{=} \hlstr{":basis"}\hlstd{))}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-basismap_res} 
 \begin{kframe}\begin{alltt}
-\hlfunctioncall{par}(opar)
+\hlkwd{par}\hlstd{(opar)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -492,10 +484,10 @@ settings translate as:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-Colv = NA
-scale = \hlstring{"r1"}
-color = \hlstring{"YlOrRd:50"}
-annRow = \hlfunctioncall{predict}(object, \hlstring{"features"})
+\hlstd{Colv} \hlkwb{=} \hlnum{NA}
+\hlstd{scale} \hlkwb{=} \hlstr{"r1"}
+\hlstd{color} \hlkwb{=} \hlstr{"YlOrRd:50"}
+\hlstd{annRow} \hlkwb{=} \hlkwd{predict}\hlstd{(object,} \hlstr{"features"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -537,17 +529,17 @@ same kind of customization as the other NMF heatmap functions:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-opar <- \hlfunctioncall{par}(mfrow = \hlfunctioncall{c}(1, 2))
-\hlcomment{# default plot}
-\hlfunctioncall{consensusmap}(res)
-\hlcomment{# customized plot}
-\hlfunctioncall{consensusmap}(res, annCol = covariates, annColors = \hlfunctioncall{list}(c = \hlstring{"blue"}), labCol = \hlstring{"sample "}, 
-    main = \hlstring{"Cluster stability"}, sub = \hlstring{"Consensus matrix and all covariates"})
+\hlstd{opar} \hlkwb{<-} \hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{))}
+\hlcom{# default plot}
+\hlkwd{consensusmap}\hlstd{(res)}
+\hlcom{# customized plot}
+\hlkwd{consensusmap}\hlstd{(res,} \hlkwc{annCol} \hlstd{= covariates,} \hlkwc{annColors} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{c} \hlstd{=} \hlstr{"blue"}\hlstd{),} \hlkwc{labCol} \hlstd{=} \hlstr{"sample "}\hlstd{,}
+    \hlkwc{main} \hlstd{=} \hlstr{"Cluster stability"}\hlstd{,} \hlkwc{sub} \hlstd{=} \hlstr{"Consensus matrix and all covariates"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_res} 
 \begin{kframe}\begin{alltt}
-\hlfunctioncall{par}(opar)
+\hlkwd{par}\hlstd{(opar)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -567,11 +559,11 @@ settings translate as:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-distfun = \hlfunctioncall{function}(x) \hlfunctioncall{as.dist}(1 - x)  \hlcomment{# x being the consensus matrix}
-hclustfun = \hlstring{"average"}
-Rowv = TRUE
-Colv = \hlstring{"Rowv"}
-color = \hlstring{"-RdYlBu"}
+\hlstd{distfun} \hlkwb{=} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{as.dist}\hlstd{(}\hlnum{1} \hlopt{-} \hlstd{x)}  \hlcom{# x being the consensus matrix}
+\hlstd{hclustfun} \hlkwb{=} \hlstr{"average"}
+\hlstd{Rowv} \hlkwb{=} \hlnum{TRUE}
+\hlstd{Colv} \hlkwb{=} \hlstr{"Rowv"}
+\hlstd{color} \hlkwb{=} \hlstr{"-RdYlBu"}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -590,7 +582,7 @@ See documentation \code{?nmfEstimateRank} for more details on the returned value
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-res2_7 <- \hlfunctioncall{nmf}(X, 2:7, nrun = 10, .options = \hlstring{"v"})
+\hlstd{res2_7} \hlkwb{<-} \hlkwd{nmf}\hlstd{(X,} \hlnum{2}\hlopt{:}\hlnum{7}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{10}\hlstd{,} \hlkwc{.options} \hlstd{=} \hlstr{"v"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## Compute NMF rank= 2  ... + measures ... OK
@@ -601,7 +593,7 @@ res2_7 <- \hlfunctioncall{nmf}(X, 2:7, nrun = 10, .options = \hlstring{"v"})
 ## Compute NMF rank= 7  ... + measures ... OK
 \end{verbatim}
 \begin{alltt}
-\hlfunctioncall{class}(res2_7)
+\hlkwd{class}\hlstd{(res2_7)}
 \end{alltt}
 \begin{verbatim}
 ## [1] "NMF.rank"
@@ -619,7 +611,7 @@ which plots all the consensus matrices on the same plot:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{consensusmap}(res2_7)
+\hlkwd{consensusmap}\hlstd{(res2_7)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_estimate} 
@@ -645,7 +637,7 @@ a \code{list} in argument \code{method}:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-res_methods <- \hlfunctioncall{nmf}(X, 3, \hlfunctioncall{list}(\hlstring{"lee"}, \hlstring{"brunet"}, \hlstring{"nsNMF"}), nrun = 10)
+\hlstd{res_methods} \hlkwb{<-} \hlkwd{nmf}\hlstd{(X,} \hlnum{3}\hlstd{,} \hlkwd{list}\hlstd{(}\hlstr{"lee"}\hlstd{,} \hlstr{"brunet"}\hlstd{,} \hlstr{"nsNMF"}\hlstd{),} \hlkwc{nrun} \hlstd{=} \hlnum{10}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## Compute NMF method 'lee' [1/3] ... OK
@@ -653,7 +645,7 @@ res_methods <- \hlfunctioncall{nmf}(X, 3, \hlfunctioncall{list}(\hlstring{"lee"}
 ## Compute NMF method 'nsNMF' [3/3] ... OK
 \end{verbatim}
 \begin{alltt}
-\hlfunctioncall{class}(res_methods)
+\hlkwd{class}\hlstd{(res_methods)}
 \end{alltt}
 \begin{verbatim}
 ## [1] "NMFList"
@@ -672,7 +664,7 @@ As previously, the sequence of consensus matrices is plotted with \code{consensu
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{consensusmap}(res_methods)
+\hlkwd{consensusmap}\hlstd{(res_methods)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_methods} 
@@ -687,9 +679,9 @@ This section still needs to be written, but many examples of annotated heatmaps 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{demo}(\hlstring{"aheatmap"})
-\hlcomment{# or}
-\hlfunctioncall{demo}(\hlstring{"heatmaps"})
+\hlkwd{demo}\hlstd{(}\hlstr{"aheatmap"}\hlstd{)}
+\hlcom{# or}
+\hlkwd{demo}\hlstd{(}\hlstr{"heatmaps"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -699,22 +691,23 @@ These demos and the plots they generate can also be browsed online at \url{http:
 
 \section{Session Info}
 \begin{itemize}\raggedright
-  \item R version 3.0.1 (2013-05-16), \verb|i686-pc-linux-gnu|
+  \item R version 3.0.1 (2013-05-16), \verb|x86_64-pc-linux-gnu|
   \item Locale: \verb|LC_CTYPE=en_US.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_US.UTF-8|, \verb|LC_COLLATE=en_US.UTF-8|, \verb|LC_MONETARY=en_US.UTF-8|, \verb|LC_MESSAGES=en_US.UTF-8|, \verb|LC_PAPER=C|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_US.UTF-8|, \verb|LC_IDENTIFICATION=C|
-  \item Base packages: base, datasets, graphics, grDevices, grid,
+  \item Base packages: base, datasets, graphics, grDevices,
     methods, parallel, stats, utils
-  \item Other packages: BH~1.51.0-1, bigmemory~4.4.3,
-    bigmemory.sri~0.1.2, Biobase~2.20.0, BiocGenerics~0.6.0,
-    cluster~1.14.4, digest~0.6.3, doParallel~1.0.3, foreach~1.4.1,
-    iterators~1.0.6, knitr~1.2.9, NMF~0.17.3, pkgmaker~0.16.4,
-    RColorBrewer~1.0-5, registry~0.2, rngtools~1.2,
+  \item Other packages: BH~1.51.0-2, bigmemory~4.4.3,
+    bigmemory.sri~0.1.2, Biobase~2.20.1, BiocGenerics~0.6.0,
+    cluster~1.14.4, doParallel~1.0.3, foreach~1.4.1,
+    iterators~1.0.6, knitr~1.4.9, NMF~0.17.9, pkgmaker~0.17,
+    RColorBrewer~1.0-5, registry~0.2, rngtools~1.2.2,
     synchronicity~1.1.0
   \item Loaded via a namespace (and not attached):
     codetools~0.2-8, colorspace~1.2-2, compiler~3.0.1,
-    dichromat~2.0-0, evaluate~0.4.3, formatR~0.7, ggplot2~0.9.3.1,
-    gridBase~0.4-6, gtable~0.1.2, labeling~0.1, MASS~7.3-26,
-    munsell~0.4, plyr~1.8, proto~0.3-10, reshape2~1.2.2,
-    scales~0.2.3, stringr~0.6.2, tools~3.0.1, xtable~1.7-1
+    dichromat~2.0-0, digest~0.6.3, evaluate~0.4.7, formatR~0.9,
+    ggplot2~0.9.3.1, grid~3.0.1, gridBase~0.4-6, gtable~0.1.2,
+    highr~0.2.1, labeling~0.2, MASS~7.3-29, munsell~0.4.2,
+    plyr~1.8, proto~0.3-10, reshape2~1.2.2, scales~0.2.3,
+    stringr~0.6.2, tools~3.0.1, xtable~1.7-1
 \end{itemize}
 
 

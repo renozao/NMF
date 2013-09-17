@@ -67,13 +67,10 @@ ccPalette <- function(x, n=NA, verbose=FALSE){
 				}else{
 					
 					if( is.na(i) ){
-						
-						suggest <-
-						if( !require.quiet('RColorBrewer') )
-							"\n\tNOTE: the `RColorBrewer` package is not installed. Re-try after installing it."
-						
-						stop("Invalid palette name '", x, "': should be one of RColorBrewer's palette or "
-							, paste("'", cpal ,"'", sep='', collapse=', '), ".", suggest)
+												
+						stop("Invalid palette name '", x, "': should be an RColorBrewer palette or one of "
+							, paste("'", cpal ,"'", sep='', collapse=', ')
+                            , ".\n  Available RColorBrewer palettes: ", str_out(rownames(brewer.pal.info), Inf), '.')
 					}
 					x <- cpal[i]
 					

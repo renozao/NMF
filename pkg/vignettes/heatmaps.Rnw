@@ -33,7 +33,6 @@ pkgmaker::latex_preamble()
 <<bibliofile, echo=FALSE, results='asis'>>=
 pkgmaker::latex_bibliography('NMF')	
 @
-\bibliography{Rpackages}
 \newcommand{\citet}[1]{\textcite{#1}}
 \renewcommand{\cite}[1]{\parencite{#1}}
 \DefineBibliographyStrings{english}{%

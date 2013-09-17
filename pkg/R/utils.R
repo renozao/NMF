@@ -2,8 +2,6 @@
 #' @include nmf-package.R
 NULL
 
-library(pkgmaker)
-
 #' Utility Function in the NMF Package
 #' 
 #' @name utils-NMF
@@ -605,29 +603,6 @@ setClassUnion('.functionSlotNULL', c('character', 'function', 'NULL'))
 	return(TRUE)
 }
 
-# Returns the number of cores to use
-getNCores <- function(){
-	rv <- paste(R.version$major, R.version$minor, sep='.') 
-	if( utils::compareVersion(rv, "2.14.0") >=0 && require(parallel) )
-		parallel:::detectCores()
-	else{
-		# extracted from parallel::detectCores() in R-2.14.0
-		all.tests <- FALSE; logical <- FALSE;
-		systems <- list(darwin = "/usr/sbin/sysctl -n hw.ncpu 2>/dev/null", 
-				freebsd = "/sbin/sysctl -n hw.ncpu 2>/dev/null", linux = "grep processor /proc/cpuinfo 2>/dev/null | wc -l", 
-				irix = c("hinv | grep Processors | sed 's: .*::'", "hinv | grep '^Processor '| wc -l"), 
-				solaris = if (logical) "/usr/sbin/psrinfo -v | grep 'Status of.*processor' | wc -l" else "/usr/sbin/psrinfo -p")
-		for (i in seq(systems)) if (all.tests || length(grep(paste("^", 
-									names(systems)[i], sep = ""), R.version$os))) 
-				for (cmd in systems[i]) {
-					a <- gsub("^ +", "", system(cmd, TRUE)[1])
-					if (length(grep("^[1-9]", a))) 
-						return(as.integer(a))
-				}
-		NA_integer_		
-	}
-}
-
 ####% Utility function needed in heatmap.plus.2
 #invalid <- function (x) 
 #{
@@ -1059,4 +1034,9 @@ CI.Rsq <- function (rsq, n, k, level = 0.95)
 	ucl <- rsq + mez
 	mat <- data.frame(Rsq = rsq, SErsq = sersq, LCL = lcl, UCL = ucl)
 	return(mat)
+}
+
+str_dim <- function(x, dims=dim(x)){
+    if( !is.null(dims) ) paste0(dims, collapse = ' x ')
+    else length(x)
 }

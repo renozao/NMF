@@ -17,21 +17,16 @@
 }
 \makeatother
 
-\definecolor{fgcolor}{rgb}{0.2, 0.2, 0.2}
-\newcommand{\hlnumber}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hlfunctioncall}[1]{\textcolor[rgb]{0.501960784313725,0,0.329411764705882}{\textbf{#1}}}%
-\newcommand{\hlstring}[1]{\textcolor[rgb]{0.6,0.6,1}{#1}}%
-\newcommand{\hlkeyword}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
-\newcommand{\hlargument}[1]{\textcolor[rgb]{0.690196078431373,0.250980392156863,0.0196078431372549}{#1}}%
-\newcommand{\hlcomment}[1]{\textcolor[rgb]{0.180392156862745,0.6,0.341176470588235}{#1}}%
-\newcommand{\hlroxygencomment}[1]{\textcolor[rgb]{0.43921568627451,0.47843137254902,0.701960784313725}{#1}}%
-\newcommand{\hlformalargs}[1]{\textcolor[rgb]{0.690196078431373,0.250980392156863,0.0196078431372549}{#1}}%
-\newcommand{\hleqformalargs}[1]{\textcolor[rgb]{0.690196078431373,0.250980392156863,0.0196078431372549}{#1}}%
-\newcommand{\hlassignement}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
-\newcommand{\hlpackage}[1]{\textcolor[rgb]{0.588235294117647,0.709803921568627,0.145098039215686}{#1}}%
-\newcommand{\hlslot}[1]{\textit{#1}}%
-\newcommand{\hlsymbol}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hlprompt}[1]{\textcolor[rgb]{0.2,0.2,0.2}{#1}}%
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
 
 \usepackage{framed}
 \makeatletter
@@ -134,10 +129,10 @@
 , backref=true
 , backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
-\bibliography{/tmp/Rpkglib_117019e1fc6b/NMF/REFERENCES}
-
-
 \bibliography{Rpackages}
+\bibliography{/tmp/Rpkglib_45c34672d7c3/NMF/REFERENCES}
+
+
 \newcommand{\citet}[1]{\textcite{#1}}
 \renewcommand{\cite}[1]{\parencite{#1}}
 \DefineBibliographyStrings{english}{%
@@ -181,7 +176,7 @@
 
 
 \title{An introduction to NMF package\\
-\small Version 0.17.3}
+\small Version 0.17.9}
 \author{Renaud Gaujoux, \url{renaud@cbio.uct.ac.za}}
 % \\Address Computational Biology - University of Cape Town, South Africa,
 
@@ -211,10 +206,10 @@ pages \code{?gedAlgorithm.<algorithm>}, e.g., \code{?gedAlgorithm.SNMF\_R}.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# Install}
-\hlfunctioncall{install.packages}(\hlstring{"NMF"})
-\hlcomment{# Load}
-\hlfunctioncall{library}(NMF)
+\hlcom{# Install}
+\hlkwd{install.packages}\hlstd{(}\hlstr{"NMF"}\hlstd{)}
+\hlcom{# Load}
+\hlkwd{library}\hlstd{(NMF)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -231,10 +226,10 @@ If you need to load objects saved in versions prior 0.8.14 please use:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# eg., load from some RData file}
-\hlfunctioncall{load}(\hlstring{"object.RData"})
-\hlcomment{# update class definition}
-object <- \hlfunctioncall{nmfObject}(object)
+\hlcom{# eg., load from some RData file}
+\hlkwd{load}\hlstd{(}\hlstr{"object.RData"}\hlstd{)}
+\hlcom{# update class definition}
+\hlstd{object} \hlkwb{<-} \hlkwd{nmfObject}\hlstd{(object)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -315,8 +310,8 @@ A given algorithm is retrieved by its name (a \code{character} key), that is par
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# list all available algorithms}
-\hlfunctioncall{nmfAlgorithm}()
+\hlcom{# list all available algorithms}
+\hlkwd{nmfAlgorithm}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
 ##  [1] "brunet"    "KL"        "lee"       "Frobenius"
@@ -324,8 +319,8 @@ A given algorithm is retrieved by its name (a \code{character} key), that is par
 ##  [9] "snmf/r"    "snmf/l"    "siNMF"
 \end{verbatim}
 \begin{alltt}
-\hlcomment{# retrieve a specific algorithm: 'brunet'}
-\hlfunctioncall{nmfAlgorithm}(\hlstring{"brunet"})
+\hlcom{# retrieve a specific algorithm: 'brunet'}
+\hlkwd{nmfAlgorithm}\hlstd{(}\hlstr{"brunet"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## <object of class: NMFStrategyIterative>
@@ -339,8 +334,8 @@ A given algorithm is retrieved by its name (a \code{character} key), that is par
 ##   onReturn: none
 \end{verbatim}
 \begin{alltt}
-\hlcomment{# partial match is also fine}
-\hlfunctioncall{identical}(\hlfunctioncall{nmfAlgorithm}(\hlstring{"br"}), \hlfunctioncall{nmfAlgorithm}(\hlstring{"brunet"}))
+\hlcom{# partial match is also fine}
+\hlkwd{identical}\hlstd{(}\hlkwd{nmfAlgorithm}\hlstd{(}\hlstr{"br"}\hlstd{),} \hlkwd{nmfAlgorithm}\hlstd{(}\hlstr{"brunet"}\hlstd{))}
 \end{alltt}
 \begin{verbatim}
 ## [1] TRUE
@@ -432,15 +427,15 @@ A given seeding method is retrieved by its name (a \code{character} key) that is
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# list all available seeding methods}
-\hlfunctioncall{nmfSeed}()
+\hlcom{# list all available seeding methods}
+\hlkwd{nmfSeed}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
 ## [1] "none"   "random" "ica"    "nndsvd"
 \end{verbatim}
 \begin{alltt}
-\hlcomment{# retrieve a specific method: 'nndsvd'}
-\hlfunctioncall{nmfSeed}(\hlstring{"nndsvd"})
+\hlcom{# retrieve a specific method: 'nndsvd'}
+\hlkwd{nmfSeed}\hlstd{(}\hlstr{"nndsvd"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## <object of class:  NMFSeed >
@@ -448,8 +443,8 @@ A given seeding method is retrieved by its name (a \code{character} key) that is
 ## method:	 <function>
 \end{verbatim}
 \begin{alltt}
-\hlcomment{# partial match is also fine}
-\hlfunctioncall{identical}(\hlfunctioncall{nmfSeed}(\hlstring{"nn"}), \hlfunctioncall{nmfSeed}(\hlstring{"nndsvd"}))
+\hlcom{# partial match is also fine}
+\hlkwd{identical}\hlstd{(}\hlkwd{nmfSeed}\hlstd{(}\hlstr{"nn"}\hlstd{),} \hlkwd{nmfSeed}\hlstd{(}\hlstr{"nndsvd"}\hlstd{))}
 \end{alltt}
 \begin{verbatim}
 ## [1] TRUE
@@ -521,7 +516,7 @@ Moreover they do not show up in the listing returned by the \code{nmfAlgorithm} 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{nmfAlgorithm}(all = TRUE)
+\hlkwd{nmfAlgorithm}\hlstd{(}\hlkwc{all} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ##  [1] ".R#brunet" "brunet"    "KL"        ".R#lee"   
@@ -531,9 +526,8 @@ Moreover they do not show up in the listing returned by the \code{nmfAlgorithm} 
 ## [17] "siNMF"
 \end{verbatim}
 \begin{alltt}
-
-\hlcomment{# to get all the algorithms that have a secondary R version}
-\hlfunctioncall{nmfAlgorithm}(version = \hlstring{"R"})
+\hlcom{# to get all the algorithms that have a secondary R version}
+\hlkwd{nmfAlgorithm}\hlstd{(}\hlkwc{version} \hlstd{=} \hlstr{"R"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ##      brunet         lee      offset       nsNMF 
@@ -552,10 +546,10 @@ The column \emph{Speed.up} contains the ratio $R/C$.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# retrieve all the methods that have a secondary R version}
-meth <- \hlfunctioncall{nmfAlgorithm}(version = \hlstring{"R"})
-meth <- \hlfunctioncall{c}(\hlfunctioncall{names}(meth), meth)
-meth
+\hlcom{# retrieve all the methods that have a secondary R version}
+\hlstd{meth} \hlkwb{<-} \hlkwd{nmfAlgorithm}\hlstd{(}\hlkwc{version} \hlstd{=} \hlstr{"R"}\hlstd{)}
+\hlstd{meth} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{names}\hlstd{(meth), meth)}
+\hlstd{meth}
 \end{alltt}
 \begin{verbatim}
 ##                                                      brunet 
@@ -564,12 +558,10 @@ meth
 ##    ".R#lee" ".R#offset"  ".R#nsNMF"
 \end{verbatim}
 \begin{alltt}
-
-\hlcomment{# load the Golub data}
-\hlfunctioncall{data}(esGolub)
-
-\hlcomment{# compute NMF for each method}
-res <- \hlfunctioncall{nmf}(esGolub, 3, meth, seed = 123456)
+\hlcom{# load the Golub data}
+\hlkwd{data}\hlstd{(esGolub)}
+\hlcom{# compute NMF for each method}
+\hlstd{res} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{, meth,} \hlkwc{seed} \hlstd{=} \hlnum{123456}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## Compute NMF method 'brunet' [1/8] ... OK
@@ -582,26 +574,25 @@ res <- \hlfunctioncall{nmf}(esGolub, 3, meth, seed = 123456)
 ## Compute NMF method '.R#nsNMF' [8/8] ... OK
 \end{verbatim}
 \begin{alltt}
-
-\hlcomment{# extract only the elapsed time}
-t <- \hlfunctioncall{sapply}(res, runtime)[3, ]
+\hlcom{# extract only the elapsed time}
+\hlstd{t} \hlkwb{<-} \hlkwd{sapply}\hlstd{(res, runtime)[}\hlnum{3}\hlstd{, ]}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
 
 % latex table generated in R 3.0.1 by xtable 1.7-1 package
-% Wed Jun 12 22:23:51 2013
+% Mon Sep 16 22:56:10 2013
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrr}
   \hline
  & C & R & Speed.up \\ 
   \hline
-brunet & 3.18 & 13.45 & 4.23 \\ 
-  lee & 3.24 & 13.18 & 4.06 \\ 
-  offset & 5.86 & 20.17 & 3.44 \\ 
-  nsNMF & 5.48 & 19.31 & 3.52 \\ 
+brunet & 2.40 & 8.42 & 3.51 \\ 
+  lee & 5.66 & 9.97 & 1.76 \\ 
+  offset & 5.29 & 14.02 & 2.65 \\ 
+  nsNMF & 4.72 & 12.33 & 2.61 \\ 
    \hline
 \end{tabular}
 \caption{Performance speed up achieved by the optimized C++ implementation for some of the NMF algorithms.} 
@@ -618,11 +609,10 @@ To view all the package's bibtex citations, including all vignette(s) and manual
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# plain text}
-\hlfunctioncall{citation}(\hlstring{"NMF"})
-
-\hlcomment{# or to get the bibtex entries}
-\hlfunctioncall{toBibtex}(\hlfunctioncall{citation}(\hlstring{"NMF"}))
+\hlcom{# plain text}
+\hlkwd{citation}\hlstd{(}\hlstr{"NMF"}\hlstd{)}
+\hlcom{# or to get the bibtex entries}
+\hlkwd{toBibtex}\hlstd{(}\hlkwd{citation}\hlstd{(}\hlstr{"NMF"}\hlstd{))}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -639,8 +629,8 @@ It was used in several papers on NMF \cite{Brunet2004, Gao2005} and is included 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{data}(esGolub)
-esGolub
+\hlkwd{data}\hlstd{(esGolub)}
+\hlstd{esGolub}
 \end{alltt}
 \begin{verbatim}
 ## ExpressionSet (storageMode: lockedEnvironment)
@@ -661,11 +651,10 @@ esGolub
 ## Annotation:
 \end{verbatim}
 \begin{alltt}
-esGolub <- esGolub[1:200, ]
-
-\hlcomment{# remove the uneeded variable 'Sample' from the phenotypic}
-\hlcomment{# data}
-esGolub$Sample <- NULL
+\hlstd{esGolub} \hlkwb{<-} \hlstd{esGolub[}\hlnum{1}\hlopt{:}\hlnum{200}\hlstd{, ]}
+\hlcom{# remove the uneeded variable 'Sample' from the phenotypic}
+\hlcom{# data}
+\hlstd{esGolub}\hlopt{$}\hlstd{Sample} \hlkwb{<-} \hlkwa{NULL}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -682,8 +671,8 @@ To run the default NMF algorithm on data \code{esGolub} with a factorization ran
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# default NMF algorithm}
-res <- \hlfunctioncall{nmf}(esGolub, 3)
+\hlcom{# default NMF algorithm}
+\hlstd{res} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -703,7 +692,7 @@ The result of a single NMF run is an object of class \code{NMFfit}, that holds b
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-res
+\hlstd{res}
 \end{alltt}
 \begin{verbatim}
 ## <Object of class: NMFfit>
@@ -721,7 +710,7 @@ res
 ##   Iterations: 510 
 ##   Timing:
 ##      user  system elapsed 
-##     0.272   0.004   0.279
+##     0.240   0.000   0.243
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -732,7 +721,7 @@ The fitted model can be retrieved via method \code{fit}, which returns an object
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{fit}(res)
+\hlkwd{fit}\hlstd{(res)}
 \end{alltt}
 \begin{verbatim}
 ## <Object of class:NMFstd>
@@ -749,8 +738,8 @@ The estimated target matrix can be retrieved via the generic method \code{fitted
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-V.hat <- \hlfunctioncall{fitted}(res)
-\hlfunctioncall{dim}(V.hat)
+\hlstd{V.hat} \hlkwb{<-} \hlkwd{fitted}\hlstd{(res)}
+\hlkwd{dim}\hlstd{(V.hat)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 200  38
@@ -764,17 +753,16 @@ Quality and performance measures about the factorization are computed by method 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{summary}(res)
+\hlkwd{summary}\hlstd{(res)}
 \end{alltt}
 \begin{verbatim}
 ## Length  Class   Mode 
 ##      1 NMFfit     S4
 \end{verbatim}
 \begin{alltt}
-
-\hlcomment{# More quality measures are computed, if the target matrix}
-\hlcomment{# is provided:}
-\hlfunctioncall{summary}(res, target = esGolub)
+\hlcom{# More quality measures are computed, if the target matrix is}
+\hlcom{# provided:}
+\hlkwd{summary}\hlstd{(res,} \hlkwc{target} \hlstd{= esGolub)}
 \end{alltt}
 \begin{verbatim}
 ## Length  Class   Mode 
@@ -790,7 +778,7 @@ Here we use the phenotypic variable \code{Cell} found in the Golub dataset, that
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{summary}(res, class = esGolub$Cell)
+\hlkwd{summary}\hlstd{(res,} \hlkwc{class} \hlstd{= esGolub}\hlopt{$}\hlstd{Cell)}
 \end{alltt}
 \begin{verbatim}
 ## Length  Class   Mode 
@@ -805,18 +793,17 @@ The basis matrix (i.e. matrix $W$ or the metagenes) and the mixture coefficient 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# get matrix W}
-w <- \hlfunctioncall{basis}(res)
-\hlfunctioncall{dim}(w)
+\hlcom{# get matrix W}
+\hlstd{w} \hlkwb{<-} \hlkwd{basis}\hlstd{(res)}
+\hlkwd{dim}\hlstd{(w)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 200   3
 \end{verbatim}
 \begin{alltt}
-
-\hlcomment{# get matrix H}
-h <- \hlfunctioncall{coef}(res)
-\hlfunctioncall{dim}(h)
+\hlcom{# get matrix H}
+\hlstd{h} \hlkwb{<-} \hlkwd{coef}\hlstd{(res)}
+\hlkwd{dim}\hlstd{(h)}
 \end{alltt}
 \begin{verbatim}
 ## [1]  3 38
@@ -831,9 +818,9 @@ The result is a \code{NMF} object composed of the selected rows and/or columns:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# keep only the first 10 features}
-res.subset <- res[1:10, ]
-\hlfunctioncall{class}(res.subset)
+\hlcom{# keep only the first 10 features}
+\hlstd{res.subset} \hlkwb{<-} \hlstd{res[}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{, ]}
+\hlkwd{class}\hlstd{(res.subset)}
 \end{alltt}
 \begin{verbatim}
 ## [1] "NMFfit"
@@ -841,21 +828,21 @@ res.subset <- res[1:10, ]
 ## [1] "NMF"
 \end{verbatim}
 \begin{alltt}
-\hlfunctioncall{dim}(res.subset)
+\hlkwd{dim}\hlstd{(res.subset)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 10 38  3
 \end{verbatim}
 \begin{alltt}
-\hlcomment{# keep only the first 10 samples}
-\hlfunctioncall{dim}(res[, 1:10])
+\hlcom{# keep only the first 10 samples}
+\hlkwd{dim}\hlstd{(res[,} \hlnum{1}\hlopt{:}\hlnum{10}\hlstd{])}
 \end{alltt}
 \begin{verbatim}
 ## [1] 200  10   3
 \end{verbatim}
 \begin{alltt}
-\hlcomment{# subset both features and samples:}
-\hlfunctioncall{dim}(res[1:20, 1:10])
+\hlcom{# subset both features and samples:}
+\hlkwd{dim}\hlstd{(res[}\hlnum{1}\hlopt{:}\hlnum{20}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{10}\hlstd{])}
 \end{alltt}
 \begin{verbatim}
 ## [1] 20 10  3
@@ -876,19 +863,18 @@ The NMF package implements this procedure in methods \code{featureScore} and \co
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# only compute the scores}
-s <- \hlfunctioncall{featureScore}(res)
-\hlfunctioncall{summary}(s)
+\hlcom{# only compute the scores}
+\hlstd{s} \hlkwb{<-} \hlkwd{featureScore}\hlstd{(res)}
+\hlkwd{summary}\hlstd{(s)}
 \end{alltt}
 \begin{verbatim}
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##  0.0001  0.0145  0.0596  0.1180  0.1320  0.9960
 \end{verbatim}
 \begin{alltt}
-
-\hlcomment{# compute the scores and characterize each metagene}
-s <- \hlfunctioncall{extractFeatures}(res)
-\hlfunctioncall{str}(s)
+\hlcom{# compute the scores and characterize each metagene}
+\hlstd{s} \hlkwb{<-} \hlkwd{extractFeatures}\hlstd{(res)}
+\hlkwd{str}\hlstd{(s)}
 \end{alltt}
 \begin{verbatim}
 ## List of 3
@@ -911,7 +897,7 @@ The following algorithms are currently implemented (cf. \cref{tab:algo} for more
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{nmfAlgorithm}()
+\hlkwd{nmfAlgorithm}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
 ##  [1] "brunet"    "KL"        "lee"       "Frobenius"
@@ -933,9 +919,9 @@ the Frobenius euclidean norm, one make the following call:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# using Lee and Seung's algorithm}
-res <- \hlfunctioncall{nmf}(esGolub, 3, \hlstring{"lee"})
-\hlfunctioncall{algorithm}(res)
+\hlcom{# using Lee and Seung's algorithm}
+\hlstd{res} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlstr{"lee"}\hlstd{)}
+\hlkwd{algorithm}\hlstd{(res)}
 \end{alltt}
 \begin{verbatim}
 ## [1] "lee"
@@ -948,16 +934,15 @@ To use the Nonsmooth NMF algorithm from \cite{Pascual-Montano2006}:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# using the Nonsmooth NMF algorithm with parameter}
-\hlcomment{# theta=0.7}
-res <- \hlfunctioncall{nmf}(esGolub, 3, \hlstring{"ns"}, theta = 0.7)
-\hlfunctioncall{algorithm}(res)
+\hlcom{# using the Nonsmooth NMF algorithm with parameter theta=0.7}
+\hlstd{res} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlstr{"ns"}\hlstd{,} \hlkwc{theta} \hlstd{=} \hlnum{0.7}\hlstd{)}
+\hlkwd{algorithm}\hlstd{(res)}
 \end{alltt}
 \begin{verbatim}
 ## [1] "nsNMF"
 \end{verbatim}
 \begin{alltt}
-\hlfunctioncall{fit}(res)
+\hlkwd{fit}\hlstd{(res)}
 \end{alltt}
 \begin{verbatim}
 ## <Object of class:NMFns>
@@ -974,10 +959,10 @@ Or to use the PE-NMF algorithm from \cite{Zhang2008}:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# using the PE-NMF algorithm with parameters alpha=0.01,}
-\hlcomment{# beta=1}
-res <- \hlfunctioncall{nmf}(esGolub, 3, \hlstring{"pe"}, alpha = 0.01, beta = 1)
-res
+\hlcom{# using the PE-NMF algorithm with parameters alpha=0.01,}
+\hlcom{# beta=1}
+\hlstd{res} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlstr{"pe"}\hlstd{,} \hlkwc{alpha} \hlstd{=} \hlnum{0.01}\hlstd{,} \hlkwc{beta} \hlstd{=} \hlnum{1}\hlstd{)}
+\hlstd{res}
 \end{alltt}
 \begin{verbatim}
 ## <Object of class: NMFfit>
@@ -996,7 +981,7 @@ res
 ##   Iterations: 2000 
 ##   Timing:
 ##      user  system elapsed 
-##     1.172   0.000   1.174
+##     0.972   0.000   0.972
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1034,7 +1019,7 @@ The following seeding methods are currently implemented:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{nmfSeed}()
+\hlkwd{nmfSeed}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
 ## [1] "none"   "random" "ica"    "nndsvd"
@@ -1048,8 +1033,8 @@ To use a specific method to seed the computation of a factorization, one simply 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-res <- \hlfunctioncall{nmf}(esGolub, 3, seed = \hlstring{"nndsvd"})
-res
+\hlstd{res} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{seed} \hlstd{=} \hlstr{"nndsvd"}\hlstd{)}
+\hlstd{res}
 \end{alltt}
 \begin{verbatim}
 ## <Object of class: NMFfit>
@@ -1067,7 +1052,7 @@ res
 ##   Iterations: 1090 
 ##   Timing:
 ##      user  system elapsed 
-##     0.544   0.000   0.545
+##     0.504   0.000   0.504
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1087,29 +1072,27 @@ Moreover, single runs can also use RNGstream by passing a 6-length seed.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# single run and single numeric seed}
-res <- \hlfunctioncall{nmf}(esGolub, 3, seed = 123456)
-\hlfunctioncall{showRNG}(res)
+\hlcom{# single run and single numeric seed}
+\hlstd{res} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{seed} \hlstd{=} \hlnum{123456}\hlstd{)}
+\hlkwd{showRNG}\hlstd{(res)}
 \end{alltt}
 \begin{verbatim}
 ## # RNG kind:  Mersenne-Twister / Inversion 
 ## # RNG state: 403L, 624L, ..., 449848215L [ed7ba52c9c2666ca159b185949fd9d73]
 \end{verbatim}
 \begin{alltt}
-
-\hlcomment{# multiple runs and single numeric seed}
-res <- \hlfunctioncall{nmf}(esGolub, 3, seed = 123456, nrun = 2)
-\hlfunctioncall{showRNG}(res)
+\hlcom{# multiple runs and single numeric seed}
+\hlstd{res} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{seed} \hlstd{=} \hlnum{123456}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{2}\hlstd{)}
+\hlkwd{showRNG}\hlstd{(res)}
 \end{alltt}
 \begin{verbatim}
 ## # RNG kind:  L'Ecuyer-CMRG / Inversion 
 ## # RNG state: 407L, -1896287838L, -649582056L, -453180354L, -16866084L, -2023648666L, -827768031L
 \end{verbatim}
 \begin{alltt}
-
-\hlcomment{# single run with a 6-length seed}
-res <- \hlfunctioncall{nmf}(esGolub, 3, seed = \hlfunctioncall{rep}(123456, 6))
-\hlfunctioncall{showRNG}(res)
+\hlcom{# single run with a 6-length seed}
+\hlstd{res} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{seed} \hlstd{=} \hlkwd{rep}\hlstd{(}\hlnum{123456}\hlstd{,} \hlnum{6}\hlstd{))}
+\hlkwd{showRNG}\hlstd{(res)}
 \end{alltt}
 \begin{verbatim}
 ## # RNG kind:  L'Ecuyer-CMRG / Inversion 
@@ -1126,10 +1109,10 @@ Yet another option is to completely specify the initial factorization, by passin
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# initialize a 'constant' factorization based on the target}
-\hlcomment{# dimension}
-init <- \hlfunctioncall{nmfModel}(3, esGolub, W = 0.5, H = 0.3)
-\hlfunctioncall{head}(\hlfunctioncall{basis}(init))
+\hlcom{# initialize a 'constant' factorization based on the target}
+\hlcom{# dimension}
+\hlstd{init} \hlkwb{<-} \hlkwd{nmfModel}\hlstd{(}\hlnum{3}\hlstd{, esGolub,} \hlkwc{W} \hlstd{=} \hlnum{0.5}\hlstd{,} \hlkwc{H} \hlstd{=} \hlnum{0.3}\hlstd{)}
+\hlkwd{head}\hlstd{(}\hlkwd{basis}\hlstd{(init))}
 \end{alltt}
 \begin{verbatim}
 ##                [,1] [,2] [,3]
@@ -1141,9 +1124,8 @@ init <- \hlfunctioncall{nmfModel}(3, esGolub, W = 0.5, H = 0.3)
 ## M19878_s_at     0.5  0.5  0.5
 \end{verbatim}
 \begin{alltt}
-
-\hlcomment{# fit using this NMF model as a seed}
-res <- \hlfunctioncall{nmf}(esGolub, 3, seed = init)
+\hlcom{# fit using this NMF model as a seed}
+\hlstd{res} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{seed} \hlstd{= init)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1164,8 +1146,8 @@ For performance reason we use \code{nrun=5} here, but a typical choice would lie
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-res.multirun <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5)
-res.multirun
+\hlstd{res.multirun} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{5}\hlstd{)}
+\hlstd{res.multirun}
 \end{alltt}
 \begin{verbatim}
 ## <Object of class: NMFfitX1 >
@@ -1175,7 +1157,7 @@ res.multirun
 ##    407L, 1997333926L, -492612625L, 469522788L, -1828607723L, 1996453586L, -1167273941L 
 ##   Total timing:
 ##    user  system elapsed 
-##   2.252   0.180   2.006
+##   2.384   0.224   1.963
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1195,9 +1177,9 @@ If one is interested in keeping the results from all the runs, one can set the o
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# explicitly setting the option keep.all to TRUE}
-res <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .options = \hlfunctioncall{list}(keep.all = TRUE))
-res
+\hlcom{# explicitly setting the option keep.all to TRUE}
+\hlstd{res} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{.options} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{keep.all} \hlstd{=} \hlnum{TRUE}\hlstd{))}
+\hlstd{res}
 \end{alltt}
 \begin{verbatim}
 ## <Object of class: NMFfitXn >
@@ -1207,10 +1189,10 @@ res
 ##    407L, 479565376L, 313168193L, 758619662L, -1499576521L, -1114385908L, 588631965L 
 ##   Total timing:
 ##    user  system elapsed 
-##   3.516   0.224   1.765 
+##   3.576   0.300   1.789 
 ##   Sequential timing:
 ##    user  system elapsed 
-##   2.180   0.016   2.212
+##   2.068   0.016   2.087
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1219,8 +1201,8 @@ res
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# or using letter code 'k' in argument .options}
-\hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .options = \hlstring{"k"})
+\hlcom{# or using letter code 'k' in argument .options}
+\hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{.options} \hlstd{=} \hlstr{"k"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1229,7 +1211,7 @@ res
 In this case, the result is an object of class \code{NMFfitXn} that also inherits from class \code{list}.
 
 Note that keeping all the results may be memory consuming. 
-For example, a 3-rank \code{NMF} fit\footnote{i.e. the result of a single NMF run with rank equal 3.} for the Golub gene expression matrix ($5000 \times 38$) takes about 19Kb\footnote{This size might change depending on the architecture (32 or 64 bits)}.
+For example, a 3-rank \code{NMF} fit\footnote{i.e. the result of a single NMF run with rank equal 3.} for the Golub gene expression matrix ($5000 \times 38$) takes about 26Kb\footnote{This size might change depending on the architecture (32 or 64 bits)}.
 
 \subsection{Parallel computations}\label{multicore}
 
@@ -1307,20 +1289,17 @@ Although we do not show the output here, the user is recommended to run these co
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# the default call will try to run in parallel using all}
-\hlcomment{# the cores => will be in parallel if all the requirements}
-\hlcomment{# are satisfied}
-\hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"v"})
-
-\hlcomment{# request a certain number of cores to use => no error if}
-\hlcomment{# not possible}
-\hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"vp8"})
-
-\hlcomment{# force parallel computation: use option 'P'}
-\hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"vP"})
-
-\hlcomment{# require an improbable number of cores => error}
-\hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"vP200"})
+\hlcom{# the default call will try to run in parallel using all the}
+\hlcom{# cores => will be in parallel if all the requirements are}
+\hlcom{# satisfied}
+\hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{.opt} \hlstd{=} \hlstr{"v"}\hlstd{)}
+\hlcom{# request a certain number of cores to use => no error if not}
+\hlcom{# possible}
+\hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{.opt} \hlstd{=} \hlstr{"vp8"}\hlstd{)}
+\hlcom{# force parallel computation: use option 'P'}
+\hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{.opt} \hlstd{=} \hlstr{"vP"}\hlstd{)}
+\hlcom{# require an improbable number of cores => error}
+\hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{.opt} \hlstd{=} \hlstr{"vP200"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1336,25 +1315,20 @@ the cores computation on each machine.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# file: mpi.R}
-
-\hlcomment{## 0. Create and register an MPI cluster}
-\hlfunctioncall{library}(doMPI)
-cl <- \hlfunctioncall{startMPIcluster}()
-\hlfunctioncall{registerDoMPI}(cl)
-\hlfunctioncall{library}(NMF)
-
-\hlcomment{# run on all workers using the current parallel backend}
-\hlfunctioncall{data}(esGolub)
-res <- \hlfunctioncall{nmf}(esGolub, 3, \hlstring{"brunet"}, nrun = n, .opt = \hlstring{"p"}, .pbackend = NULL)
-
-\hlcomment{# save result}
-\hlfunctioncall{save}(res, file = \hlstring{"result.RData"})
-
-\hlcomment{## 4. Shutdown the cluster and quit MPI}
-\hlfunctioncall{closeCluster}(cl)
-\hlfunctioncall{mpi.quit}()
-
+\hlcom{# file: mpi.R}
+\hlcom{## 0. Create and register an MPI cluster}
+\hlkwd{library}\hlstd{(doMPI)}
+\hlstd{cl} \hlkwb{<-} \hlkwd{startMPIcluster}\hlstd{()}
+\hlkwd{registerDoMPI}\hlstd{(cl)}
+\hlkwd{library}\hlstd{(NMF)}
+\hlcom{# run on all workers using the current parallel backend}
+\hlkwd{data}\hlstd{(esGolub)}
+\hlstd{res} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlstr{"brunet"}\hlstd{,} \hlkwc{nrun} \hlstd{= n,} \hlkwc{.opt} \hlstd{=} \hlstr{"p"}\hlstd{,} \hlkwc{.pbackend} \hlstd{=} \hlkwa{NULL}\hlstd{)}
+\hlcom{# save result}
+\hlkwd{save}\hlstd{(res,} \hlkwc{file} \hlstd{=} \hlstr{"result.RData"}\hlstd{)}
+\hlcom{## 4. Shutdown the cluster and quit MPI}
+\hlkwd{closeCluster}\hlstd{(cl)}
+\hlkwd{mpi.quit}\hlstd{()}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1388,8 +1362,8 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# parallel execution on 2 cores (if possible)}
-res1 <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"vp2"}, seed = 123)
+\hlcom{# parallel execution on 2 cores (if possible)}
+\hlstd{res1} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{.opt} \hlstd{=} \hlstr{"vp2"}\hlstd{,} \hlkwc{seed} \hlstd{=} \hlnum{123}\hlstd{)}
 \end{alltt}
 
 
@@ -1397,12 +1371,11 @@ res1 <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"vp2"}, seed
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   1.596   0.088   2.135
+##   1.708   0.104   2.075
 \end{verbatim}
 \begin{alltt}
-
-\hlcomment{# or use the doParallel with single core}
-res2 <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"vp1"}, seed = 123)
+\hlcom{# or use the doParallel with single core}
+\hlstd{res2} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{.opt} \hlstd{=} \hlstr{"vp1"}\hlstd{,} \hlkwc{seed} \hlstd{=} \hlnum{123}\hlstd{)}
 \end{alltt}
 
 
@@ -1410,13 +1383,12 @@ res2 <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"vp1"}, seed
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |========                                          |  17%Runs: |                                                        Runs: |=================                                 |  33%Runs: |                                                        Runs: |=========================                         |  50%Runs: |                                                        Runs: |=================================                 |  67%Runs: |                                                        Runs: |==========================================        |  83%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   2.548   0.036   2.589
+##   2.824   0.012   2.849
 \end{verbatim}
 \begin{alltt}
-
-\hlcomment{# force sequential computation by sapply: use option '-p'}
-\hlcomment{# or .pbackend=NA}
-res3 <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"v-p"}, seed = 123)
+\hlcom{# force sequential computation by sapply: use option '-p' or}
+\hlcom{# .pbackend=NA}
+\hlstd{res3} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{.opt} \hlstd{=} \hlstr{"v-p"}\hlstd{,} \hlkwc{seed} \hlstd{=} \hlnum{123}\hlstd{)}
 \end{alltt}
 
 
@@ -1424,11 +1396,11 @@ res3 <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"v-p"}, seed
 ## Runs: 1* 2* 3* 4 5 ... DONE
 ## System time:
 ##    user  system elapsed 
-##   2.020   0.000   2.026
+##   1.952   0.000   1.958
 \end{verbatim}
 \begin{alltt}
-res4 <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"v"}, .pbackend = NA, 
-    seed = 123)
+\hlstd{res4} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{.opt} \hlstd{=} \hlstr{"v"}\hlstd{,} \hlkwc{.pbackend} \hlstd{=} \hlnum{NA}\hlstd{,}
+    \hlkwc{seed} \hlstd{=} \hlnum{123}\hlstd{)}
 \end{alltt}
 
 
@@ -1436,13 +1408,12 @@ res4 <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"v"}, .pback
 ## Runs: 1* 2* 3* 4 5 ... DONE
 ## System time:
 ##    user  system elapsed 
-##   1.964   0.008   1.992
+##   1.820   0.000   1.822
 \end{verbatim}
 \begin{alltt}
-
-\hlcomment{# or use the SEQ backend of foreach: .pbackend='seq'}
-res5 <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"v"}, .pbackend = \hlstring{"seq"}, 
-    seed = 123)
+\hlcom{# or use the SEQ backend of foreach: .pbackend='seq'}
+\hlstd{res5} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{.opt} \hlstd{=} \hlstr{"v"}\hlstd{,} \hlkwc{.pbackend} \hlstd{=} \hlstr{"seq"}\hlstd{,}
+    \hlkwc{seed} \hlstd{=} \hlnum{123}\hlstd{)}
 \end{alltt}
 
 
@@ -1450,12 +1421,11 @@ res5 <- \hlfunctioncall{nmf}(esGolub, 3, nrun = 5, .opt = \hlstring{"v"}, .pback
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |========                                          |  17%Runs: |                                                        Runs: |=================                                 |  33%Runs: |                                                        Runs: |=========================                         |  50%Runs: |                                                        Runs: |=================================                 |  67%Runs: |                                                        Runs: |==========================================        |  83%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   2.980   0.020   3.012
+##   2.516   0.000   2.519
 \end{verbatim}
 \begin{alltt}
-
-\hlcomment{# all results are all identical}
-\hlfunctioncall{nmf.equal}(\hlfunctioncall{list}(res1, res2, res3, res4, res5))
+\hlcom{# all results are all identical}
+\hlkwd{nmf.equal}\hlstd{(}\hlkwd{list}\hlstd{(res1, res2, res3, res4, res5))}
 \end{alltt}
 \begin{verbatim}
 ## [1] TRUE
@@ -1481,8 +1451,8 @@ For performance reason, we perform here only 10 runs for each value of the rank.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# perform 10 runs for each value of r in range 2:6}
-estim.r <- \hlfunctioncall{nmf}(esGolub, 2:6, nrun = 10, seed = 123456)
+\hlcom{# perform 10 runs for each value of r in range 2:6}
+\hlstd{estim.r} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{2}\hlopt{:}\hlnum{6}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{10}\hlstd{,} \hlkwc{seed} \hlstd{=} \hlnum{123456}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1502,7 +1472,7 @@ The results are in fact much cleaner when using the full dataset (\cref{fig:heat
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{plot}(estim.r)
+\hlkwd{plot}\hlstd{(estim.r)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-estimate_rank_plot} 
@@ -1516,7 +1486,7 @@ The results are in fact much cleaner when using the full dataset (\cref{fig:heat
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{consensusmap}(estim.r, annCol = esGolub, labCol = NA, labRow = NA)
+\hlkwd{consensusmap}\hlstd{(estim.r,} \hlkwc{annCol} \hlstd{= esGolub,} \hlkwc{labCol} \hlstd{=} \hlnum{NA}\hlstd{,} \hlkwc{labRow} \hlstd{=} \hlnum{NA}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-estimate_rank_hm_include} 
@@ -1539,13 +1509,13 @@ The rank estimation procedure can then be applied to the randomized data, and th
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# shuffle original data}
-V.random <- \hlfunctioncall{randomize}(esGolub)
-\hlcomment{# estimate quality measures from the shuffled data (use}
-\hlcomment{# default NMF algorithm)}
-estim.r.random <- \hlfunctioncall{nmf}(V.random, 2:6, nrun = 10, seed = 123456)
-\hlcomment{# plot measures on same graph}
-\hlfunctioncall{plot}(estim.r, estim.r.random)
+\hlcom{# shuffle original data}
+\hlstd{V.random} \hlkwb{<-} \hlkwd{randomize}\hlstd{(esGolub)}
+\hlcom{# estimate quality measures from the shuffled data (use}
+\hlcom{# default NMF algorithm)}
+\hlstd{estim.r.random} \hlkwb{<-} \hlkwd{nmf}\hlstd{(V.random,} \hlnum{2}\hlopt{:}\hlnum{6}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{10}\hlstd{,} \hlkwc{seed} \hlstd{=} \hlnum{123456}\hlstd{)}
+\hlcom{# plot measures on same graph}
+\hlkwd{plot}\hlstd{(estim.r, estim.r.random)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-estimate_rank_random} 
@@ -1566,9 +1536,9 @@ Here we fix the random seed to 123456.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# fit a model for several different methods}
-res.multi.method <- \hlfunctioncall{nmf}(esGolub, 3, \hlfunctioncall{list}(\hlstring{"brunet"}, \hlstring{"lee"}, \hlstring{"ns"}), 
-    seed = 123456, .options = \hlstring{"t"})
+\hlcom{# fit a model for several different methods}
+\hlstd{res.multi.method} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwd{list}\hlstd{(}\hlstr{"brunet"}\hlstd{,} \hlstr{"lee"}\hlstd{,} \hlstr{"ns"}\hlstd{),}
+    \hlkwc{seed} \hlstd{=} \hlnum{123456}\hlstd{,} \hlkwc{.options} \hlstd{=} \hlstr{"t"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## Compute NMF method 'brunet' [1/3] ... OK
@@ -1584,7 +1554,7 @@ Passing the result to method \code{compare} produces a \code{data.frame} that co
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{compare}(res.multi.method)
+\hlkwd{compare}\hlstd{(res.multi.method)}
 \end{alltt}
 \begin{verbatim}
 ##        method   seed rng    metric rank sparseness.basis
@@ -1596,14 +1566,13 @@ Passing the result to method \code{compare} produces a \code{data.frame} that co
 ## lee             0.4466          0.7148           0.6764
 ## nsNMF           0.7350          0.8654           0.7946
 ##        residuals niter   cpu cpu.all nrun
-## brunet    543536   510 0.280   0.280    1
-## lee    673513121  1780 0.992   0.992    1
-## nsNMF     585106   970 0.828   0.828    1
+## brunet    543536   510 0.264   0.264    1
+## lee    673513121  1780 1.108   1.108    1
+## nsNMF     585106   970 0.728   0.728    1
 \end{verbatim}
 \begin{alltt}
-
-\hlcomment{# If prior knowledge of classes is available}
-\hlfunctioncall{compare}(res.multi.method, class = esGolub$Cell)
+\hlcom{# If prior knowledge of classes is available}
+\hlkwd{compare}\hlstd{(res.multi.method,} \hlkwc{class} \hlstd{= esGolub}\hlopt{$}\hlstd{Cell)}
 \end{alltt}
 \begin{verbatim}
 ##        method   seed rng    metric rank sparseness.basis
@@ -1615,9 +1584,9 @@ Passing the result to method \code{compare} produces a \code{data.frame} that co
 ## lee             0.4466 0.5789  0.7231          0.7148
 ## nsNMF           0.7350 0.7895  0.4691          0.8654
 ##        silhouette.basis residuals niter   cpu cpu.all nrun
-## brunet           0.7488    543536   510 0.280   0.280    1
-## lee              0.6764 673513121  1780 0.992   0.992    1
-## nsNMF            0.7946    585106   970 0.828   0.828    1
+## brunet           0.7488    543536   510 0.264   0.264    1
+## lee              0.6764 673513121  1780 1.108   1.108    1
+## nsNMF            0.7946    585106   970 0.728   0.728    1
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1637,9 +1606,9 @@ This computation is not enabled by default as it induces some overhead.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# run nmf with .option='t'}
-res <- \hlfunctioncall{nmf}(esGolub, 3, .options = \hlstring{"t"})
-\hlcomment{# or with .options=list(track=TRUE)}
+\hlcom{# run nmf with .option='t'}
+\hlstd{res} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{.options} \hlstd{=} \hlstr{"t"}\hlstd{)}
+\hlcom{# or with .options=list(track=TRUE)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1650,8 +1619,8 @@ The trajectory can be plot with the method \code{plot} (\cref{fig:errorplot}):
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{plot}(res)
-\hlfunctioncall{plot}(res.multi.method)
+\hlkwd{plot}\hlstd{(res)}
+\hlkwd{plot}\hlstd{(res.multi.method)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=0.5\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-errorplot1} 
@@ -1696,11 +1665,11 @@ We refer to the relevant help pages \code{?basismap} and \code{?aheatmap} for mo
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{layout}(\hlfunctioncall{cbind}(1, 2))
-\hlcomment{# basis components}
-\hlfunctioncall{basismap}(res, subsetRow = TRUE)
-\hlcomment{# mixture coefficients}
-\hlfunctioncall{coefmap}(res)
+\hlkwd{layout}\hlstd{(}\hlkwd{cbind}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{))}
+\hlcom{# basis components}
+\hlkwd{basismap}\hlstd{(res,} \hlkwc{subsetRow} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlcom{# mixture coefficients}
+\hlkwd{coefmap}\hlstd{(res)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-heatmap_coef_basis_inc} 
@@ -1718,8 +1687,8 @@ Golub dataset):
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# The cell type is used to label rows and columns}
-\hlfunctioncall{consensusmap}(res.multirun, annCol = esGolub, tracks = NA)
+\hlcom{# The cell type is used to label rows and columns}
+\hlkwd{consensusmap}\hlstd{(res.multirun,} \hlkwc{annCol} \hlstd{= esGolub,} \hlkwc{tracks} \hlstd{=} \hlnum{NA}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=0.49\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-heatmap_consensus_inc1} 
@@ -1759,12 +1728,11 @@ To define a strategy, the user needs to provide a \code{function} that implement
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-my.algorithm <- \hlfunctioncall{function}(x, seed, param.1, param.2) \{
-\hlcomment{    # do something with starting point ...}
-    
-\hlcomment{    # return updated starting point}
-    \hlfunctioncall{return}(seed)
-\}
+\hlstd{my.algorithm} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{seed}\hlstd{,} \hlkwc{param.1}\hlstd{,} \hlkwc{param.2}\hlstd{) \{}
+    \hlcom{# do something with starting point ...}
+    \hlcom{# return updated starting point}
+    \hlkwd{return}\hlstd{(seed)}
+\hlstd{\}}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1784,24 +1752,22 @@ For example:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-my.algorithm <- \hlfunctioncall{function}(x, seed, scale.factor = 1) \{
-\hlcomment{    # do something with starting point ...  for example: 1.}
-\hlcomment{    # compute principal components}
-    pca <- \hlfunctioncall{prcomp}(\hlfunctioncall{t}(x), retx = TRUE)
-    
-\hlcomment{    # 2. use the absolute values of the first PCs for the}
-\hlcomment{    # metagenes Note: the factorization rank is stored in}
-\hlcomment{    # object 'start'}
-    factorization.rank <- \hlfunctioncall{nbasis}(seed)
-    \hlfunctioncall{metagenes}(\hlfunctioncall{fit}(seed)) <- \hlfunctioncall{abs}(pca$rotation[, 1:factorization.rank])
-\hlcomment{    # use the rotated matrix to get the mixture coefficient use}
-\hlcomment{    # a scaling factor (just to illustrate the use of extra}
-\hlcomment{    # parameters)}
-    \hlfunctioncall{metaprofiles}(\hlfunctioncall{fit}(seed)) <- \hlfunctioncall{t}(\hlfunctioncall{abs}(pca$x[, 1:factorization.rank]))/scale.factor
-    
-\hlcomment{    # return updated data}
-    \hlfunctioncall{return}(seed)
-\}
+\hlstd{my.algorithm} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{seed}\hlstd{,} \hlkwc{scale.factor} \hlstd{=} \hlnum{1}\hlstd{) \{}
+    \hlcom{# do something with starting point ...  for example: 1.}
+    \hlcom{# compute principal components}
+    \hlstd{pca} \hlkwb{<-} \hlkwd{prcomp}\hlstd{(}\hlkwd{t}\hlstd{(x),} \hlkwc{retx} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+    \hlcom{# 2. use the absolute values of the first PCs for the}
+    \hlcom{# metagenes Note: the factorization rank is stored in object}
+    \hlcom{# 'start'}
+    \hlstd{factorization.rank} \hlkwb{<-} \hlkwd{nbasis}\hlstd{(seed)}
+    \hlkwd{metagenes}\hlstd{(}\hlkwd{fit}\hlstd{(seed))} \hlkwb{<-} \hlkwd{abs}\hlstd{(pca}\hlopt{$}\hlstd{rotation[,} \hlnum{1}\hlopt{:}\hlstd{factorization.rank])}
+    \hlcom{# use the rotated matrix to get the mixture coefficient use a}
+    \hlcom{# scaling factor (just to illustrate the use of extra}
+    \hlcom{# parameters)}
+    \hlkwd{metaprofiles}\hlstd{(}\hlkwd{fit}\hlstd{(seed))} \hlkwb{<-} \hlkwd{t}\hlstd{(}\hlkwd{abs}\hlstd{(pca}\hlopt{$}\hlstd{x[,} \hlnum{1}\hlopt{:}\hlstd{factorization.rank]))}\hlopt{/}\hlstd{scale.factor}
+    \hlcom{# return updated data}
+    \hlkwd{return}\hlstd{(seed)}
+\hlstd{\}}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1813,10 +1779,10 @@ Here we apply the algorithm to some matrix \code{V} randomly generated:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-n <- 50
-r <- 3
-p <- 20
-V <- \hlfunctioncall{syntheticNMF}(n, r, p, noise = TRUE)
+\hlstd{n} \hlkwb{<-} \hlnum{50}
+\hlstd{r} \hlkwb{<-} \hlnum{3}
+\hlstd{p} \hlkwb{<-} \hlnum{20}
+\hlstd{V} \hlkwb{<-} \hlkwd{syntheticNMF}\hlstd{(n, r, p,} \hlkwc{noise} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1825,7 +1791,7 @@ V <- \hlfunctioncall{syntheticNMF}(n, r, p, noise = TRUE)
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{nmf}(V, 3, my.algorithm, scale.factor = 10)
+\hlkwd{nmf}\hlstd{(V,} \hlnum{3}\hlstd{, my.algorithm,} \hlkwc{scale.factor} \hlstd{=} \hlnum{10}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## <Object of class: NMFfit>
@@ -1835,7 +1801,7 @@ V <- \hlfunctioncall{syntheticNMF}(n, r, p, noise = TRUE)
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_1feb6316c75d 
+##   algorithm:  nmf_4d3b61663691 
 ##   seed:  random 
 ##   RNG: 403L, 173L, ..., 1280296329L [0d87fde5bf092083bd059bcc33d58a3e]
 ##   distance metric:  'euclidean' 
@@ -1843,7 +1809,7 @@ V <- \hlfunctioncall{syntheticNMF}(n, r, p, noise = TRUE)
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.008   0.000   0.006
+##     0.008   0.000   0.008
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1856,8 +1822,8 @@ If the algorithm is based on another distance measure, this one can be specified
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# based on Kullback-Leibler divergence}
-\hlfunctioncall{nmf}(V, 3, my.algorithm, scale.factor = 10, objective = \hlstring{"KL"})
+\hlcom{# based on Kullback-Leibler divergence}
+\hlkwd{nmf}\hlstd{(V,} \hlnum{3}\hlstd{, my.algorithm,} \hlkwc{scale.factor} \hlstd{=} \hlnum{10}\hlstd{,} \hlkwc{objective} \hlstd{=} \hlstr{"KL"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## <Object of class: NMFfit>
@@ -1867,7 +1833,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_1feb14ce6fa5 
+##   algorithm:  nmf_4d3b44eeba43 
 ##   seed:  random 
 ##   RNG: 403L, 383L, ..., 1280296329L [2f2572f5c6b643d37859d97079951964]
 ##   distance metric:  'KL' 
@@ -1875,16 +1841,16 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.004
+##     0.000   0.000   0.003
 \end{verbatim}
 \begin{alltt}
-\hlcomment{# based on custom distance metric}
-\hlfunctioncall{nmf}(V, 3, my.algorithm, scale.factor = 10, objective = \hlfunctioncall{function}(x, 
-    target, ...) \{
-    (\hlfunctioncall{sum}((target - \hlfunctioncall{fitted}(x))^4))^\{
-        1/4
-    \}
-\})
+\hlcom{# based on custom distance metric}
+\hlkwd{nmf}\hlstd{(V,} \hlnum{3}\hlstd{, my.algorithm,} \hlkwc{scale.factor} \hlstd{=} \hlnum{10}\hlstd{,} \hlkwc{objective} \hlstd{=} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,}
+    \hlkwc{target}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+    \hlstd{(}\hlkwd{sum}\hlstd{((target} \hlopt{-} \hlkwd{fitted}\hlstd{(x))}\hlopt{^}\hlnum{4}\hlstd{))}\hlopt{^}\hlstd{\{}
+        \hlnum{1}\hlopt{/}\hlnum{4}
+    \hlstd{\}}
+\hlstd{\})}
 \end{alltt}
 \begin{verbatim}
 ## <Object of class: NMFfit>
@@ -1894,7 +1860,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_1feb6e51afc4 
+##   algorithm:  nmf_4d3b35b78db3 
 ##   seed:  random 
 ##   RNG: 403L, 593L, ..., 1280296329L [7ed64fa772a4b1e68cebc0bfed3cb018]
 ##   distance metric:  <function> 
@@ -1902,7 +1868,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.000   0.000   0.004
+##     0.004   0.000   0.003
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1933,15 +1899,13 @@ As an example, we reuse the previously defined custom algorithm\footnote{As it i
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# put some negative input data}
-V.neg <- V
-V.neg[1, ] <- -1
-
-\hlcomment{# this generates an error}
-\hlfunctioncall{try}(\hlfunctioncall{nmf}(V.neg, 3, my.algorithm, scale.factor = 10))
-
-\hlcomment{# this runs my.algorithm without error}
-\hlfunctioncall{nmf}(V.neg, 3, my.algorithm, mixed = TRUE, scale.factor = 10)
+\hlcom{# put some negative input data}
+\hlstd{V.neg} \hlkwb{<-} \hlstd{V}
+\hlstd{V.neg[}\hlnum{1}\hlstd{, ]} \hlkwb{<-} \hlopt{-}\hlnum{1}
+\hlcom{# this generates an error}
+\hlkwd{try}\hlstd{(}\hlkwd{nmf}\hlstd{(V.neg,} \hlnum{3}\hlstd{, my.algorithm,} \hlkwc{scale.factor} \hlstd{=} \hlnum{10}\hlstd{))}
+\hlcom{# this runs my.algorithm without error}
+\hlkwd{nmf}\hlstd{(V.neg,} \hlnum{3}\hlstd{, my.algorithm,} \hlkwc{mixed} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{scale.factor} \hlstd{=} \hlnum{10}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## <Object of class: NMFfit>
@@ -1951,7 +1915,7 @@ V.neg[1, ] <- -1
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_1feb27214ce0 
+##   algorithm:  nmf_4d3b95b665f 
 ##   seed:  random 
 ##   RNG: 403L, 179L, ..., -818492466L [850b670d66e22c6d00f5d79570d1ce8a]
 ##   distance metric:  'euclidean' 
@@ -1959,7 +1923,7 @@ V.neg[1, ] <- -1
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.004
+##     0.004   0.000   0.003
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1975,7 +1939,7 @@ argument:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{nmfModel}()
+\hlkwd{nmfModel}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
 ## <Object of class:NMFstd>
@@ -1993,31 +1957,27 @@ We use model \code{NMFOffset} \cite{Badea2008}, that includes an offset to take 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-my.algorithm.offset <- \hlfunctioncall{function}(x, seed, scale.factor = 1) \{
-\hlcomment{    # do something with starting point ...  for example: 1.}
-\hlcomment{    # compute principal components}
-    pca <- \hlfunctioncall{prcomp}(\hlfunctioncall{t}(x), retx = TRUE)
-    
-\hlcomment{    # retrieve the model being estimated}
-    data.model <- \hlfunctioncall{fit}(seed)
-    
-\hlcomment{    # 2. use the absolute values of the first PCs for the}
-\hlcomment{    # metagenes Note: the factorization rank is stored in}
-\hlcomment{    # object 'start'}
-    factorization.rank <- \hlfunctioncall{nbasis}(data.model)
-    \hlfunctioncall{metagenes}(data.model) <- \hlfunctioncall{abs}(pca$rotation[, 1:factorization.rank])
-\hlcomment{    # use the rotated matrix to get the mixture coefficient use}
-\hlcomment{    # a scaling factor (just to illustrate the use of extra}
-\hlcomment{    # parameters)}
-    \hlfunctioncall{metaprofiles}(data.model) <- \hlfunctioncall{t}(\hlfunctioncall{abs}(pca$x[, 1:factorization.rank]))/scale.factor
-    
-\hlcomment{    # 3. Compute the offset as the mean expression}
-    data.model@offset <- \hlfunctioncall{rowMeans}(x)
-    
-\hlcomment{    # return updated data}
-    \hlfunctioncall{fit}(seed) <- data.model
-    seed
-\}
+\hlstd{my.algorithm.offset} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{seed}\hlstd{,} \hlkwc{scale.factor} \hlstd{=} \hlnum{1}\hlstd{) \{}
+    \hlcom{# do something with starting point ...  for example: 1.}
+    \hlcom{# compute principal components}
+    \hlstd{pca} \hlkwb{<-} \hlkwd{prcomp}\hlstd{(}\hlkwd{t}\hlstd{(x),} \hlkwc{retx} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+    \hlcom{# retrieve the model being estimated}
+    \hlstd{data.model} \hlkwb{<-} \hlkwd{fit}\hlstd{(seed)}
+    \hlcom{# 2. use the absolute values of the first PCs for the}
+    \hlcom{# metagenes Note: the factorization rank is stored in object}
+    \hlcom{# 'start'}
+    \hlstd{factorization.rank} \hlkwb{<-} \hlkwd{nbasis}\hlstd{(data.model)}
+    \hlkwd{metagenes}\hlstd{(data.model)} \hlkwb{<-} \hlkwd{abs}\hlstd{(pca}\hlopt{$}\hlstd{rotation[,} \hlnum{1}\hlopt{:}\hlstd{factorization.rank])}
+    \hlcom{# use the rotated matrix to get the mixture coefficient use a}
+    \hlcom{# scaling factor (just to illustrate the use of extra}
+    \hlcom{# parameters)}
+    \hlkwd{metaprofiles}\hlstd{(data.model)} \hlkwb{<-} \hlkwd{t}\hlstd{(}\hlkwd{abs}\hlstd{(pca}\hlopt{$}\hlstd{x[,} \hlnum{1}\hlopt{:}\hlstd{factorization.rank]))}\hlopt{/}\hlstd{scale.factor}
+    \hlcom{# 3. Compute the offset as the mean expression}
+    \hlstd{data.model}\hlopt{@}\hlkwc{offset} \hlkwb{<-} \hlkwd{rowMeans}\hlstd{(x)}
+    \hlcom{# return updated data}
+    \hlkwd{fit}\hlstd{(seed)} \hlkwb{<-} \hlstd{data.model}
+    \hlstd{seed}
+\hlstd{\}}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -2027,8 +1987,8 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# run custom algorithm with NMF model with offset}
-\hlfunctioncall{nmf}(V, 3, my.algorithm.offset, model = \hlstring{"NMFOffset"}, scale.factor = 10)
+\hlcom{# run custom algorithm with NMF model with offset}
+\hlkwd{nmf}\hlstd{(V,} \hlnum{3}\hlstd{, my.algorithm.offset,} \hlkwc{model} \hlstd{=} \hlstr{"NMFOffset"}\hlstd{,} \hlkwc{scale.factor} \hlstd{=} \hlnum{10}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## <Object of class: NMFfit>
@@ -2039,7 +1999,7 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   samples: 20 
 ##   offset: [ 0.3677 0.9383 1.347 1.019 0.6695 ... ]
 ##  # Details:
-##   algorithm:  nmf_1feb64a45c3e 
+##   algorithm:  nmf_4d3b559b8531 
 ##   seed:  random 
 ##   RNG: 403L, 389L, ..., -818492466L [7d13c1cc60f9b6390bf7ebfc74dce591]
 ##   distance metric:  'euclidean' 
@@ -2047,7 +2007,7 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.004
+##     0.004   0.000   0.003
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2062,21 +2022,17 @@ The user can also define custom seeding method as a function of the form:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-
-\hlcomment{# start: object of class NMF target: the target matrix}
-my.seeding.method <- \hlfunctioncall{function}(model, target) \{
-    
-\hlcomment{    # use only the largest columns for W}
-    w.cols <- \hlfunctioncall{apply}(target, 2, \hlfunctioncall{function}(x) \hlfunctioncall{sqrt}(\hlfunctioncall{sum}(x^2)))
-    \hlfunctioncall{metagenes}(model) <- target[, \hlfunctioncall{order}(w.cols)[1:\hlfunctioncall{nbasis}(model)]]
-    
-\hlcomment{    # initialize H randomly}
-    \hlfunctioncall{metaprofiles}(model) <- \hlfunctioncall{matrix}(\hlfunctioncall{runif}(\hlfunctioncall{nbasis}(model) * \hlfunctioncall{ncol}(target)), 
-        \hlfunctioncall{nbasis}(model), \hlfunctioncall{ncol}(target))
-    
-\hlcomment{    # return updated object}
-    \hlfunctioncall{return}(model)
-\}
+\hlcom{# start: object of class NMF target: the target matrix}
+\hlstd{my.seeding.method} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{model}\hlstd{,} \hlkwc{target}\hlstd{) \{}
+    \hlcom{# use only the largest columns for W}
+    \hlstd{w.cols} \hlkwb{<-} \hlkwd{apply}\hlstd{(target,} \hlnum{2}\hlstd{,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{sqrt}\hlstd{(}\hlkwd{sum}\hlstd{(x}\hlopt{^}\hlnum{2}\hlstd{)))}
+    \hlkwd{metagenes}\hlstd{(model)} \hlkwb{<-} \hlstd{target[,} \hlkwd{order}\hlstd{(w.cols)[}\hlnum{1}\hlopt{:}\hlkwd{nbasis}\hlstd{(model)]]}
+    \hlcom{# initialize H randomly}
+    \hlkwd{metaprofiles}\hlstd{(model)} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlkwd{runif}\hlstd{(}\hlkwd{nbasis}\hlstd{(model)} \hlopt{*} \hlkwd{ncol}\hlstd{(target)),}
+        \hlkwd{nbasis}\hlstd{(model),} \hlkwd{ncol}\hlstd{(target))}
+    \hlcom{# return updated object}
+    \hlkwd{return}\hlstd{(model)}
+\hlstd{\}}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -2086,7 +2042,7 @@ To use the new seeding method:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{nmf}(V, 3, \hlstring{"snmf/r"}, seed = my.seeding.method)
+\hlkwd{nmf}\hlstd{(V,} \hlnum{3}\hlstd{,} \hlstr{"snmf/r"}\hlstd{,} \hlkwc{seed} \hlstd{= my.seeding.method)}
 \end{alltt}
 \begin{verbatim}
 ## <Object of class: NMFfit>
@@ -2097,14 +2053,14 @@ To use the new seeding method:
 ##   samples: 20 
 ##  # Details:
 ##   algorithm:  snmf/r 
-##   seed:  NMF.seed.1feb5d9bc445 
+##   seed:  NMF.seed.4d3b3690d580 
 ##   RNG: 403L, 25L, ..., -1308220775L [e0cc5847b800083c2460eb9eaa25bd4e]
 ##   distance metric:  <function> 
 ##   residuals:  195.6 
 ##   Iterations: 105 
 ##   Timing:
 ##      user  system elapsed 
-##     0.304   0.004   0.310
+##     0.264   0.000   0.264
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2119,8 +2075,8 @@ These behave similarly as the \code{getOption} and \code{nmf.options} base funct
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcomment{# show default algorithm and seeding method}
-\hlfunctioncall{nmf.options}(\hlstring{"default.algorithm"}, \hlstring{"default.seed"})
+\hlcom{# show default algorithm and seeding method}
+\hlkwd{nmf.options}\hlstd{(}\hlstr{"default.algorithm"}\hlstd{,} \hlstr{"default.seed"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## $default.algorithm
@@ -2130,17 +2086,16 @@ These behave similarly as the \code{getOption} and \code{nmf.options} base funct
 ## [1] "random"
 \end{verbatim}
 \begin{alltt}
-
-\hlcomment{# retrieve a single option}
-\hlfunctioncall{nmf.getOption}(\hlstring{"default.seed"})
+\hlcom{# retrieve a single option}
+\hlkwd{nmf.getOption}\hlstd{(}\hlstr{"default.seed"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## [1] "random"
 \end{verbatim}
 \begin{alltt}
 
-\hlcomment{## # All options}
-\hlcomment{## nmf.options()}
+## # All options
+## nmf.options()
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -2216,13 +2171,13 @@ The default/current values of each options can be displayed using the function
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlfunctioncall{nmf.printOptions}()
+\hlkwd{nmf.printOptions}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
 ## <Package specific options: package:NMF>
 ## Registered: FALSE
 ## Options <as default>:
-## List of 11
+## List of 12
 ##  $ default.algorithm: chr "brunet"
 ##  $ default.seed     : chr "random"
 ##  $ error.track      :Class 'option_symlink'  chr "track"
@@ -2233,6 +2188,7 @@ The default/current values of each options can be displayed using the function
 ##  $ pbackend         : chr "par"
 ##  $ verbose          : logi FALSE
 ##  $ debug            : logi FALSE
+##  $ grid.patch       : logi FALSE
 ##  $ shared.memory    : logi TRUE
 \end{verbatim}
 \end{kframe}
@@ -2272,23 +2228,24 @@ The default/current values of each options can be displayed using the function
 \pagebreak 
 \section{Session Info}
 \begin{itemize}\raggedright
-  \item R version 3.0.1 (2013-05-16), \verb|i686-pc-linux-gnu|
+  \item R version 3.0.1 (2013-05-16), \verb|x86_64-pc-linux-gnu|
   \item Locale: \verb|LC_CTYPE=en_US.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_US.UTF-8|, \verb|LC_COLLATE=en_US.UTF-8|, \verb|LC_MONETARY=en_US.UTF-8|, \verb|LC_MESSAGES=en_US.UTF-8|, \verb|LC_PAPER=C|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_US.UTF-8|, \verb|LC_IDENTIFICATION=C|
   \item Base packages: base, datasets, graphics,
-    grDevices, grid, methods, parallel, stats, utils
-  \item Other packages: BH~1.51.0-1, bigmemory~4.4.3,
-    bigmemory.sri~0.1.2, Biobase~2.20.0,
-    BiocGenerics~0.6.0, cluster~1.14.4, digest~0.6.3,
+    grDevices, methods, parallel, stats, utils
+  \item Other packages: BH~1.51.0-2, bigmemory~4.4.3,
+    bigmemory.sri~0.1.2, Biobase~2.20.1,
+    BiocGenerics~0.6.0, cluster~1.14.4,
     doParallel~1.0.3, foreach~1.4.1, iterators~1.0.6,
-    knitr~1.2.9, NMF~0.17.3, pkgmaker~0.16.4,
-    RColorBrewer~1.0-5, registry~0.2, rngtools~1.2,
+    knitr~1.4.9, NMF~0.17.9, pkgmaker~0.17,
+    RColorBrewer~1.0-5, registry~0.2, rngtools~1.2.2,
     synchronicity~1.1.0, xtable~1.7-1
   \item Loaded via a namespace (and not attached):
     codetools~0.2-8, colorspace~1.2-2,
-    compiler~3.0.1, dichromat~2.0-0, evaluate~0.4.3,
-    formatR~0.7, ggplot2~0.9.3.1, gridBase~0.4-6,
-    gtable~0.1.2, labeling~0.1, MASS~7.3-26,
-    munsell~0.4, plyr~1.8, proto~0.3-10,
+    compiler~3.0.1, dichromat~2.0-0, digest~0.6.3,
+    evaluate~0.4.7, formatR~0.9, ggplot2~0.9.3.1,
+    grid~3.0.1, gridBase~0.4-6, gtable~0.1.2,
+    highr~0.2.1, labeling~0.2, MASS~7.3-29,
+    munsell~0.4.2, plyr~1.8, proto~0.3-10,
     reshape2~1.2.2, scales~0.2.3, stringr~0.6.2,
     tools~3.0.1
 \end{itemize}

@@ -36,7 +36,8 @@
   into a pallete by \code{rev(sequential_hcl(2, h = x, l =
   c(50, 95)))}. Other values are concatenated with the grey
   colour '#F1F1F1'. \item one of RColorBrewer's palette
-  name, or one of 'RdYlBu2', 'rainbow', 'heat', 'topo',
+  name (see \code{\link[RColorBrewer]{display.brewer.all}})
+  , or one of 'RdYlBu2', 'rainbow', 'heat', 'topo',
   'terrain', 'cm'. } When the coluor palette is specified
   with a single value, and is negative or preceded a minus
   ('-'), the reversed palette is used. The number of breaks
@@ -157,9 +158,15 @@
 
   \item{distfun}{default distance measure used in
   clustering rows and columns. Possible values are:
-  \itemize{ \item \code{"correlation"} and all the
-  distances supported by \code{\link{dist}} (e.g.
-  \code{"euclidean"}). \item an object of class \code{dist}
+  \itemize{ \item all the distance methods supported by
+  \code{\link{dist}} (e.g. "euclidean" or "maximum"). \item
+  all correlation methods supported by \code{\link{cor}},
+  such as \code{"pearson"} or \code{"spearman"}. The
+  pairwise distances between rows/columns are then computed
+  as \code{d <- dist(1 - cor(..., method = distfun))}.
+
+  One may as well use the string "correlation" which is an
+  alias for "pearson". \item an object of class \code{dist}
   such as returned by \code{\link{dist}} or
   \code{\link{as.dist}}. }}
 
@@ -302,6 +309,22 @@
 
   Please read the associated vignette for more information
   and sample code.
+}
+\section{PDF graphic devices}{
+  if plotting on a PDF graphic device -- started with
+  \code{\link{pdf}}, one may get generate a first blank
+  page, due to internals of standard functions from the
+  \pkg{grid} package that are called by \code{aheatmap}.
+  The \pkg{NMF} package ships a custom patch that fixes
+  this issue. However, in order to comply with CRAN
+  policies, the patch is \strong{not} applied by default
+  and the user must explicitly be enabled it. This can be
+  achieved on runtime by either setting the NMF specific
+  option 'grid.patch' via
+  \code{nmf.options(grid.patch=TRUE)}, or on load time if
+  the environment variable 'R_PACKAGE_NMF_GRID_PATCH' is
+  defined and its value is something that is not equivalent
+  to \code{FALSE} (i.e. not '', 'false' nor 0).
 }
 \examples{
 ## See the demo 'aheatmap' for more examples:

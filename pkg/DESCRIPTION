@@ -1,8 +1,8 @@
 Package: NMF
 Type: Package
 Title: Algorithms and framework for Nonnegative Matrix Factorization (NMF).
-Version: 0.17.5
-Date: 2013-06-12
+Version: 0.18
+Date: 2013-09-17
 Author: Renaud Gaujoux, Cathal Seoighe
 Maintainer: Renaud Gaujoux <renaud@mancala.cbio.uct.ac.za>
 Authors@R: c( person("Renaud", "Gaujoux", role=c('aut', 'cre'),
@@ -23,29 +23,26 @@ Depends:
     R (>= 2.15.2),
     methods,
     utils,
-    stats,
-    cluster,
-    pkgmaker (>= 0.16),
-    rngtools,
+    pkgmaker (>= 0.17),
     registry,
-    digest,
-    grid
+    rngtools,
+    cluster
 Imports:
     graphics,
-    rngtools,
+    stats,
     stringr,
+    digest,
+    grid,
     grDevices,
     gridBase,
     colorspace,
     RColorBrewer,
-    iterators,
     foreach,
     doParallel,
     ggplot2,
     reshape2
 Suggests:
     RcppOctave (>= 0.8.12),
-    Biobase,
     fastICA,
     doMPI,
     bigmemory (>= 4.2),
@@ -107,4 +104,5 @@ Collate:
     'seed-nndsvd.R'
     'data.R'
     'tests.R'
+    'run.R'
 VignetteBuilder: knitr
