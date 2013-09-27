@@ -63,6 +63,7 @@ options(prompt=' ', width = 60)
 options(continue=' ')
 set.seed(123456)
 library(knitr)
+knit_hooks$set(try = pkgmaker::hook_try)
 @
 
 % use cleveref for automatic reference label formatting
@@ -1084,10 +1085,10 @@ my.algorithm <- function(x, seed, scale.factor=1){
 	# 2. use the absolute values of the first PCs for the metagenes
 	# Note: the factorization rank is stored in object 'start'	
 	factorization.rank <- nbasis(seed)
-	metagenes(fit(seed)) <- abs(pca$rotation[,1:factorization.rank])
+	basis(seed) <- abs(pca$rotation[,1:factorization.rank])
 	# use the rotated matrix to get the mixture coefficient
 	# use a scaling factor (just to illustrate the use of extra parameters)
-	metaprofiles(fit(seed)) <- t(abs(pca$x[,1:factorization.rank])) / scale.factor
+	coef(seed) <- t(abs(pca$x[,1:factorization.rank])) / scale.factor
 	
 	# return updated data
 	return(seed)
@@ -1099,7 +1100,7 @@ Here we apply the algorithm to some matrix \code{V} randomly generated:
 
 <<define_V>>=
 n <- 50; r <- 3; p <- 20
-V <-syntheticNMF(n, r, p, noise=TRUE)
+V <-syntheticNMF(n, r, p)
 @
 
 <<custom_algo_run>>=
@@ -1115,8 +1116,8 @@ If the algorithm is based on another distance measure, this one can be specified
 nmf(V, 3, my.algorithm, scale.factor=10, objective='KL')
 # based on custom distance metric
 nmf(V, 3, my.algorithm, scale.factor=10
-	, objective=function(x, target, ...){ 
-			( sum( (target-fitted(x))^4 ) )^{1/4} 
+	, objective=function(model, target, ...){
+            ( sum( (target-fitted(model))^4 ) )^{1/4} 
 		}
 )
 @
@@ -1143,7 +1144,7 @@ This will skip the sign check of the input data and let the custom algorithm per
  
 As an example, we reuse the previously defined custom algorithm\footnote{As it is defined here, the custom algorithm still returns nonnegative factors, which would not be desirable in a real example, as one would not be able to closely fit the negative entries.}:
 
-<<custom_algo_run_mixed, error = TRUE>>=
+<<custom_algo_run_mixed, error = TRUE, try = TRUE>>=
 # put some negative input data 
 V.neg <- V; V.neg[1,] <- -1;
 
@@ -1182,10 +1183,10 @@ my.algorithm.offset <- function(x, seed, scale.factor=1){
 	# 2. use the absolute values of the first PCs for the metagenes
 	# Note: the factorization rank is stored in object 'start'	
 	factorization.rank <- nbasis(data.model)
-	metagenes(data.model) <- abs(pca$rotation[,1:factorization.rank])	
+	basis(data.model) <- abs(pca$rotation[,1:factorization.rank])	
 	# use the rotated matrix to get the mixture coefficient
 	# use a scaling factor (just to illustrate the use of extra parameters)
-	metaprofiles(data.model) <- t(abs(pca$x[,1:factorization.rank])) / scale.factor
+	coef(data.model) <- t(abs(pca$x[,1:factorization.rank])) / scale.factor
 	
 	# 3. Compute the offset as the mean expression
 	data.model@offset <- rowMeans(x)	
@@ -1216,10 +1217,10 @@ my.seeding.method <- function(model, target){
 	
 	# use only the largest columns for W
 	w.cols <- apply(target, 2, function(x) sqrt(sum(x^2)))
-	metagenes(model) <- target[,order(w.cols)[1:nbasis(model)]]
+	basis(model) <- target[,order(w.cols)[1:nbasis(model)]]
 	
 	# initialize H randomly
-	metaprofiles(model) <- matrix(runif(nbasis(model)*ncol(target))
+	coef(model) <- matrix(runif(nbasis(model)*ncol(target))
 						, nbasis(model), ncol(target))
 
 	# return updated object
