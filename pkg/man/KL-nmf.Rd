@@ -141,8 +141,8 @@
   \code{\link{nmf.stop.connectivity}} as used by
   \sQuote{brunet}.
 
-  \code{file.show(system.file('matlab', 'brunet.m',
-  package='NMF'))}
+  \samp{ library(RcppOctave)
+  file.show(system.mfile('brunet.m', package='NMF')) }
 }
 \details{
   \code{nmf_update.brunet_R} implements in pure R a single

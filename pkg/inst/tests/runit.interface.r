@@ -187,10 +187,28 @@ test.nmf.method <- function(){
 	nmf(V, r, 'lee')
 	checkIdentical( new.rseed, getRNG(), "RNG setting after the run is the same as if one has run only the last method" )
 	
+    # list of methods
 	res <- nmf(V, r, list('ns', 'br', 'lee'), nrun=3)
 	checkIdentical(names(res), c('nsNMF', 'brunet', 'lee'), "Argument list() + multiple run: names are set correctly to the complete method names")
 	checkTrue( all(sapply(res, function(x) identical(getRNG1(x), getRNG1(res[[1]])))),
 			"Argument list() + multiple runs: Initial RNG settings are the same for each method")
+    
+    ml <- list('ns', 'brunet', 'lee')
+    checkException(nmf(V, r, ml, .parameters = 2:3), "Error if argument .parameters not a list")
+    checkException(nmf(V, r, ml, .parameters = list(br = list())), "Error if argument .parameters has no names")
+    checkException(nmf(V, r, ml, .parameters = list(br = list(), list(copy = TRUE))), "Error if argument .parameters has missing names")
+    checkException(nmf(V, r, ml, .parameters = list(br = list(), brun = list(copy = TRUE))), "Error if argument .parameters has multiple matching names")
+    checkWarning(nmf(V, r, ml, .parameters = list(br = list(aaa = 1))), TRUE, "Error if unused argument in selected method-specific parameters")
+    checkWarning(nmf(V, r, ml, .parameters = list(br = list(), toto = list())), TRUE, "Warning if unused elements in .parameters")
+    checkTrue(all(isNMFfit(res <- nmf(V, r, ml, seed = 123, .parameters = list(br = list(maxIter = 10), ns = list(maxIter = 2)))))
+                , "List of methods working if called with correct .parameters")
+    checkIdentical( niter(res$nsNMF), 2L, )
+    checkIdentical( niter(res$brunet), 10L)
+    res_lee <- nmf(V, r, 'lee', seed = 123)
+    checkTrue( niter(res$lee) > 10L, "Method without method-specific parameter specification correctly runs without them: niter > 10L" )
+    checkIdentical( niter(res$lee), niter(res$lee), "Method without method-specific parameter specification correctly runs without them: niter equal" )
+    checkTrue( nmf.equal(res$lee, res_lee), "Method without method-specific parameter specification correctly runs without them: identical result" )
+    
 }
 
 #' Unit test for multiple rank
@@ -269,13 +287,8 @@ test.nmf.seed.argument <- function(){
 	checkException( nmf(V, r, seed=list('zzz')), "Throw an error when: inexistent seeding method name (passed as list)")
 	checkException( nmf(V, r, seed=list(method='zzz')), "Throw an error when: inexistent seeding method name (passed as named list)")
 	checkException( nmf(V, r, seed=list(toto=1, method='random')), "Throw an error when: unused argument is passed to seeding method")
-    # In R-3.1.0, this does not throw an error anymore, but only a warning.
-    if( testRversion('>= 3.1.0') ){
-	    checkWarning( nmf(V, r, seed=numeric()), "\\.Random\\.seed.* is not a valid integer")
-    }else{ # previous versions threw an error
-	    checkException( nmf(V, r, seed=numeric()), "Throw an error when: seed argument is an empty numeric")
-    }
-	
+    checkException( nmf(V, r, seed=numeric()), "Throw an error when: seed argument is an empty numeric")
+    
 	checkException( nmf(V, r, seed=c(1,2)), "Throw an error when: seed argument is a numeric of invalid length (2)")
 	checkException( nmf(V, r, seed=rep(5,5)), "Throw an error when: seed argument is an invalid numeric value for .Random.seed (7)")
 	

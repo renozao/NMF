@@ -209,6 +209,10 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='NULL'),
 #' This method returns an object of class \code{\linkS4class{NMFList}}, that is  
 #' essentially a list containing each fit.  
 #' 
+#' @param .parameters list of method-specific parameters.
+#' Its elements must have names matching a single method listed in \code{method},
+#' and be lists of named values that are passed to the corresponding method. 
+#' 
 #' @demo 
 #' # compare some NMF algorithms (tracking the approximation error)
 #' res <- nmf(x, 2, list('brunet', 'lee', 'nsNMF'), .options='t')
@@ -219,12 +223,21 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='NULL'),
 #' plot(res)
 #' 
 setMethod('nmf', signature(x='matrix', rank='numeric', method='list'), 
-	function(x, rank, method, ...)
+	function(x, rank, method, ..., .parameters = list())
 	{
 		# apply each NMF algorithm
 		k <- 0
 		n <- length(method)
-		t <- system.time({
+        
+        # setup/check method specific parameters
+        ARGS <- NULL
+        .used.parameters <- character()
+        if( !is.list(.parameters) )
+            stop("NMF::nmf - Invalid value for argument `.parameters`: must be a named list.")
+        if( length(.parameters) && (is.null(names(.parameters)) || any(names(.parameters) == '')) )
+            stop("NMF::nmf - Invalid value for argument `.parameters`: all elements must be named.") 
+        
+        t <- system.time({
 			res <- lapply(method, 
 				function(meth, ...){
 					k <<- k+1
@@ -235,8 +248,26 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='list'),
 					orng <- RNGseed()
 					if( k < n ) on.exit( RNGseed(orng), add = TRUE)
 					
+                    # look for method-specific arguments
+                    i.param <- 0L
+                    if( length(.parameters) ){
+                        i.param <- charmatch(names(.parameters), methname)
+                        if( !length(i.param <- seq_along(.parameters)[!is.na(i.param)]) )
+                            i.param <- 0L
+                        else if( length(i.param) > 1L ){
+                            stop("Method name '", methname, "' matches multiple method-specific parameters "
+                                    , "[", str_out(names(.parameters)[i.param], Inf), "]")
+                        }
+                    }
 					#o <- capture.output( 
-						res <- try( nmf(x, rank, meth, ...) , silent=TRUE) 
+                        if( !i.param ){
+                            res <- try( nmf(x, rank, meth, ...) , silent=TRUE)
+                        }else{
+                            if( is.null(ARGS) ) ARGS <<- list(x, rank, ...)
+                            .used.parameters <<- c(.used.parameters, names(.parameters)[i.param])
+                            res <- try( do.call(nmf, c(ARGS, method = meth, .parameters[[i.param]])) 
+                                        , silent=TRUE)
+                        } 
 					#)
 					if( is(res, 'try-error') )
 						cat("ERROR\n")
@@ -258,6 +289,11 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='list'),
 		}
 		res <- res[ok]
 		# TODO error if ok is empty
+
+        # not-used parameters
+        if( length(.used.parameters) != length(.parameters) ){
+            warning("NMF::nmf - Did not use methods-specific parameters ", str_out(setdiff(names(.parameters), .used.parameters), Inf))
+        }
 
 		# add names to the result list
 		names(res) <- sapply(res, function(x){
@@ -1487,7 +1523,7 @@ function(x, rank, method
                 # This is important so that these can be found in worker nodes
                 # for non-fork clusters.
                 if( !is.null(contribs <- registryContributors(package = 'NMF')) ){
-                    .packages <- c(pkg, contribs)
+                    .packages <- c(.packages, contribs)
                 }
                 
 				# export dev environment if in dev mode 

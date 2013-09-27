@@ -21,46 +21,32 @@ NULL
 #' The function must take at least two arguments: the target matrix and the initial 
 #' NMF model, converted into an Octave list object, with elements corresponding to 
 #' slots of the corresponding S4 class.  
-#' @slot mfiles character vector that contains a set of path to .m files.
+#' @slot mcode character vector that contains a set of path to .m files.
 #' These files are (re-)sourced every time the strategy is called, and must be 
 #' present at runtime in the current directory or in a directory from Octave path. 
 #' 
 setClass('NMFStrategyOctave'
 	, representation(
 		algorithm = '.functionSlot' # the function that implements the algorithm
-		, mfiles = 'character'
+		, mcode = 'character'
 		, onReturn = 'function' # method called just before returning the resulting NMF object
 	)
 	, prototype(
 		onReturn = function(object, x){
-			fit(x) <- new2(modelname(x), object)
-			if( !is.null(object$runtime) )
-				x@runtime <- structure(unlist(object$runtime), class='proc_time')
+            if( !isNMFfit(object) ){
+                
+                if( !is.nmf(object) && !is.list(object) ){
+                    stop("Result object should be an NMF object or a list")
+                }
+            	fit(x) <- new2(modelname(x), object)
+    			if( !is.null(object$runtime) )
+    				x@runtime <- structure(unlist(object$runtime), class='proc_time')
+            }
 			x
 		}
 	)
 	, contains = 'NMFStrategy'
 )
-
-## #' Initialize method for \code{\linkS4class{NMFStrategyOctave}}.
-## #' 
-## #' @param mfiles .m files specifications.
-#setMethod('initialize', 'NMFStrategyOctave',
-#	function(.Object, ..., mfiles){
-#		
-#		# resolve within the package
-#		if( length(mfiles) && any(nchar(mfiles) > 0) 
-#			&& require.quiet('RcppOctave') ){
-#			mfiles <- RcppOctave::mfiles(mfiles)
-#		}
-#		# initialize parent
-#		.Object <- callNextMethod(.Object, ...)
-#		# process mfiles
-#		.Object@mfiles <- mfiles
-#		# return object
-#		.Object
-#	}
-#)
 
 #' Runs the NMF algorithms implemented by the Octave/Matlab function associated with the 
 #' strategy -- and stored in slot \code{'algorithm'} of \code{object}.
@@ -80,26 +66,33 @@ setMethod('run', signature(object='NMFStrategyOctave', y='matrix', x='NMFfit'),
 			fstop("The package RcppOctave is required to run this algorithm.\n"
 				, "  Try installing it with: install.packages('RcppOctave')")
 		
-		# add path to all mfiles
-		mfiles <- object@mfiles
-		if( length(mfiles) && any(nchar(mfiles) > 0) ){
-			mfiles <- mfiles(mfiles)
-		}
-			
-		mdirs <- unique(c(dirname(mfiles), tempdir(), packagePath('matlab', package=packageSlot(object))))
-		inp <- sapply(mdirs, RcppOctave::o_inpath)
-		added <- sapply(mdirs, function(p){
-			if( !RcppOctave::o_inpath(p) ){
-				RcppOctave::o_addpath(p)
-				TRUE
-			}else FALSE
-		})
-#		sapply(mfiles(object@mfiles), o_source)
-		on.exit({
-			rmpath <- RcppOctave::.O$rmpath
-			sapply(mdirs[added], rmpath)
-		})
-
+        # add path to all mfiles
+        mdirs <- character()
+        ## add package mfiles directory if possible
+        if( nzchar(pkg <- packageSlot(object)) ){
+            if( nzchar(pkg_mfiles <- system.mfile(package=pkg)) )
+                mdirs <- c(mdirs, pkg_mfiles)
+        }
+		## add path to specified mfiles
+		mfiles <- object@mcode
+		if( length(mfiles) && any(nzchar(mfiles)) ){
+			mfiles <- as.mfile(mfiles)
+    		mdirs <- c(mdirs, dirname(mfiles))
+        }
+        ## add to path
+        if( length(mdirs) ){
+            mdirs <- unique(mdirs)
+            # check which dirs were already in Octave path
+    		in_path <- sapply(mdirs, RcppOctave::o_inpath)
+    		sapply(mdirs[!in_path], RcppOctave::o_addpath)
+            # on exit: cleanup Octave path 
+    		on.exit({
+    			rmpath <- RcppOctave::.O$rmpath
+    			sapply(mdirs[!in_path], rmpath)
+    		})
+        }
+        #
+        
 		# load algorithm
 		main <- algorithm(object, load=TRUE)
 
@@ -131,7 +124,7 @@ setMethod('algorithm', signature(object='NMFStrategyOctave'),
 			# return wrapped into a function
 			.main <- RcppOctave::o_get(f)
 			function(y, x, ...){
-				.main(y, r=nbasis(x), W=basis(x), H=coef(x), ...)
+				.main(y, r=as.numeric(nbasis(x)), W=basis(x), H=coef(x), ...)
 			}
 		}
 )
@@ -152,6 +145,6 @@ setMethod('show', 'NMFStrategyOctave', function(object){
 		cat(" main: "
 			, if( is.function(f) ) str_fun(f) else str_c(f, ' <Octave function>')
 			, "\n", sep='')
-		cat(" mfiles: ", str_out(object@mfiles, Inf), "\n", sep='')
+		cat(" mcode: ", str_out(object@mcode, Inf), "\n", sep='')
 	}
 )

@@ -5,7 +5,6 @@
 ###############################################################################
 
 #' @include NMF-class.R
-#' @include Bioc-layer.R
 NULL
 
 #' Transforming from Mixed-sign to Nonnegative Data
