@@ -1523,7 +1523,7 @@ function(x, rank, method
                 # This is important so that these can be found in worker nodes
                 # for non-fork clusters.
                 if( !is.null(contribs <- registryContributors(package = 'NMF')) ){
-                    .packages <- c(pkg, contribs)
+                    .packages <- c(.packages, contribs)
                 }
                 
 				# export dev environment if in dev mode 
