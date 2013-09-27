@@ -1,7 +1,7 @@
 Package: NMF
 Type: Package
 Title: Algorithms and framework for Nonnegative Matrix Factorization (NMF).
-Version: 0.18
+Version: 0.18.2
 Date: 2013-09-17
 Author: Renaud Gaujoux, Cathal Seoighe
 Maintainer: Renaud Gaujoux <renaud@mancala.cbio.uct.ac.za>
@@ -19,13 +19,14 @@ Description: This package provides a framework to perform Non-negative Matrix
 License: GPL (>=2)
 URL: http://nmf.r-forge.r-project.org
 LazyLoad: yes
+VignetteBuilder: knitr
 Depends:
-    R (>= 2.15.2),
+    R (>= 3.0.0),
     methods,
     utils,
-    pkgmaker (>= 0.17),
+    pkgmaker (>= 0.17.4),
     registry,
-    rngtools,
+    rngtools (>= 1.2.3),
     cluster
 Imports:
     graphics,
@@ -42,7 +43,7 @@ Imports:
     ggplot2,
     reshape2
 Suggests:
-    RcppOctave (>= 0.8.12),
+    RcppOctave (>= 0.10),
     fastICA,
     doMPI,
     bigmemory (>= 4.2),
@@ -53,8 +54,8 @@ Suggests:
     knitr,
     bibtex,
     RUnit,
-    mail
-Enhances: Biobase
+    mail,
+    Biobase
 Collate:
     'rmatrix.R'
     'nmf-package.R'
@@ -92,8 +93,8 @@ Collate:
     'seed-base.R'
     'parallel.R'
     'nmf.R'
-    'Bioc-layer.R'
     'transforms.R'
+    'Bioc-layer.R'
     'NMFplots.R'
     'algorithms-lnmf.R'
     'algorithms-lsnmf.R'
@@ -105,4 +106,3 @@ Collate:
     'data.R'
     'tests.R'
     'run.R'
-VignetteBuilder: knitr
