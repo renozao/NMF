@@ -29,11 +29,10 @@
   into an Octave list object, with elements corresponding
   to slots of the corresponding S4 class.}
 
-  \item{mfiles}{character vector that contains a set of
-  path to .m files. These files are (re-)sourced every time
-  the strategy is called, and must be present at runtime in
-  the current directory or in a directory from Octave
-  path.}
+  \item{mcode}{character vector that contains a set of path
+  to .m files. These files are (re-)sourced every time the
+  strategy is called, and must be present at runtime in the
+  current directory or in a directory from Octave path.}
 
   }
 }
