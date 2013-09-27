@@ -270,7 +270,7 @@ setMethod('NMFStrategy', signature(name='character', method='missing'),
 			# check iterative strategy
 			if( hasArg2('Update') ){ # create a new NMFStrategyIterative object
 				new('NMFStrategyIterative', name=name, ..., package=package)
-			}else if( hasArg2('mfiles') ){
+			}else if( hasArg2('mcode') ){
 				new('NMFStrategyOctave', name=name, ..., package=package)
 			}else if( hasArg2('algorithm') ){
 				new('NMFStrategyFunction', name=name, ..., package=package)

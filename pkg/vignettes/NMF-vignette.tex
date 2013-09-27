@@ -130,7 +130,7 @@
 , backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 \bibliography{Rpackages}
-\bibliography{/tmp/Rpkglib_45c34672d7c3/NMF/REFERENCES}
+\bibliography{/tmp/Rpkglib_37fa56fea620/NMF/REFERENCES}
 
 
 \newcommand{\citet}[1]{\textcite{#1}}
@@ -176,7 +176,7 @@
 
 
 \title{An introduction to NMF package\\
-\small Version 0.17.9}
+\small Version 0.18.2}
 \author{Renaud Gaujoux, \url{renaud@cbio.uct.ac.za}}
 % \\Address Computational Biology - University of Cape Town, South Africa,
 
@@ -582,17 +582,17 @@ The column \emph{Speed.up} contains the ratio $R/C$.
 
 
 % latex table generated in R 3.0.1 by xtable 1.7-1 package
-% Mon Sep 16 22:56:10 2013
+% Mon Sep 23 16:20:32 2013
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrr}
   \hline
  & C & R & Speed.up \\ 
   \hline
-brunet & 2.40 & 8.42 & 3.51 \\ 
-  lee & 5.66 & 9.97 & 1.76 \\ 
-  offset & 5.29 & 14.02 & 2.65 \\ 
-  nsNMF & 4.72 & 12.33 & 2.61 \\ 
+brunet & 2.29 & 11.31 & 4.95 \\ 
+  lee & 5.54 & 14.41 & 2.60 \\ 
+  offset & 5.90 & 20.09 & 3.41 \\ 
+  nsNMF & 4.46 & 18.25 & 4.10 \\ 
    \hline
 \end{tabular}
 \caption{Performance speed up achieved by the optimized C++ implementation for some of the NMF algorithms.} 
@@ -710,7 +710,7 @@ The result of a single NMF run is an object of class \code{NMFfit}, that holds b
 ##   Iterations: 510 
 ##   Timing:
 ##      user  system elapsed 
-##     0.240   0.000   0.243
+##      0.24    0.00    0.24
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -756,8 +756,14 @@ Quality and performance measures about the factorization are computed by method 
 \hlkwd{summary}\hlstd{(res)}
 \end{alltt}
 \begin{verbatim}
-## Length  Class   Mode 
-##      1 NMFfit     S4
+##             rank sparseness.basis  sparseness.coef 
+##        3.000e+00        6.392e-01        6.213e-01 
+##  silhouette.coef silhouette.basis        residuals 
+##        8.030e-01        7.348e-01        5.435e+05 
+##            niter              cpu          cpu.all 
+##        5.100e+02        2.400e-01        2.400e-01 
+##             nrun 
+##        1.000e+00
 \end{verbatim}
 \begin{alltt}
 \hlcom{# More quality measures are computed, if the target matrix is}
@@ -765,8 +771,14 @@ Quality and performance measures about the factorization are computed by method 
 \hlkwd{summary}\hlstd{(res,} \hlkwc{target} \hlstd{= esGolub)}
 \end{alltt}
 \begin{verbatim}
-## Length  Class   Mode 
-##      1 NMFfit     S4
+##             rank sparseness.basis  sparseness.coef 
+##        3.000e+00        6.392e-01        6.213e-01 
+##              rss             evar  silhouette.coef 
+##        1.535e+09        8.233e-01        8.030e-01 
+## silhouette.basis        residuals            niter 
+##        7.348e-01        5.435e+05        5.100e+02 
+##              cpu          cpu.all             nrun 
+##        2.400e-01        2.400e-01        1.000e+00
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -781,8 +793,14 @@ Here we use the phenotypic variable \code{Cell} found in the Golub dataset, that
 \hlkwd{summary}\hlstd{(res,} \hlkwc{class} \hlstd{= esGolub}\hlopt{$}\hlstd{Cell)}
 \end{alltt}
 \begin{verbatim}
-## Length  Class   Mode 
-##      1 NMFfit     S4
+##             rank sparseness.basis  sparseness.coef 
+##        3.000e+00        6.392e-01        6.213e-01 
+##           purity          entropy  silhouette.coef 
+##        8.421e-01        3.167e-01        8.030e-01 
+## silhouette.basis        residuals            niter 
+##        7.348e-01        5.435e+05        5.100e+02 
+##              cpu          cpu.all             nrun 
+##        2.400e-01        2.400e-01        1.000e+00
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -981,7 +999,7 @@ Or to use the PE-NMF algorithm from \cite{Zhang2008}:
 ##   Iterations: 2000 
 ##   Timing:
 ##      user  system elapsed 
-##     0.972   0.000   0.972
+##     0.888   0.000   0.888
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1052,7 +1070,7 @@ To use a specific method to seed the computation of a factorization, one simply 
 ##   Iterations: 1090 
 ##   Timing:
 ##      user  system elapsed 
-##     0.504   0.000   0.504
+##     0.564   0.000   0.562
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1157,7 +1175,7 @@ For performance reason we use \code{nrun=5} here, but a typical choice would lie
 ##    407L, 1997333926L, -492612625L, 469522788L, -1828607723L, 1996453586L, -1167273941L 
 ##   Total timing:
 ##    user  system elapsed 
-##   2.384   0.224   1.963
+##   2.096   0.180   1.853
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1189,10 +1207,10 @@ If one is interested in keeping the results from all the runs, one can set the o
 ##    407L, 479565376L, 313168193L, 758619662L, -1499576521L, -1114385908L, 588631965L 
 ##   Total timing:
 ##    user  system elapsed 
-##   3.576   0.300   1.789 
+##   3.180   0.312   1.570 
 ##   Sequential timing:
 ##    user  system elapsed 
-##   2.068   0.016   2.087
+##   1.884   0.020   1.920
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1371,7 +1389,7 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   1.708   0.104   2.075
+##   1.424   0.152   1.850
 \end{verbatim}
 \begin{alltt}
 \hlcom{# or use the doParallel with single core}
@@ -1383,7 +1401,7 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |========                                          |  17%Runs: |                                                        Runs: |=================                                 |  33%Runs: |                                                        Runs: |=========================                         |  50%Runs: |                                                        Runs: |=================================                 |  67%Runs: |                                                        Runs: |==========================================        |  83%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   2.824   0.012   2.849
+##   2.400   0.004   2.410
 \end{verbatim}
 \begin{alltt}
 \hlcom{# force sequential computation by sapply: use option '-p' or}
@@ -1396,7 +1414,7 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 ## Runs: 1* 2* 3* 4 5 ... DONE
 ## System time:
 ##    user  system elapsed 
-##   1.952   0.000   1.958
+##   1.860   0.000   1.861
 \end{verbatim}
 \begin{alltt}
 \hlstd{res4} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{.opt} \hlstd{=} \hlstr{"v"}\hlstd{,} \hlkwc{.pbackend} \hlstd{=} \hlnum{NA}\hlstd{,}
@@ -1408,7 +1426,7 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 ## Runs: 1* 2* 3* 4 5 ... DONE
 ## System time:
 ##    user  system elapsed 
-##   1.820   0.000   1.822
+##   1.832   0.000   1.840
 \end{verbatim}
 \begin{alltt}
 \hlcom{# or use the SEQ backend of foreach: .pbackend='seq'}
@@ -1421,7 +1439,7 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |========                                          |  17%Runs: |                                                        Runs: |=================                                 |  33%Runs: |                                                        Runs: |=========================                         |  50%Runs: |                                                        Runs: |=================================                 |  67%Runs: |                                                        Runs: |==========================================        |  83%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   2.516   0.000   2.519
+##   2.460   0.012   2.479
 \end{verbatim}
 \begin{alltt}
 \hlcom{# all results are all identical}
@@ -1566,9 +1584,9 @@ Passing the result to method \code{compare} produces a \code{data.frame} that co
 ## lee             0.4466          0.7148           0.6764
 ## nsNMF           0.7350          0.8654           0.7946
 ##        residuals niter   cpu cpu.all nrun
-## brunet    543536   510 0.264   0.264    1
-## lee    673513121  1780 1.108   1.108    1
-## nsNMF     585106   970 0.728   0.728    1
+## brunet    543536   510 0.252   0.252    1
+## lee    673513121  1780 1.024   1.024    1
+## nsNMF     585106   970 0.748   0.748    1
 \end{verbatim}
 \begin{alltt}
 \hlcom{# If prior knowledge of classes is available}
@@ -1584,9 +1602,9 @@ Passing the result to method \code{compare} produces a \code{data.frame} that co
 ## lee             0.4466 0.5789  0.7231          0.7148
 ## nsNMF           0.7350 0.7895  0.4691          0.8654
 ##        silhouette.basis residuals niter   cpu cpu.all nrun
-## brunet           0.7488    543536   510 0.264   0.264    1
-## lee              0.6764 673513121  1780 1.108   1.108    1
-## nsNMF            0.7946    585106   970 0.728   0.728    1
+## brunet           0.7488    543536   510 0.252   0.252    1
+## lee              0.6764 673513121  1780 1.024   1.024    1
+## nsNMF            0.7946    585106   970 0.748   0.748    1
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1760,11 +1778,11 @@ For example:
     \hlcom{# metagenes Note: the factorization rank is stored in object}
     \hlcom{# 'start'}
     \hlstd{factorization.rank} \hlkwb{<-} \hlkwd{nbasis}\hlstd{(seed)}
-    \hlkwd{metagenes}\hlstd{(}\hlkwd{fit}\hlstd{(seed))} \hlkwb{<-} \hlkwd{abs}\hlstd{(pca}\hlopt{$}\hlstd{rotation[,} \hlnum{1}\hlopt{:}\hlstd{factorization.rank])}
+    \hlkwd{basis}\hlstd{(seed)} \hlkwb{<-} \hlkwd{abs}\hlstd{(pca}\hlopt{$}\hlstd{rotation[,} \hlnum{1}\hlopt{:}\hlstd{factorization.rank])}
     \hlcom{# use the rotated matrix to get the mixture coefficient use a}
     \hlcom{# scaling factor (just to illustrate the use of extra}
     \hlcom{# parameters)}
-    \hlkwd{metaprofiles}\hlstd{(}\hlkwd{fit}\hlstd{(seed))} \hlkwb{<-} \hlkwd{t}\hlstd{(}\hlkwd{abs}\hlstd{(pca}\hlopt{$}\hlstd{x[,} \hlnum{1}\hlopt{:}\hlstd{factorization.rank]))}\hlopt{/}\hlstd{scale.factor}
+    \hlkwd{coef}\hlstd{(seed)} \hlkwb{<-} \hlkwd{t}\hlstd{(}\hlkwd{abs}\hlstd{(pca}\hlopt{$}\hlstd{x[,} \hlnum{1}\hlopt{:}\hlstd{factorization.rank]))}\hlopt{/}\hlstd{scale.factor}
     \hlcom{# return updated data}
     \hlkwd{return}\hlstd{(seed)}
 \hlstd{\}}
@@ -1782,7 +1800,7 @@ Here we apply the algorithm to some matrix \code{V} randomly generated:
 \hlstd{n} \hlkwb{<-} \hlnum{50}
 \hlstd{r} \hlkwb{<-} \hlnum{3}
 \hlstd{p} \hlkwb{<-} \hlnum{20}
-\hlstd{V} \hlkwb{<-} \hlkwd{syntheticNMF}\hlstd{(n, r, p,} \hlkwc{noise} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{V} \hlkwb{<-} \hlkwd{syntheticNMF}\hlstd{(n, r, p)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1801,7 +1819,7 @@ Here we apply the algorithm to some matrix \code{V} randomly generated:
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_4d3b61663691 
+##   algorithm:  nmf_386e3380f007 
 ##   seed:  random 
 ##   RNG: 403L, 173L, ..., 1280296329L [0d87fde5bf092083bd059bcc33d58a3e]
 ##   distance metric:  'euclidean' 
@@ -1809,7 +1827,7 @@ Here we apply the algorithm to some matrix \code{V} randomly generated:
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.008   0.000   0.008
+##     0.008   0.000   0.006
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1833,7 +1851,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_4d3b44eeba43 
+##   algorithm:  nmf_386e302d75dc 
 ##   seed:  random 
 ##   RNG: 403L, 383L, ..., 1280296329L [2f2572f5c6b643d37859d97079951964]
 ##   distance metric:  'KL' 
@@ -1841,13 +1859,13 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.000   0.000   0.003
+##     0.004   0.000   0.003
 \end{verbatim}
 \begin{alltt}
 \hlcom{# based on custom distance metric}
-\hlkwd{nmf}\hlstd{(V,} \hlnum{3}\hlstd{, my.algorithm,} \hlkwc{scale.factor} \hlstd{=} \hlnum{10}\hlstd{,} \hlkwc{objective} \hlstd{=} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,}
+\hlkwd{nmf}\hlstd{(V,} \hlnum{3}\hlstd{, my.algorithm,} \hlkwc{scale.factor} \hlstd{=} \hlnum{10}\hlstd{,} \hlkwc{objective} \hlstd{=} \hlkwa{function}\hlstd{(}\hlkwc{model}\hlstd{,}
     \hlkwc{target}\hlstd{,} \hlkwc{...}\hlstd{) \{}
-    \hlstd{(}\hlkwd{sum}\hlstd{((target} \hlopt{-} \hlkwd{fitted}\hlstd{(x))}\hlopt{^}\hlnum{4}\hlstd{))}\hlopt{^}\hlstd{\{}
+    \hlstd{(}\hlkwd{sum}\hlstd{((target} \hlopt{-} \hlkwd{fitted}\hlstd{(model))}\hlopt{^}\hlnum{4}\hlstd{))}\hlopt{^}\hlstd{\{}
         \hlnum{1}\hlopt{/}\hlnum{4}
     \hlstd{\}}
 \hlstd{\})}
@@ -1860,7 +1878,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_4d3b35b78db3 
+##   algorithm:  nmf_386e38d76259 
 ##   seed:  random 
 ##   RNG: 403L, 593L, ..., 1280296329L [7ed64fa772a4b1e68cebc0bfed3cb018]
 ##   distance metric:  <function> 
@@ -1868,7 +1886,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.003
+##     0.004   0.000   0.004
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1904,6 +1922,10 @@ As an example, we reuse the previously defined custom algorithm\footnote{As it i
 \hlstd{V.neg[}\hlnum{1}\hlstd{, ]} \hlkwb{<-} \hlopt{-}\hlnum{1}
 \hlcom{# this generates an error}
 \hlkwd{try}\hlstd{(}\hlkwd{nmf}\hlstd{(V.neg,} \hlnum{3}\hlstd{, my.algorithm,} \hlkwc{scale.factor} \hlstd{=} \hlnum{10}\hlstd{))}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: NMF::nmf - Input matrix x contains some negative entries.}}\begin{alltt}
 \hlcom{# this runs my.algorithm without error}
 \hlkwd{nmf}\hlstd{(V.neg,} \hlnum{3}\hlstd{, my.algorithm,} \hlkwc{mixed} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{scale.factor} \hlstd{=} \hlnum{10}\hlstd{)}
 \end{alltt}
@@ -1915,7 +1937,7 @@ As an example, we reuse the previously defined custom algorithm\footnote{As it i
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_4d3b95b665f 
+##   algorithm:  nmf_386e5e3cffe7 
 ##   seed:  random 
 ##   RNG: 403L, 179L, ..., -818492466L [850b670d66e22c6d00f5d79570d1ce8a]
 ##   distance metric:  'euclidean' 
@@ -1923,7 +1945,7 @@ As an example, we reuse the previously defined custom algorithm\footnote{As it i
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.003
+##     0.000   0.000   0.004
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1967,11 +1989,11 @@ We use model \code{NMFOffset} \cite{Badea2008}, that includes an offset to take 
     \hlcom{# metagenes Note: the factorization rank is stored in object}
     \hlcom{# 'start'}
     \hlstd{factorization.rank} \hlkwb{<-} \hlkwd{nbasis}\hlstd{(data.model)}
-    \hlkwd{metagenes}\hlstd{(data.model)} \hlkwb{<-} \hlkwd{abs}\hlstd{(pca}\hlopt{$}\hlstd{rotation[,} \hlnum{1}\hlopt{:}\hlstd{factorization.rank])}
+    \hlkwd{basis}\hlstd{(data.model)} \hlkwb{<-} \hlkwd{abs}\hlstd{(pca}\hlopt{$}\hlstd{rotation[,} \hlnum{1}\hlopt{:}\hlstd{factorization.rank])}
     \hlcom{# use the rotated matrix to get the mixture coefficient use a}
     \hlcom{# scaling factor (just to illustrate the use of extra}
     \hlcom{# parameters)}
-    \hlkwd{metaprofiles}\hlstd{(data.model)} \hlkwb{<-} \hlkwd{t}\hlstd{(}\hlkwd{abs}\hlstd{(pca}\hlopt{$}\hlstd{x[,} \hlnum{1}\hlopt{:}\hlstd{factorization.rank]))}\hlopt{/}\hlstd{scale.factor}
+    \hlkwd{coef}\hlstd{(data.model)} \hlkwb{<-} \hlkwd{t}\hlstd{(}\hlkwd{abs}\hlstd{(pca}\hlopt{$}\hlstd{x[,} \hlnum{1}\hlopt{:}\hlstd{factorization.rank]))}\hlopt{/}\hlstd{scale.factor}
     \hlcom{# 3. Compute the offset as the mean expression}
     \hlstd{data.model}\hlopt{@}\hlkwc{offset} \hlkwb{<-} \hlkwd{rowMeans}\hlstd{(x)}
     \hlcom{# return updated data}
@@ -1999,7 +2021,7 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   samples: 20 
 ##   offset: [ 0.3677 0.9383 1.347 1.019 0.6695 ... ]
 ##  # Details:
-##   algorithm:  nmf_4d3b559b8531 
+##   algorithm:  nmf_386e59b319ec 
 ##   seed:  random 
 ##   RNG: 403L, 389L, ..., -818492466L [7d13c1cc60f9b6390bf7ebfc74dce591]
 ##   distance metric:  'euclidean' 
@@ -2007,7 +2029,7 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.004   0.000   0.003
+##     0.004   0.000   0.004
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2026,9 +2048,9 @@ The user can also define custom seeding method as a function of the form:
 \hlstd{my.seeding.method} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{model}\hlstd{,} \hlkwc{target}\hlstd{) \{}
     \hlcom{# use only the largest columns for W}
     \hlstd{w.cols} \hlkwb{<-} \hlkwd{apply}\hlstd{(target,} \hlnum{2}\hlstd{,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{sqrt}\hlstd{(}\hlkwd{sum}\hlstd{(x}\hlopt{^}\hlnum{2}\hlstd{)))}
-    \hlkwd{metagenes}\hlstd{(model)} \hlkwb{<-} \hlstd{target[,} \hlkwd{order}\hlstd{(w.cols)[}\hlnum{1}\hlopt{:}\hlkwd{nbasis}\hlstd{(model)]]}
+    \hlkwd{basis}\hlstd{(model)} \hlkwb{<-} \hlstd{target[,} \hlkwd{order}\hlstd{(w.cols)[}\hlnum{1}\hlopt{:}\hlkwd{nbasis}\hlstd{(model)]]}
     \hlcom{# initialize H randomly}
-    \hlkwd{metaprofiles}\hlstd{(model)} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlkwd{runif}\hlstd{(}\hlkwd{nbasis}\hlstd{(model)} \hlopt{*} \hlkwd{ncol}\hlstd{(target)),}
+    \hlkwd{coef}\hlstd{(model)} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlkwd{runif}\hlstd{(}\hlkwd{nbasis}\hlstd{(model)} \hlopt{*} \hlkwd{ncol}\hlstd{(target)),}
         \hlkwd{nbasis}\hlstd{(model),} \hlkwd{ncol}\hlstd{(target))}
     \hlcom{# return updated object}
     \hlkwd{return}\hlstd{(model)}
@@ -2053,14 +2075,14 @@ To use the new seeding method:
 ##   samples: 20 
 ##  # Details:
 ##   algorithm:  snmf/r 
-##   seed:  NMF.seed.4d3b3690d580 
+##   seed:  NMF.seed.386e3f684498 
 ##   RNG: 403L, 25L, ..., -1308220775L [e0cc5847b800083c2460eb9eaa25bd4e]
 ##   distance metric:  <function> 
 ##   residuals:  195.6 
 ##   Iterations: 105 
 ##   Timing:
 ##      user  system elapsed 
-##     0.264   0.000   0.264
+##     0.248   0.000   0.250
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2234,20 +2256,19 @@ The default/current values of each options can be displayed using the function
     grDevices, methods, parallel, stats, utils
   \item Other packages: BH~1.51.0-2, bigmemory~4.4.3,
     bigmemory.sri~0.1.2, Biobase~2.20.1,
-    BiocGenerics~0.6.0, cluster~1.14.4,
-    doParallel~1.0.3, foreach~1.4.1, iterators~1.0.6,
-    knitr~1.4.9, NMF~0.17.9, pkgmaker~0.17,
-    RColorBrewer~1.0-5, registry~0.2, rngtools~1.2.2,
+    BiocGenerics~0.6.0, cluster~1.14.4, knitr~1.4.1,
+    NMF~0.18.2, pkgmaker~0.17.4, RColorBrewer~1.0-5,
+    registry~0.2, rngtools~1.2.3,
     synchronicity~1.1.0, xtable~1.7-1
   \item Loaded via a namespace (and not attached):
     codetools~0.2-8, colorspace~1.2-2,
-    compiler~3.0.1, dichromat~2.0-0, digest~0.6.3,
-    evaluate~0.4.7, formatR~0.9, ggplot2~0.9.3.1,
-    grid~3.0.1, gridBase~0.4-6, gtable~0.1.2,
-    highr~0.2.1, labeling~0.2, MASS~7.3-29,
-    munsell~0.4.2, plyr~1.8, proto~0.3-10,
-    reshape2~1.2.2, scales~0.2.3, stringr~0.6.2,
-    tools~3.0.1
+    dichromat~2.0-0, digest~0.6.3, doParallel~1.0.3,
+    evaluate~0.4.7, foreach~1.4.1, formatR~0.9,
+    ggplot2~0.9.3.1, grid~3.0.1, gridBase~0.4-6,
+    gtable~0.1.2, highr~0.2.1, iterators~1.0.6,
+    labeling~0.2, MASS~7.3-29, munsell~0.4.2,
+    plyr~1.8, proto~0.3-10, reshape2~1.2.2,
+    scales~0.2.3, stringr~0.6.2, tools~3.0.1
 \end{itemize}
 
 

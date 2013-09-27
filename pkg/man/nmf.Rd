@@ -22,6 +22,9 @@
   \S4method{nmf}{matrix,numeric,NULL}(x, rank, method,
     seed = NULL, model = NULL, ...)
 
+  \S4method{nmf}{matrix,numeric,list}(x, rank, method, ...,
+    .parameters = list())
+
   \S4method{nmf}{matrix,numeric,function}(x, rank, method,
     seed, model = "NMFstd", ..., name,
     objective = "euclidean", mixed = FALSE)
@@ -87,6 +90,11 @@
   internal calls to \code{nmf} methods are passed to the
   function that effectively implements the algorithm that
   fits an NMF model on \code{x}.}
+
+  \item{.parameters}{list of method-specific parameters.
+  Its elements must have names matching a single method
+  listed in \code{method}, and be lists of named values
+  that are passed to the corresponding method.}
 
   \item{name}{name associated with the NMF algorithm
   implemented by the function \code{method} [only used when

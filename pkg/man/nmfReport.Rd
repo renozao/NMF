@@ -36,7 +36,7 @@
   sub-directory \code{scripts/}, and is compiled using
   \pkg{knitr}.
 
-  At the begining of the document, a file named
+  At the beginning of the document, a file named
   \code{'functions.R'} is looked for in the current
   directory, and sourced if present. This enables the
   definition of custom NMF methods (see

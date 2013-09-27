@@ -220,16 +220,19 @@
   \item{distfun}{default distance measure used in
   clustering rows and columns. Possible values are:
   \itemize{ \item all the distance methods supported by
-  \code{\link{dist}} (e.g. "euclidean" or "maximum"). \item
-  all correlation methods supported by \code{\link{cor}},
-  such as \code{"pearson"} or \code{"spearman"}. The
-  pairwise distances between rows/columns are then computed
-  as \code{d <- dist(1 - cor(..., method = distfun))}.
+  \code{\link{dist}} (e.g. "euclidean" or "maximum").
+
+  \item all correlation methods supported by
+  \code{\link{cor}}, such as \code{"pearson"} or
+  \code{"spearman"}. The pairwise distances between
+  rows/columns are then computed as \code{d <- dist(1 -
+  cor(..., method = distfun))}.
 
   One may as well use the string "correlation" which is an
-  alias for "pearson". \item an object of class \code{dist}
-  such as returned by \code{\link{dist}} or
-  \code{\link{as.dist}}. }}
+  alias for "pearson".
+
+  \item an object of class \code{dist} such as returned by
+  \code{\link{dist}} or \code{\link{as.dist}}. }}
 
   \item{hclustfun}{default clustering method used to
   cluster rows and columns. Possible values are: \itemize{

@@ -235,7 +235,7 @@ test.port_brunet <- function(){
 	}
 	
 	# source
-	o_source(file.path(packagePath('matlab', package='NMF'), 'brunet.m'))
+	o_source(file.path(packagePath('m-files', package='NMF'), 'brunet.m'))
 	
 	# define input data
 	setRNG('default', 'default')

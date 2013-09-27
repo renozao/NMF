@@ -529,7 +529,8 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
 #' @examples 
 #' 
 #' x <- rmatrix(100, 20, dimnames = list(paste0('a', 1:100), letters[1:20]))
-#' res <- nmf(x, 4, nrun = 5)
+#' # NB: using maxIter for the example purpose only
+#' res <- nmf(x, 4, nrun = 5, maxIter = 100)
 #' 
 #' # sample clustering from best fit
 #' plot(silhouette(res))
