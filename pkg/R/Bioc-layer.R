@@ -6,6 +6,10 @@
 # Author: Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
 ###############################################################################
 
+#' @include NMF-class.R
+#' @include transforms.R
+NULL
+
 #' Specific NMF Layer for Bioconductor 
 #' 
 #' The package NMF provides an optional layer for working with common objects
