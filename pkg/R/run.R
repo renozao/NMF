@@ -14,7 +14,7 @@
 #' the package installation sub-directory \code{scripts/}, and is compiled
 #' using \pkg{knitr}.
 #'  
-#' At the begining of the document, a file named \code{'functions.R'} is 
+#' At the beginning of the document, a file named \code{'functions.R'} is 
 #' looked for in the current directory, and sourced if present.
 #' This enables the definition of custom NMF methods (see \code{\link{setNMFMethod}}) 
 #' or setting global options.   
@@ -50,6 +50,8 @@ nmfReport <- function(x, rank, method, colClass = NULL, ..., output = NULL, temp
 	x <- force(x)
 	rank <- force(rank)
 	method <- force(method)
+    if( isString(method) ) method <- list(method)
+    
 	args <- list(...)
 	nmfRun <- function(x, rank, method, ...){
 		args <- expand_dots(args)
