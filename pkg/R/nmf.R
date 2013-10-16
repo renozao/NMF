@@ -1943,9 +1943,11 @@ function(x, rank, method
 	
 	# CHECK PARAMETERS:	
 	# test for negative values in x only if the method is not mixed
-	if( !is.mixed(method) && min(x) < 0 ) fstop('Input matrix ', substitute(x),' contains some negative entries.');
+	if( !is.mixed(method) && min(x, na.rm = TRUE) < 0 )
+        fstop('Input matrix ', substitute(x),' contains some negative entries.');
 	# test if one row contains only zero entries
-	if( min(rowSums(x)) == 0) fstop('Input matrix ', substitute(x),' contains at least one null row.');	
+    if( min(rowSums(x, na.rm = TRUE), na.rm = TRUE) == 0 )
+        fstop('Input matrix ', substitute(x),' contains at least one null or NA-filled row.');	
 
 	# a priori the parameters for the run are all the one in '...'
 	# => expand with the strategy's defaults (e.g., maxIter)
