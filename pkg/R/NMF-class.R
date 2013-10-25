@@ -995,12 +995,15 @@ setReplaceMethod('dimnames', 'NMF',
 #' object \code{x} unchanged.
 #' 
 #' \item One single index as in \code{x[i]}: the value is the complete NMF 
-#' model composed of the selected basis components, subset by \code{i}.
-#' If argument \code{drop} is not missing then only the basis matrix is returned 
-#' and \code{drop} is used:
-#' \code{x[i, drop=TRUE.or.FALSE]} <=> \code{basis(x)[, i, drop=TRUE.or.FALSE]}.
+#' model composed of the selected basis components, subset by \code{i}, 
+#' except if argument \code{drop=TRUE}, or if it is missing and \code{i} is of length 1.
+#' Then only the basis matrix is returned with dropped dimensions: 
+#' \code{x[i, drop=TRUE]} <=> \code{drop(basis(x)[, i])}.
 #' 
-#' Note that in version <= 0.8.7, the call \code{x[i]} was equivalent to
+#' This means for example that \code{x[1L]} is the first basis vector, 
+#' and \code{x[1:3, drop = TRUE]} is the matrix composed of the 3 first basis vectors -- in columns.
+#' 
+#' Note that in version <= 0.18.3, the call \code{x[i, drop = TRUE.or.FALSE]} was equivalent to
 #' \code{basis(x)[, i, drop=TRUE.or.FALSE]}.
 #' 
 #' \item More than one index with \code{drop=FALSE} (default) as in
@@ -1008,7 +1011,7 @@ setReplaceMethod('dimnames', 'NMF',
 #' etc...: the value is a \code{NMF} object whose basis and/or mixture
 #' coefficient matrices have been subset accordingly. The third index \code{k}
 #' affects simultaneously the columns of the basis matrix AND the rows of the
-#' mixture coefficient matrix.
+#' mixture coefficient matrix. In this case argument \code{drop} is not used.
 #' 
 #' \item More than one index with \code{drop=TRUE} and \code{i} xor \code{j}
 #' missing: the value returned is the matrix that is the more affected by the
@@ -1040,20 +1043,7 @@ setReplaceMethod('dimnames', 'NMF',
 #' Note that only the first extra subset index is used.
 #' A warning is thrown if more than one extra argument is passed in \code{...}.
 #' @param drop single \code{logical} value used to drop the \code{NMF-class}
-#' wrapping and only return subsets of one of the factor matrices:
-#' \itemize{
-#' \item When \code{drop=FALSE} it returns the \code{NMF} object \code{x} with the
-#' basis matrix and/or mixture coefficient matrix subset accordingly to the
-#' values in \code{i}, \code{j}, and \code{...}.
-#' 
-#' \item When \code{drop=TRUE} it returns the factor that is subset "the more"
-#' (see section \emph{Value}).
-#' }
-#' 
-#' Note that in the case where both indexes \code{i} and \code{j} are provided,
-#' argument \code{drop} is ignored: \code{x[i,j, drop=TRUE]} (resp.
-#' \code{x[i,j,k, drop=TRUE]}) is identical to \code{x[i,j, drop=FALSE]} (resp.
-#' \code{x[i,j,k, drop=FALSE]}).
+#' wrapping and only return subsets of one of the factor matrices (see \emph{Details})
 #' 
 #' @rdname subset-NMF
 #' @export
@@ -1144,7 +1134,7 @@ setMethod('[', 'NMF',
 		if( single.arg || k.notmissing ){
 			.basis(x) <- basis(x)[, k, drop = FALSE]
 			# return basis only single arg and drop=TRUE 
-			if( single.arg && !mdrop ) return( basis(x)[,,drop=drop] )
+			if( single.arg && ((mdrop && length(k) == 1L) || drop) ) return( drop(basis(x)) )
 			.coef(x) <- coef(x)[k, , drop = FALSE]
 		}
 		
