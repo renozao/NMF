@@ -33,7 +33,7 @@ setClass('NMFStrategyOctave'
 	)
 	, prototype(
 		onReturn = function(object, x){
-            if( !isNMFfit(object) ){
+            if( !isNMFfit(object, recursive = FALSE) ){
                 
                 if( !is.nmf(object) && !is.list(object) ){
                     stop("Result object should be an NMF object or a list")
