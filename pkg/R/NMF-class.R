@@ -262,20 +262,46 @@ setMethod('.basis', signature(object='NMF'),
 
 #' @export
 #' @rdname basis-coef-methods
-setGeneric('basis<-', function(object, value) standardGeneric('basis<-') )
+#' @inline
+setGeneric('basis<-', function(object, ..., value) standardGeneric('basis<-') )
 #' Default methods that calls \code{.basis<-} and check the validity of the 
 #' updated object. 
-setReplaceMethod('basis', signature(object='ANY', value='ANY'), 
-	function(object, value){
+#' @param use.dimnames logical that indicates if the object's dim names should be 
+#' set using those from the new value, or left unchanged -- after truncating 
+#' them to fit new dimensions if necessary.
+#' This is useful to only set the entries of a factor.
+#' @param ... unused extra arguments, which throw an error if used.
+#' 
+setReplaceMethod('basis', signature(object='NMF', value='ANY'), 
+	function(object, use.dimnames = TRUE, ..., value){
 		
+        # error if passed extra arguments
+        if( length(xargs<- list(...)) ){
+            stop("basis<-,NMF - Unused arguments: ", str_out(xargs, Inf, use.names = TRUE))
+        }
+        
+        # backup old dimnames to reapply them on exit
+        if( !use.dimnames ) odn <- dimnames(object)
+        
 		# only set non-fixed terms
 		if( !nbterms(object) ) .basis(object) <- value
 		else{
 			i <- ibasis(object)
 			.basis(object)[,i] <- value[, i]
 		}
+        # adapt coef if empty
+        if( !hasCoef(object) ){
+            x <- basis(object)
+            .coef(object) <- coef(object)[1:ncol(x), , drop = FALSE] 
+        }
 		# check object validity
 		validObject(object)
+        
+        # update other factor if necessary
+        if( use.dimnames ) basisnames(object) <- colnames(basis(object))
+        else if( !length(odn) ) dimnames(object) <- NULL
+        else dimnames(object) <- mapply(head, odn, dim(object), SIMPLIFY = FALSE)
+        
 		object
 	}	
 )
@@ -355,20 +381,40 @@ setMethod('.coef', signature(object='NMF'),
 
 #' @export
 #' @rdname basis-coef-methods
-setGeneric('coef<-', function(object, value) standardGeneric('coef<-') )
+#' @inline
+setGeneric('coef<-', function(object, ..., value) standardGeneric('coef<-') )
 #' Default methods that calls \code{.coef<-} and check the validity of the 
 #' updated object. 
-setReplaceMethod('coef', signature(object='ANY', value='ANY'), 
-	function(object, value){
+setReplaceMethod('coef', signature(object='NMF', value='ANY'), 
+	function(object, use.dimnames = TRUE, ..., value){
 		
+        # error if passed extra arguments
+        if( length(xargs<- list(...)) ){
+            stop("coef<-,NMF - Unused arguments: ", str_out(xargs, Inf, use.names = TRUE))
+        }
+        # backup old dimnames to reapply them on exit
+        if( !use.dimnames ) odn <- dimnames(object)
+        
 		# only set non-fixed terms
 		if( !ncterms(object) ) .coef(object) <- value
 		else{
 			i <- icoef(object)
 			.coef(object)[i, ] <- value[i, ]
 		}
+        # adapt basis if empty before validation
+        if( !hasBasis(object) ){
+            x <- coef(object)
+            .basis(object) <- basis(object)[, 1:nrow(x), drop = FALSE] 
+        }
 		# check object validity
 		validObject(object)
+        
+        # update other factor if necessary
+        if( use.dimnames ) basisnames(object) <- rownames(coef(object))
+        else if( !length(odn) ) dimnames(object) <- NULL
+        else dimnames(object) <- mapply(head, odn, dim(object), SIMPLIFY = FALSE)
+        
+            
 		object
 	}	
 )
