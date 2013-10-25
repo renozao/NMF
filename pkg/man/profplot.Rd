@@ -5,9 +5,10 @@
 \usage{
   profplot(x, ...)
 
-  \method{profplot}{default} (x, y, scale = FALSE,
-    match.names = TRUE, legend = TRUE, confint = TRUE,
-    Colv, labels, annotation, ..., add = FALSE)
+  \method{profplot}{default} (x, y,
+    scale = c("none", "max", "c1"), match.names = TRUE,
+    legend = TRUE, confint = TRUE, Colv, labels,
+    annotation, ..., add = FALSE)
 }
 \arguments{
   \item{x}{a matrix or an NMF object from which is
@@ -20,10 +21,14 @@
   from the best fit if \code{y} is the results from
   multiple NMF runs.}
 
-  \item{scale}{a logical that specifies whether the columns
-  of the matrices should be scaled into proportions (i.e.
-  to sum up to one) before plotting. Default is
-  \code{FALSE}.}
+  \item{scale}{specifies how the data should be scaled
+  before plotting. If \code{'none'} or \code{NA}, then no
+  scaling is applied and the "raw" data is plotted. If
+  \code{TRUE} or \code{'max'} then each row of both
+  matrices are normalised with their respective maximum
+  values. If \code{'c1'}, then each column of both matrix
+  is scaled into proportions (i.e. to sum up to one).
+  Default is \code{'none'}.}
 
   \item{match.names}{a logical that indicates if the
   profiles in \code{y} should be subset and/or re-ordered
