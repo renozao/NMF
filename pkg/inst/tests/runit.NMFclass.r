@@ -880,8 +880,9 @@ test.subset <- function(){
 	checkTrue(identical(a[,,2:4,drop=TRUE], a[,,2:4,drop=FALSE]), "subset more than 1 basis dropping is OK (do nothing)")
 	
 	checkEquals(dim(a[NULL]), c(n, p, 0), "subset basis NULL is OK (dim)")
-	checkTrue(is.nmf(a[2]), "subset with single index returns the complete NMF object")
-	checkEquals(dim(a[2]), c(n,p, 1), "subset with single index returns the complete NMF object subset as a single rank")
+    checkIdentical(a[2], basis(a)[,2], "subset with single index + drop missing returns single basis as vector")
+	checkTrue(is.nmf(a[2, drop = FALSE]), "subset with single index with drop=FALSE returns the complete NMF object")
+	checkEquals(dim(a[2, drop = FALSE]), c(n,p, 1), "subset with single index with drop=FALSE returns the complete NMF object subset as a single rank")
 	checkIdentical(a[2, drop=TRUE], basis(a)[,2, drop=TRUE], "subset with single index + drop=TRUE returns single basis as vector")
 	checkIdentical(a[2, drop=FALSE], basis(a)[,2, drop=FALSE], "subset with single index + drop=FALSE returns single basis as matrix")
 	
