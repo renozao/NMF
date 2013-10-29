@@ -165,12 +165,19 @@
   }
 }
 \examples{
+#----------
+# compare,NMFfit-method
+#----------
 x <- rmatrix(20,10)
 res <- nmf(x, 3)
 res2 <- nmf(x, 2, 'lee')
 
 # compare arguments
 compare(res, res2, target=x)
+
+#----------
+# compare,list-method
+#----------
 # compare elements of a list
 compare(list(res, res2), target=x)
 }

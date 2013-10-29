@@ -12,11 +12,9 @@
 
   \S4method{objective}{NMFStrategy}(object)
 
-  \S4method{objective}{NMFStrategy,character}(object) <-
-    value
+  \S4method{objective}{NMFStrategy,character}(object)<-value
 
-  \S4method{objective}{NMFStrategy,function}(object) <-
-    value
+  \S4method{objective}{NMFStrategy,function}(object)<-value
 
   is.mixed(object)
 }

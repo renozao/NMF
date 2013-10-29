@@ -13,11 +13,11 @@
 \usage{
   basisnames(x, ...)
 
-  basisnames(x, ...) <- value
+  basisnames(x, ...)<-value
 
   \S4method{dimnames}{NMF}(x)
 
-  \S4method{dimnames}{NMF}(x) <- value
+  \S4method{dimnames}{NMF}(x)<-value
 }
 \arguments{
   \item{x}{an object with suitable \code{basis} and

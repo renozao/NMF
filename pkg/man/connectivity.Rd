@@ -109,9 +109,16 @@
   }
 }
 \examples{
+#----------
+# connectivity,ANY-method
+#----------
 # clustering of random data
 h <- hclust(dist(rmatrix(10,20)))
 connectivity(cutree(h, 2))
+
+#----------
+# connectivity,factor-method
+#----------
 connectivity(gl(2, 4))
 }
 \references{

@@ -50,26 +50,26 @@ plot(silhouette(res, what = 'features'))
 summary(res)
 
 # consensus silhouettes are ordered as on default consensusmap heatmap
-op <- par(mfrow = c(1,2))
+\dontrun{ op <- par(mfrow = c(1,2)) }
 consensusmap(res)
 si <- silhouette(res, what = 'consensus')
 plot(si)
-par(op)
+\dontrun{ par(op) }
 
 # if the order is based on some custom numeric weights
-op <- par(mfrow = c(1,2))
+\dontrun{ op <- par(mfrow = c(1,2)) }
 cm <- consensusmap(res, Rowv = runif(ncol(res)))
 # NB: use reverse order because silhouettes are plotted top-down
 si <- silhouette(res, what = 'consensus', order = rev(cm$rowInd))
 plot(si)
-par(op)
+\dontrun{ par(op) }
 
 # do the reverse: order the heatmap as a set of silhouettes
 si <- silhouette(res, what = 'features')
-op <- par(mfrow = c(1,2))
+\dontrun{ op <- par(mfrow = c(1,2)) }
 basismap(res, Rowv = si)
 plot(si)
-par(op)
+\dontrun{ par(op) }
 }
 \seealso{
   \code{\link[NMF]{predict}}

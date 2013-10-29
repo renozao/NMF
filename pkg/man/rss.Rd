@@ -94,11 +94,18 @@
   }
 }
 \examples{
+#----------
+# rss,matrix-method
+#----------
 # RSS bewteeen random matrices
 x <- rmatrix(20,10, max=50)
 y <- rmatrix(20,10, max=50)
 rss(x, y)
 rss(x, x + rmatrix(x, max=0.1))
+
+#----------
+# rss,ANY-method
+#----------
 # RSS between an NMF model and a target matrix
 x <- rmatrix(20, 10)
 y <- rnmf(3, x) # random compatible model

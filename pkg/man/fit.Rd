@@ -19,7 +19,7 @@
 \usage{
   fit(object, ...)
 
-  fit(object) <- value
+  fit(object)<-value
 
   minfit(object, ...)
 }

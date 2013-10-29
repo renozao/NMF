@@ -299,6 +299,9 @@
   set by the number of basis components in the seed.
 }
 \examples{
+#----------
+# nmfModel,numeric,numeric-method
+#----------
 # data
 n <- 20; r <- 3; p <- 10
 V <- rmatrix(n, p) # some target matrix
@@ -319,10 +322,22 @@ try( nmfModel(r+1, W=w, H=h) )
 # but warnings are thrown
 nmfModel(r, W=w, H=h)
 nmfModel(r, n-1, W=w, H=h)
+
+#----------
+# nmfModel,numeric,missing-method
+#----------
 ## Empty model of given rank
 nmfModel(3)
+
+#----------
+# nmfModel,missing,ANY-method
+#----------
 nmfModel(target=10) #square
 nmfModel(target=c(10, 5))
+
+#----------
+# nmfModel,missing,missing-method
+#----------
 # Build an empty NMF model
 nmfModel()
 
@@ -341,9 +356,17 @@ nmfModel(H=h)
 nmfModel(W=w, H=h)
 # error if not compatible
 try( nmfModel(W=w, H=h[-1,]) )
+
+#----------
+# nmfModel,numeric,matrix-method
+#----------
 # create a r-ranked NMF model compatible with a given target matrix
 obj <- nmfModel(r, V)
 all(is.na(basis(obj)))
+
+#----------
+# nmfModel,matrix,matrix-method
+#----------
 ## From two existing factors
 
 # allows a convenient call without argument names
@@ -363,10 +386,18 @@ nmf.equal(res, nmf(V, mod))
 # are selected based on the input NMF model.
 # e.g. here rank was 3 and the algorithm "nsNMF" is used, because it is the default
 # algorithm to fit "NMFns" models (See ?nmf).
+
+#----------
+# nmfModel,matrix,ANY-method
+#----------
 ## swapped arguments `rank` and `target`
 V <- rmatrix(20, 10)
 nmfModel(V) # equivalent to nmfModel(target=V)
 nmfModel(V, 3) # equivalent to nmfModel(3, V)
+
+#----------
+# nmfModel,formula,ANY-method
+#----------
 # empty 3-rank model
 nmfModel(~ 3)
 
@@ -385,6 +416,10 @@ nmfModel(x ~ 3 + gr + b, data=list(b=runif(10)))
 e <- ExpressionSet(x)
 pData(e) <- data.frame(a=runif(10))
 nmfModel(e ~ 3 + gr + a) # `a` is looked up in the phenotypic data of x pData(x)
+
+#----------
+# nmfModels
+#----------
 # show all the NMF models available (i.e. the classes that inherit from class NMF)
 nmfModels()
 # show all the built-in NMF models available

@@ -89,6 +89,9 @@
   }
 }
 \examples{
+#----------
+# rmatrix,numeric-method
+#----------
 ## Generate a random matrix of a given size
 rmatrix(5, 3)
 \dontshow{ stopifnot( identical(dim(rmatrix(5, 3)), c(5L,3L)) ) }
@@ -111,9 +114,17 @@ a <- rmatrix(1000, 50, rnorm)
 # extra arguments can be passed to the random variate generation function
 a <- rmatrix(1000, 50, rnorm, mean=2, sd=0.5)
 \dontrun{ hist(a) }
+
+#----------
+# rmatrix,ANY-method
+#----------
 # random matrix of the same dimension as another matrix
 x <- matrix(3,4)
 dim(rmatrix(x))
+
+#----------
+# rmatrix,NMF-method
+#----------
 # generate noisy fitted target from an NMF model (the true model)
 gr <- as.numeric(mapply(rep, 1:3, 3))
 h <- outer(1:3, gr, '==') + 0

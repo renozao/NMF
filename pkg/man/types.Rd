@@ -100,17 +100,28 @@
   \url{https://stat.ethz.ch/pipermail/r-devel/2011-June/061357.html}
 }
 \examples{
+#----------
+# is.nmf
+#----------
 # test if an object is an NMF model, i.e. that it implements the NMF interface
 is.nmf(1:4)
 is.nmf('NMFstd')
 is.nmf('NMFblah')
 is.nmf( nmfModel(3) )
 is.nmf( nmf(rmatrix(20,10), 3) )
+
+#----------
+# is.empty.nmf
+#----------
 # empty model
 is.empty.nmf( nmfModel(3) )
 # non empty models
 is.empty.nmf( nmfModel(3, 10, 0) )
 is.empty.nmf( rnmf(3, 10, 5) )
+
+#----------
+# isNMFfit
+#----------
 ## Testing results of fits
 # generate a random
 V <- rmatrix(20, 10)
