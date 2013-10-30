@@ -13,7 +13,7 @@
 
   \S4method{name}{Strategy}(object, all = FALSE)
 
-  name(object, ...) <- value
+  name(object, ...)<-value
 }
 \arguments{
   \item{object}{an R object with a defined \code{name}

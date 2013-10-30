@@ -104,12 +104,19 @@
   }
 }
 \examples{
+#----------
+# summary,NMF-method
+#----------
 # random NMF model
 x <- rnmf(3, 20, 12)
 summary(x)
 summary(x, gl(3, 4))
 summary(x, target=rmatrix(x))
 summary(x, gl(3,4), target=rmatrix(x))
+
+#----------
+# summary,NMFfit-method
+#----------
 # generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)
 n <- 50; counts <- c(5, 5, 8);
 V <- syntheticNMF(n, counts)

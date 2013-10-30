@@ -1,3 +1,4 @@
+#' @import graphics
 #' @import rngtools
 #' @import digest
 #' @import stringr

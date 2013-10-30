@@ -284,6 +284,9 @@
   }
 }
 \examples{
+#----------
+# rnmf,NMFOffset,numeric-method
+#----------
 # random NMF model with offset
 x <- rnmf(2, 3, model='NMFOffset')
 x
@@ -291,6 +294,10 @@ offset(x)
 # from a matrix
 x <- rnmf(2, rmatrix(5,3, max=10), model='NMFOffset')
 offset(x)
+
+#----------
+# rnmf,NMF,numeric-method
+#----------
 ## random NMF of same class and rank as another model
 
 x <- nmfModel(3, 10, 5)
@@ -307,16 +314,28 @@ y <- rnmf(3, 50, 10, model='NMFns')
 y
 \dontshow{ stopifnot( identical(dim(y), c(50L,10L,3L)) ) }
 \dontshow{ stopifnot( is(y, 'NMFns') ) }
+
+#----------
+# rnmf,ANY,matrix-method
+#----------
 # random NMF compatible with a target matrix
 x <- nmfModel(3, 10, 5)
 y <- rmatrix(20, 13)
 rnmf(x, y) # rank of x
 rnmf(2, y) # rank 2
+
+#----------
+# rnmf,NMF,missing-method
+#----------
 ## random NMF from another model
 
 a <- nmfModel(3, 100, 20)
 b <- rnmf(a)
 \dontshow{ stopifnot( !nmf.equal(a,b) ) }
+
+#----------
+# rnmf,numeric,missing-method
+#----------
 # random NMF model with known basis matrix
 x <- rnmf(5, W=matrix(1:18, 6)) # 6 x 5 model with rank=3
 basis(x) # fixed
@@ -332,11 +351,19 @@ x <- rnmf(5, H=matrix(1:18, 3), model='NMFOffset')
 basis(x) # random
 coef(x) # fixed
 offset(x) # random
+
+#----------
+# rnmf,missing,missing-method
+#----------
 # random model other than standard NMF
 x <- rnmf(W=matrix(1:18, 6), H=matrix(21:38, 3), model='NMFOffset')
 basis(x) # fixed
 coef(x) # fixed
 offset(x) # random
+
+#----------
+# rnmf,numeric,numeric-method
+#----------
 ## random standard NMF of given dimensions
 
 # generate a random NMF model with rank 3 that fits a 100x20 matrix

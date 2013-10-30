@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>heatmap-NMF. NMF 0.18.3</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">NMF</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+	  <li><a href="PAGE-MAN.html"><span class="glyphicon glyphicon-home"></span> Index</a></li>
+    </ul>
+    <!-- <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>--> 
+    <ul class="nav navbar-nav navbar-right">
+      <!--<li><p class="navbar-text" onClick="$('#versionMenu').load('')">Version</p></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">0.18.3 (stable) <b class="caret"></b></a>
+        <ul class="dropdown-menu" id='versionMenu'>
+        </ul>
+      </li>-->
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Heatmaps of NMF Factors</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p><p>The NMF package ships an advanced heatmap engine
+  implemented by the function <code><a href='aheatmap.html'>aheatmap</a></code>. Some
+  convenience heatmap functions have been implemented for
+  NMF models, which redefine default values for some of the
+  arguments of <code><a href='aheatmap.html'>aheatmap</a></code>, hence tuning the
+  output specifically for NMF models.</p>
+<p><code>basimap</code> draws an annotated heatmap of the basis
+  matrix.</p>
+<p><code>coefmap</code> draws an annotated heatmap of the
+  coefficient matrix.</p>
+<p><code>consensusmap</code> plots heatmaps of consensus matrices.</p></p>
+  
+    </div>
+    
+    <h2>Usage</h2>
+    <pre>basismap(object, ...)
+
+<span class="label label-success">S4</span> (NMF)
+`basismap`(object, color = "YlOrRd:50", scale = "r1", Rowv = TRUE, Colv = NA, 
+  subsetRow = FALSE, annRow = NA, annCol = NA, tracks = "basis", main = "Basis components", 
+      info = FALSE, ...)
+
+coefmap(object, ...)
+
+<span class="label label-success">S4</span> (NMF)
+`coefmap`(object, color = "YlOrRd:50", scale = "c1", Rowv = NA, Colv = TRUE, 
+      annRow = NA, annCol = NA, tracks = "basis", main = "Mixture coefficients", info = FALSE, 
+      ...)
+
+consensusmap(object, ...)
+
+<span class="label label-success">S4</span> (NMFfitX)
+`consensusmap`(object, annRow = NA, annCol = NA, tracks = c("basis:", "consensus:", 
+      "silhouette:"), main = "Consensus matrix", info = FALSE, ...)
+
+<span class="label label-success">S4</span> (matrix)
+`consensusmap`(object, color = "-RdYlBu", distfun = function(x) as.dist(1 - 
+      x), hclustfun = "average", Rowv = TRUE, Colv = "Rowv", main = if (is.null(nr) || 
+      nr > 1) "Consensus matrix" else "Connectiviy matrix", info = FALSE, ...)
+
+<span class="label label-success">S4</span> (NMFfitX)
+`coefmap`(object, Colv = TRUE, annRow = NA, annCol = NA, tracks = c("basis", 
+      "consensus:"), ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>an object from which is extracted NMF
+  factors or a consensus matrix</dd>
+      <dt>...</dt>
+      <dd>extra arguments passed to
+  <code><a href='aheatmap.html'>aheatmap</a></code>.</dd>
+      <dt>subsetRow</dt>
+      <dd>Argument that specifies how to filter
+  the rows that will appear in the heatmap. When
+  <code>FALSE</code> (default), all rows are used. Besides the
+  values supported by argument <code>subsetRow</code> of
+  <code><a href='aheatmap.html'>aheatmap</a></code>, other possible values are:
+
+  <ul>
+<li> <code>TRUE</code>: only the rows that are
+  basis-specific are used. The default selection method is
+  from <cite>KimH2007</cite>. This is equivalent to
+  <code>subsetRow='kim'</code>.
+
+  </li>
+<li> a single <code>character</code> string or numeric value
+  that specifies the method to use to select the
+  basis-specific rows, that should appear in the heatmap
+  (cf. argument <code>method</code> for function
+  <code><a href='scores.html'>extractFeatures</a></code>).
+
+  Note <code><a href='scores.html'>extractFeatures</a></code> is called with
+  argument <code>nodups=TRUE</code>, so that features that are
+  selected for multiple components only appear once. </li>
+</ul>
+</dd>
+      <dt>tracks</dt>
+      <dd>Special additional annotation tracks to
+  highlight associations between basis components and
+  sample clusters: <ol>
+<li>basismatches each row
+  (resp. column) to the most contributing basis component
+  in <code>basismap</code> (resp. <code>coefmap</code>). In
+  <code>basismap</code> (resp. <code>coefmap</code>), adding a track
+  <code>':basis'</code> to <code>annCol</code> (resp. <code>annRow</code>)
+  makes the column (resp. row) corresponding to the
+  component being also highlited using the mathcing
+  colours. </li>
+</ol>
+</dd>
+      <dt>info</dt>
+      <dd>if <code>TRUE</code> then the name of the algorithm
+  that fitted the NMF model is displayed at the bottom of
+  the plot, if available. Other wise it is passed as is to
+  <code>aheatmap</code>.</dd>
+      <dt>color</dt>
+      <dd>colour specification for the heatmap.
+  Default to palette '-RdYlBu2:100', i.e. reversed palette
+  'RdYlBu2' (a slight modification of RColorBrewer's
+  palette 'RdYlBu') with 100 colors. Possible values are:
+  <ul>
+<li> a character/integer vector of length
+  greater than 1 that is directly used and assumed to
+  contain valid R color specifications. </li>
+<li> a single
+  color/integer (between 0 and 8)/other numeric value that
+  gives the dominant colors. Numeric values are converted
+  into a pallete by <code>rev(sequential_hcl(2, h = x, l =
+  c(50, 95)))</code>. Other values are concatenated with the grey
+  colour '#F1F1F1'. </li>
+<li> one of RColorBrewer's palette
+  name (see <code><a href='http://www.inside-r.org/r-doc/RColorBrewer/ColorBrewer'>display.brewer.all</a></code>)
+  , or one of 'RdYlBu2', 'rainbow', 'heat', 'topo',
+  'terrain', 'cm'. </li>
+</ul>
+ When the coluor palette is specified
+  with a single value, and is negative or preceded a minus
+  ('-'), the reversed palette is used. The number of breaks
+  can also be specified after a colon (':'). For example,
+  the default colour palette is specified as
+  '-RdYlBu2:100'.</dd>
+      <dt>scale</dt>
+      <dd>character indicating how the values should
+  scaled in either the row direction or the column
+  direction. Note that the scaling is performed after
+  row/column clustering, so that it has no effect on the
+  row/column ordering. Possible values are: <ul>
+<li>
+  <code>"row"</code>: center and standardize each row separately
+  to row Z-scores </li>
+<li> <code>"column"</code>: center and
+  standardize each column separately to column Z-scores
+  </li>
+<li> <code>"r1"</code>: scale each row to sum up to one </li>
+<li>
+  <code>"c1"</code>: scale each column to sum up to one </li>
+<li>
+  <code>"none"</code>: no scaling </li>
+</ul>
+</dd>
+      <dt>Rowv</dt>
+      <dd>clustering specification(s) for the rows. It
+  allows to specify the
+  distance/clustering/ordering/display parameters to be
+  used for the <em>rows only</em>. Possible values are:
+  <ul>
+<li> <code>TRUE</code> or <code>NULL</code> (to be
+  consistent with <code><a href='http://www.inside-r.org/r-doc/stats/heatmap'>heatmap</a></code>): compute a
+  dendrogram from hierarchical clustering using the
+  distance and clustering methods <code>distfun</code> and
+  <code>hclustfun</code>.
+
+  </li>
+<li> <code>NA</code>: disable any ordering. In this case, and
+  if not otherwise specified with argument
+  <code>revC=FALSE</code>, the heatmap shows the input matrix
+  with the rows in their original order, with the first row
+  on top to the last row at the bottom. Note that this
+  differ from the behaviour or <code><a href='http://www.inside-r.org/r-doc/stats/heatmap'>heatmap</a></code>, but
+  seemed to be a more sensible choice when vizualizing a
+  matrix without reordering.
+
+  </li>
+<li> an integer vector of length the number of rows of
+  the input matrix (<code>nrow(x)</code>), that specifies the row
+  order. As in the case <code>Rowv=NA</code>, the ordered matrix
+  is shown first row on top, last row at the bottom.
+
+  </li>
+<li> a character vector or a list specifying values to
+  use instead of arguments <code>distfun</code>, <code>hclustfun</code>
+  and <code>reorderfun</code> when clustering the rows (see the
+  respective argument descriptions for a list of accepted
+  values). If <code>Rowv</code> has no names, then the first
+  element is used for <code>distfun</code>, the second (if
+  present) is used for <code>hclustfun</code>, and the third (if
+  present) is used for <code>reorderfun</code>.
+
+  </li>
+<li> a numeric vector of weights, of length the number
+  of rows of the input matrix, used to reorder the
+  internally computed dendrogram <code>d</code> by
+  <code>reorderfun(d, Rowv)</code>.
+
+  </li>
+<li> <code>FALSE</code>: the dendrogram <em>is</em> computed
+  using methods <code>distfun</code>, <code>hclustfun</code>, and
+  <code>reorderfun</code> but is not shown.
+
+  </li>
+<li> a single integer that specifies how many subtrees
+  (i.e. clusters) from the computed dendrogram should have
+  their root faded out. This can be used to better
+  highlight the different clusters.
+
+  </li>
+<li> a single double that specifies how much space is
+  used by the computed dendrogram. That is that this value
+  is used in place of <code>treeheight</code>. </li>
+</ul>
+</dd>
+      <dt>Colv</dt>
+      <dd>clustering specification(s) for the columns.
+  It accepts the same values as argument <code>Rowv</code>
+  (modulo the expected length for vector specifications),
+  and allow specifying the
+  distance/clustering/ordering/display parameters to be
+  used for the <em>columns only</em>. <code>Colv</code> may also be
+  set to <code>"Rowv"</code>, in which case the dendrogram or
+  ordering specifications applied to the rows are also
+  applied to the columns. Note that this is allowed only
+  for square input matrices, and that the row ordering is
+  in this case by default reversed (<code>revC=TRUE</code>) to
+  obtain the diagonal in the standard way (from top-left to
+  bottom-right). See argument <code>Rowv</code> for other
+  possible values.</dd>
+      <dt>annRow</dt>
+      <dd>specifications of row annotation tracks
+  displayed as coloured columns on the left of the
+  heatmaps. The annotation tracks are drawn from left to
+  right. The same conversion, renaming and colouring rules
+  as for argument <code>annCol</code> apply.</dd>
+      <dt>annCol</dt>
+      <dd>specifications of column annotation tracks
+  displayed as coloured rows on top of the heatmaps. The
+  annotation tracks are drawn from bottom to top. A single
+  annotation track can be specified as a single vector;
+  multiple tracks are specified as a list, a data frame, or
+  an
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code>
+  object, in which case the phenotypic data is used
+  (<code>pData(eset)</code>). Character or integer vectors are
+  converted and displayed as factors. Unnamed tracks are
+  internally renamed into <code>Xi</code>, with i being
+  incremented for each unamed track, across both column and
+  row annotation tracks. For each track, if no
+  corresponding colour is specified in argument
+  <code>annColors</code>, a palette or a ramp is automatically
+  computed and named after the track's name.</dd>
+      <dt>main</dt>
+      <dd>Main title as a character string or a grob.</dd>
+      <dt>distfun</dt>
+      <dd>default distance measure used in
+  clustering rows and columns. Possible values are:
+  <ul>
+<li> all the distance methods supported by
+  <code><a href='http://www.inside-r.org/r-doc/stats/dist'>dist</a></code> (e.g. "euclidean" or "maximum").
+
+  </li>
+<li> all correlation methods supported by
+  <code><a href='http://www.inside-r.org/r-doc/stats/cor'>cor</a></code>, such as <code>"pearson"</code> or
+  <code>"spearman"</code>. The pairwise distances between
+  rows/columns are then computed as <code>d <- dist(1 -
+  cor(..., method = distfun))</code>.
+
+  One may as well use the string "correlation" which is an
+  alias for "pearson".
+
+  </li>
+<li> an object of class <code>dist</code> such as returned by
+  <code><a href='http://www.inside-r.org/r-doc/stats/dist'>dist</a></code> or <code><a href='http://www.inside-r.org/r-doc/stats/dist'>as.dist</a></code>. </li>
+</ul>
+</dd>
+      <dt>hclustfun</dt>
+      <dd>default clustering method used to
+  cluster rows and columns. Possible values are: <ul>
+<li> a method name (a character string) supported by
+  <code><a href='http://www.inside-r.org/r-doc/stats/hclust'>hclust</a></code> (e.g. <code>'average'</code>). </li>
+<li> an
+  object of class <code>hclust</code> such as returned by
+  <code><a href='http://www.inside-r.org/r-doc/stats/hclust'>hclust</a></code> </li>
+<li> a dendrogram </li>
+</ul>
+</dd>
+    </dl>
+    
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p><strong>IMPORTANT:</strong> although they essentially have the
+  same set of arguments, their order sometimes differ
+  between them, as well as from <code><a href='aheatmap.html'>aheatmap</a></code>. We
+  therefore strongly recommend to use fully named arguments
+  when calling these functions.</p>
+  
+      <p><code>basimap</code> default values for the following arguments
+  of <code><a href='aheatmap.html'>aheatmap</a></code>: <ul>
+<li> the color
+  palette; </li>
+<li> the scaling specification, which by
+  default scales each row separately so that they sum up to
+  one (<code>scale='r1'</code>); </li>
+<li> the column ordering which
+  is disabled; </li>
+<li> allowing for passing feature
+  extraction methods in argument <code>subsetRow</code>, that are
+  passed to <code><a href='scores.html'>extractFeatures</a></code>. See argument
+  description here and therein. </li>
+<li> the addition of a
+  default named annotation track, that shows the dominant
+  basis component for each row (i.e. each feature).</p>
+  
+      <p>This track is specified in argument <code>tracks</code> (see
+  its argument description). By default, a matching column
+  annotation track is also displayed, but may be disabled
+  using <code>tracks=':basis'</code>.</p>
+  
+      <p></li>
+<li> a suitable title and extra information like the
+  fitting algorithm, when <code>object</code> is a fitted NMF
+  model. </li>
+</ul></p>
+  
+      <p><code>coefmap</code> redefines default values for the following
+  arguments of <code><a href='aheatmap.html'>aheatmap</a></code>: <ul>
+<li> the
+  color palette; </li>
+<li> the scaling specification, which by
+  default scales each column separately so that they sum up
+  to one (<code>scale='c1'</code>); </li>
+<li> the row ordering which
+  is disabled; </li>
+<li> the addition of a default annotation
+  track, that shows the most contributing basis component
+  for each column (i.e. each sample).</p>
+  
+      <p>This track is specified in argument <code>tracks</code> (see
+  its argument description). By default, a matching row
+  annotation track is also displayed, but can be disabled
+  using <code>tracks='basis:'</code>. </li>
+<li> a suitable title and
+  extra information like the fitting algorithm, when
+  <code>object</code> is a fitted NMF model. </li>
+</ul></p>
+  
+      <p><code>consensusmap</code> redefines default values for the
+  following arguments of <code><a href='aheatmap.html'>aheatmap</a></code>: <ul>
+<li> the colour palette; </li>
+<li> the column ordering which
+  is set equal to the row ordering, since a consensus
+  matrix is symmetric; </li>
+<li> the distance and linkage
+  methods used to order the rows (and columns). The default
+  is to use 1 minus the consensus matrix itself as
+  distance, and average linkage. </li>
+<li> the addition of two
+  special named annotation tracks, <code>'basis:'</code> and
+  <code>'consensus:'</code>, that show, for each column (i.e.
+  each sample), the dominant basis component in the best
+  fit and the hierarchical clustering of the consensus
+  matrix respectively (using 1-consensus as distance and
+  average linkage).</p>
+  
+      <p>These tracks are specified in argument <code>tracks</code>,
+  which behaves as in <code><a href='heatmaps.html'>basismap</a></code>.</p>
+  
+      <p></li>
+<li> a suitable title and extra information like the
+  type of NMF model or the fitting algorithm, when
+  <code>object</code> is a fitted NMF model. </li>
+</ul></p>
+  
+      <p></p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>basismap<code>signature(object = "NMF")</code>: Plots a
+  heatmap of the basis matrix of the NMF model
+  <code>object</code>. This method also works for fitted NMF
+  models (i.e. <code>NMFfit</code> objects).</p>
+  
+      <p></li>
+<li>basismap<code>signature(object = "NMFfitX")</code>:
+  Plots a heatmap of the basis matrix of the best fit in
+  <code>object</code>.</p>
+  
+      <p></li>
+<li>coefmap<code>signature(object = "NMF")</code>: The
+  default method for NMF objects has special default values
+  for some arguments of <code><a href='aheatmap.html'>aheatmap</a></code> (see
+  argument description).</p>
+  
+      <p></li>
+<li>coefmap<code>signature(object = "NMFfitX")</code>:
+  Plots a heatmap of the coefficient matrix of the best fit
+  in <code>object</code>.</p>
+  
+      <p>This method adds: <ul>
+<li> an extra special column
+  annotation track for multi-run NMF fits,
+  <code>'consensus:'</code>, that shows the consensus cluster
+  associated to each sample. </li>
+<li> a column sorting schema
+  <code>'consensus'</code> that can be passed to argument
+  <code>Colv</code> and orders the columns using the hierarchical
+  clustering of the consensus matrix with average linkage,
+  as returned by <code><a href='consensushc.html'>consensushc</a>(object)</code>. This is
+  also the ordering that is used by default for the heatmap
+  of the consensus matrix as ploted by
+  <code><a href='heatmaps.html'>consensusmap</a></code>. </li>
+</ul></p>
+  
+      <p></li>
+<li>consensusmap<code>signature(object = "NMFfitX")</code>:
+  Plots a heatmap of the consensus matrix obtained when
+  fitting an NMF model with multiple runs.</p>
+  
+      <p></li>
+<li>consensusmap<code>signature(object = "NMF")</code>:
+  Plots a heatmap of the connectivity matrix of an NMF
+  model.</p>
+  
+      <p></li>
+<li>consensusmap<code>signature(object = "matrix")</code>:
+  Main method that redefines default values for arguments
+  of <code><a href='aheatmap.html'>aheatmap</a></code>.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>basismap</li><li>basismap-methods</li><li>basismap,NMFfitX-method</li><li>basismap,NMF-method</li><li>coefmap</li><li>coefmap-methods</li><li>coefmap,NMFfitX-method</li><li>coefmap,NMF-method</li><li>consensusmap</li><li>consensusmap,matrix-method</li><li>consensusmap-methods</li><li>consensusmap,NMFfitX-method</li><li>consensusmap,NMF-method</li><li>heatmap-NMF</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

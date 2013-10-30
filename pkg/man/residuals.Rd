@@ -16,10 +16,10 @@
   \S4method{residuals}{NMFfit}(object, track = FALSE,
     niter = NULL, ...)
 
-  residuals(object, ...) <- value
+  residuals(object, ...)<-value
 
   \S4method{residuals}{NMFfit}(object, ..., niter = NULL,
-    track = FALSE) <- value
+    track = FALSE)<-value
 
   hasTrack(object, niter = NULL)
 

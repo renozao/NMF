@@ -67,21 +67,21 @@
 \usage{
   algorithm(object, ...)
 
-  algorithm(object, ...) <- value
+  algorithm(object, ...)<-value
 
   seeding(object, ...)
 
-  seeding(object, ...) <- value
+  seeding(object, ...)<-value
 
   niter(object, ...)
 
-  niter(object, ...) <- value
+  niter(object, ...)<-value
 
   nrun(object, ...)
 
   objective(object, ...)
 
-  objective(object, ...) <- value
+  objective(object, ...)<-value
 
   runtime(object, ...)
 
@@ -404,10 +404,17 @@
   page are mainly based on this implementation.
 }
 \examples{
+#----------
+# modelname,ANY-method
+#----------
 # get the type of an NMF model
 modelname(nmfModel(3))
 modelname(nmfModel(3, model='NMFns'))
 modelname(nmfModel(3, model='NMFOffset'))
+
+#----------
+# modelname,NMFStrategy-method
+#----------
 # get the type of model(s) associated with an NMF algorithm
 modelname( nmfAlgorithm('brunet') )
 modelname( nmfAlgorithm('nsNMF') )

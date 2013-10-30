@@ -11,7 +11,7 @@
 
   \S4method{$}{NMF}(x, name)
 
-  \S4method{$}{NMF}(x, name) <- value
+  \S4method{$}{NMF}(x, name)<-value
 
   \S4method{.DollarNames}{NMF}(x, pattern = "")
 }
@@ -104,6 +104,10 @@
   \code{\linkS4class{NMF}}, that should be overloaded by
   sub-classes, and throws an error if called. }
 
+  \item{basis<-}{\code{signature(object = "NMF")}: Default
+  methods that calls \code{.basis<-} and check the validity
+  of the updated object. }
+
   \item{basiscor}{\code{signature(x = "NMF", y =
   "matrix")}: Computes the correlations between the basis
   vectors of \code{x} and the columns of \code{y}. }
@@ -133,6 +137,10 @@
   "matrix")}: Pure virtual method for objects of class
   \code{\linkS4class{NMF}}, that should be overloaded by
   sub-classes, and throws an error if called. }
+
+  \item{coef<-}{\code{signature(object = "NMF")}: Default
+  methods that calls \code{.coef<-} and check the validity
+  of the updated object. }
 
   \item{coefficients}{\code{signature(object = "NMF")}:
   Alias to \code{coef,NMF}, therefore also pure virtual. }

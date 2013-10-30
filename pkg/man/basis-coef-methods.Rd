@@ -4,7 +4,6 @@
 \alias{.basis}
 \alias{.basis<-}
 \alias{basis<-}
-\alias{basis<-,ANY-method}
 \alias{basis,ANY-method}
 \alias{.basis<--methods}
 \alias{.basis-methods}
@@ -15,6 +14,7 @@
 \alias{basis,NMFfitXn-method}
 \alias{.basis<-,NMF,matrix-method}
 \alias{.basis,NMF-method}
+\alias{basis<-,NMF-method}
 \alias{basis,NMF-method}
 \alias{.basis<-,NMFstd,matrix-method}
 \alias{.basis,NMFstd-method}
@@ -22,7 +22,6 @@
 \alias{.coef}
 \alias{.coef<-}
 \alias{coef<-}
-\alias{coef<-,ANY-method}
 \alias{coefficients}
 \alias{coefficients-methods}
 \alias{coefficients,NMF-method}
@@ -35,6 +34,7 @@
 \alias{coef,NMFfitXn-method}
 \alias{.coef<-,NMF,matrix-method}
 \alias{.coef,NMF-method}
+\alias{coef<-,NMF-method}
 \alias{coef,NMF-method}
 \alias{.coef<-,NMFstd,matrix-method}
 \alias{.coef,NMFstd-method}
@@ -51,9 +51,12 @@
 
   .basis(object, ...)
 
-  basis(object) <- value
+  basis(object, ...)<-value
 
-  .basis(object) <- value
+  \S4method{basis}{NMF}(object, use.dimnames = TRUE,
+    ...)<-value
+
+  .basis(object)<-value
 
   \S4method{loadings}{NMF}(x)
 
@@ -63,9 +66,12 @@
 
   .coef(object, ...)
 
-  coef(object) <- value
+  coef(object, ...)<-value
 
-  .coef(object) <- value
+  \S4method{coef}{NMF}(object, use.dimnames = TRUE,
+    ...)<-value
+
+  .coef(object)<-value
 
   coefficients(object, ...)
 
@@ -84,13 +90,22 @@
 
   \item{...}{extra arguments to allow extension and passed
   to the low-level access functions \code{.coef} and
-  \code{.basis}.}
+  \code{.basis}.
+
+  Note that these throw an error if used in replacement
+  functions \code{}.}
 
   \item{all}{a logical that indicates whether the complete
   matrix factor should be returned (\code{TRUE}) or only
   the non-fixed part. This is relevant only for
   formula-based NMF models that include fixed basis or
   coefficient terms.}
+
+  \item{use.dimnames}{logical that indicates if the
+  object's dim names should be set using those from the new
+  value, or left unchanged -- after truncating them to fit
+  new dimensions if necessary. This is useful to only set
+  the entries of a factor.}
 
   \item{value}{replacement value}
 
@@ -212,7 +227,7 @@
   except when developing NMF algorithms, to update the
   basis matrix of the seed object before returning it. }
 
-  \item{basis<-}{\code{signature(object = "ANY")}: Default
+  \item{basis<-}{\code{signature(object = "NMF")}: Default
   methods that calls \code{.basis<-} and check the validity
   of the updated object. }
 
@@ -261,7 +276,7 @@
   coefficient matrix in the seed object before returning
   it. }
 
-  \item{coef<-}{\code{signature(object = "ANY")}: Default
+  \item{coef<-}{\code{signature(object = "NMF")}: Default
   methods that calls \code{.coef<-} and check the validity
   of the updated object. }
 
@@ -283,10 +298,17 @@
   }
 }
 \examples{
+#----------
+# scoef
+#----------
 # Scaled coefficient matrix
 x <- rnmf(3, 10, 5)
 scoef(x)
 scoef(x, 100)
+
+#----------
+# .basis,NMFstd-method
+#----------
 # random standard NMF model
 x <- rnmf(3, 10, 5)
 basis(x)

@@ -371,6 +371,9 @@
   }
 }
 \examples{
+#----------
+# heatmap-NMF
+#----------
 ## More examples are provided in demo `heatmaps`
 \dontrun{
 demo(heatmaps)
@@ -381,18 +384,30 @@ demo(heatmaps)
 v <- syntheticNMF(20, 3, 10)
 # estimate a model
 x <- nmf(v, 3)
+
+#----------
+# basismap
+#----------
 # show basis matrix
 basismap(x)
 \dontrun{
 # without the default annotation tracks
 basismap(x, tracks=NA)
 }
+
+#----------
+# coefmap
+#----------
 # coefficient matrix
 coefmap(x)
 \dontrun{
 # without the default annotation tracks
 coefmap(x, tracks=NA)
 }
+
+#----------
+# consensusmap
+#----------
 \dontrun{
 res <- nmf(x, 3, nrun=3)
 consensusmap(res)

@@ -8,9 +8,9 @@
 \alias{cterms<-,NMFstd-method}
 \title{Fixed Terms in NMF Models}
 \usage{
-  bterms(object) <- value
+  bterms(object)<-value
 
-  cterms(object) <- value
+  cterms(object)<-value
 }
 \arguments{
   \item{object}{NMF object to be updated.}

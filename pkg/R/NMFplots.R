@@ -32,9 +32,9 @@ corplot <- function(x, y, legend=TRUE, confint=TRUE, ..., add=FALSE){
 
 	# draw plot using matplot
 	pfun <- if( add ) matpoints else matplot
-	do.call(pfun, c(list(x, y), gpar))
+	#do.call(pfun, c(list(x, y), gpar))
 	# add perfect match line
-	abline(a=0, b=1)	
+	#abline(a=0, b=1)	
 	
 	# initialise result
 	res <- list(global=list())
@@ -46,6 +46,9 @@ corplot <- function(x, y, legend=TRUE, confint=TRUE, ..., add=FALSE){
 	grsq$alpha <- res$global$lm$coef[2L]
 	
 	# add legend if requested
+    x <- provideDimnames(x, base = list(as.character(1:max(dim(x)))))
+    y <- provideDimnames(y, base = list(as.character(1:max(dim(y)))))
+    ct.labs <- colnames(x) 
 	if( legend ){
 		# separate correlations
 		res$local <- list(lm=list(), cortest=list())
@@ -66,20 +69,37 @@ corplot <- function(x, y, legend=TRUE, confint=TRUE, ..., add=FALSE){
 			}
 			))
 		#
-		lpar <- .extract.args(gpar, graphics::legend)
-		lpar$lty <- -1		
-		lpar$pt.cex <- lpar$cex
-		lpar$cex <- 1
-		do.call('legend', c(list(x='topleft', legend=paste(colnames(x)
-				, ' (', lco[,4] # local alpha
-						, ' | ', lco[,3] # local correlation
-						, ' | ', sprintf("%0.2f", lco[,1]) # local R-square
-						, if( confint ) str_c(' +/- ', lco[,2]) # local R-square conf int
-					, ')', sep='')), lpar))
-		ci <- if( confint ) str_c(' +/- ', round(grsq$UCL - grsq$Rsq, 2)) else ''
-		legend("bottomright", legend=bquote(alpha == .(sprintf("%0.2f | ", grsq$alpha)) ~ rho == .(sprintf("%0.2f | ", grsq$rho)) ~ R^2 == .(sprintf("%0.2f%s", grsq$Rsq, ci))))
+        ct.labs <- sapply(seq_along(ct.labs), function(i){
+                    ci <- if( confint ) str_c(' +/- ', lco[i,2]) else ''
+                    bquote(.(sprintf('%s (', colnames(y)[i])) 
+                            ~ alpha == .(sprintf(' %0.2f | ', lco[i,4])) 
+                            ~ rho == .(sprintf(' %.02f | ', lco[i,3]))
+                             ~ R^2 == .(sprintf(' %0.2f %s)', lco[i,1], ci)))
+                })
 	}
-	invisible(res)
+    
+    df <- data.frame(x = melt(x), y = melt(y))
+    df[[5L]] <- factor(df[[5L]], levels = colnames(y))
+    ct <- colnames(df)[5L]
+    ct.title <- gsub('y.', '', ct, fixed = TRUE)
+    p <- ggplot(df, aes_string(x='x.value', y='y.value'
+                , color = ct)) + 
+            geom_point() +
+            xlab(gpar$xlab) + ylab(gpar$ylab) +
+            scale_color_discrete(labels = ct.labs) + 
+            stat_smooth(method = lm) +
+            geom_abline(slope = 1, linetype = 3) +
+            facet_grid(paste0('~ ', ct)) + 
+            labs(color = ct.title)
+    if( legend ){
+        p <- p + theme(legend.position = 'bottom') + 
+                guides(color = guide_legend(ncol = 1))
+    }else{
+        p <- p + theme(legend.position = 'none')
+    }
+            
+    p$correlations <- res
+    p
 }
 
 #setMethod('corplot', signature(x='NMFfitXn', y='NMF')
@@ -144,9 +164,12 @@ profplot <- function(x, ...){
 #' @param y a matrix or an NMF object from which is extracted the mixture
 #' coefficient matrix.
 #' It is extracted from the best fit if \code{y} is the results from multiple NMF runs.
-#' @param scale a logical that specifies whether the columns of the matrices
-#' should be scaled into proportions (i.e. to sum up to one) before plotting.
-#' Default is \code{FALSE}.
+#' @param scale specifies how the data should be scaled before plotting.
+#' If \code{'none'} or \code{NA}, then no scaling is applied and the "raw" data is plotted.
+#' If \code{TRUE} or \code{'max'} then each row of both matrices
+#' are normalised with their respective maximum values.
+#' If \code{'c1'}, then each column of both matrix is scaled into proportions (i.e. to sum up to one).
+#' Default is \code{'none'}.
 #' @param match.names a logical that indicates if the profiles in \code{y} 
 #' should be subset and/or re-ordered to match the profile names in \code{x} 
 #' (i.e. the rownames). This is attempted only when both \code{x} and \code{y}
@@ -204,7 +227,7 @@ profplot <- function(x, ...){
 #' # looking at all the correlations allow to order the components in a "common" order
 #' profcor(res, res2)
 #' 
-profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
+profplot.default <- function(x, y, scale=c('none', 'max', 'c1'), match.names=TRUE
 							, legend=TRUE, confint=TRUE
 							, Colv, labels, annotation, ..., add = FALSE){
 	
@@ -276,18 +299,26 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
 			# subset and reorder if possible
 			if( length(x.idx) > 0L ){
 				res$y.idx <- y.idx[x.idx]
-				y <- y[y.idx,]
+				y <- y[y.idx, , drop = FALSE]
 				res$x.idx <- x.idx				
-				x <- x[x.idx, ]
+				x <- x[x.idx, , drop = FALSE]
 			}
 		}
 		
 		# scale to proportions if requested
-		if( scale ){
+        if( missing(scale) ) scale <- NULL
+        else if( isTRUE(scale) ) scale <- 'max'
+        scale <- match.arg(scale)
+		if( scale == 'max' ){
+			gpar <- .set.list.defaults(gpar
+					, xlim=c(0,1), ylim=c(0,1))
+			x <- sweep(x, 1L, apply(x, 1L, max), '/')
+            y <- sweep(y, 1L, apply(y, 1L, max), '/')
+		} else if( scale == 'c1' ){
 			gpar <- .set.list.defaults(gpar
 					, xlim=c(0,1), ylim=c(0,1))
 			x <- sum2one(x)
-			y <- sum2one(y)
+            y <- sum2one(y)
 		}else{
 			Mx <- max(x, y); mx <- min(x, y)
 			# extend default limits by a 0.25 factor
@@ -301,10 +332,11 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
 		gpar <- .set.list.defaults(gpar			
 				, main="Profile correlations")
 		# plot the correlation plot		
-		res$cor <- do.call(corplot, c(list(x=t(x), y=t(y), legend=legend, confint=confint, add=add), gpar))
+		p <- do.call(corplot, c(list(x=t(x), y=t(y), legend=legend, confint=confint, add=add), gpar))
+        p <- expand_list(p, list(idx.map = res))
 		
 		# return result list
-		return( invisible(res) )
+		return( p )
 	}
 		
 	# extract mixture coefficient
@@ -326,6 +358,7 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
 		stop("NMF::profplot - Invalid argument `x`: could not extract profile matrix")
 	
 	# scale to proportions if requested
+    if( missing(scale) || !isTRUE(scale) ) scale <- FALSE
 	if( scale ){
 		gpar <- .set.list.defaults(gpar, ylim=c(0,1))
 		x <- sum2one(x)
@@ -545,26 +578,26 @@ profplot.default <- function(x, y, scale=FALSE, match.names=TRUE
 #' summary(res)
 #' 
 #' # consensus silhouettes are ordered as on default consensusmap heatmap
-#' op <- par(mfrow = c(1,2))
+#' \dontrun{ op <- par(mfrow = c(1,2)) }
 #' consensusmap(res)
 #' si <- silhouette(res, what = 'consensus')
 #' plot(si)
-#' par(op)
+#' \dontrun{ par(op) }
 #' 
 #' # if the order is based on some custom numeric weights
-#' op <- par(mfrow = c(1,2))
+#' \dontrun{ op <- par(mfrow = c(1,2)) }
 #' cm <- consensusmap(res, Rowv = runif(ncol(res)))
 #' # NB: use reverse order because silhouettes are plotted top-down
 #' si <- silhouette(res, what = 'consensus', order = rev(cm$rowInd))
 #' plot(si)
-#' par(op)
+#' \dontrun{ par(op) }
 #' 
 #' # do the reverse: order the heatmap as a set of silhouettes
 #' si <- silhouette(res, what = 'features')
-#' op <- par(mfrow = c(1,2)) 
+#' \dontrun{ op <- par(mfrow = c(1,2)) } 
 #' basismap(res, Rowv = si)
 #' plot(si)
-#' par(op)
+#' \dontrun{ par(op) }
 #' 
 silhouette.NMF <- function(x, what = NULL, order = NULL, ...){
     
@@ -572,6 +605,7 @@ silhouette.NMF <- function(x, what = NULL, order = NULL, ...){
     p <- predict(x, what = what, dmatrix = TRUE)
     # compute silhouette
     si <- silhouette(as.numeric(p), dmatrix = attr(p, 'dmatrix'))
+    attr(si, 'call') <- match.call(call = sys.call(-1))
 	if( is_NA(si) ) return(NA)
     # fix rownames if necessary
     if( is.null(rownames(si)) ){
@@ -598,5 +632,7 @@ silhouette.NMF <- function(x, what = NULL, order = NULL, ...){
 
 #' @S3method silhouette NMFfitX
 silhouette.NMFfitX <- function(x, ...){
-    silhouette.NMF(x, ...)
+    si <- silhouette.NMF(x, ...)
+    attr(si, 'call') <- match.call(call = sys.call(-1))
+    si
 }

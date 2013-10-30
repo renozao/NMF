@@ -195,7 +195,7 @@ test.nmf.method <- function(){
     
     ml <- list('ns', 'brunet', 'lee')
     checkException(nmf(V, r, ml, .parameters = 2:3), "Error if argument .parameters not a list")
-    checkException(nmf(V, r, ml, .parameters = list(br = list())), "Error if argument .parameters has no names")
+    checkException(nmf(V, r, ml, .parameters = list(list(copy = TRUE))), "Error if argument .parameters has no names")
     checkException(nmf(V, r, ml, .parameters = list(br = list(), list(copy = TRUE))), "Error if argument .parameters has missing names")
     checkException(nmf(V, r, ml, .parameters = list(br = list(), brun = list(copy = TRUE))), "Error if argument .parameters has multiple matching names")
     checkWarning(nmf(V, r, ml, .parameters = list(br = list(aaa = 1))), TRUE, "Error if unused argument in selected method-specific parameters")

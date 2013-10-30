@@ -203,7 +203,9 @@ setMethod('fitted', signature(object='NMF'),
 #' @param object an object from which to extract the factor matrices, typically an 
 #' object of class \code{\linkS4class{NMF}}.
 #' @param ... extra arguments to allow extension and passed to the low-level 
-#' access functions \code{.coef} and \code{.basis}. 
+#' access functions \code{.coef} and \code{.basis}.
+#' 
+#' Note that these throw an error if used in replacement functions \code{}.
 #'   
 #' @rdname basis-coef-methods
 #' @family NMF-interface
@@ -262,20 +264,45 @@ setMethod('.basis', signature(object='NMF'),
 
 #' @export
 #' @rdname basis-coef-methods
-setGeneric('basis<-', function(object, value) standardGeneric('basis<-') )
+#' @inline
+setGeneric('basis<-', function(object, ..., value) standardGeneric('basis<-') )
 #' Default methods that calls \code{.basis<-} and check the validity of the 
 #' updated object. 
-setReplaceMethod('basis', signature(object='ANY', value='ANY'), 
-	function(object, value){
+#' @param use.dimnames logical that indicates if the object's dim names should be 
+#' set using those from the new value, or left unchanged -- after truncating 
+#' them to fit new dimensions if necessary.
+#' This is useful to only set the entries of a factor.
+#' 
+setReplaceMethod('basis', signature(object='NMF', value='ANY'), 
+	function(object, use.dimnames = TRUE, ..., value){
 		
+        # error if passed extra arguments
+        if( length(xargs<- list(...)) ){
+            stop("basis<-,NMF - Unused arguments: ", str_out(xargs, Inf, use.names = TRUE))
+        }
+        
+        # backup old dimnames to reapply them on exit
+        if( !use.dimnames ) odn <- dimnames(object)
+        
 		# only set non-fixed terms
 		if( !nbterms(object) ) .basis(object) <- value
 		else{
 			i <- ibasis(object)
 			.basis(object)[,i] <- value[, i]
 		}
+        # adapt coef if empty
+        if( !hasCoef(object) ){
+            x <- basis(object)
+            .coef(object) <- coef(object)[1:ncol(x), , drop = FALSE] 
+        }
 		# check object validity
 		validObject(object)
+        
+        # update other factor if necessary
+        if( use.dimnames ) basisnames(object) <- colnames(basis(object))
+        else if( !length(odn) ) dimnames(object) <- NULL
+        else dimnames(object) <- mapply(head, odn, dim(object), SIMPLIFY = FALSE)
+        
 		object
 	}	
 )
@@ -355,20 +382,40 @@ setMethod('.coef', signature(object='NMF'),
 
 #' @export
 #' @rdname basis-coef-methods
-setGeneric('coef<-', function(object, value) standardGeneric('coef<-') )
+#' @inline
+setGeneric('coef<-', function(object, ..., value) standardGeneric('coef<-') )
 #' Default methods that calls \code{.coef<-} and check the validity of the 
 #' updated object. 
-setReplaceMethod('coef', signature(object='ANY', value='ANY'), 
-	function(object, value){
+setReplaceMethod('coef', signature(object='NMF', value='ANY'), 
+	function(object, use.dimnames = TRUE, ..., value){
 		
+        # error if passed extra arguments
+        if( length(xargs<- list(...)) ){
+            stop("coef<-,NMF - Unused arguments: ", str_out(xargs, Inf, use.names = TRUE))
+        }
+        # backup old dimnames to reapply them on exit
+        if( !use.dimnames ) odn <- dimnames(object)
+        
 		# only set non-fixed terms
 		if( !ncterms(object) ) .coef(object) <- value
 		else{
 			i <- icoef(object)
 			.coef(object)[i, ] <- value[i, ]
 		}
+        # adapt basis if empty before validation
+        if( !hasBasis(object) ){
+            x <- coef(object)
+            .basis(object) <- basis(object)[, 1:nrow(x), drop = FALSE] 
+        }
 		# check object validity
 		validObject(object)
+        
+        # update other factor if necessary
+        if( use.dimnames ) basisnames(object) <- rownames(coef(object))
+        else if( !length(odn) ) dimnames(object) <- NULL
+        else dimnames(object) <- mapply(head, odn, dim(object), SIMPLIFY = FALSE)
+        
+            
 		object
 	}	
 )
@@ -995,12 +1042,15 @@ setReplaceMethod('dimnames', 'NMF',
 #' object \code{x} unchanged.
 #' 
 #' \item One single index as in \code{x[i]}: the value is the complete NMF 
-#' model composed of the selected basis components, subset by \code{i}.
-#' If argument \code{drop} is not missing then only the basis matrix is returned 
-#' and \code{drop} is used:
-#' \code{x[i, drop=TRUE.or.FALSE]} <=> \code{basis(x)[, i, drop=TRUE.or.FALSE]}.
+#' model composed of the selected basis components, subset by \code{i}, 
+#' except if argument \code{drop=TRUE}, or if it is missing and \code{i} is of length 1.
+#' Then only the basis matrix is returned with dropped dimensions: 
+#' \code{x[i, drop=TRUE]} <=> \code{drop(basis(x)[, i])}.
 #' 
-#' Note that in version <= 0.8.7, the call \code{x[i]} was equivalent to
+#' This means for example that \code{x[1L]} is the first basis vector, 
+#' and \code{x[1:3, drop = TRUE]} is the matrix composed of the 3 first basis vectors -- in columns.
+#' 
+#' Note that in version <= 0.18.3, the call \code{x[i, drop = TRUE.or.FALSE]} was equivalent to
 #' \code{basis(x)[, i, drop=TRUE.or.FALSE]}.
 #' 
 #' \item More than one index with \code{drop=FALSE} (default) as in
@@ -1008,7 +1058,7 @@ setReplaceMethod('dimnames', 'NMF',
 #' etc...: the value is a \code{NMF} object whose basis and/or mixture
 #' coefficient matrices have been subset accordingly. The third index \code{k}
 #' affects simultaneously the columns of the basis matrix AND the rows of the
-#' mixture coefficient matrix.
+#' mixture coefficient matrix. In this case argument \code{drop} is not used.
 #' 
 #' \item More than one index with \code{drop=TRUE} and \code{i} xor \code{j}
 #' missing: the value returned is the matrix that is the more affected by the
@@ -1040,20 +1090,7 @@ setReplaceMethod('dimnames', 'NMF',
 #' Note that only the first extra subset index is used.
 #' A warning is thrown if more than one extra argument is passed in \code{...}.
 #' @param drop single \code{logical} value used to drop the \code{NMF-class}
-#' wrapping and only return subsets of one of the factor matrices:
-#' \itemize{
-#' \item When \code{drop=FALSE} it returns the \code{NMF} object \code{x} with the
-#' basis matrix and/or mixture coefficient matrix subset accordingly to the
-#' values in \code{i}, \code{j}, and \code{...}.
-#' 
-#' \item When \code{drop=TRUE} it returns the factor that is subset "the more"
-#' (see section \emph{Value}).
-#' }
-#' 
-#' Note that in the case where both indexes \code{i} and \code{j} are provided,
-#' argument \code{drop} is ignored: \code{x[i,j, drop=TRUE]} (resp.
-#' \code{x[i,j,k, drop=TRUE]}) is identical to \code{x[i,j, drop=FALSE]} (resp.
-#' \code{x[i,j,k, drop=FALSE]}).
+#' wrapping and only return subsets of one of the factor matrices (see \emph{Details})
 #' 
 #' @rdname subset-NMF
 #' @export
@@ -1144,7 +1181,7 @@ setMethod('[', 'NMF',
 		if( single.arg || k.notmissing ){
 			.basis(x) <- basis(x)[, k, drop = FALSE]
 			# return basis only single arg and drop=TRUE 
-			if( single.arg && !mdrop ) return( basis(x)[,,drop=drop] )
+			if( single.arg && ((mdrop && length(k) == 1L) || drop) ) return( drop(basis(x)) )
 			.coef(x) <- coef(x)[k, , drop = FALSE]
 		}
 		
