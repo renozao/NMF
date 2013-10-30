@@ -627,8 +627,8 @@ setGeneric('plot', package='graphics' )
 #' of the curve.
 #' If \code{skip=1L} (default) only the initial residual -- that is computed before any iteration, is
 #' skipped, if present in the track (it associated with iteration 0).
-#' 
-#' @export
+#'
+#' @export 
 setMethod('plot', signature(x='NMFfit', y='missing'),
 	function(x, y, skip=-1L, ...){
 		

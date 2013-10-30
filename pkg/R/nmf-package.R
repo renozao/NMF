@@ -1,9 +1,9 @@
+#' @import graphics
 #' @import rngtools
 #' @import digest
 #' @import stringr
 #' @import stats
 #' @import methods
-#' @import graphics
 NULL
 #library(digest)
 

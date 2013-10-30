@@ -1074,8 +1074,7 @@ setMethod('consensus', signature(object='NMFfitXn'),
 	}
 )
 
-#' @export
-#' @noRd
+#' @S3method plot NMF.consensus 
 plot.NMF.consensus <- function(x, ...){
 	consensusmap(x, ...)
 }
