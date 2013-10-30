@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>runtime.all,NMFfitXn-method. NMF 0.18.3</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">NMF</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+	  <li><a href="PAGE-MAN.html"><span class="glyphicon glyphicon-home"></span> Index</a></li>
+    </ul>
+    <!-- <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>--> 
+    <ul class="nav navbar-nav navbar-right">
+      <!--<li><p class="navbar-text" onClick="$('#versionMenu').load('')">Version</p></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">0.18.3 (stable) <b class="caret"></b></a>
+        <ul class="dropdown-menu" id='versionMenu'>
+        </ul>
+      </li>-->
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Returns the CPU time used to perform all the NMF fits stored in <code>object</code>.</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p><p>If no time data is available from in slot
+  &#145;runtime.all&#146; and argument <code>null=TRUE</code>, then
+  the sequential time as computed by <code><a href='algorithmic.html'>seqtime</a></code>
+  is returned, and a warning is thrown unless
+  <code>warning=FALSE</code>.</p></p>
+  
+    </div>
+    
+    <h2>Usage</h2>
+    <pre><span class="label label-success">S4</span> (NMFfitXn)
+`runtime.all`(object, null = FALSE, warning = TRUE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>null</dt>
+      <dd>a logical that indicates if the sequential
+  time should be returned if no time data is available in
+  slot &#145;runtime.all&#146;.</dd>
+      <dt>warning</dt>
+      <dd>a logical that indicates if a warning
+  should be thrown if the sequential time is returned
+  instead of the real CPU time.</dd>
+      <dt>object</dt>
+      <dd>an object computed using some algorithm, or
+  that describes an algorithm itself.</dd>
+    </dl>
+          </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>runtime.all,NMFfitXn-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
