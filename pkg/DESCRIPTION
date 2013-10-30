@@ -12,7 +12,7 @@ Description: This package provides a framework to perform Non-negative Matrix
     in C++, and the main interface function provides an easy way of performing
     parallel computations on multicore machines.
 License: GPL (>=2)
-URL: http://renozao.github.io/NMF/current,
+URL: http://renozao.github.io/NMF/master,
     http://github.com/renozao/NMF,
     http://r-forge.r-project.org/projects/nmf/
 BugReports: http://github.com/renozao/NMF/issues
