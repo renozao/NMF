@@ -109,10 +109,6 @@
 
   \item{value}{replacement value}
 
-  \item{all}{logical that indicates if all coefficients
-  should be returned or only the ones not representing
-  fixed coefficient terms.}
-
   \item{scale}{scaling factor, which indicates to the value
   the columns of the coefficient matrix should sum up to.}
 

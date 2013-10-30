@@ -3,6 +3,7 @@
 #' @import stringr
 #' @import stats
 #' @import methods
+#' @import graphics
 NULL
 #library(digest)
 

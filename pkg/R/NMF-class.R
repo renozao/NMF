@@ -203,7 +203,9 @@ setMethod('fitted', signature(object='NMF'),
 #' @param object an object from which to extract the factor matrices, typically an 
 #' object of class \code{\linkS4class{NMF}}.
 #' @param ... extra arguments to allow extension and passed to the low-level 
-#' access functions \code{.coef} and \code{.basis}. 
+#' access functions \code{.coef} and \code{.basis}.
+#' 
+#' Note that these throw an error if used in replacement functions \code{}.
 #'   
 #' @rdname basis-coef-methods
 #' @family NMF-interface
@@ -270,7 +272,6 @@ setGeneric('basis<-', function(object, ..., value) standardGeneric('basis<-') )
 #' set using those from the new value, or left unchanged -- after truncating 
 #' them to fit new dimensions if necessary.
 #' This is useful to only set the entries of a factor.
-#' @param ... unused extra arguments, which throw an error if used.
 #' 
 setReplaceMethod('basis', signature(object='NMF', value='ANY'), 
 	function(object, use.dimnames = TRUE, ..., value){

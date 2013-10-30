@@ -4,12 +4,7 @@ Title: Algorithms and framework for Nonnegative Matrix Factorization (NMF).
 Version: 0.18.3
 Date: 2013-09-17
 Author: Renaud Gaujoux, Cathal Seoighe
-Maintainer: Renaud Gaujoux <renaud@mancala.cbio.uct.ac.za>
-Authors@R: c( person("Renaud", "Gaujoux", role=c('aut', 'cre'),
-    email='renaud@mancala.cbio.uct.ac.za') , person("Cathal", "Seoighe",
-    role='ths') , person("P.", "Brunet", role = "ctb", comment='method: brunet
-    (Matlab original version)') , person("H.", "Kim", role = "ctb",
-    comment='methods: snmf/r(l) (Matlab original version)') )
+Maintainer: Renaud Gaujoux <renaud@tx.technion.ac.il>
 Description: This package provides a framework to perform Non-negative Matrix
     Factorization (NMF). It implements a set of already published algorithms
     and seeding methods, and provides a framework to test, develop and plug
@@ -17,7 +12,10 @@ Description: This package provides a framework to perform Non-negative Matrix
     in C++, and the main interface function provides an easy way of performing
     parallel computations on multicore machines.
 License: GPL (>=2)
-URL: http://nmf.r-forge.r-project.org
+URL: http://renozao.github.io/NMF/current,
+    http://github.com/renozao/NMF,
+    http://r-forge.r-project.org/projects/nmf/
+BugReports: http://github.com/renozao/NMF/issues
 LazyLoad: yes
 VignetteBuilder: knitr
 Depends:
@@ -43,7 +41,7 @@ Imports:
     ggplot2,
     reshape2
 Suggests:
-    RcppOctave (>= 0.10),
+    RcppOctave (>= 0.11),
     fastICA,
     doMPI,
     bigmemory (>= 4.2),

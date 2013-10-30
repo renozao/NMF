@@ -578,26 +578,26 @@ profplot.default <- function(x, y, scale=c('none', 'max', 'c1'), match.names=TRU
 #' summary(res)
 #' 
 #' # consensus silhouettes are ordered as on default consensusmap heatmap
-#' op <- par(mfrow = c(1,2))
+#' \dontrun{ op <- par(mfrow = c(1,2)) }
 #' consensusmap(res)
 #' si <- silhouette(res, what = 'consensus')
 #' plot(si)
-#' par(op)
+#' \dontrun{ par(op) }
 #' 
 #' # if the order is based on some custom numeric weights
-#' op <- par(mfrow = c(1,2))
+#' \dontrun{ op <- par(mfrow = c(1,2)) }
 #' cm <- consensusmap(res, Rowv = runif(ncol(res)))
 #' # NB: use reverse order because silhouettes are plotted top-down
 #' si <- silhouette(res, what = 'consensus', order = rev(cm$rowInd))
 #' plot(si)
-#' par(op)
+#' \dontrun{ par(op) }
 #' 
 #' # do the reverse: order the heatmap as a set of silhouettes
 #' si <- silhouette(res, what = 'features')
-#' op <- par(mfrow = c(1,2)) 
+#' \dontrun{ op <- par(mfrow = c(1,2)) } 
 #' basismap(res, Rowv = si)
 #' plot(si)
-#' par(op)
+#' \dontrun{ par(op) }
 #' 
 silhouette.NMF <- function(x, what = NULL, order = NULL, ...){
     
@@ -605,6 +605,7 @@ silhouette.NMF <- function(x, what = NULL, order = NULL, ...){
     p <- predict(x, what = what, dmatrix = TRUE)
     # compute silhouette
     si <- silhouette(as.numeric(p), dmatrix = attr(p, 'dmatrix'))
+    attr(si, 'call') <- match.call(call = sys.call(-1))
 	if( is_NA(si) ) return(NA)
     # fix rownames if necessary
     if( is.null(rownames(si)) ){
@@ -631,5 +632,7 @@ silhouette.NMF <- function(x, what = NULL, order = NULL, ...){
 
 #' @S3method silhouette NMFfitX
 silhouette.NMFfitX <- function(x, ...){
-    silhouette.NMF(x, ...)
+    si <- silhouette.NMF(x, ...)
+    attr(si, 'call') <- match.call(call = sys.call(-1))
+    si
 }
