@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>NMFStrategy-class. NMF 0.19</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">NMF</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+	  <li><a href="PAGE-MAN.html"><span class="glyphicon glyphicon-home"></span> Index</a></li>
+    </ul>
+    <!-- <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>--> 
+    <ul class="nav navbar-nav navbar-right">
+      <!--<li><p class="navbar-text" onClick="$('#versionMenu').load('')">Version</p></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">0.18.3 (stable) <b class="caret"></b></a>
+        <ul class="dropdown-menu" id='versionMenu'>
+        </ul>
+      </li>-->
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Virtual Interface for NMF Algorithms</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p><p>This class partially implements the generic interface
+  defined for general algorithms defined in the <span class = "pkg">NMF</span>
+  package (see <code><a href='algorithmic.html'>algorithmic-NMF</a></code>).</p>
+<p><code>is.mixed</code> tells if an NMF algorithm works on
+  mixed-sign data.</p></p>
+  
+    </div>
+    
+    <h2>Usage</h2>
+    <pre><span class="label label-success">S4</span> (NMFStrategy)
+`show`(object)
+
+<span class="label label-success">S4</span> (NMFStrategy)
+`objective`(object)
+
+<span class="label label-success">S4</span> (NMFStrategy,character)
+`objective`(object) <- value
+
+<span class="label label-success">S4</span> (NMFStrategy,function)
+`objective`(object) <- value
+
+is.mixed(object)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>Any R object</dd>
+      <dt>value</dt>
+      <dd>replacement value</dd>
+    </dl>
+    
+    <div class="Slots">
+      <h2>Slots</h2>
+      
+      <p><ol>
+<li>objectivethe objective function associated with
+  the algorithm (Frobenius, Kullback-Leibler, etc...).  It
+  is either an access key of a registered objective
+  function or a function definition.  In the latter case,
+  the given function must have the following signature
+  <code>(x="NMF", y="matrix")</code> and return a nonnegative
+  real value.</p>
+  
+      <p></li>
+<li>modela character string giving either the
+  (sub)class name of the NMF-class instance used and
+  returned by the strategy, or a function name.</p>
+  
+      <p></li>
+<li>mixeda logical that indicates if the algorithm
+  works on mixed-sign data.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>canFit<code>signature(x = "NMFStrategy", y =
+  "character")</code>: Tells if an NMF algorithm can fit a given
+  class of NMF models</p>
+  
+      <p></li>
+<li>canFit<code>signature(x = "NMFStrategy", y =
+  "NMF")</code>: Tells if an NMF algorithm can fit the same class
+  of models as <code>y</code></p>
+  
+      <p></li>
+<li>deviance<code>signature(object = "NMFStrategy")</code>:
+  Computes the value of the objective function between the
+  estimate <code>x</code> and the target <code>y</code>.</p>
+  
+      <p></li>
+<li>modelname<code>signature(object =
+  "NMFStrategy")</code>: Returns the model(s) that an NMF
+  algorithm can fit.</p>
+  
+      <p></li>
+<li>NMFStrategy<code>signature(name = "NMFStrategy",
+  method = "missing")</code>: Creates an <code>NMFStrategy</code> based
+  on a template object (Constructor-Copy), in particular it
+  uses the <strong>same</strong> name.</p>
+  
+      <p></li>
+<li>objective<code>signature(object =
+  "NMFStrategy")</code>: Gets the objective function associated
+  with an NMF algorithm.</p>
+  
+      <p>It is used in
+  <code><a href='deviance.html'>deviance</a></code> to
+  compute the objective value for an NMF model with respect
+  to a given target matrix.</p>
+  
+      <p></li>
+<li>objective<code>signature(object =
+  "NMFStrategy")</code>: Gets the objective function associated
+  with an NMF algorithm.</p>
+  
+      <p>It is used in
+  <code><a href='deviance.html'>deviance</a></code> to
+  compute the objective value for an NMF model with respect
+  to a given target matrix.</p>
+  
+      <p></li>
+<li>objective<-<code>signature(object =
+  "NMFStrategy", value = "character")</code>: Sets the objective
+  function associated with an NMF algorithm, with a
+  character string that must be a registered objective
+  function.</p>
+  
+      <p></li>
+<li>objective<-<code>signature(object =
+  "NMFStrategy", value = "character")</code>: Sets the objective
+  function associated with an NMF algorithm, with a
+  character string that must be a registered objective
+  function.</p>
+  
+      <p></li>
+<li>objective<-<code>signature(object =
+  "NMFStrategy", value = "function")</code>: Sets the objective
+  function associated with an NMF algorithm, with a
+  function that computes the approximation error between an
+  NMF model and a target matrix.</p>
+  
+      <p></li>
+<li>objective<-<code>signature(object =
+  "NMFStrategy", value = "function")</code>: Sets the objective
+  function associated with an NMF algorithm, with a
+  function that computes the approximation error between an
+  NMF model and a target matrix.</p>
+  
+      <p></li>
+<li>run<code>signature(object = "NMFStrategy", y =
+  "matrix", x = "NMFfit")</code>: Pure virtual method defined for
+  all NMF algorithms to ensure that a method <code>run</code> is
+  defined by sub-classes of <code>NMFStrategy</code>.</p>
+  
+      <p>It throws an error if called directly.</p>
+  
+      <p></li>
+<li>run<code>signature(object = "NMFStrategy", y =
+  "matrix", x = "NMF")</code>: Method to run an NMF algorithm
+  directly starting from a given NMF model.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>is.mixed</li><li>NMFStrategy-class</li><li>objective&lt;-,NMFStrategy,character-method</li><li>objective&lt;-,NMFStrategy,function-method</li><li>objective,NMFStrategy-method</li><li>show,NMFStrategy-method</li>
+    </ul>
+    <ul>
+      <li>internal</li><li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

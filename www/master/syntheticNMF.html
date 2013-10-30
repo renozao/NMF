@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>syntheticNMF. NMF 0.19</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">NMF</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+	  <li><a href="PAGE-MAN.html"><span class="glyphicon glyphicon-home"></span> Index</a></li>
+    </ul>
+    <!-- <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>--> 
+    <ul class="nav navbar-nav navbar-right">
+      <!--<li><p class="navbar-text" onClick="$('#versionMenu').load('')">Version</p></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">0.18.3 (stable) <b class="caret"></b></a>
+        <ul class="dropdown-menu" id='versionMenu'>
+        </ul>
+      </li>-->
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Simulating Datasets</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p><p>The function <code>syntheticNMF</code> generates random target
+  matrices that follow some defined NMF model, and may be
+  used to test NMF algorithms. It is designed to designed
+  to produce data with known or clear classes of samples.</p></p>
+  
+    </div>
+    
+    <h2>Usage</h2>
+    <pre>syntheticNMF(n, r, p, offset = NULL, noise = TRUE, factors = FALSE, seed = NULL)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>n</dt>
+      <dd>number of rows of the target matrix.</dd>
+      <dt>r</dt>
+      <dd>specification of the factorization rank. It may
+  be a single <code>numeric</code>, in which case argument
+  <code>p</code> is required and <code>r</code> groups of samples are
+  generated from a draw from a multinomial distribution
+  with equal probabilities, that provides their sizes.
+
+  It may also be a numerical vector, which contains the
+  number of samples in each class (i.e integers). In this
+  case argument <code>p</code> is discarded and forced to be the
+  sum of <code>r</code>.</dd>
+      <dt>p</dt>
+      <dd>number of columns of the synthetic target
+  matrix. Not used if parameter <code>r</code> is a vector (see
+  description of argument <code>r</code>).</dd>
+      <dt>offset</dt>
+      <dd>specification of a common offset to be
+  added to the synthetic target matrix, before
+  noisification. Its may be a numeric vector of length
+  <code>n</code>, or a single numeric value that is used as the
+  standard deviation of a centred normal distribution from
+  which the actual offset values are drawn.</dd>
+      <dt>noise</dt>
+      <dd>a logical that indicate if noise should be
+  added to the matrix.</dd>
+      <dt>factors</dt>
+      <dd>a logical that indicates if the NMF
+  factors should be return together with the matrix.</dd>
+      <dt>seed</dt>
+      <dd>a single numeric value used to seed the
+  random number generator before generating the matrix. The
+  state of the RNG is restored on exit.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a matrix, or a list if argument <code>factors=TRUE</code>.</p>
+  
+      <p>When <code>factors=FALSE</code>, the result is a matrix object,
+  with the following attributes set: <ol>
+<li>coefficientsthe true underlying coefficient
+  matrix (i.e. <code>H</code>); </li>
+<li>basisthe true underlying
+  coefficient matrix (i.e. <code>H</code>); </li>
+<li>offsetthe
+  offset if any; </li>
+<li>pDataa <code>list</code> with one
+  element <code>'Group'</code> that contains a factor that
+  indicates the true groups of samples, i.e. the most
+  contributing basis component for each sample;
+  </li>
+<li>fDataa <code>list</code> with one element
+  <code>'Group'</code> that contains a factor that indicates the
+  true groups of features, i.e. the basis component to
+  which each feature contributes the most. </li>
+</ol></p>
+  
+      <p>Moreover, the result object is an
+  <code><a href='http://www.inside-r.org/r-doc/pkgmaker/ExposeAttribute'>ExposeAttribute</a></code> object, which means that
+  relevant attributes are accessible via <code>$</code>, e.g.,
+  <code>res$coefficients</code>. In particular, methods
+  <code><a href='basis-coef-methods.html'>coef</a></code> and <code><a href='basis-coef-methods.html'>basis</a></code> will work as
+  expected and return the true underlying coefficient and
+  basis matrices respectively.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre><code class="r">
+# generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)
+n &lt;- 50
+counts &lt;- c(5, 5, 8)
+
+# no noise
+V &lt;- syntheticNMF(n, counts, noise=FALSE)
+## Not run: aheatmap(V)
+
+# with noise
+V &lt;- syntheticNMF(n, counts)
+## Not run: aheatmap(V)
+
+</code></pre>
+
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>syntheticNMF</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>txtProgressBar. NMF 0.19</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="
+  R Core Team
+">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">NMF</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+	  <li><a href="PAGE-MAN.html"><span class="glyphicon glyphicon-home"></span> Index</a></li>
+    </ul>
+    <!-- <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>--> 
+    <ul class="nav navbar-nav navbar-right">
+      <!--<li><p class="navbar-text" onClick="$('#versionMenu').load('')">Version</p></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">0.18.3 (stable) <b class="caret"></b></a>
+        <ul class="dropdown-menu" id='versionMenu'>
+        </ul>
+      </li>-->
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Simple Progress Bar</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p><p>Creates a simple progress bar with title. This function
+  is identical to <code>utils::txtProgressBar</code> but allow
+  adding a title to the progress bar, and can be shared by
+  multiple processes, e.g., in multicore or multi-hosts
+  computations.</p></p>
+  
+    </div>
+    
+    <h2>Usage</h2>
+    <pre>txtProgressBar(min = 0, max = 1, initial = 0, char = "=", width = NA, title = if (style == 
+  3) " ", label, style = 1, file = "", shared = NULL)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>shared</dt>
+      <dd>specification of a shared directory to use
+  when the progress bar is to be used by multiple
+  processes.</dd>
+      <dt>min</dt>
+      <dd>(finite) numeric values for the extremes of
+  the progress bar. Must have <code>min < max</code>.</dd>
+      <dt>max</dt>
+      <dd>(finite) numeric values for the extremes of
+  the progress bar. Must have <code>min < max</code>.</dd>
+      <dt>initial</dt>
+      <dd>initial or new value for the progress bar.
+  See &#145;Details&#146; for what happens with invalid
+  values.</dd>
+      <dt>char</dt>
+      <dd>the character (or character string) to form
+  the progress bar.</dd>
+      <dt>width</dt>
+      <dd>the width of the progress bar, as a multiple
+  of the width of <code>char</code>.  If <code>NA</code>, the default,
+  the number of characters is that which fits into
+  <code>getOption("width")</code>.</dd>
+      <dt>title</dt>
+      <dd>ignored, for compatibility with other
+  progress bars.</dd>
+      <dt>label</dt>
+      <dd>ignored, for compatibility with other
+  progress bars.</dd>
+      <dt>style</dt>
+      <dd>the &#145;style&#146; of the bar -- see
+  &#145;Details&#146;.</dd>
+      <dt>file</dt>
+      <dd>an open connection object or <code>""</code> which
+  indicates the console: <code><a href='http://www.inside-r.org/r-doc/base/showConnections'>stderr</a>()</code> might be
+  useful here.</dd>
+    </dl>
+          </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>txtProgressBar</li>
+    </ul>
+    <ul>
+      <li>internal</li>
+    </ul> -->
+      
+    
+    <h2>Author</h2>
+    
+  R Core Team
+
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

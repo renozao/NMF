@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>rmatrix. NMF 0.19</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">NMF</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+	  <li><a href="PAGE-MAN.html"><span class="glyphicon glyphicon-home"></span> Index</a></li>
+    </ul>
+    <!-- <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>--> 
+    <ul class="nav navbar-nav navbar-right">
+      <!--<li><p class="navbar-text" onClick="$('#versionMenu').load('')">Version</p></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">0.18.3 (stable) <b class="caret"></b></a>
+        <ul class="dropdown-menu" id='versionMenu'>
+        </ul>
+      </li>-->
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Generating Random Matrices</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p><p>The S4 generic <code>rmatrix</code> generates a random matrix
+  from a given object. Methods are provided to generate
+  matrices with entries drawn from any given random
+  distribution function, e.g. <code><a href='http://www.inside-r.org/r-doc/stats/Uniform'>runif</a></code> or
+  <code><a href='http://www.inside-r.org/r-doc/stats/Normal'>rnorm</a></code>.</p></p>
+  
+    </div>
+    
+    <h2>Usage</h2>
+    <pre>rmatrix(x, ...)
+
+<span class="label label-success">S4</span> (numeric)
+`rmatrix`(x, y = NULL, dist = runif, byrow = FALSE, dimnames = NULL, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>object from which to generate a random matrix</dd>
+      <dt>y</dt>
+      <dd>optional specification of number of columns</dd>
+      <dt>dist</dt>
+      <dd>a random distribution function or a numeric
+  seed (see details of method <code>rmatrix,numeric</code>)</dd>
+      <dt>byrow</dt>
+      <dd>a logical passed in the internal call to the
+  function <code><a href='http://www.inside-r.org/r-doc/base/matrix'>matrix</a></code></dd>
+      <dt>dimnames</dt>
+      <dd><code>NULL</code> or a <code>list</code> passed in
+  the internal call to the function <code><a href='http://www.inside-r.org/r-doc/base/matrix'>matrix</a></code></dd>
+      <dt>...</dt>
+      <dd>extra arguments passed to the distribution
+  function <code>dist</code>.</dd>
+    </dl>
+    
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>rmatrix<code>signature(x = "numeric")</code>: Generates
+  a random matrix of given dimensions, whose entries are
+  drawn using the distribution function <code>dist</code>.</p>
+  
+      <p>This is the workhorse method that is eventually called by
+  all other methods. It returns a matrix with: <ul>
+<li> <code>x</code> rows and <code>y</code> columns if <code>y</code> is
+  not missing and not <code>NULL</code>; </li>
+<li> dimension
+  <code>x[1]</code> x <code>x[2]</code> if <code>x</code> has at least two
+  elements; </li>
+<li> dimension <code>x</code> (i.e. a square matrix)
+  otherwise. </li>
+</ul></p>
+  
+      <p>The default is to draw its entries from the standard
+  uniform distribution using the base function
+  <code><a href='http://www.inside-r.org/r-doc/stats/Uniform'>runif</a></code>, but any other function that
+  generates random numeric vectors of a given length may be
+  specified in argument <code>dist</code>. All arguments in
+  <code>...</code> are passed to the function specified in
+  <code>dist</code>.</p>
+  
+      <p>The only requirement is that the function in <code>dist</code>
+  is of the following form:</p>
+  
+      <p><span class = "samp"> function(n, ...){ # return vector of length n ...
+  }</span></p>
+  
+      <p>This is the case of all base random draw function such as
+  <code><a href='http://www.inside-r.org/r-doc/stats/Normal'>rnorm</a></code>, <code><a href='http://www.inside-r.org/r-doc/stats/GammaDist'>rgamma</a></code>, etc...</p>
+  
+      <p></li>
+<li>rmatrix<code>signature(x = "ANY")</code>: Default
+  method which calls <code>rmatrix,vector</code> on the
+  dimensions of <code>x</code> that is assumed to be returned by
+  a suitable <code>dim</code> method: it is equivalent to
+  <code>rmatrix(dim(x), y=NULL, ...)</code>.</p>
+  
+      <p></li>
+<li>rmatrix<code>signature(x = "NMF")</code>: Returns the
+  target matrix estimate of the NMF model <code>x</code>,
+  perturbated by adding a random matrix generated using the
+  default method of <code>rmatrix</code>: it is a equivalent to
+  <code>fitted(x) + rmatrix(fitted(x), ...)</code>.</p>
+  
+      <p>This method can be used to generate random target
+  matrices that depart from a known NMF model to a
+  controlled extend. This is useful to test the robustness
+  of NMF algorithms to the presence of certain types of
+  noise in the data.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre><code class="r">
+#----------
+# rmatrix,numeric-method
+#----------
+## Generate a random matrix of a given size
+rmatrix(5, 3)
+</code></pre>
+
+<pre><code>##         [,1]   [,2]   [,3]
+## [1,] 0.06243 0.1101 0.8997
+## [2,] 0.90294 0.5133 0.3080
+## [3,] 0.02825 0.8323 0.5569
+## [4,] 0.32196 0.4457 0.9992
+## [5,] 0.12815 0.7559 0.2021
+</code></pre>
+
+<pre><code class="r">## Don&#39;t show: 
+ stopifnot( identical(dim(rmatrix(5, 3)), c(5L,3L)) ) 
+## End Don&#39;t show
+
+## Generate a random matrix of the same dimension of a template matrix
+a &lt;- matrix(1, 3, 4)
+rmatrix(a)
+</code></pre>
+
+<pre><code>##        [,1]   [,2]   [,3]   [,4]
+## [1,] 0.5755 0.1902 0.5678 0.3842
+## [2,] 0.4891 0.8384 0.3627 0.5724
+## [3,] 0.2043 0.8881 0.2311 0.5999
+</code></pre>
+
+<pre><code class="r">## Don&#39;t show: 
+ stopifnot( identical(dim(rmatrix(a)), c(3L,4L)) ) 
+## End Don&#39;t show
+
+## Specificy the distribution to use
+
+# the default is uniform
+a &lt;- rmatrix(1000, 50)
+## Not run:  hist(a) 
+
+# use normal ditribution
+a &lt;- rmatrix(1000, 50, rnorm)
+## Not run:  hist(a) 
+
+# extra arguments can be passed to the random variate generation function
+a &lt;- rmatrix(1000, 50, rnorm, mean=2, sd=0.5)
+## Not run:  hist(a) 
+
+#----------
+# rmatrix,ANY-method
+#----------
+# random matrix of the same dimension as another matrix
+x &lt;- matrix(3,4)
+dim(rmatrix(x))
+</code></pre>
+
+<pre><code>## [1] 4 1
+</code></pre>
+
+<pre><code class="r">
+#----------
+# rmatrix,NMF-method
+#----------
+# generate noisy fitted target from an NMF model (the true model)
+gr &lt;- as.numeric(mapply(rep, 1:3, 3))
+h &lt;- outer(1:3, gr, &#39;==&#39;) + 0
+x &lt;- rnmf(10, H=h)
+y &lt;- rmatrix(x)
+## Not run: 
+##D # show heatmap of the noisy target matrix: block patterns should be clear
+##D aheatmap(y)
+## End(Not run)
+## Don&#39;t show: 
+ stopifnot( identical(dim(y), dim(x)[1:2]) ) 
+## End Don&#39;t show
+
+# test NMF algorithm on noisy data
+# add some noise to the true model (drawn from uniform [0,1])
+res &lt;- nmf(rmatrix(x), 3)
+summary(res)
+</code></pre>
+
+<pre><code>## Length  Class   Mode 
+##      1 NMFfit     S4
+</code></pre>
+
+<pre><code class="r">
+# add more noise to the true model (drawn from uniform [0,10])
+res &lt;- nmf(rmatrix(x, max=10), 3)
+summary(res)
+</code></pre>
+
+<pre><code>## Length  Class   Mode 
+##      1 NMFfit     S4
+</code></pre>
+
+<pre><code class="r">
+</code></pre>
+
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>rmatrix</li><li>rmatrix,ANY-method</li><li>rmatrix-methods</li><li>rmatrix,NMF-method</li><li>rmatrix,numeric-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
