@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>basiscor. NMF 0.18.3</title>
+<title>basiscor. NMF 0.19</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -50,12 +50,9 @@
       <button type="submit" class="btn btn-default">Submit</button>
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
-      <!--<li><p class="navbar-text" onClick="$('#versionMenu').load('')">Version</p></li>
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">0.18.3 (stable) <b class="caret"></b></a>
-        <ul class="dropdown-menu" id='versionMenu'>
-        </ul>
-      </li>-->
+      <li><p class="navbar-text">
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.19</span>
+      &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
 </nav>
@@ -170,38 +167,38 @@ b &lt;- rnmf(3, 100, 20)
 basiscor(a)
 </code></pre>
 
-<pre><code>##         [,1]     [,2]     [,3]
-## [1,] 1.00000  0.06571  0.07454
-## [2,] 0.06571  1.00000 -0.05254
-## [3,] 0.07454 -0.05254  1.00000
+<pre><code>##          [,1]     [,2]     [,3]
+## [1,]  1.00000  0.01573 -0.11310
+## [2,]  0.01573  1.00000 -0.09955
+## [3,] -0.11310 -0.09955  1.00000
 </code></pre>
 
 <pre><code class="r">profcor(a)
 </code></pre>
 
 <pre><code>##         [,1]     [,2]     [,3]
-## [1,]  1.0000 -0.28054  0.37781
-## [2,] -0.2805  1.00000 -0.06874
-## [3,]  0.3778 -0.06874  1.00000
+## [1,]  1.0000 -0.12166  0.10348
+## [2,] -0.1217  1.00000 -0.07672
+## [3,]  0.1035 -0.07672  1.00000
 </code></pre>
 
 <pre><code class="r"># Compute correlations with b
 basiscor(a, b)
 </code></pre>
 
-<pre><code>##          [,1]    [,2]    [,3]
-## [1,]  0.01637 0.11050 0.10626
-## [2,] -0.06718 0.09537 0.14088
-## [3,]  0.00984 0.06184 0.07318
+<pre><code>##          [,1]    [,2]     [,3]
+## [1,]  0.12944 0.07605 -0.05536
+## [2,] -0.06839 0.07035  0.06887
+## [3,]  0.02039 0.04259 -0.06284
 </code></pre>
 
 <pre><code class="r">profcor(a, b)
 </code></pre>
 
-<pre><code>##           [,1]    [,2]     [,3]
-## [1,] 0.2113787 -0.1269 -0.05774
-## [2,] 0.2315197  0.1562  0.04111
-## [3,] 0.0007233  0.3020  0.05312
+<pre><code>##          [,1]     [,2]     [,3]
+## [1,] -0.20244  0.26083  0.52509
+## [2,] -0.35297 -0.02638  0.32742
+## [3,]  0.01174  0.20117 -0.08078
 </code></pre>
 
 <pre><code class="r">
@@ -212,19 +209,19 @@ res &lt;- nmf(fitted(a) + rmatrix(a), 3)
 basiscor(a, res)
 </code></pre>
 
-<pre><code>##          [,1]    [,2]    [,3]
-## [1,]  0.21476 -0.2563  0.8476
-## [2,] -0.09435  0.8655  0.2355
-## [3,]  0.93522  0.1128 -0.1850
+<pre><code>##         [,1]    [,2]    [,3]
+## [1,] -0.5005  0.7591  0.5237
+## [2,]  0.5205 -0.4436  0.7113
+## [3,]  0.6243  0.3005 -0.4950
 </code></pre>
 
 <pre><code class="r">profcor(a, res)
 </code></pre>
 
-<pre><code>##         [,1]     [,2]     [,3]
-## [1,]  0.5907 -0.49638  0.94144
-## [2,] -0.2838  0.95455 -0.05927
-## [3,]  0.9472 -0.05217  0.21651
+<pre><code>##         [,1]    [,2]    [,3]
+## [1,] -0.2700  0.8312  0.4625
+## [2,]  0.4121 -0.3479  0.6802
+## [3,]  0.8150  0.5752 -0.4499
 </code></pre>
 
 <pre><code class="r">
@@ -233,10 +230,10 @@ W &lt;- rmatrix(basis(a))
 basiscor(a, W)
 </code></pre>
 
-<pre><code>##          [,1]     [,2]     [,3]
-## [1,] -0.14582  0.09163 -0.10495
-## [2,]  0.12012 -0.09303  0.09434
-## [3,] -0.04335  0.07661  0.02081
+<pre><code>##         [,1]     [,2]    [,3]
+## [1,] 0.11930  0.03413  0.0275
+## [2,] 0.08869 -0.05614  0.1794
+## [3,] 0.06014 -0.02244 -0.1644
 </code></pre>
 
 <pre><code class="r">identical(basiscor(a, W), basiscor(W, a))
@@ -250,10 +247,10 @@ H &lt;- rmatrix(coef(a))
 profcor(a, H)
 </code></pre>
 
-<pre><code>##           [,1]    [,2]     [,3]
-## [1,]  0.009043 0.23802  0.11020
-## [2,] -0.059763 0.03489 -0.01838
-## [3,] -0.071702 0.16899 -0.34341
+<pre><code>##          [,1]     [,2]    [,3]
+## [1,]  0.06211 -0.32006 -0.2529
+## [2,] -0.62589  0.06137  0.1070
+## [3,] -0.20470 -0.14094  0.3890
 </code></pre>
 
 <pre><code class="r">identical(profcor(a, H), profcor(H, a))
@@ -279,7 +276,7 @@ profcor(a, H)
 </div>
       
       <footer>
-      <p class="pull-right"><a href="#">Back to top</a></p>
+      
 <p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
       </footer>
     </div>
