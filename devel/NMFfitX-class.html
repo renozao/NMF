@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>NMFfitX-class. NMF 0.21</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">NMF</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+	  <li><a href="PAGE-MAN.html"><span class="glyphicon glyphicon-home"></span> Index</a></li>
+    </ul>
+    <!-- <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>--> 
+    <ul class="nav navbar-nav navbar-right">
+      <li><p class="navbar-text">
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      &nbsp;</p></li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Virtual Class to Handle Results from Multiple Runs of NMF Algorithms</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p><p>This class defines a common interface to handle the
+  results from multiple runs of a single NMF algorithm,
+  performed with the <code><a href='nmf.html'>nmf</a></code> method.</p></p>
+  
+    </div>
+    
+    
+    
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>Currently, this interface is implemented by two classes,
+  <code><a href='NMFfitX1-class.html'>NMFfitX1-class</a></code> and
+  <code><a href='NMFfitXn-class.html'>NMFfitXn-class</a></code>, which respectively handle
+  the case where only the best fit is kept, and the case
+  where the list of all the fits is returned.</p>
+  
+      <p>See <code><a href='nmf.html'>nmf</a></code> for more details on the method
+  arguments.</p>
+  
+    </div>
+
+    <div class="Slots">
+      <h2>Slots</h2>
+      
+      <p><ol>
+<li>runtime.allObject of class
+  <code><a href='http://www.inside-r.org/r-doc/base/proc.time'>proc_time</a></code> that contains CPU
+  times required to perform all the runs.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>basismap<code>signature(object = "NMFfitX")</code>:
+  Plots a heatmap of the basis matrix of the best fit in
+  <code>object</code>.</p>
+  
+      <p></li>
+<li>coefmap<code>signature(object = "NMFfitX")</code>:
+  Plots a heatmap of the coefficient matrix of the best fit
+  in <code>object</code>.</p>
+  
+      <p>This method adds: <ul>
+<li> an extra special column
+  annotation track for multi-run NMF fits,
+  <code>'consensus:'</code>, that shows the consensus cluster
+  associated to each sample. </li>
+<li> a column sorting schema
+  <code>'consensus'</code> that can be passed to argument
+  <code>Colv</code> and orders the columns using the hierarchical
+  clustering of the consensus matrix with average linkage,
+  as returned by <code><a href='consensushc.html'>consensushc</a>(object)</code>. This is
+  also the ordering that is used by default for the heatmap
+  of the consensus matrix as ploted by
+  <code><a href='heatmaps.html'>consensusmap</a></code>. </li>
+</ul></p>
+  
+      <p></li>
+<li>consensus<code>signature(object = "NMFfitX")</code>:
+  Pure virtual method defined to ensure <code>consensus</code> is
+  defined for sub-classes of <code>NMFfitX</code>. It throws an
+  error if called.</p>
+  
+      <p></li>
+<li>consensushc<code>signature(object = "NMFfitX")</code>:
+  Compute the hierarchical clustering on the consensus
+  matrix of <code>object</code>, or on the connectivity matrix of
+  the best fit in <code>object</code>.</p>
+  
+      <p></li>
+<li>consensusmap<code>signature(object = "NMFfitX")</code>:
+  Plots a heatmap of the consensus matrix obtained when
+  fitting an NMF model with multiple runs.</p>
+  
+      <p></li>
+<li>cophcor<code>signature(object = "NMFfitX")</code>:
+  Computes the cophenetic correlation coefficient on the
+  consensus matrix of <code>object</code>. All arguments in
+  <code>...</code> are passed to the method
+  <code>cophcor,matrix</code>.</p>
+  
+      <p></li>
+<li>deviance<code>signature(object = "NMFfitX")</code>:
+  Returns the deviance achieved by the best fit object,
+  i.e. the lowest deviance achieved across all NMF runs.</p>
+  
+      <p></li>
+<li>dispersion<code>signature(object = "NMFfitX")</code>:
+  Computes the dispersion on the consensus matrix obtained
+  from multiple NMF runs.</p>
+  
+      <p></li>
+<li>fit<code>signature(object = "NMFfitX")</code>: Returns
+  the model object that achieves the lowest residual
+  approximation error across all the runs.</p>
+  
+      <p>It is a pure virtual method defined to ensure <code>fit</code>
+  is defined for sub-classes of <code>NMFfitX</code>, which
+  throws an error if called.</p>
+  
+      <p></li>
+<li>getRNG1<code>signature(object = "NMFfitX")</code>:
+  Returns the RNG settings used for the first NMF run of
+  multiple NMF runs.</p>
+  
+      <p></li>
+<li>ibterms<code>signature(object = "NMFfitX")</code>:
+  Method for multiple NMF fit objects, which returns the
+  indexes of fixed basis terms from the best fitted model.</p>
+  
+      <p></li>
+<li>metaHeatmap<code>signature(object = "NMFfitX")</code>:
+  Deprecated method subsituted by
+  <code><a href='heatmaps.html'>consensusmap</a></code>.</p>
+  
+      <p></li>
+<li>minfit<code>signature(object = "NMFfitX")</code>:
+  Returns the fit object that achieves the lowest residual
+  approximation error across all the runs.</p>
+  
+      <p>It is a pure virtual method defined to ensure
+  <code>minfit</code> is defined for sub-classes of
+  <code>NMFfitX</code>, which throws an error if called.</p>
+  
+      <p></li>
+<li>nmf.equal<code>signature(x = "NMFfitX", y =
+  "NMF")</code>: Compares two NMF models when at least one comes
+  from multiple NMF runs.</p>
+  
+      <p></li>
+<li>NMFfitX<code>signature(object = "NMFfitX")</code>:
+  Provides a way to aggregate <code>NMFfitXn</code> objects into
+  an <code>NMFfitX1</code> object.</p>
+  
+      <p></li>
+<li>nrun<code>signature(object = "NMFfitX")</code>: Returns
+  the number of NMF runs performed to create <code>object</code>.</p>
+  
+      <p>It is a pure virtual method defined to ensure <code>nrun</code>
+  is defined for sub-classes of <code>NMFfitX</code>, which
+  throws an error if called.</p>
+  
+      <p>See <code><a href='algorithmic.html'>nrun,NMFfitX-method</a></code> for more details.</p>
+  
+      <p></li>
+<li>predict<code>signature(object = "NMFfitX")</code>:
+  Returns the cluster membership index from an NMF model
+  fitted with multiple runs.</p>
+  
+      <p>Besides the type of clustering available for any NMF
+  models (<code>'columns', 'rows', 'samples', 'features'</code>),
+  this method can return the cluster membership index based
+  on the consensus matrix, computed from the multiple NMF
+  runs.</p>
+  
+      <p>See <code><a href='predict.html'>predict,NMFfitX-method</a></code> for more
+  details.</p>
+  
+      <p></li>
+<li>residuals<code>signature(object = "NMFfitX")</code>:
+  Returns the residuals achieved by the best fit object,
+  i.e. the lowest residual approximation error achieved
+  across all NMF runs.</p>
+  
+      <p></li>
+<li>runtime.all<code>signature(object = "NMFfitX")</code>:
+  Returns the CPU time required to compute all the NMF
+  runs. It returns <code>NULL</code> if no CPU data is available.</p>
+  
+      <p></li>
+<li>show<code>signature(object = "NMFfitX")</code>: Show
+  method for objects of class <code>NMFfitX</code></p>
+  
+      <p></li>
+<li>summary<code>signature(object = "NMFfitX")</code>:
+  Computes a set of measures to help evaluate the quality
+  of the <em>best fit</em> of the set. The result is similar
+  to the result from the <code>summary</code> method of
+  <code>NMFfit</code> objects. See <code><a href='NMF-class.html'>NMF-class</a></code> for
+  details on the computed measures. In addition, the
+  cophenetic correlation (<code><a href='cophcor.html'>cophcor</a></code>) and
+  <code><a href='dispersion.html'>dispersion</a></code> coefficients of the consensus
+  matrix are returned, as well as the total CPU time
+  (<code><a href='algorithmic.html'>runtime.all</a></code>).</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre><code class="r">
+# generate a synthetic dataset with known classes
+n &lt;- 20; counts &lt;- c(5, 2, 3);
+V &lt;- syntheticNMF(n, counts)
+
+# perform multiple runs of one algorithm (default is to keep only best fit)
+res &lt;- nmf(V, 3, nrun=3)
+res
+</code></pre>
+
+<pre><code>## &lt;Object of class: NMFfitX1 &gt;
+##   Method: brunet 
+##   Runs:  3 
+##   RNG:
+##    407L, 1640873474L, -2107031141L, 137979936L, -396230239L, 305232622L, -1882487145L 
+##   Total timing:
+##    user  system elapsed 
+##   1.999   0.417   1.824
+</code></pre>
+
+<pre><code class="r">
+# plot a heatmap of the consensus matrix
+## Not run:  consensusmap(res) 
+
+# perform multiple runs of one algorithm (keep all the fits)
+res &lt;- nmf(V, 3, nrun=3, .options=&#39;k&#39;)
+res
+</code></pre>
+
+<pre><code>## &lt;Object of class: NMFfitXn &gt;
+##   Method: brunet 
+##   Runs:  3 
+##   RNG:
+##    407L, -2007342784L, 680534081L, -313646834L, 541863479L, -376386292L, 812240541L 
+##   Total timing:
+##    user  system elapsed 
+##   1.830   0.394   1.515 
+##   Sequential timing:
+##    user  system elapsed 
+##   0.495   0.006   0.501
+</code></pre>
+
+<pre><code class="r">
+</code></pre>
+
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>NMFfitX-class</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  Other multipleNMF: <code><a href='NMFfitX1-class.html'>NMFfitX1-class</a></code>,
+  <code><a href='NMFfitXn-class.html'>NMFfitXn-class</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

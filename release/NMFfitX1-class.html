@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>NMFfitX1-class. NMF 0.20</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">NMF</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+	  <li><a href="PAGE-MAN.html"><span class="glyphicon glyphicon-home"></span> Index</a></li>
+    </ul>
+    <!-- <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>--> 
+    <ul class="nav navbar-nav navbar-right">
+      <li><p class="navbar-text">
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20</span>
+      &nbsp;</p></li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Structure for Storing the Best Fit Amongst Multiple NMF Runs</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p><p>This class is used to return the result from a multiple
+  run of a single NMF algorithm performed with function
+  <code>nmf</code> with the -- default -- option
+  <code>keep.all=FALSE</code> (cf. <code><a href='nmf.html'>nmf</a></code>).</p></p>
+  
+    </div>
+    
+    
+    
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>It extends both classes <code><a href='NMFfitX-class.html'>NMFfitX-class</a></code> and
+  <code><a href='NMFfit-class.html'>NMFfit-class</a></code>, and stores a the result of
+  the best fit in its <code>NMFfit</code> structure.</p>
+  
+      <p>Beside the best fit, this class allows to hold data about
+  the computation of the multiple runs, such as the number
+  of runs, the CPU time used to perform all the runs, as
+  well as the consensus matrix.</p>
+  
+      <p>Due to the inheritance from class <code>NMFfit</code>, objects
+  of class <code>NMFfitX1</code> can be handled exactly as the
+  results of single NMF run -- as if only the best run had
+  been performed.</p>
+  
+    </div>
+
+    <div class="Slots">
+      <h2>Slots</h2>
+      
+      <p><ol>
+<li>consensusobject of class <code>matrix</code> used to
+  store the consensus matrix based on all the runs.</p>
+  
+      <p></li>
+<li>nrunan <code>integer</code> that contains the number of
+  runs performed to compute the object.</p>
+  
+      <p></li>
+<li>rng1an object that contains RNG settings used for
+  the first run. See <code><a href='RNG.html'>getRNG1</a></code>.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>consensus<code>signature(object = "NMFfitX1")</code>:
+  The result is the matrix stored in slot
+  &#145;consensus&#146;. This method returns <code>NULL</code> if
+  the consensus matrix is empty.</p>
+  
+      <p></li>
+<li>fit<code>signature(object = "NMFfitX1")</code>: Returns
+  the model object associated with the best fit, amongst
+  all the runs performed when fitting <code>object</code>.</p>
+  
+      <p>Since <code>NMFfitX1</code> objects only hold the best fit,
+  this method simply returns the NMF model fitted by
+  <code>object</code> -- that is stored in slot &#145;fit&#146;.</p>
+  
+      <p></li>
+<li>getRNG1<code>signature(object = "NMFfitX1")</code>:
+  Returns the RNG settings used to compute the first of all
+  NMF runs, amongst which <code>object</code> was selected as the
+  best fit.</p>
+  
+      <p></li>
+<li>minfit<code>signature(object = "NMFfitX1")</code>:
+  Returns the fit object associated with the best fit,
+  amongst all the runs performed when fitting
+  <code>object</code>.</p>
+  
+      <p>Since <code>NMFfitX1</code> objects only hold the best fit,
+  this method simply returns <code>object</code> coerced into an
+  <code>NMFfit</code> object.</p>
+  
+      <p></li>
+<li>nmf.equal<code>signature(x = "NMFfitX1", y =
+  "NMFfitX1")</code>: Compares the NMF models fitted by multiple
+  runs, that only kept the best fits.</p>
+  
+      <p></li>
+<li>nrun<code>signature(object = "NMFfitX1")</code>:
+  Returns the number of NMF runs performed, amongst which
+  <code>object</code> was selected as the best fit.</p>
+  
+      <p></li>
+<li>show<code>signature(object = "NMFfitX1")</code>: Show
+  method for objects of class <code>NMFfitX1</code></p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre><code class="r">
+# generate a synthetic dataset with known classes
+n &lt;- 20; counts &lt;- c(5, 2, 3);
+V &lt;- syntheticNMF(n, counts)
+
+# get the class factor
+groups &lt;- V$pData$Group
+
+# perform multiple runs of one algorithm, keeping only the best fit (default)
+#i.e.: the implicit nmf options are .options=list(keep.all=FALSE) or .options=&#39;-k&#39;
+res &lt;- nmf(V, 3, nrun=3)
+res
+</code></pre>
+
+<pre><code>## &lt;Object of class: NMFfitX1 &gt;
+##   Method: brunet 
+##   Runs:  3 
+##   RNG:
+##    407L, 1138333723L, -99406688L, 1732172833L, -1163594898L, -907967209L, -1569669524L 
+##   Total timing:
+##    user  system elapsed 
+##   2.010   0.391   1.756
+</code></pre>
+
+<pre><code class="r">
+# compute summary measures
+summary(res)
+</code></pre>
+
+<pre><code>##   Length    Class     Mode 
+##        1 NMFfitX1       S4
+</code></pre>
+
+<pre><code class="r"># get more info
+summary(res, target=V, class=groups)
+</code></pre>
+
+<pre><code>##   Length    Class     Mode 
+##        1 NMFfitX1       S4
+</code></pre>
+
+<pre><code class="r">
+# show computational time
+runtime.all(res)
+</code></pre>
+
+<pre><code>##    user  system elapsed 
+##   2.010   0.391   1.756
+</code></pre>
+
+<pre><code class="r">
+# plot the consensus matrix, as stored (pre-computed) in the object
+## Not run:  consensusmap(res, annCol=groups) 
+
+</code></pre>
+
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>NMFfitX1-class</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  Other multipleNMF: <code><a href='NMFfitX-class.html'>NMFfitX-class</a></code>,
+  <code><a href='NMFfitXn-class.html'>NMFfitXn-class</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

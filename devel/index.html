@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>Index. NMF 0.21</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Renaud Gaujoux, Cathal Seoighe">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">NMF</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+	  <li><a href=""><span class="glyphicon glyphicon-home"></span> Index</a></li>
+       <li><a href="PAGE-MAN.html">Documentation</a></li>
+       <li><a href="PAGE-DEMOS.html">Demos</a></li>
+       <li><a href="PAGE-REFERENCES.html">References</a></li>
+    </ul>
+    <!-- <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>--> 
+    <ul class="nav navbar-nav navbar-right">
+      <li><p class="navbar-text">
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      &nbsp;<span style="background-color:red" class="badge label-danger">devel</span>
+      &nbsp;</p></li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <div class="row">
+  <div class="col-xs-12 col-sm-6 col-md-8">
+  	<h1>Algorithms and framework for Nonnegative Matrix Factorization (NMF)</h1>
+  	
+	<div style='text-decoration:italic' class="alert alert-info">
+	<span class="glyphicon glyphicon-tag"></span>
+	Gaujoux R and Seoighe C (2010).
+&ldquo;A flexible R package for nonnegative matrix factorization.&rdquo;
+<EM>BMC Bioinformatics</EM>, <B>11</B>(1), pp. 367.
+ISSN 1471-2105, <a href="http://dx.doi.org/10.1186/1471-2105-11-367">http://dx.doi.org/10.1186/1471-2105-11-367</a>, <a href="http://www.biomedcentral.com/1471-2105/11/367">http://www.biomedcentral.com/1471-2105/11/367</a>.
+	</div>
+	  
+    <h2>Background</h2>
+
+<p>Nonnegative Matrix Factorization (NMF) is an unsupervised learning technique that has been applied successfully in several fields, including signal processing, face recognition and text mining.
+Recent applications of NMF in bioinformatics have demonstrated its ability to extract meaningful information from high-dimensional data such as gene expression microarrays. Developments in NMF theory and applications have resulted in a variety of algorithms and methods.
+However, most NMF implementations have been on commercial platforms, while those that are freely available typically require programming skills.
+This limits their use by the wider research community.</p>
+
+<h2>Results</h2>
+
+<p>Our objective is to provide the bioinformatics community with an open-source, easy-to-use and unified interface to standard NMF algorithms, as well as with a simple framework to help implement and test new NMF methods.
+For that purpose, we have developed a package for the R/BioConductor platform. The package ports public code to R, and is structured to enable users to easily modify and/or add algorithms.
+It includes a number of published NMF algorithms and initialization methods and facilitates the combination of these to produce new NMF strategies.
+Commonly used benchmark data and visualization methods are provided to help in the comparison and interpretation of the results.</p>
+
+<h2>Conclusions</h2>
+
+<p>The NMF package helps realize the potential of Nonnegative Matrix Factorization, especially in bioinformatics, providing easy access to methods that have already yielded new insights in many applications.</p>
+
+<h2>Availability</h2>
+
+<p>Documentation, source code and sample data are available from:</p>
+
+<ul>
+<li><p><img src="img/r-icon.jpg" alt=""/> Latest stable release from CRAN: <a href="http://cran.r-project.org/package=NMF">http://cran.r-project.org/package=NMF</a></p></li>
+<li><p>Development versions: </p>
+
+<ul>
+<li><img src="img/r-forge-icon.png" alt=""/> project: <a href="http://r-forge.r-project.org/projects/nmf">http://r-forge.r-project.org/projects/nmf</a><br />
+<em>NOTE: due to some unknown problem on R-forge build system, the package is not being built. Please use the MyCRAN repository until the issue is fixed.</em><br /><br /></li>
+<li>MyCRAN: personal CRAN-like repository at <a href="http://web.cbio.uct.ac.za/%7Erenaud/CRAN">http://web.cbio.uct.ac.za/~renaud/CRAN</a></li>
+</ul></li>
+</ul>
+
+
+    <h2>Help topics</h2>
+
+	<div id="cloud"></div>
+	<script>
+var fill = d3.scale.category20();
+  wordScale=d3.scale.log().domain([1, 63]).range([10, 100]);
+  var w = 960, h = 600;
+ var datawords=["advanced-NMF:2", "aheatmap:1", "algorithm,NMFList-method:1", "algorithm,NMFStrategyOctave-method:1", "algorithmic-NMF:63", "summary:6", "basis:43", "basiscor:12", "bioc-NMF:22", "canFit:5", "connectivity:10", "consensus,NMFfitX1-method:1", "consensus,NMFfitXn-method:2", "consensushc:5", "cophcor:4", "deviance:7", "basisnames:9", "nbasis:7", "dispersion:4", ".fcnnls:1", "esGolub:1", "fcnnls:5", "fit:15", "fitted:7", "nmf_update.lee_R:8", "heatmap-NMF:14", "nmf_update.brunet_R:10", "nmf_update.lsnmf:4", "match_atrack:1", "nmfAlgorithm:1", "nmfApply:1", "nmfCheck:1", "NMF-class:5", "compare-NMF:7", "NMF-defunct:6", "NMF-deprecated:1", "nmf.equal:11", "nmfEstimateRank:2", "NMFfit-class:2", "NMFfitX1-class:1", "NMFfitX-class:1", "NMFfitXn-class:1", "nmfFormals:2", "NMFList-class:1", "nmfModel:13", "NMFns-class:1", "nmfObject:1", "NMFOffset-class:2", "NMF-package:2", "nmf:15", "nmfReport:1", "NMFSeed-class:1", "nmfSeed:3", "NMFstd-class:1", "NMFStrategyFunction-class:1", "NMFStrategyIterative-class:1", "NMFStrategyOctave-class:2", "NMFStrategy:16", "nmf_update.euclidean.h:5", "nmf_update.KL.h:5", "nneg:9", "nmf_update.ns:5", "objective,NMFfit-method:1", "offset,NMFfit-method:1", "offset,NMFOffset-method:1", "nmf_update.euclidean_offset.h:7", "options-NMF:5", "parallel-NMF:5", "plot,NMFfit,missing-method:1", "predict:4", "profplot:2", "purity:12", "randomize:1", "methods-NMF:5", "residuals:9", "rmatrix:5", "getRNG1:8", "rnmf:11", "rss:7", "runtime.all,NMFfitXn-method:1", "runtime,NMFList-method:1", "scale.NMF:1", "featureScore:8", "seed:10", "setNMFMethod:2", "NMFSeed:6", "setupBackend:5", "show,NMFfit-method:1", "show,NMFfitX1-method:1", "show,NMFfitX-method:1", "show,NMFfitXn-method:1", "show,NMFList-method:1", "show,NMF-method:1", "show,NMFns-method:1", "show,NMFOffset-method:1", "show,NMFSeed-method:1", "show,NMFStrategyIterative-method:1", "silhouette.NMF:1", "smoothing:1", "nmfAlgorithm.SNMF_R:4", "sparseness:5", "staticVar:1", "NMFStop:6", "[,NMF-method:1", "syntheticNMF:1", "ibterms:19", "t.NMF:1", "is.nmf:6", "utils-NMF:2"];
+
+d3.layout.cloud().size([w, h])
+      .words(datawords.map(function(d) {
+		d = d.split(":");
+        return {key: d[0], value: d[1] * 1};
+      }))
+      .spiral("rectangular")
+      .padding(2)
+      //.rotate(function() { return  ~~(Math.random() * 2) * 90; })
+      .text(function(d) { return d.key; })
+      .fontSize(function(d) { return wordScale(d.value); })
+      .on("end", draw)
+      .start();
+
+  function draw(words) {
+    d3.select("#cloud").append("svg")
+        .attr("width", w)
+        .attr("height", h)
+      .append("g")
+        .attr("transform", "translate(" + [w >> 1, h >> 1] + ")")
+      .selectAll("text")
+        .data(words)
+      .enter().append("text")
+        .style("font-size", function(d) { return d.size + "px"; })
+        .style("font-family", "Impact")
+        .style("fill", function(d, i) { return fill(i); })
+        .attr("text-anchor", "middle")
+        .attr("class", "cloud-txt")
+        .attr("transform", function(d) {
+          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+        })
+        .text(function(d) { return d.text; });
+  }
+</script>
+	
+  </div>
+  
+  <div class="col-xs-6 col-sm-6 col-md-4">
+    <h2>Vignettes</h2>
+    <ul>
+      <li><a href="vignettes/heatmaps.pdf">NMF: generating heatmaps</a></li>
+      <li><a href="vignettes/NMF-unitTests.pdf">NMF-unitTests</a></li>
+      <li><a href="vignettes/NMF-vignette.pdf">An introduction to the package NMF</a></li>
+    </ul>
+    
+    <h2>Demos</h2>
+    <ul>
+      <li><a href="demo-nmf.html">Using the main function nmf()</a></li>
+      <li><a href="demo-heatmaps.html">Heatmaps of NMF objects</a></li>
+      <li><a href="demo-aheatmap.html">Annotated heatmaps</a></li>
+    </ul>
+    
+    <h2>Dependencies</h2>
+    <ul>
+      <li><strong>R version</strong>: R &gt;= 3.0.0</li>
+      <li><strong>Depends</strong>: methods, utils, pkgmaker, registry, rngtools, cluster</li>
+      <li><strong>Imports</strong>: graphics, stats, stringr, digest, grid, grDevices, gridBase, colorspace, RColorBrewer, foreach, doParallel, ggplot2, reshape2</li>
+      <li><strong>Suggests</strong>: RcppOctave, fastICA, doMPI, bigmemory, synchronicity, corpcor, xtable, devtools, knitr, bibtex, RUnit, mail, Biobase</li>
+      
+    </ul>
+     
+	    
+	  	<h2>Authors</h2>
+	  	<ul>
+	  		<li>Renaud Gaujoux</li>
+	  		<li>Cathal Seoighe</li>
+	  	</ul>
+	  	
+	  	
+	  	<h2>Maintainer</h2>
+	  	<ul>
+	  		<li>Renaud Gaujoux (renaud at tx.technion.ac.il)</li>
+	  	</ul>
+	
+	
+  	<h2>Web page(s)</h2>
+  	<ul>
+  		<li><a href="http://renozao.github.io/NMF">http://renozao.github.io/NMF</a></li>
+  		<li><a href="http://github.com/renozao/NMF">http://github.com/renozao/NMF</a></li>
+  		<li><a href="http://r-forge.r-project.org/projects/nmf/">http://r-forge.r-project.org/projects/nmf/</a></li>
+  	</ul>
+    
+  </div>
+</div>
+      
+      <footer>
+      
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

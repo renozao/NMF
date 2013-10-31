@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>basiscor. NMF 0.20</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">NMF</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+	  <li><a href="PAGE-MAN.html"><span class="glyphicon glyphicon-home"></span> Index</a></li>
+    </ul>
+    <!-- <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>--> 
+    <ul class="nav navbar-nav navbar-right">
+      <li><p class="navbar-text">
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20</span>
+      &nbsp;</p></li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Correlations in NMF Models</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p><p><code>basiscor</code> computes the correlation matrix between
+  basis vectors, i.e. the <em>columns</em> of its basis
+  matrix -- which is the model's first matrix factor.</p>
+<p><code>profcor</code> computes the correlation matrix between
+  basis profiles, i.e. the <em>rows</em> of the coefficient
+  matrix -- which is the model's second matrix factor.</p></p>
+  
+    </div>
+    
+    <h2>Usage</h2>
+    <pre>basiscor(x, y, ...)
+
+profcor(x, y, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>a matrix or an object with suitable methods
+  <code><a href='basis-coef-methods.html'>basis</a></code> or <code><a href='basis-coef-methods.html'>coef</a></code>.</dd>
+      <dt>y</dt>
+      <dd>a matrix or an object with suitable methods
+  <code><a href='basis-coef-methods.html'>basis</a></code> or <code><a href='basis-coef-methods.html'>coef</a></code>, and dimensions
+  compatible with <code>x</code>. If missing the correlations are
+  computed between <code>x</code> and <code>y=x</code>.</dd>
+      <dt>...</dt>
+      <dd>extra arguments passed to <code><a href='http://www.inside-r.org/r-doc/stats/cor'>cor</a></code>.</dd>
+    </dl>
+    
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>Each generic has methods defined for computing
+  correlations between NMF models and/or compatible
+  matrices. The computation is performed by the base
+  function <code><a href='http://www.inside-r.org/r-doc/stats/cor'>cor</a></code>.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>basiscor<code>signature(x = "NMF", y =
+  "matrix")</code>: Computes the correlations between the basis
+  vectors of <code>x</code> and the columns of <code>y</code>.</p>
+  
+      <p></li>
+<li>basiscor<code>signature(x = "matrix", y =
+  "NMF")</code>: Computes the correlations between the columns of
+  <code>x</code> and the the basis vectors of <code>y</code>.</p>
+  
+      <p></li>
+<li>basiscor<code>signature(x = "NMF", y = "NMF")</code>:
+  Computes the correlations between the basis vectors of
+  <code>x</code> and <code>y</code>.</p>
+  
+      <p></li>
+<li>basiscor<code>signature(x = "NMF", y =
+  "missing")</code>: Computes the correlations between the basis
+  vectors of <code>x</code>.</p>
+  
+      <p></li>
+<li>profcor<code>signature(x = "NMF", y = "matrix")</code>:
+  Computes the correlations between the basis profiles of
+  <code>x</code> and the rows of <code>y</code>.</p>
+  
+      <p></li>
+<li>profcor<code>signature(x = "matrix", y = "NMF")</code>:
+  Computes the correlations between the rows of <code>x</code>
+  and the basis profiles of <code>y</code>.</p>
+  
+      <p></li>
+<li>profcor<code>signature(x = "NMF", y = "NMF")</code>:
+  Computes the correlations between the basis profiles of
+  <code>x</code> and <code>y</code>.</p>
+  
+      <p></li>
+<li>profcor<code>signature(x = "NMF", y =
+  "missing")</code>: Computes the correlations between the basis
+  profiles of <code>x</code>.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre><code class="r">
+# generate two random NMF models
+a &lt;- rnmf(3, 100, 20)
+b &lt;- rnmf(3, 100, 20)
+
+# Compute auto-correlations
+basiscor(a)
+</code></pre>
+
+<pre><code>##          [,1]    [,2]     [,3]
+## [1,]  1.00000 0.10016 -0.05467
+## [2,]  0.10016 1.00000  0.09674
+## [3,] -0.05467 0.09674  1.00000
+</code></pre>
+
+<pre><code class="r">profcor(a)
+</code></pre>
+
+<pre><code>##          [,1]    [,2]     [,3]
+## [1,]  1.00000 -0.1956  0.02698
+## [2,] -0.19563  1.0000 -0.04980
+## [3,]  0.02698 -0.0498  1.00000
+</code></pre>
+
+<pre><code class="r"># Compute correlations with b
+basiscor(a, b)
+</code></pre>
+
+<pre><code>##          [,1]    [,2]     [,3]
+## [1,] -0.18489 0.03323 -0.05528
+## [2,] -0.02311 0.04419  0.07674
+## [3,] -0.02071 0.02112  0.08368
+</code></pre>
+
+<pre><code class="r">profcor(a, b)
+</code></pre>
+
+<pre><code>##         [,1]     [,2]     [,3]
+## [1,] -0.2293 -0.02197 -0.19828
+## [2,] -0.2556 -0.19399  0.03887
+## [3,] -0.2887 -0.01391 -0.13688
+</code></pre>
+
+<pre><code class="r">
+# try to recover the underlying NMF model &#39;a&#39; from noisy data
+res &lt;- nmf(fitted(a) + rmatrix(a), 3)
+
+# Compute correlations with the true model
+basiscor(a, res)
+</code></pre>
+
+<pre><code>##         [,1]    [,2]    [,3]
+## [1,]  0.7101  0.4196 -0.1881
+## [2,] -0.1711  0.7181  0.5422
+## [3,]  0.5193 -0.4303  0.8146
+</code></pre>
+
+<pre><code class="r">profcor(a, res)
+</code></pre>
+
+<pre><code>##         [,1]    [,2]    [,3]
+## [1,]  0.9110  0.4511 -0.5000
+## [2,] -0.4491  0.6309  0.4679
+## [3,]  0.3179 -0.5138  0.7384
+</code></pre>
+
+<pre><code class="r">
+# Compute correlations with a random compatible matrix
+W &lt;- rmatrix(basis(a))
+basiscor(a, W)
+</code></pre>
+
+<pre><code>##          [,1]    [,2]      [,3]
+## [1,] -0.06416 0.11074  0.001515
+## [2,] -0.03673 0.06707 -0.147930
+## [3,] -0.08258 0.10769 -0.214169
+</code></pre>
+
+<pre><code class="r">identical(basiscor(a, W), basiscor(W, a))
+</code></pre>
+
+<pre><code>## [1] FALSE
+</code></pre>
+
+<pre><code class="r">
+H &lt;- rmatrix(coef(a))
+profcor(a, H)
+</code></pre>
+
+<pre><code>##           [,1]     [,2]     [,3]
+## [1,] -0.164707  0.47390 -0.09437
+## [2,] -0.429636 -0.09443  0.12871
+## [3,]  0.008568  0.10072  0.44778
+</code></pre>
+
+<pre><code class="r">identical(profcor(a, H), profcor(H, a))
+</code></pre>
+
+<pre><code>## [1] FALSE
+</code></pre>
+
+<pre><code class="r">
+</code></pre>
+
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>basiscor</li><li>basiscor,matrix,NMF-method</li><li>basiscor-methods</li><li>basiscor,NMF,matrix-method</li><li>basiscor,NMF,missing-method</li><li>basiscor,NMF,NMF-method</li><li>profcor</li><li>profcor,matrix,NMF-method</li><li>profcor-methods</li><li>profcor,NMF,matrix-method</li><li>profcor,NMF,missing-method</li><li>profcor,NMF,NMF-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

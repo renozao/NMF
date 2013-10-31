@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>fit. NMF 0.20</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">NMF</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+	  <li><a href="PAGE-MAN.html"><span class="glyphicon glyphicon-home"></span> Index</a></li>
+    </ul>
+    <!-- <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>--> 
+    <ul class="nav navbar-nav navbar-right">
+      <li><p class="navbar-text">
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20</span>
+      &nbsp;</p></li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Extracting Fitted Models</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p><p>The functions <code>fit</code> and <code>minfit</code> are S4
+  genetics that extract the best model object and the best
+  fit object respectively, from a collection of models or
+  from a wrapper object.</p>
+<p><code>fit<-</code> sets the fitted model in a fit object. It is
+  meant to be called only when developing new NMF
+  algorithms, e.g. to update the value of the model stored
+  in the starting point.</p></p>
+  
+    </div>
+    
+    <h2>Usage</h2>
+    <pre>fit(object, ...)
+
+fit(object) <- value
+
+minfit(object, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>an object fitted by some algorithm, e.g. as
+  returned by the function <code><a href='nmf.html'>nmf</a></code>.</dd>
+      <dt>value</dt>
+      <dd>replacement value</dd>
+      <dt>...</dt>
+      <dd>extra arguments to allow extension</dd>
+    </dl>
+    
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>A fit object differs from a model object in that it
+  contains data about the fit, such as the initial RNG
+  settings, the CPU time used, etc..., while a model
+  object only contains the actual modelling data such as
+  regression coefficients, loadings, etc...</p>
+  
+      <p>That best model is generally defined as the one that
+  achieves the maximum/minimum some quantitative measure,
+  amongst all models in a collection.</p>
+  
+      <p>In the case of NMF models, the best model is the one that
+  achieves the best approximation error, according to the
+  objective function associated with the algorithm that
+  performed the fit(s).</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>fit<code>signature(object = "NMFfit")</code>: Returns
+  the NMF model object stored in slot <code>'fit'</code>.</p>
+  
+      <p></li>
+<li>fit<code>signature(object = "NMFfitX")</code>: Returns
+  the model object that achieves the lowest residual
+  approximation error across all the runs.</p>
+  
+      <p>It is a pure virtual method defined to ensure <code>fit</code>
+  is defined for sub-classes of <code>NMFfitX</code>, which
+  throws an error if called.</p>
+  
+      <p></li>
+<li>fit<code>signature(object = "NMFfitX1")</code>: Returns
+  the model object associated with the best fit, amongst
+  all the runs performed when fitting <code>object</code>.</p>
+  
+      <p>Since <code>NMFfitX1</code> objects only hold the best fit,
+  this method simply returns the NMF model fitted by
+  <code>object</code> -- that is stored in slot &#145;fit&#146;.</p>
+  
+      <p></li>
+<li>fit<code>signature(object = "NMFfitXn")</code>: Returns
+  the best NMF fit object amongst all the fits stored in
+  <code>object</code>, i.e. the fit that achieves the lowest
+  estimation residuals.</p>
+  
+      <p></li>
+<li>fit<-<code>signature(object = "NMFfit", value =
+  "NMF")</code>: Updates the NMF model object stored in slot
+  <code>'fit'</code> with a new value.</p>
+  
+      <p></li>
+<li>minfit<code>signature(object = "NMFfit")</code>:
+  Returns the object its self, since there it is the result
+  of a single NMF run.</p>
+  
+      <p></li>
+<li>minfit<code>signature(object = "NMFfitX")</code>:
+  Returns the fit object that achieves the lowest residual
+  approximation error across all the runs.</p>
+  
+      <p>It is a pure virtual method defined to ensure
+  <code>minfit</code> is defined for sub-classes of
+  <code>NMFfitX</code>, which throws an error if called.</p>
+  
+      <p></li>
+<li>minfit<code>signature(object = "NMFfitX1")</code>:
+  Returns the fit object associated with the best fit,
+  amongst all the runs performed when fitting
+  <code>object</code>.</p>
+  
+      <p>Since <code>NMFfitX1</code> objects only hold the best fit,
+  this method simply returns <code>object</code> coerced into an
+  <code>NMFfit</code> object.</p>
+  
+      <p></li>
+<li>minfit<code>signature(object = "NMFfitXn")</code>:
+  Returns the best NMF model in the list, i.e. the run that
+  achieved the lower estimation residuals.</p>
+  
+      <p>The model is selected based on its <code>deviance</code> value.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>fit</li><li>fit&lt;-</li><li>fit&lt;--methods</li><li>fit-methods</li><li>fit,NMFfit-method</li><li>fit&lt;-,NMFfit,NMF-method</li><li>fit,NMFfitX1-method</li><li>fit,NMFfitX-method</li><li>fit,NMFfitXn-method</li><li>minfit</li><li>minfit-methods</li><li>minfit,NMFfit-method</li><li>minfit,NMFfitX1-method</li><li>minfit,NMFfitX-method</li><li>minfit,NMFfitXn-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
