@@ -412,7 +412,7 @@ print.fcnnls <- function(x, ...){
 ###%
 ###% 
 #function [W,H,i] 
-nmf_snmf <- function(A, x, maxIter=20000L, eta=-1, beta=0.01, bi_conv=c(0, 10), eps_conv=1e-4, version=c('R', 'L'), verbose=FALSE){
+nmf_snmf <- function(A, x, maxIter= nmf.getOption('maxIter') %||% 20000L, eta=-1, beta=0.01, bi_conv=c(0, 10), eps_conv=1e-4, version=c('R', 'L'), verbose=FALSE){
 #nmfsh_comb <- function(A, k, param, verbose=FALSE, bi_conv=c(0, 10), eps_conv=1e-4, version=c('R', 'L')){
 	
 	# depending on the version: 

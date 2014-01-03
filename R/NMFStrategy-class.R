@@ -5,6 +5,7 @@
 
 
 #' @include algorithmic.R
+#' @include NMFSet-class.R
 NULL
 
 #' Generic Strategy Class
