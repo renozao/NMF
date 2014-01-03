@@ -113,6 +113,8 @@ setMethod('fcnnls', signature(x='matrix', y='matrix'),
 		# process the result
 		f <- x %*% res$coef
 		resid <- y - f
+        # set dimnames
+        if( is.null(rownames(res$coef)) ) rownames(res$coef) <- colnames(x)
 
 		# wrap up the result
 		out <- list(x=res$coef, fitted=f, residuals=resid, deviance=norm(resid, 'F')^2, passive=res$Pset, pseudo=pseudo)
