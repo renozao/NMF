@@ -80,6 +80,11 @@
   provides a convenient way of sub-setting objects of class
   \code{NMF}, using a matrix-like syntax.
 
+  It allows to consistently subset one or both matrix
+  factors in the NMF model, as well as retrieving part of
+  the basis components or part of the mixture coefficients
+  with a reduced amount of code.
+
   See \code{\link{[,NMF-method}} for more details. }
 
   \item{$}{\code{signature(x = "NMF")}: shortcut for

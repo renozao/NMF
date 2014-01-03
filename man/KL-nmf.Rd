@@ -33,15 +33,18 @@
   nmf_update.brunet(i, v, x, copy = FALSE,
     eps = .Machine$double.eps, ...)
 
-  nmfAlgorithm.brunet_R(..., .stop = NULL, maxIter = 2000,
+  nmfAlgorithm.brunet_R(..., .stop = NULL,
+    maxIter = nmf.getOption("maxIter") \%||\% 2000,
     eps = .Machine$double.eps, stopconv = 40,
     check.interval = 10)
 
-  nmfAlgorithm.brunet(..., .stop = NULL, maxIter = 2000,
+  nmfAlgorithm.brunet(..., .stop = NULL,
+    maxIter = nmf.getOption("maxIter") \%||\% 2000,
     copy = FALSE, eps = .Machine$double.eps, stopconv = 40,
     check.interval = 10)
 
-  nmfAlgorithm.KL(..., .stop = NULL, maxIter = 2000,
+  nmfAlgorithm.KL(..., .stop = NULL,
+    maxIter = nmf.getOption("maxIter") \%||\% 2000,
     copy = FALSE, eps = .Machine$double.eps,
     stationary.th = .Machine$double.eps,
     check.interval = 5 * check.niter, check.niter = 10L)

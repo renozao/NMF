@@ -29,7 +29,8 @@
     y, x, ...)
 
   \S4method{run}{NMFStrategyIterative,matrix,NMFfit}(object,
-    y, x, .stop = NULL, maxIter = 2000, ...)
+    y, x, .stop = NULL,
+    maxIter = nmf.getOption("maxIter") \%||\% 2000, ...)
 
   \S4method{run}{NMFStrategyIterativeX,matrix,NMFfit}(object,
     y, x, maxIter, ...)

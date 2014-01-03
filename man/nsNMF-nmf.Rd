@@ -10,10 +10,12 @@
 
   nmf_update.ns_R(i, v, x, ...)
 
-  nmfAlgorithm.nsNMF_R(..., .stop = NULL, maxIter = 2000,
+  nmfAlgorithm.nsNMF_R(..., .stop = NULL,
+    maxIter = nmf.getOption("maxIter") \%||\% 2000,
     stopconv = 40, check.interval = 10)
 
-  nmfAlgorithm.nsNMF(..., .stop = NULL, maxIter = 2000,
+  nmfAlgorithm.nsNMF(..., .stop = NULL,
+    maxIter = nmf.getOption("maxIter") \%||\% 2000,
     copy = FALSE, stopconv = 40, check.interval = 10)
 }
 \arguments{
@@ -75,6 +77,12 @@
   introduces an intermediate smoothing matrix to enhance
   sparsity of the factors.
 
+  \code{nmf_update.ns} computes the updated nsNMF model. It
+  uses the optimized \emph{C++} implementations
+  \code{\link{nmf_update.KL.w}} and
+  \code{\link{nmf_update.KL.h}} to update \eqn{W} and
+  \eqn{H} respectively.
+
   \code{nmf_update.ns_R} implements the same updates in
   \emph{plain R}.
 
@@ -87,12 +95,6 @@
   connectivity matrix.
 }
 \details{
-  \code{nmf_update.ns} computes the updated nsNMF model. It
-  uses the optimized \emph{C++} implementations
-  \code{\link{nmf_update.KL.w}} and
-  \code{\link{nmf_update.KL.h}} to update \eqn{W} and
-  \eqn{H} respectively.
-
   The multiplicative updates are based on the updates
   proposed by \cite{Brunet et al. (2004)}, except that the
   NMF estimate \eqn{W H} is replaced by \eqn{W S H} and

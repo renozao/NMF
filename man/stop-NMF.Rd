@@ -78,6 +78,12 @@
   stopping/convergence criteria commonly used in NMF
   algorithms.
 
+  \code{NMFStop} acts as a factory method that creates
+  stopping criterion functions from different types of
+  values, which are subsequently used by
+  \code{\linkS4class{NMFStrategyIterative}} objects to
+  determine when to stop their iterative process.
+
   \code{nmf.stop.iteration} generates a function that
   implements the stopping criterion that limits the number
   of iterations to a maximum of \code{n}), i.e. that
@@ -105,12 +111,6 @@
   connectivity matrix.
 }
 \details{
-  \code{NMFStop} acts as a factory method that creates
-  stopping criterion functions from different types of
-  values, which are subsequently used by
-  \code{\linkS4class{NMFStrategyIterative}} objects to
-  determine when to stop their iterative process.
-
   \code{NMFStop} can take the following values: \describe{
   \item{function}{ is returned unchanged, except when it
   has no arguments, in which case it assumed to be a

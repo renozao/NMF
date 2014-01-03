@@ -15,15 +15,18 @@
   nmf_update.lee(i, v, x, rescale = TRUE, copy = FALSE,
     eps = 10^-9, weight = NULL, ...)
 
-  nmfAlgorithm.lee_R(..., .stop = NULL, maxIter = 2000,
+  nmfAlgorithm.lee_R(..., .stop = NULL,
+    maxIter = nmf.getOption("maxIter") \%||\% 2000,
     rescale = TRUE, eps = 10^-9, stopconv = 40,
     check.interval = 10)
 
-  nmfAlgorithm.lee(..., .stop = NULL, maxIter = 2000,
+  nmfAlgorithm.lee(..., .stop = NULL,
+    maxIter = nmf.getOption("maxIter") \%||\% 2000,
     rescale = TRUE, copy = FALSE, eps = 10^-9,
     weight = NULL, stopconv = 40, check.interval = 10)
 
-  nmfAlgorithm.Frobenius(..., .stop = NULL, maxIter = 2000,
+  nmfAlgorithm.Frobenius(..., .stop = NULL,
+    maxIter = nmf.getOption("maxIter") \%||\% 2000,
     rescale = TRUE, copy = FALSE, eps = 10^-9,
     weight = NULL, stationary.th = .Machine$double.eps,
     check.interval = 5 * check.niter, check.niter = 10L)

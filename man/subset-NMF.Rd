@@ -42,13 +42,13 @@
 \description{
   This method provides a convenient way of sub-setting
   objects of class \code{NMF}, using a matrix-like syntax.
-}
-\details{
+
   It allows to consistently subset one or both matrix
   factors in the NMF model, as well as retrieving part of
   the basis components or part of the mixture coefficients
   with a reduced amount of code.
-
+}
+\details{
   The returned value depends on the number of subset index
   passed and the value of argument \code{drop}:
 
