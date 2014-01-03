@@ -8,7 +8,10 @@ library(pkgmaker)
 
 # skip tests on CRAN checks
 #if( !isCRANcheck() ){
-	
+library(NMF)
+library(RUnit)
+nmf.options(maxIter=100L)
+    
 tests <- try( utest('package:NMF', quiet=FALSE) )
 
 if( FALSE ){
