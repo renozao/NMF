@@ -283,6 +283,7 @@ setReplaceMethod('basis', signature(object='NMF', value='ANY'),
         
         # backup old dimnames to reapply them on exit
         if( !use.dimnames ) odn <- dimnames(object)
+        nb_old <- nbasis(object)
         
 		# only set non-fixed terms
 		if( !nbterms(object) ) .basis(object) <- value
@@ -293,7 +294,8 @@ setReplaceMethod('basis', signature(object='NMF', value='ANY'),
         # adapt coef if empty
         if( !hasCoef(object) ){
             x <- basis(object)
-            .coef(object) <- coef(object)[1:ncol(x), , drop = FALSE] 
+            .coef(object) <- rbind(coef(object)[1:min(nb_old, ncol(x)), , drop = FALSE], matrix(NA, max(ncol(x)-nb_old, 0), 0))
+#            .coef(object) <- coef(object)[1:ncol(x), , drop = FALSE] 
         }
 		# check object validity
 		validObject(object)
@@ -395,6 +397,7 @@ setReplaceMethod('coef', signature(object='NMF', value='ANY'),
         }
         # backup old dimnames to reapply them on exit
         if( !use.dimnames ) odn <- dimnames(object)
+        nb_old <- nbasis(object)
         
 		# only set non-fixed terms
 		if( !ncterms(object) ) .coef(object) <- value
@@ -405,7 +408,7 @@ setReplaceMethod('coef', signature(object='NMF', value='ANY'),
         # adapt basis if empty before validation
         if( !hasBasis(object) ){
             x <- coef(object)
-            .basis(object) <- basis(object)[, 1:nrow(x), drop = FALSE] 
+            .basis(object) <- cbind(basis(object)[, 1:min(nb_old, nrow(x)), drop = FALSE], matrix(NA, 0, max(nrow(x)-nb_old, 0))) 
         }
 		# check object validity
 		validObject(object)
