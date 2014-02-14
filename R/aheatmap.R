@@ -6,38 +6,44 @@ NULL
 library(grid)
 library(gridBase)
 
+# extends gpar objects
+c_gpar <- function(gp, ...){
+    x <- list(...)
+    do.call(gpar, c(gp, x[!names(x) %in% names(gp)]))
+}
+
+
 lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 , treeheight_col, treeheight_row, legend, main = NULL, sub = NULL, info = NULL
 , annTracks, annotation_legend
-, fontsize, fontsize_row, fontsize_col, ...){
+, fontsize, fontsize_row, fontsize_col, gp = gpar()){
 
 	annotation_colors <- annTracks$colors
 	row_annotation <- annTracks$annRow
 	annotation <- annTracks$annCol
 	
+    gp0 <- gp
 	coln_height <- unit(10, "bigpts")
 	if(!is.null(coln)){
 		longest_coln = which.max(nchar(coln))
-		gp = gpar(fontsize = fontsize_col, ...)
-		coln_height <- coln_height +  unit(1.1, "grobheight", textGrob(coln[longest_coln], rot = 90, gp = gp))
+		coln_height <- coln_height +  unit(1.1, "grobheight", textGrob(coln[longest_coln], rot = 90, gp = c_gpar(gp, fontsize = fontsize_col)))
 	}
 
 	rown_width <- rown_width_min <- unit(10, "bigpts")
 	if(!is.null(rown)){
 		longest_rown = which.max(nchar(rown))
-		gp = gpar(fontsize = fontsize_row, ...)
-		rown_width <- rown_width_min + unit(1.2, "grobwidth", textGrob(rown[longest_rown], gp = gp))
+		rown_width <- rown_width_min + unit(1.2, "grobwidth", textGrob(rown[longest_rown], gp = c_gpar(gp, fontsize = fontsize_row)))
 	}
 	
-	gp = list(fontsize = fontsize, ...)
+	gp = c_gpar(gp, fontsize = fontsize)
 	# Legend position
 	if( !is_NA(legend) ){
 		longest_break = which.max(nchar(as.character(legend)))
-		longest_break = unit(1.1, "grobwidth", textGrob(as.character(legend)[longest_break], gp = do.call(gpar, gp)))
+		longest_break = unit(1.1, "grobwidth", textGrob(as.character(legend)[longest_break], gp = gp))
 		# minimum fixed width: plan for 2 decimals and a sign 
-		min_lw = unit(1.1, "grobwidth", textGrob("-00.00", gp = do.call(gpar, gp)))
+		min_lw = unit(1.1, "grobwidth", textGrob("-00.00", gp = gp))
 		longest_break = max(longest_break, min_lw)
-		title_length = unit(1.1, "grobwidth", textGrob("Scale", gp = gpar(fontface = "bold", ...)))
+		title_length = unit(1.1, "grobwidth", textGrob("Scale", gp = c_gpar(gp0, fontface = "bold")))
 		legend_width = unit(12, "bigpts") + longest_break * 1.2
 		legend_width = max(title_length, legend_width)
 	}
@@ -49,11 +55,11 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 		# Width of the corresponding legend
 		longest_ann <- unlist(lapply(annotation, names))
 		longest_ann <- longest_ann[which.max(nchar(longest_ann))]
-		annot_legend_width = unit(1, "grobwidth", textGrob(longest_ann, gp = gpar(fontsize=fontsize, ...))) + unit(10, "bigpts")
+		annot_legend_width = unit(1, "grobwidth", textGrob(longest_ann, gp = gp)) + unit(10, "bigpts")
 		
 		# width of the legend title
 		annot_legend_title <- names(annotation)[which.max(nchar(names(annotation)))]
-		annot_legend_title_width = unit(1, "grobwidth", textGrob(annot_legend_title, gp = gpar(fontface = "bold", fontsize=fontsize, ...)))
+		annot_legend_title_width = unit(1, "grobwidth", textGrob(annot_legend_title, gp = c_gpar(gp, fontface = "bold")))
 		
 		# total width 
 		max(annot_legend_width, annot_legend_title_width) + unit(5, "bigpts")
@@ -116,7 +122,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 			cellheight <- convertHeight(unit(1, "grobheight", rectGrob(0,0, matwidth, matheight)), "bigpts", valueOnly = T) / nrow
 			fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.6*cellheight, 'bigpts')), 'points')
 			
-			rown_width <- rown_width_min + unit(1.2, "grobwidth", textGrob(rown[longest_rown], gp = gpar(fontsize=fontsize_row, ...)))
+			rown_width <- rown_width_min + unit(1.2, "grobwidth", textGrob(rown[longest_rown], gp = c_gpar(gp0, fontsize = fontsize_row)))
 			matwidth <- unit(1, "npc") - rown_width - legend_width - row_annot_width  - treeheight_row - annot_legend_width
 		}
 	}
@@ -222,17 +228,17 @@ draw_matrix = function(matrix, border_color){
 	m = ncol(matrix)
 	x = (1:m)/m - 1/2/m
 	y = (1:n)/n - 1/2/n
-	for(i in 1:m){
+    for(i in 1:m){
 		grid.rect(x = x[i], y = y, width = 1/m, height = 1/n, gp = gpar(fill = matrix[,i], col = border_color))
 	}
 }
 
-draw_colnames = function(coln, ...){
+draw_colnames = function(coln, gp = gpar()){
 	
 	m = length(coln)
 	
 	# decide on the label orientation
-	width <- m * unit(1, "grobwidth", textGrob(coln[i <- which.max(nchar(coln))], gp = gpar(...)))
+	width <- m * unit(1, "grobwidth", textGrob(coln[i <- which.max(nchar(coln))], gp = gp))
 	width <- as.numeric(convertWidth(width, "inches"))
 	gwidth <- as.numeric(convertWidth(unit(1, 'npc'), "inches"))
 	y <- NULL
@@ -247,29 +253,29 @@ draw_colnames = function(coln, ...){
 		hjust <- 0.5
 	}
 	if( is.null(y) ){
-		height <- unit(1, "grobheight", textGrob(coln[i], vjust = vjust, hjust = hjust, rot=rot, gp = gpar(...)))
+		height <- unit(1, "grobheight", textGrob(coln[i], vjust = vjust, hjust = hjust, rot=rot, gp = gp))
 		y <- unit(1, 'npc') - height
 	}
 	
 	x = (1:m)/m - 1/2/m
-	grid.text(coln, x = x, y = y, vjust = vjust, hjust = hjust, rot=rot, gp = gpar(...))
+	grid.text(coln, x = x, y = y, vjust = vjust, hjust = hjust, rot=rot, gp = gp)
 }
 
 # draw rownames first row at bottom, last on top
-draw_rownames = function(rown, ...){
+draw_rownames = function(rown, gp = gpar()){
 	n = length(rown)
 	y = (1:n)/n - 1/2/n
-	grid.text(rown, x = unit(5, "bigpts"), y = y, vjust = 0.5, hjust = 0, gp = gpar(...))	
+	grid.text(rown, x = unit(5, "bigpts"), y = y, vjust = 0.5, hjust = 0, gp = gp)	
 }
 
-draw_legend = function(color, breaks, legend, ...){
+draw_legend = function(color, breaks, legend, gp = gpar()){
 	height = min(unit(1, "npc"), unit(150, "bigpts"))
 	pushViewport(viewport(x = 0, y = unit(1, "npc"), just = c(0, 1), height = height))
 	legend_pos = (legend - min(breaks)) / (max(breaks) - min(breaks))
 	breaks = (breaks - min(breaks)) / (max(breaks) - min(breaks))
 	h = breaks[-1] - breaks[-length(breaks)]
 	grid.rect(x = 0, y = breaks[-length(breaks)], width = unit(10, "bigpts"), height = h, hjust = 0, vjust = 0, gp = gpar(fill = color, col = "#FFFFFF00"))
-	grid.text(legend, x = unit(12, "bigpts"), y = legend_pos, hjust = 0, gp = gpar(...))
+	grid.text(legend, x = unit(12, "bigpts"), y = legend_pos, hjust = 0, gp = gp)
 	upViewport()
 }
 
@@ -324,20 +330,20 @@ draw_annotations = function(converted_annotations, border_color, horizontal=TRUE
 	}
 }
 
-draw_annotation_legend = function(annotation_colors, border_color, ...){
+draw_annotation_legend = function(annotation_colors, border_color, gp = gpar()){
 	
 	y = unit(1, "npc")
 	
-	text_height = convertHeight(unit(1, "grobheight", textGrob("FGH", gp = gpar(...))), "bigpts")	
+	text_height = convertHeight(unit(1, "grobheight", textGrob("FGH", gp = gp)), "bigpts")	
 	for(i in names(annotation_colors)){
-		grid.text(i, x = 0, y = y, vjust = 1, hjust = 0, gp = gpar(fontface = "bold", ...))
+		grid.text(i, x = 0, y = y, vjust = 1, hjust = 0, gp = c_gpar(gp, fontface = "bold"))
 		y = y - 1.5 * text_height
 		#if(class(annotation[[i]]) %in% c("character", "factor")){
 		acol <- annotation_colors[[i]]
 		if( attr(acol, 'afactor') ){
 			sapply(seq_along(acol), function(j){
 				grid.rect(x = unit(0, "npc"), y = y, hjust = 0, vjust = 1, height = text_height, width = text_height, gp = gpar(col = border_color, fill = acol[j]))
-				grid.text(names(acol)[j], x = text_height * 1.3, y = y, hjust = 0, vjust = 1, gp = gpar(...))
+				grid.text(names(acol)[j], x = text_height * 1.3, y = y, hjust = 0, vjust = 1, gp = gp)
 				y <<- y - 1.5 * text_height
 			})
 		}
@@ -347,7 +353,7 @@ draw_annotation_legend = function(annotation_colors, border_color, ...){
 			grid.rect(x = unit(0, "npc"), y = yy, hjust = 0, vjust = 1, height = h, width = text_height, gp = gpar(col = "#FFFFFF00", fill = ccRamp(acol, 100)))
 			txt = c(tail(names(acol),1), head(names(acol))[1])
 			yy = y - c(0, 3) * text_height
-			grid.text(txt, x = text_height * 1.3, y = yy, hjust = 0, vjust = 1, gp = gpar(...))
+			grid.text(txt, x = text_height * 1.3, y = yy, hjust = 0, vjust = 1, gp = gp)
 			y = y - 4.5 * text_height
 		}
 		y = y - 1.5 * text_height
@@ -515,12 +521,12 @@ d <- function(x){
 heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	, tree_col, tree_row, treeheight_col, treeheight_row
 	, filename=NA, width=NA, height=NA
-	, breaks, color, legend
+	, breaks, color, legend, txt = NULL
 	, annTracks, annotation_legend=TRUE
 	, new=TRUE, fontsize, fontsize_row, fontsize_col
 	, main=NULL, sub=NULL, info=NULL
 	, verbose=getOption('verbose')
-	, ...){
+	, gp = gpar()){
 
 	annotation_colors <- annTracks$colors
 	row_annotation <- annTracks$annRow
@@ -577,12 +583,12 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	}	
 	
 	# define grob for main 
-	mainGrob <- if( !is.null(main) && !is.grob(main) ) textGrob(main, gp = gpar(fontsize = 1.2 * fontsize, fontface="bold", ...))
-	subGrob <- if( !is.null(sub) && !is.grob(sub) ) textGrob(sub, gp = gpar(fontsize = 0.8 * fontsize, ...))
+	mainGrob <- if( !is.null(main) && !is.grob(main) ) textGrob(main, gp = c_gpar(gp, fontsize = 1.2 * fontsize, fontface="bold"))
+	subGrob <- if( !is.null(sub) && !is.grob(sub) ) textGrob(sub, gp = c_gpar(gp, fontsize = 0.8 * fontsize))
 	infoGrob <- if( !is.null(info) && !is.grob(info) ){
 #		infotxt <- paste(strwrap(paste(info, collapse=" | "), width=20), collapse="\n")
 		grobTree(gList(rectGrob(gp = gpar(fill = "grey80"))
-			,textGrob(paste(info, collapse=" | "), x=unit(5, 'bigpts'), y=0.5, just='left', gp = gpar(fontsize = 0.8 * fontsize, ...))))
+			,textGrob(paste(info, collapse=" | "), x=unit(5, 'bigpts'), y=0.5, just='left', gp = c_gpar(gp, fontsize = 0.8 * fontsize))))
 	}
 	
 	# Set layout
@@ -592,7 +598,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	, legend = legend
 	, annTracks = annTracks, annotation_legend = annotation_legend
 	, fontsize = fontsize, fontsize_row = fontsize_row, fontsize_col = fontsize_col
-	, main = mainGrob, sub = subGrob, info = infoGrob, ...)
+	, main = mainGrob, sub = subGrob, info = infoGrob, gp = gp)
 	
 	# resize the graphic file device if necessary
 	if( writeToFile ){		
@@ -616,7 +622,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 		if( verbose ) message("Push again top viewport")
 		# repush the layout
 		pushViewport(glo$vp)
-		if( verbose ) grid.rect(width=unit(glo$width, 'inches'), height=unit(glo$height, 'inches'), gp=gpar(col='blue'))
+		if( verbose ) grid.rect(width=unit(glo$width, 'inches'), height=unit(glo$height, 'inches'), gp = gpar(col='blue'))
 	}
 
 	#grid.show.layout(glo$layout); return()
@@ -653,7 +659,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 		#vplayout(4, 2)
 		vplayout('cnam')
 		fontsize_col <- convertUnit(min(unit(fontsize_col, 'points'), unit(0.6*glo$cellwidth, 'bigpts')), 'points')
-		draw_colnames(colnames(matrix), fontsize = fontsize_col, ...)
+		draw_colnames(colnames(matrix), gp = c_gpar(gp, fontsize = fontsize_col))
 		upViewport()
 	}
 	
@@ -662,7 +668,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 		#vplayout(3, 3)
 		vplayout('rnam')
 		fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.6*glo$cellheight, 'bigpts')), 'points')
-		draw_rownames(rownames(matrix), fontsize = fontsize_row, ...)
+		draw_rownames(rownames(matrix), gp = c_gpar(gp, fontsize = fontsize_row))
 		upViewport()
 	}
 
@@ -685,7 +691,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	if( annotation_legend && !is_NA(annotation_colors) ){
 		#vplayout(3, 5)
 		vplayout('aleg')
-		draw_annotation_legend(annotation_colors, border_color, fontsize = fontsize, ...)
+		draw_annotation_legend(annotation_colors, border_color, gp = c_gpar(gp, fontsize = fontsize))
 		upViewport()
 	}
 
@@ -693,7 +699,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	if(!is_NA(legend)){
 		#vplayout(3, 4)
 		vplayout('leg')
-		draw_legend(color, breaks, legend, fontsize = fontsize, ...)
+		draw_legend(color, breaks, legend, gp = c_gpar(gp, fontsize = fontsize))
 		upViewport()
 	}
 
@@ -1626,7 +1632,7 @@ subset_index <- function(x, margin, subset){
 #' borders of some viewports are highlighted. It is entended for debugging 
 #' purposes.
 #' 
-#' @param \dots graphical parameters for the text used in plot. Parameters passed to 
+#' @param gp graphical parameters for the text used in plot. Parameters passed to 
 #' \code{\link{grid.text}}, see \code{\link{gpar}}. 
 #' 
 #' @author 
@@ -1732,7 +1738,7 @@ aheatmap = function(x
 , fontsize=10, cexRow = min(0.2 + 1/log10(nr), 1.2), cexCol = min(0.2 + 1/log10(nc), 1.2)
 , filename = NA, width = NA, height = NA
 , main = NULL, sub = NULL, info = NULL
-, verbose=getOption('verbose'), ...){
+, verbose=getOption('verbose'), gp = gpar()){
 
 	# set verbosity level
 	ol <- lverbose(verbose)
@@ -1975,7 +1981,7 @@ aheatmap = function(x
 	, fontsize = fontsize, fontsize_row = cexRow * fontsize, fontsize_col = cexCol * fontsize
 	, main = main, sub = sub, info = info
 	, verbose = verbose
-	, ...)
+	, gp = gp)
 	
 	# return info about the plot
 	invisible(res)
