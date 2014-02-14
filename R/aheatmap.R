@@ -223,13 +223,32 @@ draw_dendrogram = function(hc, horizontal = T){
 }
 
 # draw a matrix first row at bottom, last at top
-draw_matrix = function(matrix, border_color){
+draw_matrix = function(matrix, border_color, txt = NULL, gp = gpar()){
 	n = nrow(matrix)
 	m = ncol(matrix)
 	x = (1:m)/m - 1/2/m
 	y = (1:n)/n - 1/2/n
+    
+    if( !is.null(txt) ) txt[is.na(txt)] <- ''
+     
     for(i in 1:m){
 		grid.rect(x = x[i], y = y, width = 1/m, height = 1/n, gp = gpar(fill = matrix[,i], col = border_color))
+        if( !is.null(txt) ){
+            grid.text(label=txt[, i],
+                                x=x[i],
+                                y=y,
+#                                just=just,
+#                                hjust=hjust,
+#                                vjust=vjust,
+                                rot=0,
+                                check.overlap= FALSE, #check.overlap,
+                                default.units= 'npc', #default.units,
+#                                name=name,
+                                gp=gp,
+#                                draw=draw,
+#                                vp=vp
+                  )
+        }
 	}
 }
 
@@ -646,10 +665,14 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 		upViewport()
 	}
 
+    # recompute margin fontsizes
+    fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.6*glo$cellheight, 'bigpts')), 'points')
+    fontsize_col <- convertUnit(min(unit(fontsize_col, 'points'), unit(0.6*glo$cellwidth, 'bigpts')), 'points')
+    
 	# Draw matrix
 	#vplayout(3, 2)
 	vplayout('mat')
-	draw_matrix(matrix, border_color)
+	draw_matrix(matrix, border_color, txt = txt, gp = gpar(fontsize = fontsize_row))
 	#d(matrix)
 	#grid.rect()
 	upViewport()
@@ -658,7 +681,6 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	if(length(colnames(matrix)) != 0){
 		#vplayout(4, 2)
 		vplayout('cnam')
-		fontsize_col <- convertUnit(min(unit(fontsize_col, 'points'), unit(0.6*glo$cellwidth, 'bigpts')), 'points')
 		draw_colnames(colnames(matrix), gp = c_gpar(gp, fontsize = fontsize_col))
 		upViewport()
 	}
@@ -667,7 +689,6 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	if(length(rownames(matrix)) != 0){
 		#vplayout(3, 3)
 		vplayout('rnam')
-		fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.6*glo$cellheight, 'bigpts')), 'points')
 		draw_rownames(rownames(matrix), gp = c_gpar(gp, fontsize = fontsize_row))
 		upViewport()
 	}
@@ -1735,6 +1756,7 @@ aheatmap = function(x
 , legend = TRUE, annCol = NA, annRow = NA, annColors = NA, annLegend = TRUE
 , labRow = NULL, labCol = NULL
 , subsetRow = NULL, subsetCol = NULL
+, txt = NULL
 , fontsize=10, cexRow = min(0.2 + 1/log10(nr), 1.2), cexCol = min(0.2 + 1/log10(nc), 1.2)
 , filename = NA, width = NA, height = NA
 , main = NULL, sub = NULL, info = NULL
@@ -1753,6 +1775,11 @@ aheatmap = function(x
 
 	# rename to old parameter name
 	mat <- x
+    if( !is.null(txt) ){
+        if( !all(dim(mat), dim(x)) ){
+            stop("Incompatible data and text dimensions: arguments x and txt must have the same size.")
+        }
+    }
 	
 	# init result list
 	res <- list()
@@ -1886,7 +1913,9 @@ aheatmap = function(x
 		
 		if( verbose ) message("Order rows")
 		subInd <- attr(res$rowInd, 'subset')
-		mat <- mat[if( is.null(subInd) ) res$rowInd else subInd, , drop=FALSE]
+        ri <- if( is.null(subInd) ) res$rowInd else subInd
+		mat <- mat[ri, , drop=FALSE] # data
+        if( !is.null(txt) ) txt <- txt[ri, , drop = FALSE] # text 
 	}
 	
 	if( !is_NA(tree_col) ){		
@@ -1912,7 +1941,9 @@ aheatmap = function(x
 		
 		if( verbose ) message("Order columns")
 		subInd <- attr(res$colInd, 'subset')
-		mat <- mat[, if( is.null(subInd) ) res$colInd else subInd, drop=FALSE]		
+        ci <- if( is.null(subInd) ) res$colInd else subInd
+		mat <- mat[, ci, drop=FALSE] # data
+        if( !is.null(txt) ) txt <- txt[, ci, drop = FALSE] # text
 	}
 	
 	# adding clustering info
@@ -1978,6 +2009,7 @@ aheatmap = function(x
 	, treeheight_col = treeheight_col, treeheight_row = treeheight_row, tree_col = tree_col, tree_row = tree_row
 	, filename = filename, width = width, height = height, breaks = breaks, color = color, legend = legend
 	, annTracks = annTracks, annotation_legend = annotation_legend
+    , txt = txt
 	, fontsize = fontsize, fontsize_row = cexRow * fontsize, fontsize_col = cexCol * fontsize
 	, main = main, sub = sub, info = info
 	, verbose = verbose
