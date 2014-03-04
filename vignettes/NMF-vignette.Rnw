@@ -59,8 +59,6 @@ pkgmaker::latex_bibliography('NMF')
 \urlstyle{rm}
 
 <<options, echo=FALSE>>=
-options(prompt=' ', width = 60)
-options(continue=' ')
 set.seed(123456)
 library(knitr)
 knit_hooks$set(try = pkgmaker::hook_try)
@@ -84,6 +82,8 @@ knit_hooks$set(try = pkgmaker::hook_try)
 <<load_library, echo=FALSE, include=FALSE>>=
 # Load
 library(NMF)
+# limit number of cores used
+nmf.options(cores = 2)
 @
 
 \title{An introduction to NMF package\\
