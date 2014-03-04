@@ -13,7 +13,7 @@ sum2one <- function(x){
 }
 
 #' @import grDevices
-corplot <- function(x, y, legend=TRUE, confint=TRUE, ..., add=FALSE){
+corplot <- function(x, y, legend=TRUE, confint=TRUE, scales = 'fixed', ..., add=FALSE){
 	
 	cols <- rainbow(ncol(x))
 	
@@ -89,7 +89,7 @@ corplot <- function(x, y, legend=TRUE, confint=TRUE, ..., add=FALSE){
             scale_color_discrete(labels = ct.labs) + 
             stat_smooth(method = lm) +
             geom_abline(slope = 1, linetype = 3) +
-            facet_grid(paste0('~ ', ct)) + 
+            facet_grid(paste0('~ ', ct), scales = scales) + 
             labs(color = ct.title)
     if( legend ){
         p <- p + theme(legend.position = 'bottom') + 
@@ -308,12 +308,19 @@ profplot.default <- function(x, y, scale=c('none', 'max', 'c1'), match.names=TRU
 		# scale to proportions if requested
         if( missing(scale) ) scale <- NULL
         else if( isTRUE(scale) ) scale <- 'max'
+        else if( isFALSE(scale) ) scale <- 'none'
         scale <- match.arg(scale)
+        scales <- 'free'
 		if( scale == 'max' ){
 			gpar <- .set.list.defaults(gpar
 					, xlim=c(0,1), ylim=c(0,1))
-			x <- sweep(x, 1L, apply(x, 1L, max), '/')
-            y <- sweep(y, 1L, apply(y, 1L, max), '/')
+            # scale x
+            iscale <- (xm <- apply(abs(x), 1L, max)) > 0 
+		    x[iscale, ] <- sweep(x[iscale, , drop = FALSE], 1L, xm[iscale], '/')
+            # scale y
+            iscale <- (ym <- apply(abs(y), 1L, max)) > 0
+            y[iscale, ] <- sweep(y[iscale, , drop = FALSE], 1L, ym[iscale], '/')
+            scales <- 'fixed'
 		} else if( scale == 'c1' ){
 			gpar <- .set.list.defaults(gpar
 					, xlim=c(0,1), ylim=c(0,1))
@@ -332,7 +339,7 @@ profplot.default <- function(x, y, scale=c('none', 'max', 'c1'), match.names=TRU
 		gpar <- .set.list.defaults(gpar			
 				, main="Profile correlations")
 		# plot the correlation plot		
-		p <- do.call(corplot, c(list(x=t(x), y=t(y), legend=legend, confint=confint, add=add), gpar))
+		p <- do.call(corplot, c(list(x=t(x), y=t(y), scales = scales, legend=legend, confint=confint, add=add), gpar))
         p <- expand_list(p, list(idx.map = res))
 		
 		# return result list
@@ -562,8 +569,8 @@ profplot.default <- function(x, y, scale=c('none', 'max', 'c1'), match.names=TRU
 #' @examples 
 #' 
 #' x <- rmatrix(100, 20, dimnames = list(paste0('a', 1:100), letters[1:20]))
-#' # NB: using maxIter for the example purpose only
-#' res <- nmf(x, 4, nrun = 5, maxIter = 100)
+#' # NB: using low value for maxIter for the example purpose only
+#' res <- nmf(x, 4, nrun = 5, maxIter = 50)
 #' 
 #' # sample clustering from best fit
 #' plot(silhouette(res))
