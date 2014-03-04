@@ -1391,7 +1391,7 @@ function(x, rank, method
 			if( opt.parallel && !is_NA(oldBackend) ){
 				on.exit({
 						if( verbose > 2 ){
-							message("# Restoring previous foreach backend ... ", appendLF=FALSE)
+							message("# Restoring previous foreach backend '", getDoBackendName(oldBackend) ,"' ... ", appendLF=FALSE)
 						}
 						setDoBackend(oldBackend, cleanup=TRUE)
 						if( verbose > 2 ) message('OK')
