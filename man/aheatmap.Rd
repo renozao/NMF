@@ -204,6 +204,11 @@
   before drawing the heatmap. It accepts the similar values
   as \code{subsetRow}. See details above.}
 
+  \item{txt}{character matrix of the same size as \code{x},
+  that contains text to display in each cell. \code{NA}
+  values are allowed and are not displayed. See demo for an
+  example.}
+
   \item{treeheight}{how much space (in points) should be
   used to display dendrograms. If specified as a single
   value, it is used for both dendrograms. A length-2 vector

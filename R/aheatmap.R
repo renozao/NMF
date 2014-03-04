@@ -229,6 +229,7 @@ draw_matrix = function(matrix, border_color, txt = NULL, gp = gpar()){
 	x = (1:m)/m - 1/2/m
 	y = (1:n)/n - 1/2/n
     
+    # substitute NA values with empty strings
     if( !is.null(txt) ) txt[is.na(txt)] <- ''
      
     for(i in 1:m){
@@ -1590,6 +1591,11 @@ subset_index <- function(x, margin, subset){
 #' @param subsetCol Specification of subsetting the columns before drawing the 
 #' heatmap. It accepts the similar values as \code{subsetRow}. See details above.
 #' 
+#' @param txt character matrix of the same size as \code{x}, that contains text to 
+#' display in each cell. 
+#' \code{NA} values are allowed and are not displayed.
+#' See demo for an example. 
+#' 
 #' @param treeheight how much space (in points) should be used to display 
 #' dendrograms. If specified as a single value, it is used for both dendrograms. 
 #' A length-2 vector specifies separate values for the row and 
@@ -1743,6 +1749,14 @@ subset_index <- function(x, margin, subset){
 #' drows = dist(x, method = "minkowski")
 #' dcols = dist(t(x), method = "minkowski")
 #' aheatmap(x, Rowv = drows, Colv = dcols)
+#' 
+#' # Display text in each cells
+#' t <- outer(as.character(outer(letters, letters, paste0)), letters, paste0)[1:n, 1:p] 
+#' aheatmap(x, txt = t)
+#' # NA values are shown as empty cells
+#' t.na <- t
+#' t.na[sample(length(t.na), 500)] <- NA # half of the cells
+#' aheatmap(x, txt = t.na)
 #' 
 #' @export
 aheatmap = function(x
