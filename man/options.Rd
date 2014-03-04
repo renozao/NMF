@@ -122,6 +122,10 @@
   own custom options. } } % end description
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # show all NMF specific options
 nmf.printOptions()
 

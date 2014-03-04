@@ -28,6 +28,10 @@
   \code{\link{NMFns-class}} for more details).
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 x <- nmfModel(3, model='NMFns')
 smoothing(x)
 smoothing(x, 0.1)

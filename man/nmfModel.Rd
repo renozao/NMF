@@ -299,6 +299,10 @@
   set by the number of basis components in the seed.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 #----------
 # nmfModel,numeric,numeric-method
 #----------

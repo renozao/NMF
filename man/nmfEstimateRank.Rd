@@ -152,6 +152,10 @@
   same plots, using argument \code{y}.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 if( !isCHECK() ){
 
 set.seed(123456)

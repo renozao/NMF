@@ -81,6 +81,10 @@
   }
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # generate a synthetic dataset with known classes
 n <- 20; counts <- c(5, 2, 3);
 V <- syntheticNMF(n, counts)

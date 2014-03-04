@@ -43,6 +43,10 @@
   \code{\link{setNMFMethod}}) or setting global options.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 \dontrun{
 
 x <- rmatrix(20, 10)

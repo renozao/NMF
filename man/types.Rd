@@ -94,6 +94,10 @@
   \url{https://stat.ethz.ch/pipermail/r-devel/2011-June/061357.html}
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 #----------
 # is.nmf
 #----------

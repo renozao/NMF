@@ -12,11 +12,12 @@
     treeheight = 50, legend = TRUE, annCol = NA,
     annRow = NA, annColors = NA, annLegend = TRUE,
     labRow = NULL, labCol = NULL, subsetRow = NULL,
-    subsetCol = NULL, fontsize = 10,
+    subsetCol = NULL, txt = NULL, fontsize = 10,
     cexRow = min(0.2 + 1/log10(nr), 1.2),
     cexCol = min(0.2 + 1/log10(nc), 1.2), filename = NA,
     width = NA, height = NA, main = NULL, sub = NULL,
-    info = NULL, verbose = getOption("verbose"), ...)
+    info = NULL, verbose = getOption("verbose"),
+    gp = gpar())
 }
 \arguments{
   \item{x}{numeric matrix of the values to be plotted. An
@@ -284,8 +285,8 @@
   displayed and the borders of some viewports are
   highlighted. It is entended for debugging purposes.}
 
-  \item{\dots}{graphical parameters for the text used in
-  plot. Parameters passed to \code{\link{grid.text}}, see
+  \item{gp}{graphical parameters for the text used in plot.
+  Parameters passed to \code{\link{grid.text}}, see
   \code{\link{gpar}}.}
 }
 \description{
@@ -330,6 +331,10 @@
   to \code{FALSE} (i.e. not '', 'false' nor 0).
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 ## See the demo 'aheatmap' for more examples:
 \dontrun{
 demo('aheatmap')

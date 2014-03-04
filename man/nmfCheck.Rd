@@ -28,6 +28,10 @@
   random data.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # test default algorithm
 nmfCheck()
 

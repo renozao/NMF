@@ -111,6 +111,10 @@
   }
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 ## Define a random nonnegative matrix matrix
 n <- 200; p <- 20; r <- 3
 V <- rmatrix(n, p)

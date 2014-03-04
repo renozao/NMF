@@ -101,6 +101,10 @@
   columns is scaled so that it sums up to 1.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # create a completely empty NMFns object
 new('NMFns')
 

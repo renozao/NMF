@@ -95,6 +95,10 @@
   }
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # create a dummy NMF object that highlight the different way of subsetting
 a <- nmfModel(W=outer(seq(1,5),10^(0:2)), H=outer(10^(0:2),seq(-1,-10)))
 basisnames(a) <- paste('b', 1:nbasis(a), sep='')

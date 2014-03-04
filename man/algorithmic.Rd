@@ -404,6 +404,10 @@
   page are mainly based on this implementation.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 #----------
 # modelname,ANY-method
 #----------

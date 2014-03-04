@@ -37,6 +37,10 @@
   function \code{\link{nmf}} with a given NMF algorithm.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # wrap Lee & Seung algorithm into a function
 lee <- nmfWrapper('lee', seed=12345)
 args(lee)

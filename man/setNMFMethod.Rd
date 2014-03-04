@@ -36,6 +36,10 @@
   \code{setNMFMethod} for backward compatibility.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # define/regsiter a new -- dummy -- NMF algorithm with the minimum arguments
 # y: target matrix
 # x: initial NMF model (i.e. the seed)
