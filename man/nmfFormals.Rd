@@ -22,6 +22,10 @@
   given NMF algorithm.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # show arguments of an NMF algorithm
 nmfArgs('brunet')
 nmfArgs('snmf/r')

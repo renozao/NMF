@@ -6,6 +6,8 @@
 \alias{ForeachBackend,cluster-method}
 \alias{ForeachBackend,doMPI_backend-method}
 \alias{ForeachBackend,doParallel_backend-method}
+\alias{ForeachBackend,doParallelMC_backend-method}
+\alias{ForeachBackend,doParallelSNOW_backend-method}
 \alias{ForeachBackend,doPSOCK_backend-method}
 \alias{ForeachBackend-methods}
 \alias{ForeachBackend,missing-method}
@@ -120,6 +122,24 @@
   \item{ForeachBackend}{\code{signature(object =
   "doParallel_backend")}: doParallel-specific backend
   factory }
+
+  \item{ForeachBackend}{\code{signature(object =
+  "doParallelMC_backend")}: doParallel-specific backend
+  factory for multicore (fork) clusters
+
+  This method is needed since version 1.0.7 of
+  \pkg{doParallel}, which removed internal function
+  \code{info} and defined separate backend names for mc and
+  snow clusters. }
+
+  \item{ForeachBackend}{\code{signature(object =
+  "doParallelSNOW_backend")}: doParallel-specific backend
+  factory for SNOW clusters.
+
+  This method is needed since version 1.0.7 of
+  \pkg{doParallel}, which removed internal function
+  \code{info} and defined separate backend names for mc and
+  snow clusters. }
 
   \item{ForeachBackend}{\code{signature(object =
   "doPSOCK_backend")}: doSNOW-specific backend factory }

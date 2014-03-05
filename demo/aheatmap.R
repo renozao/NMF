@@ -51,3 +51,11 @@ aheatmap(x, annCol = annotation, annColors = ann_colors)
 drows = dist(x, method = "minkowski")
 dcols = dist(t(x), method = "minkowski")
 aheatmap(x, Rowv = drows, Colv = dcols)
+
+# Display text in each cells
+t <- outer(as.character(outer(letters, letters, paste0)), letters, paste0)[1:n, 1:p]
+aheatmap(x, txt = t)
+# NA values are shown as empty cells
+t.na <- t
+t.na[sample(length(t.na), 500)] <- NA # half of the cells
+aheatmap(x, txt = t.na)

@@ -49,6 +49,10 @@
   algorithms that are stored in registry. It allows to list
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # list all main algorithms
 nmfAlgorithm()
 # list all versions of algorithms

@@ -33,9 +33,13 @@
   Silhouette of NMF Clustering
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 x <- rmatrix(100, 20, dimnames = list(paste0('a', 1:100), letters[1:20]))
-# NB: using maxIter for the example purpose only
-res <- nmf(x, 4, nrun = 5, maxIter = 100)
+# NB: using low value for maxIter for the example purpose only
+res <- nmf(x, 4, nrun = 5, maxIter = 50)
 
 # sample clustering from best fit
 plot(silhouette(res))

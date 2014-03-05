@@ -108,6 +108,10 @@
   }
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # random standard NMF model
 x <- rnmf(3, 10, 5)
 all.equal(fitted(x), basis(x) \%*\% coef(x))

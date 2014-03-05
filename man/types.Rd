@@ -48,9 +48,6 @@
   \code{is.nmf} tests if an object is an NMF model or a
   class that extends the class NMF.
 
-  \code{is.empty.nmf} tests whether an \code{NMF} object
-  describes an empty NMF model, i.e. it contains no data.
-
   \code{hasBasis} tests whether an objects contains a basis
   matrix -- returned by a suitable method \code{basis} --
   with at least one row.
@@ -62,9 +59,6 @@
   \code{is.partial.nmf} tests whether an NMF model object
   contains either an empty basis or coefficient matrix. It
   is a shorcut for \code{!hasCoef(x) || !hasBasis(x)}.
-
-  \code{isNMFfit} tells if an object results from an NMF
-  fit.
 }
 \details{
   \code{is.nmf} tests if \code{object} is the name of a
@@ -100,6 +94,10 @@
   \url{https://stat.ethz.ch/pipermail/r-devel/2011-June/061357.html}
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 #----------
 # is.nmf
 #----------
@@ -126,7 +124,7 @@ is.empty.nmf( rnmf(3, 10, 5) )
 # generate a random
 V <- rmatrix(20, 10)
 
-# single run -- using maxIter to speed up the example
+# single run -- using very low value for maxIter to speed up the example
 res <- nmf(V, 3, maxIter=3L)
 isNMFfit(res)
 

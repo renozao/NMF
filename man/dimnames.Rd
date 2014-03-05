@@ -44,11 +44,6 @@
   provide separate access to each of these dimension names
   respectively. Their respective replacement form allow to
   set each dimension names separately.
-
-  The generic \code{basisnames<-} simultaneously sets the
-  names of the basis components and coefficients of an
-  object, for which suitable \code{basis} and \code{coef}
-  methods are defined.
 }
 \details{
   The function \code{basisnames} is a new S4 generic
@@ -115,6 +110,10 @@
   }
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # create a random NMF object
 a <- rnmf(2, 5, 3)
 

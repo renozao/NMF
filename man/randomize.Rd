@@ -28,6 +28,10 @@
   data.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 x <- matrix(1:32, 4, 8)
 randomize(x)
 randomize(x)

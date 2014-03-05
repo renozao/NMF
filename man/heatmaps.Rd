@@ -248,14 +248,6 @@
   NMF models, which redefine default values for some of the
   arguments of \code{\link{aheatmap}}, hence tuning the
   output specifically for NMF models.
-
-  \code{basimap} draws an annotated heatmap of the basis
-  matrix.
-
-  \code{coefmap} draws an annotated heatmap of the
-  coefficient matrix.
-
-  \code{consensusmap} plots heatmaps of consensus matrices.
 }
 \details{
   \strong{IMPORTANT:} although they essentially have the
@@ -371,6 +363,10 @@
   }
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 #----------
 # heatmap-NMF
 #----------

@@ -20,6 +20,10 @@
   requires specific handling.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 x <- rnmf(3, 100, 20)
 x
 # transpose

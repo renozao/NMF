@@ -47,6 +47,10 @@ There is no such information for the AML samples. It is a
   \code{\link[Biobase]{ExpressionSet-class}}.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 data(esGolub)
 esGolub
 \dontrun{pData(esGolub)}

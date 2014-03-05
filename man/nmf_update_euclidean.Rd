@@ -60,17 +60,17 @@
   matrix and its NMF estimate is measured by the --
   euclidean -- Frobenius norm.
 
-  \code{nmf_update.euclidean.w_R} and
-  \code{nmf_update.euclidean.h_R} implement the same
-  updates in \emph{plain R}.
-}
-\details{
   \code{nmf_update.euclidean.w} and
   \code{nmf_update.euclidean.h} compute the updated basis
   and coefficient matrices respectively. They use a
   \emph{C++} implementation which is optimised for speed
   and memory usage.
 
+  \code{nmf_update.euclidean.w_R} and
+  \code{nmf_update.euclidean.h_R} implement the same
+  updates in \emph{plain R}.
+}
+\details{
   The coefficient matrix (\code{H}) is updated as follows:
   \deqn{ H_{kj} \leftarrow \frac{\max(H_{kj} W^T V)_{kj},
   \varepsilon) }{(W^T W H)_{kj} + \varepsilon} }{ H_kj <-

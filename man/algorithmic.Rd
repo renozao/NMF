@@ -199,6 +199,10 @@
   first fit. It returns \code{NULL} if the object is empty.
   }
 
+  \item{algorithm}{\code{signature(object = "NMFSeed")}:
+  Returns the workhorse function of the seeding method
+  described by \code{object}. }
+
   \item{algorithm}{\code{signature(object =
   "NMFStrategyFunction")}: Returns the single R function
   that implements the NMF algorithm -- as stored in slot
@@ -212,9 +216,9 @@
   See \code{\link{algorithm,NMFStrategyOctave-method}} for
   more details. }
 
-  \item{algorithm}{\code{signature(object = "NMFSeed")}:
-  Returns the workhorse function of the seeding method
-  described by \code{object}. }
+  \item{algorithm<-}{\code{signature(object = "NMFSeed",
+  value = "function")}: Sets the workhorse function of the
+  seeding method described by \code{object}. }
 
   \item{algorithm<-}{\code{signature(object =
   "NMFStrategyFunction", value = "function")}: Sets the
@@ -225,10 +229,6 @@
   "NMFStrategyOctave", value = "character")}: Sets the name
   of the Octave/Matlab function that implements the NMF
   algorithm. It is stored in slot \code{algorithm}. }
-
-  \item{algorithm<-}{\code{signature(object = "NMFSeed",
-  value = "function")}: Sets the workhorse function of the
-  seeding method described by \code{object}. }
 
   \item{compare}{\code{signature(object = "NMFfitXn")}:
   Compares the fits obtained by separate runs of NMF, in a
@@ -404,6 +404,10 @@
   page are mainly based on this implementation.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 #----------
 # modelname,ANY-method
 #----------

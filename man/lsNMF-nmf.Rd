@@ -9,9 +9,9 @@
 
   wrss(object, X, weight)
 
-  nmfAlgorithm.lsNMF(..., .stop = NULL, maxIter = 2000,
-    weight, eps = 10^-9,
-    stationary.th = .Machine$double.eps,
+  nmfAlgorithm.lsNMF(..., .stop = NULL,
+    maxIter = nmf.getOption("maxIter") \%||\% 2000, weight,
+    eps = 10^-9, stationary.th = .Machine$double.eps,
     check.interval = 5 * check.niter, check.niter = 10L)
 }
 \arguments{

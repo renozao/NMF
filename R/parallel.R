@@ -85,6 +85,14 @@ getDoBackend <- function(){
 		}
 	)
 }
+
+getDoBackendInfo <- function(x, item){
+    if( is.function(x$info) ) x$info(x$data, item)
+}
+getDoBackendName <- function(x){
+    getDoBackendInfo(x, 'name')
+}
+
 #' \code{setDoBackend} is identical to \code{\link[foreach]{setDoPar}}, but 
 #' returns the internal of the previously registered backend.
 #' 
@@ -107,7 +115,7 @@ setDoBackend <- function(data, cleanup=FALSE){
 	
 	if( !is.null(data) ){
 		bdata <- data
-		if( is.backend(data) )	data <- data[!names(data) %in% c('name', 'cleanup')]
+		if( is.backend(data) ) data <- data[!names(data) %in% c('name', 'cleanup')]
 		do.call('setDoPar', data)
 		setBackendCleanup(bdata)
 	}else{
@@ -300,28 +308,71 @@ setOldClass('doParallel_backend')
 #' @param type type of cluster, See \code{\link[parallel]{makeCluster}}.
 setMethod('ForeachBackend', 'doParallel_backend',
 	function(object, cl, type=NULL){
-		
-		# use all available cores if not otherwise specified
-		register_cleanup <-
-		if( missing(cl) ){
-			!length(object$data) || isNumber(object$data) || isNumber(object$data[[1L]])
-		}else{
-			isNumber(cl)
-		}
-
-		# required registration data
+				
+		# set type of cluster if explicitly provided
+		if( !is.null(type) ) object$data$type <- type
+        
+        # required registration data
 		# NB: a function doParallel:::doParallel should exist and do the same 
 		# thing as parallel::registerDoParallel without registering the backend
 		#object$fun <- doParallel:::doParallel
-		object$info <- doParallel:::info
-		
-		# set type of cluster if explicitly provided
-		if( !is.null(type) ) object$data$type <- type
+#		object$info <- doParallel:::info
+        # doParallel:::info has been removed from doParallel since version 1.0.7
+		# Reported in Issue #7
+        object$info <- getDoParallelInfo(object)
 		
 		# return object
 		object
 	}
 )
+#' doParallel-specific backend factory for multicore (fork) clusters
+#' 
+#' This method is needed since version 1.0.7 of \pkg{doParallel}, which removed 
+#' internal function \code{info} and defined separate backend names for mc and snow clusters.
+setMethod('ForeachBackend', 'doParallelMC_backend',
+    function(object, ...){
+	
+        object$info <- getDoParallelInfo('mc')
+        object$name <- 'doParallel'
+        # return object
+        object
+    }
+)
+#' doParallel-specific backend factory for SNOW clusters.
+#' 
+#' This method is needed since version 1.0.7 of \pkg{doParallel}, which removed 
+#' internal function \code{info} and defined separate backend names for mc and snow clusters.
+setMethod('ForeachBackend', 'doParallelSNOW_backend',
+    function(object, ...){
+        
+        object$info <- getDoParallelInfo('snow')
+        object$name <- 'doParallel'
+        # return object
+        object
+    }
+)
+
+getDoParallelType <- function(x){
+    
+    
+    cl <- x$data[['cl']]
+    if( is.null(cl) && length(x$data) && (is.null(names(x$data)) || names(x$data)[[1L]] == '') )
+        cl <- x$data[[1L]]
+    if ( is.null(cl) || is.numeric(cl) ) {
+        if (.Platform$OS.type == "windows" || (!is.null(x$data$type) && !identical(x$data$type, 'FORK')) ) 'snow'
+        else 'mc'
+    }
+    else 'snow'
+    
+}
+
+getDoParallelInfo <- function(x, ...){
+    t <- if( isString(x) ) x else getDoParallelType(x, ...)
+#    str(t)
+    ns <- asNamespace('doParallel')
+    if( t == 'mc' ) get('mcinfo', ns)
+    else get('snowinfo', ns)
+}
 
 ######################################################
 # doPSOCK
@@ -504,7 +555,7 @@ print.foreach_backend <- function(x, ...){
 	
 	# early exit for doSEQ
 	if( name == 'doSEQ' ) return( registerDoSEQ )
-	
+    
 	# build name of registration function
 	s <- str_c(toupper(substring(name, 1,1)), substring(name, 2))
 	funname <- str_c('register', s)

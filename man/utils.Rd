@@ -18,6 +18,10 @@
   \code{\link{args}}, but returns the output as a string.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 args(library)
 str_args(library)
 }

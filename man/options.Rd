@@ -113,9 +113,19 @@
   output may be very -- very -- messy, and is aimed at
   debugging only.}
 
-  } % end description
+  \item{maxIter}{ Default maximum number of iteration to
+  use (default NULL). This option is for internal/technical
+  usage only, to globally speed up examples or tests of NMF
+  algorithms. To be used with care at one's own risk... It
+  is documented here so that advanced users are aware of
+  its existence, and can avoid possible conflict with their
+  own custom options. } } % end description
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # show all NMF specific options
 nmf.printOptions()
 

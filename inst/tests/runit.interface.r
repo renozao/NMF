@@ -983,10 +983,12 @@ test.nmf.stop <- function(){
 	r <- 3; V <- .testData(r=r)
 	#
 	
+    if( is.null(maxIter <- nmf.getOption('maxIter')) ) maxIter <- 2000L
+    maxIter <- maxIter + 100L
 	checkIdentical( niter(nmf(V, r, .stop=37L)), 37L, "Integer stopping criterium: fixed number of iterations")
-	checkIdentical( niter(nmf(V, r, .stop=3000L)), 3000L
+	checkIdentical( niter(nmf(V, r, .stop=maxIter)), maxIter
 		, "Integer stopping criterium greater than default maxIter: fixed number of iterations is honoured")
-	checkIdentical( niter(nmf(V, r, .stop=3000L, maxIter=1000L)), 1000L
+	checkIdentical( niter(nmf(V, r, .stop=200L, maxIter=67L)), 67L
 		, "Integer stopping criterium greater than provided maxIter: maxIter is honoured")
 	checkTrue( niter(nmf(V, r, .stop=37)) != 37, "Numeric stopping criterium: stationarity threshold")
 	checkTrue( niter(nmf(V, r, .stop='nmf.stop.stationary')) != 37, "stopping criterium 'stationary' as full name is passed correctly")

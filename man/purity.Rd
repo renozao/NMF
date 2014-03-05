@@ -52,9 +52,6 @@
   respectively compute the purity and the entropy of a
   clustering given \emph{a priori} known classes.
 
-  Entropy of a Clustering
-}
-\details{
   The purity and entropy measure the ability of a
   clustering method, to recover known classes (e.g. one
   knows the true class labels of each sample), that are
@@ -62,7 +59,8 @@
   from the number of known classes. \cite{Kim et al.
   (2007)} used these measures to evaluate the performance
   of their alternate least-squares NMF algorithm.
-
+}
+\details{
   Suppose we are given \eqn{l} categories, while the
   clustering method generates \eqn{k} clusters.
 
@@ -141,6 +139,10 @@
   }
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)
 n <- 50; counts <- c(5, 5, 8);
 V <- syntheticNMF(n, counts)

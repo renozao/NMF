@@ -22,7 +22,8 @@ NULL
 nmfAlgorithm.brunet_M <- setNMFMethod('.M#brunet',
 	, objective= 'KL'
 	, mcode = 'brunet.m'
-	, algorithm = function (y, x, verbose=nmf.getOption('verbose')){
-		RcppOctave::.CallOctave('brunet', y, nbasis(x), verbose, basis(x), coef(x));
+	, algorithm = function (y, x, verbose=nmf.getOption('verbose')
+                            , maxIter = nmf.getOption('maxIter') %||% 2000L){
+		RcppOctave::.CallOctave('brunet', y, nbasis(x), verbose, basis(x), coef(x), maxIter);
 	}
 )
