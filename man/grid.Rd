@@ -22,6 +22,9 @@
   exported (i.e. not tampering core functions) and are only
   meant for internal use within the \pkg{NMF} package.
 
+  \code{tryViewport} tries to go down to a viewport in the
+  current tree, given its name.
+
   \code{current.vpPath_patched} aims at substituting
   \code{\link[grid]{current.vpPath}}, so that the graphic
   engine is not reset. This is essentially to prevent
@@ -32,9 +35,6 @@
   grid.
 }
 \details{
-  \code{tryViewport} tries to go down to a viewport in the
-  current tree, given its name.
-
   \code{tryViewport} uses \code{\link[grid]{grid.ls}} and
   not \code{\link{seekViewport}} as the latter would reset
   the graphic device and break the mix grid/base graphic

@@ -19,10 +19,12 @@
   nmf_update.offset(i, v, x, copy = FALSE, eps = 10^-9,
     ...)
 
-  nmfAlgorithm.offset_R(..., .stop = NULL, maxIter = 2000,
+  nmfAlgorithm.offset_R(..., .stop = NULL,
+    maxIter = nmf.getOption("maxIter") \%||\% 2000,
     eps = 10^-9, stopconv = 40, check.interval = 10)
 
-  nmfAlgorithm.offset(..., .stop = NULL, maxIter = 2000,
+  nmfAlgorithm.offset(..., .stop = NULL,
+    maxIter = nmf.getOption("maxIter") \%||\% 2000,
     copy = FALSE, eps = 10^-9, stopconv = 40,
     check.interval = 10)
 }
@@ -97,6 +99,11 @@
   models a common baseline for each feature accross all
   samples: \deqn{V \approx W H + I}
 
+  \code{nmf_update.euclidean_offset.h} and
+  \code{nmf_update.euclidean_offset.w} compute the updated
+  NMFOffset model, using the optimized \emph{C++}
+  implementations.
+
   \code{nmf_update.offset_R} implements a complete single
   update step, using plain R updates.
 
@@ -110,11 +117,6 @@
   \code{\link{nmf_update.offset_R}} respectively.
 }
 \details{
-  \code{nmf_update.euclidean_offset.h} and
-  \code{nmf_update.euclidean_offset.w} compute the updated
-  NMFOffset model, using the optimized \emph{C++}
-  implementations.
-
   The associated model is defined as an
   \code{\linkS4class{NMFOffset}} object. The details of the
   multiplicative updates can be found in \cite{Badea

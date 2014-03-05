@@ -145,6 +145,10 @@
   }
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # create a completely empty NMFstd object
 new('NMFstd')
 

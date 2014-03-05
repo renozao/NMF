@@ -59,11 +59,9 @@ pkgmaker::latex_bibliography('NMF')
 \urlstyle{rm}
 
 <<options, echo=FALSE>>=
-options(prompt=' ', width = 60)
-options(continue=' ')
 set.seed(123456)
 library(knitr)
-knit_hooks$set(try = pkgmaker::hook_try)
+knit_hooks$set(try = pkgmaker::hook_try, backspace = pkgmaker::hook_backspace())
 @
 
 % use cleveref for automatic reference label formatting
@@ -84,11 +82,13 @@ knit_hooks$set(try = pkgmaker::hook_try)
 <<load_library, echo=FALSE, include=FALSE>>=
 # Load
 library(NMF)
+# limit number of cores used
+nmf.options(cores = 2)
 @
 
 \title{An introduction to NMF package\\
 \small Version \Sexpr{utils::packageVersion('NMF')}}
-\author{Renaud Gaujoux, \url{renaud@cbio.uct.ac.za}}
+\author{Renaud Gaujoux}
 % \\Address Computational Biology - University of Cape Town, South Africa,
 
 \maketitle
@@ -842,7 +842,7 @@ However in some situation (e.g. while debugging), it might be useful to force th
 This can be done via the option \code{'p1'} to run on a single core , or with
 \code{.pbackend='seq'} to use the foreach backend \code{doSEQ} or to \code{NA} to use a standard \code{sapply} call:
 
-<<force_seq, cache=TRUE>>=
+<<force_seq, cache=TRUE, backspace = TRUE>>=
 # parallel execution on 2 cores (if possible)
 res1 <- nmf(esGolub, 3, nrun=5, .opt='vp2', seed=123)
 

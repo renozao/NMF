@@ -70,13 +70,13 @@ setMethod('run', signature(object='NMFStrategyOctave', y='matrix', x='NMFfit'),
         mdirs <- character()
         ## add package mfiles directory if possible
         if( nzchar(pkg <- packageSlot(object)) ){
-            if( nzchar(pkg_mfiles <- system.mfile(package=pkg)) )
+            if( nzchar(pkg_mfiles <- RcppOctave::system.mfile(package=pkg)) )
                 mdirs <- c(mdirs, pkg_mfiles)
         }
 		## add path to specified mfiles
 		mfiles <- object@mcode
 		if( length(mfiles) && any(nzchar(mfiles)) ){
-			mfiles <- as.mfile(mfiles)
+			mfiles <- RcppOctave::as.mfile(mfiles)
     		mdirs <- c(mdirs, dirname(mfiles))
         }
         ## add to path

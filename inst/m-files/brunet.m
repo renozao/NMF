@@ -69,7 +69,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-function [W,H,runtime,niter] = brunet(v,r,verbose, w, h)
+function [W,H,runtime,niter] = brunet(v,r,verbose, w, h, niter)
 %
 % Jean-Philippe Brunet
 % Cancer Genomics 
@@ -117,7 +117,10 @@ end
 
 [n,m]=size(v);
 stopconv=40;      % stopping criterion (can be adjusted)
-niter = 2000;     % maximum number of iterations (can be adjusted)
+if nargin<6,
+ niter = 2000;     % maximum number of iterations (can be adjusted)
+end
+
 
 cons=zeros(m,m);
 consold=cons;

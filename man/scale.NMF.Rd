@@ -45,6 +45,10 @@
   up to one.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # random 3-rank 10x5 NMF model
 x <- rnmf(3, 10, 5)
 

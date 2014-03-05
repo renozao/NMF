@@ -51,15 +51,15 @@
   matrix and its NMF estimate is measured by the
   Kullback-Leibler divergence.
 
-  \code{nmf_update.KL.w_R} and \code{nmf_update.KL.h_R}
-  implement the same updates in \emph{plain R}.
-}
-\details{
   \code{nmf_update.KL.w} and \code{nmf_update.KL.h} compute
   the updated basis and coefficient matrices respectively.
   They use a \emph{C++} implementation which is optimised
   for speed and memory usage.
 
+  \code{nmf_update.KL.w_R} and \code{nmf_update.KL.h_R}
+  implement the same updates in \emph{plain R}.
+}
+\details{
   The coefficient matrix (\code{H}) is updated as follows:
   \deqn{ H_{kj} \leftarrow H_{kj} \frac{\left( sum_i
   \frac{W_{ik} V_{ij}}{(WH)_{ij}} \right)}{ sum_i W_{ik} }.

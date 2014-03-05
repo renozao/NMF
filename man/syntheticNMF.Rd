@@ -72,6 +72,10 @@
   to produce data with known or clear classes of samples.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)
 n <- 50
 counts <- c(5, 5, 8)

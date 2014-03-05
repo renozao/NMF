@@ -42,13 +42,13 @@
 \description{
   This method provides a convenient way of sub-setting
   objects of class \code{NMF}, using a matrix-like syntax.
-}
-\details{
+
   It allows to consistently subset one or both matrix
   factors in the NMF model, as well as retrieving part of
   the basis components or part of the mixture coefficients
   with a reduced amount of code.
-
+}
+\details{
   The returned value depends on the number of subset index
   passed and the value of argument \code{drop}:
 
@@ -95,6 +95,10 @@
   }
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # create a dummy NMF object that highlight the different way of subsetting
 a <- nmfModel(W=outer(seq(1,5),10^(0:2)), H=outer(10^(0:2),seq(-1,-10)))
 basisnames(a) <- paste('b', 1:nbasis(a), sep='')

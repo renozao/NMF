@@ -271,7 +271,7 @@ staticVar <- local({
 #'   
 #' @rdname NMFStrategy
 setMethod('run', signature(object='NMFStrategyIterative', y='matrix', x='NMFfit'),
-	function(object, y, x, .stop=NULL, maxIter=2000L, ...){
+	function(object, y, x, .stop=NULL, maxIter = nmf.getOption('maxIter') %||% 2000L, ...){
 	
 	method <- object
 	# override the stop method on runtime

@@ -33,7 +33,7 @@ NULL
 #' # generate a random
 #' V <- rmatrix(20, 10)
 #' 
-#' # single run -- using maxIter to speed up the example 
+#' # single run -- using very low value for maxIter to speed up the example 
 #' res <- nmf(V, 3, maxIter=3L)
 #' isNMFfit(res)
 #' 

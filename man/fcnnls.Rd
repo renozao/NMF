@@ -52,8 +52,7 @@
   square linear problem using normal equations and the fast
   combinatorial strategy from \cite{Van Benthem et al.
   (2004)}:
-}
-\details{
+
   \deqn{ \begin{array}{l} \min \|Y - X K\|_F\\ \mbox{s.t. }
   K>=0 \end{array} }{min ||Y - X K||_F, s.t. K>=0}
 
@@ -65,7 +64,8 @@
   The algorithm is very fast compared to other approaches,
   as it is optimised for handling multiple right-hand
   sides.
-
+}
+\details{
   Within the \code{NMF} package, this algorithm is used
   internally by the SNMF/R(L) algorithm from \cite{Kim et
   al. (2007)} to solve general Nonnegative Matrix
@@ -111,6 +111,10 @@
   }
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 ## Define a random nonnegative matrix matrix
 n <- 200; p <- 20; r <- 3
 V <- rmatrix(n, p)

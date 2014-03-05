@@ -59,6 +59,10 @@
   values for both matrix factors.} }
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # list all registered seeding methods
 nmfSeed()
 # retrieve one of the methods

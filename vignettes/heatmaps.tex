@@ -125,7 +125,7 @@
 , backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 \bibliography{Rpackages}
-\bibliography{/tmp/Rpkglib_6997333d1b43/NMF/REFERENCES}
+\bibliography{/tmp/Rpkglib_26ff65706d7b/NMF/REFERENCES}
 
 
 \newcommand{\citet}[1]{\textcite{#1}}
@@ -167,7 +167,7 @@
 
 
 \title{Generating heatmaps for Nonnegative Matrix Factorization\\
-\small Package \nmfpack\ - Version 0.20}
+\small Package \nmfpack\ - Version 0.20.2}
 \author{Renaud Gaujoux}
 
 \maketitle
@@ -265,12 +265,14 @@ random target matrix, as well as some annotations or covariates:
 \begin{alltt}
 \hlcom{# random data that follow an 3-rank NMF model (with quite some noise: sd=2)}
 \hlstd{X} \hlkwb{<-} \hlkwd{syntheticNMF}\hlstd{(}\hlnum{100}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{20}\hlstd{,} \hlkwc{noise} \hlstd{=} \hlnum{2}\hlstd{)}
+
 \hlcom{# row annotations and covariates}
 \hlstd{n} \hlkwb{<-} \hlkwd{nrow}\hlstd{(X)}
 \hlstd{d} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(n)}
 \hlstd{e} \hlkwb{<-} \hlkwd{unlist}\hlstd{(}\hlkwd{mapply}\hlstd{(rep,} \hlkwd{c}\hlstd{(}\hlstr{"X"}\hlstd{,} \hlstr{"Y"}\hlstd{,} \hlstr{"Z"}\hlstd{),} \hlnum{10}\hlstd{))}
 \hlstd{e} \hlkwb{<-} \hlkwd{c}\hlstd{(e,} \hlkwd{rep}\hlstd{(}\hlnum{NA}\hlstd{, n} \hlopt{-} \hlkwd{length}\hlstd{(e)))}
 \hlstd{rdata} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{Var} \hlstd{= d,} \hlkwc{Type} \hlstd{= e)}
+
 \hlcom{# column annotations and covariates}
 \hlstd{p} \hlkwb{<-} \hlkwd{ncol}\hlstd{(X)}
 \hlstd{a} \hlkwb{<-} \hlkwd{sample}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"alpha"}\hlstd{,} \hlstr{"beta"}\hlstd{,} \hlstr{"gamma"}\hlstd{), p,} \hlkwc{replace} \hlstd{=} \hlnum{TRUE}\hlstd{)}
@@ -691,23 +693,23 @@ These demos and the plots they generate can also be browsed online at \url{http:
 
 \section{Session Info}
 \begin{itemize}\raggedright
-  \item R version 3.0.2 (2013-09-25), \verb|x86_64-pc-linux-gnu|
+  \item R Under development (unstable) (2014-03-02 r65102), \verb|x86_64-unknown-linux-gnu|
   \item Locale: \verb|LC_CTYPE=en_US.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_US.UTF-8|, \verb|LC_COLLATE=en_US.UTF-8|, \verb|LC_MONETARY=en_US.UTF-8|, \verb|LC_MESSAGES=en_US.UTF-8|, \verb|LC_PAPER=en_US.UTF-8|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_US.UTF-8|, \verb|LC_IDENTIFICATION=C|
   \item Base packages: base, datasets, graphics, grDevices,
     methods, parallel, stats, utils
-  \item Other packages: BH~1.51.0-3, bigmemory~4.4.3,
+  \item Other packages: BH~1.51.0-4, bigmemory~4.4.6,
     bigmemory.sri~0.1.2, Biobase~2.22.0, BiocGenerics~0.8.0,
-    cluster~1.14.4, knitr~1.5, NMF~0.20, pkgmaker~0.18.2,
+    cluster~1.14.4, knitr~1.5, NMF~0.20.2, pkgmaker~0.17.4,
     RColorBrewer~1.0-5, registry~0.2, rngtools~1.2.3,
-    synchronicity~1.1.0
+    synchronicity~1.1.2
   \item Loaded via a namespace (and not attached):
     codetools~0.2-8, colorspace~1.2-4, dichromat~2.0-0,
-    digest~0.6.3, doParallel~1.0.3, evaluate~0.5.1, foreach~1.4.1,
-    formatR~0.9, ggplot2~0.9.3.1, grid~3.0.2, gridBase~0.4-6,
-    gtable~0.1.2, highr~0.2.1, iterators~1.0.6, labeling~0.2,
-    MASS~7.3-29, munsell~0.4.2, plyr~1.8, proto~0.3-10,
-    reshape2~1.2.2, scales~0.2.3, stringr~0.6.2, tools~3.0.2,
-    xtable~1.7-1
+    digest~0.6.4, doParallel~1.0.8, evaluate~0.5.1, foreach~1.4.1,
+    formatR~0.10, ggplot2~0.9.3.1, grid~3.1.0, gridBase~0.4-7,
+    gtable~0.1.2, highr~0.3, iterators~1.0.6, labeling~0.2,
+    MASS~7.3-29, munsell~0.4.2, plyr~1.8.1, proto~0.3-10,
+    Rcpp~0.11.0, reshape2~1.2.2, scales~0.2.3, stringr~0.6.2,
+    tools~3.1.0, xtable~1.7-1
 \end{itemize}
 
 

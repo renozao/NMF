@@ -711,6 +711,10 @@
   section of this man page and in the package's vignette.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # Only basic calls are presented in this manpage.
 # Many more examples are provided in the demo file nmf.R
 \dontrun{

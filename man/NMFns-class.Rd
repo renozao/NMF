@@ -6,15 +6,15 @@
   This class implements the \emph{Nonsmooth Nonnegative
   Matrix Factorization} (nsNMF) model, required by the
   Nonsmooth NMF algorithm.
-}
-\details{
+
   The Nonsmooth NMF algorithm is defined by
   \cite{Pascual-Montano et al. (2006)} as a modification of
   the standard divergence based NMF algorithm (see section
   Details and references below).  It aims at obtaining
   sparser factor matrices, by the introduction of a
   smoothing matrix.
-
+}
+\details{
   The Nonsmooth NMF algorithm is a modification of the
   standard divergence based NMF algorithm (see
   \code{\linkS4class{NMF}}). Given a non-negative \eqn{n
@@ -101,6 +101,10 @@
   columns is scaled so that it sums up to 1.
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # create a completely empty NMFns object
 new('NMFns')
 

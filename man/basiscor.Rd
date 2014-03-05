@@ -82,6 +82,10 @@
   }
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # generate two random NMF models
 a <- rnmf(3, 100, 20)
 b <- rnmf(3, 100, 20)

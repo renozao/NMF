@@ -305,6 +305,10 @@
   }
 }
 \examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
 # run default NMF algorithm on a random matrix
 n <- 50; r <- 3; p <- 20
 V <- rmatrix(n, p)
