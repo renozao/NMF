@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>rnmf. NMF 0.20.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">NMF</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+	  <li><a href="PAGE-MAN.html"><span class="glyphicon glyphicon-home"></span> Index</a></li>
+    </ul>
+    <!-- <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>--> 
+    <ul class="nav navbar-nav navbar-right">
+      <li><p class="navbar-text">
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      &nbsp;</p></li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Generating Random NMF Models</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p><p>Generates NMF models with random values drawn from a
+  uniform distribution. It returns an NMF model with basis
+  and mixture coefficient matrices filled with random
+  values. The main purpose of the function <code>rnmf</code> is
+  to provide a common interface to generate random seeds
+  used by the <code><a href='nmf.html'>nmf</a></code> function.</p></p>
+  
+    </div>
+    
+    <h2>Usage</h2>
+    <pre>rnmf(x, target, ...)
+
+<span class="label label-success">S4</span> (NMF,numeric)
+`rnmf`(x, target, ncol = NULL, keep.names = TRUE, dist = runif)
+
+<span class="label label-success">S4</span> (ANY,matrix)
+`rnmf`(x, target, ..., dist = list(max = max(max(target, na.rm = TRUE), 
+  1)), use.dimnames = TRUE)
+
+<span class="label label-success">S4</span> (numeric,missing)
+`rnmf`(x, target, ..., W, H, dist = runif)
+
+<span class="label label-success">S4</span> (missing,missing)
+`rnmf`(x, target, ..., W, H)
+
+<span class="label label-success">S4</span> (numeric,numeric)
+`rnmf`(x, target, ncol = NULL, ..., dist = runif)
+
+<span class="label label-success">S4</span> (formula,ANY)
+`rnmf`(x, target, ..., dist = runif)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>an object that determines the rank, dimension
+  and/or class of the generated NMF model, e.g. a numeric
+  value or an object that inherits from class
+  <code><a href='NMF-class.html'>NMF-class</a></code>. See the description of the
+  specific methods for more details on the supported
+  types.</dd>
+      <dt>target</dt>
+      <dd>optional specification of target
+  dimensions. See section <em>Methods</em> for how this
+  parameter is used by the different methods.</dd>
+      <dt>...</dt>
+      <dd>extra arguments to allow extensions and passed
+  to the next method eventually down to
+  <code><a href='nmfModel.html'>nmfModel</a></code>, where they are used to initialise
+  slots that are specific to the instantiating NMF model.</dd>
+      <dt>ncol</dt>
+      <dd>single numeric value that specifies the
+  number of columns of the coefficient matrix. Only used
+  when <code>target</code> is a single numeric value.</dd>
+      <dt>keep.names</dt>
+      <dd>a logical that indicates if the
+  dimension names of the original NMF object <code>x</code>
+  should be conserved (<code>TRUE</code>) or discarded
+  (<code>FALSE</code>).</dd>
+      <dt>dist</dt>
+      <dd>specification of the random distribution to
+  use to draw the entries of the basis and coefficient
+  matrices. It may be specified as: <ul>
+<li> a <code>function</code> which must be a distribution
+  function such as e.g. <code><a href='http://www.inside-r.org/r-doc/stats/Uniform'>runif</a></code> that is used to
+  draw the entries of both the basis and coefficient
+  matrices. It is passed in the <code>dist</code> argument of
+  <code><a href='rmatrix.html'>rmatrix</a></code>.
+
+  </li>
+<li> a <code>list</code> of arguments that are passed
+  internally to <code><a href='rmatrix.html'>rmatrix</a></code>, via
+  <code>do.call('rmatrix', dist)</code>.
+
+  </li>
+<li> a <code>character</code> string that is partially matched
+  to &#145;basis&#146; or &#145;coef&#146;, that specifies which
+  matrix in should be drawn randomly, the other remaining
+  as in <code>x</code> -- unchanged.
+
+  </li>
+<li> a <code>list</code> with elements &#145;basis&#146; and/or
+  &#145;coef&#146;, which specify the <code>dist</code> argument
+  separately for the basis and coefficient matrix
+  respectively.
+
+  These elements may be either a distribution function, or
+  a list of arguments that are passed internally to
+  <code><a href='rmatrix.html'>rmatrix</a></code>, via <code>do.call('rmatrix',
+  dist$basis)</code> or <code>do.call('rmatrix', dist$coef)</code>. </li>
+</ul>
+</dd>
+      <dt>use.dimnames</dt>
+      <dd>a logical that indicates whether the
+  dimnames of the target matrix should be set on the
+  returned NMF model.</dd>
+      <dt>W</dt>
+      <dd>value for the basis matrix. <code>data.frame</code>
+  objects are converted into matrices with
+  <code><a href='http://www.inside-r.org/r-doc/base/matrix'>as.matrix</a></code>.</dd>
+      <dt>H</dt>
+      <dd>value for the mixture coefficient matrix
+  <code>data.frame</code> objects are converted into matrices
+  with <code><a href='http://www.inside-r.org/r-doc/base/matrix'>as.matrix</a></code>.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>An NMF model, i.e. an object that inherits from class
+  <code><a href='NMF-class.html'>NMF-class</a></code>.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>If necessary, extensions of the standard NMF model or
+  custom models must define a method
+  "rnmf,<NMF.MODEL.CLASS>,numeric" for initialising their
+  specific slots other than the basis and mixture
+  coefficient matrices. In order to benefit from the
+  complete built-in interface, the overloading methods
+  should call the generic version using function
+  <code><a href='http://www.inside-r.org/r-doc/methods/NextMethod'>callNextMethod</a></code>, prior to set the values of
+  the specific slots. See for example the method
+  <code><a href='rnmf.html'>rnmf</a></code>
+  defined for <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code> models:
+  <code>showMethods(rnmf, class='NMFOffset',
+  include=TRUE))</code>.</p>
+  
+      <p>For convenience, shortcut methods for working on
+  <code>data.frame</code> objects directly are implemented.
+  However, note that conversion of a <code>data.frame</code> into
+  a <code>matrix</code> object may take some non-negligible time,
+  for large datasets. If using this method or other
+  NMF-related methods several times, consider converting
+  your data <code>data.frame</code> object into a matrix once for
+  good, when first loaded.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>rnmf<code>signature(x = "NMFOffset", target =
+  "numeric")</code>: Generates a random NMF model with offset,
+  from class <code>NMFOffset</code>.</p>
+  
+      <p>The offset values are drawn from a uniform distribution
+  between 0 and the maximum entry of the basis and
+  coefficient matrices, which are drawn by the next
+  suitable <code><a href='rnmf.html'>rnmf</a></code> method, which is the
+  workhorse method <code>rnmf,NMF,numeric</code>.</p>
+  
+      <p></li>
+<li>rnmf<code>signature(x = "NMF", target =
+  "numeric")</code>: Generates a random NMF model of the same
+  class and rank as another NMF model.</p>
+  
+      <p>This is the workhorse method that is eventually called by
+  all other methods. It generates an NMF model of the same
+  class and rank as <code>x</code>, compatible with the
+  dimensions specified in <code>target</code>, that can be a
+  single or 2-length numeric vector, to specify a square or
+  rectangular target matrix respectively.</p>
+  
+      <p>The second dimension can also be passed via argument
+  <code>ncol</code>, so that calling <code>rnmf(x, 20, 10, ...)</code>
+  is equivalent to <code>rnmf(x, c(20, 10), ...)</code>, but
+  easier to write.</p>
+  
+      <p>The entries are uniformly drawn between <code>0</code> and
+  <code>max</code> (optionally specified in <code>...</code>) that
+  defaults to 1.</p>
+  
+      <p>By default the dimnames of <code>x</code> are set on the
+  returned NMF model. This behaviour is disabled with
+  argument <code>keep.names=FALSE</code>. See
+  <code><a href='nmfModel.html'>nmfModel</a></code>.</p>
+  
+      <p></li>
+<li>rnmf<code>signature(x = "ANY", target =
+  "matrix")</code>: Generates a random NMF model compatible and
+  consistent with a target matrix.</p>
+  
+      <p>The entries are uniformly drawn between <code>0</code> and
+  <code>max(target)</code>. It is more or less a shortcut for:
+  <span class = "samp"> rnmf(x, dim(target), max=max(target), ...)</span></p>
+  
+      <p>It returns an NMF model of the same class as <code>x</code>.</p>
+  
+      <p></li>
+<li>rnmf<code>signature(x = "ANY", target =
+  "data.frame")</code>: Shortcut for <code>rnmf(x,
+  as.matrix(target))</code>.</p>
+  
+      <p></li>
+<li>rnmf<code>signature(x = "NMF", target =
+  "missing")</code>: Generates a random NMF model of the same
+  dimension as another NMF model.</p>
+  
+      <p>It is a shortcut for <code>rnmf(x, nrow(x), ncol(x),
+  ...)</code>, which returns a random NMF model of the same class
+  and dimensions as <code>x</code>.</p>
+  
+      <p></li>
+<li>rnmf<code>signature(x = "numeric", target =
+  "missing")</code>: Generates a random NMF model of a given
+  rank, with known basis and/or coefficient matrices.</p>
+  
+      <p>This methods allow to easily generate partially random
+  NMF model, where one or both factors are known. Although
+  the later case might seems strange, it makes sense for
+  NMF models that have fit extra data, other than the basis
+  and coefficient matrices, that are drawn by an
+  <code>rnmf</code> method defined for their own class, which
+  should internally call <code>rnmf,NMF,numeric</code> and let it
+  draw the basis and coefficient matrices. (e.g. see
+  <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code> and
+  <code><a href='rnmf.html'>rnmf,NMFOffset,numeric-method</a></code>).</p>
+  
+      <p>Depending on whether arguments <code>W</code> and/or <code>H</code>
+  are missing, this method interprets <code>x</code> differently:
+  <ul>
+<li> <code>W</code> provided, <code>H</code> missing: <code>x</code> is
+  taken as the number of columns that must be drawn to
+  build a random coefficient matrix (i.e. the number of
+  columns in the target matrix).</p>
+  
+      <p></li>
+<li> <code>W</code> is missing, <code>H</code> is provided: <code>x</code>
+  is taken as the number of rows that must be drawn to
+  build a random basis matrix (i.e. the number of rows in
+  the target matrix).</p>
+  
+      <p></li>
+<li> both <code>W</code> and <code>H</code> are provided: <code>x</code>
+  is taken as the target rank of the model to generate.
+  </li>
+<li> Having both <code>W</code> and <code>H</code> missing produces
+  an error, as the dimension of the model cannot be
+  determined in this case. </li>
+</ul></p>
+  
+      <p>The matrices <code>W</code> and <code>H</code> are reduced if
+  necessary and possible to be consistent with this value
+  of the rank, by the internal call to
+  <code><a href='nmfModel.html'>nmfModel</a></code>.</p>
+  
+      <p>All arguments in <code>...</code> are passed to the function
+  <code><a href='nmfModel.html'>nmfModel</a></code> which is used to build an initial
+  NMF model, that is in turn passed to
+  <code>rnmf,NMF,numeric</code> with <code>dist=list(coef=dist)</code>
+  or <code>dist=list(basis=dist)</code> when suitable. The type
+  of NMF model to generate can therefore be specified in
+  argument <code>model</code> (see <code><a href='nmfModel.html'>nmfModel</a></code> for
+  other possible arguments).</p>
+  
+      <p>The returned NMF model, has a basis matrix equal to
+  <code>W</code> (if not missing) and a coefficient matrix equal
+  to <code>H</code> (if not missing), or drawn according to the
+  specification provided in argument <code>dist</code> (see
+  method <code>rnmf,NMF,numeric</code> for details on the
+  supported values for <code>dist</code>).</p>
+  
+      <p></li>
+<li>rnmf<code>signature(x = "missing", target =
+  "missing")</code>: Generates a random NMF model with known
+  basis and coefficient matrices.</p>
+  
+      <p>This method is a shortcut for calling
+  <code>rnmf,numeric,missing</code> with a suitable value for
+  <code>x</code> (the rank), when both factors are known:
+  codernmf(min(ncol(W), nrow(H)), ..., W=W, H=H).</p>
+  
+      <p>Arguments <code>W</code> and <code>H</code> are required. Note that
+  calling this method only makes sense for NMF models that
+  contains data to fit other than the basis and coefficient
+  matrices, e.g. <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code>.</p>
+  
+      <p></li>
+<li>rnmf<code>signature(x = "numeric", target =
+  "numeric")</code>: Generates a random standard NMF model of
+  given dimensions.</p>
+  
+      <p>This is a shortcut for <code>rnmf(nmfModel(x, target,
+  ncol, ...)), dist=dist)</code>. It generates a standard NMF
+  model compatible with the dimensions passed in
+  <code>target</code>, that can be a single or 2-length numeric
+  vector, to specify a square or rectangular target matrix
+  respectively. See <code><a href='nmfModel.html'>nmfModel</a></code>.</p>
+  
+      <p></li>
+<li>rnmf<code>signature(x = "formula", target =
+  "ANY")</code>: Generate a random formula-based NMF model, using
+  the method <code><a href='nmfModel.html'>nmfModel,formula,ANY-method</a></code>.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre><code class="r">
+## Don&#39;t show: 
+# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+## End Don&#39;t show
+
+#----------
+# rnmf,NMFOffset,numeric-method
+#----------
+# random NMF model with offset
+x &lt;- rnmf(2, 3, model=&#39;NMFOffset&#39;)
+x
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFOffset&gt;
+## features: 3 
+## basis/rank: 2 
+## samples: 3 
+## offset: [ 0.8593 0.4552 0.1415 ]
+</code></pre>
+
+<pre><code class="r">offset(x)
+</code></pre>
+
+<pre><code>## [1] 0.8593 0.4552 0.1415
+</code></pre>
+
+<pre><code class="r"># from a matrix
+x &lt;- rnmf(2, rmatrix(5,3, max=10), model=&#39;NMFOffset&#39;)
+offset(x)
+</code></pre>
+
+<pre><code>## [1] 0.1676 1.4397 0.0907 1.6305 8.4577
+</code></pre>
+
+<pre><code class="r">
+#----------
+# rnmf,NMF,numeric-method
+#----------
+## random NMF of same class and rank as another model
+
+x &lt;- nmfModel(3, 10, 5)
+x
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 10 
+## basis/rank: 3 
+## samples: 5
+</code></pre>
+
+<pre><code class="r">rnmf(x, 20) # square
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 20 
+## basis/rank: 3 
+## samples: 20
+</code></pre>
+
+<pre><code class="r">rnmf(x, 20, 13)
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 20 
+## basis/rank: 3 
+## samples: 13
+</code></pre>
+
+<pre><code class="r">rnmf(x, c(20, 13))
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 20 
+## basis/rank: 3 
+## samples: 13
+</code></pre>
+
+<pre><code class="r">
+# using another distribution
+rnmf(x, 20, dist=rnorm)
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 20 
+## basis/rank: 3 
+## samples: 20
+</code></pre>
+
+<pre><code class="r">
+# other than standard model
+y &lt;- rnmf(3, 50, 10, model=&#39;NMFns&#39;)
+y
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFns&gt;
+## features: 50 
+## basis/rank: 3 
+## samples: 10 
+## theta: 0.5
+</code></pre>
+
+<pre><code class="r">## Don&#39;t show: 
+ stopifnot( identical(dim(y), c(50L,10L,3L)) ) 
+## End Don&#39;t show
+## Don&#39;t show: 
+ stopifnot( is(y, &#39;NMFns&#39;) ) 
+## End Don&#39;t show
+
+#----------
+# rnmf,ANY,matrix-method
+#----------
+# random NMF compatible with a target matrix
+x &lt;- nmfModel(3, 10, 5)
+y &lt;- rmatrix(20, 13)
+rnmf(x, y) # rank of x
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 20 
+## basis/rank: 3 
+## samples: 13
+</code></pre>
+
+<pre><code class="r">rnmf(2, y) # rank 2
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 20 
+## basis/rank: 2 
+## samples: 13
+</code></pre>
+
+<pre><code class="r">
+#----------
+# rnmf,NMF,missing-method
+#----------
+## random NMF from another model
+
+a &lt;- nmfModel(3, 100, 20)
+b &lt;- rnmf(a)
+## Don&#39;t show: 
+ stopifnot( !nmf.equal(a,b) ) 
+## End Don&#39;t show
+
+#----------
+# rnmf,numeric,missing-method
+#----------
+# random NMF model with known basis matrix
+x &lt;- rnmf(5, W=matrix(1:18, 6)) # 6 x 5 model with rank=3
+basis(x) # fixed
+</code></pre>
+
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    7   13
+## [2,]    2    8   14
+## [3,]    3    9   15
+## [4,]    4   10   16
+## [5,]    5   11   17
+## [6,]    6   12   18
+</code></pre>
+
+<pre><code class="r">coef(x) # random
+</code></pre>
+
+<pre><code>##         [,1]   [,2]   [,3]   [,4]   [,5]
+## [1,] 0.66625 0.5059 0.2495 0.2319 0.1443
+## [2,] 0.56969 0.2239 0.1809 0.4358 0.8978
+## [3,] 0.06515 0.6946 0.9902 0.7095 0.7371
+</code></pre>
+
+<pre><code class="r">
+# random NMF model with known coefficient matrix
+x &lt;- rnmf(5, H=matrix(1:18, 3)) # 5 x 6 model with rank=3
+basis(x) # random
+</code></pre>
+
+<pre><code>##         [,1]    [,2]   [,3]
+## [1,] 0.92839 0.73168 0.1459
+## [2,] 0.30243 0.74252 0.4800
+## [3,] 0.58870 0.46922 0.4528
+## [4,] 0.90568 0.32728 0.4540
+## [5,] 0.01955 0.05723 0.7322
+</code></pre>
+
+<pre><code class="r">coef(x) # fixed
+</code></pre>
+
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
+## [1,]    1    4    7   10   13   16
+## [2,]    2    5    8   11   14   17
+## [3,]    3    6    9   12   15   18
+</code></pre>
+
+<pre><code class="r">
+# random model other than standard NMF
+x &lt;- rnmf(5, H=matrix(1:18, 3), model=&#39;NMFOffset&#39;)
+basis(x) # random
+</code></pre>
+
+<pre><code>##         [,1]    [,2]    [,3]
+## [1,] 0.33448 0.30402 0.17421
+## [2,] 0.95253 0.08696 0.21987
+## [3,] 0.29234 0.86826 0.33064
+## [4,] 0.24446 0.26103 0.83145
+## [5,] 0.08534 0.14251 0.07539
+</code></pre>
+
+<pre><code class="r">coef(x) # fixed
+</code></pre>
+
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
+## [1,]    1    4    7   10   13   16
+## [2,]    2    5    8   11   14   17
+## [3,]    3    6    9   12   15   18
+</code></pre>
+
+<pre><code class="r">offset(x) # random
+</code></pre>
+
+<pre><code>## [1]  6.757  5.272  1.035 15.726 15.844
+</code></pre>
+
+<pre><code class="r">
+#----------
+# rnmf,missing,missing-method
+#----------
+# random model other than standard NMF
+x &lt;- rnmf(W=matrix(1:18, 6), H=matrix(21:38, 3), model=&#39;NMFOffset&#39;)
+basis(x) # fixed
+</code></pre>
+
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    7   13
+## [2,]    2    8   14
+## [3,]    3    9   15
+## [4,]    4   10   16
+## [5,]    5   11   17
+## [6,]    6   12   18
+</code></pre>
+
+<pre><code class="r">coef(x) # fixed
+</code></pre>
+
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
+## [1,]   21   24   27   30   33   36
+## [2,]   22   25   28   31   34   37
+## [3,]   23   26   29   32   35   38
+</code></pre>
+
+<pre><code class="r">offset(x) # random
+</code></pre>
+
+<pre><code>## [1]  1.139  9.845  7.353 31.626  1.325 32.649
+</code></pre>
+
+<pre><code class="r">
+#----------
+# rnmf,numeric,numeric-method
+#----------
+## random standard NMF of given dimensions
+
+# generate a random NMF model with rank 3 that fits a 100x20 matrix
+rnmf(3, 100, 20)
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 100 
+## basis/rank: 3 
+## samples: 20
+</code></pre>
+
+<pre><code class="r">## Don&#39;t show: 
+ stopifnot( identical(dim(rnmf(3, 100, 20)), c(100L,20L,3L)) ) 
+## End Don&#39;t show
+# generate a random NMF model with rank 3 that fits a 100x100 matrix
+rnmf(3, 100)
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 100 
+## basis/rank: 3 
+## samples: 100
+</code></pre>
+
+<pre><code class="r">## Don&#39;t show: 
+ stopifnot( identical(dim(rnmf(3, 100)), c(100L,100L,3L)) ) 
+## End Don&#39;t show
+
+</code></pre>
+
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>rnmf</li><li>rnmf,ANY,data.frame-method</li><li>rnmf,ANY,matrix-method</li><li>rnmf,formula,ANY-method</li><li>rnmf-methods</li><li>rnmf,missing,missing-method</li><li>rnmf,NMF,missing-method</li><li>rnmf,NMF,numeric-method</li><li>rnmf,NMFOffset,numeric-method</li><li>rnmf,numeric,missing-method</li><li>rnmf,numeric,numeric-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  <code><a href='rmatrix.html'>rmatrix</a></code>
+
+  Other NMF-interface: <code><a href='basis-coef-methods.html'>basis</a></code>,
+  <code><a href='basis-coef-methods.html'>.basis</a></code>, <code><a href='basis-coef-methods.html'>.basis<-</a></code>,
+  <code><a href='basis-coef-methods.html'>basis<-</a></code>, <code><a href='basis-coef-methods.html'>coef</a></code>,
+  <code><a href='basis-coef-methods.html'>.coef</a></code>, <code><a href='basis-coef-methods.html'>.coef<-</a></code>,
+  <code><a href='basis-coef-methods.html'>coef<-</a></code>, <code><a href='basis-coef-methods.html'>coefficients</a></code>,
+  <code><a href='NMF-class.html'>.DollarNames,NMF-method</a></code>,
+  <code><a href='basis-coef-methods.html'>loadings,NMF-method</a></code>, <code><a href='NMF-class.html'>misc</a></code>,
+  <code><a href='NMF-class.html'>NMF-class</a></code>, <code><a href='NMF-class.html'>$<-,NMF-method</a></code>,
+  <code><a href='NMF-class.html'>$,NMF-method</a></code>, <code><a href='nmfModel.html'>nmfModel</a></code>,
+  <code><a href='nmfModel.html'>nmfModels</a></code>, <code><a href='basis-coef-methods.html'>scoef</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

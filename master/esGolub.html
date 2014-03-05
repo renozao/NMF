@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>esGolub. NMF 0.20.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">NMF</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+	  <li><a href="PAGE-MAN.html"><span class="glyphicon glyphicon-home"></span> Index</a></li>
+    </ul>
+    <!-- <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>--> 
+    <ul class="nav navbar-nav navbar-right">
+      <li><p class="navbar-text">
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      &nbsp;</p></li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Golub ExpressionSet</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p><p>This data comes originally from the gene expression data
+  from <cite>Golub et al. (1999)</cite>. The version included in
+  the package is the one used and referenced in
+  <cite>Brunet et al. (2004)</cite>. The samples are from 27
+  patients with acute lymphoblastic leukemia (ALL) and 11
+  patients with acute myeloid leukemia (AML).</p></p>
+  
+    </div>
+    
+    
+    
+    <div class="Format">
+      <h2>Format</h2>
+      
+      <p>There are 3 covariates listed.</p>
+  
+      <p><ul>
+<li> Samples: The original sample labels.  </li>
+<li> ALL.AML: Whether the
+patient had AML or ALL. It is a <code><a href='http://www.inside-r.org/r-doc/base/factor'>factor</a></code> with levels
+<code>c('ALL', 'AML')</code>.  </li>
+<li> Cell: ALL arises from two different types of
+lymphocytes (T-cell and B-cell).  This specifies which for the ALL patients;
+There is no such information for the AML samples. It is a
+<code><a href='http://www.inside-r.org/r-doc/base/factor'>factor</a></code> with levels <code>c('T-cell', 'B-cell', NA)</code>.</p>
+  
+      <p></li>
+</ul></p>
+  
+    </div>
+
+    <div class="Source">
+      <h2>Source</h2>
+      
+      <p>Web page for <cite>Brunet2004</cite>:
+  <a href = 'http://www.broadinstitute.org/publications/broad872'>http://www.broadinstitute.org/publications/broad872</a></p>
+  
+      <p>Original data from Golub et al.:
+  <a href = 'http://www-genome.wi.mit.edu/mpr/data_set_ALL_AML.html'>http://www-genome.wi.mit.edu/mpr/data_set_ALL_AML.html</a></p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The samples were assayed using Affymetrix Hgu6800 chips
+  and the original data on the expression of 7129 genes
+  (Affymetrix probes) are available on the Broad Institute
+  web site (see references below).</p>
+  
+      <p>The data in <code>esGolub</code> were obtained from the web
+  page related to the paper from <cite>Brunet et al.
+  (2004)</cite>, which describes an application of Nonnegative
+  Matrix Factorization to gene expression clustering. (see
+  link in section <em>Source</em>).</p>
+  
+      <p>They contain the 5,000 most highly varying genes
+  according to their coefficient of variation, and were
+  installed in an object of class
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet-class</a></code>.</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Golub TR, Slonim DK, Tamayo P, Huard C, Gaasenbeek M,
+  Mesirov JP, Coller H, Loh ML, Downing JR, Caligiuri Ma,
+  Bloomfield CD and Lander ES (1999). "Molecular
+  classification of cancer: class discovery and class
+  prediction by gene expression monitoring." _Science (New
+  York, N.Y.)_, *286*(5439), pp. 531-7. ISSN 0036-8075,
+  <URL: http://www.ncbi.nlm.nih.gov/pubmed/10521349>.</p>
+  
+      <p>Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).
+  "Metagenes and molecular pattern discovery using matrix
+  factorization." _Proceedings of the National Academy of
+  Sciences of the United States of America_, *101*(12), pp.
+  4164-9. ISSN 0027-8424, <URL:
+  http://dx.doi.org/10.1073/pnas.0308531101>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/15016911>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre><code class="r">
+## Don&#39;t show: 
+# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+## End Don&#39;t show
+
+data(esGolub)
+esGolub
+</code></pre>
+
+<pre><code>## ExpressionSet (storageMode: lockedEnvironment)
+## assayData: 5000 features, 38 samples 
+##   element names: exprs 
+## protocolData: none
+## phenoData
+##   sampleNames: ALL_19769_B-cell ALL_23953_B-cell ... AML_7 (38
+##     total)
+##   varLabels: Sample ALL.AML Cell
+##   varMetadata: labelDescription
+## featureData
+##   featureNames: M12759_at U46006_s_at ... D86976_at (5000 total)
+##   fvarLabels: Description
+##   fvarMetadata: labelDescription
+## experimentData: use &#39;experimentData(object)&#39;
+## Annotation:
+</code></pre>
+
+<pre><code class="r">## Not run: pData(esGolub)
+
+</code></pre>
+
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>esGolub</li>
+    </ul>
+    <ul>
+      <li>datasets</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
