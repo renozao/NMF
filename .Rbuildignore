@@ -1,5 +1,6 @@
 \.project
 \.settings
+staticdocs
 ^sandbox$
 ^ressources/$
 ^man-roxygen/
