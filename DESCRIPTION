@@ -22,7 +22,7 @@ Depends:
     R (>= 3.0.0),
     methods,
     utils,
-    pkgmaker (>= 0.17.4),
+    pkgmaker (>= 0.20),
     registry,
     rngtools (>= 1.2.3),
     cluster
