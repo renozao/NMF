@@ -130,7 +130,7 @@
 , backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 \bibliography{Rpackages}
-\bibliography{/tmp/Rpkglib_649f6328ea38/NMF/REFERENCES}
+\bibliography{/tmp/Rpkglib_c3867327f76/NMF/REFERENCES}
 
 
 \newcommand{\citet}[1]{\textcite{#1}}
@@ -177,7 +177,7 @@
 
 \title{An introduction to NMF package\\
 \small Version 0.20.2}
-\author{Renaud Gaujoux, \url{renaud@cbio.uct.ac.za}}
+\author{Renaud Gaujoux}
 % \\Address Computational Biology - University of Cape Town, South Africa,
 
 \maketitle
@@ -582,7 +582,7 @@ The column \emph{Speed.up} contains the ratio $R/C$.
 
 
 % latex table generated in R 3.0.2 by xtable 1.7-1 package
-% Tue Mar  4 17:06:03 2014
+% Wed Mar  5 13:34:06 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrr}
@@ -1385,7 +1385,7 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   1.651   0.125   2.093
+##   1.973   0.105   2.367
 \end{verbatim}
 \begin{alltt}
 \hlcom{# or use the doParallel with single core}
@@ -1397,7 +1397,7 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |========                                          |  17%Runs: |                                                        Runs: |=================                                 |  33%Runs: |                                                        Runs: |=========================                         |  50%Runs: |                                                        Runs: |=================================                 |  67%Runs: |                                                        Runs: |==========================================        |  83%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   2.788   0.016   2.805
+##   2.945   0.008   2.955
 \end{verbatim}
 \begin{alltt}
 \hlcom{# force sequential computation by sapply: use option '-p' or .pbackend=NA}
@@ -1409,7 +1409,7 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 ## Runs: 1* 2* 3* 4 5 ... DONE
 ## System time:
 ##    user  system elapsed 
-##    1.99    0.00    1.99
+##   2.051   0.000   2.053
 \end{verbatim}
 \begin{alltt}
 \hlstd{res4} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{nrun} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{.opt} \hlstd{=} \hlstr{"v"}\hlstd{,} \hlkwc{.pbackend} \hlstd{=} \hlnum{NA}\hlstd{,} \hlkwc{seed} \hlstd{=} \hlnum{123}\hlstd{)}
@@ -1420,7 +1420,7 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 ## Runs: 1* 2* 3* 4 5 ... DONE
 ## System time:
 ##    user  system elapsed 
-##     1.9     0.0     1.9
+##   1.825   0.000   1.825
 \end{verbatim}
 \begin{alltt}
 \hlcom{# or use the SEQ backend of foreach: .pbackend='seq'}
@@ -1432,7 +1432,7 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |========                                          |  17%Runs: |                                                        Runs: |=================                                 |  33%Runs: |                                                        Runs: |=========================                         |  50%Runs: |                                                        Runs: |=================================                 |  67%Runs: |                                                        Runs: |==========================================        |  83%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   2.556   0.008   2.565
+##   2.539   0.008   2.548
 \end{verbatim}
 \begin{alltt}
 \hlcom{# all results are all identical}
@@ -1809,7 +1809,7 @@ Here we apply the algorithm to some matrix \code{V} randomly generated:
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_65435434d149 
+##   algorithm:  nmf_cb3705cb0d0 
 ##   seed:  random 
 ##   RNG: 403L, 173L, ..., 1280296329L [0d87fde5bf092083bd059bcc33d58a3e]
 ##   distance metric:  'euclidean' 
@@ -1817,7 +1817,7 @@ Here we apply the algorithm to some matrix \code{V} randomly generated:
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.006   0.004   0.017
+##     0.005   0.004   0.016
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1841,7 +1841,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_6543764fd3f6 
+##   algorithm:  nmf_cb32d1d20bc 
 ##   seed:  random 
 ##   RNG: 403L, 383L, ..., 1280296329L [2f2572f5c6b643d37859d97079951964]
 ##   distance metric:  'KL' 
@@ -1849,7 +1849,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.006   0.000   0.005
+##     0.006   0.000   0.007
 \end{verbatim}
 \begin{alltt}
 \hlcom{# based on custom distance metric}
@@ -1868,7 +1868,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_654335a3b47b 
+##   algorithm:  nmf_cb39200403 
 ##   seed:  random 
 ##   RNG: 403L, 593L, ..., 1280296329L [7ed64fa772a4b1e68cebc0bfed3cb018]
 ##   distance metric:  <function> 
@@ -1928,7 +1928,7 @@ As an example, we reuse the previously defined custom algorithm\footnote{As it i
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_654349224a64 
+##   algorithm:  nmf_cb32106b50a 
 ##   seed:  random 
 ##   RNG: 403L, 179L, ..., -818492466L [850b670d66e22c6d00f5d79570d1ce8a]
 ##   distance metric:  'euclidean' 
@@ -1936,7 +1936,7 @@ As an example, we reuse the previously defined custom algorithm\footnote{As it i
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.005   0.000   0.006
+##     0.006   0.000   0.006
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2014,7 +2014,7 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   samples: 20 
 ##   offset: [ 0.3677 0.9383 1.347 1.019 0.6695 ... ]
 ##  # Details:
-##   algorithm:  nmf_654341683592 
+##   algorithm:  nmf_cb3275b85c7 
 ##   seed:  random 
 ##   RNG: 403L, 389L, ..., -818492466L [7d13c1cc60f9b6390bf7ebfc74dce591]
 ##   distance metric:  'euclidean' 
@@ -2071,14 +2071,14 @@ To use the new seeding method:
 ##   samples: 20 
 ##  # Details:
 ##   algorithm:  snmf/r 
-##   seed:  NMF.seed.6543fc39623 
+##   seed:  NMF.seed.cb359f77fd 
 ##   RNG: 403L, 25L, ..., -1308220775L [e0cc5847b800083c2460eb9eaa25bd4e]
 ##   distance metric:  <function> 
 ##   residuals:  195.6 
 ##   Iterations: 105 
 ##   Timing:
 ##      user  system elapsed 
-##     0.243   0.000   0.244
+##     0.244   0.000   0.247
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2272,7 +2272,7 @@ The default/current values of each options can be displayed using the function
     methods, parallel, stats, utils
   \item Other packages: BH~1.51.0-4, bigmemory~4.4.6,
     bigmemory.sri~0.1.2, Biobase~2.22.0, BiocGenerics~0.8.0,
-    cluster~1.14.4, knitr~1.5, NMF~0.20.2, pkgmaker~0.19.3,
+    cluster~1.14.4, knitr~1.5, NMF~0.20.2, pkgmaker~0.20,
     RColorBrewer~1.0-5, registry~0.2, rngtools~1.2.3,
     synchronicity~1.1.2, xtable~1.7-1
   \item Loaded via a namespace (and not attached):

@@ -1,4 +1,15 @@
 *************************************************************************
+Changes in version 0.20
+*************************************************************************
+NEW FEATURES
+    o aheatmap gains an argument txt that enables displaying text in each 
+    cell of the heatmap.
+    
+FIXES
+    o now all examples, vignettes and unit tests comply with CRAN policies 
+    on the maximum number of cores to be used when checking packages (2). 
+
+*************************************************************************
 Changes in version 0.18
 *************************************************************************
 NEW FEATURES
