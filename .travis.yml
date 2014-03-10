@@ -12,6 +12,9 @@ before_install:
   - ./travis-tool.sh bootstrap
 install:
   - ./travis-tool.sh install_deps
+  - Rscript -e "source('http://bioconductor.org/biocLite.R');
+                  biocLite();
+                  biocLite('Biobase')"
 script: ./travis-tool.sh run_tests
 
 on_failure:
@@ -21,3 +24,10 @@ notifications:
   email:
     on_success: change
     on_failure: change
+
+env:
+   global:
+     - R_BUILD_ARGS=" " 
+     - R_CHECK_ARGS="--as-cran"
+     - BOOTSTRAP_LATEX="1"
+
