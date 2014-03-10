@@ -26,4 +26,4 @@ _NOTE: due to some unknown problem on R-forge build system, the package is not b
 	* MyCRAN: personal CRAN-like repository at http://web.cbio.uct.ac.za/~renaud/CRAN
 
 -----
-__Travis check:__ https://travis-ci.org/renozao/NMF.png?branch=devel 
+__Travis check:__ [![Build Status](https://travis-ci.org/renozao/NMF.png?branch=devel)](https://travis-ci.org/renozao/NMF)
