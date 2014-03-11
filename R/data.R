@@ -48,9 +48,14 @@
 #' @keywords datasets
 #' @examples
 #' 
-#' data(esGolub)
-#' esGolub
-#' \dontrun{pData(esGolub)}
+#' # requires package Biobase to be installed
+#' if( require(Biobase) ){
+#' 
+#' 	data(esGolub)
+#' 	esGolub
+#' 	\dontrun{pData(esGolub)}
+#' 
+#' }
 #'  
 NULL
 
