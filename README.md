@@ -25,4 +25,5 @@ Documentation, source code and sample data are available from:
 _NOTE: due to some unknown problem on R-forge build system, the package is not being built. Please use the MyCRAN repository until the issue is fixed._<br /><br />
 	* MyCRAN: personal CRAN-like repository at http://web.cbio.uct.ac.za/~renaud/CRAN
 
-
+-----
+__Travis check:__ [![Build Status](https://travis-ci.org/renozao/NMF.png?branch=devel)](https://travis-ci.org/renozao/NMF)

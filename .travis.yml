@@ -1,0 +1,35 @@
+# Sample .travis.yml for R projects.
+#
+# See README.md for instructions, or for more configuration options,
+# see the wiki:
+#   https://github.com/craigcitro/r-travis/wiki
+
+language: c
+
+before_install:
+  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
+  - chmod 755 ./travis-tool.sh
+  - ./travis-tool.sh bootstrap
+  - ./travis-tool.sh aptget_install octave3.2 octave3.2-headers biblatex
+
+install:
+  - ./travis-tool.sh install_deps
+  - Rscript -e "source('http://bioconductor.org/biocLite.R');
+                  biocLite();
+                  biocLite('Biobase')"
+script: ./travis-tool.sh run_tests
+
+on_failure:
+  - ./travis-tool.sh dump_logs
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+
+env:
+   global:
+     - R_BUILD_ARGS=" " 
+     - R_CHECK_ARGS="--as-cran"
+     - BOOTSTRAP_LATEX="1"
+

@@ -130,7 +130,7 @@
 , backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 \bibliography{Rpackages}
-\bibliography{/tmp/Rpkglib_c3867327f76/NMF/REFERENCES}
+\bibliography{/tmp/Rpkglib_394351b45565/NMF/REFERENCES}
 
 
 \newcommand{\citet}[1]{\textcite{#1}}
@@ -581,8 +581,8 @@ The column \emph{Speed.up} contains the ratio $R/C$.
 \end{knitrout}
 
 
-% latex table generated in R 3.0.2 by xtable 1.7-1 package
-% Wed Mar  5 13:34:06 2014
+% latex table generated in R 3.1.0 by xtable 1.7-1 package
+% Thu Mar  6 16:58:41 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrr}
@@ -1809,7 +1809,7 @@ Here we apply the algorithm to some matrix \code{V} randomly generated:
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_cb3705cb0d0 
+##   algorithm:  nmf_39ad12a8aa80 
 ##   seed:  random 
 ##   RNG: 403L, 173L, ..., 1280296329L [0d87fde5bf092083bd059bcc33d58a3e]
 ##   distance metric:  'euclidean' 
@@ -1817,7 +1817,7 @@ Here we apply the algorithm to some matrix \code{V} randomly generated:
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.005   0.004   0.016
+##     0.009   0.000   0.020
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1841,7 +1841,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_cb32d1d20bc 
+##   algorithm:  nmf_39ad5fbeadaf 
 ##   seed:  random 
 ##   RNG: 403L, 383L, ..., 1280296329L [2f2572f5c6b643d37859d97079951964]
 ##   distance metric:  'KL' 
@@ -1849,7 +1849,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.006   0.000   0.007
+##     0.005   0.000   0.005
 \end{verbatim}
 \begin{alltt}
 \hlcom{# based on custom distance metric}
@@ -1868,7 +1868,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_cb39200403 
+##   algorithm:  nmf_39ad5368e23d 
 ##   seed:  random 
 ##   RNG: 403L, 593L, ..., 1280296329L [7ed64fa772a4b1e68cebc0bfed3cb018]
 ##   distance metric:  <function> 
@@ -1876,7 +1876,7 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.006   0.000   0.006
+##     0.005   0.000   0.005
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1928,7 +1928,7 @@ As an example, we reuse the previously defined custom algorithm\footnote{As it i
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_cb32106b50a 
+##   algorithm:  nmf_39ad2756a205 
 ##   seed:  random 
 ##   RNG: 403L, 179L, ..., -818492466L [850b670d66e22c6d00f5d79570d1ce8a]
 ##   distance metric:  'euclidean' 
@@ -1936,7 +1936,7 @@ As an example, we reuse the previously defined custom algorithm\footnote{As it i
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.006   0.000   0.006
+##     0.004   0.000   0.005
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2014,7 +2014,7 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   samples: 20 
 ##   offset: [ 0.3677 0.9383 1.347 1.019 0.6695 ... ]
 ##  # Details:
-##   algorithm:  nmf_cb3275b85c7 
+##   algorithm:  nmf_39ad26cb3ff1 
 ##   seed:  random 
 ##   RNG: 403L, 389L, ..., -818492466L [7d13c1cc60f9b6390bf7ebfc74dce591]
 ##   distance metric:  'euclidean' 
@@ -2022,7 +2022,7 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.005   0.000   0.005
+##     0.004   0.000   0.005
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2071,14 +2071,14 @@ To use the new seeding method:
 ##   samples: 20 
 ##  # Details:
 ##   algorithm:  snmf/r 
-##   seed:  NMF.seed.cb359f77fd 
+##   seed:  NMF.seed.39ad3f168fd6 
 ##   RNG: 403L, 25L, ..., -1308220775L [e0cc5847b800083c2460eb9eaa25bd4e]
 ##   distance metric:  <function> 
 ##   residuals:  195.6 
 ##   Iterations: 105 
 ##   Timing:
 ##      user  system elapsed 
-##     0.244   0.000   0.247
+##     0.198   0.000   0.198
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2266,7 +2266,7 @@ The default/current values of each options can be displayed using the function
 \pagebreak 
 \section{Session Info}
 \begin{itemize}\raggedright
-  \item R version 3.0.2 (2013-09-25), \verb|x86_64-pc-linux-gnu|
+  \item R Under development (unstable) (2014-03-02 r65102), \verb|x86_64-unknown-linux-gnu|
   \item Locale: \verb|LC_CTYPE=en_US.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_US.UTF-8|, \verb|LC_COLLATE=en_US.UTF-8|, \verb|LC_MONETARY=en_US.UTF-8|, \verb|LC_MESSAGES=en_US.UTF-8|, \verb|LC_PAPER=en_US.UTF-8|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_US.UTF-8|, \verb|LC_IDENTIFICATION=C|
   \item Base packages: base, datasets, graphics, grDevices,
     methods, parallel, stats, utils
@@ -2278,11 +2278,11 @@ The default/current values of each options can be displayed using the function
   \item Loaded via a namespace (and not attached):
     codetools~0.2-8, colorspace~1.2-4, dichromat~2.0-0,
     digest~0.6.4, doParallel~1.0.8, evaluate~0.5.1, foreach~1.4.1,
-    formatR~0.10, ggplot2~0.9.3.1, grid~3.0.2, gridBase~0.4-7,
+    formatR~0.10, ggplot2~0.9.3.1, grid~3.1.0, gridBase~0.4-7,
     gtable~0.1.2, highr~0.3, iterators~1.0.6, labeling~0.2,
     MASS~7.3-29, munsell~0.4.2, plyr~1.8.1, proto~0.3-10,
     Rcpp~0.11.0, reshape2~1.2.2, scales~0.2.3, stringr~0.6.2,
-    tools~3.0.2
+    tools~3.1.0
 \end{itemize}
 
 

@@ -325,6 +325,8 @@ setMethod('ForeachBackend', 'doParallel_backend',
 		object
 	}
 )
+
+setOldClass('doParallelMC_backend')
 #' doParallel-specific backend factory for multicore (fork) clusters
 #' 
 #' This method is needed since version 1.0.7 of \pkg{doParallel}, which removed 
@@ -338,6 +340,8 @@ setMethod('ForeachBackend', 'doParallelMC_backend',
         object
     }
 )
+
+setOldClass('doParallelSNOW_backend')
 #' doParallel-specific backend factory for SNOW clusters.
 #' 
 #' This method is needed since version 1.0.7 of \pkg{doParallel}, which removed 

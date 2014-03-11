@@ -10,6 +10,7 @@ if( isNamespaceLoaded('NMF') ){
 }
 
 library(stringr)
+library(foreach)
 
 shared_DEACTIVATED <- function(...){
 	msg <- NULL
@@ -143,10 +144,11 @@ test.gVariable <- function(){
 		
 		.test <- function(shared){
 			mess <- function(...) paste(.msg, ' + shared=', shared, ":", ...)
+            cat(mess(), "\n")
 			
 			# run foreach loop
 			v <- gVariable(123, shared=shared)
-			if( libs ) setupLibPaths()
+			if( libs ) setupLibPaths(verbose = TRUE)
 			res <- foreach(i=1:20) %dopar% { 
 				if(i==1) v(456) else if( i== 2) Sys.sleep(0.2); c(Sys.getpid(), v())
 			}

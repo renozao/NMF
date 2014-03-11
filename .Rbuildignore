@@ -15,3 +15,4 @@ vignettes/Rplots.pdf$
 tests-results$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.travis\.yml$
