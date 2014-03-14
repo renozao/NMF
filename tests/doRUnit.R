@@ -6,6 +6,9 @@
 
 library(pkgmaker)
 
+# Skip checks except if run locally    
+if( !isFALSE(Sys.getenv_value('_R_LOCAL_CHECK_')) ){
+    
 # skip tests on CRAN checks
 #if( !isCRANcheck() ){
 library(NMF)
@@ -54,4 +57,6 @@ if( length(resfile) ){
 # stop if error
 if( is(tests, 'try-error') ){
 	stop(tests)
+}
+
 }
