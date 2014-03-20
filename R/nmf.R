@@ -1704,8 +1704,15 @@ function(x, rank, method
 					# loop over the result files to find the best fit
 					if( verbose > 2 ) message("# Processing partial results ... ", appendLF=FALSE)
 					ffstop <- function(...){ message('ERROR'); fstop(...) }
+                    ffwarning <- function(...){ message('WARNING'); fwarning(...) }
 					# get best fit index
-					idx <- which.min(sapply(res.runs, '[[', 'residuals'))
+                    resids <- sapply(res.runs, '[[', 'residuals')
+                    # check for NA residuals
+                    if( length(rNA <- which(is.na(resids) | is.nan(resids))) ){
+                        if( length(rNA) <  nrun ) ffwarning("Some of the final deviances are NAs or NaNs [", length(rNA), "]")
+                        else ffstop("All runs returned NA or NaN final deviances")
+                    }
+					idx <- which.min(idx)
 					if( length(idx) == 0L )
 						ffstop("Unexpected error: no partial result seem to have been saved.")
 					resfile <- res.runs[[idx]]$filename
