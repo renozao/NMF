@@ -11,9 +11,9 @@
     reorderfun = function(d, w) reorder(d, w),
     treeheight = 50, legend = TRUE, annCol = NA,
     annRow = NA, annColors = NA, annLegend = TRUE,
-    labRow = NULL, labCol = NULL, subsetRow = NULL,
-    subsetCol = NULL, txt = NULL, fontsize = 10,
-    cexRow = min(0.2 + 1/log10(nr), 1.2),
+    cexAnn = NA, labRow = NULL, labCol = NULL,
+    subsetRow = NULL, subsetCol = NULL, txt = NULL,
+    fontsize = 10, cexRow = min(0.2 + 1/log10(nr), 1.2),
     cexCol = min(0.2 + 1/log10(nc), 1.2), filename = NA,
     width = NA, height = NA, main = NULL, sub = NULL,
     info = NULL, verbose = getOption("verbose"),
@@ -250,6 +250,13 @@
   \item{annLegend}{boolean value specifying if the legend
   for the annotation tracks should be drawn or not. Default
   is \code{TRUE}.}
+
+  \item{cexAnn}{scaling coefficent for the size of the
+  annotation tracks. This is used for the height (resp.
+  width) of the column (resp. row) annotation tracks.
+  Separate sizes can be specified as a vector
+  \code{c(row_size, col_size)}, where an NA value means
+  using the default for the corresponding track.}
 
   \item{labRow}{labels for the rows.}
 

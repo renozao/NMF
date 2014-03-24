@@ -15,7 +15,7 @@ c_gpar <- function(gp, ...){
 
 lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 , treeheight_col, treeheight_row, legend, main = NULL, sub = NULL, info = NULL
-, annTracks, annotation_legend
+, annTracks, annotation_legend, cexAnn
 , fontsize, fontsize_row, fontsize_col, gp = gpar()){
 
 	annotation_colors <- annTracks$colors
@@ -68,7 +68,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	# Column annotations
 	if( !is_NA(annotation) ){
 		# Column annotation height		
-		annot_height = unit(ncol(annotation) * (8 + 2) + 2, "bigpts")
+		annot_height = unit(ncol(annotation) * (cexAnn[2L] * 8 + 2) + 2, "bigpts")
 	}
 	else{
 		annot_height = unit(0, "bigpts")
@@ -77,7 +77,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	# add a viewport for the row annotations
 	if ( !is_NA(row_annotation) ) {
 		# Row annotation width		
-		row_annot_width = unit(ncol(row_annotation) * (8 + 2) + 2, "bigpts")
+		row_annot_width = unit(ncol(row_annotation) * (cexAnn[1L] * 8 + 2) + 2, "bigpts")
 	}
 	else {
 		row_annot_width = unit(0, "bigpts")
@@ -330,20 +330,24 @@ convert_annotations = function(annotation, annotation_colors){
 	#return(as.matrix(new))
 }
 
-draw_annotations = function(converted_annotations, border_color, horizontal=TRUE){
+draw_annotations = function(converted_annotations, border_color, horizontal=TRUE, cex = 1){
 	n = ncol(converted_annotations)
 	m = nrow(converted_annotations)
+    base_size <- 8
+    size <- cex * base_size
+    psize <- unit(size, "bigpts")
 	if( horizontal ){
 		x = (1:m)/m - 1/2/m
-		y = cumsum(rep(8, n)) - 4 + cumsum(rep(2, n))
+		y = cumsum(rep(size + 2, n)) - cex * base_size / 2
 		for(i in 1:m){
-			grid.rect(x = x[i], unit(y[n:1], "bigpts"), width = 1/m, height = unit(8, "bigpts"), gp = gpar(fill = converted_annotations[i, ], col = border_color))
+			grid.rect(x = x[i], unit(y[n:1], "bigpts"), width = 1/m, height = psize, gp = gpar(fill = converted_annotations[i, ], col = border_color))
 		}
 	}else{
-		x = cumsum(rep(8, n)) - 4 + cumsum(rep(2, n))
+		x = cumsum(rep(size + 2, n)) - cex * base_size / 2
+        print(x)
 		y = (1:m)/m - 1/2/m
 		for (i in 1:m) {
-			grid.rect(x = unit(x[1:n], "bigpts"), y=y[i], width = unit(8, "bigpts"), 
+			grid.rect(x = unit(x[1:n], "bigpts"), y=y[i], width = psize, 
 					height = 1/m, gp = gpar(fill = converted_annotations[i,]
 					, col = border_color))
 		}
@@ -542,7 +546,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	, tree_col, tree_row, treeheight_col, treeheight_row
 	, filename=NA, width=NA, height=NA
 	, breaks, color, legend, txt = NULL
-	, annTracks, annotation_legend=TRUE
+	, annTracks, annotation_legend=TRUE, cexAnn = NA
 	, new=TRUE, fontsize, fontsize_row, fontsize_col
 	, main=NULL, sub=NULL, info=NULL
 	, verbose=getOption('verbose')
@@ -552,7 +556,10 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	row_annotation <- annTracks$annRow
 	annotation <- annTracks$annCol
 	writeToFile <- !is.na(filename)
-	
+    # annotation track size
+    if( length(cexAnn) == 1L ) cexAnn <- c(cexAnn, cexAnn)
+    cexAnn[is.na(cexAnn)] <- 1 
+    
 	# open graphic device (dimensions will be changed after computation of the correct height)
 	if( writeToFile ){
 		gfile(filename)
@@ -616,7 +623,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	, cellwidth = cellwidth, cellheight = cellheight
 	, treeheight_col = treeheight_col, treeheight_row = treeheight_row
 	, legend = legend
-	, annTracks = annTracks, annotation_legend = annotation_legend
+	, annTracks = annTracks, annotation_legend = annotation_legend, cexAnn = cexAnn
 	, fontsize = fontsize, fontsize_row = fontsize_row, fontsize_col = fontsize_col
 	, main = mainGrob, sub = subGrob, info = infoGrob, gp = gp)
 	
@@ -698,14 +705,14 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	if( !is_NA(annotation) ){
 		#vplayout(2, 2)
 		vplayout('cann')
-		draw_annotations(annotation, border_color)
+		draw_annotations(annotation, border_color, cex = cexAnn[2L])
 		upViewport()
 	}	
 	
 	# add row annotations if necessary	
 	if ( !is_NA(row_annotation) ) {
 		vplayout('rann')
-		draw_annotations(row_annotation, border_color, horizontal=FALSE)
+		draw_annotations(row_annotation, border_color, horizontal=FALSE, cex = cexAnn[1L])
 		upViewport()
 	}
 	
@@ -1632,6 +1639,11 @@ subset_index <- function(x, margin, subset){
 #' should be drawn or not.
 #' Default is \code{TRUE}.
 #' 
+#' @param cexAnn scaling coefficent for the size of the annotation tracks.
+#' This is used for the height (resp. width) of the column (resp. row) annotation tracks.
+#' Separate sizes can be specified as a vector \code{c(row_size, col_size)}, 
+#' where an NA value means using the default for the corresponding track.
+#' 
 #' @param labRow labels for the rows.
 #' @param labCol labels for the columns. See description for argument \code{labRow} 
 #' for a list of the possible values.
@@ -1767,7 +1779,7 @@ aheatmap = function(x
     || is(Rowv, 'silhouette')
 , distfun = "euclidean", hclustfun = "complete", reorderfun = function(d,w) reorder(d,w)
 , treeheight = 50
-, legend = TRUE, annCol = NA, annRow = NA, annColors = NA, annLegend = TRUE
+, legend = TRUE, annCol = NA, annRow = NA, annColors = NA, annLegend = TRUE, cexAnn = NA
 , labRow = NULL, labCol = NULL
 , subsetRow = NULL, subsetCol = NULL
 , txt = NULL
@@ -2022,7 +2034,7 @@ aheatmap = function(x
 	res$vp <- heatmap_motor(mat, border_color = border_color, cellwidth = cellwidth, cellheight = cellheight
 	, treeheight_col = treeheight_col, treeheight_row = treeheight_row, tree_col = tree_col, tree_row = tree_row
 	, filename = filename, width = width, height = height, breaks = breaks, color = color, legend = legend
-	, annTracks = annTracks, annotation_legend = annotation_legend
+	, annTracks = annTracks, annotation_legend = annotation_legend, cexAnn = cexAnn
     , txt = txt
 	, fontsize = fontsize, fontsize_row = cexRow * fontsize, fontsize_col = cexCol * fontsize
 	, main = main, sub = sub, info = info
