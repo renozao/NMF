@@ -136,17 +136,16 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	# Produce layout()
     glayout <- vplayout(NULL, layout = layout)
     # reoder width/height according to layout
-    wunits <- list(rtree = treeheight_row, rann = row_annot_width, mat = matwidth, rnam = rown_width)[glayout$h]
-    wunits <- c(wunits, list(legend_width, annot_legend_width))
-    names(wunits) <- NULL
-    hunits <- list(ctree = treeheight_col, cann = annot_height, mat = matheight, cnam = coln_height)[glayout$v]
-    hunits <- c(list(main_height), hunits, list(sub_height, info_height))
-    names(hunits) <- NULL
+    wunits <- list(rtree = treeheight_row, rann = row_annot_width, mat = matwidth, rnam = rown_width, leg = legend_width, aleg = annot_legend_width)[glayout$h]
+    hunits <- list(main = main_height, ctree = treeheight_col, cann = annot_height, mat = matheight, cnam = coln_height, sub = sub_height, info = info_height)[glayout$v]
     unique.name <- glayout$name
     # do layout
 	lo <- grid.layout(nrow = 7, ncol = 6
 			, widths = do.call('unit.c', wunits)
 			, heights = do.call('unit.c', hunits))
+    
+#    grid.show.layout(lo, unit.col = NA); stop()
+    
 	hvp <- viewport( name=paste('aheatmap', unique.name, sep='-'), layout = lo)
 	pushViewport(hvp)
 	
@@ -166,70 +165,80 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
                 , layout = glayout) )
 }
 
-draw_dendrogram = function(hc, horizontal = T, flip = FALSE){
+.grid_dendrogram <- function(hc, horiz = FALSE, flip = FALSE){
 	
-#	.draw.dendrodram <- function(hc){
-#		
-#		# convert into an hclust if necessary
-#		if( is(hc, 'dendrogram') ){
-#			hca <- attr(hc, 'hclust')
-#			hc <- if( !is.null(hca) ) hca else as.hclust(hc)
-#		}
-#		
-#		h = hc$height / max(hc$height) / 1.05
-#		m = hc$merge
-#		o = hc$order
-#		n = length(o)
-#	
-#		m[m > 0] = n + m[m > 0] 
-#		m[m < 0] = abs(m[m < 0])
-#	
-#		dist = matrix(0, nrow = 2 * n - 1, ncol = 2, dimnames = list(NULL, c("x", "y"))) 
-#		dist[1:n, 1] = 1 / n / 2 + (1 / n) * (match(1:n, o) - 1)
-#	
-#		for(i in 1:nrow(m)){
-#			dist[n + i, 1] = (dist[m[i, 1], 1] + dist[m[i, 2], 1]) / 2
-#			dist[n + i, 2] = h[i]
-#		}
-#	
-#		draw_connection = function(x1, x2, y1, y2, y){
-#			grid.lines(x = c(x1, x1), y = c(y1, y))
-#			grid.lines(x = c(x2, x2), y = c(y2, y))
-#			grid.lines(x = c(x1, x2), y = c(y, y))
-#		}
-#		
-#		# create a rotating viewport for vertical dendrogram 
-#		if(!horizontal){
-#			gr = rectGrob()
-#			pushViewport(viewport(height = unit(1, "grobwidth", gr), width = unit(1, "grobheight", gr), angle = 90))
-#			on.exit(upViewport())
-#		}
-#		
-#		for(i in 1:nrow(m)){
-#			draw_connection(dist[m[i, 1], 1], dist[m[i, 2], 1], dist[m[i, 1], 2], dist[m[i, 2], 2], h[i])
-#		}		
-#				
-#	}
-	
-	.draw.dendrodram <- function(hc, ...){
-#		suppressWarnings( opar <- par(plt = gridPLT(), new = TRUE) )
-		( opar <- par(plt = gridPLT(), new = TRUE) )
-		on.exit(par(opar))
-		if( getOption('verbose') ) grid.rect(gp = gpar(col = "blue", lwd = 2))
-		if( !is(hc, 'dendrogram') )
-			hc <- as.dendrogram(hc)
-		plot(hc, horiz=!horizontal, xaxs="i", yaxs="i", axes=FALSE, leaflab="none", ...)
+	# convert into an hclust if necessary
+	if( is(hc, 'dendrogram') ){
+		hca <- attr(hc, 'hclust')
+		hc <- if( !is.null(hca) ) hca else as.hclust(hc)
 	}
 	
+	h = hc$height / max(hc$height) / 1.05
+	m = hc$merge
+	o = hc$order
+	n = length(o)
+	
+	m[m > 0] = n + m[m > 0] 
+	m[m < 0] = abs(m[m < 0])
+	
+	dist = matrix(0, nrow = 2 * n - 1, ncol = 2, dimnames = list(NULL, c("x", "y"))) 
+	dist[1:n, 1] = 1 / n / 2 + (1 / n) * (match(1:n, o) - 1)
+	
+	for(i in 1:nrow(m)){
+		dist[n + i, 1] = (dist[m[i, 1], 1] + dist[m[i, 2], 1]) / 2
+		dist[n + i, 2] = h[i]
+	}
+    
+    # flip around y-axis if requested
+    if( flip ){
+        dist[, 2] <- 1 - dist[, 2]
+        h <- 1 - h
+    }
+	
+	draw_connection = function(x1, x2, y1, y2, y){
+		grid.lines(x = c(x1, x1), y = c(y1, y))
+		grid.lines(x = c(x2, x2), y = c(y2, y))
+		grid.lines(x = c(x1, x2), y = c(y, y))
+	}
+	
+	# create a rotating viewport for row dendrogram 
+	if( horiz ){
+		gr = rectGrob()
+        pushViewport(viewport(height = unit(1, "grobwidth", gr), width = unit(1, "grobheight", gr), angle = 90))
+		on.exit(upViewport())
+	}
+	
+	for(i in 1:nrow(m)){
+		draw_connection(dist[m[i, 1], 1], dist[m[i, 2], 1], dist[m[i, 1], 2], dist[m[i, 2], 2], h[i])
+	}		
+	
+}
+
+.base_dendrogram <- function(hc, horiz = FALSE, flip = FALSE, ...){
+    if( flip ) # not supported 
+        stop("Could not draw ", if( horiz ) 'row' else 'column', " dendrogram: base function plot.dendrogram cannot draw flipped dendrogram")
+    
+#	suppressWarnings( opar <- par(plt = gridPLT(), new = TRUE) )
+	( opar <- par(plt = gridPLT(), new = TRUE) )
+	on.exit(par(opar))
+	if( getOption('verbose') ) grid.rect(gp = gpar(col = "blue", lwd = 2))
+	if( !is(hc, 'dendrogram') )
+		hc <- as.dendrogram(hc)
+	plot(hc, horiz = horiz, xaxs="i", yaxs="i", axes=FALSE, leaflab="none", ...)
+}
+
+
+draw_dendrogram = function(hc, horizontal = FALSE, flip = FALSE){
 		
+    .draw.dendrodram <- if( flip ) .grid_dendrogram else .base_dendrogram 
 	# create a margin viewport
-	if(!horizontal)
-		pushViewport( viewport(x=0,y=0,width=0.9,height=1,just=c("left", "bottom")) )
-	else
-		pushViewport( viewport(x=0,y=0.1,width=1,height=0.9,just=c("left", "bottom")) )
+	if( horizontal ){
+        vp <- viewport(x=0.1, y=0, width=0.9, height=1,just=c("left", "bottom"))
+	}else vp <- viewport(x=0, y=0, width=1, height=0.9,just=c("left", "bottom"))
+    pushViewport( vp )
 	on.exit(upViewport())
 	
-	.draw.dendrodram(hc)
+    .draw.dendrodram(hc, horiz = horizontal, flip = flip)
 
 }
 
@@ -356,7 +365,6 @@ draw_annotations = function(converted_annotations, border_color, horizontal=TRUE
 		}
 	}else{
 		x = cumsum(rep(size + 2, n)) - cex * base_size / 2
-        print(x)
 		y = (1:m)/m - 1/2/m
 		for (i in 1:m) {
 			grid.rect(x = unit(x[1:n], "bigpts"), y=y[i], width = psize, 
@@ -396,12 +404,33 @@ draw_annotation_legend = function(annotation_colors, border_color, gp = gpar()){
 	}
 }
 
-process_layout <- function(x){
-    x <- gsub(' ', '', x, fixed = TRUE)
-    x <- strsplit(x, '|', fixed = TRUE)[[1L]]
+#' Annotated Heatmap Layout
+#' 
+#' Shows a diagram of an annotated heatmap layout specification.
+#' 
+#' @inheritParams aheatmap
+#' 
+#' @export
+#' @examples 
+#' aheatmap_layout()
+#' aheatmap_layout('amld')
+#' aheatmap_layout('amld | .')
+#' 
+aheatmap_layout <- function(layout = 'daml'){
+    .aheatmap_layout(layout, plot = TRUE)
+}
+
+.aheatmap_layout <- function(layout = 'daml', plot = FALSE){
+    
+    x <- layout
+    if( length(x) == 1L ){
+        x <- strsplit(x, '|', fixed = TRUE)[[1L]]
+    }
     # resolve shortcuts
     if( length(x) == 1L ) x <- c(x, x)
     x[ x=='.' ] <- 'daml'
+    x <- gsub(' ', '', x, fixed = TRUE)
+    
     # split into letters
     x <- strsplit(x, '')
     x <- lapply(x, unique)
@@ -414,7 +443,7 @@ process_layout <- function(x){
     i <- cbind(ie+1, match('m', x[[1L]]))
     rownames(i) <- names(elements)
     res <- i
-    e_order$v <- names(elements)[order(ie)]
+    e_order$v <- c('main', names(elements)[order(ie)], 'sub', 'info')
     
     xm <- res['mat', 1]
     ym <- res['mat', 2]
@@ -425,7 +454,7 @@ process_layout <- function(x){
     i <- cbind(xm, ie)
     rownames(i) <- names(elements)
     res <- rbind(res, i)
-    e_order$h <- names(elements)[order(ie)]
+    e_order$h <- c(names(elements)[order(ie)], 'leg', 'aleg')
     
     # fixed elements
     res <- rbind(res, main = c(1, ym)
@@ -435,10 +464,44 @@ process_layout <- function(x){
             , aleg= c(xm, 6)
     )
     
-#    str(e_order)
     colnames(res) <- c('x', 'y')
+    res <- res[!duplicated(rownames(res)), ]
     flip <- sapply(e_order, function(x) grep('tree', x) > which(x=='mat'), simplify = FALSE)
-    c(list(layout = res), e_order, flip_dendrogram = flip)
+    res <- c(list(layout = res), e_order, flip_dendrogram = flip)
+    
+    if( plot ){
+        
+        grid.newpage()
+        #gl <- vplayout(NULL, layout = x)
+        gl <- res 
+        l <- unit(2, 'line')
+        wunits <- list(rtree = 2 * l, rann = l, mat = unit(1, 'null'), rnam = l, leg = l, aleg = l)[gl$h]
+        hunits <- list(main=l, ctree = 2 * l, cann = l, mat = unit(1, 'null'), cnam = l, sub = l, info = 1.5 * l)[gl$v]
+        
+        lo <- grid.layout(nrow = 7, ncol = 6
+	            , widths = do.call('unit.c', wunits)
+	            , heights = do.call('unit.c', hunits))
+        
+        grid.show.layout(lo, unit.col = NA, cell.label = FALSE)
+
+        # label components
+        pushViewport(viewport(0.5, 0.5, 0.8, 0.8, layout = lo))
+        labels <- c(tree = 'dendrogram', ann = 'annotation tracks', nam = 'labels')
+        ilabels <- function(x, y) setNames(paste(x, labels), paste0(y, names(labels)))
+        labels <- c(ilabels('Row', 'r'), ilabels('Column', 'c'), leg = 'Legend', aleg = 'Annotation legend'
+                    , mat = 'Data'
+                    , main = 'Main title', sub = 'Subtitle', info = 'Extra info pane')
+        label.vp <- function(x, rot = 0){
+            vp.inner <- viewport(layout.pos.row = gl$layout[x, 1], layout.pos.col = gl$layout[x, 2])
+            pushViewport(vp.inner)
+            grid.text(labels[x], rot = rot)
+            popViewport()
+        }
+        sapply(gl$h[!gl$h == 'mat'], label.vp, 90)
+        sapply(gl$v, label.vp)
+        popViewport()
+    }
+    invisible(res)
 }
 
 vplayout <- local(
@@ -455,7 +518,7 @@ vplayout <- local(
             if( is.null(layout) || identical(layout, 'default') ){ #default
                 layout <- 'damlLA | daml'
             }
-            .layout <<- process_layout(layout)        
+            .layout <<- .aheatmap_layout(layout)        
 			return(c(list(name = graphic.name), .layout))
 		}
 		name <- NULL
@@ -734,14 +797,14 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	# Draw tree for the columns
 	if (!is_NA(tree_col) &&  treeheight_col != 0){
 		vplayout('ctree')
-		draw_dendrogram(tree_col, horizontal = T, flip = glo$layout$flip_dendrogram$v)
+		draw_dendrogram(tree_col, horizontal = FALSE, flip = glo$layout$flip_dendrogram.v)
 		upViewport()
 	}
 
 	# Draw tree for the rows
 	if(!is_NA(tree_row) && treeheight_row !=0){
 		vplayout('rtree')
-		draw_dendrogram(tree_row, horizontal = F, flip = glo$layout$flip_dendrogram$h)
+		draw_dendrogram(tree_row, horizontal = TRUE, flip = glo$layout$flip_dendrogram.h)
 		upViewport()
 	}
 
@@ -1715,10 +1778,35 @@ subset_index <- function(x, margin, subset){
 #' for a list of the possible values.
 #' 
 #' @param layout layout specification that indicates the relative position 
-#' of each component like dendrograms, annotations, matrix and labels.
-#' Layouts are specified as a sequence of characters that defines
-#' the horizontal and vertical order of each component.
-#' The sequence must contain one instance of each of the following characters:
+#' of the dendrograms, annotations, matrix and labels.
+#' Two layouts can be defined: one horizontal, which relates to components associated to rows, 
+#' and one vertical, which relates to components associated with columns.
+#' Each layout is specified as a character strings, composed of characters 
+#' that encode the order of each component:
+#' 
+#' \describe{
+#' \item{d}{ for dendrogram;}
+#' \item{a}{ for annotation tracks;}
+#' \item{m}{ for data matrix;}
+#' \item{l}{ for labels.}
+#' }
+#' The specification must contain one instance of each character.
+#' 
+#' The default horizontal and vertical layout is \code{"daml"}, and can also be specified
+#' as \code{"."}.
+#' Separate layouts can be passed as a character vector with 2 element (e.g., \code{c("daml", "mald")}),
+#' or as a single string, with layouts separated by \code{"|"} (e.g., \code{". | almd"}). 
+#' If only one layout specification is passed, then it is used for both horizontal 
+#' and vertical layouts.
+#' 
+#' \strong{Examples:} 
+#' \itemize{
+#' \item \code{layout = "dlma"} puts labels at the leaves of the dendrograms and 
+#' annotation track below or at the right of the data matrix
+#' \item \code{layout = ". | amld"} use the default layout for rows, put
+#' column annotation track on top of the data matrix, followed by column labels and 
+#' dendrogram.
+#' }
 #'  
 #' @param fontsize base fontsize for the plot 
 #' @param cexRow fontsize for the rownames, specified as a fraction of argument 

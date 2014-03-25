@@ -13,7 +13,8 @@
     annRow = NA, annColors = NA, annLegend = TRUE,
     cexAnn = NA, labRow = NULL, labCol = NULL,
     subsetRow = NULL, subsetCol = NULL, txt = NULL,
-    fontsize = 10, cexRow = min(0.2 + 1/log10(nr), 1.2),
+    layout = "daml", fontsize = 10,
+    cexRow = min(0.2 + 1/log10(nr), 1.2),
     cexCol = min(0.2 + 1/log10(nc), 1.2), filename = NA,
     width = NA, height = NA, main = NULL, sub = NULL,
     info = NULL, verbose = getOption("verbose"),
@@ -263,6 +264,36 @@
   \item{labCol}{labels for the columns. See description for
   argument \code{labRow} for a list of the possible
   values.}
+
+  \item{layout}{layout specification that indicates the
+  relative position of the dendrograms, annotations, matrix
+  and labels. Two layouts can be defined: one horizontal,
+  which relates to components associated to rows, and one
+  vertical, which relates to components associated with
+  columns. Each layout is specified as a character strings,
+  composed of characters that encode the order of each
+  component:
+
+  \describe{ \item{d}{ for dendrogram;} \item{a}{ for
+  annotation tracks;} \item{m}{ for data matrix;} \item{l}{
+  for labels.} } The specification must contain one
+  instance of each character.
+
+  The default horizontal and vertical layout is
+  \code{"daml"}, and can also be specified as \code{"."}.
+  Separate layouts can be passed as a character vector with
+  2 element (e.g., \code{c("daml", "mald")}), or as a
+  single string, with layouts separated by \code{"|"}
+  (e.g., \code{". | almd"}). If only one layout
+  specification is passed, then it is used for both
+  horizontal and vertical layouts.
+
+  \strong{Examples:} \itemize{ \item \code{layout = "dlma"}
+  puts labels at the leaves of the dendrograms and
+  annotation track below or at the right of the data matrix
+  \item \code{layout = ". | amld"} use the default layout
+  for rows, put column annotation track on top of the data
+  matrix, followed by column labels and dendrogram. }}
 
   \item{fontsize}{base fontsize for the plot}
 
