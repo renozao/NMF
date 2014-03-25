@@ -1,0 +1,176 @@
+%\VignetteIndexEntry{aheatmap: a Powerful Annotated Heatmap Engine}
+%\VignetteDepends{utils,NMF,RColorBrewer,knitr,bibtex}
+%\VignetteKeyword{aplot}
+%\VignetteCompiler{knitr}
+%\VignetteEngine{knitr::knitr}
+
+\documentclass[a4paper]{article}
+
+%\usepackage[OT1]{fontenc}
+\usepackage[colorlinks]{hyperref}
+\usepackage{a4wide}
+\usepackage{xspace}
+\usepackage[all]{hypcap} % for linking to the top of the figures or tables
+
+% add preamble from pkgmaker
+<<pkgmaker_preamble, echo=FALSE, results='asis'>>=
+pkgmaker::latex_preamble()
+@
+
+\newcommand{\nmfpack}{\pkgname{NMF}}
+\newcommand{\MATLAB}{MATLAB\textsuperscript{\textregistered}\xspace}
+\newcommand{\refeqn}[1]{(\ref{#1})}
+
+% REFERENCES
+\usepackage[citestyle=authoryear-icomp
+, doi=true
+, url=true
+, maxnames=1
+, maxbibnames=15
+, backref=true
+, backend=bibtex]{biblatex}
+\AtEveryCitekey{\clearfield{url}}
+<<bibliofile, echo=FALSE, results='asis'>>=
+pkgmaker::latex_bibliography('NMF')	
+@
+\newcommand{\citet}[1]{\textcite{#1}}
+\renewcommand{\cite}[1]{\parencite{#1}}
+\DefineBibliographyStrings{english}{%
+    backrefpage  = {see p.}, % for single page number
+    backrefpages = {see pp.} % for multiple page numbers
+}
+%
+
+% boxed figures
+\usepackage{float}
+\floatstyle{boxed} 
+\restylefloat{figure}
+
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{mathabx}
+
+\usepackage{url}
+\urlstyle{rm}
+
+% use cleveref for automatic reference label formatting
+\usepackage[capitalise, noabbrev]{cleveref}
+
+% define commands for notes
+\usepackage{todonotes}
+\newcommand{\nbnote}[1]{\ \bigskip\todo[inline, backgroundcolor=blue!20!white]{\scriptsize\textsf{\textbf{NB:} #1}}\ \\}
+
+% put table of contents on two columns
+\usepackage[toc]{multitoc}
+
+\setkeys{Gin}{width=0.95\textwidth}
+
+\begin{document}
+
+<<options, include=FALSE, verbose=TRUE>>=
+set.seed(123456)
+library(NMF)
+library(knitr)
+opts_chunk$set(fig.show = 'hold', out.width = ".48\\textwidth")
+@
+
+\title{aheatmap: a Powerful Annotated Heatmap Engine\\
+\small Package \nmfpack\ - Version \Sexpr{utils::packageVersion('NMF')}}
+\author{Renaud Gaujoux}
+
+\maketitle
+
+\begin{abstract}
+This vignette showcases the main features of the annotated heatmap engine
+implemented by the function \code{aheatmap}.
+This engine is a highly enhanced modification of the function \code{pheatmap}
+from the \CRANpkg{pheatmap}, and provides convenient and quick ways of producing high quality and customizable annotated heatmaps.
+Currently this function is part of the package \nmfpack, but will most
+probably eventually constitute a separate package on its own.
+\end{abstract}
+
+{\small \tableofcontents}
+
+\section{Overview}
+
+The development of the function \code{aheatmap} started as modification of the
+function \code{pheatmap} from the \CRANpkg{pheatmap}. 
+The initial objective was to improve and increase its capabilities, as well as 
+defining a simplified interface that was more consistent with the R core
+function \code{heatmap}.
+It is evolving into a general, flexible, powerful and easy to use engine for
+drawing annotated heatmaps.
+  
+The function \code{aheatmap} has many advantages compared to other heatmap functions 
+such as \code{heatmap}, \code{gplots::heatmap2}, \code{heatmap.plus::heatmap.plus} 
+, or \code{pheatmap}:
+
+\begin{itemize}
+\item Annotations: unlimited number of annotation tracks can be added to 
+\emph{both} columns and rows, with automated colouring for categorical and 
+numeric variables.
+\item Compatibility with both base and grid graphics: the function can be 
+directly called in drawing contexts such as grid, mfrow or layout.
+We believe that this is a feature many R users will enjoy, and that is
+strictly impossible with base heatmaps.
+\item Legends: default automatic legend and colouring;
+\item Customisation: clustering methods, annotations, colours and legend can all 
+be customised, even separately for rows and columns;
+\item Convenient interface: many arguments provide multiple ways of 
+specifying their value(s), which speeds up developping/writing and reduce the 
+amount of code required to generate customised plots (e.g. see
+\cref{sec:colour_spec}).
+\item Aesthetics: the heatmaps look globally cleaner, the image and text components 
+are by default well proportioned relatively to each other, and all fit within 
+the graphic device -- if not set to an unresonnably small size.
+\end{itemize}
+
+\section{Components}
+
+Annotated heatmaps essentially use \code{grid} graphics\footnote{Except for
+drawing dendrograms, which are plotted using the proven and well optimised base
+function \code{plot.dendrogram}.}, composing the global picture by putting
+together the following components (or viewports in \code{grid} language):
+
+\begin{description}
+  \item[dendrograms] clusters and order columns/rows; 
+  \item[annotations] are additional \emph{tracks} that provide extra
+  information about each column/row according to some associated auxiliary data;
+  \item[data matrix], i.e. the heatmap itself, shown as coloured cells;
+  \item[labels] associates each column/row with some textual information;
+  \item[legends] such as value scales or color code used for the data matrix or
+  annotations;
+  \item[other information] like main title, sub-title, extra information pane.
+\end{description}
+
+\Cref{fig:layout} shows a diagram of two possible grid layout that combined
+the above listed components into a complete annotated heatmap.
+
+\begin{figure}[!htpb]
+\label{fig:layout}
+<<layout>>=
+# default layout
+aheatmap_layout()
+# alternative layout
+aheatmap_layout("amld | dlma")
+@
+\caption{Grid layout diagram of annotated heatmaps: (left) default layout and
+(right) an alternative layout, with separate specification for rows
+and columns -- passed as a single string.}
+\end{figure}
+
+\section{Annotation tracks}
+\section{Dendrograms}
+\section{Column/row ordering}
+\section{Colours}
+\section{Labels}
+\section{Legends}
+
+\section{Session Info}
+<<sessionInfo, echo=FALSE, results='asis'>>=
+toLatex(sessionInfo())
+@
+
+\printbibliography[heading=bibintoc]
+
+\end{document}
