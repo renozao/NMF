@@ -125,7 +125,7 @@
 , backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 \bibliography{Rpackages}
-\bibliography{/tmp/Rpkglib_26ff65706d7b/NMF/REFERENCES}
+\bibliography{/tmp/Rpkglib_2ccc2f12eea2/NMF/REFERENCES}
 
 
 \newcommand{\citet}[1]{\textcite{#1}}
@@ -167,7 +167,7 @@
 
 
 \title{Generating heatmaps for Nonnegative Matrix Factorization\\
-\small Package \nmfpack\ - Version 0.20.2}
+\small Package \nmfpack\ - Version 0.21}
 \author{Renaud Gaujoux}
 
 \maketitle
@@ -677,7 +677,32 @@ As previously, the sequence of consensus matrices is plotted with \code{consensu
 \section{Generic heatmap engine: \texttt{aheatmap}}
 \label{sec:aheatmap}
 
-This section still needs to be written, but many examples of annotated heatmaps can be found in the demos \code{'aheatmap'} and \code{'heatmaps'}:
+All heatmaps in the \nmfpack package are generated using the generic
+annotated heatmap engine \code{aheatmap}, and therefore inherit from all its
+features. 
+More details on \code{aheatmap} are provided in a dedicated vignette and demos.
+
+\subsection{Vignette}
+
+Generic annotated heatmaps are covered by the vignette \emph{"aheatmap: a
+Powerful Annotated Heatmap Engine}, which can be opened from an R session by
+the following command:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{vignette}\hlstd{(}\hlstr{"aheatmap"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+The vignette PDF is also available for download at
+\url{http://renozao.github.io/NMF/master/vignettes/aheatmap.pdf}
+
+\subsection{Demos}
+The code demo \code{'heatmaps'} provides many concrete examples of annotated
+heatmaps. 
+The demo can be launch from an R session by the following commands:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -689,27 +714,29 @@ This section still needs to be written, but many examples of annotated heatmaps 
 \end{knitrout}
 
 
-These demos and the plots they generate can also be browsed online at \url{http://nmf.r-forge.r-project.org/_DEMOS.html}.
+These demos and the plots they generate can also be browsed online at
+\url{http://renozao.github.io/NMF/master/_DEMOS.html}.
+
 
 \section{Session Info}
 \begin{itemize}\raggedright
-  \item R Under development (unstable) (2014-03-02 r65102), \verb|x86_64-unknown-linux-gnu|
+  \item R version 3.0.3 (2014-03-06), \verb|x86_64-pc-linux-gnu|
   \item Locale: \verb|LC_CTYPE=en_US.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_US.UTF-8|, \verb|LC_COLLATE=en_US.UTF-8|, \verb|LC_MONETARY=en_US.UTF-8|, \verb|LC_MESSAGES=en_US.UTF-8|, \verb|LC_PAPER=en_US.UTF-8|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_US.UTF-8|, \verb|LC_IDENTIFICATION=C|
   \item Base packages: base, datasets, graphics, grDevices,
     methods, parallel, stats, utils
   \item Other packages: BH~1.51.0-4, bigmemory~4.4.6,
     bigmemory.sri~0.1.2, Biobase~2.22.0, BiocGenerics~0.8.0,
-    cluster~1.14.4, knitr~1.5, NMF~0.20.2, pkgmaker~0.17.4,
-    RColorBrewer~1.0-5, registry~0.2, rngtools~1.2.3,
+    cluster~1.15.1, knitr~1.5, NMF~0.21, pkgmaker~0.21,
+    RColorBrewer~1.0-5, registry~0.2, rngtools~1.2.4,
     synchronicity~1.1.2
   \item Loaded via a namespace (and not attached):
     codetools~0.2-8, colorspace~1.2-4, dichromat~2.0-0,
     digest~0.6.4, doParallel~1.0.8, evaluate~0.5.1, foreach~1.4.1,
-    formatR~0.10, ggplot2~0.9.3.1, grid~3.1.0, gridBase~0.4-7,
+    formatR~0.10, ggplot2~0.9.3.1, grid~3.0.3, gridBase~0.4-7,
     gtable~0.1.2, highr~0.3, iterators~1.0.6, labeling~0.2,
-    MASS~7.3-29, munsell~0.4.2, plyr~1.8.1, proto~0.3-10,
+    MASS~7.3-30, munsell~0.4.2, plyr~1.8.1, proto~0.3-10,
     Rcpp~0.11.0, reshape2~1.2.2, scales~0.2.3, stringr~0.6.2,
-    tools~3.1.0, xtable~1.7-1
+    tools~3.0.3, xtable~1.7-3
 \end{itemize}
 
 
