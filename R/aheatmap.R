@@ -106,16 +106,22 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 		info_width <- unit(0, "bigpts")		
 	}
 	
+    # pre-process layout
+    gl <- .aheatmap_layout(layout)
+    col_legend_width <- row_legend_width <- unit(0, 'bigpts')
+    if( !gl$legend_horiz ) row_legend_width <- legend_width 
+    else col_legend_width <- legend_width
+    
 	# Set cell sizes
 	if(is.na(cellwidth)){
-		matwidth = unit(1, "npc") - rown_width - legend_width - row_annot_width  - treeheight_row - annot_legend_width
+		matwidth = unit(1, "npc") - rown_width - row_legend_width - row_annot_width  - treeheight_row - annot_legend_width
 	}
 	else{
 		matwidth = unit(cellwidth * ncol, "bigpts")
 	}
 
 	if(is.na(cellheight)){
-		matheight = unit(1, "npc") - treeheight_col - annot_height - main_height - coln_height - sub_height - info_height
+		matheight = unit(1, "npc") - treeheight_col - annot_height - main_height - coln_height - col_legend_width - sub_height - info_height
 	
 		# recompute the cell width depending on the automatic fontsize
 		if( is.na(cellwidth) && !is.null(rown) ){
@@ -123,7 +129,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 			fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.6*cellheight, 'bigpts')), 'points')
 			
 			rown_width <- rown_width_min + unit(1.2, "grobwidth", textGrob(rown[longest_rown], gp = c_gpar(gp0, fontsize = fontsize_row)))
-			matwidth <- unit(1, "npc") - rown_width - legend_width - row_annot_width  - treeheight_row - annot_legend_width
+			matwidth <- unit(1, "npc") - rown_width - row_legend_width - row_annot_width  - treeheight_row - annot_legend_width
 		}
 	}
 	else{
@@ -137,7 +143,8 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
     glayout <- vplayout(NULL, layout = layout
                         , size = list(
                                 list(rtree = treeheight_row, rann = row_annot_width, mat = matwidth, rnam = rown_width, leg = legend_width, aleg = annot_legend_width)
-                                , list(main = main_height, ctree = treeheight_col, cann = annot_height, mat = matheight, cnam = coln_height, sub = sub_height, info = info_height)
+                                , list(main = main_height, ctree = treeheight_col, cann = annot_height, mat = matheight, cnam = coln_height, leg = legend_width
+                                        , sub = sub_height, info = info_height)
                             )
                     )
     # reoder width/height according to layout
@@ -229,7 +236,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 
 
 draw_dendrogram = function(hc, horizontal = FALSE, flip = FALSE){
-		
+    
     .draw.dendrodram <- if( flip ) .grid_dendrogram else .base_dendrogram 
 	# create a margin viewport
 	if( horizontal ){
@@ -312,15 +319,21 @@ draw_rownames = function(rown, gp = gpar()){
 	grid.text(rown, x = unit(5, "bigpts"), y = y, vjust = 0.5, hjust = 0, gp = gp)	
 }
 
-draw_legend = function(color, breaks, legend, gp = gpar()){
+draw_legend = function(color, breaks, legend, gp = gpar(), horiz = FALSE){
     left_margin <- 4
 	height = min(unit(1, "npc"), unit(150, "bigpts"))
-	pushViewport(viewport(x = 0, y = unit(1, "npc"), just = c(0, 1), height = height))
+	if( !horiz ) pushViewport(viewport(x = 0, y = unit(1, "npc"), just = c(0, 1), height = height))
+    else pushViewport(viewport(y = 0, x = unit(1, "npc"), just = c(1, 0), width = height))
 	legend_pos = (legend - min(breaks)) / (max(breaks) - min(breaks))
 	breaks = (breaks - min(breaks)) / (max(breaks) - min(breaks))
 	h = breaks[-1] - breaks[-length(breaks)]
-	grid.rect(x = unit(left_margin, "bigpts"), y = breaks[-length(breaks)], width = unit(10, "bigpts"), height = h, hjust = 0, vjust = 0, gp = gpar(fill = color, col = "#FFFFFF00"))
-	grid.text(legend, x = unit(12 + left_margin, "bigpts"), y = legend_pos, hjust = 0, gp = gp)
+    if( !horiz ){
+    	grid.rect(x = unit(left_margin, "bigpts"), y = breaks[-length(breaks)], width = unit(10, "bigpts"), height = h, hjust = 0, vjust = 0, gp = gpar(fill = color, col = "#FFFFFF00"))
+        grid.text(legend, x = unit(12 + left_margin, "bigpts"), y = legend_pos, hjust = 0, gp = gp)
+    }else{
+        grid.rect(y = unit(left_margin, "bigpts"), x = breaks[-length(breaks)], height = unit(10, "bigpts"), width = h, hjust = 0, vjust = 0, gp = gpar(fill = color, col = "#FFFFFF00"))
+    	grid.text(legend, y = unit(12 + left_margin, "bigpts"), x = legend_pos, vjust = 0, gp = gp)
+    }
 	upViewport()
 }
 
@@ -418,7 +431,7 @@ draw_annotation_legend = function(annotation_colors, border_color, gp = gpar()){
 #' @examples 
 #' aheatmap_layout()
 #' aheatmap_layout('amld')
-#' aheatmap_layout('amld | .')
+#' aheatmap_layout('amld * .')
 #' 
 aheatmap_layout <- function(layout = 'daml'){
     .aheatmap_layout(layout, plot = TRUE)
@@ -428,55 +441,86 @@ aheatmap_layout <- function(layout = 'daml'){
     
     x <- layout
     if( length(x) == 1L ){
-        x <- strsplit(x, '|', fixed = TRUE)[[1L]]
+        x <- strsplit(x, '*', fixed = TRUE)[[1L]]
     }
     # resolve shortcuts
     if( length(x) == 1L ) x <- c(x, x)
     x <- gsub(' ', '', x, fixed = TRUE)
-    x[ x=='.' ] <- 'daml'
+    x <- gsub('.', 'daml', x, fixed = TRUE)
     
     # split into letters
     x <- strsplit(x, '')
     x <- lapply(x, unique)
     
+    # add default legend spec if missing
+    if( any(unlist(x) == '-') ){
+        x[[1L]] <- setdiff(x[[1L]], 'L')
+        x[[2L]] <- union(x[[2L]], 'L')
+    }
+    if( any(unlist(x) == '|') ){
+        x[[2L]] <- setdiff(x[[2L]], 'L')
+        x[[1L]] <- union(x[[1L]], 'L')
+    }
+    
+    if( !any(unlist(x) == 'L') ){
+        x[[1L]] <- c(x[[1L]], 'L')
+    }else if( sum(unlist(x) == 'L') > 1L ){ # both
+        x[[2L]] <- setdiff(x[[2L]], 'L')
+    }
+    
+    # remove unknown characters
+    v_default <- strsplit('daml', '')[[1L]]
+    x <- lapply(x, intersect, c(v_default, 'L'))
+    # add default prefix
+    x <- sapply(x, function(x) if( !length(x) ) v_default else x)
+    x <- sapply(x, function(x) if( identical(x, 'L') ) c(v_default, 'L') else x)
+    
     e_order <- list(v=NULL, h=NULL)
     lexique <- c(tree = 'd', ann = 'a', nam = 'l')
     # vertical layout
-    elements <- c(setNames(lexique, paste0('c', names(lexique))), mat = 'm')
+    elements <- c(setNames(lexique, paste0('c', names(lexique))), mat = 'm', leg = 'L')
     ie <- match(elements, x[[2L]])
     i <- cbind(ie+1, match('m', x[[1L]]))
     rownames(i) <- names(elements)
     res <- i
-    e_order$v <- c('main', names(elements)[order(ie)], 'sub', 'info')
+    e_order$v <- c('main', names(elements)[setdiff(order(ie), which(is.na(ie)))], 'sub', 'info')
     
+    # data matrix position
     xm <- res['mat', 1]
     ym <- res['mat', 2]
     
     # horizontal layout
-    elements <- c(setNames(lexique, paste0('r', names(lexique))), mat = 'm')
+    elements <- c(setNames(lexique, paste0('r', names(lexique))), mat = 'm', leg = 'L')
     ie <- match(elements, x[[1L]])
     i <- cbind(xm, ie)
     rownames(i) <- names(elements)
     res <- rbind(res, i)
-    e_order$h <- c(names(elements)[order(ie)], 'leg', 'aleg')
+    e_order$h <- c(names(elements)[setdiff(order(ie), which(is.na(ie)))], 'aleg')
     
     # fixed elements
+    nc <- length(e_order$h)
+    nr <- length(e_order$v)
     res <- rbind(res, main = c(1, ym)
-			, sub = c(6, ym)
-			, info = c(7, ym)
-            , leg= c(xm, 5)
-            , aleg= c(xm, 6)
+			, sub = c(nr-1, ym)
+			, info = c(nr, ym)
+            , aleg= c(xm, nc)
     )
     
     colnames(res) <- c('x', 'y')
+    res <- res[!is.na(res[, 1]) & !is.na(res[, 2]), ]
     res <- res[!duplicated(rownames(res)), ]
+    
+    # determine dendrogram orientation
     flip <- sapply(e_order, function(x) grep('tree', x) > which(x=='mat'), simplify = FALSE)
     res <- c(list(layout = res), e_order, flip_dendrogram = flip)
+    
+    # determine legend position
+    res$legend_horiz <- !'leg' %in% res$h
     
     if( plot && is.null(size) ){ # if plotting use dummy sizes
         l <- unit(2, 'line')
         size <- list(list(rtree = 2 * l, rann = l, mat = unit(1, 'null'), rnam = l, leg = l, aleg = l)[res$h]
-                    , list(main=l, ctree = 2 * l, cann = l, mat = unit(1, 'null'), cnam = l, sub = l, info = 1.5 * l)[res$v])
+                    , list(main=l, ctree = 2 * l, cann = l, mat = unit(1, 'null'), cnam = l, leg = l, sub = l, info = 1.5 * l)[res$v])
     }
     
     # reorder sizes according to layout specification
@@ -489,6 +533,7 @@ aheatmap_layout <- function(layout = 'daml'){
         
         res$grid.layout <- lo
     }
+    #
     
     if( plot ){
         
@@ -501,7 +546,7 @@ aheatmap_layout <- function(layout = 'daml'){
         pushViewport(viewport(0.5, 0.5, 0.8, 0.8, layout = lo))
         labels <- c(tree = 'dendrogram', ann = 'annotation tracks', nam = 'labels')
         ilabels <- function(x, y) setNames(paste(x, labels), paste0(y, names(labels)))
-        labels <- c(ilabels('Row', 'r'), ilabels('Column', 'c'), leg = 'Legend', aleg = 'Annotation legend'
+        labels <- c(ilabels('Row', 'r'), ilabels('Column', 'c'), leg = 'Scale legend', aleg = 'Annotation legend'
                     , mat = 'Data'
                     , main = 'Main title', sub = 'Subtitle', info = 'Extra info pane')
         label.vp <- function(x, rot = 0){
@@ -870,7 +915,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	# Draw legend
 	if(!is_NA(legend)){
 		vplayout('leg')
-		draw_legend(color, breaks, legend, gp = c_gpar(gp, fontsize = fontsize))
+		draw_legend(color, breaks, legend, gp = c_gpar(gp, fontsize = fontsize), horiz = glo$layout$legend_horiz)
 		upViewport()
 	}
 
@@ -1808,7 +1853,7 @@ subset_index <- function(x, margin, subset){
 #' The default horizontal and vertical layout is \code{"daml"}, and can also be specified
 #' as \code{"."}.
 #' Separate layouts can be passed as a character vector with 2 element (e.g., \code{c("daml", "mald")}),
-#' or as a single string, with layouts separated by \code{"|"} (e.g., \code{". | almd"}). 
+#' or as a single string, with layouts separated by \code{"*"} (e.g., \code{". * almd"}). 
 #' If only one layout specification is passed, then it is used for both horizontal 
 #' and vertical layouts.
 #' 

@@ -152,7 +152,7 @@ the above listed components into a complete annotated heatmap.
 # default layout
 aheatmap_layout()
 # alternative layout
-aheatmap_layout("amld | dlma")
+aheatmap_layout("amld * dlma")
 @
 \caption{Grid layout diagram of annotated heatmaps: (left) default layout and
 (right) an alternative layout, with separate specification for rows

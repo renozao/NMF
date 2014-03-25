@@ -283,8 +283,8 @@
   \code{"daml"}, and can also be specified as \code{"."}.
   Separate layouts can be passed as a character vector with
   2 element (e.g., \code{c("daml", "mald")}), or as a
-  single string, with layouts separated by \code{"|"}
-  (e.g., \code{". | almd"}). If only one layout
+  single string, with layouts separated by \code{"*"}
+  (e.g., \code{". * almd"}). If only one layout
   specification is passed, then it is used for both
   horizontal and vertical layouts.
 
