@@ -134,18 +134,18 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	# - use 6 instead of 5 column for the row_annotation
 	# - take into account the associated legend's width
 	# Produce layout()
-    glayout <- vplayout(NULL, layout = layout)
+    glayout <- vplayout(NULL, layout = layout
+                        , size = list(
+                                list(rtree = treeheight_row, rann = row_annot_width, mat = matwidth, rnam = rown_width, leg = legend_width, aleg = annot_legend_width)
+                                , list(main = main_height, ctree = treeheight_col, cann = annot_height, mat = matheight, cnam = coln_height, sub = sub_height, info = info_height)
+                            )
+                    )
     # reoder width/height according to layout
-    wunits <- list(rtree = treeheight_row, rann = row_annot_width, mat = matwidth, rnam = rown_width, leg = legend_width, aleg = annot_legend_width)[glayout$h]
-    hunits <- list(main = main_height, ctree = treeheight_col, cann = annot_height, mat = matheight, cnam = coln_height, sub = sub_height, info = info_height)[glayout$v]
     unique.name <- glayout$name
-    # do layout
-	lo <- grid.layout(nrow = 7, ncol = 6
-			, widths = do.call('unit.c', wunits)
-			, heights = do.call('unit.c', hunits))
-    
-#    grid.show.layout(lo, unit.col = NA); stop()
-    
+    # push layout
+	lo <- glayout$grid.layout
+    # drop grid layout spec from result object
+    glayout$grid.layout <- NULL
 	hvp <- viewport( name=paste('aheatmap', unique.name, sep='-'), layout = lo)
 	pushViewport(hvp)
 	
@@ -233,8 +233,12 @@ draw_dendrogram = function(hc, horizontal = FALSE, flip = FALSE){
     .draw.dendrodram <- if( flip ) .grid_dendrogram else .base_dendrogram 
 	# create a margin viewport
 	if( horizontal ){
-        vp <- viewport(x=0.1, y=0, width=0.9, height=1,just=c("left", "bottom"))
-	}else vp <- viewport(x=0, y=0, width=1, height=0.9,just=c("left", "bottom"))
+        x <- if( flip ) 0.1 else 0
+        vp <- viewport(x=x, y=0, width=0.9, height=1,just=c("left", "bottom"))
+	}else{
+        y <- if( !flip ) 0.1 else 0
+        vp <- viewport(x=0, y=y, width=1, height=0.9,just=c("left", "bottom"))
+    }
     pushViewport( vp )
 	on.exit(upViewport())
 	
@@ -420,7 +424,7 @@ aheatmap_layout <- function(layout = 'daml'){
     .aheatmap_layout(layout, plot = TRUE)
 }
 
-.aheatmap_layout <- function(layout = 'daml', plot = FALSE){
+.aheatmap_layout <- function(layout = 'daml', plot = FALSE, size = NULL){
     
     x <- layout
     if( length(x) == 1L ){
@@ -428,8 +432,8 @@ aheatmap_layout <- function(layout = 'daml'){
     }
     # resolve shortcuts
     if( length(x) == 1L ) x <- c(x, x)
-    x[ x=='.' ] <- 'daml'
     x <- gsub(' ', '', x, fixed = TRUE)
+    x[ x=='.' ] <- 'daml'
     
     # split into letters
     x <- strsplit(x, '')
@@ -469,18 +473,27 @@ aheatmap_layout <- function(layout = 'daml'){
     flip <- sapply(e_order, function(x) grep('tree', x) > which(x=='mat'), simplify = FALSE)
     res <- c(list(layout = res), e_order, flip_dendrogram = flip)
     
+    if( plot && is.null(size) ){ # if plotting use dummy sizes
+        l <- unit(2, 'line')
+        size <- list(list(rtree = 2 * l, rann = l, mat = unit(1, 'null'), rnam = l, leg = l, aleg = l)[res$h]
+                    , list(main=l, ctree = 2 * l, cann = l, mat = unit(1, 'null'), cnam = l, sub = l, info = 1.5 * l)[res$v])
+    }
+    
+    # reorder sizes according to layout specification
+    if( !is.null(size) ){
+        wunits <- size[[1L]][res$h]
+        hunits <- size[[2L]][res$v]
+        lo <- grid.layout(nrow = length(hunits), ncol = length(wunits)
+	            , widths = do.call('unit.c', wunits)
+	            , heights = do.call('unit.c', hunits))
+        
+        res$grid.layout <- lo
+    }
+    
     if( plot ){
         
         grid.newpage()
-        #gl <- vplayout(NULL, layout = x)
         gl <- res 
-        l <- unit(2, 'line')
-        wunits <- list(rtree = 2 * l, rann = l, mat = unit(1, 'null'), rnam = l, leg = l, aleg = l)[gl$h]
-        hunits <- list(main=l, ctree = 2 * l, cann = l, mat = unit(1, 'null'), cnam = l, sub = l, info = 1.5 * l)[gl$v]
-        
-        lo <- grid.layout(nrow = 7, ncol = 6
-	            , widths = do.call('unit.c', wunits)
-	            , heights = do.call('unit.c', hunits))
         
         grid.show.layout(lo, unit.col = NA, cell.label = FALSE)
 
@@ -509,7 +522,7 @@ vplayout <- local(
 	graphic.name <- NULL
 	.index <- 0L
     .layout <- NULL
-	function(x, y, verbose = getOption('verbose'), layout = NULL){
+	function(x, y, verbose = getOption('verbose'), layout = NULL, size = NULL){
 		# initialize the graph name
 		if( is.null(x) ){
             .index <<- .index + 1L
@@ -518,7 +531,7 @@ vplayout <- local(
             if( is.null(layout) || identical(layout, 'default') ){ #default
                 layout <- 'damlLA | daml'
             }
-            .layout <<- .aheatmap_layout(layout)        
+            .layout <<- .aheatmap_layout(layout, size = size)
 			return(c(list(name = graphic.name), .layout))
 		}
 		name <- NULL
