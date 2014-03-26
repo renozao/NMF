@@ -253,11 +253,13 @@
   is \code{TRUE}.}
 
   \item{cexAnn}{scaling coefficent for the size of the
-  annotation tracks. This is used for the height (resp.
-  width) of the column (resp. row) annotation tracks.
-  Separate sizes can be specified as a vector
-  \code{c(row_size, col_size)}, where an NA value means
-  using the default for the corresponding track.}
+  annotation tracks. Values > 1 (resp. < 1) will increase
+  (resp. decrease) the size of each annotation track. This
+  applies to the height (resp. width) of the column (resp.
+  row) annotation tracks. Separate row and column sizes can
+  be specified as a vector \code{c(row_size, col_size)},
+  where an NA value means using the default for the
+  corresponding track.}
 
   \item{labRow}{labels for the rows.}
 
@@ -266,34 +268,17 @@
   values.}
 
   \item{layout}{layout specification that indicates the
-  relative position of the dendrograms, annotations, matrix
-  and labels. Two layouts can be defined: one horizontal,
-  which relates to components associated to rows, and one
-  vertical, which relates to components associated with
-  columns. Each layout is specified as a character strings,
-  composed of characters that encode the order of each
-  component:
+  relative position of the heatmap's components. Two
+  layouts can be defined: one horizontal, which relates to
+  components associated to rows, and one vertical, which
+  relates to components associated with columns. Each
+  layout is specified as a character strings, composed of
+  characters that encode the order of each component:
+  dendrogram (d), annotation tracks (a), data matrix (m),
+  labels (l) and legend (L).
 
-  \describe{ \item{d}{ for dendrogram;} \item{a}{ for
-  annotation tracks;} \item{m}{ for data matrix;} \item{l}{
-  for labels.} } The specification must contain one
-  instance of each character.
-
-  The default horizontal and vertical layout is
-  \code{"daml"}, and can also be specified as \code{"."}.
-  Separate layouts can be passed as a character vector with
-  2 element (e.g., \code{c("daml", "mald")}), or as a
-  single string, with layouts separated by \code{"*"}
-  (e.g., \code{". * almd"}). If only one layout
-  specification is passed, then it is used for both
-  horizontal and vertical layouts.
-
-  \strong{Examples:} \itemize{ \item \code{layout = "dlma"}
-  puts labels at the leaves of the dendrograms and
-  annotation track below or at the right of the data matrix
-  \item \code{layout = ". | amld"} use the default layout
-  for rows, put column annotation track on top of the data
-  matrix, followed by column labels and dendrogram. }}
+  See \code{\link{aheatmap_layout}} for more details on
+  layout specifications.}
 
   \item{fontsize}{base fontsize for the plot}
 

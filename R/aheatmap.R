@@ -23,10 +23,10 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	annotation <- annTracks$annCol
 	
     gp0 <- gp
-	coln_height <- unit(10, "bigpts")
+	coln_height <- unit(0, "bigpts")
 	if(!is.null(coln)){
 		longest_coln = which.max(nchar(coln))
-		coln_height <- coln_height +  unit(1.1, "grobheight", textGrob(coln[longest_coln], rot = 90, gp = c_gpar(gp, fontsize = fontsize_col)))
+		coln_height <- unit(10, "bigpts") +  unit(1.1, "grobheight", textGrob(coln[longest_coln], rot = 90, gp = c_gpar(gp, fontsize = fontsize_col)))
 	}
 
 	rown_width <- rown_width_min <- unit(10, "bigpts")
@@ -38,14 +38,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	gp = c_gpar(gp, fontsize = fontsize)
 	# Legend position
 	if( !is_NA(legend) ){
-		longest_break = which.max(nchar(as.character(legend)))
-		longest_break = unit(1.1, "grobwidth", textGrob(as.character(legend)[longest_break], gp = gp))
-		# minimum fixed width: plan for 2 decimals and a sign 
-		min_lw = unit(1.1, "grobwidth", textGrob("-00.00", gp = gp))
-		longest_break = max(longest_break, min_lw)
-		title_length = unit(1.1, "grobwidth", textGrob("Scale", gp = c_gpar(gp0, fontface = "bold")))
-		legend_width = unit(12 + 4, "bigpts") + longest_break * 1.2
-		legend_width = max(title_length, legend_width)
+        legend_width <- draw_legend(legend = legend, dims.only = TRUE)
 	}
 	else{
 		legend_width = unit(0, "bigpts")
@@ -108,9 +101,9 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	
     # pre-process layout
     gl <- .aheatmap_layout(layout)
-    col_legend_width <- row_legend_width <- unit(0, 'bigpts')
-    if( !gl$legend_horiz ) row_legend_width <- legend_width 
-    else col_legend_width <- legend_width
+    col_legend_height <- row_legend_width <- unit(0, 'bigpts')
+    if( !isTRUE(gl$options$legend$horizontal) ) row_legend_width <- legend_width 
+    else col_legend_height <- legend_width
     
 	# Set cell sizes
 	if(is.na(cellwidth)){
@@ -121,7 +114,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	}
 
 	if(is.na(cellheight)){
-		matheight = unit(1, "npc") - treeheight_col - annot_height - main_height - coln_height - col_legend_width - sub_height - info_height
+		matheight = unit(1, "npc") - treeheight_col - annot_height - main_height - coln_height - col_legend_height - sub_height - info_height
 	
 		# recompute the cell width depending on the automatic fontsize
 		if( is.na(cellwidth) && !is.null(rown) ){
@@ -140,13 +133,14 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	# - use 6 instead of 5 column for the row_annotation
 	# - take into account the associated legend's width
 	# Produce layout()
-    glayout <- vplayout(NULL, layout = layout
-                        , size = list(
-                                list(rtree = treeheight_row, rann = row_annot_width, mat = matwidth, rnam = rown_width, leg = legend_width, aleg = annot_legend_width)
-                                , list(main = main_height, ctree = treeheight_col, cann = annot_height, mat = matheight, cnam = coln_height, leg = legend_width
-                                        , sub = sub_height, info = info_height)
-                            )
-                    )
+    layout_size <- list(
+                    list(rtree = treeheight_row, rann = row_annot_width, mat = matwidth, rnam = rown_width, leg = legend_width, aleg = annot_legend_width)
+                    , list(main = main_height, ctree = treeheight_col, cann = annot_height, mat = matheight, cnam = coln_height, leg = legend_width
+                            , sub = sub_height, info = info_height)
+                )
+    
+#    aheatmap_layout(layout, size = layout_size); stop()
+    glayout <- vplayout(NULL, layout = layout, size = layout_size)
     # reoder width/height according to layout
     unique.name <- glayout$name
     # push layout
@@ -319,22 +313,62 @@ draw_rownames = function(rown, gp = gpar()){
 	grid.text(rown, x = unit(5, "bigpts"), y = y, vjust = 0.5, hjust = 0, gp = gp)	
 }
 
-draw_legend = function(color, breaks, legend, gp = gpar(), horiz = FALSE){
-    left_margin <- 4
-	height = min(unit(1, "npc"), unit(150, "bigpts"))
-	if( !horiz ) pushViewport(viewport(x = 0, y = unit(1, "npc"), just = c(0, 1), height = height))
-    else pushViewport(viewport(y = 0, x = unit(1, "npc"), just = c(1, 0), width = height))
-	legend_pos = (legend - min(breaks)) / (max(breaks) - min(breaks))
-	breaks = (breaks - min(breaks)) / (max(breaks) - min(breaks))
-	h = breaks[-1] - breaks[-length(breaks)]
-    if( !horiz ){
-    	grid.rect(x = unit(left_margin, "bigpts"), y = breaks[-length(breaks)], width = unit(10, "bigpts"), height = h, hjust = 0, vjust = 0, gp = gpar(fill = color, col = "#FFFFFF00"))
-        grid.text(legend, x = unit(12 + left_margin, "bigpts"), y = legend_pos, hjust = 0, gp = gp)
-    }else{
-        grid.rect(y = unit(left_margin, "bigpts"), x = breaks[-length(breaks)], height = unit(10, "bigpts"), width = h, hjust = 0, vjust = 0, gp = gpar(fill = color, col = "#FFFFFF00"))
-    	grid.text(legend, y = unit(12 + left_margin, "bigpts"), x = legend_pos, vjust = 0, gp = gp)
+
+draw_legend = function(color, breaks, legend, gp = gpar(), opts = NULL, dims.only = FALSE){
+    
+    # sizes
+    padding <- unit(4, 'bigpts')
+    thickness <- unit(10, 'bigpts')
+    space <- unit(2, 'bigpts')
+    
+    if( dims.only ){
+    	longest_break = which.max(nchar(as.character(legend)))
+    	longest_break = unit(1.1, "grobwidth", textGrob(as.character(legend)[longest_break], gp = gp))
+    	# minimum fixed width: plan for 2 decimals and a sign 
+    	min_lw = unit(1.1, "grobwidth", textGrob("-00.00", gp = gp))
+    	longest_break = min(longest_break, min_lw)
+    	#title_length = unit(1.1, "grobwidth", textGrob("Scale", gp = c_gpar(gp0, fontface = "bold")))
+    	legend_width <- padding + thickness + space + longest_break * 1
+        return(legend_width)
     }
-	upViewport()
+    
+    if( !isTRUE(opts$expand) ){
+        size <- min(unit(1, "npc"), unit(150, "bigpts"))
+        shift <- unit(1, "npc") - size
+        if( opts$pos == 'middle' ) shift <- shift * .5
+        else if( opts$pos == 'bottom' && !isTRUE(opts$horizontal) ) shift <- unit(0, "npc")
+        else if( opts$pos == 'top' && isTRUE(opts$horizontal) ) shift <- unit(0, "npc")
+        
+        if( !isTRUE(opts$horizontal) ){
+            pushViewport(viewport(x = 0, y = shift, just = c(0, 0), height = size))
+        }else{
+            pushViewport(viewport(y = 0, x = shift, just = c(0, 0), width = size))
+        }
+        
+        on.exit( upViewport() )
+    }
+    
+    # compute raltive position for breaks and "ticks"
+	tick_pos = (legend - min(breaks)) / (max(breaks) - min(breaks))
+    breaks = (breaks - min(breaks)) / (max(breaks) - min(breaks))
+    h <- diff(breaks)
+    
+    txt_shift <- thickness + space + padding
+    
+    flip_coord <- function(x, flip, max = unit(1, 'npc')){
+        if( flip ) max - x 
+        else x
+    }
+    
+    if( !isTRUE(opts$horizontal) ){
+    	grid.rect(x = flip_coord(padding, opts$flip$h, unit(1, 'npc') - thickness), y = breaks[-length(breaks)], width = thickness, height = h, hjust = 0, vjust = 0
+                , gp = gpar(fill = color, col = "#FFFFFF00"))
+        grid.text(legend, x = flip_coord(txt_shift, opts$flip$h, txt_shift), y = tick_pos, hjust = 0, gp = gp)
+    }else{
+        grid.rect(y = flip_coord(padding, !opts$flip$v), x = breaks[-length(breaks)], height = thickness, width = h, hjust = 0, vjust = 0
+                , gp = gpar(fill = color, col = "#FFFFFF00"))
+        grid.text(legend, y = flip_coord(txt_shift, !opts$flip$v), x = tick_pos, vjust = 0, gp = gp)
+    }
 }
 
 convert_annotations = function(annotation, annotation_colors){
@@ -421,46 +455,167 @@ draw_annotation_legend = function(annotation_colors, border_color, gp = gpar()){
 	}
 }
 
-#' Annotated Heatmap Layout
+#' Annotated Heatmap Layout Preview
 #' 
-#' Shows a diagram of an annotated heatmap layout specification.
+#' Shows a diagram of an annotated heatmap layout for given specification.
 #' 
-#' @inheritParams aheatmap
+#' @param layout layout specification that indicates the relative position 
+#' of the heatmap's components.
+#' Two layouts can be defined: one horizontal, which relates to components associated to rows, 
+#' and one vertical, which relates to components associated with columns.
+#' Each layout is specified as a character strings, composed of characters 
+#' that encode the order of each component: dendrogram (d), annotation tracks (a), 
+#' data matrix (m), labels (l) and legend (L).
+#' See section \emph{Layout syntax} for a complete specification  
+#'
+#' @details Layout syntax:
+#' 
+#' Layouts are specified as character strings that can contain the following characters, 
+#' each associated with a given component or behaviour:
+#' 
+#' \strong{Components}
+#' \describe{
+#' \item{\quote{d}}{ dendrogram component}
+#' \item{\quote{a}}{ annotation tracks}
+#' \item{\quote{m}}{ data matrix}
+#' \item{\quote{l}}{ labels}
+#' \item{\quote{L}}{ scale legend}
+#' }
+#' 
+#' \strong{Behaviours}
+#' \describe{
+#' \item{\quote{^}}{ align top (resp. left) for horizontal (resp. vertical) layout.}
+#' \item{\quote{-}}{ align middle (resp. center) for horizontal (resp. vertical) layout.}
+#' \item{\quote{_}}{ align bottom (resp. right) for horizontal (resp. vertical) layout.
+#' If used alone (i.e. \code{layout = "_"}), then this is equivalent to \code{"|L_"}, 
+#' which make places the legend horizontally on the bottom-right corner.}  
+#' \item{\quote{*}}{ used either alone or after after \code{\quote{L}} to specifiy that the 
+#' legend should expand to full height/width.}
+#' }
+#' The specification must contain one instance of each of these character.
+#' 
+#' The default horizontal/vertical layout is \code{"daml"}, and can also be specified
+#' as \code{"."}.
+#' 
+#' Separate layouts can be passed as a character vector with 2 element (e.g., \code{c("daml", "mald")}),
+#' or as a single string, with layouts separated by \code{"|"} (e.g., \code{"almd | L."}).
+#' When using this separator, a layout specification may be omitted, indicating
+#' that the default layout shoud be used: \code{"almd|"} is equivalent to \code{"almd | ."}.
+#' If only one layout specification is passed (i.e. a string without \code{"|"}), 
+#' then it is used for both horizontal and vertical layouts.
+#' 
+#' \strong{Shortcuts}
+#' \itemize{
+#' \item \code{layout = "*"} is a shortcut for \code{layout = ".L*"}, which expands the legend to 
+#' take up full height;
+#' \item \code{layout = "_"} is a shortcut for \code{layout = "|.L_"}, which puts the legend at 
+#' bottom-right corner;
+#' \item \code{layout = "_^"} is a shortcut for \code{layout = "|.L^"}, which puts the legend at 
+#' bottom-left corner;
+#' \item \code{layout = "_*"} is a shortcut for \code{layout = "|.L*"}, which puts the legend 
+#' at bottom, expanded to take up full width;
+#' \item \code{layout = "^"} is a shortcut for \code{layout = "L^.|"}, which puts the legend 
+#' on the top-left corner.
+#' }
+#' 
+#' \strong{Examples:} 
+#' \itemize{
+#' \item \code{layout = "dlma"} puts labels at the leaves of the dendrograms and 
+#' annotation track below or at the right of the data matrix
+#' \item \code{layout = ". | amld"} use the default layout for rows, put
+#' column annotation track on top of the data matrix, followed by column labels and 
+#' dendrogram.
+#' }
 #' 
 #' @export
 #' @examples 
-#' aheatmap_layout()
-#' aheatmap_layout('amld')
-#' aheatmap_layout('amld * .')
 #' 
-aheatmap_layout <- function(layout = 'daml'){
-    .aheatmap_layout(layout, plot = TRUE)
+#' # default layout
+#' aheatmap_layout()
+#' 
+#' # Common row/column layout: annotations > data > labels > dendrogram 
+#' aheatmap_layout('amld')
+#' 
+#' # Separate row/column layout: row as above / column as default
+#' aheatmap_layout('amld | .')
+#' 
+#' ## Legend
+#' # horizontal bottom-right
+#' aheatmap_layout('_')
+#' # hotizontal top-left (equivalent to "|L^.")
+#' aheatmap_layout('^')
+#' 
+aheatmap_layout <- function(layout = 'daml', size = NULL){
+    
+    # define dummy sizes
+    if( is.null(size) ){
+        l <- unit(2, 'line')
+        size <- list(list(rtree = 2 * l, rann = l, mat = unit(1, 'null'), rnam = l, leg = l, aleg = l)
+                , list(main=l, ctree = 2 * l, cann = l, mat = unit(1, 'null'), cnam = l, leg = l, sub = l, info = 1.5 * l))
+    }
+    
+    # compute layout
+    gl <- .aheatmap_layout(layout, size = size)
+    lo <- gl$grid.layout
+
+    # plot layout diagram
+    grid.newpage()
+    grid.show.layout(lo, unit.col = NA, cell.label = FALSE)
+    
+    # label components
+    pushViewport(viewport(0.5, 0.5, 0.8, 0.8, layout = lo))
+    labels <- c(tree = 'dendrogram', ann = 'annotation tracks', nam = 'labels')
+    ilabels <- function(x, y) setNames(paste(x, labels), paste0(y, names(labels)))
+    labels <- c(ilabels('Row', 'r'), ilabels('Column', 'c'), leg = 'Scale legend', aleg = 'Annotation legend'
+            , mat = 'Data'
+            , main = 'Main title', sub = 'Subtitle', info = 'Extra info pane')
+    
+    # taken from internal loop in grid.show.layout
+    label.vp <- function(x, rot = 0){
+        vp.inner <- viewport(layout.pos.row = gl$layout[x, 1], layout.pos.col = gl$layout[x, 2])
+        # TODO: skip empty viewports
+        # push and draw
+        pushViewport(vp.inner)
+        grid.text(labels[x], rot = rot)
+        popViewport()
+    }
+    
+    sapply(gl$h[!gl$h == 'mat'], label.vp, 90)
+    sapply(gl$v, label.vp)
+    popViewport()
+
 }
 
-.aheatmap_layout <- function(layout = 'daml', plot = FALSE, size = NULL){
+.aheatmap_layout <- function(layout = 'daml', size = NULL){
     
+    default = 'daml'
     x <- layout
+    x <- gsub(' ', '', x, fixed = TRUE)
     if( length(x) == 1L ){
-        x <- strsplit(x, '*', fixed = TRUE)[[1L]]
+        # special legend specification
+        if( x == "*" ) x <- paste0(default, "L*")
+        else if( x == "^" ) x <- c("L^.", default)
+        else if( x == "_" ) x <- c(default, "L_")
+        else if( x == "_*" ) x <- c(default, "L*")
+        else if( x == "_^" ) x <- c(default, "L^")
+        else{
+            x <- gsub("(\\|)?L?([-_*^])", "\\1L\\2", x)
+            x <- strsplit(x, '|', fixed = TRUE)[[1L]]
+        }
     }
+    
     # resolve shortcuts
     if( length(x) == 1L ) x <- c(x, x)
-    x <- gsub(' ', '', x, fixed = TRUE)
     x <- gsub('.', 'daml', x, fixed = TRUE)
     
     # split into letters
+    x_v <- x # keep vector version for later use
     x <- strsplit(x, '')
     x <- lapply(x, unique)
     
-    # add default legend spec if missing
-    if( any(unlist(x) == '-') ){
-        x[[1L]] <- setdiff(x[[1L]], 'L')
-        x[[2L]] <- union(x[[2L]], 'L')
-    }
-    if( any(unlist(x) == '|') ){
-        x[[2L]] <- setdiff(x[[2L]], 'L')
-        x[[1L]] <- union(x[[1L]], 'L')
-    }
+    # only keep component characters
+    v_default <- strsplit('daml', '')[[1L]]
+    x <- lapply(x, intersect, c(v_default, 'L'))
     
     if( !any(unlist(x) == 'L') ){
         x[[1L]] <- c(x[[1L]], 'L')
@@ -468,10 +623,7 @@ aheatmap_layout <- function(layout = 'daml'){
         x[[2L]] <- setdiff(x[[2L]], 'L')
     }
     
-    # remove unknown characters
-    v_default <- strsplit('daml', '')[[1L]]
-    x <- lapply(x, intersect, c(v_default, 'L'))
-    # add default prefix
+    # add default prefix where not specified
     x <- sapply(x, function(x) if( !length(x) ) v_default else x)
     x <- sapply(x, function(x) if( identical(x, 'L') ) c(v_default, 'L') else x)
     
@@ -510,20 +662,27 @@ aheatmap_layout <- function(layout = 'daml'){
     res <- res[!is.na(res[, 1]) & !is.na(res[, 2]), ]
     res <- res[!duplicated(rownames(res)), ]
     
-    # determine dendrogram orientation
+    # build result list
+    res <- c(list(layout = res), e_order, options = list())
+    
+    ## Component-specific options
+    # dendrogram orientation
     flip <- sapply(e_order, function(x) grep('tree', x) > which(x=='mat'), simplify = FALSE)
-    res <- c(list(layout = res), e_order, flip_dendrogram = flip)
+    res$options$dendrogram <- list(flip = flip)
+    # legend 
+    hleg <- !'leg' %in% res$h
+    res$options$legend <- list(horizontal = hleg)
+    # detect legend positionning specifications
+    leg_spec <- str_match(x_v, "L((\\^)|(-)|(_)|(\\*))")[1+hleg, -(1:2)]
+    leg_spec <- !is.na(leg_spec) & nzchar(leg_spec)
+    if( !length(ipos <- which(leg_spec[1:3])) ) ipos <- 2 * hleg + 1
+    res$options$legend$pos <- c("top", "middle", "bottom")[ipos]
+    res$options$legend$expand <- leg_spec[4L]
+    # text orientation
+    res$options$legend$flip <- sapply(e_order, function(x) grep('^leg', x) < which(x=='mat'), simplify = FALSE)
+    ##
     
-    # determine legend position
-    res$legend_horiz <- !'leg' %in% res$h
-    
-    if( plot && is.null(size) ){ # if plotting use dummy sizes
-        l <- unit(2, 'line')
-        size <- list(list(rtree = 2 * l, rann = l, mat = unit(1, 'null'), rnam = l, leg = l, aleg = l)[res$h]
-                    , list(main=l, ctree = 2 * l, cann = l, mat = unit(1, 'null'), cnam = l, leg = l, sub = l, info = 1.5 * l)[res$v])
-    }
-    
-    # reorder sizes according to layout specification
+    ## grid.layout: generate and order component sizes according to layout specification
     if( !is.null(size) ){
         wunits <- size[[1L]][res$h]
         hunits <- size[[2L]][res$v]
@@ -535,30 +694,6 @@ aheatmap_layout <- function(layout = 'daml'){
     }
     #
     
-    if( plot ){
-        
-        grid.newpage()
-        gl <- res 
-        
-        grid.show.layout(lo, unit.col = NA, cell.label = FALSE)
-
-        # label components
-        pushViewport(viewport(0.5, 0.5, 0.8, 0.8, layout = lo))
-        labels <- c(tree = 'dendrogram', ann = 'annotation tracks', nam = 'labels')
-        ilabels <- function(x, y) setNames(paste(x, labels), paste0(y, names(labels)))
-        labels <- c(ilabels('Row', 'r'), ilabels('Column', 'c'), leg = 'Scale legend', aleg = 'Annotation legend'
-                    , mat = 'Data'
-                    , main = 'Main title', sub = 'Subtitle', info = 'Extra info pane')
-        label.vp <- function(x, rot = 0){
-            vp.inner <- viewport(layout.pos.row = gl$layout[x, 1], layout.pos.col = gl$layout[x, 2])
-            pushViewport(vp.inner)
-            grid.text(labels[x], rot = rot)
-            popViewport()
-        }
-        sapply(gl$h[!gl$h == 'mat'], label.vp, 90)
-        sapply(gl$v, label.vp)
-        popViewport()
-    }
     invisible(res)
 }
 
@@ -821,6 +956,9 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	, fontsize = fontsize, fontsize_row = fontsize_row, fontsize_col = fontsize_col
     , layout = layout
 	, main = mainGrob, sub = subGrob, info = infoGrob, gp = gp)
+    
+    # extract options
+    loptions <- glo$layout$options 
 	
 	# resize the graphic file device if necessary
 	if( writeToFile ){		
@@ -855,14 +993,14 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	# Draw tree for the columns
 	if (!is_NA(tree_col) &&  treeheight_col != 0){
 		vplayout('ctree')
-		draw_dendrogram(tree_col, horizontal = FALSE, flip = glo$layout$flip_dendrogram.v)
+		draw_dendrogram(tree_col, horizontal = FALSE, flip = loptions$dendrogram$flip$v)
 		upViewport()
 	}
 
 	# Draw tree for the rows
 	if(!is_NA(tree_row) && treeheight_row !=0){
 		vplayout('rtree')
-		draw_dendrogram(tree_row, horizontal = TRUE, flip = glo$layout$flip_dendrogram.h)
+		draw_dendrogram(tree_row, horizontal = TRUE, flip = loptions$dendrogram$flip$h)
 		upViewport()
 	}
 
@@ -915,7 +1053,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	# Draw legend
 	if(!is_NA(legend)){
 		vplayout('leg')
-		draw_legend(color, breaks, legend, gp = c_gpar(gp, fontsize = fontsize), horiz = glo$layout$legend_horiz)
+		draw_legend(color, breaks, legend, gp = c_gpar(gp, fontsize = fontsize), opts = loptions$legend)
 		upViewport()
 	}
 
@@ -1827,8 +1965,10 @@ subset_index <- function(x, margin, subset){
 #' Default is \code{TRUE}.
 #' 
 #' @param cexAnn scaling coefficent for the size of the annotation tracks.
-#' This is used for the height (resp. width) of the column (resp. row) annotation tracks.
-#' Separate sizes can be specified as a vector \code{c(row_size, col_size)}, 
+#' Values > 1 (resp. < 1) will increase (resp. decrease) the size of each annotation 
+#' track.
+#' This applies to the height (resp. width) of the column (resp. row) annotation tracks.
+#' Separate row and column sizes can be specified as a vector \code{c(row_size, col_size)}, 
 #' where an NA value means using the default for the corresponding track.
 #' 
 #' @param labRow labels for the rows.
@@ -1836,35 +1976,14 @@ subset_index <- function(x, margin, subset){
 #' for a list of the possible values.
 #' 
 #' @param layout layout specification that indicates the relative position 
-#' of the dendrograms, annotations, matrix and labels.
+#' of the heatmap's components.
 #' Two layouts can be defined: one horizontal, which relates to components associated to rows, 
 #' and one vertical, which relates to components associated with columns.
 #' Each layout is specified as a character strings, composed of characters 
-#' that encode the order of each component:
+#' that encode the order of each component: dendrogram (d), annotation tracks (a), 
+#' data matrix (m), labels (l) and legend (L).
 #' 
-#' \describe{
-#' \item{d}{ for dendrogram;}
-#' \item{a}{ for annotation tracks;}
-#' \item{m}{ for data matrix;}
-#' \item{l}{ for labels.}
-#' }
-#' The specification must contain one instance of each character.
-#' 
-#' The default horizontal and vertical layout is \code{"daml"}, and can also be specified
-#' as \code{"."}.
-#' Separate layouts can be passed as a character vector with 2 element (e.g., \code{c("daml", "mald")}),
-#' or as a single string, with layouts separated by \code{"*"} (e.g., \code{". * almd"}). 
-#' If only one layout specification is passed, then it is used for both horizontal 
-#' and vertical layouts.
-#' 
-#' \strong{Examples:} 
-#' \itemize{
-#' \item \code{layout = "dlma"} puts labels at the leaves of the dendrograms and 
-#' annotation track below or at the right of the data matrix
-#' \item \code{layout = ". | amld"} use the default layout for rows, put
-#' column annotation track on top of the data matrix, followed by column labels and 
-#' dendrogram.
-#' }
+#' See \code{\link{aheatmap_layout}} for more details on layout specifications. 
 #'  
 #' @param fontsize base fontsize for the plot 
 #' @param cexRow fontsize for the rownames, specified as a fraction of argument 
