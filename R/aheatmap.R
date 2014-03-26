@@ -589,8 +589,8 @@ aheatmap_layout <- function(layout = 'daml', size = NULL){
 .aheatmap_layout <- function(layout = 'daml', size = NULL){
     
     default = 'daml'
+    layout <- gsub(' ', '', layout, fixed = TRUE)
     x <- layout
-    x <- gsub(' ', '', x, fixed = TRUE)
     if( length(x) == 1L ){
         # special legend specification
         if( x == "*" ) x <- paste0(default, "L*")
@@ -601,6 +601,8 @@ aheatmap_layout <- function(layout = 'daml', size = NULL){
         else{
             x <- gsub("(\\|)?L?([-_*^])", "\\1L\\2", x)
             x <- strsplit(x, '|', fixed = TRUE)[[1L]]
+            # deal with ending "|"
+            if( grepl("\\|$", layout) ) x <- c(x, '')
         }
     }
     
