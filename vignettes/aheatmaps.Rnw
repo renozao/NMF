@@ -59,6 +59,7 @@ pkgmaker::latex_bibliography('NMF')
 % define commands for notes
 \usepackage{todonotes}
 \newcommand{\nbnote}[1]{\ \bigskip\todo[inline, backgroundcolor=blue!20!white]{\scriptsize\textsf{\textbf{NB:} #1}}\ \\}
+\newcommand{\footurl}[1]{\footnote{\url{#1}}}
 
 % put table of contents on two columns
 \usepackage[toc]{multitoc}
@@ -71,7 +72,7 @@ pkgmaker::latex_bibliography('NMF')
 set.seed(123456)
 library(NMF)
 library(knitr)
-opts_chunk$set(fig.show = 'hold', out.width = ".48\\textwidth")
+opts_chunk$set(size = 'small', fig.show = 'hold', out.width = ".48\\textwidth")
 @
 
 \title{aheatmap: a Powerful Annotated Heatmap Engine\\
@@ -125,6 +126,32 @@ are by default well proportioned relatively to each other, and all fit within
 the graphic device -- if not set to an unresonnably small size.
 \end{itemize}
 
+\section{Preliminaries}
+
+\subsection{Installation}
+
+The \code{aheatmap} function is currently part of the \CRANpkg{NMF}, which can
+be installed from any CRAN mirror or from the GitHub
+repository\footurl{http://github.com/renozao/NMF}, for the development version,
+with the following commands:
+
+<<install, eval = FALSE>>=
+# latest stable
+intall.pacakges('NMF')
+# development version
+devtools::install_github('NMF', 'renozao', 'devel')
+@
+
+\subsection{Sample data}
+For the purpose of illustrating the capabilities of the function
+\code{aheatmap}, we first generate some random data that we will use throughout
+the vignette:
+
+<<sample_data>>=
+# data matrix
+x <- rmatrix(20, 10)
+@
+
 \section{Components}
 
 Annotated heatmaps essentially use \code{grid} graphics\footnote{Except for
@@ -147,16 +174,16 @@ together the following components (or viewports in \code{grid} language):
 the above listed components into a complete annotated heatmap.
 
 \begin{figure}[!htpb]
-\label{fig:layout}
 <<layout>>=
 # default layout
 aheatmap_layout()
 # alternative layout
-aheatmap_layout("amld * dlma")
+aheatmap_layout("amld | dlma")
 @
 \caption{Grid layout diagram of annotated heatmaps: (left) default layout and
 (right) an alternative layout, with separate specification for rows
 and columns -- passed as a single string.}
+\label{fig:layout}
 \end{figure}
 
 \section{Annotation tracks}
@@ -164,7 +191,56 @@ and columns -- passed as a single string.}
 \section{Column/row ordering}
 \section{Colours}
 \section{Labels}
+
 \section{Legends}
+Annotated heatmaps have two types of legends, one showing the colour-value scale
+used to visualise the data matrix and another one for the annotation tracks.
+
+\subsection{Colour scale}
+The very principle of a heatmap is to bin the data values into a certain number
+of intervals or breaks, and associate each of these with a given colour.
+The colour scale is the legend that provides details about how to read the
+resulting colour coded data matrix.
+As such, it serves multiple purposes:
+\begin{itemize}
+  \item provide the mapping between colours and value intervals;
+  \item show the actual range of displayed values;
+  \item optionnaly show the overall distribution of values.
+\end{itemize}
+
+\subsubsection{Colours and breaks}
+
+\subsubsection{Look and position}
+As for other components in annotated heatmaps, the position of the
+colour scale is controlled by the argument \code{layout}, which can also be used
+to specify if the scale should be expand over the full height/width or have a
+fixed size.
+
+By default the scale is placed on the top-right corner of the data matrix, with
+a fixed size.
+\Cref{fig:layout_scale} illustrates how to obtain some other commonly used
+positions/look.
+However, more options are available, as detailed in the manual page for
+\code{aheatmap\_layout}.
+
+\begin{figure}[h!]
+<<layout_scale, out.width = "0.25\\textwidth">>=
+# vertical on the right expanded over the full height
+aheatmap(x, layout = '*')
+# horizontal at the bottom-right corner
+aheatmap(x, layout = '_')
+# horizontal the bottom, expanded over the full width
+aheatmap(x, layout = '_*')
+# vertical on the left (when not using/showing row dendrogram)
+aheatmap(x, Rowv = NA, layout = 'L.|')
+@
+\caption{Colour scale alternative layouts: the scale can be placed in different
+areas around the data matrix and expanded to full height/width.}
+\label{fig:layout_scale}
+\end{figure}
+
+
+\subsection{Annotations}
 
 \section{Session Info}
 <<sessionInfo, echo=FALSE, results='asis'>>=

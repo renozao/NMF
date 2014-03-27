@@ -125,7 +125,7 @@
 , backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 %\bibliography{Rpackages}
-\bibliography{/tmp/Rpkglib_417b792bfa87/NMF/REFERENCES}
+\bibliography{/tmp/Rpkglib_25d846110dda/NMF/REFERENCES}
 
 
 \newcommand{\citet}[1]{\textcite{#1}}
@@ -154,6 +154,7 @@
 % define commands for notes
 \usepackage{todonotes}
 \newcommand{\nbnote}[1]{\ \bigskip\todo[inline, backgroundcolor=blue!20!white]{\scriptsize\textsf{\textbf{NB:} #1}}\ \\}
+\newcommand{\footurl}[1]{\footnote{\url{#1}}}
 
 % put table of contents on two columns
 \usepackage[toc]{multitoc}
@@ -217,6 +218,42 @@ are by default well proportioned relatively to each other, and all fit within
 the graphic device -- if not set to an unresonnably small size.
 \end{itemize}
 
+\section{Preliminaries}
+
+\subsection{Installation}
+
+The \code{aheatmap} function is currently part of the \CRANpkg{NMF}, which can
+be installed from any CRAN mirror or from the GitHub
+repository\footurl{http://github.com/renozao/NMF}, for the development version,
+with the following commands:
+
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# latest stable}
+\hlkwd{intall.pacakges}\hlstd{(}\hlstr{"NMF"}\hlstd{)}
+\hlcom{# development version}
+\hlstd{devtools::}\hlkwd{install_github}\hlstd{(}\hlstr{"NMF"}\hlstd{,} \hlstr{"renozao"}\hlstd{,} \hlstr{"devel"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\subsection{Sample data}
+For the purpose of illustrating the capabilities of the function
+\code{aheatmap}, we first generate some random data that we will use throughout
+the vignette:
+
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# data matrix}
+\hlstd{x} \hlkwb{<-} \hlkwd{rmatrix}\hlstd{(}\hlnum{20}\hlstd{,} \hlnum{10}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
 \section{Components}
 
 Annotated heatmaps essentially use \code{grid} graphics\footnote{Except for
@@ -239,14 +276,13 @@ together the following components (or viewports in \code{grid} language):
 the above listed components into a complete annotated heatmap.
 
 \begin{figure}[!htpb]
-\label{fig:layout}
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{# default layout}
 \hlkwd{aheatmap_layout}\hlstd{()}
 \hlcom{# alternative layout}
-\hlkwd{aheatmap_layout}\hlstd{(}\hlstr{"amld * dlma"}\hlstd{)}
+\hlkwd{aheatmap_layout}\hlstd{(}\hlstr{"amld | dlma"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=.48\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-layout1} 
@@ -257,6 +293,7 @@ the above listed components into a complete annotated heatmap.
 \caption{Grid layout diagram of annotated heatmaps: (left) default layout and
 (right) an alternative layout, with separate specification for rows
 and columns -- passed as a single string.}
+\label{fig:layout}
 \end{figure}
 
 \section{Annotation tracks}
@@ -264,7 +301,66 @@ and columns -- passed as a single string.}
 \section{Column/row ordering}
 \section{Colours}
 \section{Labels}
+
 \section{Legends}
+Annotated heatmaps have two types of legends, one showing the colour-value scale
+used to visualise the data matrix and another one for the annotation tracks.
+
+\subsection{Colour scale}
+The very principle of a heatmap is to bin the data values into a certain number
+of intervals or breaks, and associate each of these with a given colour.
+The colour scale is the legend that provides details about how to read the
+resulting colour coded data matrix.
+As such, it serves multiple purposes:
+\begin{itemize}
+  \item provide the mapping between colours and value intervals;
+  \item show the actual range of displayed values;
+  \item optionnaly show the overall distribution of values.
+\end{itemize}
+
+\subsubsection{Colours and breaks}
+
+\subsubsection{Look and position}
+As for other components in annotated heatmaps, the position of the
+colour scale is controlled by the argument \code{layout}, which can also be used
+to specify if the scale should be expand over the full height/width or have a
+fixed size.
+
+By default the scale is placed on the top-right corner of the data matrix, with
+a fixed size.
+\Cref{fig:layout_scale} illustrates how to obtain some other commonly used
+positions/look.
+However, more options are available, as detailed in the manual page for
+\code{aheatmap\_layout}.
+
+\begin{figure}[h!]
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# vertical on the right expanded over the full height}
+\hlkwd{aheatmap}\hlstd{(x,} \hlkwc{layout} \hlstd{=} \hlstr{"*"}\hlstd{)}
+\hlcom{# horizontal at the bottom-right corner}
+\hlkwd{aheatmap}\hlstd{(x,} \hlkwc{layout} \hlstd{=} \hlstr{"_"}\hlstd{)}
+\hlcom{# horizontal the bottom, expanded over the full width}
+\hlkwd{aheatmap}\hlstd{(x,} \hlkwc{layout} \hlstd{=} \hlstr{"_*"}\hlstd{)}
+\hlcom{# vertical on the left (when not using/showing row dendrogram)}
+\hlkwd{aheatmap}\hlstd{(x,} \hlkwc{Rowv} \hlstd{=} \hlnum{NA}\hlstd{,} \hlkwc{layout} \hlstd{=} \hlstr{"L.|"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=0.25\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-layout_scale1} 
+\includegraphics[width=0.25\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-layout_scale2} 
+\includegraphics[width=0.25\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-layout_scale3} 
+\includegraphics[width=0.25\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-layout_scale4} 
+
+\end{knitrout}
+
+\caption{Colour scale alternative layouts: the scale can be placed in different
+areas around the data matrix and expanded to full height/width.}
+\label{fig:layout_scale}
+\end{figure}
+
+
+\subsection{Annotations}
 
 \section{Session Info}
 \begin{itemize}\raggedright
@@ -275,15 +371,16 @@ and columns -- passed as a single string.}
   \item Other packages: BH~1.51.0-4, bigmemory~4.4.6,
     bigmemory.sri~0.1.2, Biobase~2.22.0, BiocGenerics~0.8.0,
     cluster~1.15.1, knitr~1.5, NMF~0.21, pkgmaker~0.21,
-    registry~0.2, rngtools~1.2.4, synchronicity~1.1.2
+    RColorBrewer~1.0-5, registry~0.2, rngtools~1.2.4,
+    synchronicity~1.1.2
   \item Loaded via a namespace (and not attached):
     codetools~0.2-8, colorspace~1.2-4, dichromat~2.0-0,
     digest~0.6.4, doParallel~1.0.8, evaluate~0.5.1, foreach~1.4.1,
     formatR~0.10, ggplot2~0.9.3.1, grid~3.0.3, gridBase~0.4-7,
     gtable~0.1.2, highr~0.3, iterators~1.0.6, labeling~0.2,
     MASS~7.3-30, munsell~0.4.2, plyr~1.8.1, proto~0.3-10,
-    RColorBrewer~1.0-5, Rcpp~0.11.0, reshape2~1.2.2, scales~0.2.3,
-    stringr~0.6.2, tools~3.0.3, xtable~1.7-3
+    Rcpp~0.11.1, reshape2~1.2.2, scales~0.2.3, stringr~0.6.2,
+    tools~3.0.3, xtable~1.7-3
 \end{itemize}
 
 
