@@ -1106,7 +1106,7 @@ generate_breaks = function(x, n, center=NA){
 }
 
 scale_vec_colours = function(x, col = rainbow(10), breaks = NA){
-	return(col[as.numeric(cut(x, breaks = breaks, include.lowest = T))])
+    return(col[cut(x, breaks = breaks, include.lowest = T, labels = FALSE)])	
 }
 
 scale_colours = function(mat, col = rainbow(10), breaks = NA){
@@ -2336,25 +2336,25 @@ aheatmap = function(x
 	mat = scale_mat(mat, scale)
 	
 	## Colors and scales
-	# load named palette if necessary
-	color <- ccRamp(color)
-	
-	# generate breaks if necessary
-	if( is_NA(breaks) || isNumber(breaks) ){
-		if( verbose ) message("Generate breaks")
-		# if a single number: center the breaks on this value
-		cbreaks <- if( isNumber(breaks) ) breaks else NA
-		breaks = generate_breaks(as.vector(mat), length(color), center=cbreaks)
-	}
-	if( isTRUE(legend) ){
-		if( verbose ) message("Generate data legend breaks")
+    # generate colour scale
+    if( verbose ) message("Generate colour scale (palette + breaks)")
+    if( is_NA(breaks) ) breaks <- NULL
+	colour_scale <- ccRamp(color, breaks = breaks, data = as.vector(mat))
+    # store into result list
+    res$col <- colour_scale
+    # assign as separate objects (legacy)
+	breaks <- setNames(colour_scale, NULL)
+    color <- names(colour_scale)
+        
+    if( isTRUE(legend) ){
+		if( verbose ) message("Generate colour scale ticks")
 		legend = grid.pretty(range(as.vector(breaks)))
 	}
 	else {
 		legend = NA
 	}
-	mat = scale_colours(mat, col = color, breaks = breaks)
-	
+    mat = scale_colours(mat, col = color, breaks = breaks)
+    
 	annotation_legend <- annLegend
 	annotation_colors <- annColors
 	

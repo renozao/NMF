@@ -116,22 +116,31 @@ ccPalette <- function(x, n=NA, verbose=FALSE){
 #' Implementation is borrowed from the R core function \code{\link{cut.default}}.
 #' 
 #' @keywords internal
-ccBreaks <- function(x, breaks){
+ccBreaks <- function(x, breaks, center = NULL){
 	
 	if (!is.numeric(x)) 
 		stop("'x' must be numeric")
 	
 	if (length(breaks) == 1L) {
-		if (is.na(breaks) | breaks < 2L) 
-			stop("Invalid number of intervals: should be >= 2")
-		nb <- as.integer(breaks + 1)
-		dx <- diff(rx <- range(x, na.rm = TRUE))
-		if (dx == 0) 
-			dx <- abs(rx[1L])
-		breaks <- seq.int(rx[1L] - dx/1000, rx[2L] + dx/1000, 
-				length.out = nb)
+        
+        if (is.na(breaks) | breaks < 2L) 
+    		stop("Invalid number of intervals: should be >= 2")
+    	nb <- as.integer(breaks + 1)
+    	dx <- diff(rx <- range(x, na.rm = TRUE))
+    	if (dx == 0) 
+    		dx <- abs(rx[1L])
+    	
+        if( is.null(center) ){
+    		breaks <- seq.int(rx[1L] - dx/1000, rx[2L] + dx/1000, length.out = nb)
+        }else{ # center the breaks on the requested value
+            M <- max(abs(center - rx[1L]), abs(center - rx[2L]))
+    		lb <- seq(center-M-dx/1000, center, length.out = floor(nb/2))
+            n <- ceiling(nb/2)
+    		rb <- seq(center, center+M+dx/1000, length.out = n+1)
+    		breaks <- c(lb, rb[-1])
+    	}
 	}
-	else nb <- length(breaks <- sort.int(as.double(breaks)))
+	
 	if (anyDuplicated(breaks)) 
 		stop("'breaks' are not unique")
 	
@@ -199,7 +208,7 @@ ccSpec <- function(x){
 #' Builds a Color Ramp from Compact Color Specification
 #' 
 #' @keywords internal 
-ccRamp <- function(x, n=NA, ...){ #breaks, data, ...){
+ccRamp <- function(x, n = NA, breaks = NULL, data = NULL, ...){
 	
 	# generate random color specification if necessary
 	if( missing(x) )
@@ -208,31 +217,64 @@ ccRamp <- function(x, n=NA, ...){ #breaks, data, ...){
 	# extract specifications
 	sp <- ccSpec(x)
 	x <- sp$palette
-	if( missing(n) ){
-		n <- sp$n
-		if( is_NA(n) ) n <- 50		
-	}
-	
 	# create a palette from specification x
 	x <- ccPalette(x, ...)
+    
+    if( missing(n) ){
+        
+        # x is a complete colour scale 
+        if( is.numeric(x) ) n <- length(x)
+        else if( isInteger(breaks) ) n <- breaks
+        else n <- sp$n
+        
+		if( is_NA(n) ){
+            if( is.null(breaks) ) n <- 50
+            else if( length(breaks) > 1L ) n <- length(breaks) - 1L
+		}        
+	}
 	
-#	# compute breaks
-#	breaks <- 
-#	if( !missing(breaks) ){
-#		breaks <- ccBreaks(x, breaks)
-#		if( missing(n) )
-#			n <- length(breaks)
-#		breaks
-#	}
-#	else if( !missing(data) ){
-#		if( missing(n) )
-#			n <- length(x)
-#		ccBreaks(data, n)
-#	}
-
-	if( is_NA(n) )
-		n <- length(x)
-
-	# return ramp from palette
-	colorRampPalette(x)(n+1)
+	if( is_NA(n) ) n <- length(x)
+    
+	# create ramp from palette
+    if( is.numeric(x) ){
+        if( is.null(names(x)) )
+            stop("Invalid colour specification: numeric scales must have names.")
+        if( !is.null(breaks) ){
+            if( isInteger(breaks) ){
+                if( breaks < length(x) )
+                    stop("Invalid number of breaks: must at least equal to the colour scale length.")
+                if( breaks > length(x) ){
+                    # generate breaks over full range
+                    breaks <- ccBreaks(c(x, data), breaks)
+                    y <- x[order(x)]
+                    ib <- cut(y, breaks, include.lowest = TRUE, labels = FALSE)
+                    cols <- lapply(seq(length(ib)-1), function(i){
+                        n <- max(ib[i+1] - ib[i], 2)
+                        col <- colorRampPalette(names(y)[c(i, i+1)])(n)
+                        res <- setNames(rep(NA, length(col)), col)
+                        res[1L] <- y[i]
+                        if( n == 2L ) return(res[1L])
+                        res[-1L] <- breaks[seq(ib[i]+1, ib[i+1]-1)]
+                        res[-length(res)]
+                    })
+                    # combine result with breaks
+                    x <- unlist(cols)
+                }
+            }else warning("Discarding non integer value of argument `break`: directly using complete colour scale specification.")
+        }
+        color <- x
+    }else{
+        color <- colorRampPalette(x)(n)
+    
+        if( is.null(breaks) || isNumber(breaks) ){
+    		# if a single real number: center the breaks on this value
+    		cbreaks <- if( isReal(breaks) ) breaks else NULL
+    		breaks <- ccBreaks(data, length(color), center=cbreaks)
+    	}
+        
+        if( !is.null(breaks) ) color <- setNames(breaks, color)
+    }
+    
+    # return mapping
+    color
 }
