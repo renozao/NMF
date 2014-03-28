@@ -12,12 +12,15 @@ c_gpar <- function(gp, ...){
     do.call(gpar, c(gp, x[!names(x) %in% names(gp)]))
 }
 
+lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
+, treeheight_col, treeheight_row, legend, main, sub, info
+, annTracks, annotation_legend, cexAnn, layout
+, fontsize, fontsize_row, fontsize_col, gp){
 
-lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
-, treeheight_col, treeheight_row, legend, main = NULL, sub = NULL, info = NULL
-, annTracks, annotation_legend, cexAnn, layout = NULL
-, fontsize, fontsize_row, fontsize_col, gp = gpar()){
-
+    # pre-process layout to determine each component position/presence
+    gl <- .aheatmap_layout(layout)
+    
+    # annotation data
 	annotation_colors <- annTracks$colors
 	row_annotation <- annTracks$annRow
 	annotation <- annTracks$annCol
@@ -37,12 +40,13 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	
 	gp = c_gpar(gp, fontsize = fontsize)
 	# Legend position
-	if( !is_NA(legend) ){
-        legend_width <- draw_legend(legend = legend, dims.only = TRUE)
-	}
-	else{
-		legend_width = unit(0, "bigpts")
-	}
+	if( !is_NA(legend) ) legend_width <- draw_legend(legend = legend, dims.only = TRUE)
+	else legend_width <- unit(0, "bigpts")
+    col_legend_height <- row_legend_width <- unit(0, 'bigpts')
+    if( !isTRUE(gl$options$legend$horizontal) ) row_legend_width <- legend_width 
+    else col_legend_height <- legend_width
+    #
+    
 	
 	.annLegend.dim <- function(annotation, fontsize){
 		# Width of the corresponding legend
@@ -99,22 +103,16 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 		info_width <- unit(0, "bigpts")		
 	}
 	
-    # pre-process layout
-    gl <- .aheatmap_layout(layout)
-    col_legend_height <- row_legend_width <- unit(0, 'bigpts')
-    if( !isTRUE(gl$options$legend$horizontal) ) row_legend_width <- legend_width 
-    else col_legend_height <- legend_width
-    
 	# Set cell sizes
 	if(is.na(cellwidth)){
-		matwidth = unit(1, "npc") - rown_width - row_legend_width - row_annot_width  - treeheight_row - annot_legend_width
+		matwidth = unit(1, "npc") - rown_width - row_legend_width - row_annot_width  - treeheight_row - annot_legend_width - gl$padding$h
 	}
 	else{
 		matwidth = unit(cellwidth * ncol, "bigpts")
 	}
 
 	if(is.na(cellheight)){
-		matheight = unit(1, "npc") - treeheight_col - annot_height - main_height - coln_height - col_legend_height - sub_height - info_height
+		matheight = unit(1, "npc") - treeheight_col - annot_height - main_height - coln_height - col_legend_height - sub_height - info_height - gl$padding$v
 	
 		# recompute the cell width depending on the automatic fontsize
 		if( is.na(cellwidth) && !is.null(rown) ){
@@ -122,7 +120,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 			fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.6*cellheight, 'bigpts')), 'points')
 			
 			rown_width <- rown_width_min + unit(1.2, "grobwidth", textGrob(rown[longest_rown], gp = c_gpar(gp0, fontsize = fontsize_row)))
-			matwidth <- unit(1, "npc") - rown_width - row_legend_width - row_annot_width  - treeheight_row - annot_legend_width
+			matwidth <- unit(1, "npc") - rown_width - row_legend_width - row_annot_width  - treeheight_row - annot_legend_width - gl$padding$h
 		}
 	}
 	else{
@@ -152,10 +150,12 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	
 	#grid.show.layout(lo); stop('sas')
 	# Get cell dimensions
-	vplayout('mat')
-	cellwidth = convertWidth(unit(1, "npc"), "bigpts", valueOnly = T) / ncol
-	cellheight = convertHeight(unit(1, "npc"), "bigpts", valueOnly = T) / nrow
-	upViewport()
+    cellwidth <- cellheight <- 0 
+	if( vplayout('mat') ){
+    	cellwidth = convertWidth(unit(1, "npc"), "bigpts", valueOnly = T) / ncol
+    	cellheight = convertHeight(unit(1, "npc"), "bigpts", valueOnly = T) / nrow
+    	upViewport()
+    }
 		
 	height <- as.numeric(convertHeight(sum(lo$height), "inches"))
 	width <- as.numeric(convertWidth(sum(lo$width), "inches"))
@@ -555,7 +555,7 @@ aheatmap_layout <- function(layout = 'daml', size = NULL){
     }
     
     # compute layout
-    gl <- .aheatmap_layout(layout, size = size)
+    gl <- vplayout(NULL, layout = layout, size = size)
     lo <- gl$grid.layout
 
     # plot layout diagram
@@ -572,10 +572,7 @@ aheatmap_layout <- function(layout = 'daml', size = NULL){
     
     # taken from internal loop in grid.show.layout
     label.vp <- function(x, rot = 0){
-        vp.inner <- viewport(layout.pos.row = gl$layout[x, 1], layout.pos.col = gl$layout[x, 2])
-        # TODO: skip empty viewports
-        # push and draw
-        pushViewport(vp.inner)
+        vplayout(x)
         grid.text(labels[x], rot = rot)
         popViewport()
     }
@@ -588,7 +585,14 @@ aheatmap_layout <- function(layout = 'daml', size = NULL){
 
 .aheatmap_layout <- function(layout = 'daml', size = NULL){
     
-    default = 'daml'
+    layout <- as.character(layout)
+    
+    # defaults
+    default <- 'daml'
+    defaultL <- paste0(default, 'L')
+    v_default <- strsplit(default, '')[[1L]]
+    cex.pad <- 1
+    
     layout <- gsub(' ', '', layout, fixed = TRUE)
     x <- layout
     if( length(x) == 1L ){
@@ -608,26 +612,44 @@ aheatmap_layout <- function(layout = 'daml', size = NULL){
     
     # resolve shortcuts
     if( length(x) == 1L ) x <- c(x, x)
-    x <- gsub('.', 'daml', x, fixed = TRUE)
+    x <- gsub('.', defaultL, x, fixed = TRUE)
+    
+    # extract padding
+    cex.pad <- sapply(x, function(x){
+        m <- str_match(x, "^([0-9.]+)[0-9]")
+        if( !is.na(m[, 1]) ) m[, 2]
+        else cex.pad
+    })
+    cex.pad <- as.numeric(cex.pad)
     
     # split into letters
     x_v <- x # keep vector version for later use
     x <- strsplit(x, '')
     x <- lapply(x, unique)
     
-    # only keep component characters
-    v_default <- strsplit('daml', '')[[1L]]
-    x <- lapply(x, intersect, c(v_default, 'L'))
+    # process each layout
+    x <- lapply(x, function(x){    
+        xp <- if( !length(x) ) v_default # empty => default
+        else if( identical(x, '!') ) 'm'
+        else if( identical(x, 'L') ) c(v_default, 'L')
+        else if( length(i <- grep('/', x, fixed = TRUE)) ){ # detect component skip
+            skip <- tail(x, length(x) - i)
+            if( any(skip == '*') ) skip <- setdiff(union(skip, v_default), 'm')
+            if( i == 1L ) setdiff(v_default, skip)
+            else setdiff(head(x, i-1), skip)
+        } else x
+        # only keep component characters
+        xp <- intersect(xp, c(v_default, 'L'))
+        if( !length(xp) ) v_default
+        else xp
+    })
     
-    if( !any(unlist(x) == 'L') ){
-        x[[1L]] <- c(x[[1L]], 'L')
-    }else if( sum(unlist(x) == 'L') > 1L ){ # both
+#    if( !any(unlist(x) == 'L') ){
+#        x[[1L]] <- c(x[[1L]], 'L')
+#    }else 
+    if( sum(unlist(x) == 'L') > 1L ){ # both
         x[[2L]] <- setdiff(x[[2L]], 'L')
     }
-    
-    # add default prefix where not specified
-    x <- sapply(x, function(x) if( !length(x) ) v_default else x)
-    x <- sapply(x, function(x) if( identical(x, 'L') ) c(v_default, 'L') else x)
     
     e_order <- list(v=NULL, h=NULL)
     lexique <- c(tree = 'd', ann = 'a', nam = 'l')
@@ -649,7 +671,11 @@ aheatmap_layout <- function(layout = 'daml', size = NULL){
     i <- cbind(xm, ie)
     rownames(i) <- names(elements)
     res <- rbind(res, i)
-    e_order$h <- c(names(elements)[setdiff(order(ie), which(is.na(ie)))], 'aleg')
+    e_order$h <- names(elements)[setdiff(order(ie), which(is.na(ie)))]
+    # add annotation legend only if necessary
+    if( with_aleg <- any(unlist(x) == 'a') ){
+        e_order$h <- c(e_order$h, 'aleg')
+    }
     
     # fixed elements
     nc <- length(e_order$h)
@@ -657,7 +683,7 @@ aheatmap_layout <- function(layout = 'daml', size = NULL){
     res <- rbind(res, main = c(1, ym)
 			, sub = c(nr-1, ym)
 			, info = c(nr, ym)
-            , aleg= c(xm, nc)
+            , aleg = if( with_aleg ) c(xm, nc)
     )
     
     colnames(res) <- c('x', 'y')
@@ -671,6 +697,7 @@ aheatmap_layout <- function(layout = 'daml', size = NULL){
     # dendrogram orientation
     flip <- sapply(e_order, function(x) grep('tree', x) > which(x=='mat'), simplify = FALSE)
     res$options$dendrogram <- list(flip = flip)
+    
     # legend 
     hleg <- !'leg' %in% res$h
     res$options$legend <- list(horizontal = hleg)
@@ -685,9 +712,23 @@ aheatmap_layout <- function(layout = 'daml', size = NULL){
     ##
     
     ## grid.layout: generate and order component sizes according to layout specification
+    padding <- unit(4, 'bigpts')
+    res$padding <- list(h = (length(res$h) + 1) * cex.pad[1] * padding
+                        , v = (length(res$v) + 1) * cex.pad[2] * padding)
     if( !is.null(size) ){
         wunits <- size[[1L]][res$h]
         hunits <- size[[2L]][res$v]
+        padd <- function(x, size){
+            tmp <- list(size)
+            sapply(seq_along(x), function(i){ tmp[[2*i]] <<- x[[i]]; tmp[[2*i+1]] <<- tmp[[1L]]})
+            tmp
+        }
+        
+        # add padding
+        res$cex.pad <- cex.pad	
+        if( cex.pad[1] ) wunits <- padd(wunits, cex.pad[1] * padding)
+        if( cex.pad[1] ) hunits <- padd(hunits, cex.pad[2] * padding)
+        
         lo <- grid.layout(nrow = length(hunits), ncol = length(wunits)
 	            , widths = do.call('unit.c', wunits)
 	            , heights = do.call('unit.c', hunits))
@@ -704,7 +745,7 @@ vplayout <- local(
 	graphic.name <- NULL
 	.index <- 0L
     .layout <- NULL
-	function(x, y, verbose = getOption('verbose'), layout = NULL, size = NULL){
+	function(x, y, verbose = getOption('verbose'), layout = NULL, ...){
 		# initialize the graph name
 		if( is.null(x) ){
             .index <<- .index + 1L
@@ -713,7 +754,7 @@ vplayout <- local(
             if( is.null(layout) || identical(layout, 'default') ){ #default
                 layout <- 'damlLA | daml'
             }
-            .layout <<- .aheatmap_layout(layout, size = size)
+            .layout <<- .aheatmap_layout(layout, ...)
 			return(c(list(name = graphic.name), .layout))
 		}
 		name <- NULL
@@ -725,37 +766,21 @@ vplayout <- local(
 				y$name <- name
 				return(pushViewport(y))			
 			}
-			if( !is.null(tryViewport(name, verbose=verbose)) )
-				return()
+			if( !is.null(tryViewport(name, verbose=verbose)) ) return(TRUE)
 			
+            # lookup viewport 
             mlayout <- .layout$layout
-            if( !x %in% rownames(mlayout) ) 
-                stop("aheatmap - invalid viewport name [", x, ']')
+            if( !x %in% rownames(mlayout) ) return(FALSE)
+#                stop("aheatmap - invalid component name [", x, ']')
             xy <- mlayout[x, ]
             x <- xy[1L]
-            y <- xy[2L] 
-#			switch(x
-#				, main={x<-1; y<-3;}
-#                , mat={x<-4; y<-3;}
-#                # columns
-#				, ctree={x<-2; y<-3;}
-#				, cann={x<-3; y<-3;}
-#                , cnam={x<-5; y<-3;}
-#                # rows
-#				, rtree={x<-4; y<-1;}
-#				, rann={x<-4; y<-2;}
-#				, rnam={x<-4; y<-4;}
-#                # legends
-#				, leg={x<-4; y<-5;}
-#				, aleg={x<-4; y<-6;}
-#                # sub stuff
-#				, sub={x<-6; y<-3;}
-#				, info={x<-7; y<-3;}
-#				, stop("aheatmap - invalid viewport name")
-#			)
+            if( .layout$cex.pad[1] ) x <- x * 2
+            y <- xy[2L]
+            if( .layout$cex.pad[2] ) y <- y * 2
 		}
 		if( verbose ) message("vp - create ", name)
 		pushViewport(viewport(layout.pos.row = x, layout.pos.col = y, name=name))
+        TRUE
 	}	
 })
 
@@ -993,15 +1018,13 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	if(mindim < 3) border_color = NA
 
 	# Draw tree for the columns
-	if (!is_NA(tree_col) &&  treeheight_col != 0){
-		vplayout('ctree')
+	if (!is_NA(tree_col) &&  treeheight_col != 0 && vplayout('ctree') ){
 		draw_dendrogram(tree_col, horizontal = FALSE, flip = loptions$dendrogram$flip$v)
 		upViewport()
 	}
 
 	# Draw tree for the rows
-	if(!is_NA(tree_row) && treeheight_row !=0){
-		vplayout('rtree')
+	if(!is_NA(tree_row) && treeheight_row !=0 && vplayout('rtree') ){
 		draw_dendrogram(tree_row, horizontal = TRUE, flip = loptions$dendrogram$flip$h)
 		upViewport()
 	}
@@ -1011,71 +1034,63 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
     fontsize_col <- convertUnit(min(unit(fontsize_col, 'points'), unit(0.6*glo$cellwidth, 'bigpts')), 'points')
     
 	# Draw matrix
-	vplayout('mat')
-	draw_matrix(matrix, border_color, txt = txt, gp = gpar(fontsize = fontsize_row))
-	#d(matrix)
-	#grid.rect()
-	upViewport()
+	if( vplayout('mat') ){
+    	draw_matrix(matrix, border_color, txt = txt, gp = gpar(fontsize = fontsize_row))
+    	#d(matrix)
+    	#grid.rect()
+    	upViewport()
+    }
 
 	# Draw colnames
-	if(length(colnames(matrix)) != 0){
-		vplayout('cnam')
+	if(length(colnames(matrix)) != 0 && vplayout('cnam') ){
 		draw_colnames(colnames(matrix), gp = c_gpar(gp, fontsize = fontsize_col))
 		upViewport()
 	}
 	
 	# Draw rownames
-	if(length(rownames(matrix)) != 0){
-		vplayout('rnam')
+	if(length(rownames(matrix)) != 0 && vplayout('rnam') ){
 		draw_rownames(rownames(matrix), gp = c_gpar(gp, fontsize = fontsize_row))
 		upViewport()
 	}
 
 	# Draw annotation tracks
-	if( !is_NA(annotation) ){
-		vplayout('cann')
+	if( !is_NA(annotation) && vplayout('cann') ){
 		draw_annotations(annotation, border_color, cex = cexAnn[2L])
 		upViewport()
 	}	
 	
 	# add row annotations if necessary	
-	if ( !is_NA(row_annotation) ) {
-		vplayout('rann')
+	if ( !is_NA(row_annotation) && vplayout('rann') ) {
 		draw_annotations(row_annotation, border_color, horizontal=FALSE, cex = cexAnn[1L])
 		upViewport()
 	}
 	
 	# Draw annotation legend
-	if( annotation_legend && !is_NA(annotation_colors) ){
-		vplayout('aleg')
+	if( annotation_legend && !is_NA(annotation_colors) && vplayout('aleg') ){
 		draw_annotation_legend(annotation_colors, border_color, gp = c_gpar(gp, fontsize = fontsize))
 		upViewport()
 	}
 
 	# Draw legend
-	if(!is_NA(legend)){
-		vplayout('leg')
+	if(!is_NA(legend) && vplayout('leg') ){
 		draw_legend(color, breaks, legend, gp = c_gpar(gp, fontsize = fontsize), opts = loptions$legend)
 		upViewport()
 	}
 
 	# Draw main title
-	if(!is.null(mainGrob)){
-		vplayout('main')
+	if(!is.null(mainGrob) && vplayout('main') ){
 		grid.draw(mainGrob)
 		upViewport()
 	}
 	
 	# Draw subtitle
-	if(!is.null(subGrob)){
-		vplayout('sub')
+	if(!is.null(subGrob) && vplayout('sub') ){
 		grid.draw(subGrob)
 		upViewport()
 	}
 	
 	# Draw info
-	if(!is.null(infoGrob)){
-		vplayout('info')
+	if(!is.null(infoGrob) && vplayout('info') ){
 		grid.draw(infoGrob)
 		upViewport()
 	}
@@ -2121,7 +2136,7 @@ aheatmap = function(x
 , legend = TRUE, annCol = NA, annRow = NA, annColors = NA, annLegend = TRUE, cexAnn = NA
 , labRow = NULL, labCol = NULL
 , subsetRow = NULL, subsetCol = NULL
-, txt = NULL, layout = 'daml'
+, txt = NULL, layout = '.'
 , fontsize=10, cexRow = min(0.2 + 1/log10(nr), 1.2), cexCol = min(0.2 + 1/log10(nc), 1.2)
 , filename = NA, width = NA, height = NA
 , main = NULL, sub = NULL, info = NULL
