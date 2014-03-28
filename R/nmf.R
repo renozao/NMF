@@ -1601,17 +1601,16 @@ function(x, rank, method
 					# if only the best fit must be kept then update the shared objects
 					if( !keep.all ){
 						
+                        # retrieve approximation error
+						err <- deviance(res)
 						# initialise result list
-						resList <- list(filename=NA, residuals=NA, .callback=NULL)
+						resList <- list(filename=NA, deviance=err, .callback=NULL, min.deviance = NA)
 						
 						##LOCK_MUTEX
 						mutex_eval({
 												
 							# check if the run found a better fit
 							.STATIC.err <- vOBJECTIVE()
-							
-							# retrieve approximation error
-							err <- deviance(res)
 							
 							if( is.na(.STATIC.err) || err < .STATIC.err ){
 								
@@ -1620,7 +1619,7 @@ function(x, rank, method
 									else if( verbose >= 2 ) cat('*')
 								}
 								
-								# update residuals
+								# update "global" min deviance
 								vOBJECTIVE(err)
 								
 								# update best fit on disk: use pid if not using shared memory
@@ -1633,7 +1632,7 @@ function(x, rank, method
 								}
 								# store the filename and achieved objective value in the result list
 								resList$filename <- resfile
-								resList$residuals <- err
+								resList$min.deviance <- err
 																
 							}
 							
@@ -1705,17 +1704,20 @@ function(x, rank, method
 					if( verbose > 2 ) message("# Processing partial results ... ", appendLF=FALSE)
 					ffstop <- function(...){ message('ERROR'); fstop(...) }
                     ffwarning <- function(...){ message('WARNING'); fwarning(...) }
-					# get best fit index
-                    resids <- sapply(res.runs, '[[', 'residuals')
-                    # check for NA residuals
+                    
+                    # check for NA deviance
+                    resids <- sapply(res.runs, '[[', 'deviance')
                     if( length(rNA <- which(is.na(resids) | is.nan(resids))) ){
-                        if( length(rNA) <  nrun ) ffwarning("Some of the final deviances are NAs or NaNs [", length(rNA), "]")
+                        if( length(rNA) <  nrun ) ffwarning("Some of the computed final deviances are NAs or NaNs [", length(rNA), "]")
                         else ffstop("All runs returned NA or NaN final deviances")
                     }
-					idx <- which.min(resids)
+                    
+                    # get best fit index
+                    mdev <- sapply(res.runs, '[[', 'min.deviance')
+					idx <- which(mdev == min(mdev, na.rm=TRUE))
 					if( length(idx) == 0L )
 						ffstop("Unexpected error: no partial result seem to have been saved.")
-					resfile <- res.runs[[idx]]$filename
+					resfile <- res.runs[[idx[1L]]]$filename
 					# check existence of the result file
 					if( !file_test('-f', resfile) )
 						ffstop("could not find temporary result file '", resfile, "'")
