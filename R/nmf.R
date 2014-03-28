@@ -1712,7 +1712,7 @@ function(x, rank, method
                         if( length(rNA) <  nrun ) ffwarning("Some of the final deviances are NAs or NaNs [", length(rNA), "]")
                         else ffstop("All runs returned NA or NaN final deviances")
                     }
-					idx <- which.min(idx)
+					idx <- which.min(resids)
 					if( length(idx) == 0L )
 						ffstop("Unexpected error: no partial result seem to have been saved.")
 					resfile <- res.runs[[idx]]$filename
