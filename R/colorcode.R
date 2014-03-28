@@ -266,7 +266,7 @@ ccRamp <- function(x, n = NA, breaks = NULL, data = NULL, ...){
     }else{
         color <- colorRampPalette(x)(n)
     
-        if( is.null(breaks) || isNumber(breaks) ){
+        if( !is.null(data) && (is.null(breaks) || isNumber(breaks)) ){
     		# if a single real number: center the breaks on this value
     		cbreaks <- if( isReal(breaks) ) breaks else NULL
     		breaks <- ccBreaks(data, length(color), center=cbreaks)
