@@ -125,7 +125,7 @@
 , backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 \bibliography{Rpackages}
-\bibliography{/tmp/Rpkglib_2ccc2f12eea2/NMF/REFERENCES}
+\bibliography{/tmp/Rpkglib_43f1233df370/NMF/REFERENCES}
 
 
 \newcommand{\citet}[1]{\textcite{#1}}
@@ -299,6 +299,10 @@ As an example, one can conveniently visualize the target matrix as a heatmap, wi
 \begin{alltt}
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{))}
 \hlkwd{aheatmap}\hlstd{(X,} \hlkwc{annCol} \hlstd{= covariates,} \hlkwc{annRow} \hlstd{= X}\hlopt{$}\hlstd{fData)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: 'x' must be numeric}}\begin{alltt}
 \hlkwd{aheatmap}\hlstd{(X)}
 \end{alltt}
 \end{kframe}
@@ -427,12 +431,14 @@ more details).
         \hlstd{,} \hlkwc{annColors} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{Metagene}\hlstd{=}\hlstr{'Set2'}\hlstd{)}
         \hlstd{,} \hlkwc{info} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-coefmap_custom} 
-\begin{kframe}\begin{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: 'x' must be numeric}}\begin{alltt}
 \hlkwd{par}\hlstd{(opar)}
 \end{alltt}
 \end{kframe}
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-coefmap_custom} 
+
 \end{knitrout}
 
 
@@ -461,12 +467,14 @@ row annotations can be added using the same argument \code{annRow}.
 \hlcom{# customized plot: only use row special annotation track.}
 \hlkwd{basismap}\hlstd{(res,} \hlkwc{main} \hlstd{=} \hlstr{"Metagenes"}\hlstd{,} \hlkwc{annRow} \hlstd{=} \hlkwd{list}\hlstd{(d, e),} \hlkwc{tracks} \hlstd{=} \hlkwd{c}\hlstd{(}\hlkwc{Metagene} \hlstd{=} \hlstr{":basis"}\hlstd{))}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-basismap_res} 
-\begin{kframe}\begin{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: 'x' must be numeric}}\begin{alltt}
 \hlkwd{par}\hlstd{(opar)}
 \end{alltt}
 \end{kframe}
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-basismap_res} 
+
 \end{knitrout}
 
 
@@ -534,13 +542,17 @@ same kind of customization as the other NMF heatmap functions:
 \hlstd{opar} \hlkwb{<-} \hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{))}
 \hlcom{# default plot}
 \hlkwd{consensusmap}\hlstd{(res)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: 'x' must be numeric}}\begin{alltt}
 \hlcom{# customized plot}
 \hlkwd{consensusmap}\hlstd{(res,} \hlkwc{annCol} \hlstd{= covariates,} \hlkwc{annColors} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{c} \hlstd{=} \hlstr{"blue"}\hlstd{),} \hlkwc{labCol} \hlstd{=} \hlstr{"sample "}\hlstd{,}
     \hlkwc{main} \hlstd{=} \hlstr{"Cluster stability"}\hlstd{,} \hlkwc{sub} \hlstd{=} \hlstr{"Consensus matrix and all covariates"}\hlstd{)}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_res} 
-\begin{kframe}\begin{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: 'x' must be numeric}}\begin{alltt}
 \hlkwd{par}\hlstd{(opar)}
 \end{alltt}
 \end{kframe}
@@ -615,9 +627,9 @@ which plots all the consensus matrices on the same plot:
 \begin{alltt}
 \hlkwd{consensusmap}\hlstd{(res2_7)}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_estimate} 
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: 'x' must be numeric}}\end{kframe}
 \end{knitrout}
 
 
@@ -668,9 +680,9 @@ As previously, the sequence of consensus matrices is plotted with \code{consensu
 \begin{alltt}
 \hlkwd{consensusmap}\hlstd{(res_methods)}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_methods} 
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: 'x' must be numeric}}\end{kframe}
 \end{knitrout}
 
 
@@ -728,14 +740,14 @@ These demos and the plots they generate can also be browsed online at
     bigmemory.sri~0.1.2, Biobase~2.22.0, BiocGenerics~0.8.0,
     cluster~1.15.1, knitr~1.5, NMF~0.21, pkgmaker~0.21,
     RColorBrewer~1.0-5, registry~0.2, rngtools~1.2.4,
-    synchronicity~1.1.2
+    synchronicity~1.1.4
   \item Loaded via a namespace (and not attached):
     codetools~0.2-8, colorspace~1.2-4, dichromat~2.0-0,
     digest~0.6.4, doParallel~1.0.8, evaluate~0.5.1, foreach~1.4.1,
     formatR~0.10, ggplot2~0.9.3.1, grid~3.0.3, gridBase~0.4-7,
     gtable~0.1.2, highr~0.3, iterators~1.0.6, labeling~0.2,
     MASS~7.3-30, munsell~0.4.2, plyr~1.8.1, proto~0.3-10,
-    Rcpp~0.11.0, reshape2~1.2.2, scales~0.2.3, stringr~0.6.2,
+    Rcpp~0.11.1, reshape2~1.2.2, scales~0.2.3, stringr~0.6.2,
     tools~3.0.3, xtable~1.7-3
 \end{itemize}
 
