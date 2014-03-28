@@ -475,21 +475,21 @@ draw_annotation_legend = function(annotation_colors, border_color, gp = gpar()){
 #' 
 #' \strong{Components}
 #' \describe{
-#' \item{\quote{d}}{ dendrogram component}
-#' \item{\quote{a}}{ annotation tracks}
-#' \item{\quote{m}}{ data matrix}
-#' \item{\quote{l}}{ labels}
-#' \item{\quote{L}}{ scale legend}
+#' \item{\sQuote{d}}{ dendrogram component}
+#' \item{\sQuote{a}}{ annotation tracks}
+#' \item{\sQuote{m}}{ data matrix}
+#' \item{\sQuote{l}}{ labels}
+#' \item{\sQuote{L}}{ scale legend}
 #' }
 #' 
 #' \strong{Behaviours}
 #' \describe{
-#' \item{\quote{^}}{ align top (resp. left) for horizontal (resp. vertical) layout.}
-#' \item{\quote{-}}{ align middle (resp. center) for horizontal (resp. vertical) layout.}
-#' \item{\quote{_}}{ align bottom (resp. right) for horizontal (resp. vertical) layout.
+#' \item{\sQuote{^}}{ align top (resp. left) for horizontal (resp. vertical) layout.}
+#' \item{\sQuote{-}}{ align middle (resp. center) for horizontal (resp. vertical) layout.}
+#' \item{\sQuote{_}}{ align bottom (resp. right) for horizontal (resp. vertical) layout.
 #' If used alone (i.e. \code{layout = "_"}), then this is equivalent to \code{"|L_"}, 
 #' which make places the legend horizontally on the bottom-right corner.}  
-#' \item{\quote{*}}{ used either alone or after after \code{\quote{L}} to specifiy that the 
+#' \item{\sQuote{*}}{ used either alone or after after \code{\sQuote{L}} to specifiy that the 
 #' legend should expand to full height/width.}
 #' }
 #' The specification must contain one instance of each of these character.
