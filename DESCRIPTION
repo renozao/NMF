@@ -38,7 +38,8 @@ Imports:
     foreach,
     doParallel,
     ggplot2,
-    reshape2
+    reshape2,
+    fastICA
 Suggests:
     RcppOctave (>= 0.11),
     fastICA,
