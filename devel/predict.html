@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>predict. NMF 0.21</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">NMF</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+	  <li><a href="PAGE-MAN.html"><span class="glyphicon glyphicon-home"></span> Index</a></li>
+    </ul>
+    <!-- <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>--> 
+    <ul class="nav navbar-nav navbar-right">
+      <li><p class="navbar-text">
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      &nbsp;</p></li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Clustering and Prediction</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p><p>The methods <code>predict</code> for NMF models return the
+  cluster membership of each sample or each feature.
+  Currently the classification/prediction of new data is
+  not implemented.</p></p>
+  
+    </div>
+    
+    <h2>Usage</h2>
+    <pre>predict(object, ...)
+
+<span class="label label-success">S4</span> (NMF)
+`predict`(object, what = c("columns", "rows", "samples", "features"), prob = FALSE, 
+  dmatrix = FALSE)
+
+<span class="label label-success">S4</span> (NMFfitX)
+`predict`(object, what = c("columns", "rows", "samples", "features", "consensus", 
+      "chc"), dmatrix = FALSE, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>an NMF model</dd>
+      <dt>what</dt>
+      <dd>a character string that indicates the type of
+  cluster membership should be returned: &#145;columns&#146;
+  or &#145;rows&#146; for clustering the colmuns or the rows
+  of the target matrix respectively. The values
+  &#145;samples&#146; and &#145;features&#146; are aliases for
+  &#145;colmuns&#146; and &#145;rows&#146; respectively.</dd>
+      <dt>prob</dt>
+      <dd>logical that indicates if the relative
+  contributions of/to the dominant basis component should
+  be computed and returned. See <em>Details</em>.</dd>
+      <dt>dmatrix</dt>
+      <dd>logical that indicates if a dissimiliarity
+  matrix should be attached to the result. This is notably
+  used internally when computing NMF clustering
+  silhouettes.</dd>
+      <dt>...</dt>
+      <dd>additional arguments affecting the predictions
+  produced.</dd>
+    </dl>
+    
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The cluster membership is computed as the index of the
+  dominant basis component for each sample
+  (<code>what='samples' or 'columns'</code>) or each feature
+  (<code>what='features' or 'rows'</code>), based on their
+  corresponding entries in the coefficient matrix or basis
+  matrix respectively.</p>
+  
+      <p>For example, if <code>what='samples'</code>, then the dominant
+  basis component is computed for each column of the
+  coefficient matrix as the row index of the maximum within
+  the column.</p>
+  
+      <p>If argument <code>prob=FALSE</code> (default), the result is a
+  <code>factor</code>. Otherwise a list with two elements is
+  returned: element <code>predict</code> contains the cluster
+  membership index (as a <code>factor</code>) and element
+  <code>prob</code> contains the relative contribution of the
+  dominant component to each sample (resp. the relative
+  contribution of each feature to the dominant basis
+  component):</p>
+  
+      <p><ul>
+<li> Samples: <pre class = 'eq'>p(j) = x(k0) / sum_k x(k)</code>, for each sample
+  <code class = 'eq'>1\leq j \leq p</code>, where <code class = 'eq'>x(k)</code> is the
+  contribution of the <code class = 'eq'>k</code>-th basis component to
+  <code class = 'eq'>j</code>-th sample (i.e. <code>H[k ,j]</code>), and
+  <code class = 'eq'>x(k0)</code> is the maximum of these
+  contributions.</p>
+  
+      <p></li>
+<li> Features: <pre class = 'eq'>p(i) =
+  y(k0) / sum_k y(k)</code>, for each feature <code class = 'eq'>1\leq i \leq
+  p</code>, where <code class = 'eq'>y(k)</code> is the contribution of the
+  <code class = 'eq'>k</code>-th basis component to <code class = 'eq'>i</code>-th feature (i.e.
+  <code>W[i, k]</code>), and <code class = 'eq'>y(k0)</code> is the maximum
+  of these contributions.</p>
+  
+      <p></li>
+</ul></p>
+  
+      <p></p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>predict<code>signature(object = "NMF")</code>: Default
+  method for NMF models</p>
+  
+      <p></li>
+<li>predict<code>signature(object = "NMFfitX")</code>:
+  Returns the cluster membership index from an NMF model
+  fitted with multiple runs.</p>
+  
+      <p>Besides the type of clustering available for any NMF
+  models (<code>'columns', 'rows', 'samples', 'features'</code>),
+  this method can return the cluster membership index based
+  on the consensus matrix, computed from the multiple NMF
+  runs.</p>
+  
+      <p>Argument <code>what</code> accepts the following extra types:
+  <ol>
+<li><code>'chc'</code> returns the cluster
+  membership based on the hierarchical clustering of the
+  consensus matrix, as performed by
+  <code><a href='consensushc.html'>consensushc</a></code>. </li>
+<li><code>'consensus'</code>
+  same as <code>'chc'</code> but the levels of the membership
+  index are re-labeled to match the order of the clusters
+  as they would be displayed on the associated dendrogram,
+  as re-ordered on the default annotation track in
+  consensus heatmap produced by
+  <code><a href='heatmaps.html'>consensusmap</a></code>. </li>
+</ol></p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).
+  "Metagenes and molecular pattern discovery using matrix
+  factorization." _Proceedings of the National Academy of
+  Sciences of the United States of America_, *101*(12), pp.
+  4164-9. ISSN 0027-8424, <URL:
+  http://dx.doi.org/10.1073/pnas.0308531101>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/15016911>.</p>
+  
+      <p>Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and
+  Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix
+  factorization (nsNMF)." _IEEE Trans. Pattern Anal. Mach.
+  Intell_, *28*, pp. 403-415.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre><code class="r">## Don&#39;t show: 
+# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+## End Don&#39;t show
+
+# random target matrix
+v &lt;- rmatrix(20, 10)
+# fit an NMF model
+x &lt;- nmf(v, 5)
+
+# predicted column and row clusters
+predict(x)
+</code></pre>
+
+<pre><code>##  [1] 2 1 3 3 2 2 4 3 5 5
+## Levels: 1 2 3 4 5
+</code></pre>
+
+<pre><code class="r">predict(x, &#39;rows&#39;)
+</code></pre>
+
+<pre><code>##  [1] 4 3 3 1 2 1 3 2 2 4 5 2 2 5 2 2 2 3 5 1
+## Levels: 1 2 3 4 5
+</code></pre>
+
+<pre><code class="r"># with relative contributions of each basis component
+predict(x, prob=TRUE)
+</code></pre>
+
+<pre><code>## $predict
+##  [1] 2 1 3 3 2 2 4 3 5 5
+## Levels: 1 2 3 4 5
+## 
+## $prob
+##  [1] 0.6549 0.5737 0.3991 0.4739 0.7041 0.3985 0.7131 0.4525 0.5565 0.4988
+</code></pre>
+
+<pre><code class="r">predict(x, &#39;rows&#39;, prob=TRUE)
+</code></pre>
+
+<pre><code>## $predict
+##  [1] 4 3 3 1 2 1 3 2 2 4 5 2 2 5 2 2 2 3 5 1
+## Levels: 1 2 3 4 5
+## 
+## $prob
+##  [1] 0.3316 0.4484 0.4585 0.3756 0.5058 0.4518 0.7304 0.3823 0.4584 0.4654
+## [11] 0.7780 0.4405 0.3925 0.4034 0.4019 0.5154 0.4929 0.3635 0.3868 0.7015
+</code></pre>
+
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>predict</li><li>predict-methods</li><li>predict,NMFfitX-method</li><li>predict,NMF-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

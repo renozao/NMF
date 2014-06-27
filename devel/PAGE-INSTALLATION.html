@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>. NMF 0.21</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">NMF</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+	  <li><a href=""><span class="glyphicon glyphicon-home"></span> Index</a></li>
+       <li><a href="PAGE-MAN.html">Documentation</a></li>
+       <li><a href="PAGE-DEMOS.html">Demos</a></li>
+       <li><a href="PAGE-REFERENCES.html">References</a></li>
+       <li class="active"><a href="PAGE-INSTALLATION.html">Installation</a></li>
+       <li><a href="PAGE-NEWS.html">News</a></li>
+    </ul>
+    <!-- <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>--> 
+    <ul class="nav navbar-nav navbar-right">
+      <li><p class="navbar-text">
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      &nbsp;<span style="background-color:red" class="badge label-danger">devel</span>
+      &nbsp;</p></li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      
+
+<div class="row"><div class="span8">
+  <h2><img src="img/github.png" alt=""/> GitHub</h2>
+
+<p>Repository: <a href="https://github.com/renozao/NMF">https://github.com/renozao/NMF</a></p>
+
+<p>The package can be installed from source from the GitHub using the <code>devtools</code> package as follows:</p>
+
+<pre><code class="r">library(devtools)
+# latest stable version
+install_github(&#39;NMF&#39;, &#39;renozao&#39;)
+
+# development version
+install_github(&#39;NMF&#39;, &#39;renozao&#39;, &#39;devel&#39;)
+</code></pre>
+
+<h3>Troubleshooting</h3>
+
+<p>The above commands will perform a complete build/installation, which may require a <strong>complete R development environment</strong>.
+This should be fine for standard unix-based R installations (Linux, Mac), but is cannot be taken for granted on Windows machines. </p>
+
+<p>So if this fails, then try doing a quick install by: </p>
+
+<ul>
+<li>skipping vignette generation only with argument <code>build_vignette = FALSE</code>.</li>
+<li>limiting the installation procedure to the strict necessary with argument <code>quick = TRUE</code>;</li>
+</ul>
+
+<pre><code class="r">library(devtools)
+# latest stable version
+install_github(&#39;NMF&#39;, &#39;renozao&#39;, quick = TRUE)
+install_github(&#39;NMF&#39;, &#39;renozao&#39;, build_vignettes = FALSE)
+
+# development version
+install_github(&#39;NMF&#39;, &#39;renozao&#39;, &#39;devel&#39;, quick = TRUE)
+install_github(&#39;NMF&#39;, &#39;renozao&#39;, &#39;devel&#39;, build_vignettes = FALSE)
+</code></pre>
+
+<hr/>
+
+<h2><img src="img/r-forge-icon.png" alt=""/> R-forge</h2>
+
+<p>Project: <a href="http://r-forge.r-project.org/projects/nmf">http://r-forge.r-project.org/projects/nmf</a></p>
+
+<p>The latest automated build of the package can be installed from R-forge repository as follows:</p>
+
+<pre><code class="r">install.packages(&quot;NMF&quot;, repos=&quot;http://R-Forge.R-project.org&quot;)
+</code></pre>
+
+<h3>Troubleshooting</h3>
+
+<p>This installation method depends on the package&#39;s build status on R-forge, which can be checked on the <a href="http://r-forge.r-project.org/projects/nmf">project page</a> &gt; &#39;R packages&#39; or from R:</p>
+
+<pre><code class="r">&#39;NMF&#39; %in% rownames(available.packages(contrib.url(&quot;http://R-Forge.R-project.org&quot;)))
+</code></pre>
+
+</div></div>
+      
+      <footer>
+      
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

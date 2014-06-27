@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>nmf_update.lsnmf. NMF 0.21</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">NMF</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+	  <li><a href="PAGE-MAN.html"><span class="glyphicon glyphicon-home"></span> Index</a></li>
+    </ul>
+    <!-- <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>--> 
+    <ul class="nav navbar-nav navbar-right">
+      <li><p class="navbar-text">
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      &nbsp;</p></li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Multiplicative Updates for LS-NMF</h1>
+
+<div class="row">
+  <div class="span8">
+    <div class="description">
+      <h2>Description</h2>
+      
+      <p><p>Implementation of the updates for the LS-NMF algorithm
+  from <cite>Wang et al. (2006)</cite>.</p>
+<p><code>wrss</code> implements the objective function used by the
+  LS-NMF algorithm.</p></p>
+  
+    </div>
+    
+    <h2>Usage</h2>
+    <pre>nmf_update.lsnmf(i, X, object, weight, eps = 10^-9, ...)
+
+wrss(object, X, weight = 1)
+
+nmfAlgorithm._lsNMF(..., .stop = NULL, maxIter = nmf.getOption("maxIter") %||% 2000, 
+  weight, eps = 10^-9, stationary.th = .Machine$double.eps, check.interval = 5 * 
+          check.niter, check.niter = 10L)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>i</dt>
+      <dd>current iteration</dd>
+      <dt>X</dt>
+      <dd>target matrix</dd>
+      <dt>object</dt>
+      <dd>current NMF model</dd>
+      <dt>weight</dt>
+      <dd>value for <code class = 'eq'>S</code>, i.e. the weights
+  that are applied to each entry in <code>X</code> by <code>X *
+  weight</code> (= entry wise product). Weights are usually
+  specified as a matrix of the same dimension as <code>X</code>
+  (e.g. uncertainty estimates for each measurement), but
+  may also be passed as a vector, in which case the
+  standard rules for entry wise product between matrices
+  and vectors apply (e.g. recycling elements).
+
+  Null weights can be used to handle missing values in the
+  target matrix. In particular, using <code>weight=NA</code>
+  cancels out all missing values (see examples).</dd>
+      <dt>eps</dt>
+      <dd>small number passed to the standard
+  euclidean-based NMF updates (see
+  <code><a href='nmf_update_euclidean.html'>nmf_update.euclidean</a></code>).</dd>
+      <dt>...</dt>
+      <dd>extra arguments (not used)</dd>
+      <dt>.stop</dt>
+      <dd>specification of a stopping criterion, that
+  is used instead of the one associated to the NMF
+  algorithm. It may be specified as: <ul>
+<li> the
+  access key of a registered stopping criterion; </li>
+<li> a
+  single integer that specifies the exact number of
+  iterations to perform, which will be honoured unless a
+  lower value is explicitly passed in argument
+  <code>maxIter</code>. </li>
+<li> a single numeric value that
+  specifies the stationnarity threshold for the objective
+  function, used in with <code><a href='stop-NMF.html'>nmf.stop.stationary</a></code>;
+  </li>
+<li> a function with signature
+  <code>(object="NMFStrategy", i="integer", y="matrix",
+  x="NMF", ...)</code>, where <code>object</code> is the
+  <code>NMFStrategy</code> object that describes the algorithm
+  being run, <code>i</code> is the current iteration, <code>y</code> is
+  the target matrix and <code>x</code> is the current value of
+  the NMF model. </li>
+</ul>
+</dd>
+      <dt>maxIter</dt>
+      <dd>maximum number of iterations to perform.</dd>
+      <dt>stationary.th</dt>
+      <dd>maximum absolute value of the
+  gradient, for the objective function to be considered
+  stationary.</dd>
+      <dt>check.interval</dt>
+      <dd>interval (in number of iterations)
+  on which the stopping criterion is computed.</dd>
+      <dt>check.niter</dt>
+      <dd>number of successive iteration used to
+  compute the stationnary criterion.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>updated object <code>object</code></p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Wang G, Kossenkov AV and Ochs MF (2006). "LS-NMF: a
+  modified non-negative matrix factorization algorithm
+  utilizing uncertainty estimates." _BMC bioinformatics_,
+  *7*, pp. 175. ISSN 1471-2105, <URL:
+  http://dx.doi.org/10.1186/1471-2105-7-175>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/16569230>.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>lsNMF-nmf</li><li>nmfAlgorithm._lsNMF</li><li>nmf_update.lsnmf</li><li>wrss</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
