@@ -1,15 +1,15 @@
 \name{nmf_update.lsnmf}
 \alias{lsNMF-nmf}
-\alias{nmfAlgorithm.lsNMF}
+\alias{nmfAlgorithm._lsNMF}
 \alias{nmf_update.lsnmf}
 \alias{wrss}
 \title{Multiplicative Updates for LS-NMF}
 \usage{
   nmf_update.lsnmf(i, X, object, weight, eps = 10^-9, ...)
 
-  wrss(object, X, weight)
+  wrss(object, X, weight = 1)
 
-  nmfAlgorithm.lsNMF(..., .stop = NULL,
+  nmfAlgorithm._lsNMF(..., .stop = NULL,
     maxIter = nmf.getOption("maxIter") \%||\% 2000, weight,
     eps = 10^-9, stationary.th = .Machine$double.eps,
     check.interval = 5 * check.niter, check.niter = 10L)
@@ -28,7 +28,11 @@
   (e.g. uncertainty estimates for each measurement), but
   may also be passed as a vector, in which case the
   standard rules for entry wise product between matrices
-  and vectors apply (e.g. recylcing elements).}
+  and vectors apply (e.g. recycling elements).
+
+  Null weights can be used to handle missing values in the
+  target matrix. In particular, using \code{weight=NA}
+  cancels out all missing values (see examples).}
 
   \item{eps}{small number passed to the standard
   euclidean-based NMF updates (see
@@ -75,6 +79,24 @@
 
   \code{wrss} implements the objective function used by the
   LS-NMF algorithm.
+}
+\examples{
+\dontshow{# roxygen generated flag
+options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
+}
+
+# Handling missing values in data
+x <- rmatrix(100, 20)
+NA_values <- sample(length(x), 5)
+x[ NA_values ] <- NA
+
+# Classic Lee does not work on this
+res <- nmf(x, 2, 'lee')
+anyNA(res) # 3 means NA values in basis and coef matrix
+
+# LS-NMF handles missing values by cancelling them with null weights
+res <- nmf(x, 2, 'ls-nmf', .opt='v')
+anyNA(res)
 }
 \references{
   Wang G, Kossenkov AV and Ochs MF (2006). "LS-NMF: a

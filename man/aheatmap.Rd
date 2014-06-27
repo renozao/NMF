@@ -13,7 +13,7 @@
     annRow = NA, annColors = NA, annLegend = TRUE,
     cexAnn = NA, labRow = NULL, labCol = NULL,
     subsetRow = NULL, subsetCol = NULL, txt = NULL,
-    layout = "daml", fontsize = 10,
+    layout = ".", fontsize = 10,
     cexRow = min(0.2 + 1/log10(nr), 1.2),
     cexCol = min(0.2 + 1/log10(nc), 1.2), filename = NA,
     width = NA, height = NA, main = NULL, sub = NULL,
