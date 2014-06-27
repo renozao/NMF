@@ -2512,6 +2512,13 @@ setMethod('nmf.equal', signature(x='NMF', y='NMF'),
 		}
 )
 
+#' @S3method anyNA NMF
+anyNA.NMF <- function(x){
+    NAb <- anyNA(basis(x))
+    NAc <- anyNA(coef(x))
+    NAb + 2 * NAc
+}
+
 # Match and Order Basis Components
 #
 # 
