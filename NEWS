@@ -1,4 +1,18 @@
 *************************************************************************
+Changes in version 0.21
+*************************************************************************
+CHANGES
+    o Package now depends on R >= 3.1.0
+    
+NEW FEATURES
+    o Algorithm LS-NMF (key: 'ls-nmf') now handles missing values in data
+    matrix
+    o aheatmap gains a new argument `na.color` to specify the color to use
+    for NA values.
+    o New method anyNA.NMF to check for NA values in the basis and/or 
+    coefficient matrix of an NMF object
+
+*************************************************************************
 Changes in version 0.20
 *************************************************************************
 NEW FEATURES

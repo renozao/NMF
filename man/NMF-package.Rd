@@ -2,7 +2,7 @@
 \name{NMF-package}
 \alias{NMF}
 \alias{NMF-package}
-\title{Algorithms and framework for Nonnegative Matrix Factorization (NMF).}
+\title{Algorithms and framework for Nonnegative Matrix Factorization (NMF)}
 \description{
   This package provides a framework to perform Non-negative
   Matrix Factorization (NMF). It implements a set of
@@ -14,7 +14,9 @@
   on multicore machines.
 }
 \details{
-  \code{\link{nmf}} Run a given NMF algorithm
+  \tabular{ll}{ Package: \tab NMF\cr Type: \tab Package\cr
+  Version: \tab 0.21\cr Date: \tab 2013-09-17\cr License:
+  \tab GPL (>=2)\cr LazyLoad: \tab yes\cr }
 }
 \examples{
 \dontshow{# roxygen generated flag
@@ -32,12 +34,16 @@ basismap(res)
 coefmap(res)
 }
 \author{
-  Renaud Gaujoux \email{renaud@cbio.uct.ac.za}
+  Renaud Gaujoux
+
+  Cathal Seoighe
+
+  Maintainer: Renaud Gaujoux <renaud@tx.technion.ac.il>
 }
 \references{
   \url{http://cran.r-project.org/}
 
-  \url{http://nmf.r-forge.project.org}
+  \url{http://renozao.github.io/NMF}
 }
 \seealso{
   \code{\link{nmf}}
