@@ -1798,6 +1798,9 @@ subset_index <- function(x, margin, subset){
 #' The number of breaks can also be specified after a colon (':'). For example, 
 #' the default colour palette is specified as '-RdYlBu2:100'.
 #' 
+#' @param na.color Specifies the colour to use for \code{NA} values.
+#' Setting to \code{NA} (default) produces uncoloured cells (white).
+#' 
 #' @param breaks a sequence of numbers that covers the range of values in \code{x} and is one 
 #' element longer than color vector. Used for mapping values to colors. Useful, if needed 
 #' to map certain values to certain colors. If value is NA then the 
@@ -2084,6 +2087,12 @@ subset_index <- function(x, margin, subset){
 #' aheatmap(x, color = -1L)
 #' # color specification as a numeric: use HCL color
 #' aheatmap(x, color = 1)
+#' # color for NA values
+#' y <- x
+#' y[sample(length(y), p)] <- NA
+#' aheatmap(y)
+#' aheatmap(y, na.color = 'black')
+#' 
 #' # do not cluster the rows 
 #' aheatmap(x, Rowv = NA)
 #' # no heatmap legend
@@ -2126,7 +2135,7 @@ subset_index <- function(x, margin, subset){
 #' 
 #' @export
 aheatmap = function(x
-, color = '-RdYlBu2:100'
+, color = '-RdYlBu2:100', na.color = NA
 , breaks = NA, border_color=NA, cellwidth = NA, cellheight = NA, scale = "none"
 , Rowv=TRUE, Colv=TRUE
 , revC = identical(Colv, "Rowv") || is_NA(Rowv) || (is.integer(Rowv) && length(Rowv) > 1)
@@ -2369,6 +2378,9 @@ aheatmap = function(x
 		legend = NA
 	}
     mat = scale_colours(mat, col = color, breaks = breaks)
+    if( !is_NA(na.color) ){ # use specified color for NA values
+        mat[is.na(mat)] <- na.color
+    }
     
 	annotation_legend <- annLegend
 	annotation_colors <- annColors

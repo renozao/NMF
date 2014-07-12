@@ -20,6 +20,12 @@ aheatmap(x, color = 1L)
 aheatmap(x, color = -1L)
 # color specification as a numeric: use HCL color
 aheatmap(x, color = 1)
+# color for NA values
+y <- x
+y[sample(length(y), p)] <- NA
+aheatmap(y)
+aheatmap(y, na.color = 'black')
+
 # do not cluster the rows
 aheatmap(x, Rowv = NA)
 # no heatmap legend

@@ -2,9 +2,10 @@
 \alias{aheatmap}
 \title{Annotated Heatmaps}
 \usage{
-  aheatmap(x, color = "-RdYlBu2:100", breaks = NA,
-    border_color = NA, cellwidth = NA, cellheight = NA,
-    scale = "none", Rowv = TRUE, Colv = TRUE,
+  aheatmap(x, color = "-RdYlBu2:100", na.color = NA,
+    breaks = NA, border_color = NA, cellwidth = NA,
+    cellheight = NA, scale = "none", Rowv = TRUE,
+    Colv = TRUE,
     revC = identical(Colv, "Rowv") || is_NA(Rowv) || (is.integer(Rowv) && 
         length(Rowv) > 1) || is(Rowv, "silhouette"),
     distfun = "euclidean", hclustfun = "complete",
@@ -46,6 +47,10 @@
   can also be specified after a colon (':'). For example,
   the default colour palette is specified as
   '-RdYlBu2:100'.}
+
+  \item{na.color}{Specifies the colour to use for \code{NA}
+  values. Setting to \code{NA} (default) produces
+  uncoloured cells (white).}
 
   \item{breaks}{a sequence of numbers that covers the range
   of values in \code{x} and is one element longer than
