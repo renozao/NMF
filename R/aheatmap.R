@@ -1801,6 +1801,9 @@ subset_index <- function(x, margin, subset){
 #' @param na.color Specifies the colour to use for \code{NA} values.
 #' Setting to \code{NA} (default) produces uncoloured cells (white).
 #' 
+#' It can also be a list of 2 elements, with the first element specifying the color and 
+#' the second a given value or a range of values (as a 2-length vector) to be forced to NA. 
+#' 
 #' @param breaks a sequence of numbers that covers the range of values in \code{x} and is one 
 #' element longer than color vector. Used for mapping values to colors. Useful, if needed 
 #' to map certain values to certain colors. If value is NA then the 
@@ -2377,9 +2380,17 @@ aheatmap = function(x
 	else {
 		legend = NA
 	}
+    
+    # convert numeric values to colours
+    if( verbose ) message("Map values to colours")
+    if( is.list(na.color) && length(na.color) > 1L ){ # force specified values to NA
+        na_range <- na.color[[2L]]
+        if( length(na_range) == 1L ) mat[mat %in% na_range] <- NA
+        else mat[mat >= na_range[1L] & mat <= na_range[2L] ] <- NA
+    }
     mat = scale_colours(mat, col = color, breaks = breaks)
     if( !is_NA(na.color) ){ # use specified color for NA values
-        mat[is.na(mat)] <- na.color
+        mat[is.na(mat)] <- na.color[[1L]]
     }
     
 	annotation_legend <- annLegend
