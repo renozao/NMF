@@ -70,7 +70,7 @@ ccPalette <- function(x, n=NA, verbose=FALSE){
 												
 						stop("Invalid palette name '", x, "': should be an RColorBrewer palette or one of "
 							, paste("'", cpal ,"'", sep='', collapse=', ')
-                            , ".\n  Available RColorBrewer palettes: ", str_out(rownames(brewer.pal.info), Inf), '.')
+                            , ".\n  Available RColorBrewer palettes: ", str_out(sort(rownames(brewer.pal.info)), Inf), '.')
 					}
 					x <- cpal[i]
 					
