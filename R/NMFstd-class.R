@@ -126,7 +126,7 @@ setClass('NMFstd'
 				return(paste('Dimensions of W and H are not compatible [ncol(W)=', ncol(object@W) , '!= nrow(H)=', nrow(object@H), ']'))
 			}
 			# give a warning if the dimensions look strange: rank greater than the number of samples
-			if( !is.empty.nmf(object) && ncol(object@H) && now(object@W) && ncol(object@W) > ncol(object@H) ){
+			if( !is.empty.nmf(object) && ncol(object@H) && nrow(object@W) && ncol(object@W) > ncol(object@H) ){
 				warning(paste('Dimensions of W and H look strange [ncol(W)=', ncol(object@W) , '> ncol(H)=', ncol(object@H), ']'))
 			}
 			
