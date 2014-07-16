@@ -397,6 +397,9 @@ convert_annotations = function(annotation, annotation_colors){
 		}
 	})
 
+    # shape as a matrix
+	if( !is.matrix(x) ) x <- as.matrix(x) 
+                
 	colnames(x) <- names(annotation)
 	return(x)
 	#return(as.matrix(new))
