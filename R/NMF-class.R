@@ -228,8 +228,8 @@ setMethod('basis', signature(object='ANY'),
 #' coefficient terms.
 #' 
 #' @inline
-setMethod('basis', signature(object='NMF'),
-	function(object, all=TRUE, ...){
+setMethod('basis', 'NMF',
+	function(object, ..., all=TRUE){
 		if( all || !length(i <- ibterms(object)) ){
 			# return all coefficients
 			.basis(object, ...)
@@ -274,22 +274,18 @@ setGeneric('basis<-', function(object, ..., value) standardGeneric('basis<-') )
 #' This is useful to only set the entries of a factor.
 #' 
 setReplaceMethod('basis', signature(object='NMF', value='ANY'), 
-	function(object, use.dimnames = TRUE, ..., value){
-		
-        # error if passed extra arguments
-        if( length(xargs<- list(...)) ){
-            stop("basis<-,NMF - Unused arguments: ", str_out(xargs, Inf, use.names = TRUE))
-        }
-        
+	function(object, ..., use.dimnames = TRUE, value){
+
+
         # backup old dimnames to reapply them on exit
         if( !use.dimnames ) odn <- dimnames(object)
         nb_old <- nbasis(object)
         
 		# only set non-fixed terms
-		if( !nbterms(object) ) .basis(object) <- value
+		if( !nbterms(object) ) .basis(object, ...) <- value
 		else{
 			i <- ibasis(object)
-			.basis(object)[,i] <- value[, i]
+			.basis(object, ...)[,i] <- value[, i]
 		}
         # adapt coef if empty
         if( !hasCoef(object) ){
@@ -311,7 +307,7 @@ setReplaceMethod('basis', signature(object='NMF', value='ANY'),
 #' @param value replacement value 
 #' @rdname basis-coef-methods
 #' @export
-setGeneric('.basis<-', function(object, value) standardGeneric('.basis<-') )
+setGeneric('.basis<-', function(object, ..., value) standardGeneric('.basis<-') )
 #' @template VirtualNMF
 setReplaceMethod('.basis', signature(object='NMF', value='matrix'), 
 	function(object, value){ 
@@ -355,7 +351,7 @@ setMethod('loadings', 'NMF', function(x) basis(x) )
 setGeneric('coef', package='stats')
 #' @inline
 setMethod('coef', 'NMF',
-	function(object, all=TRUE, ...){
+	function(object, ..., all=TRUE){
 		
 		if( all || !length(i <- icterms(object)) ){
 			# return all coefficients
@@ -389,21 +385,17 @@ setGeneric('coef<-', function(object, ..., value) standardGeneric('coef<-') )
 #' Default methods that calls \code{.coef<-} and check the validity of the 
 #' updated object. 
 setReplaceMethod('coef', signature(object='NMF', value='ANY'), 
-	function(object, use.dimnames = TRUE, ..., value){
+	function(object, ..., use.dimnames = TRUE, value){
 		
-        # error if passed extra arguments
-        if( length(xargs<- list(...)) ){
-            stop("coef<-,NMF - Unused arguments: ", str_out(xargs, Inf, use.names = TRUE))
-        }
         # backup old dimnames to reapply them on exit
         if( !use.dimnames ) odn <- dimnames(object)
         nb_old <- nbasis(object)
         
 		# only set non-fixed terms
-		if( !ncterms(object) ) .coef(object) <- value
+		if( !ncterms(object) ) .coef(object, ...) <- value
 		else{
 			i <- icoef(object)
-			.coef(object)[i, ] <- value[i, ]
+			.coef(object, ...)[i, ] <- value[i, ]
 		}
         # adapt basis if empty before validation
         if( !hasBasis(object) ){
@@ -425,7 +417,7 @@ setReplaceMethod('coef', signature(object='NMF', value='ANY'),
 
 #' @export
 #' @rdname basis-coef-methods
-setGeneric('.coef<-', function(object, value) standardGeneric('.coef<-') )
+setGeneric('.coef<-', function(object, ..., value) standardGeneric('.coef<-') )
 #' @template VirtualNMF
 setReplaceMethod('.coef', signature(object='NMF', value='matrix'), 
 	function(object, value){ 
@@ -838,7 +830,9 @@ setMethod('nbasis', signature(x='ANY'),
 #' @export
 setMethod('dim', signature(x='NMF'), 
 	function(x){
-		c(nrow(basis(x)), ncol(coef(x)), nbasis(x))	
+        b <- dim(basis(x))
+		co <- dim(coef(x))
+		c(b[1L], co[2L], b[-1L], if( length(b) <= 2L ) co[-(1:2)])	
 	}
 )
 
@@ -980,11 +974,11 @@ setMethod('dimnames', 'NMF',
 	function(x){
 		b <- dimnames(basis(x))
 		if( is.null(b) )
-			b <- list(NULL, NULL)
+			b <- as.list(replicate(length(dim(x) - 1L), NULL))
 		c <- dimnames(coef(x))
 		if( is.null(c) )
-			c <- list(NULL, NULL)
-		l <- c(b[1],c[2],b[2])
+			c <- as.list(replicate(length(dim(x) - 1L), NULL))
+		l <- c(b[1], c[2], b[-1L], if( length(b) <= 2L ) c[-(1:2)])
 		if( all(sapply(l, is.null)) ) NULL else l
 	}
 )

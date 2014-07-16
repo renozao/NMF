@@ -9,6 +9,7 @@
 \alias{.basis-methods}
 \alias{basis<--methods}
 \alias{basis-methods}
+\alias{.basis<-,NMFarray,array-method}
 \alias{.basis<-,NMFfit,matrix-method}
 \alias{.basis,NMFfit-method}
 \alias{basis,NMFfitXn-method}
@@ -29,6 +30,7 @@
 \alias{.coef-methods}
 \alias{coef<--methods}
 \alias{coef-methods}
+\alias{.coef<-,NMFarray,array-method}
 \alias{.coef<-,NMFfit,matrix-method}
 \alias{.coef,NMFfit-method}
 \alias{coef,NMFfitXn-method}
@@ -47,35 +49,35 @@
 \usage{
   basis(object, ...)
 
-  \S4method{basis}{NMF}(object, all = TRUE, ...)
+  \S4method{basis}{NMF}(object, ..., all = TRUE)
 
   .basis(object, ...)
 
   basis(object, ...)<-value
 
-  \S4method{basis}{NMF}(object, use.dimnames = TRUE,
-    ...)<-value
+  \S4method{basis}{NMF}(object, ...,
+    use.dimnames = TRUE)<-value
 
-  .basis(object)<-value
+  .basis(object, ...)<-value
 
   \S4method{loadings}{NMF}(x)
 
   coef(object, ...)
 
-  \S4method{coef}{NMF}(object, all = TRUE, ...)
+  \S4method{coef}{NMF}(object, ..., all = TRUE)
 
   .coef(object, ...)
 
   coef(object, ...)<-value
 
-  \S4method{coef}{NMF}(object, use.dimnames = TRUE,
-    ...)<-value
+  \S4method{coef}{NMF}(object, ...,
+    use.dimnames = TRUE)<-value
 
-  .coef(object)<-value
+  .coef(object, ...)<-value
 
   coefficients(object, ...)
 
-  \S4method{coefficients}{NMF}(object, all = TRUE, ...)
+  \S4method{coefficients}{NMF}(object, ..., all = TRUE)
 
   scoef(object, ...)
 
@@ -199,6 +201,12 @@
 
   This function returns slot \code{W} of \code{object}. }
 
+  \item{.basis}{\code{signature(object = "NMFarray")}: This
+  function returns slot \code{W} of \code{object}.
+
+  See \code{\link{.basis,NMFarray-method}} for more
+  details. }
+
   \item{.basis}{\code{signature(object = "NMFfit")}:
   Returns the basis matrix from an NMF model fitted with
   function \code{\link{nmf}}.
@@ -214,6 +222,18 @@
 
   \item{.basis<-}{\code{signature(object = "NMFstd", value
   = "matrix")}: Set the basis matrix in standard NMF models
+
+  This function sets slot \code{W} of \code{object}. }
+
+  \item{.basis<-}{\code{signature(object = "NMFarray",
+  value = "matrix")}: Replaces a slice of the basis array.
+
+  See \code{\link{.basis<-,NMFarray,matrix-method}} for
+  more details. }
+
+  \item{.basis<-}{\code{signature(object = "NMFarray",
+  value = "array")}: Set the basis array in NMF array
+  models
 
   This function sets slot \code{W} of \code{object}. }
 
@@ -246,6 +266,12 @@
 
   This function returns slot \code{H} of \code{object}. }
 
+  \item{.coef}{\code{signature(object = "NMFarray")}: This
+  function returns slot \code{H} of \code{object}.
+
+  See \code{\link{.coef,NMFarray-method}} for more details.
+  }
+
   \item{.coef}{\code{signature(object = "NMFfit")}: Returns
   the the coefficient matrix from an NMF model fitted with
   function \code{\link{nmf}}.
@@ -264,6 +290,18 @@
   standard NMF models
 
   This function sets slot \code{H} of \code{object}. }
+
+  \item{.coef<-}{\code{signature(object = "NMFarray", value
+  = "array")}: Set the mixture coefficient matrix in
+  standard NMF models
+
+  This function sets slot \code{H} of \code{object}. }
+
+  \item{.coef<-}{\code{signature(object = "NMFarray", value
+  = "matrix")}: Replaces a slice of the coefficent array.
+
+  See \code{\link{.coef<-,NMFarray,matrix-method}} for more
+  details. }
 
   \item{.coef<-}{\code{signature(object = "NMFfit", value =
   "matrix")}: Sets the the coefficient matrix of an NMF

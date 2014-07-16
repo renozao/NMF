@@ -181,6 +181,7 @@ nmfModel(r, W=w, H=h)
 \seealso{
   Other NMF-model:
   \code{\link{initialize,NMFOffset-method}},
-  \code{\link{NMFns-class}}, \code{\link{NMFOffset-class}}
+  \code{\link{NMFarray-class}}, \code{\link{NMFns-class}},
+  \code{\link{NMFOffset-class}}
 }
 

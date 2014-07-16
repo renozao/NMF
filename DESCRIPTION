@@ -1,7 +1,7 @@
 Package: NMF
 Type: Package
 Title: Algorithms and framework for Nonnegative Matrix Factorization (NMF)
-Version: 0.21
+Version: 0.21.2
 Date: 2013-09-17
 Author: Renaud Gaujoux, Cathal Seoighe
 Maintainer: Renaud Gaujoux <renaud@tx.technion.ac.il>
@@ -74,6 +74,7 @@ Collate:
     'NMFns-class.R'
     'nmfModel.R'
     'fixed-terms.R'
+    'NMFarray-class.R'
     'NMFfit-class.R'
     'NMFSet-class.R'
     'NMFStrategy-class.R'

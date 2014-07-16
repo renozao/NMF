@@ -50,7 +50,12 @@
 
   \item{na.color}{Specifies the colour to use for \code{NA}
   values. Setting to \code{NA} (default) produces
-  uncoloured cells (white).}
+  uncoloured cells (white).
+
+  It can also be a list of 2 elements, with the first
+  element specifying the color and the second a given value
+  or a range of values (as a 2-length vector) to be forced
+  to NA.}
 
   \item{breaks}{a sequence of numbers that covers the range
   of values in \code{x} and is one element longer than

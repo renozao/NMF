@@ -130,6 +130,7 @@ rnmf(3, 10, 5, model='NMFns', theta=0.3)
 \seealso{
   Other NMF-model:
   \code{\link{initialize,NMFOffset-method}},
+  \code{\link{NMFarray-class}},
   \code{\link{NMFOffset-class}}, \code{\link{NMFstd-class}}
 }
 

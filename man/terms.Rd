@@ -5,6 +5,7 @@
 \alias{ibasis}
 \alias{ibterms}
 \alias{ibterms-methods}
+\alias{ibterms,NMFarray-method}
 \alias{ibterms,NMFfit-method}
 \alias{ibterms,NMFfitX-method}
 \alias{ibterms,NMF-method}
@@ -12,6 +13,7 @@
 \alias{icoef}
 \alias{icterms}
 \alias{icterms-methods}
+\alias{icterms,NMFarray-method}
 \alias{icterms,NMFfit-method}
 \alias{icterms,NMF-method}
 \alias{icterms,NMFstd-method}

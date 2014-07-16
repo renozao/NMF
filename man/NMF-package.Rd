@@ -15,7 +15,7 @@
 }
 \details{
   \tabular{ll}{ Package: \tab NMF\cr Type: \tab Package\cr
-  Version: \tab 0.21\cr Date: \tab 2013-09-17\cr License:
+  Version: \tab 0.21.2\cr Date: \tab 2013-09-17\cr License:
   \tab GPL (>=2)\cr LazyLoad: \tab yes\cr }
 }
 \examples{
