@@ -210,10 +210,16 @@ ccSpec <- function(x){
 #' @keywords internal 
 ccRamp <- function(x, n = NA, breaks = NULL, data = NULL, ...){
 	
-	# generate random color specification if necessary
+    # generate random color specification if necessary
 	if( missing(x) )
 		x <- round(runif(1) * 360)
 	
+    # list specification
+    if( is.list(x) && length(x) == 2L && isNumber(x[[2L]]) ){
+        n <- x[[2L]]
+        x <- x[[1L]]
+    }
+    
 	# extract specifications
 	sp <- ccSpec(x)
 	x <- sp$palette
@@ -232,7 +238,7 @@ ccRamp <- function(x, n = NA, breaks = NULL, data = NULL, ...){
             else if( length(breaks) > 1L ) n <- length(breaks) - 1L
 		}        
 	}
-	
+    
 	if( is_NA(n) ) n <- length(x)
     
 	# create ramp from palette
