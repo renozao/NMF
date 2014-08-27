@@ -490,8 +490,8 @@ draw_annotation_legend = function(annotation_colors, border_color, gp = gpar()){
 #' \item{\sQuote{^}}{ align top (resp. left) for horizontal (resp. vertical) layout.}
 #' \item{\sQuote{-}}{ align middle (resp. center) for horizontal (resp. vertical) layout.}
 #' \item{\sQuote{_}}{ align bottom (resp. right) for horizontal (resp. vertical) layout.
-#' If used alone (i.e. \code{layout = "_"}), then this is equivalent to \code{"|L_"}, 
-#' which make places the legend horizontally on the bottom-right corner.}  
+#' If used alone (i.e. \code{layout = "_"}), then this is equivalent to \code{"|.L_"}, 
+#' which places the legend horizontally on the bottom-right corner.}  
 #' \item{\sQuote{*}}{ used either alone or after after \code{\sQuote{L}} to specifiy that the 
 #' legend should expand to full height/width.}
 #' }
@@ -602,9 +602,9 @@ aheatmap_layout <- function(layout = 'daml', size = NULL){
         # special legend specification
         if( x == "*" ) x <- paste0(default, "L*")
         else if( x == "^" ) x <- c("L^.", default)
-        else if( x == "_" ) x <- c(default, "L_")
-        else if( x == "_*" ) x <- c(default, "L*")
-        else if( x == "_^" ) x <- c(default, "L^")
+        else if( x == "_" ) x <- c(default, ".L_")
+        else if( x == "_*" ) x <- c(default, ".L*")
+        else if( x == "_^" ) x <- c(default, ".L^")
         else{
             x <- gsub("(\\|)?L?([-_*^])", "\\1L\\2", x)
             x <- strsplit(x, '|', fixed = TRUE)[[1L]]
@@ -612,7 +612,6 @@ aheatmap_layout <- function(layout = 'daml', size = NULL){
             if( grepl("\\|$", layout) ) x <- c(x, '')
         }
     }
-    
     # resolve shortcuts
     if( length(x) == 1L ) x <- c(x, x)
     x <- gsub('.', defaultL, x, fixed = TRUE)
@@ -1171,8 +1170,19 @@ cutheight <- function(x, n){
 #' 
 #' @import digest
 #' @keywords internal
+#' @import dendextend
 cutdendro <- function(x, n){
 	
+    if( isString(n) ){
+        qlibrary(colorspace)
+        qlibrary(dendextend)
+        m <- str_match(n, "^#([0-9])+")
+        return(x %>% set("branches_k_color", k = m[, 2L]))
+    }
+    
+    n0 <- n
+    n <- abs(n)
+    
 	# exit early if n <=1: nothing to do
 	if( n <= 1 ) return(x)
 		
@@ -1193,10 +1203,12 @@ cutdendro <- function(x, n){
 	dts <- c(lty=2, lwd=1.2, col=8)
 	a <- dendrapply(x, function(node){
 		a <- attributes(node)
-		if( a$id %in% ids || (!is.leaf(node) && any(c(attr(node[[1]], 'id'), attr(node[[2]], 'id')) %in% ids)) )
+		if( n0 > 0 && (a$id %in% ids || (!is.leaf(node) && any(c(attr(node[[1]], 'id'), attr(node[[2]], 'id')) %in% ids))) 
+            || (n0 < 0 && (!a$id %in% ids && !(!is.leaf(node) && any(c(attr(node[[1]], 'id'), attr(node[[2]], 'id')) %in% ids)))) )
 			attr(node, 'edgePar') <- dts
 		node
-	})	
+	})
+
 }
 
 # internal class definition for 
@@ -1275,10 +1287,14 @@ cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, s
 		param
 	}else{ # will compute dendrogram (NB: mat was already subset before calling cluster_mat)
 		
+        use.cutdendro <- function(x){
+            is.integer(x) || (isString(x) && grepl("^#[0-9]+$", x))
+        }
+        
 		param <- 
-		if( is.integer(param) )
-			param
-		else if( is.null(param) || isLogical(param) ) # use default reordering by rowMeans
+		if( use.cutdendro(param) ){
+            param
+		}else if( is.null(param) || isLogical(param) ) # use default reordering by rowMeans
 			rowMeans(mat, na.rm=na.rm)
 		else if( is.numeric(param) ){ # numeric reordering weights
 			# subset if necessary
@@ -1345,7 +1361,7 @@ cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, s
 		# do hierarchical clustering 
 		hc <- if( is.character(hclustfun) ){
 			
-			av <- c('ward', 'single', 'complete', 'average', 'mcquitty', 'median', 'centroid')
+			av <- c('ward.D', 'ward.D2', 'ward', 'single', 'complete', 'average', 'mcquitty', 'median', 'centroid')
 			i <- pmatch(hclustfun, av)
 			if( is.na(i) )
 				stop("aheatmap - Invalid clustering method, must be one of: ", paste("'", av, "'", sep='', collapse=', '))
@@ -1363,7 +1379,7 @@ cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, s
 		dh <- as.dendrogram(hc)
 	
 		# customize the dendrogram plot: highlight clusters
-		if( is.integer(param) )
+		if( use.cutdendro(param) )
 			dh <- cutdendro(dh, param)						
 		else if( is.numeric(param) && length(param)==nrow(mat) ) # reorder the dendrogram if necessary
 			dh <- reorderfun(dh, param)
