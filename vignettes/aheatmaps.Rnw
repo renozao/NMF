@@ -148,6 +148,7 @@ For the purpose of illustrating the capabilities of the function
 the vignette:
 
 <<sample_data>>=
+set.seed(1234)
 # data matrix
 x <- rmatrix(20, 10)
 @
@@ -187,8 +188,60 @@ and columns -- passed as a single string.}
 \end{figure}
 
 \section{Annotation tracks}
-\section{Dendrograms}
+
 \section{Column/row ordering}
+
+The rows and/or columns of heatmaps are generally ordered in a way that
+highlight shared value patterns.
+This ordering can be automatically computed from the data itself, e.g., using
+clustering algorithms, or forced to match known groups/order.
+Arguments \code{Rowv}, \code{Colv}, as well as \code{distfun} and
+\code{hclustfun} for automatic clustering, control how the ordering is
+performed and displayed.
+They accept the same values as the base function \code{aheatmap}, mimicking its
+behaviour, but also supports other convenient ways of specifying ordering and
+highlighting data patterns, some of which are illustrated in the rest of this
+section.
+We refer to the corresponding argument description on the man page
+\code{?aheatmap} for a list of all supported values.
+
+\subsection{Dendrograms}
+
+Dendrograms result from applying a hierarchical clutering algorithm to the rows
+or columns, typically using the base function \code{hclust}.
+
+\subsubsection{Algorithms}
+By default \code{aheatmap} performs hierarchical clustering and show the
+resulting dedrograms of both rows and columns, using the \code{"euclidean"}
+distance and the linkage method \code{"complete"}.
+However more custom ordering can be achieved using suitable
+arguments:
+
+<<clustering>>=
+# default
+aheatmap(x)
+# use different clustering method for rows
+aheatmap(x, Rowv = c('manhattan', 'average'), info = TRUE)
+@
+
+\subsubsection{Display}
+
+<<dendrogram, out.width = "0.33\\textwidth">>=
+# cluster rows but do not show dendrogram
+aheatmap(x, Rowv = FALSE)
+# cut column dendrogram into 3 clusters
+aheatmap(x, Rowv = FALSE, Colv = 3L)
+aheatmap(x, Rowv = FALSE, Colv = -3L)
+
+# cluster highlighting
+aheatmap(x, Rowv = "#4", Colv = FALSE)
+aheatmap(x, Rowv = "#4|!", Colv = FALSE)
+aheatmap(x, Colv = list("#3@2", text_col = 'red', text = 'Cluster B'), Rowv = FALSE)
+@
+
+
+\subsection{Forced ordering}
+
 \section{Colours}
 \section{Labels}
 
@@ -197,10 +250,10 @@ Annotated heatmaps have two types of legends, one showing the colour-value scale
 used to visualise the data matrix and another one for the annotation tracks.
 
 \subsection{Colour scale}
-The very principle of a heatmap is to bin the data values into a certain number
-of intervals or breaks, and associate each of these with a given colour.
-The colour scale is the legend that provides details about how to read the
-resulting colour coded data matrix.
+The very principle of a heatmap is to bin data values into a certain number
+of intervals (or breaks), associating each of these with a given colour.
+The \emph{colour scale} is the legend that provides details about how to read
+the resulting colour coded data matrix.
 As such, it serves multiple purposes:
 \begin{itemize}
   \item provide the mapping between colours and value intervals;
@@ -213,18 +266,18 @@ As such, it serves multiple purposes:
 \subsubsection{Look and position}
 As for other components in annotated heatmaps, the position of the
 colour scale is controlled by the argument \code{layout}, which can also be used
-to specify if the scale should be expand over the full height/width or have a
-fixed size.
+to specify if the scale should expand over the full height/width or have a
+limited fixed size.
 
 By default the scale is placed on the top-right corner of the data matrix, with
-a fixed size.
-\Cref{fig:layout_scale} illustrates how to obtain some other commonly used
-positions/look.
-However, more options are available, as detailed in the manual page for
+a limited fixed size.
+\Cref{fig:layout_scale} illustrates how to easily obtain some other commonly
+used positions/look, through the use of special layout shortcuts.
+More options are available, as detailed in the manual page for
 \code{aheatmap\_layout}.
 
 \begin{figure}[h!]
-<<layout_scale, out.width = "0.25\\textwidth">>=
+<<layout_scale, out.width = "0.23\\textwidth">>=
 # vertical on the right expanded over the full height
 aheatmap(x, layout = '*')
 # horizontal at the bottom-right corner
@@ -232,7 +285,7 @@ aheatmap(x, layout = '_')
 # horizontal the bottom, expanded over the full width
 aheatmap(x, layout = '_*')
 # vertical on the left (when not using/showing row dendrogram)
-aheatmap(x, Rowv = NA, layout = 'L.|')
+aheatmap(x, Rowv = NA, layout = '^')
 @
 \caption{Colour scale alternative layouts: the scale can be placed in different
 areas around the data matrix and expanded to full height/width.}

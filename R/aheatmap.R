@@ -225,7 +225,22 @@ lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
 	if( getOption('verbose') ) grid.rect(gp = gpar(col = "blue", lwd = 2))
 	if( !is(hc, 'dendrogram') )
 		hc <- as.dendrogram(hc)
-	plot(hc, horiz = horiz, xaxs="i", yaxs="i", axes=FALSE, leaflab="none", ...)
+	res <- plot(hc, horiz = horiz, xaxs="i", yaxs="i", axes=FALSE, leaflab="none", ...)
+    
+    if( !is.null(cluster_spec <- attr(hc, 'cluster.spec')) ){
+        sapply(seq(cluster_spec$k)[cluster_spec$which], function(i){
+            cluster_spec$which <- i
+            d <- NULL
+            if( !is.null(cluster_spec$col) ) cluster_spec$col <- alphacol(cluster_spec$col[i], .2)
+            cluster_spec$text <- cluster_spec$text[[i]]
+            cluster_spec <- expand_list(cluster_spec, horiz = horiz, density = d, lty = 5, lwd = 1.5, lower_rect = 0)
+            .d <- function(...){
+                rect.dendrogram(hc, ...)
+            }
+            do.call(.d, cluster_spec)
+        })
+    }
+    invisible(res)
 }
 
 
@@ -1163,6 +1178,11 @@ cutheight <- function(x, n){
 	res[n-1]
 }
 
+.dendextend <- function(){
+    qlibrary(colorspace)
+    qlibrary(dendextend)
+}
+
 #' Fade Out the Upper Branches from a Dendrogram
 #' 
 #' @param x a dendrogram
@@ -1170,18 +1190,35 @@ cutheight <- function(x, n){
 #' 
 #' @import digest
 #' @keywords internal
-#' @import dendextend
+#' @import dendextend magrittr
 cutdendro <- function(x, n){
 	
-    if( isString(n) ){
-        qlibrary(colorspace)
-        qlibrary(dendextend)
-        m <- str_match(n, "^#([0-9])+")
-        return(x %>% set("branches_k_color", k = m[, 2L]))
+    use_dendextend <- FALSE
+    if( isString(n) || is.list(n) ){
+        .dendextend()
+        use_dendextend <- TRUE
+        spec <- str_match(n[[1L]], "^#(-?[0-9]+)(@([0-9, ]+))?([|])?([!])?")
+#        print(spec)
+        n0 <- n
+        n <- as.integer(spec[, 2L])
+        n_cl <- abs(n)
+            
+        # border
+        bd <- if( nzchar(spec[, 5L]) ) 8 else NA
+        col <- if( nzchar(spec[, 6L]) ) NA
+        # subset
+        w <- if( nzchar(spec[, 4L]) ) eval(parse(text = sprintf("c(%s)", spec[, 4L]))) else seq(n_cl)
+        cl_spec <- expand_list(c(list(k = n_cl), as.list(n0[-1L])), col = col, border = bd, which = w)
+        # complete text
+        if( length(cl_spec$which) == 1L && !is.null(cl_spec$text) ) cl_spec$text <- rep(cl_spec$text, length.out = cl_spec$k)
+        if( length(bad_i <- which(cl_spec$which > n_cl)) ){
+            stop(gettextf("all indexes in `@` or `which` must be between 1 and %d [bad indexes: %s]", n_cl, str_out(w[bad_i], 5, total = length(bad_i) > 5)))
+        }
     }
     
     n0 <- n
     n <- abs(n)
+    
     
 	# exit early if n <=1: nothing to do
 	if( n <= 1 ) return(x)
@@ -1192,23 +1229,57 @@ cutdendro <- function(x, n){
 			n
 	})
 
-	# cut x in n groups
+    # cut x in n groups
 	# find the height where to cut
+    if( use_dendextend && !is_NA(cl_spec$col) ){
+        if( !is.null(cl_spec$col) ){
+            # complete colors to avoid warnings
+            if( length(cl_spec$which) == 1L ) cl_spec$col <- rep(cl_spec$col, length.out = cl_spec$k)
+            
+            x <- x %>% set("branches_k_color", k = n, value = cl_spec$col)
+        }else x <- x %>% set("branches_k_color", k = n)
+    }
 	h <- cutheight(x, n)
 	cfx <- cut(x, h)
 	# get the ids of the upper nodes
-	ids <- sapply(cfx$lower, function(sub) attr(sub, 'id'))		
-	
-	# highlight the upper branches with dot lines
-	dts <- c(lty=2, lwd=1.2, col=8)
-	a <- dendrapply(x, function(node){
-		a <- attributes(node)
-		if( n0 > 0 && (a$id %in% ids || (!is.leaf(node) && any(c(attr(node[[1]], 'id'), attr(node[[2]], 'id')) %in% ids))) 
-            || (n0 < 0 && (!a$id %in% ids && !(!is.leaf(node) && any(c(attr(node[[1]], 'id'), attr(node[[2]], 'id')) %in% ids)))) )
-			attr(node, 'edgePar') <- dts
-		node
+	ids <- sapply(cfx$lower, function(sub) attr(sub, 'id'))
+    
+    # highlight the upper branches with dot lines
+    if( use_dendextend ){
+        dts <- c(lty=2, lwd=2)
+        cl_spec$col <- unlist(sapply(cfx$lower, function(sub) attr(sub, 'edgePar')[['col']]))
+        
+    }else{
+        dts <- c(lty=2, lwd=1.2, col = 8)
+    }
+    
+    a <- dendrapply(x, function(node){
+		a <- attributes(node) 
+        if( n0 > 0 && (a$id %in% ids || (!is.leaf(node) && any(c(attr(node[[1]], 'id'), attr(node[[2]], 'id')) %in% ids))) # dash upper tree
+            || (n0 < 0 && (!a$id %in% ids && !(!is.leaf(node) && any(c(attr(node[[1]], 'id'), attr(node[[2]], 'id')) %in% ids)))) ){# dash lower cluster trees
+        
+                if( use_dendextend ){
+                    attr(node, 'edgePar') <- c(dts, attr(node, 'edgePar')['col'])
+                } else attr(node, 'edgePar') <- dts
+                
+        }
+#        else if( !is.leaf(node) && use_dendextend && attr(node[[1]], 'id') %in% ids && attr(node[[2]], 'id') %in% ids && nzchar(spec[, 3L]) ){
+#            print(ids)
+#            print(attr(node[[1]], 'height'))
+#            print(attr(node, 'height'))
+#            node[[1]] %>% raise.dendrogram(attr(node[[1]], 'height') - attr(node[[1]], 'height'))
+#            node[[2]] <- node[[2]] %>% raise.dendrogram(- attr(node[[2]], 'height'))
+#        }
+        node
 	})
+    
+    # store cluster specs
+    if( use_dendextend ){
+        attr(a, 'cluster.spec') <- cl_spec 
+    }
 
+    
+    a
 }
 
 # internal class definition for 
@@ -1288,7 +1359,7 @@ cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, s
 	}else{ # will compute dendrogram (NB: mat was already subset before calling cluster_mat)
 		
         use.cutdendro <- function(x){
-            is.integer(x) || (isString(x) && grepl("^#[0-9]+$", x))
+            is.integer(x) || (isString(x) && grepl("^#-?[0-9]+", x)) || (is.list(x) && use.cutdendro(x[[1L]]))
         }
         
 		param <- 
@@ -1854,57 +1925,22 @@ subset_index <- function(x, margin, subset){
 #' @param Rowv clustering specification(s) for the rows. It allows to specify 
 #' the distance/clustering/ordering/display parameters to be used for the 
 #' \emph{rows only}.
-#' Possible values are:
-#' \itemize{
-#' \item \code{TRUE} or \code{NULL} (to be consistent with \code{\link{heatmap}}):
-#' compute a dendrogram from hierarchical clustering using the distance and 
-#' clustering methods \code{distfun} and \code{hclustfun}.
 #' 
-#' \item \code{NA}: disable any ordering. In this case, and if not otherwise 
-#' specified with argument \code{revC=FALSE}, the heatmap shows the input matrix 
-#' with the rows in their original order, with the first row on top to the last 
-#' row at the bottom. Note that this differ from the behaviour or \code{\link{heatmap}}, 
-#' but seemed to be a more sensible choice when vizualizing a matrix without 
-#' reordering.
-#' 
-#' \item an integer vector of length the number of rows of the input matrix 
-#' (\code{nrow(x)}), that specifies the row order. As in the case \code{Rowv=NA}, 
-#' the ordered matrix is shown first row on top, last row at the bottom. 
-#' 
-#' \item a character vector or a list specifying values to use instead of arguments 
-#' \code{distfun}, \code{hclustfun} and \code{reorderfun} when clustering the 
-#' rows (see the respective argument descriptions for a list of accepted 
-#' values). 
-#' If \code{Rowv} has no names, then the first element is used for \code{distfun},  
-#' the second (if present) is used for \code{hclustfun}, and the third 
-#' (if present) is used for \code{reorderfun}.
-#'
-#' \item a numeric vector of weights, of length the number of rows of the input matrix, 
-#' used to reorder the internally computed dendrogram \code{d} 
-#' by \code{reorderfun(d, Rowv)}.
-#' 
-#' \item \code{FALSE}: the dendrogram \emph{is} computed using methods \code{distfun}, 
-#' \code{hclustfun}, and \code{reorderfun} but is not shown.
-#' 
-#' \item a single integer that specifies how many subtrees (i.e. clusters) 
-#' from the computed dendrogram should have their root faded out.
-#' This can be used to better highlight the different clusters.  
-#' 
-#' \item a single double that specifies how much space is used by the computed 
-#' dendrogram. That is that this value is used in place of \code{treeheight}.
-#' }
+#' See section \emph{Row/column ordering and display} for details on all supported values.
 #' 
 #' @param Colv clustering specification(s) for the columns. It accepts the same 
 #' values as argument \code{Rowv} (modulo the expected length for vector specifications),  
 #' and allow specifying the distance/clustering/ordering/display parameters to 
 #' be used for the \emph{columns only}.
+#' 
 #' \code{Colv} may also be set to \code{"Rowv"}, in which case the dendrogram 
 #' or ordering specifications applied to the rows are also applied to the 
-#' columns. Note that this is allowed only for square input matrices, 
+#' columns. Note that this is allowed only for square matrices, 
 #' and that the row ordering is in this case by default reversed 
 #' (\code{revC=TRUE}) to obtain the diagonal in the standard way 
 #' (from top-left to bottom-right).
-#' See argument \code{Rowv} for other possible values.
+#' 
+#' See section \emph{Row/column ordering and display} for details on all supported values.
 #' 
 #' @param revC a logical that specify if the \emph{row order} defined by 
 #' \code{Rowv} should be reversed. This is mainly used to get the rows displayed 
@@ -2057,6 +2093,60 @@ subset_index <- function(x, margin, subset){
 #' Original version of \code{pheatmap}: Raivo Kolde
 #' 
 #' Enhancement into \code{aheatmap}: Renaud Gaujoux
+#' 
+#' 
+#' @section Row/column ordering and display: 
+#' 
+#' Possible values are:
+#' \itemize{
+#' \item \code{TRUE} or \code{NULL} (to be consistent with \code{\link{heatmap}}):
+#' compute a dendrogram from hierarchical clustering using the distance and 
+#' clustering methods \code{distfun} and \code{hclustfun}.
+#' 
+#' \item \code{NA}: disable any ordering. In this case, and if not otherwise 
+#' specified with argument \code{revC=FALSE}, the heatmap shows the input matrix 
+#' with the rows in their original order, with the first row on top to the last 
+#' row at the bottom. Note that this differ from the behaviour or \code{\link{heatmap}}, 
+#' but seemed to be a more sensible choice when vizualizing a matrix without 
+#' reordering.
+#' 
+#' \item an integer vector of length the number of rows of the input matrix 
+#' (\code{nrow(x)}), that specifies the row order. As in the case \code{Rowv=NA}, 
+#' the ordered matrix is shown first row on top, last row at the bottom. 
+#' 
+#' \item a character vector or a list specifying values to use instead of arguments 
+#' \code{distfun}, \code{hclustfun} and \code{reorderfun} when clustering the 
+#' rows (see the respective argument descriptions for a list of accepted 
+#' values). 
+#' If \code{Rowv} has no names, then the first element is used for \code{distfun},  
+#' the second (if present) is used for \code{hclustfun}, and the third 
+#' (if present) is used for \code{reorderfun}.
+#'
+#' \item a numeric vector of weights, of length the number of rows of the input matrix, 
+#' used to reorder the internally computed dendrogram \code{d} 
+#' by \code{reorderfun(d, Rowv)}.
+#' 
+#' \item \code{FALSE}: the dendrogram \emph{is} computed using methods \code{distfun}, 
+#' \code{hclustfun}, and \code{reorderfun} but is not shown.
+#' 
+#' \item a single integer that specifies how many subtrees (i.e. clusters) 
+#' should be highlighted, e.g., \code{aheatmap(x, Rowv = 3L)}.
+#' 
+#' If positive, then the dendrogram's branches upstream each cluster are faded out 
+#' using dashed lines.
+#' If negative, then the dendrogram's branches within each cluster are faded out 
+#' using dashed lines, keeping the root upstream branches as is.
+#' 
+#' \item a single double that specifies how much space is used by the computed 
+#' dendrogram. That is that this value is used in place of \code{treeheight}.
+#' 
+#' \item a single character string starting with a \code{'#'} or a list with its 
+#' first element as such a string, e.g., \code{aheatmap(x, Rowv = '#3')} or 
+#' \code{aheatmap(x, Colv = list('#3', text = LETTERS[1:3]))}.
+#' 
+#' 
+#' 
+#' }
 #' 
 #' @examples
 #' 
