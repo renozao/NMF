@@ -54,6 +54,7 @@ setGeneric('rmatrix', function(x, ...) standardGeneric('rmatrix'))
 #' @param dimnames \code{NULL} or a \code{list} passed in the internal call to 
 #' the function \code{\link{matrix}}
 #' @param ... extra arguments passed to the distribution function \code{dist}.
+#' @param .rng any RNG seed specification supported by \code{\link[rngtools]{setRNG}}. 
 #' 
 #' @inline
 #' 
@@ -82,7 +83,7 @@ setGeneric('rmatrix', function(x, ...) standardGeneric('rmatrix'))
 #' \dontrun{ hist(a) }
 #' 
 setMethod('rmatrix', 'numeric', 
-		function(x, y=NULL, dist=runif, byrow = FALSE, dimnames = NULL, ...){
+		function(x, y=NULL, dist=runif, byrow = FALSE, dimnames = NULL, ..., .rng = NULL){
 			
 			x <- as.integer(x)
 			# early exit if x has length 0
@@ -90,12 +91,14 @@ setMethod('rmatrix', 'numeric',
 				stop("NMF::rmatrix - invalid empty vector in argument `x`.")
 			
 			# check/ensure that 'dist' is a function.
+            if( isNumber(dist) ){
+                .rng <- dist
+                dist <- NULL
+            }
 			if( is.null(dist) ) dist <- runif
-			if( isNumber(dist) ){
-				os <- RNGseed()
-				on.exit( RNGseed(os), add=TRUE)
-				set.seed(dist)
-				dist <- runif
+			if( !is.null(.rng) ){
+				os <- setRNG(.rng)
+				on.exit( setRNG(os), add=TRUE)
 			}
 			if( !is.function(dist) )
 				stop("NMF::rmatrix - invalid value for argument 'dist': must be a function [class(dist)='", class(dist), "'].")
