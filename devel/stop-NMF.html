@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFStop. NMF 0.21</title>
+<title>NMFStop. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -117,13 +117,11 @@ nmf.stop.connectivity(object, i, y, x, stopconv = 40, check.interval = 10, ...)<
     <h2>Arguments</h2>
     <dl>
       <dt>s</dt>
-      <dd>specification of the stopping criterion. See
-  section <em>Details</em> for the supported formats and how
-  they are processed.</dd>
+      <dd>specification of the stopping criterion.
+See section <em>Details</em> for the supported formats and how they are processed.</dd>
       <dt>check</dt>
-      <dd>logical that indicates if the validity of
-  the stopping criterion function should be checked before
-  returning it.</dd>
+      <dd>logical that indicates if the validity of the stopping criterion
+function should be checked before returning it.</dd>
       <dt>n</dt>
       <dd>maximum number of iteration to perform.</dd>
       <dt>threshold</dt>
@@ -137,39 +135,34 @@ nmf.stop.connectivity(object, i, y, x, stopconv = 40, check.interval = 10, ...)<
       <dt>x</dt>
       <dd>the current NMF model</dd>
       <dt>stationary.th</dt>
-      <dd>maximum absolute value of the
-  gradient, for the objective function to be considered
-  stationary.</dd>
+      <dd>maximum absolute value of the gradient, for the objective
+function to be considered stationary.</dd>
       <dt>check.interval</dt>
-      <dd>interval (in number of iterations)
-  on which the stopping criterion is computed.</dd>
+      <dd>interval (in number of iterations) on which the stopping
+criterion is computed.</dd>
       <dt>check.niter</dt>
-      <dd>number of successive iteration used to
-  compute the stationnary criterion.</dd>
+      <dd>number of successive iteration used to compute the stationnary
+criterion.</dd>
       <dt>...</dt>
-      <dd>extra arguments passed to the function
-  <code><a href='algorithmic.html'>objective</a></code>, which computes the objective
-  value between <code>x</code> and <code>y</code>.</dd>
+      <dd>extra arguments passed to the function <code><a href='algorithmic.html'>objective</a></code>,
+which computes the objective value between <code>x</code> and <code>y</code>.</dd>
       <dt>stopconv</dt>
-      <dd>number of iterations intervals over which
-  the connectivity matrix must not change for stationarity
-  to be achieved.</dd>
+      <dd>number of iterations intervals over which the connectivity
+matrix must not change for stationarity to be achieved.</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
       
-      <p>a function that can be passed to argument <code>.stop</code> of
-  function <code><a href='nmf.html'>nmf</a></code>, which is typically used when
-  the algorith is implemented as an iterative strategy.</p>
+      <p>a function that can be passed to argument <code>.stop</code> of function
+<code><a href='nmf.html'>nmf</a></code>, which is typically used when the algorith is implemented as
+an iterative strategy.</p>
   
-      <p>a function that can be used as a stopping criterion for
-  NMF algorithms defined as
-  <code><a href='NMFStrategyIterative-class.html'>NMFStrategyIterative-class</a></code> objects. That
-  is a function with arguments <code>(strategy, i, target,
-  data, ...)</code> that returns <code>TRUE</code> if the stopping
-  criterion is satisfied -- which in turn stops the
-  iterative process, and <code>FALSE</code> otherwise.</p>
+      <p>a function that can be used as a stopping criterion for NMF algorithms
+defined as <code><a href='NMFStrategyIterative-class.html'>NMFStrategyIterative-class</a></code> objects.
+That is a function with arguments <code>(strategy, i, target, data, ...)</code>
+that returns <code>TRUE</code> if the stopping criterion is satisfied -- which in
+turn stops the iterative process, and <code>FALSE</code> otherwise.</p>
   
     </div>
 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>sparseness. NMF 0.21</title>
+<title>sparseness. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -90,8 +90,8 @@
     <div class="Value">
       <h2>Value</h2>
       
-      <p>usually a single numeric value -- in [0,1], or a numeric
-  vector. See each method for more details.</p>
+      <p>usually a single numeric value -- in [0,1], or a numeric vector.
+See each method for more details.</p>
   
     </div>
 
@@ -121,26 +121,20 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>sparseness<code>signature(x = "numeric")</code>: Base
-  method that computes the sparseness of a numeric vector.</p>
+<li>sparseness<code>signature(x = "numeric")</code>: Base method that computes the sparseness of a numeric vector.</p>
   
-      <p>It returns a single numeric value, computed following the
-  definition given in section <em>Description</em>.</p>
-  
-      <p></li>
-<li>sparseness<code>signature(x = "matrix")</code>:
-  Computes the sparseness of a matrix as the mean
-  sparseness of its column vectors. It returns a single
-  numeric value.</p>
+      <p>It returns a single numeric value, computed following the definition
+given in section <em>Description</em>.</p>
   
       <p></li>
-<li>sparseness<code>signature(x = "NMF")</code>: Compute
-  the sparseness of an object of class <code>NMF</code>, as the
-  sparseness of the basis and coefficient matrices computed
-  separately.</p>
+<li>sparseness<code>signature(x = "matrix")</code>: Computes the sparseness of a matrix as the mean sparseness of its column vectors.
+It returns a single numeric value.</p>
   
-      <p>It returns the two values in a numeric vector with names
-  &#145;basis&#146; and &#145;coef&#146;.</p>
+      <p></li>
+<li>sparseness<code>signature(x = "NMF")</code>: Compute the sparseness of an object of class <code>NMF</code>, as the sparseness of
+the basis and coefficient matrices computed separately.</p>
+  
+      <p>It returns the two values in a numeric vector with names &#145;basis&#146; and &#145;coef&#146;.</p>
   
       <p></li>
 </ol></p>

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfitX. NMF 0.21</title>
+<title>NMFfitX. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -82,35 +82,30 @@
     <h2>Arguments</h2>
     <dl>
       <dt>object</dt>
-      <dd>an object from which is created an
-  <code>NMFfitX</code> object</dd>
+      <dd>an object from which is created an <code>NMFfitX</code> object</dd>
       <dt>...</dt>
       <dd>extra arguments used to pass values for slots</dd>
       <dt>.merge</dt>
-      <dd>a logical that indicates if the fits should
-  be aggregated, only keeping the best fit, and return an
-  <code>NMFfitX1</code> object. If <code>FALSE</code>, an
-  <code>NMFfitXn</code> object containing the data of all the
-  fits is returned.</dd>
+      <dd>a logical that indicates if the fits should be aggregated, only
+keeping the best fit, and return an <code>NMFfitX1</code> object.
+If <code>FALSE</code>, an <code>NMFfitXn</code> object containing the data of all the fits
+is returned.</dd>
     </dl>
     
     <div class="Methods">
       <h2>Methods</h2>
       
       <p><ol>
-<li>NMFfitX<code>signature(object = "list")</code>: Create
-  an <code>NMFfitX</code> object from a list of fits.</p>
+<li>NMFfitX<code>signature(object = "list")</code>: Create an <code>NMFfitX</code> object from a list of fits.</p>
   
       <p></li>
-<li>NMFfitX<code>signature(object = "NMFfit")</code>:
-  Creates an <code>NMFfitX1</code> object from a single fit. This
-  is used in <code><a href='nmf.html'>nmf</a></code> when only the best fit is
-  kept in memory or on disk.</p>
+<li>NMFfitX<code>signature(object = "NMFfit")</code>: Creates an <code>NMFfitX1</code> object from a single fit.
+This is used in <code><a href='nmf.html'>nmf</a></code> when only the best fit is kept in memory or
+on disk.</p>
   
       <p></li>
-<li>NMFfitX<code>signature(object = "NMFfitX")</code>:
-  Provides a way to aggregate <code>NMFfitXn</code> objects into
-  an <code>NMFfitX1</code> object.</p>
+<li>NMFfitX<code>signature(object = "NMFfitX")</code>: Provides a way to aggregate <code>NMFfitXn</code> objects into an <code>NMFfitX1</code>
+object.</p>
   
       <p></li>
 </ol></p>

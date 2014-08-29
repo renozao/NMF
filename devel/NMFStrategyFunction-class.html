@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFStrategyFunction-class. NMF 0.21</title>
+<title>NMFStrategyFunction-class. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -81,15 +81,14 @@
       <h2>Slots</h2>
       
       <p><ol>
-<li>algorithma function that implements an NMF
-  algorithm. It must have signature <code>(y='matrix',
-  x='NMFfit')</code>, where <code>y</code> is the target matrix to
-  approximate and <code>x</code> is the NMF model assumed to be
-  seeded with an appropriate initial value -- as it is done
-  internally by function <code><a href='nmf.html'>nmf</a></code>.</p>
+<li>algorithma function that implements an NMF algorithm.
+It must have signature <code>(y='matrix', x='NMFfit')</code>, where <code>y</code> is the
+target matrix to approximate and <code>x</code> is the NMF model assumed to be
+seeded with an appropriate initial value -- as it is done internally by
+function <code><a href='nmf.html'>nmf</a></code>.</p>
   
-      <p>Note that argument names currently do not matter, but it
-  is recommended to name them as specified above.</p>
+      <p>Note that argument names currently do not matter, but it is recommended to
+name them as specified above.</p>
   
       <p></li>
 </ol></p>
@@ -102,30 +101,20 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>algorithm<code>signature(object =
-  "NMFStrategyFunction")</code>: Returns the single R function
-  that implements the NMF algorithm -- as stored in slot
-  <code>algorithm</code>.</p>
+<li>algorithm<code>signature(object = "NMFStrategyFunction")</code>: Returns the single R function that implements the NMF algorithm -- as stored in
+slot <code>algorithm</code>.</p>
   
       <p></li>
-<li>algorithm<-<code>signature(object =
-  "NMFStrategyFunction", value = "function")</code>: Sets the
-  function that implements the NMF algorithm, stored in
-  slot <code>algorithm</code>.</p>
+<li>algorithm<-<code>signature(object = "NMFStrategyFunction", value = "function")</code>: Sets the function that implements the NMF algorithm, stored in slot <code>algorithm</code>.</p>
   
       <p></li>
-<li>run<code>signature(object =
-  "NMFStrategyFunction", y = "matrix", x = "NMFfit")</code>: Runs
-  the NMF algorithms implemented by the single R function
-  -- and stored in slot <code>'algorithm'</code> of
-  <code>object</code>, on the data object <code>y</code>, using
-  <code>x</code> as starting point. It is equivalent to calling
-  <code>object@algorithm(y, x, ...)</code>.</p>
+<li>run<code>signature(object = "NMFStrategyFunction", y = "matrix", x = "NMFfit")</code>: Runs the NMF algorithms implemented by the single R function -- and stored in slot <code>'algorithm'</code>
+of <code>object</code>, on the data object <code>y</code>, using <code>x</code> as starting point.
+It is equivalent to calling <code>object@algorithm(y, x, ...)</code>.</p>
   
-      <p>This method is usually not called directly, but only via
-  the function <code><a href='nmf.html'>nmf</a></code>, which takes care of many
-  other details such as seeding the computation, handling
-  RNG settings, or setting up parallelisation.</p>
+      <p>This method is usually not called directly, but only via the function <code><a href='nmf.html'>nmf</a></code>, which
+takes care of many other details such as seeding the computation, handling RNG settings, or setting up
+parallelisation.</p>
   
       <p></li>
 </ol></p>

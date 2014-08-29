@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFOffset-class. NMF 0.21</title>
+<title>NMFOffset-class. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -82,15 +82,13 @@
     <h2>Arguments</h2>
     <dl>
       <dt>offset</dt>
-      <dd>optional numeric vector used to initialise
-  slot &#145;offset&#146;.</dd>
+      <dd>optional numeric vector used to initialise slot &#145;offset&#146;.</dd>
       <dt>.Object</dt>
-      <dd> An object: see the Details section.</dd>
+      <dd> An object:  see the Details section.</dd>
       <dt>...</dt>
-      <dd>data to include in the new object.  Named
-  arguments correspond to slots in the class definition.
-  Unnamed arguments must be objects from classes that this
-  class extends.</dd>
+      <dd>data to include in the new object.  Named arguments
+    correspond to slots in the class definition. Unnamed arguments must
+    be objects from classes that this class extends.</dd>
     </dl>
     
     <div class="Details">
@@ -110,32 +108,25 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>fitted<code>signature(object = "NMFOffset")</code>:
-  Computes the target matrix estimate for an NMFOffset
-  object.</p>
+<li>fitted<code>signature(object = "NMFOffset")</code>: Computes the target matrix estimate for an NMFOffset object.</p>
   
-      <p>The estimate is computed as: <pre class = 'eq'> W H + offset </code></p>
-  
-      <p></li>
-<li>offset<code>signature(object = "NMFOffset")</code>: The
-  function <code>offset</code> returns the offset vector from an
-  NMF model that has an offset, e.g. an <code>NMFOffset</code>
-  model.</p>
+      <p>The estimate is computed as:
+<pre class = 'eq'> W H + offset </code></p>
   
       <p></li>
-<li>rnmf<code>signature(x = "NMFOffset", target =
-  "numeric")</code>: Generates a random NMF model with offset,
-  from class <code>NMFOffset</code>.</p>
-  
-      <p>The offset values are drawn from a uniform distribution
-  between 0 and the maximum entry of the basis and
-  coefficient matrices, which are drawn by the next
-  suitable <code><a href='rnmf.html'>rnmf</a></code> method, which is the
-  workhorse method <code>rnmf,NMF,numeric</code>.</p>
+<li>offset<code>signature(object = "NMFOffset")</code>: The function <code>offset</code> returns the offset vector from an NMF model
+that has an offset, e.g. an <code>NMFOffset</code> model.</p>
   
       <p></li>
-<li>show<code>signature(object = "NMFOffset")</code>: Show
-  method for objects of class <code>NMFOffset</code></p>
+<li>rnmf<code>signature(x = "NMFOffset", target = "numeric")</code>: Generates a random NMF model with offset, from class <code>NMFOffset</code>.</p>
+  
+      <p>The offset values are drawn from a uniform distribution between 0 and
+the maximum entry of the basis and coefficient matrices, which are drawn
+by the next suitable <code><a href='rnmf.html'>rnmf</a></code> method, which is the workhorse
+method <code>rnmf,NMF,numeric</code>.</p>
+  
+      <p></li>
+<li>show<code>signature(object = "NMFOffset")</code>: Show method for objects of class <code>NMFOffset</code></p>
   
       <p></li>
 </ol></p>
@@ -147,35 +138,36 @@
     <div class="Creating objects from the Class">
       <h2>Creating objects from the Class</h2>
       
-      <p>Object of class <code>NMFOffset</code> can be created using the
-  standard way with operator <code><a href='http://www.inside-r.org/r-doc/methods/new'>new</a></code></p>
+      <p></p>
   
-      <p>However, as for all NMF model classes -- that extend
-  class <code><a href='NMF-class.html'>NMF-class</a></code>, objects of class
-  <code>NMFOffset</code> should be created using factory method
-  <code><a href='nmfModel.html'>nmfModel</a></code> :</p>
+      <p>Object of class <code>NMFOffset</code> can be created using the standard way with
+operator <code><a href='http://www.inside-r.org/r-doc/methods/new'>new</a></code></p>
+  
+      <p>However, as for all NMF model classes -- that extend class
+<code><a href='NMF-class.html'>NMF-class</a></code>, objects of class <code>NMFOffset</code> should be
+created using factory method <code><a href='nmfModel.html'>nmfModel</a></code> :</p>
   
       <p><code>new('NMFOffset')</code></p>
   
       <p><code>nmfModel(model='NMFOffset')</code></p>
   
-      <p><code>nmfModel(model='NMFOffset', W=w, offset=rep(1,
-  nrow(w)))</code></p>
+      <p><code>nmfModel(model='NMFOffset', W=w, offset=rep(1, nrow(w)))</code></p>
   
-      <p>See <code><a href='nmfModel.html'>nmfModel</a></code> for more details on how to use
-  the factory method.</p>
+      <p>See <code><a href='nmfModel.html'>nmfModel</a></code> for more details on how to use the factory
+method.</p>
   
     </div>
 
     <div class="Initialize method">
       <h2>Initialize method</h2>
       
-      <p>The initialize method for <code>NMFOffset</code> objects tries
-  to correct the initial value passed for slot
-  <code>offset</code>, so that it is consistent with the
-  dimensions of the <code>NMF</code> model: it will pad the
-  offset vector with NA values to get the length equal to
-  the number of rows in the basis matrix.</p>
+      <p></p>
+  
+      <p>The initialize method for <code>NMFOffset</code> objects tries to correct the initial
+value passed for slot <code>offset</code>, so that it is consistent with the dimensions
+of the <code>NMF</code> model:
+it will pad the offset vector with NA values to get the length equal to the
+number of rows in the basis matrix.</p>
   
     </div>
 
@@ -192,10 +184,7 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre><code class="r">## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
+    <pre><code class="r">
 
 # create a completely empty NMF object
 new(&#39;NMFOffset&#39;)
@@ -234,7 +223,7 @@ rnmf(3, 10, 5, model=&#39;NMFOffset&#39;)
 ## features: 10 
 ## basis/rank: 3 
 ## samples: 5 
-## offset: [ 0.1495 0.3168 0.4189 0.9784 0.9675 ... ]
+## offset: [ 0.06275 0.5511 0.2644 0.3093 0.8291 ... ]
 </code></pre>
 
   </div>
@@ -248,8 +237,7 @@ rnmf(3, 10, 5, model=&#39;NMFOffset&#39;)
       
     <h2>See also</h2>
     
-  Other NMF-model: <code><a href='NMFns-class.html'>NMFns-class</a></code>,
-  <code><a href='NMFstd-class.html'>NMFstd-class</a></code>
+  Other NMF-model: <code><a href='NMFarray-class.html'>NMFarray-class</a></code>, <code><a href='NMFns-class.html'>NMFns-class</a></code>, <code><a href='NMFstd-class.html'>NMFstd-class</a></code>
 
         
   </div>

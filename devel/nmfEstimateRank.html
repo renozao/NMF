@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfEstimateRank. NMF 0.21</title>
+<title>nmfEstimateRank. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -99,84 +99,72 @@
     <h2>Arguments</h2>
     <dl>
       <dt>x</dt>
-      <dd>For <code>nmfEstimateRank</code> a target object to be
-  estimated, in one of the format accepted by interface
-  <code><a href='nmf.html'>nmf</a></code>.
+      <dd>For <code>nmfEstimateRank</code> a target object to be estimated, in one
+of the format accepted by interface <code><a href='nmf.html'>nmf</a></code>.
 
-  For <code>plot.NMF.rank</code> an object of class
-  <code>NMF.rank</code> as returned by function
-  <code>nmfEstimateRank</code>.</dd>
+For <code>plot.NMF.rank</code> an object of class <code>NMF.rank</code> as returned by
+function <code>nmfEstimateRank</code>.</dd>
       <dt>range</dt>
-      <dd>a <code>numeric</code> vector containing the ranks
-  of factorization to try. Note that duplicates are removed
-  and values are sorted in increasing order. The results
-  are notably returned in this order.</dd>
+      <dd>a <code>numeric</code> vector containing the ranks of factorization
+to try.
+Note that duplicates are removed and values are sorted in increasing order.
+The results are notably returned in this order.</dd>
       <dt>method</dt>
-      <dd>A single NMF algorithm, in one of the
-  format accepted by the function <code><a href='nmf.html'>nmf</a></code>.</dd>
+      <dd>A single NMF algorithm, in one of the format accepted by
+the function <code><a href='nmf.html'>nmf</a></code>.</dd>
       <dt>nrun</dt>
-      <dd>a <code>numeric</code> giving the number of run to
-  perform for each value in <code>range</code>.</dd>
+      <dd>a <code>numeric</code> giving the number of run to perform for each
+value in <code>range</code>.</dd>
       <dt>model</dt>
-      <dd>model specification passed to each
-  <code>nmf</code> call. In particular, when <code>x</code> is a
-  formula, it is passed to argument <code>data</code> of
-  <code><a href='nmfModel.html'>nmfModel</a></code> to determine the target matrix --
-  and fixed terms.</dd>
+      <dd>model specification passed to each <code>nmf</code> call.
+In particular, when <code>x</code> is a formula, it is passed to argument
+<code>data</code> of <code><a href='nmfModel.html'>nmfModel</a></code> to determine the target matrix -- and
+fixed terms.</dd>
       <dt>verbose</dt>
-      <dd>toggle verbosity.  This parameter only
-  affects the verbosity of the outer loop over the values
-  in <code>range</code>. To print verbose (resp. debug) messages
-  from each NMF run, one can use <code>.options='v'</code> (resp.
-  <code>.options='d'</code>) that will be passed to the function
-  <code><a href='nmf.html'>nmf</a></code>.</dd>
+      <dd>toggle verbosity.  This parameter only affects the verbosity
+of the outer loop over the values in <code>range</code>.
+To print verbose (resp. debug) messages from each NMF run, one can use
+<code>.options='v'</code> (resp. <code>.options='d'</code>)
+that will be passed to the function <code><a href='nmf.html'>nmf</a></code>.</dd>
       <dt>stop</dt>
-      <dd>logical flag for running the estimation
-  process with fault tolerance.  When <code>TRUE</code>, the
-  whole execution will stop if any error is raised.  When
-  <code>FALSE</code> (default), the runs that raise an error will
-  be skipped, and the execution will carry on. The summary
-  measures for the runs with errors are set to NA values,
-  and a warning is thrown.</dd>
+      <dd>logical flag for running the estimation process with fault
+tolerance.  When <code>TRUE</code>, the whole execution will stop if any error is
+raised.  When <code>FALSE</code> (default), the runs that raise an error will be
+skipped, and the execution will carry on. The summary measures for the runs
+with errors are set to NA values, and a warning is thrown.</dd>
       <dt>...</dt>
-      <dd>For <code>nmfEstimateRank</code>, these are extra
-  parameters passed to interface <code>nmf</code>. Note that the
-  same parameters are used for each value of the rank.  See
-  <code><a href='nmf.html'>nmf</a></code>.
+      <dd>For <code>nmfEstimateRank</code>, these are extra parameters passed
+to interface <code>nmf</code>. Note that the same parameters are used for each
+value of the rank.  See <code><a href='nmf.html'>nmf</a></code>.
 
-  For <code>plot.NMF.rank</code>, these are extra graphical
-  parameter passed to the standard function <code>plot</code>.
-  See <code><a href='http://www.inside-r.org/r-doc/graphics/plot'>plot</a></code>.</dd>
+For <code>plot.NMF.rank</code>, these are extra graphical parameter passed to the
+standard function <code>plot</code>. See <code><a href='http://www.inside-r.org/r-doc/graphics/plot'>plot</a></code>.</dd>
       <dt>y</dt>
-      <dd>reference object of class <code>NMF.rank</code>, as
-  returned by function <code>nmfEstimateRank</code>. The measures
-  contained in <code>y</code> are used and plotted as a
-  reference. It is typically used to plot results obtained
-  from randomized data. The associated curves are drawn in
-  <em>red</em> (and <em>pink</em>), while those from <code>x</code>
-  are drawn in <em>blue</em> (and <em>green</em>).</dd>
+      <dd>reference object of class <code>NMF.rank</code>, as returned by
+function <code>nmfEstimateRank</code>.
+The measures contained in <code>y</code> are used and plotted as a reference.
+It is typically used to plot results obtained from randomized data.
+The associated curves are drawn in <em>red</em> (and <em>pink</em>),
+while those from <code>x</code> are drawn in <em>blue</em> (and <em>green</em>).</dd>
       <dt>what</dt>
-      <dd>a <code>character</code> vector whose elements
-  partially match one of the following item, which
-  correspond to the measures computed by
-  <code><a href='assess.html'>summary</a></code> on each -- multi-run -- NMF result:
-  &#145;all&#146;, &#145;cophenetic&#146;, &#145;rss&#146;,
-  &#145;residuals&#146;, &#145;dispersion&#146;, &#145;evar&#146;,
-  &#145;silhouette&#146; (and more specific *.coef, *.basis,
-  *.consensus), &#145;sparseness&#146; (and more specific
-  *.coef, *.basis). It specifies which measure must be
-  plotted (<code>what='all'</code> plots all the measures).</dd>
+      <dd>a <code>character</code> vector whose elements partially match
+one of the following item, which correspond to the measures computed
+by <code><a href='assess.html'>summary</a></code> on each -- multi-run -- NMF result:
+&#145;all&#146;, &#145;cophenetic&#146;, &#145;rss&#146;,
+&#145;residuals&#146;, &#145;dispersion&#146;, &#145;evar&#146;,
+&#145;silhouette&#146; (and more specific *.coef, *.basis, *.consensus),
+&#145;sparseness&#146; (and more specific *.coef, *.basis).
+It specifies which measure must be plotted (<code>what='all'</code> plots
+all the measures).</dd>
       <dt>na.rm</dt>
-      <dd>single logical that specifies if the rank
-  for which the measures are NA values should be removed
-  from the graph or not (default to <code>FALSE</code>).  This is
-  useful when plotting results which include NAs due to
-  error during the estimation process. See argument
-  <code>stop</code> for <code>nmfEstimateRank</code>.</dd>
+      <dd>single logical that specifies if the rank for which the
+measures are NA values should be removed from the graph or not (default to
+<code>FALSE</code>).  This is useful when plotting results which include NAs due
+to error during the estimation process. See argument <code>stop</code> for
+<code>nmfEstimateRank</code>.</dd>
       <dt>xname,yname</dt>
-      <dd>legend labels for the curves
-  corresponding to measures from <code>x</code> and <code>y</code>
-  respectively</dd>
+      <dd>legend labels for the curves corresponding to measures from
+<code>x</code> and <code>y</code> respectively</dd>
       <dt>xlab</dt>
       <dd>x-axis label</dd>
       <dt>ylab</dt>
@@ -188,17 +176,17 @@
     <div class="Value">
       <h2>Value</h2>
       
-      <p><code>nmfEstimateRank</code> returns a S3 object (i.e. a list)
-  of class <code>NMF.rank</code> with the following elements:</p>
+      <p><code>nmfEstimateRank</code> returns a S3 object (i.e. a list) of class
+<code>NMF.rank</code> with the following elements:</p>
   
-      <p>measures a <code>data.frame</code> containing the
-  quality measures for each rank of factorizations in
-  <code>range</code>. Each row corresponds to a measure, each
-  column to a rank.  consensus  a <code>list</code> of
-  consensus matrices, indexed by the rank of factorization
-  (as a character string). fit  a <code>list</code> of
-  the fits, indexed by the rank of factorization (as a
-  character string).</p>
+      <p>measures a <code>data.frame</code> containing the quality
+measures for each rank of factorizations in <code>range</code>. Each row
+corresponds to a measure, each column to a rank. 
+consensus  a
+<code>list</code> of consensus matrices, indexed by the rank of factorization (as
+a character string).
+fit  a <code>list</code> of the fits, indexed by the rank of factorization
+(as a character string).</p>
   
     </div>
 
@@ -247,10 +235,7 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre><code class="r">## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
+    <pre><code class="r">
 
 if( !isCHECK() ){
 

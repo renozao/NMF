@@ -2,12 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf_update.lee_R. NMF 0.21</title>
+<title>nmf_update.lee_R. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="
   Original update definition: D D Lee and HS Seung
 
-  Port to R and optimisation in C++: Renaud Gaujoux
+Port to R and optimisation in C++: Renaud Gaujoux
 ">
 
 <!-- bootstrap css -->
@@ -55,7 +55,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -115,79 +115,68 @@ nmfAlgorithm.Frobenius(..., .stop = NULL, maxIter = nmf.getOption("maxIter") %||
     <h2>Arguments</h2>
     <dl>
       <dt>rescale</dt>
-      <dd>logical that indicates if the basis matrix
-  <code class = 'eq'>W</code> should be rescaled so that its columns sum up to
-  one.</dd>
+      <dd>logical that indicates if the basis matrix <code class = 'eq'>W</code> should be
+rescaled so that its columns sum up to one.</dd>
       <dt>i</dt>
       <dd>current iteration number.</dd>
       <dt>v</dt>
       <dd>target matrix.</dd>
       <dt>x</dt>
-      <dd>current NMF model, as an
-  <code><a href='NMF-class.html'>NMF-class</a></code> object.</dd>
+      <dd>current NMF model, as an <code><a href='NMF-class.html'>NMF-class</a></code> object.</dd>
       <dt>eps</dt>
-      <dd>small numeric value used to ensure numeric
-  stability, by shifting up entries from zero to this fixed
-  value.</dd>
+      <dd>small numeric value used to ensure numeric stability, by shifting up
+entries from zero to this fixed value.</dd>
       <dt>...</dt>
-      <dd>extra arguments. These are generally not used
-  and present only to allow other arguments from the main
-  call to be passed to the initialisation and stopping
-  criterion functions (slots <code>onInit</code> and <code>Stop</code>
-  respectively).</dd>
+      <dd>extra arguments. These are generally not used and present
+only to allow other arguments from the main call to be passed to the
+initialisation and stopping criterion functions (slots <code>onInit</code> and
+<code>Stop</code> respectively).</dd>
       <dt>copy</dt>
-      <dd>logical that indicates if the update should
-  be made on the original matrix directly (<code>FALSE</code>) or
-  on a copy (<code>TRUE</code> - default). With <code>copy=FALSE</code>
-  the memory footprint is very small, and some speed-up may
-  be achieved in the case of big matrices. However, greater
-  care should be taken due the side effect. We recommend
-  that only experienced users use <code>copy=TRUE</code>.</dd>
+      <dd>logical that indicates if the update should be made on the original
+matrix directly (<code>FALSE</code>) or on a copy (<code>TRUE</code> - default).
+With <code>copy=FALSE</code> the memory footprint is very small, and some speed-up may be
+achieved in the case of big matrices.
+However, greater care should be taken due the side effect.
+We recommend that only experienced users use <code>copy=TRUE</code>.</dd>
       <dt>.stop</dt>
-      <dd>specification of a stopping criterion, that
-  is used instead of the one associated to the NMF
-  algorithm. It may be specified as: <ul>
-<li> the
-  access key of a registered stopping criterion; </li>
-<li> a
-  single integer that specifies the exact number of
-  iterations to perform, which will be honoured unless a
-  lower value is explicitly passed in argument
-  <code>maxIter</code>. </li>
-<li> a single numeric value that
-  specifies the stationnarity threshold for the objective
-  function, used in with <code><a href='stop-NMF.html'>nmf.stop.stationary</a></code>;
-  </li>
-<li> a function with signature
-  <code>(object="NMFStrategy", i="integer", y="matrix",
-  x="NMF", ...)</code>, where <code>object</code> is the
-  <code>NMFStrategy</code> object that describes the algorithm
-  being run, <code>i</code> is the current iteration, <code>y</code> is
-  the target matrix and <code>x</code> is the current value of
-  the NMF model. </li>
+      <dd>specification of a stopping criterion, that is used instead of the
+one associated to the NMF algorithm.
+It may be specified as:
+<ul>
+<li> the access key of a registered stopping criterion;
+</li>
+<li> a single integer that specifies the exact number of iterations to perform, which will
+be honoured unless a lower value is explicitly passed in argument <code>maxIter</code>.
+</li>
+<li> a single numeric value that specifies the stationnarity threshold for the
+objective function, used in with <code><a href='stop-NMF.html'>nmf.stop.stationary</a></code>;
+</li>
+<li> a function with signature <code>(object="NMFStrategy", i="integer", y="matrix", x="NMF", ...)</code>,
+where <code>object</code> is the <code>NMFStrategy</code> object that describes the algorithm being run,
+<code>i</code> is the current iteration, <code>y</code> is the target matrix and <code>x</code> is the current value of
+the NMF model.
+</li>
 </ul>
 </dd>
       <dt>maxIter</dt>
       <dd>maximum number of iterations to perform.</dd>
       <dt>stopconv</dt>
-      <dd>number of iterations intervals over which
-  the connectivity matrix must not change for stationarity
-  to be achieved.</dd>
+      <dd>number of iterations intervals over which the connectivity
+matrix must not change for stationarity to be achieved.</dd>
       <dt>check.interval</dt>
-      <dd>interval (in number of iterations)
-  on which the stopping criterion is computed.</dd>
+      <dd>interval (in number of iterations) on which the stopping
+criterion is computed.</dd>
       <dt>stationary.th</dt>
-      <dd>maximum absolute value of the
-  gradient, for the objective function to be considered
-  stationary.</dd>
+      <dd>maximum absolute value of the gradient, for the objective
+function to be considered stationary.</dd>
       <dt>check.niter</dt>
-      <dd>number of successive iteration used to
-  compute the stationnary criterion.</dd>
+      <dd>number of successive iteration used to compute the stationnary
+criterion.</dd>
       <dt>weight</dt>
-      <dd>numeric vector of sample weights, e.g.,
-  used to normalise samples coming from multiple datasets.
-  It must be of the same length as the number of
-  samples/columns in <code>v</code> -- and <code>h</code>.</dd>
+      <dd>numeric vector of sample weights, e.g., used to normalise samples
+coming from multiple datasets.
+It must be of the same length as the number of samples/columns in <code>v</code>
+-- and <code>h</code>.</dd>
     </dl>
     
     <div class="Details">
@@ -221,7 +210,7 @@ nmfAlgorithm.Frobenius(..., .stop = NULL, maxIter = nmf.getOption("maxIter") %||
     
   Original update definition: D D Lee and HS Seung
 
-  Port to R and optimisation in C++: Renaud Gaujoux
+Port to R and optimisation in C++: Renaud Gaujoux
 
     
   </div>

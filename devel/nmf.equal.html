@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf.equal. NMF 0.21</title>
+<title>nmf.equal. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -88,30 +88,24 @@
     <h2>Arguments</h2>
     <dl>
       <dt>x</dt>
-      <dd>an NMF model or an object that is associated
-  with an NMF model, e.g. the result from a fit with
-  <code><a href='nmf.html'>nmf</a></code>.</dd>
+      <dd>an NMF model or an object that is associated with an NMF model, e.g.
+the result from a fit with <code><a href='nmf.html'>nmf</a></code>.</dd>
       <dt>y</dt>
-      <dd>an NMF model or an object that is associated
-  with an NMF model, e.g. the result from a fit with
-  <code><a href='nmf.html'>nmf</a></code>.</dd>
+      <dd>an NMF model or an object that is associated with an NMF model, e.g.
+the result from a fit with <code><a href='nmf.html'>nmf</a></code>.</dd>
       <dt>identical</dt>
-      <dd>a logical that indicates if the
-  comparison should be made using the function
-  <code><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></code> (<code>TRUE</code>) or
-  <code><a href='http://www.inside-r.org/r-doc/base/all.equal'>all.equal</a></code> (<code>FALSE</code>). See description
-  for method <code>nmf.equal,NMF,NMF</code>.</dd>
+      <dd>a logical that indicates if the comparison should be made
+using the function <code><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></code> (<code>TRUE</code>) or <code><a href='http://www.inside-r.org/r-doc/base/all.equal'>all.equal</a></code>
+(<code>FALSE</code>). See description for method <code>nmf.equal,NMF,NMF</code>.</dd>
       <dt>...</dt>
-      <dd>extra arguments to allow extension, and passed
-  to subsequent calls</dd>
+      <dd>extra arguments to allow extension, and passed to subsequent calls</dd>
       <dt>all</dt>
-      <dd>a logical that indicates if all fits should be
-  compared separately or only the best fits</dd>
+      <dd>a logical that indicates if all fits should be compared separately
+or only the best fits</dd>
       <dt>vector</dt>
-      <dd>a logical, only used when <code>all=TRUE</code>,
-  that indicates if all fits must be equal for <code>x</code> and
-  <code>y</code> to be declared equal, or if one wants to return
-  the result of each comparison in a vector.</dd>
+      <dd>a logical, only used when <code>all=TRUE</code>, that indicates if
+all fits must be equal for <code>x</code> and <code>y</code> to be declared equal, or
+if one wants to return the result of each comparison in a vector.</dd>
     </dl>
     
     <div class="Details">
@@ -137,57 +131,41 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>nmf.equal<code>signature(x = "NMF", y = "NMF")</code>:
-  Compares two NMF models.</p>
+<li>nmf.equal<code>signature(x = "NMF", y = "NMF")</code>: Compares two NMF models.</p>
   
-      <p>Arguments in <code>...</code> are used only when
-  <code>identical=FALSE</code> and are passed to
-  <code>all.equal</code>.</p>
+      <p>Arguments in <code>...</code> are used only when <code>identical=FALSE</code> and are
+passed to <code>all.equal</code>.</p>
   
       <p></li>
-<li>nmf.equal<code>signature(x = "NMFfit", y =
-  "NMF")</code>: Compares two NMF models when at least one comes
-  from a NMFfit object, i.e. an object returned by a single
-  run of <code><a href='nmf.html'>nmf</a></code>.</p>
+<li>nmf.equal<code>signature(x = "NMFfit", y = "NMF")</code>: Compares two NMF models when at least one comes from a NMFfit object,
+i.e. an object returned by a single run of <code><a href='nmf.html'>nmf</a></code>.</p>
   
       <p></li>
-<li>nmf.equal<code>signature(x = "NMF", y =
-  "NMFfit")</code>: Compares two NMF models when at least one
-  comes from a NMFfit object, i.e. an object returned by a
-  single run of <code><a href='nmf.html'>nmf</a></code>.</p>
+<li>nmf.equal<code>signature(x = "NMF", y = "NMFfit")</code>: Compares two NMF models when at least one comes from a NMFfit object,
+i.e. an object returned by a single run of <code><a href='nmf.html'>nmf</a></code>.</p>
   
       <p></li>
-<li>nmf.equal<code>signature(x = "NMFfit", y =
-  "NMFfit")</code>: Compares two fitted NMF models, i.e. objects
-  returned by single runs of <code><a href='nmf.html'>nmf</a></code>.</p>
+<li>nmf.equal<code>signature(x = "NMFfit", y = "NMFfit")</code>: Compares two fitted NMF models, i.e. objects returned by single runs of
+<code><a href='nmf.html'>nmf</a></code>.</p>
   
       <p></li>
-<li>nmf.equal<code>signature(x = "NMFfitX", y =
-  "NMF")</code>: Compares two NMF models when at least one comes
-  from multiple NMF runs.</p>
+<li>nmf.equal<code>signature(x = "NMFfitX", y = "NMF")</code>: Compares two NMF models when at least one comes from multiple NMF runs.</p>
   
       <p></li>
-<li>nmf.equal<code>signature(x = "NMF", y =
-  "NMFfitX")</code>: Compares two NMF models when at least one
-  comes from multiple NMF runs.</p>
+<li>nmf.equal<code>signature(x = "NMF", y = "NMFfitX")</code>: Compares two NMF models when at least one comes from multiple NMF runs.</p>
   
       <p></li>
-<li>nmf.equal<code>signature(x = "NMFfitX1", y =
-  "NMFfitX1")</code>: Compares the NMF models fitted by multiple
-  runs, that only kept the best fits.</p>
+<li>nmf.equal<code>signature(x = "NMFfitX1", y = "NMFfitX1")</code>: Compares the NMF models fitted by multiple runs, that only kept the best fits.</p>
   
       <p></li>
-<li>nmf.equal<code>signature(x = "list", y =
-  "list")</code>: Compares the results of multiple NMF runs.</p>
+<li>nmf.equal<code>signature(x = "list", y = "list")</code>: Compares the results of multiple NMF runs.</p>
   
-      <p>This method either compare the two best fit, or all fits
-  separately. All extra arguments in <code>...</code> are passed
-  to each internal call to <code>nmf.equal</code>.</p>
+      <p>This method either compare the two best fit, or all fits separately.
+All extra arguments in <code>...</code> are passed to each internal call to
+<code>nmf.equal</code>.</p>
   
       <p></li>
-<li>nmf.equal<code>signature(x = "list", y =
-  "missing")</code>: Compare all elements in <code>x</code> to
-  <code>x[[1]]</code>.</p>
+<li>nmf.equal<code>signature(x = "list", y = "missing")</code>: Compare all elements in <code>x</code> to <code>x[[1]]</code>.</p>
   
       <p></li>
 </ol></p>

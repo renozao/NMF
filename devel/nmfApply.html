@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfApply. NMF 0.21</title>
+<title>nmfApply. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -82,37 +82,32 @@
     <h2>Arguments</h2>
     <dl>
       <dt>X</dt>
-      <dd>an object that has suitable <code><a href='basis-coef-methods.html'>basis</a></code>
-  and <code>coef</code> methods, e.g. an NMF model.</dd>
+      <dd>an object that has suitable <code><a href='basis-coef-methods.html'>basis</a></code> and <code>coef</code> methods,
+e.g. an NMF model.</dd>
       <dt>MARGIN</dt>
-      <dd>a single numeric (integer) value that
-  specifies over which margin(s) the function <code>FUN</code> is
-  applied. See section <em>Details</em> for a list of
-  possible values.</dd>
+      <dd>a single numeric (integer) value that specifies over which margin(s)
+the function <code>FUN</code> is applied.
+See section <em>Details</em> for a list of possible values.</dd>
       <dt>FUN</dt>
-      <dd>a function to apply over the specified
-  margins.</dd>
+      <dd>a function to apply over the specified margins.</dd>
       <dt>...</dt>
       <dd>extra arguments passed to <code>FUN</code></dd>
       <dt>simplify</dt>
-      <dd>a logical only used when <code>MARGIN=3</code>,
-  that indicates if <code>sapply</code> should try to simplify
-  result if possible. Since this argument follows
-  &#145;...&#146; its name cannot be abbreviated.</dd>
+      <dd>a logical only used when <code>MARGIN=3</code>, that indicates if <code>sapply</code>
+should try to simplify result if possible.
+Since this argument follows &#145;...&#146; its name cannot be abbreviated.</dd>
       <dt>USE.NAMES</dt>
-      <dd>a logical only used when
-  <code>MARGIN=3</code>, that indicates if <code>sapply</code> should
-  use the names of the basis components to name the results
-  if present. Since this argument follows &#145;...&#146; its
-  name cannot be abbreviated.</dd>
+      <dd>a logical only used when <code>MARGIN=3</code>, that indicates if <code>sapply</code>
+should use the names of the basis components to name the results if present.
+Since this argument follows &#145;...&#146; its name cannot be abbreviated.</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
       
-      <p>a vector or a list. See <code><a href='http://www.inside-r.org/r-doc/base/apply'>apply</a></code> and
-  <code><a href='http://www.inside-r.org/r-doc/base/lapply'>sapply</a></code> for more details on the output
-  format.</p>
+      <p>a vector or a list.
+See <code><a href='http://www.inside-r.org/r-doc/base/apply'>apply</a></code> and <code><a href='http://www.inside-r.org/r-doc/base/lapply'>sapply</a></code> for more details on
+the output format.</p>
   
     </div>
 
@@ -120,7 +115,7 @@
       <h2>Details</h2>
       
       <p>The function <code>FUN</code> is applied via a call to
-  <code><a href='http://www.inside-r.org/r-doc/base/apply'>apply</a></code> or <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/lapply'>sapply</a></code> according to
+  <code><a href='http://www.inside-r.org/r-doc/base/apply'>apply</a></code> or <code><a href='http://www.inside-r.org/r-doc/base/lapply'>sapply</a></code> according to
   the value of argument <code>MARGIN</code> as follows:</p>
   
       <p><ol>

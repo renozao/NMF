@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>basisnames. NMF 0.21</title>
+<title>basisnames. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -97,15 +97,13 @@ basisnames(x, ...) <- value
     <h2>Arguments</h2>
     <dl>
       <dt>x</dt>
-      <dd>an object with suitable <code>basis</code> and
-  <code>coef</code> methods, such as an object that inherit from
-  <code><a href='NMF-class.html'>NMF-class</a></code>.</dd>
+      <dd>an object with suitable <code>basis</code> and <code>coef</code> methods, such
+as an object that inherit from <code><a href='NMF-class.html'>NMF-class</a></code>.</dd>
       <dt>...</dt>
       <dd>extra argument to allow extension.</dd>
       <dt>value</dt>
-      <dd>a character vector, or <code>NULL</code> or, in
-  the case of <code>dimnames<-</code>, a list 2 or 3-length list
-  of character vectors.</dd>
+      <dd>a character vector, or <code>NULL</code> or, in the case of
+<code>dimnames<-</code>, a list 2 or 3-length list of character vectors.</dd>
     </dl>
     
     <div class="Details">
@@ -118,9 +116,9 @@ basisnames(x, ...) <- value
   method defined for its class.</p>
   
       <p>The method <code>dimnames</code> is implemented for the base
-  generic <code><a href='http://www.inside-r.org/r-doc/Biobase/class.eSet'>dimnames</a></code>, which make the base
-  function <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/row_colnames'>rownames</a></code> and
-  <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/row_colnames'>colnames</a></code> work directly.</p>
+  generic <code><a href='http://www.inside-r.org/r-doc/base/dimnames'>dimnames</a></code>, which make the base
+  function <code><a href='http://www.inside-r.org/r-doc/base/colnames'>rownames</a></code> and
+  <code><a href='http://www.inside-r.org/r-doc/base/colnames'>colnames</a></code> work directly.</p>
   
       <p>Overall, these methods behave as their equivalent on
   <code>matrix</code> objects. The function <code>basisnames<-</code>
@@ -140,43 +138,35 @@ basisnames(x, ...) <- value
       <h2>Methods</h2>
       
       <p><ol>
-<li>basisnames<code>signature(x = "ANY")</code>: Default
-  method which returns the column names of the basis matrix
-  extracted from <code>x</code>, using the <code>basis</code> method.</p>
+<li>basisnames<code>signature(x = "ANY")</code>: Default method which returns the column names of the basis matrix extracted from
+<code>x</code>, using the <code>basis</code> method.</p>
   
-      <p>For NMF objects these also correspond to the row names of
-  the coefficient matrix.</p>
+      <p>For NMF objects these also correspond to the row names of the coefficient matrix.</p>
   
       <p></li>
-<li>basisnames<-<code>signature(x = "ANY")</code>: Default
-  method which sets, respectively, the row and the column
-  names of the basis matrix and coefficient matrix of
-  <code>x</code> to <code>value</code>.</p>
+<li>basisnames<-<code>signature(x = "ANY")</code>: Default method which sets, respectively, the row and the column names of the basis
+matrix and coefficient matrix of <code>x</code> to <code>value</code>.</p>
   
       <p></li>
-<li>dimnames<code>signature(x = "NMF")</code>: Returns the
-  dimension names of the NMF model <code>x</code>.</p>
+<li>dimnames<code>signature(x = "NMF")</code>: Returns the dimension names of the NMF model <code>x</code>.</p>
   
-      <p>It returns either NULL if no dimnames are set on the
-  object, or a 3-length list containing the row names of
-  the basis matrix, the column names of the mixture
-  coefficient matrix, and the column names of the basis
-  matrix (i.e. the names of the basis components).</p>
+      <p>It returns either NULL if no dimnames are set on the object,
+or a 3-length list containing the row names of the basis matrix,
+the column names of the mixture coefficient matrix, and the column names of
+the basis matrix (i.e. the names of the basis components).</p>
   
       <p></li>
-<li>dimnames<-<code>signature(x = "NMF")</code>: sets the
-  dimension names of the NMF model <code>x</code>.</p>
+<li>dimnames<-<code>signature(x = "NMF")</code>: sets the dimension names of the NMF model <code>x</code>.</p>
   
-      <p><code>value</code> can be <code>NULL</code> which resets all
-  dimension names, or a 1, 2 or 3-length list providing
-  names at least for the rows of the basis matrix.</p>
+      <p><code>value</code> can be <code>NULL</code> which resets all dimension names, or a
+1, 2 or 3-length list providing names at least for the rows of the basis
+matrix.</p>
   
-      <p>The optional second element of <code>value</code> (NULL if
-  absent) is used to set the column names of the
-  coefficient matrix. The optional third element of
-  <code>value</code> (NULL if absent) is used to set both the
-  column names of the basis matrix and the row names of the
-  coefficient matrix.</p>
+      <p>The optional second element of <code>value</code> (NULL if absent) is used to set
+the column names of the coefficient matrix.
+The optional third element of <code>value</code> (NULL if absent) is used to set
+both the column names of the basis matrix and the row names of the
+coefficient matrix.</p>
   
       <p></li>
 </ol></p>

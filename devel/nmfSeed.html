@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfSeed. NMF 0.21</title>
+<title>nmfSeed. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -86,14 +86,13 @@ existsNMFSeed(name, exact = TRUE)</pre>
     <h2>Arguments</h2>
     <dl>
       <dt>name</dt>
-      <dd>access key of a seeding method stored in
-  registry. If missing, <code>nmfSeed</code> returns the list of
-  all available seeding methods.</dd>
+      <dd>access key of a seeding method stored in registry.
+If missing, <code>nmfSeed</code> returns the list of all available seeding methods.</dd>
       <dt>...</dt>
       <dd>extra arguments used for internal calls</dd>
       <dt>exact</dt>
-      <dd>a logical that indicates if the access key
-  should be matched exactly or partially.</dd>
+      <dd>a logical that indicates if the access key should be matched
+exactly or partially.</dd>
     </dl>
     
     <div class="Details">
@@ -150,10 +149,7 @@ existsNMFSeed(name, exact = TRUE)</pre>
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre><code class="r">## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
+    <pre><code class="r">
 
 # list all registered seeding methods
 nmfSeed()

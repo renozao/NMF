@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>purity. NMF 0.21</title>
+<title>purity. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -96,22 +96,17 @@ entropy(x, y, ...)
     <h2>Arguments</h2>
     <dl>
       <dt>x</dt>
-      <dd>an object that can be interpreted as a factor or
-  can generate such an object, e.g. via a suitable method
-  <code><a href='predict.html'>predict</a></code>, which gives the cluster membership
-  for each sample.</dd>
+      <dd>an object that can be interpreted as a factor or can generate such an object, e.g. via
+a suitable method <code><a href='predict.html'>predict</a></code>, which gives the cluster membership for each sample.</dd>
       <dt>y</dt>
-      <dd>a factor or an object coerced into a factor that
-  gives the true class labels for each sample. It may be
-  missing if <code>x</code> is a contingency table.</dd>
+      <dd>a factor or an object coerced into a factor that gives the true class labels for each sample.
+It may be missing if <code>x</code> is a contingency table.</dd>
       <dt>...</dt>
-      <dd>extra arguments to allow extension, and
-  usually passed to the next method.</dd>
+      <dd>extra arguments to allow extension, and usually passed to the next method.</dd>
       <dt>method</dt>
-      <dd>a character string that specifies how the
-  value is computed. It may be either <code>'best'</code> or
-  <code>'mean'</code> to compute the best or mean purity
-  respectively.</dd>
+      <dd>a character string that specifies how the value is computed.
+It may be either <code>'best'</code> or <code>'mean'</code> to compute the best or mean
+purity respectively.</dd>
     </dl>
     
     <div class="Value">
@@ -168,51 +163,36 @@ entropy(x, y, ...)
       <h2>Methods</h2>
       
       <p><ol>
-<li>entropy<code>signature(x = "table", y =
-  "missing")</code>: Computes the purity directly from the
-  contingency table <code>x</code>.</p>
+<li>entropy<code>signature(x = "table", y = "missing")</code>: Computes the purity directly from the contingency table <code>x</code>.</p>
   
-      <p>This is the workhorse method that is eventually called by
-  all other methods.</p>
+      <p>This is the workhorse method that is eventually called by all other methods.</p>
   
       <p></li>
-<li>entropy<code>signature(x = "factor", y = "ANY")</code>:
-  Computes the purity on the contingency table of <code>x</code>
-  and <code>y</code>, that is coerced into a factor if necessary.</p>
+<li>entropy<code>signature(x = "factor", y = "ANY")</code>: Computes the purity on the contingency table of <code>x</code> and <code>y</code>, that is
+coerced into a factor if necessary.</p>
   
       <p></li>
-<li>entropy<code>signature(x = "ANY", y = "ANY")</code>:
-  Default method that should work for results of clustering
-  algorithms, that have a suitable <code>predict</code> method
-  that returns the cluster membership vector: the purity is
-  computed between <code>x</code> and <code>predict{y}</code></p>
+<li>entropy<code>signature(x = "ANY", y = "ANY")</code>: Default method that should work for results of clustering algorithms, that have a
+suitable <code>predict</code> method that returns the cluster membership vector:
+the purity is computed between <code>x</code> and <code>predict{y}</code></p>
   
       <p></li>
-<li>entropy<code>signature(x = "NMFfitXn", y =
-  "ANY")</code>: Computes the best or mean entropy across all NMF
-  fits stored in <code>x</code>.</p>
+<li>entropy<code>signature(x = "NMFfitXn", y = "ANY")</code>: Computes the best or mean entropy across all NMF fits stored in <code>x</code>.</p>
   
       <p></li>
-<li>purity<code>signature(x = "table", y =
-  "missing")</code>: Computes the purity directly from the
-  contingency table <code>x</code></p>
+<li>purity<code>signature(x = "table", y = "missing")</code>: Computes the purity directly from the contingency table <code>x</code></p>
   
       <p></li>
-<li>purity<code>signature(x = "factor", y = "ANY")</code>:
-  Computes the purity on the contingency table of <code>x</code>
-  and <code>y</code>, that is coerced into a factor if necessary.</p>
+<li>purity<code>signature(x = "factor", y = "ANY")</code>: Computes the purity on the contingency table of <code>x</code> and <code>y</code>, that is
+coerced into a factor if necessary.</p>
   
       <p></li>
-<li>purity<code>signature(x = "ANY", y = "ANY")</code>:
-  Default method that should work for results of clustering
-  algorithms, that have a suitable <code>predict</code> method
-  that returns the cluster membership vector: the purity is
-  computed between <code>x</code> and <code>predict{y}</code></p>
+<li>purity<code>signature(x = "ANY", y = "ANY")</code>: Default method that should work for results of clustering algorithms, that have a
+suitable <code>predict</code> method that returns the cluster membership vector:
+the purity is computed between <code>x</code> and <code>predict{y}</code></p>
   
       <p></li>
-<li>purity<code>signature(x = "NMFfitXn", y =
-  "ANY")</code>: Computes the best or mean purity across all NMF
-  fits stored in <code>x</code>.</p>
+<li>purity<code>signature(x = "NMFfitXn", y = "ANY")</code>: Computes the best or mean purity across all NMF fits stored in <code>x</code>.</p>
   
       <p></li>
 </ol></p>
@@ -235,10 +215,7 @@ entropy(x, y, ...)
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre><code class="r">## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
+    <pre><code class="r">
 
 # generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)
 n &lt;- 50; counts &lt;- c(5, 5, 8);

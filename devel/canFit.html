@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>canFit. NMF 0.21</title>
+<title>canFit. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -89,30 +89,22 @@
       <dt>...</dt>
       <dd>extra arguments to allow extension</dd>
       <dt>exact</dt>
-      <dd>for logical that indicates if an algorithm
-  is considered able to fit only the models that it
-  explicitly declares (<code>TRUE</code>), or if it should be
-  considered able to also fit models that extend models
-  that it explicitly fits.</dd>
+      <dd>for logical that indicates if an algorithm is considered able to fit
+only the models that it explicitly declares (<code>TRUE</code>), or if it should be
+considered able to also fit models that extend models that it explicitly fits.</dd>
     </dl>
     
     <div class="Methods">
       <h2>Methods</h2>
       
       <p><ol>
-<li>canFit<code>signature(x = "NMFStrategy", y =
-  "character")</code>: Tells if an NMF algorithm can fit a given
-  class of NMF models</p>
+<li>canFit<code>signature(x = "NMFStrategy", y = "character")</code>: Tells if an NMF algorithm can fit a given class of NMF models</p>
   
       <p></li>
-<li>canFit<code>signature(x = "NMFStrategy", y =
-  "NMF")</code>: Tells if an NMF algorithm can fit the same class
-  of models as <code>y</code></p>
+<li>canFit<code>signature(x = "NMFStrategy", y = "NMF")</code>: Tells if an NMF algorithm can fit the same class of models as <code>y</code></p>
   
       <p></li>
-<li>canFit<code>signature(x = "character", y =
-  "ANY")</code>: Tells if a registered NMF algorithm can fit a
-  given NMF model</p>
+<li>canFit<code>signature(x = "character", y = "ANY")</code>: Tells if a registered NMF algorithm can fit a given NMF model</p>
   
       <p></li>
 </ol></p>

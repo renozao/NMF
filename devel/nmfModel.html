@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfModel. NMF 0.21</title>
+<title>nmfModel. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -99,71 +99,60 @@ nmfModels(builtin.only = FALSE)</pre>
     <h2>Arguments</h2>
     <dl>
       <dt>rank</dt>
-      <dd>specification of the target factorization
-  rank (i.e. the number of components).</dd>
+      <dd>specification of the target factorization rank
+(i.e. the number of components).</dd>
       <dt>target</dt>
-      <dd>an object that specifies the dimension of
-  the estimated target matrix.</dd>
+      <dd>an object that specifies the dimension of the estimated target matrix.</dd>
       <dt>...</dt>
-      <dd>extra arguments to allow extension, that are
-  passed down to the workhorse method
-  <code>nmfModel,numeric.numeric</code>, where they are used to
-  initialise slots specific to the instantiating NMF model
-  class.</dd>
+      <dd>extra arguments to allow extension, that are passed down to the
+workhorse method <code>nmfModel,numeric.numeric</code>, where they are used to
+initialise slots specific to the instantiating NMF model class.</dd>
       <dt>ncol</dt>
-      <dd>a numeric value that specifies the number of
-  columns of the target matrix, fitted the NMF model. It is
-  used only if not missing and when argument <code>target</code>
-  is a single numeric value.</dd>
+      <dd>a numeric value that specifies the number
+of columns of the target matrix, fitted the NMF model.
+It is used only if not missing and when argument <code>target</code> is a single
+numeric value.</dd>
       <dt>model</dt>
-      <dd>the class of the object to be created. It
-  must be a valid class name that inherits from class
-  <code>NMF</code>. Default is the standard NMF model
-  <code><a href='NMFstd-class.html'>NMFstd-class</a></code>.</dd>
+      <dd>the class of the object to be created.
+It must be a valid class name that inherits from class <code>NMF</code>.
+Default is the standard NMF model <code><a href='NMFstd-class.html'>NMFstd-class</a></code>.</dd>
       <dt>W</dt>
-      <dd>value for the basis matrix. <code>data.frame</code>
-  objects are converted into matrices with
-  <code><a href='http://www.inside-r.org/r-doc/base/matrix'>as.matrix</a></code>.</dd>
+      <dd>value for the basis matrix.
+<code>data.frame</code> objects are converted into matrices with <code><a href='http://www.inside-r.org/r-doc/base/matrix'>as.matrix</a></code>.</dd>
       <dt>H</dt>
       <dd>value for the mixture coefficient matrix
-  <code>data.frame</code> objects are converted into matrices
-  with <code><a href='http://www.inside-r.org/r-doc/base/matrix'>as.matrix</a></code>.</dd>
+<code>data.frame</code> objects are converted into matrices with <code><a href='http://www.inside-r.org/r-doc/base/matrix'>as.matrix</a></code>.</dd>
       <dt>force.dim</dt>
-      <dd>logical that indicates whether the
-  method should try lowering the rank or shrinking
-  dimensions of the input matrices to make them compatible</dd>
+      <dd>logical that indicates whether the method should try
+lowering the rank or shrinking dimensions of the input matrices to
+make them compatible</dd>
       <dt>order.basis</dt>
-      <dd>logical that indicates whether the
-  basis components should reorder the rows of the mixture
-  coefficient matrix to match the order of the basis
-  components, based on their respective names. It is only
-  used if the basis and coefficient matrices have common
-  unique column and row names respectively.</dd>
+      <dd>logical that indicates whether the basis components should
+reorder the rows of the mixture coefficient matrix to match the order of the
+basis components, based on their respective names. It is only used if the
+basis and coefficient matrices have common unique column and row names
+respectively.</dd>
       <dt>use.names</dt>
-      <dd>a logical that indicates whether the
-  dimension names of the target matrix should be set on the
-  returned NMF model.</dd>
+      <dd>a logical that indicates whether the dimension names of the
+target matrix should be set on the returned NMF model.</dd>
       <dt>data</dt>
-      <dd>Optional argument where to look for the
-  variables used in the formula.</dd>
+      <dd>Optional argument where to look for the variables used in the
+formula.</dd>
       <dt>no.attrib</dt>
-      <dd>logical that indicate if attributes
-  containing data related to the formula should be attached
-  as attributes. If <code>FALSE</code> attributes <code>'target'</code>
-  and <code>'formula'</code> contain the target matrix, and a
-  list describing each formula part (response, regressors,
-  etc.).</dd>
+      <dd>logical that indicate if attributes containing data related
+to the formula should be attached as attributes.
+If <code>FALSE</code> attributes <code>'target'</code> and <code>'formula'</code> contain the
+target matrix, and a list describing each formula part (response, regressors,
+etc.).</dd>
       <dt>builtin.only</dt>
-      <dd>logical that indicates whether only
-  built-in NMF models, i.e. defined within the NMF package,
-  should be listed.</dd>
+      <dd>logical that indicates whether only built-in NMF models,
+i.e. defined within the NMF package, should be listed.</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
       
-      <p>an object that inherits from class
-  <code><a href='NMF-class.html'>NMF-class</a></code>.</p>
+      <p>an object that inherits from class <code><a href='NMF-class.html'>NMF-class</a></code>.</p>
   
       <p>a list</p>
   
@@ -195,127 +184,96 @@ nmfModels(builtin.only = FALSE)</pre>
       <h2>Methods</h2>
       
       <p><ol>
-<li>nmfModel<code>signature(rank = "numeric", target
-  = "numeric")</code>: Main factory method for NMF models</p>
+<li>nmfModel<code>signature(rank = "numeric", target = "numeric")</code>: Main factory method for NMF models</p>
   
-      <p>This method is the workhorse method that is eventually
-  called by all other methods. See section <em>Main
-  factory method</em> for more details.</p>
+      <p>This method is the workhorse method that is eventually called by all other methods.
+See section <em>Main factory method</em> for more details.</p>
   
       <p></li>
-<li>nmfModel<code>signature(rank = "numeric", target
-  = "missing")</code>: Creates an empty NMF model of a given
-  rank.</p>
+<li>nmfModel<code>signature(rank = "numeric", target = "missing")</code>: Creates an empty NMF model of a given rank.</p>
   
-      <p>This call is equivalent to <code>nmfModel(rank, 0L,
-  ...)</code>, which creates <em>empty</em> <code>NMF</code> object with
-  a basis and mixture coefficient matrix of dimension 0 x
-  <code>rank</code> and <code>rank</code> x 0 respectively.</p>
+      <p>This call is equivalent to <code>nmfModel(rank, 0L, ...)</code>, which
+creates <em>empty</em> <code>NMF</code> object with a basis and mixture coefficient matrix
+of dimension 0 x <code>rank</code> and <code>rank</code> x 0 respectively.</p>
   
       <p></li>
-<li>nmfModel<code>signature(rank = "missing", target
-  = "ANY")</code>: Creates an empty NMF model of null rank and a
-  given dimension.</p>
+<li>nmfModel<code>signature(rank = "missing", target = "ANY")</code>: Creates an empty NMF model of null rank and a given dimension.</p>
   
-      <p>This call is equivalent to <code>nmfModel(0, target,
-  ...)</code>.</p>
+      <p>This call is equivalent to <code>nmfModel(0, target, ...)</code>.</p>
   
       <p></li>
-<li>nmfModel<code>signature(rank = "NULL", target =
-  "ANY")</code>: Creates an empty NMF model of null rank and
-  given dimension.</p>
+<li>nmfModel<code>signature(rank = "NULL", target = "ANY")</code>: Creates an empty NMF model of null rank and given dimension.</p>
   
-      <p>This call is equivalent to <code>nmfModel(0, target,
-  ...)</code>, and is meant for internal usage only.</p>
+      <p>This call is equivalent to <code>nmfModel(0, target, ...)</code>, and is meant for
+internal usage only.</p>
   
       <p></li>
-<li>nmfModel<code>signature(rank = "missing", target
-  = "missing")</code>: Creates an empty NMF model or from
-  existing factors</p>
+<li>nmfModel<code>signature(rank = "missing", target = "missing")</code>: Creates an empty NMF model or from existing factors</p>
   
-      <p>This method is equivalent to <code>nmfModel(0, 0, ...,
-  force.dim=FALSE)</code>. This means that the dimensions of the
-  NMF model will be taken from the optional basis and
-  mixture coefficient arguments <code>W</code> and <code>H</code>. An
-  error is thrown if their dimensions are not compatible.</p>
+      <p>This method is equivalent to <code>nmfModel(0, 0, ..., force.dim=FALSE)</code>.
+This means that the dimensions of the NMF model will be taken from the optional
+basis and mixture coefficient arguments <code>W</code> and <code>H</code>.
+An error is thrown if their dimensions are not compatible.</p>
   
-      <p>Hence, this method may be used to generate an NMF model
-  from existing factor matrices, by providing the named
-  arguments <code>W</code> and/or <code>H</code>:</p>
+      <p>Hence, this method may be used to generate an NMF model from existing factor
+matrices, by providing the named arguments <code>W</code> and/or <code>H</code>:</p>
   
-      <p><code>nmfModel(W=w)</code> or <code>nmfModel(H=h)</code> or
-  <code>nmfModel(W=w, H=h)</code></p>
+      <p><code>nmfModel(W=w)</code> or <code>nmfModel(H=h)</code> or <code>nmfModel(W=w, H=h)</code></p>
   
-      <p>Note that this may be achieved using the more convenient
-  interface is provided by the method
-  <code>nmfModel,matrix,matrix</code> (see its dedicated
-  description).</p>
+      <p>Note that this may be achieved using the more convenient interface is
+provided by the method <code>nmfModel,matrix,matrix</code> (see its dedicated description).</p>
   
       <p>See the description of the appropriate method below.</p>
   
       <p></li>
-<li>nmfModel<code>signature(rank = "numeric", target
-  = "matrix")</code>: Creates an NMF model compatible with a
-  target matrix.</p>
+<li>nmfModel<code>signature(rank = "numeric", target = "matrix")</code>: Creates an NMF model compatible with a target matrix.</p>
   
-      <p>This call is equivalent to <code>nmfModel(rank,
-  dim(target), ...)</code>. That is that the returned NMF object
-  fits a target matrix of the same dimension as
-  <code>target</code>.</p>
+      <p>This call is equivalent to <code>nmfModel(rank, dim(target), ...)</code>.
+That is that the returned NMF object fits a target matrix of the same
+dimension as <code>target</code>.</p>
   
-      <p>Only the dimensions of <code>target</code> are used to
-  construct the <code>NMF</code> object. The matrix slots are
-  filled with <code>NA</code> values if these are not specified
-  in arguments <code>W</code> and/or <code>H</code>. However, dimension
-  names are set on the return NMF model if present in
-  <code>target</code> and argument <code>use.names=TRUE</code>.</p>
+      <p>Only the dimensions of <code>target</code> are used to construct the <code>NMF</code> object.
+The matrix slots are filled with <code>NA</code> values if these are not specified
+in arguments <code>W</code> and/or <code>H</code>.
+However, dimension names are set on the return NMF model if present in
+<code>target</code> and argument <code>use.names=TRUE</code>.</p>
   
       <p></li>
-<li>nmfModel<code>signature(rank = "matrix", target =
-  "matrix")</code>: Creates an NMF model based on two existing
-  factors.</p>
+<li>nmfModel<code>signature(rank = "matrix", target = "matrix")</code>: Creates an NMF model based on two existing factors.</p>
   
-      <p>This method is equivalent to <code>nmfModel(0, 0, W=rank,
-  H=target..., force.dim=FALSE)</code>. This allows for a natural
-  shortcut for wrapping existing <strong>compatible</strong>
-  matrices into NMF models: <span class = "samp">nmfModel(w, h)</span></p>
+      <p>This method is equivalent to <code>nmfModel(0, 0, W=rank, H=target..., force.dim=FALSE)</code>.
+This allows for a natural shortcut for wrapping existing <strong>compatible</strong>
+matrices into NMF models:
+<span class = "samp">nmfModel(w, h)</span></p>
   
-      <p>Note that an error is thrown if their dimensions are not
-  compatible.</p>
+      <p>Note that an error is thrown if their dimensions are not compatible.</p>
   
       <p></li>
-<li>nmfModel<code>signature(rank = "data.frame",
-  target = "data.frame")</code>: Same as <code>nmfModel('matrix',
-  'matrix')</code> but for <code>data.frame</code> objects, which are
-  generally produced by <code><a href='http://www.inside-r.org/r-doc/utils/read.table'>read.delim</a></code>-like
-  functions.</p>
+<li>nmfModel<code>signature(rank = "data.frame", target = "data.frame")</code>: Same as <code>nmfModel('matrix', 'matrix')</code> but for <code>data.frame</code> objects,
+which are generally produced by <code><a href='http://www.inside-r.org/r-doc/utils/read.table'>read.delim</a></code>-like functions.</p>
   
-      <p>The input <code>data.frame</code> objects are converted into
-  matrices with <code><a href='http://www.inside-r.org/r-doc/base/matrix'>as.matrix</a></code>.</p>
+      <p>The input <code>data.frame</code> objects are converted into matrices with
+<code><a href='http://www.inside-r.org/r-doc/base/matrix'>as.matrix</a></code>.</p>
   
       <p></li>
-<li>nmfModel<code>signature(rank = "matrix", target =
-  "ANY")</code>: Creates an NMF model with arguments <code>rank</code>
-  and <code>target</code> swapped.</p>
+<li>nmfModel<code>signature(rank = "matrix", target = "ANY")</code>: Creates an NMF model with arguments <code>rank</code> and <code>target</code> swapped.</p>
   
-      <p>This call is equivalent to <code>nmfModel(rank=target,
-  target=rank, ...)</code>. This allows to call the
-  <code>nmfModel</code> function with arguments <code>rank</code> and
-  <code>target</code> swapped. It exists for convenience:
-  <ul>
-<li> allows typing <code>nmfModel(V)</code> instead
-  of <code>nmfModel(target=V)</code> to create a model compatible
-  with a given matrix <code>V</code> (i.e. of dimension
-  <code>nrow(V), 0, ncol(V)</code>) </li>
-<li> one can pass the
-  arguments in any order (the one that comes to the user's
-  mind first) and it still works as expected. </li>
+      <p>This call is equivalent to <code>nmfModel(rank=target, target=rank, ...)</code>.
+This allows to call the <code>nmfModel</code> function with arguments <code>rank</code>
+and <code>target</code> swapped.
+It exists for convenience:
+<ul>
+<li> allows typing <code>nmfModel(V)</code> instead of <code>nmfModel(target=V)</code> to create
+a model compatible with a given matrix <code>V</code> (i.e. of dimension <code>nrow(V), 0, ncol(V)</code>)
+</li>
+<li> one can pass the arguments in any order (the one that comes to the user's mind first)
+	and it still works as expected.
+</li>
 </ul></p>
   
       <p></li>
-<li>nmfModel<code>signature(rank = "formula", target
-  = "ANY")</code>: Build a formula-based NMF model, that can
-  incorporate fixed basis or coefficient terms.</p>
+<li>nmfModel<code>signature(rank = "formula", target = "ANY")</code>: Build a formula-based NMF model, that can incorporate fixed basis or
+coefficient terms.</p>
   
       <p></li>
 </ol></p>
@@ -327,62 +285,52 @@ nmfModels(builtin.only = FALSE)</pre>
     <div class="Main factory method">
       <h2>Main factory method</h2>
       
-      <p>The main factory engine of NMF models is implemented by
-  the method with signature <code>numeric, numeric</code>. Other
-  factory methods provide convenient ways of creating NMF
-  models from e.g. a given target matrix or known
-  basis/coef matrices (see section <em>Other Factory
-  Methods</em>).</p>
+      <p></p>
   
-      <p>This method creates an object of class <code>model</code>,
-  using the extra arguments in <code>...</code> to initialise
-  slots that are specific to the given model.</p>
+      <p>The main factory engine of NMF models is implemented by the method with
+signature <code>numeric, numeric</code>.
+Other factory methods provide convenient ways of creating NMF models from e.g. a
+given target matrix or known basis/coef matrices (see section <em>Other Factory Methods</em>).</p>
   
-      <p>All NMF models implement get/set methods to access the
-  matrix factors (see <code><a href='basis-coef-methods.html'>basis</a></code>), which are
-  called to initialise them from arguments <code>W</code> and
-  <code>H</code>. These argument names derive from the definition
-  of all built-in models that inherit derive from class
-  <code><a href='NMFstd-class.html'>NMFstd-class</a></code>, which has two slots, <var>W</var>
-  and <var>H</var>, to hold the two factors -- following the
-  notations used in <cite>Lee et al. (1999)</cite>.</p>
+      <p>This method creates an object of class <code>model</code>, using the extra
+arguments in <code>...</code> to initialise slots that are specific to the given model.</p>
   
-      <p>If argument <code>target</code> is missing, the method creates
-  a standard NMF model of dimension 0x<code>rank</code>x0. That
-  is that the basis and mixture coefficient matrices,
-  <var>W</var> and <var>H</var>, have dimension 0x<code>rank</code> and
-  <code>rank</code>x0 respectively.</p>
+      <p>All NMF models implement get/set methods to access the matrix factors
+(see <code><a href='basis-coef-methods.html'>basis</a></code>), which are called to initialise them from arguments
+<code>W</code> and <code>H</code>.
+These argument names derive from the definition of all built-in models that
+inherit derive from class <code><a href='NMFstd-class.html'>NMFstd-class</a></code>, which has two slots,
+<var>W</var> and <var>H</var>, to hold the two factors -- following the notations used
+in <cite>Lee et al. (1999)</cite>.</p>
   
-      <p>If target dimensions are also provided in argument
-  <code>target</code> as a 2-length vector, then the method
-  creates an <code>NMF</code> object compatible to fit a target
-  matrix of dimension <code>target[1]</code>x<code>target[2]</code>.
-  That is that the basis and mixture coefficient matrices,
-  <var>W</var> and <var>H</var>, have dimension
-  <code>target[1]</code>x<code>rank</code> and
-  <code>rank</code>x<code>target[2]</code> respectively. The target
-  dimensions can also be specified using both arguments
-  <code>target</code> and <code>ncol</code> to define the number of
-  rows and the number of columns of the target matrix
-  respectively. If no other argument is provided, these
-  matrices are filled with NAs.</p>
+      <p>If argument <code>target</code> is missing, the method creates a standard NMF
+model of dimension 0x<code>rank</code>x0.
+That is that the basis and mixture coefficient matrices, <var>W</var> and <var>H</var>,
+have dimension 0x<code>rank</code> and <code>rank</code>x0 respectively.</p>
   
-      <p>If arguments <code>W</code> and/or <code>H</code> are provided, the
-  method creates a NMF model where the basis and mixture
-  coefficient matrices, <var>W</var> and <var>H</var>, are
-  initialised using the values of <code>W</code> and/or <code>H</code>.</p>
+      <p>If target dimensions are also provided in argument <code>target</code> as a
+2-length vector, then the method creates an <code>NMF</code> object compatible to
+fit a target matrix of dimension <code>target[1]</code>x<code>target[2]</code>.
+That is that the basis and mixture coefficient matrices, <var>W</var> and <var>H</var>,
+have dimension <code>target[1]</code>x<code>rank</code> and <code>rank</code>x<code>target[2]</code>
+respectively.
+The target dimensions can also be specified using both arguments <code>target</code>
+and <code>ncol</code> to define the number of rows and the number of columns of the
+target matrix respectively.
+If no other argument is provided, these matrices are filled with NAs.</p>
   
-      <p>The dimensions given by <code>target</code>, <code>W</code> and
-  <code>H</code>, must be compatible. However if
-  <code>force.dim=TRUE</code>, the method will reduce the
-  dimensions to the achieve dimension compatibility
-  whenever possible.</p>
+      <p>If arguments <code>W</code> and/or <code>H</code> are provided, the method creates a NMF
+model where the basis and mixture coefficient matrices, <var>W</var> and <var>H</var>,
+are initialised using the values of <code>W</code> and/or <code>H</code>.</p>
   
-      <p>When <code>W</code> and <code>H</code> are both provided, the
-  <code>NMF</code> object created is suitable to seed a NMF
-  algorithm in a call to the <code><a href='nmf.html'>nmf</a></code> method. Note
-  that in this case the factorisation rank is implicitly
-  set by the number of basis components in the seed.</p>
+      <p>The dimensions given by <code>target</code>, <code>W</code> and <code>H</code>, must be compatible.
+However if <code>force.dim=TRUE</code>, the method will reduce the dimensions to the achieve
+dimension compatibility whenever possible.</p>
+  
+      <p>When <code>W</code> and <code>H</code> are both provided, the <code>NMF</code> object created is
+suitable to seed a NMF algorithm in a call to the <code><a href='nmf.html'>nmf</a></code> method.
+Note that in this case the factorisation rank is implicitly set by the number
+of basis components in the seed.</p>
   
     </div>
 
@@ -398,10 +346,7 @@ nmfModels(builtin.only = FALSE)</pre>
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre><code class="r">## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
+    <pre><code class="r">
 
 #----------
 # nmfModel,numeric,numeric-method
@@ -681,7 +626,7 @@ nmfModel(x ~ 3 + gr + b, data=list(b=runif(10)))
 ## samples: 10 
 ## fixed coef [3]:
 ##   gr = &lt;1, 2&gt;
-##   b = 0.673049666685984, 0.844573125476018, ..., 0.389775535557419
+##   b = 0.108168445993215, 0.0201862454414368, ..., 0.824667210225016
 </code></pre>
 
 <pre><code class="r"># 3-rank model that fits a given ExpressionSet (with fixed coef terms)
@@ -696,7 +641,7 @@ nmfModel(e ~ 3 + gr + a) # `a` is looked up in the phenotypic data of x pData(x)
 ## samples: 10 
 ## fixed coef [3]:
 ##   gr = &lt;1, 2&gt;
-##   a = 0.156894352519885, 0.76759451511316, ..., 0.561030999757349
+##   a = 0.569387156283483, 0.744083884637803, ..., 0.0507975923828781
 </code></pre>
 
 <pre><code class="r">#----------
@@ -706,14 +651,14 @@ nmfModel(e ~ 3 + gr + a) # `a` is looked up in the phenotypic data of x pData(x)
 nmfModels()
 </code></pre>
 
-<pre><code>## [1] &quot;NMFstd&quot;    &quot;NMFOffset&quot; &quot;NMFns&quot;
+<pre><code>## [1] &quot;NMFstd&quot;    &quot;NMFarray&quot;  &quot;NMFOffset&quot; &quot;NMFns&quot;
 </code></pre>
 
 <pre><code class="r"># show all the built-in NMF models available
 nmfModels(builtin.only=TRUE)
 </code></pre>
 
-<pre><code>## [1] &quot;NMFstd&quot;    &quot;NMFOffset&quot; &quot;NMFns&quot;
+<pre><code>## [1] &quot;NMFstd&quot;    &quot;NMFarray&quot;  &quot;NMFOffset&quot; &quot;NMFns&quot;
 </code></pre>
 
   </div>
@@ -729,16 +674,7 @@ nmfModels(builtin.only=TRUE)
     
   <code><a href='types.html'>is.empty.nmf</a></code>
 
-  Other NMF-interface: <code><a href='basis-coef-methods.html'>basis</a></code>,
-  <code><a href='basis-coef-methods.html'>.basis</a></code>, <code><a href='basis-coef-methods.html'>.basis<-</a></code>,
-  <code><a href='basis-coef-methods.html'>basis<-</a></code>, <code><a href='basis-coef-methods.html'>coef</a></code>,
-  <code><a href='basis-coef-methods.html'>.coef</a></code>, <code><a href='basis-coef-methods.html'>.coef<-</a></code>,
-  <code><a href='basis-coef-methods.html'>coef<-</a></code>, <code><a href='basis-coef-methods.html'>coefficients</a></code>,
-  <code><a href='NMF-class.html'>.DollarNames,NMF-method</a></code>,
-  <code><a href='basis-coef-methods.html'>loadings,NMF-method</a></code>, <code><a href='NMF-class.html'>misc</a></code>,
-  <code><a href='NMF-class.html'>NMF-class</a></code>, <code><a href='NMF-class.html'>$<-,NMF-method</a></code>,
-  <code><a href='NMF-class.html'>$,NMF-method</a></code>, <code><a href='rnmf.html'>rnmf</a></code>,
-  <code><a href='basis-coef-methods.html'>scoef</a></code>
+Other NMF-interface: <code><a href='basis-coef-methods.html'>basis</a></code>, <code><a href='basis-coef-methods.html'>.basis</a></code>, <code><a href='basis-coef-methods.html'>.basis<-</a></code>, <code><a href='basis-coef-methods.html'>basis<-</a></code>, <code><a href='basis-coef-methods.html'>coef</a></code>, <code><a href='basis-coef-methods.html'>.coef</a></code>, <code><a href='basis-coef-methods.html'>.coef<-</a></code>, <code><a href='basis-coef-methods.html'>coef<-</a></code>, <code><a href='basis-coef-methods.html'>coefficients</a></code>, <code><a href='NMF-class.html'>.DollarNames,NMF-method</a></code>, <code><a href='basis-coef-methods.html'>loadings,NMF-method</a></code>, <code><a href='NMF-class.html'>misc</a></code>, <code><a href='NMF-class.html'>NMF-class</a></code>, <code><a href='NMF-class.html'>$<-,NMF-method</a></code>, <code><a href='NMF-class.html'>$,NMF-method</a></code>, <code><a href='rnmf.html'>rnmf</a></code>, <code><a href='basis-coef-methods.html'>scoef</a></code>
 
         
   </div>

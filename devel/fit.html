@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>fit. NMF 0.21</title>
+<title>fit. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -90,8 +90,8 @@ minfit(object, ...)</pre>
     <h2>Arguments</h2>
     <dl>
       <dt>object</dt>
-      <dd>an object fitted by some algorithm, e.g. as
-  returned by the function <code><a href='nmf.html'>nmf</a></code>.</dd>
+      <dd>an object fitted by some algorithm, e.g. as returned by the
+function <code><a href='nmf.html'>nmf</a></code>.</dd>
       <dt>value</dt>
       <dd>replacement value</dd>
       <dt>...</dt>
@@ -122,66 +122,50 @@ minfit(object, ...)</pre>
       <h2>Methods</h2>
       
       <p><ol>
-<li>fit<code>signature(object = "NMFfit")</code>: Returns
-  the NMF model object stored in slot <code>'fit'</code>.</p>
+<li>fit<code>signature(object = "NMFfit")</code>: Returns the NMF model object stored in slot <code>'fit'</code>.</p>
   
       <p></li>
-<li>fit<code>signature(object = "NMFfitX")</code>: Returns
-  the model object that achieves the lowest residual
-  approximation error across all the runs.</p>
+<li>fit<code>signature(object = "NMFfitX")</code>: Returns the model object that achieves the lowest residual approximation
+error across all the runs.</p>
   
-      <p>It is a pure virtual method defined to ensure <code>fit</code>
-  is defined for sub-classes of <code>NMFfitX</code>, which
-  throws an error if called.</p>
+      <p>It is a pure virtual method defined to ensure <code>fit</code> is defined
+for sub-classes of <code>NMFfitX</code>, which throws an error if called.</p>
   
       <p></li>
-<li>fit<code>signature(object = "NMFfitX1")</code>: Returns
-  the model object associated with the best fit, amongst
-  all the runs performed when fitting <code>object</code>.</p>
+<li>fit<code>signature(object = "NMFfitX1")</code>: Returns the model object associated with the best fit, amongst all the
+runs performed when fitting <code>object</code>.</p>
   
-      <p>Since <code>NMFfitX1</code> objects only hold the best fit,
-  this method simply returns the NMF model fitted by
-  <code>object</code> -- that is stored in slot &#145;fit&#146;.</p>
-  
-      <p></li>
-<li>fit<code>signature(object = "NMFfitXn")</code>: Returns
-  the best NMF fit object amongst all the fits stored in
-  <code>object</code>, i.e. the fit that achieves the lowest
-  estimation residuals.</p>
+      <p>Since <code>NMFfitX1</code> objects only hold the best fit, this method simply
+returns the NMF model fitted by <code>object</code> -- that is stored in slot
+&#145;fit&#146;.</p>
   
       <p></li>
-<li>fit<-<code>signature(object = "NMFfit", value =
-  "NMF")</code>: Updates the NMF model object stored in slot
-  <code>'fit'</code> with a new value.</p>
+<li>fit<code>signature(object = "NMFfitXn")</code>: Returns the best NMF fit object amongst all the fits stored in <code>object</code>,
+i.e. the fit that achieves the lowest estimation residuals.</p>
   
       <p></li>
-<li>minfit<code>signature(object = "NMFfit")</code>:
-  Returns the object its self, since there it is the result
-  of a single NMF run.</p>
+<li>fit<-<code>signature(object = "NMFfit", value = "NMF")</code>: Updates the NMF model object stored in slot <code>'fit'</code> with a new value.</p>
   
       <p></li>
-<li>minfit<code>signature(object = "NMFfitX")</code>:
-  Returns the fit object that achieves the lowest residual
-  approximation error across all the runs.</p>
-  
-      <p>It is a pure virtual method defined to ensure
-  <code>minfit</code> is defined for sub-classes of
-  <code>NMFfitX</code>, which throws an error if called.</p>
+<li>minfit<code>signature(object = "NMFfit")</code>: Returns the object its self, since there it is the result of a single NMF run.</p>
   
       <p></li>
-<li>minfit<code>signature(object = "NMFfitX1")</code>:
-  Returns the fit object associated with the best fit,
-  amongst all the runs performed when fitting
-  <code>object</code>.</p>
+<li>minfit<code>signature(object = "NMFfitX")</code>: Returns the fit object that achieves the lowest residual approximation
+error across all the runs.</p>
   
-      <p>Since <code>NMFfitX1</code> objects only hold the best fit,
-  this method simply returns <code>object</code> coerced into an
-  <code>NMFfit</code> object.</p>
+      <p>It is a pure virtual method defined to ensure <code>minfit</code> is defined
+for sub-classes of <code>NMFfitX</code>, which throws an error if called.</p>
   
       <p></li>
-<li>minfit<code>signature(object = "NMFfitXn")</code>:
-  Returns the best NMF model in the list, i.e. the run that
-  achieved the lower estimation residuals.</p>
+<li>minfit<code>signature(object = "NMFfitX1")</code>: Returns the fit object associated with the best fit, amongst all the
+runs performed when fitting <code>object</code>.</p>
+  
+      <p>Since <code>NMFfitX1</code> objects only hold the best fit, this method simply
+returns <code>object</code> coerced into an <code>NMFfit</code> object.</p>
+  
+      <p></li>
+<li>minfit<code>signature(object = "NMFfitXn")</code>: Returns the best NMF model in the list, i.e. the run that achieved the lower
+estimation residuals.</p>
   
       <p>The model is selected based on its <code>deviance</code> value.</p>
   

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>deviance. NMF 0.21</title>
+<title>deviance. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -95,25 +95,21 @@ nmfDistance(method = c("", "KL", "euclidean"))
     <h2>Arguments</h2>
     <dl>
       <dt>y</dt>
-      <dd>a matrix compatible with the NMF model
-  <code>object</code>, i.e. <code>y</code> must have the same dimension
-  as <code>fitted(object)</code>.</dd>
+      <dd>a matrix compatible with the NMF model <code>object</code>, i.e. <code>y</code>
+must have the same dimension as <code>fitted(object)</code>.</dd>
       <dt>method</dt>
-      <dd>a character string or a function with
-  signature <code>(x="NMF", y="matrix", ...)</code> that
-  implements a distance measure between an NMF model
-  <code>x</code> and a target matrix <code>y</code>, i.e. an objective
-  function to use to compute the deviance. In
-  <code>deviance</code>, it is passed to <code>nmfDistance</code> to
-  get the function that effectively computes the deviance.</dd>
+      <dd>a character string or a function with signature
+<code>(x="NMF", y="matrix", ...)</code> that implements a distance measure between
+an NMF model <code>x</code> and a target matrix <code>y</code>, i.e. an objective function
+to use to compute the deviance.
+In <code>deviance</code>, it is passed to <code>nmfDistance</code> to get the function
+that effectively computes the deviance.</dd>
       <dt>...</dt>
-      <dd>extra parameters passed to the objective
-  function.</dd>
+      <dd>extra parameters passed to the objective function.</dd>
       <dt>x</dt>
       <dd>an NMF model that estimates <code>y</code>.</dd>
       <dt>object</dt>
-      <dd>an object for which the deviance is
-  desired.</dd>
+      <dd>an object for which the deviance is desired.</dd>
     </dl>
     
     <div class="Value">
@@ -121,8 +117,8 @@ nmfDistance(method = c("", "KL", "euclidean"))
       
       <p><code>deviance</code> returns a nonnegative numerical value</p>
   
-      <p><code>nmfDistance</code> returns a function with least two
-  arguments: an NMF model and a matrix.</p>
+      <p><code>nmfDistance</code> returns a function with least two arguments:
+an NMF model and a matrix.</p>
   
     </div>
 
@@ -130,38 +126,30 @@ nmfDistance(method = c("", "KL", "euclidean"))
       <h2>Methods</h2>
       
       <p><ol>
-<li>deviance<code>signature(object = "NMF")</code>:
-  Computes the distance between a matrix and the estimate
-  of an <code>NMF</code> model.</p>
+<li>deviance<code>signature(object = "NMF")</code>: Computes the distance between a matrix and the estimate of an <code>NMF</code> model.</p>
   
       <p></li>
-<li>deviance<code>signature(object = "NMFfit")</code>:
-  Returns the deviance of a fitted NMF model.</p>
+<li>deviance<code>signature(object = "NMFfit")</code>: Returns the deviance of a fitted NMF model.</p>
   
-      <p>This method returns the final residual value if the
-  target matrix <code>y</code> is not supplied, or the
-  approximation error between the fitted NMF model stored
-  in <code>object</code> and <code>y</code>. In this case, the
-  computation is performed using the objective function
-  <code>method</code> if not missing, or the objective of the
-  algorithm that fitted the model (stored in slot
-  <code>'distance'</code>).</p>
+      <p>This method returns the final residual value if the target matrix <code>y</code> is
+not supplied, or the approximation error between the fitted NMF model stored
+in <code>object</code> and <code>y</code>.
+In this case, the computation is performed using the objective function
+<code>method</code> if not missing, or the objective of the algorithm that
+fitted the model (stored in slot <code>'distance'</code>).</p>
   
-      <p>If not computed by the NMF algorithm itself, the value is
-  automatically computed at the end of the fitting process
-  by the function <code><a href='nmf.html'>nmf</a></code>, using the objective
-  function associated with the NMF algorithm, so that it
-  should always be available.</p>
+      <p>If not computed by the NMF algorithm itself, the value is automatically
+computed at the end of the fitting process by the function <code><a href='nmf.html'>nmf</a></code>,
+using the objective function associated with the NMF algorithm, so that it
+should always be available.</p>
   
       <p></li>
-<li>deviance<code>signature(object = "NMFfitX")</code>:
-  Returns the deviance achieved by the best fit object,
-  i.e. the lowest deviance achieved across all NMF runs.</p>
+<li>deviance<code>signature(object = "NMFfitX")</code>: Returns the deviance achieved by the best fit object, i.e. the lowest
+deviance achieved across all NMF runs.</p>
   
       <p></li>
-<li>deviance<code>signature(object = "NMFStrategy")</code>:
-  Computes the value of the objective function between the
-  estimate <code>x</code> and the target <code>y</code>.</p>
+<li>deviance<code>signature(object = "NMFStrategy")</code>: Computes the value of the objective function between the estimate <code>x</code>
+and the target <code>y</code>.</p>
   
       <p></li>
 </ol></p>
@@ -180,9 +168,7 @@ nmfDistance(method = c("", "KL", "euclidean"))
       
     <h2>See also</h2>
     
-  Other stats: <code><a href='deviance.html'>deviance,NMF-method</a></code>,
-  <code><a href='residuals.html'>hasTrack</a></code>, <code><a href='residuals.html'>residuals</a></code>,
-  <code><a href='residuals.html'>residuals<-</a></code>, <code><a href='residuals.html'>trackError</a></code>
+  Other stats: <code><a href='deviance.html'>deviance,NMF-method</a></code>, <code><a href='residuals.html'>hasTrack</a></code>, <code><a href='residuals.html'>residuals</a></code>, <code><a href='residuals.html'>residuals<-</a></code>, <code><a href='residuals.html'>trackError</a></code>
 
         
   </div>

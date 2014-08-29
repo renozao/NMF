@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFSeed. NMF 0.21</title>
+<title>NMFSeed. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -93,48 +93,42 @@ removeNMFSeed(name, ...)</pre>
       <dt>key</dt>
       <dd>access key as a single character string</dd>
       <dt>method</dt>
-      <dd>specification of the seeding method, as a
-  function that takes at least the following arguments:
-  <ol>
-<li>objectuninitialised/empty NMF model,
-  i.e. that it has 0 rows and columns, but has already the
-  rank requested in the call to <code><a href='nmf.html'>nmf</a></code> or
-  <code><a href='seed.html'>seed</a></code>. </li>
+      <dd>specification of the seeding method, as a function that takes
+at least the following arguments:
+<ol>
+<li>objectuninitialised/empty NMF model, i.e. that it has 0 rows and
+columns, but has already the rank requested in the call to <code><a href='nmf.html'>nmf</a></code>
+or <code><a href='seed.html'>seed</a></code>.
+</li>
 <li>xtarget matrix
-  </li>
-<li>...extra arguments </li>
+</li>
+<li>...extra arguments
+</li>
 </ol>
 </dd>
       <dt>...</dt>
-      <dd>arguments passed to <code>NMFSeed</code> and used to
-  initialise slots in the <code><a href='NMFSeed-class.html'>NMFSeed-class</a></code>
-  object, or to <code><a href='http://www.inside-r.org/r-doc/pkgmaker/regfetch'>pkgreg_remove</a></code>.</dd>
+      <dd>arguments passed to <code>NMFSeed</code> and used to initialise slots
+in the <code><a href='NMFSeed-class.html'>NMFSeed-class</a></code> object, or to <code><a href='http://www.inside-r.org/r-doc/pkgmaker/regfetch'>pkgreg_remove</a></code>.</dd>
       <dt>name</dt>
       <dd>name of the seeding method.</dd>
       <dt>overwrite</dt>
-      <dd>logical that indicates if any existing
-  NMF method with the same name should be overwritten
-  (<code>TRUE</code>) or not (<code>FALSE</code>), in which case an
-  error is thrown.</dd>
+      <dd>logical that indicates if any existing NMF method with the
+same name should be overwritten (<code>TRUE</code>) or not (<code>FALSE</code>),
+in which case an error is thrown.</dd>
       <dt>verbose</dt>
-      <dd>a logical that indicates if information
-  about the registration should be printed (<code>TRUE</code>) or
-  not (<code>FALSE</code>).</dd>
+      <dd>a logical that indicates if information about the registration
+should be printed (<code>TRUE</code>) or not (<code>FALSE</code>).</dd>
     </dl>
     
     <div class="Methods">
       <h2>Methods</h2>
       
       <p><ol>
-<li>NMFSeed<code>signature(key = "character")</code>:
-  Default method simply calls <code><a href='http://www.inside-r.org/r-doc/methods/new'>new</a></code> with the
-  same arguments.</p>
+<li>NMFSeed<code>signature(key = "character")</code>: Default method simply calls <code><a href='http://www.inside-r.org/r-doc/methods/new'>new</a></code> with the same arguments.</p>
   
       <p></li>
-<li>NMFSeed<code>signature(key = "NMFSeed")</code>: Creates
-  an <code>NMFSeed</code> based on a template object
-  (Constructor-Copy), in particular it uses the
-  <strong>same</strong> name.</p>
+<li>NMFSeed<code>signature(key = "NMFSeed")</code>: Creates an <code>NMFSeed</code> based on a template object (Constructor-Copy),
+in particular it uses the <strong>same</strong> name.</p>
   
       <p></li>
 </ol></p>

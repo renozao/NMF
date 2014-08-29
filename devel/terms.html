@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>ibterms. NMF 0.21</title>
+<title>ibterms. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -124,49 +124,39 @@ icoef(object, ...)</pre>
       <dt>object</dt>
       <dd>NMF object</dd>
       <dt>...</dt>
-      <dd>extra parameters to allow extension (currently
-  not used)</dd>
+      <dd>extra parameters to allow extension (currently not used)</dd>
     </dl>
     
     <div class="Methods">
       <h2>Methods</h2>
       
       <p><ol>
-<li>ibterms<code>signature(object = "NMF")</code>: Default
-  pure virtual method that ensure a method is defined for
-  concrete NMF model classes.</p>
+<li>ibterms<code>signature(object = "NMF")</code>: Default pure virtual method that ensure a method is defined for concrete
+NMF model classes.</p>
   
       <p></li>
-<li>ibterms<code>signature(object = "NMFstd")</code>:
-  Method for standard NMF models, which returns the integer
-  vector that is stored in slot <code>ibterms</code> when a
-  formula-based NMF model is instantiated.</p>
+<li>ibterms<code>signature(object = "NMFstd")</code>: Method for standard NMF models, which returns the integer vector that is
+stored in slot <code>ibterms</code> when a formula-based NMF model is instantiated.</p>
   
       <p></li>
-<li>ibterms<code>signature(object = "NMFfit")</code>:
-  Method for single NMF fit objects, which returns the
-  indexes of fixed basis terms from the fitted model.</p>
+<li>ibterms<code>signature(object = "NMFfit")</code>: Method for single NMF fit objects, which returns the indexes of fixed
+basis terms from the fitted model.</p>
   
       <p></li>
-<li>ibterms<code>signature(object = "NMFfitX")</code>:
-  Method for multiple NMF fit objects, which returns the
-  indexes of fixed basis terms from the best fitted model.</p>
+<li>ibterms<code>signature(object = "NMFfitX")</code>: Method for multiple NMF fit objects, which returns the indexes of fixed basis
+terms from the best fitted model.</p>
   
       <p></li>
-<li>icterms<code>signature(object = "NMF")</code>: Default
-  pure virtual method that ensure a method is defined for
-  concrete NMF model classes.</p>
+<li>icterms<code>signature(object = "NMF")</code>: Default pure virtual method that ensure a method is defined for concrete
+NMF model classes.</p>
   
       <p></li>
-<li>icterms<code>signature(object = "NMFstd")</code>:
-  Method for standard NMF models, which returns the integer
-  vector that is stored in slot <code>icterms</code> when a
-  formula-based NMF model is instantiated.</p>
+<li>icterms<code>signature(object = "NMFstd")</code>: Method for standard NMF models, which returns the integer vector that is
+stored in slot <code>icterms</code> when a formula-based NMF model is instantiated.</p>
   
       <p></li>
-<li>icterms<code>signature(object = "NMFfit")</code>:
-  Method for single NMF fit objects, which returns the
-  indexes of fixed coefficient terms from the fitted model.</p>
+<li>icterms<code>signature(object = "NMFfit")</code>: Method for single NMF fit objects, which returns the indexes of fixed
+coefficient terms from the fitted model.</p>
   
       <p></li>
 </ol></p>
@@ -177,7 +167,7 @@ icoef(object, ...)</pre>
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>bterms</li><li>cterms</li><li>ibasis</li><li>ibterms</li><li>ibterms-methods</li><li>ibterms,NMFfit-method</li><li>ibterms,NMFfitX-method</li><li>ibterms,NMF-method</li><li>ibterms,NMFstd-method</li><li>icoef</li><li>icterms</li><li>icterms-methods</li><li>icterms,NMFfit-method</li><li>icterms,NMF-method</li><li>icterms,NMFstd-method</li><li>iterms</li><li>nbterms</li><li>ncterms</li><li>nterms</li>
+      <li>bterms</li><li>cterms</li><li>ibasis</li><li>ibterms</li><li>ibterms-methods</li><li>ibterms,NMFarray-method</li><li>ibterms,NMFfit-method</li><li>ibterms,NMFfitX-method</li><li>ibterms,NMF-method</li><li>ibterms,NMFstd-method</li><li>icoef</li><li>icterms</li><li>icterms-methods</li><li>icterms,NMFarray-method</li><li>icterms,NMFfit-method</li><li>icterms,NMF-method</li><li>icterms,NMFstd-method</li><li>iterms</li><li>nbterms</li><li>ncterms</li><li>nterms</li>
     </ul>
     <ul>
       <li>methods</li>

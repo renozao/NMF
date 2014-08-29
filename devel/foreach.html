@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>registerDoBackend. NMF 0.21</title>
+<title>registerDoBackend. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -115,106 +115,77 @@ getDoParNHosts(object)</pre>
     <h2>Arguments</h2>
     <dl>
       <dt>object</dt>
-      <dd>specification of a foreach backend, e.g.
-  &#145;SEQ&#146;, &#145;PAR&#146; (for doParallel),
-  &#145;MPI&#146;, etc...</dd>
+      <dd>specification of a foreach backend, e.g. &#145;SEQ&#146;,
+&#145;PAR&#146; (for doParallel), &#145;MPI&#146;, etc...</dd>
       <dt>...</dt>
-      <dd>extra arguments passed to the backend own
-  registration function.</dd>
+      <dd>extra arguments passed to the backend own registration function.</dd>
       <dt>data</dt>
-      <dd>internal data of a foreach %dopar%
-  backend.</dd>
+      <dd>internal data of a foreach %dopar% backend.</dd>
       <dt>cleanup</dt>
       <dd>logical that indicates if the previous
-  backend's cleanup procedure should be run,
-  <strong>before</strong> setting the new backend.</dd>
+backend's cleanup procedure should be run, <strong>before</strong>
+setting the new backend.</dd>
       <dt>x</dt>
       <dd>specification of a foreach backend</dd>
       <dt>cl</dt>
-      <dd>cluster specification: a cluster object or a
-  numeric that indicates the number of nodes to use.</dd>
+      <dd>cluster specification: a cluster object or a numeric that indicates the
+number of nodes to use.</dd>
       <dt>type</dt>
-      <dd>type of cluster, See
-  <code><a href='http://www.inside-r.org/r-doc/parallel/makeCluster'>makeCluster</a></code>.</dd>
+      <dd>type of cluster, See <code><a href='http://www.inside-r.org/r-doc/parallel/makeCluster'>makeCluster</a></code>.</dd>
     </dl>
     
     <div class="Methods">
       <h2>Methods</h2>
       
       <p><ol>
-<li>ForeachBackend<code>signature(object = "ANY")</code>:
-  Default method defined to throw an informative error
-  message, when no other method was found.</p>
+<li>ForeachBackend<code>signature(object = "ANY")</code>: Default method defined to throw an informative error message, when no other
+method was found.</p>
   
       <p></li>
-<li>ForeachBackend<code>signature(object =
-  "character")</code>: Creates a foreach backend object based on
-  its name.</p>
+<li>ForeachBackend<code>signature(object = "character")</code>: Creates a foreach backend object based on its name.</p>
   
       <p></li>
-<li>ForeachBackend<code>signature(object =
-  "missing")</code>: Creates a foreach backend object for the
-  currently registered backend.</p>
+<li>ForeachBackend<code>signature(object = "missing")</code>: Creates a foreach backend object for the currently registered backend.</p>
   
       <p></li>
-<li>ForeachBackend<code>signature(object = "NULL")</code>:
-  Dummy method that returns <code>NULL</code>, defined for
-  correct dispatch.</p>
+<li>ForeachBackend<code>signature(object = "NULL")</code>: Dummy method that returns <code>NULL</code>, defined for correct dispatch.</p>
   
       <p></li>
-<li>ForeachBackend<code>signature(object =
-  "cluster")</code>: Creates a doParallel foreach backend that
-  uses the cluster described in <code>object</code>.</p>
+<li>ForeachBackend<code>signature(object = "cluster")</code>: Creates a doParallel foreach backend that uses the cluster described in
+<code>object</code>.</p>
   
       <p></li>
-<li>ForeachBackend<code>signature(object =
-  "numeric")</code>: Creates a doParallel foreach backend with
-  <code>object</code> processes.</p>
+<li>ForeachBackend<code>signature(object = "numeric")</code>: Creates a doParallel foreach backend with <code>object</code> processes.</p>
   
       <p></li>
-<li>ForeachBackend<code>signature(object =
-  "doParallel_backend")</code>: doParallel-specific backend
-  factory</p>
+<li>ForeachBackend<code>signature(object = "doParallel_backend")</code>: doParallel-specific backend factory</p>
   
       <p></li>
-<li>ForeachBackend<code>signature(object =
-  "doParallelMC_backend")</code>: doParallel-specific backend
-  factory for multicore (fork) clusters</p>
+<li>ForeachBackend<code>signature(object = "doParallelMC_backend")</code>: doParallel-specific backend factory for multicore (fork) clusters</p>
   
-      <p>This method is needed since version 1.0.7 of
-  <span class = "pkg">doParallel</span>, which removed internal function
-  <code>info</code> and defined separate backend names for mc and
-  snow clusters.</p>
+      <p>This method is needed since version 1.0.7 of <span class = "pkg">doParallel</span>, which removed
+internal function <code>info</code> and defined separate backend names for mc and snow clusters.</p>
   
       <p></li>
-<li>ForeachBackend<code>signature(object =
-  "doParallelSNOW_backend")</code>: doParallel-specific backend
-  factory for SNOW clusters.</p>
+<li>ForeachBackend<code>signature(object = "doParallelSNOW_backend")</code>: doParallel-specific backend factory for SNOW clusters.</p>
   
-      <p>This method is needed since version 1.0.7 of
-  <span class = "pkg">doParallel</span>, which removed internal function
-  <code>info</code> and defined separate backend names for mc and
-  snow clusters.</p>
+      <p>This method is needed since version 1.0.7 of <span class = "pkg">doParallel</span>, which removed
+internal function <code>info</code> and defined separate backend names for mc and snow clusters.</p>
   
       <p></li>
-<li>ForeachBackend<code>signature(object =
-  "doPSOCK_backend")</code>: doSNOW-specific backend factory</p>
+<li>ForeachBackend<code>signature(object = "doPSOCK_backend")</code>: doSNOW-specific backend factory</p>
   
       <p></li>
-<li>ForeachBackend<code>signature(object =
-  "mpicluster")</code>: Creates a doMPI foreach backend that uses
-  the MPI cluster described in <code>object</code>.</p>
+<li>ForeachBackend<code>signature(object = "mpicluster")</code>: Creates a doMPI foreach backend that uses the MPI cluster described in
+<code>object</code>.</p>
   
       <p></li>
-<li>ForeachBackend<code>signature(object =
-  "doMPI_backend")</code>: doMPI-specific backend factory</p>
+<li>ForeachBackend<code>signature(object = "doMPI_backend")</code>: doMPI-specific backend factory</p>
   
       <p></li>
-<li>getDoParHosts<code>signature(object = "ANY")</code>:
-  Default method that tries to heuristaically infer the
-  number of hosts and in last resort temporarly register
-  the backend and performs a foreach loop, to retrieve the
-  nodename from each worker.</p>
+<li>getDoParHosts<code>signature(object = "ANY")</code>: Default method that tries to heuristaically infer the number of hosts and in last
+resort temporarly register the backend and performs a foreach loop, to retrieve the
+nodename from each worker.</p>
   
       <p></li>
 </ol></p>

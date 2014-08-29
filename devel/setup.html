@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>setupBackend. NMF 0.21</title>
+<title>setupBackend. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -109,23 +109,18 @@ setupRNG(seed, n, verbose = FALSE)</pre>
     <h2>Arguments</h2>
     <dl>
       <dt>spec</dt>
-      <dd>target parallel specification: either
-  <code>TRUE</code> or <code>FALSE</code>, or a single numeric value
-  that specifies the number of cores to setup.</dd>
+      <dd>target parallel specification: either <code>TRUE</code> or <code>FALSE</code>,
+or a single numeric value that specifies the number of cores to setup.</dd>
       <dt>backend</dt>
-      <dd>value from argument <code>.pbackend</code> of
-  <code>nmf</code>.</dd>
+      <dd>value from argument <code>.pbackend</code> of <code>nmf</code>.</dd>
       <dt>optional</dt>
-      <dd>a logical that indicates if the
-  specification must be fully satisfied, throwing an error
-  if it is not, or if one can switch back to sequential,
-  only outputting a verbose message.</dd>
+      <dd>a logical that indicates if the specification must be fully
+satisfied, throwing an error if it is not, or if one can switch back to
+sequential, only outputting a verbose message.</dd>
       <dt>verbose</dt>
-      <dd>logical or integer level of verbosity for
-  message outputs.</dd>
+      <dd>logical or integer level of verbosity for message outputs.</dd>
       <dt>pkg</dt>
-      <dd>package name whose path should be exported the
-  workers.</dd>
+      <dd>package name whose path should be exported the workers.</dd>
       <dt>seed</dt>
       <dd>initial RNG seed specification</dd>
       <dt>n</dt>
@@ -135,12 +130,10 @@ setupRNG(seed, n, verbose = FALSE)</pre>
     <div class="Value">
       <h2>Value</h2>
       
-      <p>Returns <code>FALSE</code> if no foreach backend is to be used,
-  <code>NA</code> if the currently registered backend is to be
-  used, or, if this function call registered a new backend,
-  the previously registered backend as a <code>foreach</code>
-  object, so that it can be restored after the computation
-  is over.</p>
+      <p>Returns <code>FALSE</code> if no foreach backend is to be used, <code>NA</code> if the currently
+registered backend is to be used, or, if this function call registered a new backend,
+the previously registered backend as a <code>foreach</code> object, so that it can be restored
+after the computation is over.</p>
   
     </div>
       </div>

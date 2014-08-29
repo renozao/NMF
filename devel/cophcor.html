@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>cophcor. NMF 0.21</title>
+<title>cophcor. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -84,14 +84,12 @@
     <h2>Arguments</h2>
     <dl>
       <dt>object</dt>
-      <dd>an object from which is extracted a
-  consensus matrix.</dd>
+      <dd>an object from which is extracted a consensus matrix.</dd>
       <dt>...</dt>
-      <dd>extra arguments to allow extension and passed
-  to subsequent calls.</dd>
+      <dd>extra arguments to allow extension and passed to subsequent calls.</dd>
       <dt>linkage</dt>
-      <dd>linkage method used in the hierarchical
-  clustering. It is passed to <code><a href='http://www.inside-r.org/r-doc/stats/hclust'>hclust</a></code>.</dd>
+      <dd>linkage method used in the hierarchical clustering.
+It is passed to <code><a href='http://www.inside-r.org/r-doc/stats/hclust'>hclust</a></code>.</dd>
     </dl>
     
     <div class="Details">
@@ -116,15 +114,12 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>cophcor<code>signature(object = "matrix")</code>:
-  Workhorse method for matrices.</p>
+<li>cophcor<code>signature(object = "matrix")</code>: Workhorse method for matrices.</p>
   
       <p></li>
-<li>cophcor<code>signature(object = "NMFfitX")</code>:
-  Computes the cophenetic correlation coefficient on the
-  consensus matrix of <code>object</code>. All arguments in
-  <code>...</code> are passed to the method
-  <code>cophcor,matrix</code>.</p>
+<li>cophcor<code>signature(object = "NMFfitX")</code>: Computes the cophenetic correlation coefficient on the consensus matrix
+of <code>object</code>.
+All arguments in <code>...</code> are passed to the method <code>cophcor,matrix</code>.</p>
   
       <p></li>
 </ol></p>

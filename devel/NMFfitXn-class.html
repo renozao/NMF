@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfitXn-class. NMF 0.21</title>
+<title>NMFfitXn-class. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -100,10 +100,8 @@
       <h2>Slots</h2>
       
       <p><ol>
-<li>.Datastandard slot that contains the S3
-  <code>list</code> object data. See R documentation on S3/S4
-  classes for more details (e.g.,
-  <code><a href='http://www.inside-r.org/r-doc/methods/setOldClass'>setOldClass</a></code>).</p>
+<li>.Datastandard slot that contains the S3 <code>list</code> object data.
+See R documentation on S3/S4 classes for more details (e.g., <code><a href='http://www.inside-r.org/r-doc/methods/setOldClass'>setOldClass</a></code>).</p>
   
       <p></li>
 </ol></p>
@@ -116,134 +114,106 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>algorithm<code>signature(object = "NMFfitXn")</code>:
-  Returns the name of the common NMF algorithm used to
-  compute all fits stored in <code>object</code></p>
+<li>algorithm<code>signature(object = "NMFfitXn")</code>: Returns the name of the common NMF algorithm used to compute all fits
+stored in <code>object</code></p>
   
-      <p>Since all fits are computed with the same algorithm, this
-  method returns the name of algorithm that computed the
-  first fit. It returns <code>NULL</code> if the object is empty.</p>
-  
-      <p></li>
-<li>basis<code>signature(object = "NMFfitXn")</code>:
-  Returns the basis matrix of the best fit amongst all the
-  fits stored in <code>object</code>. It is a shortcut for
-  <code>basis(fit(object))</code>.</p>
+      <p>Since all fits are computed with the same algorithm, this method returns the
+name of algorithm that computed the first fit.
+It returns <code>NULL</code> if the object is empty.</p>
   
       <p></li>
-<li>coef<code>signature(object = "NMFfitXn")</code>:
-  Returns the coefficient matrix of the best fit amongst
-  all the fits stored in <code>object</code>. It is a shortcut
-  for <code>coef(fit(object))</code>.</p>
+<li>basis<code>signature(object = "NMFfitXn")</code>: Returns the basis matrix of the best fit amongst all the fits stored in
+<code>object</code>.
+It is a shortcut for <code>basis(fit(object))</code>.</p>
   
       <p></li>
-<li>compare<code>signature(object = "NMFfitXn")</code>:
-  Compares the fits obtained by separate runs of NMF, in a
-  single call to <code><a href='nmf.html'>nmf</a></code>.</p>
+<li>coef<code>signature(object = "NMFfitXn")</code>: Returns the coefficient matrix of the best fit amongst all the fits stored in
+<code>object</code>.
+It is a shortcut for <code>coef(fit(object))</code>.</p>
   
       <p></li>
-<li>consensus<code>signature(object = "NMFfitXn")</code>:
-  This method returns <code>NULL</code> on an empty object. The
-  result is a matrix with several attributes attached, that
-  are used by plotting functions such as
-  <code><a href='heatmaps.html'>consensusmap</a></code> to annotate the plots.</p>
+<li>compare<code>signature(object = "NMFfitXn")</code>: Compares the fits obtained by separate runs of NMF, in a single
+call to <code><a href='nmf.html'>nmf</a></code>.</p>
   
       <p></li>
-<li>dim<code>signature(x = "NMFfitXn")</code>: Returns the
-  dimension common to all fits.</p>
-  
-      <p>Since all fits have the same dimensions, it returns the
-  dimension of the first fit. This method returns
-  <code>NULL</code> if the object is empty.</p>
+<li>consensus<code>signature(object = "NMFfitXn")</code>: This method returns <code>NULL</code> on an empty object.
+The result is a matrix with several attributes attached, that are used by
+plotting functions such as <code><a href='heatmaps.html'>consensusmap</a></code> to annotate the plots.</p>
   
       <p></li>
-<li>entropy<code>signature(x = "NMFfitXn", y =
-  "ANY")</code>: Computes the best or mean entropy across all NMF
-  fits stored in <code>x</code>.</p>
+<li>dim<code>signature(x = "NMFfitXn")</code>: Returns the dimension common to all fits.</p>
+  
+      <p>Since all fits have the same dimensions, it returns the dimension of the
+first fit.
+This method returns <code>NULL</code> if the object is empty.</p>
   
       <p></li>
-<li>fit<code>signature(object = "NMFfitXn")</code>: Returns
-  the best NMF fit object amongst all the fits stored in
-  <code>object</code>, i.e. the fit that achieves the lowest
-  estimation residuals.</p>
+<li>entropy<code>signature(x = "NMFfitXn", y = "ANY")</code>: Computes the best or mean entropy across all NMF fits stored in <code>x</code>.</p>
   
       <p></li>
-<li>.getRNG<code>signature(object = "NMFfitXn")</code>:
-  Returns the RNG settings used for the best fit.</p>
+<li>fit<code>signature(object = "NMFfitXn")</code>: Returns the best NMF fit object amongst all the fits stored in <code>object</code>,
+i.e. the fit that achieves the lowest estimation residuals.</p>
+  
+      <p></li>
+<li>.getRNG<code>signature(object = "NMFfitXn")</code>: Returns the RNG settings used for the best fit.</p>
   
       <p>This method throws an error if the object is empty.</p>
   
       <p></li>
-<li>getRNG1<code>signature(object = "NMFfitXn")</code>:
-  Returns the RNG settings used for the first run.</p>
+<li>getRNG1<code>signature(object = "NMFfitXn")</code>: Returns the RNG settings used for the first run.</p>
   
       <p>This method throws an error if the object is empty.</p>
   
       <p></li>
-<li>minfit<code>signature(object = "NMFfitXn")</code>:
-  Returns the best NMF model in the list, i.e. the run that
-  achieved the lower estimation residuals.</p>
+<li>minfit<code>signature(object = "NMFfitXn")</code>: Returns the best NMF model in the list, i.e. the run that achieved the lower
+estimation residuals.</p>
   
       <p>The model is selected based on its <code>deviance</code> value.</p>
   
       <p></li>
-<li>modelname<code>signature(object = "NMFfitXn")</code>:
-  Returns the common type NMF model of all fits stored in
-  <code>object</code></p>
+<li>modelname<code>signature(object = "NMFfitXn")</code>: Returns the common type NMF model of all fits stored in <code>object</code></p>
   
-      <p>Since all fits are from the same NMF model, this method
-  returns the model type of the first fit. It returns
-  <code>NULL</code> if the object is empty.</p>
+      <p>Since all fits are from the same NMF model, this method returns the
+model type of the first fit.
+It returns <code>NULL</code> if the object is empty.</p>
   
       <p></li>
-<li>nbasis<code>signature(x = "NMFfitXn")</code>: Returns
-  the number of basis components common to all fits.</p>
+<li>nbasis<code>signature(x = "NMFfitXn")</code>: Returns the number of basis components common to all fits.</p>
   
-      <p>Since all fits have been computed using the same rank, it
-  returns the factorization rank of the first fit. This
-  method returns <code>NULL</code> if the object is empty.</p>
-  
-      <p></li>
-<li>nrun<code>signature(object = "NMFfitXn")</code>:
-  Returns the number of runs performed to compute the fits
-  stored in the list (i.e. the length of the list itself).</p>
+      <p>Since all fits have been computed using the same rank, it returns the
+factorization rank of the first fit.
+This method returns <code>NULL</code> if the object is empty.</p>
   
       <p></li>
-<li>purity<code>signature(x = "NMFfitXn", y =
-  "ANY")</code>: Computes the best or mean purity across all NMF
-  fits stored in <code>x</code>.</p>
+<li>nrun<code>signature(object = "NMFfitXn")</code>: Returns the number of runs performed to compute the fits stored in the list
+(i.e. the length of the list itself).</p>
   
       <p></li>
-<li>runtime.all<code>signature(object = "NMFfitXn")</code>:
-  If no time data is available from in slot
-  &#145;runtime.all&#146; and argument <code>null=TRUE</code>, then
-  the sequential time as computed by <code><a href='algorithmic.html'>seqtime</a></code>
-  is returned, and a warning is thrown unless
-  <code>warning=FALSE</code>.</p>
+<li>purity<code>signature(x = "NMFfitXn", y = "ANY")</code>: Computes the best or mean purity across all NMF fits stored in <code>x</code>.</p>
   
       <p></li>
-<li>seeding<code>signature(object = "NMFfitXn")</code>:
-  Returns the name of the common seeding method used the
-  computation of all fits stored in <code>object</code></p>
-  
-      <p>Since all fits are seeded using the same method, this
-  method returns the name of the seeding method used for
-  the first fit. It returns <code>NULL</code> if the object is
-  empty.</p>
+<li>runtime.all<code>signature(object = "NMFfitXn")</code>: If no time data is available from in slot &#145;runtime.all&#146; and argument
+<code>null=TRUE</code>, then the sequential time as computed by
+<code><a href='algorithmic.html'>seqtime</a></code> is returned, and a warning is thrown unless <code>warning=FALSE</code>.</p>
   
       <p></li>
-<li>seqtime<code>signature(object = "NMFfitXn")</code>:
-  Returns the CPU time that would be required to
-  sequentially compute all NMF fits stored in
-  <code>object</code>.</p>
+<li>seeding<code>signature(object = "NMFfitXn")</code>: Returns the name of the common seeding method used the computation of all fits
+stored in <code>object</code></p>
   
-      <p>This method calls the function <code>runtime</code> on each fit
-  and sum up the results. It returns <code>NULL</code> on an
-  empty object.</p>
+      <p>Since all fits are seeded using the same method, this method returns the
+name of the seeding method used for the first fit.
+It returns <code>NULL</code> if the object is empty.</p>
   
       <p></li>
-<li>show<code>signature(object = "NMFfitXn")</code>: Show
-  method for objects of class <code>NMFfitXn</code></p>
+<li>seqtime<code>signature(object = "NMFfitXn")</code>: Returns the CPU time that would be required to sequentially compute all NMF
+fits stored in <code>object</code>.</p>
+  
+      <p>This method calls the function <code>runtime</code> on each fit and sum up the
+results.
+It returns <code>NULL</code> on an empty object.</p>
+  
+      <p></li>
+<li>show<code>signature(object = "NMFfitXn")</code>: Show method for objects of class <code>NMFfitXn</code></p>
   
       <p></li>
 </ol></p>
@@ -253,10 +223,7 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre><code class="r">## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
+    <pre><code class="r">
 
 # generate a synthetic dataset with known classes
 n &lt;- 20; counts &lt;- c(5, 2, 3);
@@ -280,13 +247,13 @@ res &lt;- nmf(V, 3, nrun=3, .options=&#39;k&#39;) # .options=list(keep.all=TRUE)
 ##   Method: brunet 
 ##   Runs:  3 
 ##   RNG:
-##    407L, 1696829752L, 1561534937L, -1562173498L, 407076751L, 1528195204L, 2093245877L 
+##    407L, -1098395445L, 1227325840L, 398921809L, 915221982L, 138412231L, -602817956L 
 ##   Total timing:
 ##    user  system elapsed 
-##   1.389   0.159   1.797 
+##   2.851   0.278   1.949 
 ##   Sequential timing:
 ##    user  system elapsed 
-##   0.292   0.001   0.293
+##   0.426   0.002   0.428
 </code></pre>
 
 <pre><code class="r">summary(res)
@@ -313,14 +280,14 @@ runtime.all(res)
 </code></pre>
 
 <pre><code>##    user  system elapsed 
-##   1.389   0.159   1.797
+##   2.851   0.278   1.949
 </code></pre>
 
 <pre><code class="r">seqtime(res)
 </code></pre>
 
 <pre><code>##    user  system elapsed 
-##   0.292   0.001   0.293
+##   0.426   0.002   0.428
 </code></pre>
 
 <pre><code class="r"># plot the consensus matrix, computed on the fly
@@ -338,8 +305,7 @@ runtime.all(res)
       
     <h2>See also</h2>
     
-  Other multipleNMF: <code><a href='NMFfitX1-class.html'>NMFfitX1-class</a></code>,
-  <code><a href='NMFfitX-class.html'>NMFfitX-class</a></code>
+  Other multipleNMF: <code><a href='NMFfitX1-class.html'>NMFfitX1-class</a></code>, <code><a href='NMFfitX-class.html'>NMFfitX-class</a></code>
 
         
   </div>

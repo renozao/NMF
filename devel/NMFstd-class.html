@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFstd-class. NMF 0.21</title>
+<title>NMFstd-class. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -143,45 +143,36 @@
       <h2>Slots</h2>
       
       <p><ol>
-<li>WA <code>matrix</code> that contains the basis matrix,
-  i.e. the <em>first</em> matrix factor of the factorisation</p>
+<li>WA <code>matrix</code> that contains the basis matrix, i.e. the <em>first</em>
+matrix factor of the factorisation</p>
   
       <p></li>
-<li>HA <code>matrix</code> that contains the coefficient
-  matrix, i.e. the <em>second</em> matrix factor of the
-  factorisation</p>
+<li>HA <code>matrix</code> that contains the coefficient matrix, i.e. the
+<em>second</em> matrix factor of the factorisation</p>
   
       <p></li>
-<li>btermsa <code>data.frame</code> that contains the
-  primary data that define fixed basis terms. See
-  <code><a href='terms.html'>bterms</a></code>.</p>
+<li>btermsa <code>data.frame</code> that contains the primary data that
+define fixed basis terms. See <code><a href='terms.html'>bterms</a></code>.</p>
   
       <p></li>
-<li>ibtermsinteger vector that contains the indexes
-  of the basis components that are fixed, i.e. for which
-  only the coefficient are estimated.</p>
+<li>ibtermsinteger vector that contains the indexes of the basis components
+that are fixed, i.e. for which only the coefficient are estimated.</p>
   
-      <p>IMPORTANT: This slot is set on construction of an NMF
-  model via
-  <code><a href='nmfModel.html'>nmfModel</a></code> and
-  is not recommended to not be subsequently changed by the
-  end-user.</p>
+      <p>IMPORTANT: This slot is set on construction of an NMF model via
+<code><a href='nmfModel.html'>nmfModel</a></code> and is not recommended to
+not be subsequently changed by the end-user.</p>
   
       <p></li>
-<li>ctermsa <code>data.frame</code> that contains the
-  primary data that define fixed coefficient terms. See
-  <code><a href='terms.html'>cterms</a></code>.</p>
+<li>ctermsa <code>data.frame</code> that contains the primary data that
+define fixed coefficient terms. See <code><a href='terms.html'>cterms</a></code>.</p>
   
       <p></li>
-<li>ictermsinteger vector that contains the indexes
-  of the basis components that have fixed coefficients,
-  i.e. for which only the basis vectors are estimated.</p>
+<li>ictermsinteger vector that contains the indexes of the basis components
+that have fixed coefficients, i.e. for which only the basis vectors are estimated.</p>
   
-      <p>IMPORTANT: This slot is set on construction of an NMF
-  model via
-  <code><a href='nmfModel.html'>nmfModel</a></code> and
-  is not recommended to not be subsequently changed by the
-  end-user.</p>
+      <p>IMPORTANT: This slot is set on construction of an NMF model via
+<code><a href='nmfModel.html'>nmfModel</a></code> and is not recommended to
+not be subsequently changed by the end-user.</p>
   
       <p></li>
 </ol></p>
@@ -194,59 +185,47 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>.basis<code>signature(object = "NMFstd")</code>: Get
-  the basis matrix in standard NMF models</p>
+<li>.basis<code>signature(object = "NMFstd")</code>: Get the basis matrix in standard NMF models</p>
   
       <p>This function returns slot <code>W</code> of <code>object</code>.</p>
   
       <p></li>
-<li>.basis<-<code>signature(object = "NMFstd", value
-  = "matrix")</code>: Set the basis matrix in standard NMF models</p>
+<li>.basis<-<code>signature(object = "NMFstd", value = "matrix")</code>: Set the basis matrix in standard NMF models</p>
   
       <p>This function sets slot <code>W</code> of <code>object</code>.</p>
   
       <p></li>
-<li>bterms<-<code>signature(object = "NMFstd")</code>:
-  Default method tries to coerce <code>value</code> into a
-  <code>data.frame</code> with <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/as.data.frame'>as.data.frame</a></code>.</p>
+<li>bterms<-<code>signature(object = "NMFstd")</code>: Default method tries to coerce <code>value</code> into a <code>data.frame</code> with
+<code><a href='http://www.inside-r.org/r-doc/base/as.data.frame'>as.data.frame</a></code>.</p>
   
       <p></li>
-<li>.coef<code>signature(object = "NMFstd")</code>: Get the
-  mixture coefficient matrix in standard NMF models</p>
+<li>.coef<code>signature(object = "NMFstd")</code>: Get the mixture coefficient matrix in standard NMF models</p>
   
       <p>This function returns slot <code>H</code> of <code>object</code>.</p>
   
       <p></li>
-<li>.coef<-<code>signature(object = "NMFstd", value =
-  "matrix")</code>: Set the mixture coefficient matrix in
-  standard NMF models</p>
+<li>.coef<-<code>signature(object = "NMFstd", value = "matrix")</code>: Set the mixture coefficient matrix in standard NMF models</p>
   
       <p>This function sets slot <code>H</code> of <code>object</code>.</p>
   
       <p></li>
-<li>cterms<-<code>signature(object = "NMFstd")</code>:
-  Default method tries to coerce <code>value</code> into a
-  <code>data.frame</code> with <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/as.data.frame'>as.data.frame</a></code>.</p>
+<li>cterms<-<code>signature(object = "NMFstd")</code>: Default method tries to coerce <code>value</code> into a <code>data.frame</code> with
+<code><a href='http://www.inside-r.org/r-doc/base/as.data.frame'>as.data.frame</a></code>.</p>
   
       <p></li>
-<li>fitted<code>signature(object = "NMFstd")</code>:
-  Compute the target matrix estimate in <em>standard NMF
-  models</em>.</p>
+<li>fitted<code>signature(object = "NMFstd")</code>: Compute the target matrix estimate in <em>standard NMF models</em>.</p>
   
-      <p>The estimate matrix is computed as the product of the two
-  matrix slots <code>W</code> and <code>H</code>: <pre class = 'eq'>V ~ W H</code></p>
-  
-      <p></li>
-<li>ibterms<code>signature(object = "NMFstd")</code>:
-  Method for standard NMF models, which returns the integer
-  vector that is stored in slot <code>ibterms</code> when a
-  formula-based NMF model is instantiated.</p>
+      <p>The estimate matrix is computed as the product of the two matrix slots
+<code>W</code> and <code>H</code>:
+<pre class = 'eq'>V ~ W H</code></p>
   
       <p></li>
-<li>icterms<code>signature(object = "NMFstd")</code>:
-  Method for standard NMF models, which returns the integer
-  vector that is stored in slot <code>icterms</code> when a
-  formula-based NMF model is instantiated.</p>
+<li>ibterms<code>signature(object = "NMFstd")</code>: Method for standard NMF models, which returns the integer vector that is
+stored in slot <code>ibterms</code> when a formula-based NMF model is instantiated.</p>
+  
+      <p></li>
+<li>icterms<code>signature(object = "NMFstd")</code>: Method for standard NMF models, which returns the integer vector that is
+stored in slot <code>icterms</code> when a formula-based NMF model is instantiated.</p>
   
       <p></li>
 </ol></p>
@@ -266,10 +245,7 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre><code class="r">## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
+    <pre><code class="r">
 
 # create a completely empty NMFstd object
 new(&#39;NMFstd&#39;)
@@ -337,9 +313,7 @@ nmfModel(r, W=w, H=h)
       
     <h2>See also</h2>
     
-  Other NMF-model:
-  <code><a href='NMFOffset-class.html'>initialize,NMFOffset-method</a></code>,
-  <code><a href='NMFns-class.html'>NMFns-class</a></code>, <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code>
+  Other NMF-model: <code><a href='NMFOffset-class.html'>initialize,NMFOffset-method</a></code>, <code><a href='NMFarray-class.html'>NMFarray-class</a></code>, <code><a href='NMFns-class.html'>NMFns-class</a></code>, <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code>
 
         
   </div>

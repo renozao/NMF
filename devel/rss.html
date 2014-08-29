@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>rss. NMF 0.21</title>
+<title>rss. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -91,11 +91,11 @@ evar(object, ...)
     <h2>Arguments</h2>
     <dl>
       <dt>object</dt>
-      <dd>an R object with a suitable
-  <code><a href='fitted.html'>fitted</a></code>, <code>rss</code> or <code>evar</code> method.</dd>
+      <dd>an R object with a suitable <code><a href='fitted.html'>fitted</a></code>, <code>rss</code> or
+<code>evar</code> method.</dd>
       <dt>...</dt>
-      <dd>extra arguments to allow extension, e.g.
-  passed to <code>rss</code> in <code>evar</code> calls.</dd>
+      <dd>extra arguments to allow extension, e.g. passed to <code>rss</code>
+in <code>evar</code> calls.</dd>
       <dt>target</dt>
       <dd>target matrix</dd>
     </dl>
@@ -125,47 +125,37 @@ evar(object, ...)
       <h2>Methods</h2>
       
       <p><ol>
-<li>evar<code>signature(object = "ANY")</code>: Default
-  method for <code>evar</code>.</p>
+<li>evar<code>signature(object = "ANY")</code>: Default method for <code>evar</code>.</p>
   
       <p>It requires a suitable <code>rss</code> method to be defined
-  for <code>object</code>, as it internally calls
-  <code>rss(object, target, ...)</code>.</p>
+for <code>object</code>, as it internally calls <code>rss(object, target, ...)</code>.</p>
   
       <p></li>
-<li>rss<code>signature(object = "matrix")</code>: Computes
-  the RSS between a target matrix and its estimate
-  <code>object</code>, which must be a matrix of the same
-  dimensions as <code>target</code>.</p>
+<li>rss<code>signature(object = "matrix")</code>: Computes the RSS between a target matrix and its estimate <code>object</code>,
+which must be a matrix of the same dimensions as <code>target</code>.</p>
   
-      <p>The RSS between a target matrix <code class = 'eq'>V</code> and its estimate
-  <code class = 'eq'>v</code> is computed as: <pre class = 'eq'>RSS = \sum_{i,j} (v_{ij} -
-  V_{ij})^2</code></p>
+      <p>The RSS between a target matrix <code class = 'eq'>V</code> and its estimate <code class = 'eq'>v</code> is computed as:
+<pre class = 'eq'>RSS = \sum_{i,j} (v_{ij} - V_{ij})^2</code></p>
   
-      <p>Internally, the computation is performed using an
-  optimised C++ implementation, that is light in memory
-  usage.</p>
+      <p>Internally, the computation is performed using an optimised C++ implementation,
+that is light in memory usage.</p>
   
       <p></li>
-<li>rss<code>signature(object = "ANY")</code>: Residual sum
-  of square between a given target matrix and a model that
-  has a suitable <code><a href='fitted.html'>fitted</a></code> method. It is
-  equivalent to <code>rss(fitted(object), ...)</code></p>
+<li>rss<code>signature(object = "ANY")</code>: Residual sum of square between a given target matrix and a model that has a
+suitable <code><a href='fitted.html'>fitted</a></code> method.
+It is equivalent to <code>rss(fitted(object), ...)</code></p>
   
-      <p>In the context of NMF, <cite>Hutchins et al. (2008)</cite> used the
-  variation of the RSS in combination with the algorithm
-  from <cite>Lee et al. (1999)</cite> to estimate the correct number of
-  basis vectors. The optimal rank is chosen where the graph
-  of the RSS first shows an inflexion point, i.e. using a
-  screeplot-type criterium. See section <em>Rank
-  estimation</em> in <code><a href='nmf.html'>nmf</a></code>.</p>
+      <p>In the context of NMF, <cite>Hutchins et al. (2008)</cite> used the variation of the RSS
+in combination with the algorithm from <cite>Lee et al. (1999)</cite> to estimate the
+correct number of basis vectors.
+The optimal rank is chosen where the graph of the RSS first shows an inflexion
+point, i.e. using a screeplot-type criterium.
+See section <em>Rank estimation</em> in <code><a href='nmf.html'>nmf</a></code>.</p>
   
-      <p>Note that this way of estimation may not be suitable for
-  all models. Indeed, if the NMF optimisation problem is
-  not based on the Frobenius norm, the RSS is not directly
-  linked to the quality of approximation of the NMF model.
-  However, it is often the case that it still decreases
-  with the rank.</p>
+      <p>Note that this way of estimation may not be suitable for all models.
+Indeed, if the NMF optimisation problem is not based on the Frobenius norm,
+the RSS is not directly linked to the quality of approximation of the NMF model.
+However, it is often the case that it still decreases with the rank.</p>
   
       <p></li>
 </ol></p>
@@ -194,10 +184,7 @@ evar(object, ...)
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre><code class="r">## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
+    <pre><code class="r">
 
 #----------
 # rss,matrix-method

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFStrategyOctave-class. NMF 0.21</title>
+<title>NMFStrategyOctave-class. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -98,18 +98,16 @@
       <h2>Slots</h2>
       
       <p><ol>
-<li>algorithmcharacter string that gives the name of
-  the main Octave/Matlab function that implements the
-  algorithm. The function must take at least two arguments:
-  the target matrix and the initial NMF model, converted
-  into an Octave list object, with elements corresponding
-  to slots of the corresponding S4 class.</p>
+<li>algorithmcharacter string that gives the name of the main Octave/Matlab
+function that implements the algorithm.
+The function must take at least two arguments: the target matrix and the initial
+NMF model, converted into an Octave list object, with elements corresponding to
+slots of the corresponding S4 class.</p>
   
       <p></li>
-<li>mcodecharacter vector that contains a set of path
-  to .m files. These files are (re-)sourced every time the
-  strategy is called, and must be present at runtime in the
-  current directory or in a directory from Octave path.</p>
+<li>mcodecharacter vector that contains a set of path to .m files.
+These files are (re-)sourced every time the strategy is called, and must be
+present at runtime in the current directory or in a directory from Octave path.</p>
   
       <p></li>
 </ol></p>
@@ -122,28 +120,20 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>algorithm<code>signature(object =
-  "NMFStrategyOctave")</code>: Returns the name of the
-  Octave/Matlab function that implements the NMF algorithm
-  -- as stored in slot <code>algorithm</code>.</p>
+<li>algorithm<code>signature(object = "NMFStrategyOctave")</code>: Returns the name of the Octave/Matlab function that implements the NMF algorithm -- as stored in
+slot <code>algorithm</code>.</p>
   
       <p></li>
-<li>algorithm<-<code>signature(object =
-  "NMFStrategyOctave", value = "character")</code>: Sets the name
-  of the Octave/Matlab function that implements the NMF
-  algorithm. It is stored in slot <code>algorithm</code>.</p>
+<li>algorithm<-<code>signature(object = "NMFStrategyOctave", value = "character")</code>: Sets the name of the Octave/Matlab function that implements the NMF algorithm.
+It is stored in slot <code>algorithm</code>.</p>
   
       <p></li>
-<li>run<code>signature(object = "NMFStrategyOctave",
-  y = "matrix", x = "NMFfit")</code>: Runs the NMF algorithms
-  implemented by the Octave/Matlab function associated with
-  the strategy -- and stored in slot <code>'algorithm'</code> of
-  <code>object</code>.</p>
+<li>run<code>signature(object = "NMFStrategyOctave", y = "matrix", x = "NMFfit")</code>: Runs the NMF algorithms implemented by the Octave/Matlab function associated with the
+strategy -- and stored in slot <code>'algorithm'</code> of <code>object</code>.</p>
   
-      <p>This method is usually not called directly, but only via
-  the function <code><a href='nmf.html'>nmf</a></code>, which takes care of many
-  other details such as seeding the computation, handling
-  RNG settings, or setting up parallel computations.</p>
+      <p>This method is usually not called directly, but only via the function <code><a href='nmf.html'>nmf</a></code>, which
+takes care of many other details such as seeding the computation, handling RNG settings,
+or setting up parallel computations.</p>
   
       <p></li>
 </ol></p>

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfAlgorithm.SNMF_R. NMF 0.21</title>
+<title>nmfAlgorithm.SNMF_R. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -88,35 +88,32 @@ nmfAlgorithm.SNMF_L(..., maxIter = 20000L, eta = -1, beta = 0.01, bi_conv = c(0,
       <dt>maxIter</dt>
       <dd>maximum number of iterations.</dd>
       <dt>eta</dt>
-      <dd>parameter to suppress/bound the L2-norm of
-  <code>W</code> and in <code>H</code> in &#145;SNMF/R&#146; and
-  &#145;SNMF/L&#146; respectively.
+      <dd>parameter to suppress/bound the L2-norm of <code>W</code> and in
+<code>H</code> in &#145;SNMF/R&#146; and &#145;SNMF/L&#146; respectively.
 
-  If <code>eta < 0</code>, then it is set to the maximum value in
-  the target matrix is used.</dd>
+If <code>eta < 0</code>, then it is set to the maximum value in the target matrix is used.</dd>
       <dt>beta</dt>
-      <dd>regularisation parameter for sparsity
-  control, which balances the trade-off between the
-  accuracy of the approximation and the sparseness of
-  <code>H</code> and <code>W</code> in &#145;SNMF/R&#146; and
-  &#145;SNMF/L&#146; respectively.
+      <dd>regularisation parameter for sparsity control, which
+balances the trade-off between the accuracy of the approximation and the
+sparseness of <code>H</code> and <code>W</code> in &#145;SNMF/R&#146; and &#145;SNMF/L&#146; respectively.
 
-  Larger beta generates higher sparseness on <code>H</code>
-  (resp. <code>W</code>). Too large beta is not recommended.</dd>
+Larger beta generates higher sparseness on <code>H</code> (resp. <code>W</code>).
+Too large beta is not recommended.</dd>
       <dt>bi_conv</dt>
-      <dd>parameter of the biclustering convergence
-  test. It must be a size 2 numeric vector
-  <code>bi_conv=c(wminchange, iconv)</code>, with: <ol>
-<li><code>wminchange</code>:the minimal allowance of change
-  in row-clusters. </li>
-<li><code>iconv</code>: decide
-  convergence if row-clusters (within the allowance of
-  <code>wminchange</code>) and column-clusters have not changed
-  for <code>iconv</code> convergence checks. </li>
+      <dd>parameter of the biclustering convergence test.
+It must be a size 2 numeric vector <code>bi_conv=c(wminchange, iconv)</code>,
+with:
+<ol>
+<li><code>wminchange</code>:the minimal allowance of change in row-clusters.
+</li>
+<li><code>iconv</code>: decide convergence if row-clusters
+(within the allowance of <code>wminchange</code>)
+and column-clusters have not changed for <code>iconv</code> convergence checks.
+</li>
 </ol>
 
 
-  Convergence checks are performed every 5 iterations.</dd>
+Convergence checks are performed every 5 iterations.</dd>
       <dt>eps_conv</dt>
       <dd>threshold for the KKT convergence test.</dd>
       <dt>...</dt>

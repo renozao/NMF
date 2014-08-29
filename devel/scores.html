@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>featureScore. NMF 0.21</title>
+<title>featureScore. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -93,75 +93,64 @@ extractFeatures(object, ...)
     <h2>Arguments</h2>
     <dl>
       <dt>object</dt>
-      <dd>an object from which scores/features are
-  computed/extracted</dd>
+      <dd>an object from which scores/features are computed/extracted</dd>
       <dt>...</dt>
       <dd>extra arguments to allow extension</dd>
       <dt>method</dt>
-      <dd>scoring or selection method. It specifies
-  the name of one of the method described in sections
-  <em>Feature scores</em> and <em>Feature selection</em>.
+      <dd>scoring or selection method.
+It specifies the name of one of the method described in sections <em>Feature scores</em>
+and <em>Feature selection</em>.
 
-  Additionally for <code>extractFeatures</code>, it may be an
-  integer vector that indicates the number of top most
-  contributing features to extract from each column of
-  <code>object</code>, when ordered in decreasing order, or a
-  numeric value between 0 and 1 that indicates the minimum
-  relative basis contribution above which a feature is
-  selected (i.e. basis contribution threshold). In the case
-  of a single numeric value (integer or percentage), it is
-  used for all columns.
+Additionally for <code>extractFeatures</code>, it may be an integer vector that
+indicates the number of top most contributing features to
+extract from each column of <code>object</code>, when ordered in decreasing order,
+or a numeric value between 0 and 1 that indicates the minimum relative basis
+contribution above which a feature is selected (i.e. basis contribution threshold).
+In the case of a single numeric value (integer or percentage), it is used for all columns.
 
-  Note that <code>extractFeatures(x, 1)</code> means relative
-  contribution threshold of 100%, to select the top
-  contributing features one must explicitly specify an
-  integer value as in <code>extractFeatures(x, 1L)</code>.
-  However, if all elements in methods are > 1, they are
-  automatically treated as if they were integers:
-  <code>extractFeatures(x, 2)</code> means the top-2 most
-  contributing features in each component.</dd>
+Note that <code>extractFeatures(x, 1)</code> means relative contribution threshold of
+100%, to select the top contributing features one must explicitly specify
+an integer value as in <code>extractFeatures(x, 1L)</code>.
+However, if all elements in methods are > 1, they are automatically treated as
+if they were integers: <code>extractFeatures(x, 2)</code> means the top-2 most
+contributing features in each component.</dd>
       <dt>format</dt>
-      <dd>output format. The following values are
-  accepted: <ol>
-<li>&#145;list&#146;(default)
-  returns a list with one element per column in
-  <code>object</code>, each containing the indexes of the
-  selected features, as an integer vector. If <code>object</code>
-  has row names, these are used to name each index vector.
-  Components for which no feature were selected are
-  assigned a <code>NA</code> value.
+      <dd>output format.
+The following values are accepted:
+<ol>
+<li>&#145;list&#146;(default) returns a list with one element per column in
+<code>object</code>, each containing the indexes of the selected features, as an
+integer vector.
+If <code>object</code> has row names, these are used to name each index vector.
+Components for which no feature were selected are assigned a <code>NA</code> value.
 
-  </li>
-<li>&#145;combine&#146; returns all indexes in a single
-  vector. Duplicated indexes are made unique if
-  <code>nodups=TRUE</code> (default).
+</li>
+<li>&#145;combine&#146; returns all indexes in a single vector.
+Duplicated indexes are made unique if <code>nodups=TRUE</code> (default).
 
-  </li>
-<li>&#145;subset&#146; returns an object of the same
-  class as <code>object</code>, but subset with the selected
-  indexes, so that it contains data only from
-  basis-specific features. </li>
+</li>
+<li>&#145;subset&#146; returns an object of the same class as <code>object</code>,
+but subset with the selected indexes, so that it contains data only from
+basis-specific features.
+</li>
 </ol>
 </dd>
       <dt>nodups</dt>
-      <dd>logical that indicates if duplicated
-  indexes, i.e. features selected on multiple basis
-  components (which should in theory not happen), should be
-  only appear once in the result. Only used when
-  <code>format='combine'</code>.</dd>
+      <dd>logical that indicates if duplicated indexes,
+i.e. features selected on multiple basis components (which should in
+theory not happen), should be only appear once in the result.
+Only used when <code>format='combine'</code>.</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
       
-      <p><code>featureScore</code> returns a numeric vector of the
-  length the number of rows in <code>object</code> (i.e. one
-  score per feature).</p>
+      <p><code>featureScore</code> returns a numeric vector of the length the number
+of rows in <code>object</code> (i.e. one score per feature).</p>
   
-      <p><code>extractFeatures</code> returns the selected features as a
-  list of indexes, a single integer vector or an object of
-  the same class as <code>object</code> that only contains the
-  selected features.</p>
+      <p><code>extractFeatures</code> returns the selected features as a list of indexes,
+a single integer vector or an object of the same class as <code>object</code>
+that only contains the selected features.</p>
   
     </div>
 
@@ -189,25 +178,17 @@ extractFeatures(object, ...)
       <h2>Methods</h2>
       
       <p><ol>
-<li>extractFeatures<code>signature(object =
-  "matrix")</code>: Select features on a given matrix, that
-  contains the basis component in columns.</p>
+<li>extractFeatures<code>signature(object = "matrix")</code>: Select features on a given matrix, that contains the basis component in columns.</p>
   
       <p></li>
-<li>extractFeatures<code>signature(object = "NMF")</code>:
-  Select basis-specific features from an NMF model, by
-  applying the method <code>extractFeatures,matrix</code> to its
-  basis matrix.</p>
+<li>extractFeatures<code>signature(object = "NMF")</code>: Select basis-specific features from an NMF model, by applying the method
+<code>extractFeatures,matrix</code> to its basis matrix.</p>
   
       <p></li>
-<li>featureScore<code>signature(object = "matrix")</code>:
-  Computes feature scores on a given matrix, that contains
-  the basis component in columns.</p>
+<li>featureScore<code>signature(object = "matrix")</code>: Computes feature scores on a given matrix, that contains the basis component in columns.</p>
   
       <p></li>
-<li>featureScore<code>signature(object = "NMF")</code>:
-  Computes feature scores on the basis matrix of an NMF
-  model.</p>
+<li>featureScore<code>signature(object = "NMF")</code>: Computes feature scores on the basis matrix of an NMF model.</p>
   
       <p></li>
 </ol></p>
@@ -219,26 +200,27 @@ extractFeatures(object, ...)
     <div class="Feature scores">
       <h2>Feature scores</h2>
       
-      <p>The function <code>featureScore</code> can compute
-  basis-specificity scores using the following methods:</p>
+      <p></p>
+  
+      <p>The function <code>featureScore</code> can compute basis-specificity scores using
+the following methods:</p>
   
       <p><ol>
 <li>&#145;kim&#146; Method defined by <cite>Kim et al. (2007)</cite>.</p>
   
-      <p>The score for feature <code class = 'eq'>i</code> is defined as: <pre class = 'eq'> S_i = 1 + 1/log2(k) sum_q [ p(i,q) log2( p(i,q)
-  ) ] </code>,</p>
+      <p>The score for feature <code class = 'eq'>i</code> is defined as:
+<pre class = 'eq'>
+S_i = 1 + 1/log2(k) sum_q [ p(i,q) log2( p(i,q) ) ] </code>,</p>
   
-      <p>where <code class = 'eq'>p(i,q)</code> is the probability that the <code class = 'eq'>i</code>-th
-  feature contributes to basis <code class = 'eq'>q</code>: <pre class = 'eq'> p(i,q) = W(i,q) /
-  (sum_r W(i,r)) </code></p>
+      <p>where <code class = 'eq'>p(i,q)</code> is the probability that the <code class = 'eq'>i</code>-th feature contributes
+to basis <code class = 'eq'>q</code>: <pre class = 'eq'>
+p(i,q) = W(i,q) / (sum_r W(i,r)) </code></p>
   
-      <p>The feature scores are real values within the range
-  [0,1]. The higher the feature score the more
-  basis-specific the corresponding feature.</p>
+      <p>The feature scores are real values within the range [0,1].
+The higher the feature score the more basis-specific the corresponding feature.</p>
   
       <p></li>
-<li>&#145;max&#146;Method defined by
-  <cite>Carmona-Saez et al. (2006)</cite>.</p>
+<li>&#145;max&#146;Method defined by <cite>Carmona-Saez et al. (2006)</cite>.</p>
   
       <p>The feature scores are defined as the row maximums.</p>
   
@@ -252,37 +234,37 @@ extractFeatures(object, ...)
     <div class="Feature selection">
       <h2>Feature selection</h2>
       
-      <p>The function <code>extractFeatures</code> can select features
-  using the following methods: <ol>
-<li>&#145;kim&#146; uses <cite>Kim et al. (2007)</cite> scoring schema
-  and feature selection method.</p>
+      <p></p>
+  
+      <p>The function <code>extractFeatures</code> can select features using the following
+methods:
+<ol>
+<li>&#145;kim&#146; uses <cite>Kim et al. (2007)</cite> scoring schema and
+feature selection method.</p>
   
       <p>The features are first scored using the function
-  <code>featureScore</code> with method &#145;kim&#146;. Then only
-  the features that fulfil both following criteria are
-  retained:</p>
+<code>featureScore</code> with method &#145;kim&#146;.
+Then only the features that fulfil both following criteria are retained:</p>
   
       <p><ul>
-<li> score greater than <code class = 'eq'>\hat{\mu} + 3
-  \hat{\sigma}</code>, where <code class = 'eq'>\hat{\mu}</code> and
-  <code class = 'eq'>\hat{\sigma}</code> are the median and the median absolute
-  deviation (MAD) of the scores respectively;</p>
+<li> score greater than <code class = 'eq'>\hat{\mu} + 3 \hat{\sigma}</code>, where <code class = 'eq'>\hat{\mu}</code>
+and <code class = 'eq'>\hat{\sigma}</code> are the median and the median absolute deviation
+(MAD) of the scores respectively;</p>
   
       <p></li>
-<li> the maximum contribution to a basis component is
-  greater than the median of all contributions (i.e. of all
-  elements of W). </li>
+<li> the maximum contribution to a basis component is greater than the median
+of all contributions (i.e. of all elements of W).
+</li>
 </ul></p>
   
       <p></li>
-<li>&#145;max&#146; uses the selection method used in
-  the <code>bioNMF</code> software package and described in
-  <cite>Carmona-Saez et al. (2006)</cite>.</p>
+<li>&#145;max&#146; uses the selection method used in the <code>bioNMF</code>
+software package and described in <cite>Carmona-Saez et al. (2006)</cite>.</p>
   
-      <p>For each basis component, the features are first sorted
-  by decreasing contribution. Then, one selects only the
-  first consecutive features whose highest contribution in
-  the basis matrix is effectively on the considered basis.</p>
+      <p>For each basis component, the features are first sorted by decreasing
+contribution.
+Then, one selects only the first consecutive features whose highest
+contribution in the basis matrix is effectively on the considered basis.</p>
   
       <p></li>
 </ol></p>

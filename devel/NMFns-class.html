@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFns-class. NMF 0.21</title>
+<title>NMFns-class. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -125,18 +125,15 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>fitted<code>signature(object = "NMFns")</code>: Compute
-  estimate for an NMFns object, according to the Nonsmooth
-  NMF model (cf. <code><a href='NMFns-class.html'>NMFns-class</a></code>).</p>
+<li>fitted<code>signature(object = "NMFns")</code>: Compute estimate for an NMFns object, according to the Nonsmooth NMF model
+(cf. <code><a href='NMFns-class.html'>NMFns-class</a></code>).</p>
   
-      <p>Extra arguments in <code>...</code> are passed to method
-  <code>smoothing</code>, and are typically used to pass a value
-  for <code>theta</code>, which is used to compute the smoothing
-  matrix instead of the one stored in <code>object</code>.</p>
+      <p>Extra arguments in <code>...</code> are passed to method <code>smoothing</code>, and are
+typically used to pass a value for <code>theta</code>, which is used to compute
+the smoothing matrix instead of the one stored in <code>object</code>.</p>
   
       <p></li>
-<li>show<code>signature(object = "NMFns")</code>: Show
-  method for objects of class <code>NMFns</code></p>
+<li>show<code>signature(object = "NMFns")</code>: Show method for objects of class <code>NMFns</code></p>
   
       <p></li>
 </ol></p>
@@ -148,13 +145,14 @@
     <div class="Creating objects from the Class">
       <h2>Creating objects from the Class</h2>
       
-      <p>Object of class <code>NMFns</code> can be created using the
-  standard way with operator <code><a href='http://www.inside-r.org/r-doc/methods/new'>new</a></code></p>
+      <p></p>
   
-      <p>However, as for all NMF model classes -- that extend
-  class <code><a href='NMF-class.html'>NMF-class</a></code>, objects of class
-  <code>NMFns</code> should be created using factory method
-  <code><a href='nmfModel.html'>nmfModel</a></code> :</p>
+      <p>Object of class <code>NMFns</code> can be created using the standard way with
+operator <code><a href='http://www.inside-r.org/r-doc/methods/new'>new</a></code></p>
+  
+      <p>However, as for all NMF model classes -- that extend class
+<code><a href='NMF-class.html'>NMF-class</a></code>, objects of class <code>NMFns</code> should be
+created using factory method <code><a href='nmfModel.html'>nmfModel</a></code> :</p>
   
       <p><code>new('NMFns')</code></p>
   
@@ -162,26 +160,27 @@
   
       <p><code>nmfModel(model='NMFns', W=w, theta=0.3</code></p>
   
-      <p>See <code><a href='nmfModel.html'>nmfModel</a></code> for more details on how to use
-  the factory method.</p>
+      <p>See <code><a href='nmfModel.html'>nmfModel</a></code> for more details on how to use the factory
+method.</p>
   
     </div>
 
     <div class="Algorithm">
       <h2>Algorithm</h2>
       
-      <p>The Nonsmooth NMF algorithm uses a modified version of
-  the multiplicative update equations in Lee & Seung's
-  method for Kullback-Leibler divergence minimization. The
-  update equations are modified to take into account the --
-  constant -- smoothing matrix. The modification reduces to
-  using matrix <code class = 'eq'>W S</code> instead of matrix <code class = 'eq'>W</code> in the
-  update of matrix <code class = 'eq'>H</code>, and similarly using matrix
-  <code class = 'eq'>S H</code> instead of matrix <code class = 'eq'>H</code> in the update of
-  matrix <code class = 'eq'>W</code>.</p>
+      <p></p>
   
-      <p>After the matrix <code class = 'eq'>W</code> has been updated, each of its
-  columns is scaled so that it sums up to 1.</p>
+      <p>The Nonsmooth NMF algorithm uses a modified version of the multiplicative
+update equations in Lee & Seung's method for Kullback-Leibler divergence
+minimization.
+The update equations are modified to take into account the --
+constant -- smoothing matrix.
+The modification reduces to using matrix <code class = 'eq'>W S</code> instead of matrix <code class = 'eq'>W</code>
+in the update of matrix <code class = 'eq'>H</code>, and similarly using matrix <code class = 'eq'>S H</code>
+instead of matrix <code class = 'eq'>H</code> in the update of matrix <code class = 'eq'>W</code>.</p>
+  
+      <p>After the matrix <code class = 'eq'>W</code> has been updated, each of its columns is scaled so
+that it sums up to 1.</p>
   
     </div>
 
@@ -196,10 +195,7 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre><code class="r">## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
+    <pre><code class="r">
 
 # create a completely empty NMFns object
 new(&#39;NMFns&#39;)
@@ -252,9 +248,7 @@ rnmf(3, 10, 5, model=&#39;NMFns&#39;, theta=0.3)
       
     <h2>See also</h2>
     
-  Other NMF-model:
-  <code><a href='NMFOffset-class.html'>initialize,NMFOffset-method</a></code>,
-  <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code>, <code><a href='NMFstd-class.html'>NMFstd-class</a></code>
+  Other NMF-model: <code><a href='NMFOffset-class.html'>initialize,NMFOffset-method</a></code>, <code><a href='NMFarray-class.html'>NMFarray-class</a></code>, <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code>, <code><a href='NMFstd-class.html'>NMFstd-class</a></code>
 
         
   </div>

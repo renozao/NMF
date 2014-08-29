@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>consensushc. NMF 0.21</title>
+<title>consensushc. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -87,28 +87,26 @@
     <h2>Arguments</h2>
     <dl>
       <dt>object</dt>
-      <dd>a matrix or an <code>NMFfitX</code> object, as
-  returned by multiple NMF runs.</dd>
+      <dd>a matrix or an <code>NMFfitX</code> object, as returned by multiple
+NMF runs.</dd>
       <dt>...</dt>
       <dd>extra arguments passed to next method calls</dd>
       <dt>method</dt>
-      <dd>linkage method passed to
-  <code><a href='http://www.inside-r.org/r-doc/stats/hclust'>hclust</a></code>.</dd>
+      <dd>linkage method passed to <code><a href='http://www.inside-r.org/r-doc/stats/hclust'>hclust</a></code>.</dd>
       <dt>dendrogram</dt>
-      <dd>a logical that specifies if the result
-  of the hierarchical clustering (en <code>hclust</code> object)
-  should be converted into a dendrogram. Default value is
-  <code>TRUE</code>.</dd>
+      <dd>a logical that specifies if the result of the hierarchical
+clustering (en <code>hclust</code> object) should be converted into a dendrogram.
+Default value is <code>TRUE</code>.</dd>
       <dt>what</dt>
-      <dd>character string that indicates which matrix
-  to use in the computation.</dd>
+      <dd>character string that indicates which matrix to use in the
+computation.</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
       
-      <p>an object of class <code>dendrogram</code> or <code>hclust</code>
-  depending on the value of argument <code>dendrogram</code>.</p>
+      <p>an object of class <code>dendrogram</code> or <code>hclust</code> depending on the
+value of argument <code>dendrogram</code>.</p>
   
     </div>
 
@@ -116,19 +114,14 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>consensushc<code>signature(object = "matrix")</code>:
-  Workhorse method for matrices.</p>
+<li>consensushc<code>signature(object = "matrix")</code>: Workhorse method for matrices.</p>
   
       <p></li>
-<li>consensushc<code>signature(object = "NMF")</code>:
-  Compute the hierarchical clustering on the connectivity
-  matrix of <code>object</code>.</p>
+<li>consensushc<code>signature(object = "NMF")</code>: Compute the hierarchical clustering on the connectivity matrix of <code>object</code>.</p>
   
       <p></li>
-<li>consensushc<code>signature(object = "NMFfitX")</code>:
-  Compute the hierarchical clustering on the consensus
-  matrix of <code>object</code>, or on the connectivity matrix of
-  the best fit in <code>object</code>.</p>
+<li>consensushc<code>signature(object = "NMFfitX")</code>: Compute the hierarchical clustering on the consensus matrix of <code>object</code>,
+or on the connectivity matrix of the best fit in <code>object</code>.</p>
   
       <p></li>
 </ol></p>

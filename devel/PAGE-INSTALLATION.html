@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>. NMF 0.21</title>
+<title>. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -56,7 +56,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;<span style="background-color:red" class="badge label-danger">devel</span>
       &nbsp;</p></li>
     </ul>
@@ -71,40 +71,36 @@
       
 
 <div class="row"><div class="span8">
-  <h2><img src="img/github.png" alt=""/> GitHub</h2>
+  <h2><img src="img/github.png" alt=""/> GitHub <small>(via <a href="http://tx.technion.ac.il/%7Erenaud/GRAN/">GRAN</a>)</small></h2>
 
 <p>Repository: <a href="https://github.com/renozao/NMF">https://github.com/renozao/NMF</a></p>
 
-<p>The package can be installed from source from the GitHub using the <code>devtools</code> package as follows:</p>
+<p>The package can be installed from source from the GitHub using the <code>repotools</code> package as follows:</p>
 
-<pre><code class="r">library(devtools)
-# latest stable version
-install_github(&#39;NMF&#39;, &#39;renozao&#39;)
+<pre><code class="r"># Install repotools (need to be done only once)
+source(&#39;http://renozao.github.io/repotools/install.R&#39;)
 
-# development version
-install_github(&#39;NMF&#39;, &#39;renozao&#39;, &#39;devel&#39;)
+library(repotools)
+# latest development version
+install.pkgs(&#39;NMF&#39;)
+
+# DEVELOPMENT
+install.pkgs(&#39;NMF&#39;, dependencies = &#39;++&#39;)
 </code></pre>
 
 <h3>Troubleshooting</h3>
 
 <p>The above commands will perform a complete build/installation, which may require a <strong>complete R development environment</strong>.
-This should be fine for standard unix-based R installations (Linux, Mac), but is cannot be taken for granted on Windows machines. </p>
+This should be fine for standard unix-based R installations (Linux, Mac), but is not installed by default on Windows machines. </p>
 
-<p>So if this fails, then try doing a quick install by: </p>
+<p>So if this fails, then try doing a quick install by limiting the installation procedure to the strict necessary with argument <code>quick = TRUE</code>.</p>
 
-<ul>
-<li>skipping vignette generation only with argument <code>build_vignette = FALSE</code>.</li>
-<li>limiting the installation procedure to the strict necessary with argument <code>quick = TRUE</code>;</li>
-</ul>
+<pre><code class="r">library(repotools)
+# latest development version
+install.pkgs(&#39;NMF&#39;, quick = TRUE)
 
-<pre><code class="r">library(devtools)
-# latest stable version
-install_github(&#39;NMF&#39;, &#39;renozao&#39;, quick = TRUE)
-install_github(&#39;NMF&#39;, &#39;renozao&#39;, build_vignettes = FALSE)
-
-# development version
-install_github(&#39;NMF&#39;, &#39;renozao&#39;, &#39;devel&#39;, quick = TRUE)
-install_github(&#39;NMF&#39;, &#39;renozao&#39;, &#39;devel&#39;, build_vignettes = FALSE)
+# DEVELOPMENT
+install.pkgs(&#39;NMF&#39;, dependencies = &#39;++&#39;, quick = TRUE)
 </code></pre>
 
 <hr/>

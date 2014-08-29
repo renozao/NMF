@@ -2,14 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>fcnnls. NMF 0.21</title>
+<title>fcnnls. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="
   Original MATLAB code : Van Benthem and Keenan
 
-  Adaption of MATLAB code for SNMF/R(L): H. Kim
+Adaption of MATLAB code for SNMF/R(L): H. Kim
 
-  Adaptation to the NMF package framework: Renaud Gaujoux
+Adaptation to the NMF package framework: Renaud Gaujoux
 ">
 
 <!-- bootstrap css -->
@@ -57,7 +57,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -99,24 +99,20 @@
     <h2>Arguments</h2>
     <dl>
       <dt>...</dt>
-      <dd>extra arguments passed to the internal
-  function <code>.fcnnls</code>. Currently not used.</dd>
+      <dd>extra arguments passed to the internal function <code>.fcnnls</code>.
+Currently not used.</dd>
       <dt>verbose</dt>
-      <dd>toggle verbosity (default is
-  <code>FALSE</code>).</dd>
+      <dd>toggle verbosity (default is <code>FALSE</code>).</dd>
       <dt>x</dt>
       <dd>the coefficient matrix</dd>
       <dt>y</dt>
-      <dd>the target matrix to be approximated by <code class = 'eq'>X
-  K</code>.</dd>
+      <dd>the target matrix to be approximated by <code class = 'eq'>X K</code>.</dd>
       <dt>pseudo</dt>
-      <dd>By default (<code>pseudo=FALSE</code>) the
-  algorithm uses Gaussian elimination to solve the
-  successive internal linear problems, using the
-  <code><a href='http://www.inside-r.org/r-doc/base/solve'>solve</a></code> function.  If <code>pseudo=TRUE</code> the
-  algorithm uses Moore-Penrose generalized
-  <code><a href='http://www.inside-r.org/r-doc/corpcor/pseudoinverse'>pseudoinverse</a></code> from the
-  <code>corpcor</code> package instead of <a href='http://www.inside-r.org/r-doc/base/solve'>solve</a>.</dd>
+      <dd>By default (<code>pseudo=FALSE</code>) the algorithm uses Gaussian
+elimination to solve the successive internal linear problems, using the
+<code><a href='http://www.inside-r.org/r-doc/base/solve'>solve</a></code> function.  If <code>pseudo=TRUE</code> the algorithm uses
+Moore-Penrose generalized <code><a href='http://www.inside-r.org/r-doc/corpcor/pseudoinverse'>pseudoinverse</a></code> from the
+<code>corpcor</code> package instead of <a href='http://www.inside-r.org/r-doc/base/solve'>solve</a>.</dd>
     </dl>
     
     <div class="Value">
@@ -124,17 +120,15 @@
       
       <p>A list containing the following components:</p>
   
-      <p>x the estimated optimal matrix <code class = 'eq'>K</code>.
-  fitted the fitted matrix <code class = 'eq'>X K</code>.
-  residuals the residual matrix <code class = 'eq'>Y - X K</code>.
-  deviance the residual sum of squares between the
-  fitted matrix <code class = 'eq'>X K</code> and the target matrix <code class = 'eq'>Y</code>.
-  That is the sum of the square residuals. passive
-  a <code class = 'eq'>r x p</code> logical matrix containing the passive set,
-  that is the set of entries in <code class = 'eq'>K</code> that are not null
-  (i.e. strictly positive). pseudo a logical that
-  is <code>TRUE</code> if the computation was performed using the
-  pseudoinverse. See argument <code>pseudo</code>.</p>
+      <p>x the estimated optimal matrix <code class = 'eq'>K</code>. fitted the fitted
+matrix <code class = 'eq'>X K</code>. residuals the residual matrix <code class = 'eq'>Y - X K</code>.
+deviance the residual sum of squares between the fitted matrix
+<code class = 'eq'>X K</code> and the target matrix <code class = 'eq'>Y</code>. That is the sum of the square
+residuals. passive a <code class = 'eq'>r x p</code> logical matrix containing the
+passive set, that is the set of entries in <code class = 'eq'>K</code> that are not null (i.e.
+strictly positive). pseudo a logical that is <code>TRUE</code> if the
+computation was performed using the pseudoinverse. See argument
+<code>pseudo</code>.</p>
   
     </div>
 
@@ -173,20 +167,15 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>fcnnls<code>signature(x = "matrix", y =
-  "matrix")</code>: This method wraps a call to the internal
-  function <code>.fcnnls</code>, and formats the results in a
-  similar way as other lest-squares methods such as
-  <code><a href='http://www.inside-r.org/r-doc/stats/lm'>lm</a></code>.</p>
+<li>fcnnls<code>signature(x = "matrix", y = "matrix")</code>: This method wraps a call to the internal function <code>.fcnnls</code>, and
+formats the results in a similar way as other lest-squares methods such
+as <code><a href='http://www.inside-r.org/r-doc/stats/lm'>lm</a></code>.</p>
   
       <p></li>
-<li>fcnnls<code>signature(x = "numeric", y =
-  "matrix")</code>: Shortcut for <code>fcnnls(as.matrix(x), y,
-  ...)</code>.</p>
+<li>fcnnls<code>signature(x = "numeric", y = "matrix")</code>: Shortcut for <code>fcnnls(as.matrix(x), y, ...)</code>.</p>
   
       <p></li>
-<li>fcnnls<code>signature(x = "ANY", y = "numeric")</code>:
-  Shortcut for <code>fcnnls(x, as.matrix(y), ...)</code>.</p>
+<li>fcnnls<code>signature(x = "ANY", y = "numeric")</code>: Shortcut for <code>fcnnls(x, as.matrix(y), ...)</code>.</p>
   
       <p></li>
 </ol></p>
@@ -220,10 +209,7 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre><code class="r">## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
+    <pre><code class="r">
 
 ## Define a random nonnegative matrix matrix
 n &lt;- 200; p &lt;- 20; r &lt;- 3
@@ -261,9 +247,9 @@ res &lt;- fcnnls(X[,1], y)
     
   Original MATLAB code : Van Benthem and Keenan
 
-  Adaption of MATLAB code for SNMF/R(L): H. Kim
+Adaption of MATLAB code for SNMF/R(L): H. Kim
 
-  Adaptation to the NMF package framework: Renaud Gaujoux
+Adaptation to the NMF package framework: Renaud Gaujoux
 
     
   </div>

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfitX1-class. NMF 0.21</title>
+<title>NMFfitX1-class. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -101,16 +101,16 @@
       <h2>Slots</h2>
       
       <p><ol>
-<li>consensusobject of class <code>matrix</code> used to
-  store the consensus matrix based on all the runs.</p>
+<li>consensusobject of class <code>matrix</code> used to store the
+consensus matrix based on all the runs.</p>
   
       <p></li>
-<li>nrunan <code>integer</code> that contains the number of
-  runs performed to compute the object.</p>
+<li>nrunan <code>integer</code> that contains the number of runs
+performed to compute the object.</p>
   
       <p></li>
-<li>rng1an object that contains RNG settings used for
-  the first run. See <code><a href='RNG.html'>getRNG1</a></code>.</p>
+<li>rng1an object that contains RNG settings used for the first
+run. See <code><a href='RNG.html'>getRNG1</a></code>.</p>
   
       <p></li>
 </ol></p>
@@ -123,49 +123,37 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>consensus<code>signature(object = "NMFfitX1")</code>:
-  The result is the matrix stored in slot
-  &#145;consensus&#146;. This method returns <code>NULL</code> if
-  the consensus matrix is empty.</p>
+<li>consensus<code>signature(object = "NMFfitX1")</code>: The result is the matrix stored in slot &#145;consensus&#146;.
+This method returns <code>NULL</code> if the consensus matrix is empty.</p>
   
       <p></li>
-<li>fit<code>signature(object = "NMFfitX1")</code>: Returns
-  the model object associated with the best fit, amongst
-  all the runs performed when fitting <code>object</code>.</p>
+<li>fit<code>signature(object = "NMFfitX1")</code>: Returns the model object associated with the best fit, amongst all the
+runs performed when fitting <code>object</code>.</p>
   
-      <p>Since <code>NMFfitX1</code> objects only hold the best fit,
-  this method simply returns the NMF model fitted by
-  <code>object</code> -- that is stored in slot &#145;fit&#146;.</p>
-  
-      <p></li>
-<li>getRNG1<code>signature(object = "NMFfitX1")</code>:
-  Returns the RNG settings used to compute the first of all
-  NMF runs, amongst which <code>object</code> was selected as the
-  best fit.</p>
+      <p>Since <code>NMFfitX1</code> objects only hold the best fit, this method simply
+returns the NMF model fitted by <code>object</code> -- that is stored in slot
+&#145;fit&#146;.</p>
   
       <p></li>
-<li>minfit<code>signature(object = "NMFfitX1")</code>:
-  Returns the fit object associated with the best fit,
-  amongst all the runs performed when fitting
-  <code>object</code>.</p>
-  
-      <p>Since <code>NMFfitX1</code> objects only hold the best fit,
-  this method simply returns <code>object</code> coerced into an
-  <code>NMFfit</code> object.</p>
+<li>getRNG1<code>signature(object = "NMFfitX1")</code>: Returns the RNG settings used to compute the first of all NMF runs, amongst
+which <code>object</code> was selected as the best fit.</p>
   
       <p></li>
-<li>nmf.equal<code>signature(x = "NMFfitX1", y =
-  "NMFfitX1")</code>: Compares the NMF models fitted by multiple
-  runs, that only kept the best fits.</p>
+<li>minfit<code>signature(object = "NMFfitX1")</code>: Returns the fit object associated with the best fit, amongst all the
+runs performed when fitting <code>object</code>.</p>
+  
+      <p>Since <code>NMFfitX1</code> objects only hold the best fit, this method simply
+returns <code>object</code> coerced into an <code>NMFfit</code> object.</p>
   
       <p></li>
-<li>nrun<code>signature(object = "NMFfitX1")</code>:
-  Returns the number of NMF runs performed, amongst which
-  <code>object</code> was selected as the best fit.</p>
+<li>nmf.equal<code>signature(x = "NMFfitX1", y = "NMFfitX1")</code>: Compares the NMF models fitted by multiple runs, that only kept the best fits.</p>
   
       <p></li>
-<li>show<code>signature(object = "NMFfitX1")</code>: Show
-  method for objects of class <code>NMFfitX1</code></p>
+<li>nrun<code>signature(object = "NMFfitX1")</code>: Returns the number of NMF runs performed, amongst which <code>object</code> was
+selected as the best fit.</p>
+  
+      <p></li>
+<li>show<code>signature(object = "NMFfitX1")</code>: Show method for objects of class <code>NMFfitX1</code></p>
   
       <p></li>
 </ol></p>
@@ -175,10 +163,7 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre><code class="r">## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
+    <pre><code class="r">
 
 # generate a synthetic dataset with known classes
 n &lt;- 20; counts &lt;- c(5, 2, 3);
@@ -203,10 +188,10 @@ res &lt;- nmf(V, 3, nrun=3)
 ##   Method: brunet 
 ##   Runs:  3 
 ##   RNG:
-##    407L, -1144144714L, -1827972161L, -1350554892L, 918866277L, -1556846878L, -1055793925L 
+##    407L, -1079105194L, 2145810399L, -1753001836L, 1339230853L, -1374868094L, 962530075L 
 ##   Total timing:
 ##    user  system elapsed 
-##   1.796   0.162   2.287
+##   2.307   0.211   2.718
 </code></pre>
 
 <pre><code class="r"># compute summary measures
@@ -230,7 +215,7 @@ runtime.all(res)
 </code></pre>
 
 <pre><code>##    user  system elapsed 
-##   1.796   0.162   2.287
+##   2.307   0.211   2.718
 </code></pre>
 
 <pre><code class="r"># plot the consensus matrix, as stored (pre-computed) in the object
@@ -248,8 +233,7 @@ runtime.all(res)
       
     <h2>See also</h2>
     
-  Other multipleNMF: <code><a href='NMFfitX-class.html'>NMFfitX-class</a></code>,
-  <code><a href='NMFfitXn-class.html'>NMFfitXn-class</a></code>
+  Other multipleNMF: <code><a href='NMFfitX-class.html'>NMFfitX-class</a></code>, <code><a href='NMFfitXn-class.html'>NMFfitXn-class</a></code>
 
         
   </div>

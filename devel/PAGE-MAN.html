@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>. NMF 0.21</title>
+<title>. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Renaud Gaujoux, Cathal Seoighe">
 
@@ -56,7 +56,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;<span style="background-color:red" class="badge label-danger">devel</span>
       &nbsp;</p></li>
     </ul>
@@ -96,7 +96,7 @@
 </li>
 
   <li>
-    <code><a href="basis-coef-methods.html">basis</a></code>(.basis, .basis&lt;-, basis&lt;-, basis,ANY-method, .basis&lt;--methods, .basis-methods, basis&lt;--methods, basis-methods, .basis&lt;-,NMFfit,matrix-method, .basis,NMFfit-method, basis,NMFfitXn-method, .basis&lt;-,NMF,matrix-method, .basis,NMF-method, basis&lt;-,NMF-method, basis,NMF-method, .basis&lt;-,NMFstd,matrix-method, .basis,NMFstd-method, coef, .coef, .coef&lt;-, coef&lt;-, coefficients, coefficients-methods, coefficients,NMF-method, .coef&lt;--methods, .coef-methods, coef&lt;--methods, coef-methods, .coef&lt;-,NMFfit,matrix-method, .coef,NMFfit-method, coef,NMFfitXn-method, .coef&lt;-,NMF,matrix-method, .coef,NMF-method, coef&lt;-,NMF-method, coef,NMF-method, .coef&lt;-,NMFstd,matrix-method, .coef,NMFstd-method, loadings,NMF-method, scoef, scoef,matrix-method, scoef-methods, scoef,NMF-method)<br />Accessing NMF Factors</li>
+    <code><a href="basis-coef-methods.html">basis</a></code>(.basis, .basis&lt;-, basis&lt;-, basis,ANY-method, .basis&lt;--methods, .basis-methods, basis&lt;--methods, basis-methods, .basis&lt;-,NMFarray,array-method, .basis&lt;-,NMFarray,matrix-method, .basis,NMFarray-method, .basis&lt;-,NMFfit,matrix-method, .basis,NMFfit-method, basis,NMFfitXn-method, .basis&lt;-,NMF,matrix-method, .basis,NMF-method, basis&lt;-,NMF-method, basis,NMF-method, .basis&lt;-,NMFstd,matrix-method, .basis,NMFstd-method, coef, .coef, .coef&lt;-, coef&lt;-, coefficients, coefficients-methods, coefficients,NMF-method, .coef&lt;--methods, .coef-methods, coef&lt;--methods, coef-methods, .coef&lt;-,NMFarray,array-method, .coef&lt;-,NMFarray,matrix-method, .coef,NMFarray-method, .coef&lt;-,NMFfit,matrix-method, .coef,NMFfit-method, coef,NMFfitXn-method, .coef&lt;-,NMF,matrix-method, .coef,NMF-method, coef&lt;-,NMF-method, coef,NMF-method, .coef&lt;-,NMFstd,matrix-method, .coef,NMFstd-method, loadings,NMF-method, scoef, scoef,matrix-method, scoef-methods, scoef,NMF-method)<br />Accessing NMF Factors</li>
 
   <li>
     <code><a href="basiscor.html">basiscor</a></code>(basiscor,matrix,NMF-method, basiscor-methods, basiscor,NMF,matrix-method, basiscor,NMF,missing-method, basiscor,NMF,NMF-method, profcor, profcor,matrix,NMF-method, profcor-methods, profcor,NMF,matrix-method, profcor,NMF,missing-method, profcor,NMF,NMF-method)<br />Correlations in NMF Models</li>
@@ -151,7 +151,7 @@
     <code><a href="fit.html">fit</a></code>(fit&lt;-, fit&lt;--methods, fit-methods, fit,NMFfit-method, fit&lt;-,NMFfit,NMF-method, fit,NMFfitX1-method, fit,NMFfitX-method, fit,NMFfitXn-method, minfit, minfit-methods, minfit,NMFfit-method, minfit,NMFfitX1-method, minfit,NMFfitX-method, minfit,NMFfitXn-method)<br />Extracting Fitted Models</li>
 
   <li>
-    <code><a href="fitted.html">fitted</a></code>(fitted-methods, fitted,NMFfit-method, fitted,NMF-method, fitted,NMFns-method, fitted,NMFOffset-method, fitted,NMFstd-method)<br />Fitted Matrix in NMF Models</li>
+    <code><a href="fitted.html">fitted</a></code>(fitted-methods, fitted,NMFarray-method, fitted,NMFfit-method, fitted,NMF-method, fitted,NMFns-method, fitted,NMFOffset-method, fitted,NMFstd-method)<br />Fitted Matrix in NMF Models</li>
 
   <li>
     <code><a href="RNG.html">getRNG1</a></code>(.getRNG, getRNG1-methods, getRNG1,NMFfitX1-method, getRNG1,NMFfitX-method, getRNG1,NMFfitXn-method, .getRNG-methods, .getRNG,NMFfitXn-method)<br />Extracting RNG Data from NMF Objects</li>
@@ -160,7 +160,7 @@
     <code><a href="heatmaps.html">heatmap-NMF</a></code>(basismap, basismap-methods, basismap,NMFfitX-method, basismap,NMF-method, coefmap, coefmap-methods, coefmap,NMFfitX-method, coefmap,NMF-method, consensusmap, consensusmap,matrix-method, consensusmap-methods, consensusmap,NMFfitX-method, consensusmap,NMF-method)<br />Heatmaps of NMF Factors</li>
 
   <li>
-    <code><a href="terms.html">ibterms</a></code>(bterms, cterms, ibasis, ibterms-methods, ibterms,NMFfit-method, ibterms,NMFfitX-method, ibterms,NMF-method, ibterms,NMFstd-method, icoef, icterms, icterms-methods, icterms,NMFfit-method, icterms,NMF-method, icterms,NMFstd-method, iterms, nbterms, ncterms, nterms)<br />Fixed Terms in NMF Models</li>
+    <code><a href="terms.html">ibterms</a></code>(bterms, cterms, ibasis, ibterms-methods, ibterms,NMFarray-method, ibterms,NMFfit-method, ibterms,NMFfitX-method, ibterms,NMF-method, ibterms,NMFstd-method, icoef, icterms, icterms-methods, icterms,NMFarray-method, icterms,NMFfit-method, icterms,NMF-method, icterms,NMFstd-method, iterms, nbterms, ncterms, nterms)<br />Fixed Terms in NMF Models</li>
 
   <li>
     <code><a href="types.html">is.nmf</a></code>(hasBasis, hasCoef, is.empty.nmf, isNMFfit, is.partial.nmf)<br />Testing NMF Objects</li>
@@ -185,6 +185,9 @@
 
   <li>
     <code><a href="nmfApply.html">nmfApply</a></code><br />Apply Function for NMF Objects</li>
+
+  <li>
+    <code><a href="NMFarray-class.html">NMFarray-class</a></code><br />TRANSFAC Model - Multidimensional Nonnegative Matrix Factorization</li>
 
   <li>
     <code><a href="nmfCheck.html">nmfCheck</a></code><br />Checking NMF Algorithm</li>
@@ -238,7 +241,7 @@
     <code><a href="NMFOffset-class.html">NMFOffset-class</a></code>(initialize,NMFOffset-method)<br />NMF Model - Nonnegative Matrix Factorization with Offset</li>
 
   <li>
-    <code><a href="NMF-package.html">NMF-package</a></code>(NMF)<br />Algorithms and framework for Nonnegative Matrix Factorization (NMF).</li>
+    <code><a href="NMF-package.html">NMF-package</a></code>(NMF)<br />Algorithms and framework for Nonnegative Matrix Factorization (NMF)</li>
 
   <li>
     <code><a href="nmfReport.html">nmfReport</a></code><br />Run NMF Methods and Generate a Report</li>
@@ -356,6 +359,9 @@
 
   <li>
     <code><a href="setup.html">setupBackend</a></code>(setupLibPaths, setupRNG, setupSharedMemory, setupTempDirectory)<br />Computational Setup Functions</li>
+
+  <li>
+    <code><a href="show-commaNMFarray-method.html">show,NMFarray-method</a></code><br />Show method for objects of class </li>
 
   <li>
     <code><a href="show-commaNMFfit-method.html">show,NMFfit-method</a></code><br />Show method for objects of class </li>

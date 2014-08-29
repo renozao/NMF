@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>residuals. NMF 0.21</title>
+<title>residuals. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -102,35 +102,31 @@ trackError(object, value, niter, force = FALSE)</pre>
     <h2>Arguments</h2>
     <dl>
       <dt>object</dt>
-      <dd>an <code>NMFfit</code> object as fitted by
-  function <code><a href='nmf.html'>nmf</a></code>, in single run mode.</dd>
+      <dd>an <code>NMFfit</code> object as fitted by function <code><a href='nmf.html'>nmf</a></code>,
+in single run mode.</dd>
       <dt>...</dt>
       <dd>extra parameters (not used)</dd>
       <dt>track</dt>
-      <dd>a logical that indicates if the complete
-  track of residuals should be returned (if it has been
-  computed during the fit), or only the last value.</dd>
+      <dd>a logical that indicates if the complete track of residuals
+should be returned (if it has been computed during the fit), or only the last
+value.</dd>
       <dt>niter</dt>
-      <dd>specifies the iteration number for which one
-  wants to get/set/test a residual value. This argument is
-  used only if not <code>NULL</code></dd>
+      <dd>specifies the iteration number for which one wants
+to get/set/test a residual value. This argument is used only if not <code>NULL</code></dd>
       <dt>value</dt>
       <dd>residual value</dd>
       <dt>force</dt>
-      <dd>logical that indicates if the value should
-  be added to the track even if there already is a value
-  for this iteration number or if the iteration does not
-  conform to the tracking interval
-  <code>nmf.getOption('track.interval')</code>.</dd>
+      <dd>logical that indicates if the value should be added to the track
+even if there already is a value for this iteration number or if the iteration
+does not conform to the tracking interval <code>nmf.getOption('track.interval')</code>.</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
       
-      <p><code>residuals</code> returns a single numeric value if
-  <code>track=FALSE</code> or a numeric vector containing the
-  residual values at some iterations. The names correspond
-  to the iterations at which the residuals were computed.</p>
+      <p><code>residuals</code> returns a single numeric value if <code>track=FALSE</code>
+or a numeric vector containing the residual values at some iterations.
+The names correspond to the iterations at which the residuals were computed.</p>
   
     </div>
 
@@ -163,15 +159,12 @@ trackError(object, value, niter, force = FALSE)</pre>
       <h2>Methods</h2>
       
       <p><ol>
-<li>residuals<code>signature(object = "NMFfit")</code>:
-  Returns the residuals -- track -- between the target
-  matrix and the NMF fit <code>object</code>.</p>
+<li>residuals<code>signature(object = "NMFfit")</code>: Returns the residuals -- track -- between the target matrix and the NMF
+fit <code>object</code>.</p>
   
       <p></li>
-<li>residuals<code>signature(object = "NMFfitX")</code>:
-  Returns the residuals achieved by the best fit object,
-  i.e. the lowest residual approximation error achieved
-  across all NMF runs.</p>
+<li>residuals<code>signature(object = "NMFfitX")</code>: Returns the residuals achieved by the best fit object, i.e. the lowest
+residual approximation error achieved across all NMF runs.</p>
   
       <p></li>
 </ol></p>
@@ -190,9 +183,7 @@ trackError(object, value, niter, force = FALSE)</pre>
       
     <h2>See also</h2>
     
-  Other stats: <code><a href='deviance.html'>deviance</a></code>,
-  <code><a href='deviance.html'>deviance,NMF-method</a></code>,
-  <code><a href='deviance.html'>nmfDistance</a></code>
+  Other stats: <code><a href='deviance.html'>deviance</a></code>, <code><a href='deviance.html'>deviance,NMF-method</a></code>, <code><a href='deviance.html'>nmfDistance</a></code>
 
         
   </div>

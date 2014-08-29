@@ -2,12 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf_update.KL.h. NMF 0.21</title>
+<title>nmf_update.KL.h. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="
   Update definitions by &lt;cite&gt;Lee2001&lt;/cite&gt;.
 
-  C++ optimised implementation by Renaud Gaujoux.
+C++ optimised implementation by Renaud Gaujoux.
 ">
 
 <!-- bootstrap css -->
@@ -55,7 +55,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -109,25 +109,22 @@ nmf_update.KL.w_R(v, w, h, wh = NULL)</pre>
       <dt>ncterms</dt>
       <dd>number of fixed coefficient terms</dd>
       <dt>copy</dt>
-      <dd>logical that indicates if the update should
-  be made on the original matrix directly (<code>FALSE</code>) or
-  on a copy (<code>TRUE</code> - default). With <code>copy=FALSE</code>
-  the memory footprint is very small, and some speed-up may
-  be achieved in the case of big matrices. However, greater
-  care should be taken due the side effect. We recommend
-  that only experienced users use <code>copy=TRUE</code>.</dd>
+      <dd>logical that indicates if the update should be made on the original
+matrix directly (<code>FALSE</code>) or on a copy (<code>TRUE</code> - default).
+With <code>copy=FALSE</code> the memory footprint is very small, and some speed-up may be
+achieved in the case of big matrices.
+However, greater care should be taken due the side effect.
+We recommend that only experienced users use <code>copy=TRUE</code>.</dd>
       <dt>wh</dt>
-      <dd>already computed NMF estimate used to compute
-  the denominator term.</dd>
+      <dd>already computed NMF estimate used to compute the denominator term.</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
       
-      <p>a matrix of the same dimension as the input matrix to
-  update (i.e. <code>w</code> or <code>h</code>). If <code>copy=FALSE</code>,
-  the returned matrix uses the same memory as the input
-  object.</p>
+      <p>a matrix of the same dimension as the input matrix to update
+(i.e. <code>w</code> or <code>h</code>).
+If <code>copy=FALSE</code>, the returned matrix uses the same memory as the input object.</p>
   
     </div>
 
@@ -170,7 +167,7 @@ nmf_update.KL.w_R(v, w, h, wh = NULL)</pre>
     
   Update definitions by <cite>Lee2001</cite>.
 
-  C++ optimised implementation by Renaud Gaujoux.
+C++ optimised implementation by Renaud Gaujoux.
 
     
   </div>

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>basiscor. NMF 0.21</title>
+<title>basiscor. NMF 0.21.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -86,13 +86,12 @@ profcor(x, y, ...)</pre>
     <h2>Arguments</h2>
     <dl>
       <dt>x</dt>
-      <dd>a matrix or an object with suitable methods
-  <code><a href='basis-coef-methods.html'>basis</a></code> or <code><a href='basis-coef-methods.html'>coef</a></code>.</dd>
+      <dd>a matrix or an object with suitable methods <code><a href='basis-coef-methods.html'>basis</a></code>
+or <code><a href='basis-coef-methods.html'>coef</a></code>.</dd>
       <dt>y</dt>
-      <dd>a matrix or an object with suitable methods
-  <code><a href='basis-coef-methods.html'>basis</a></code> or <code><a href='basis-coef-methods.html'>coef</a></code>, and dimensions
-  compatible with <code>x</code>. If missing the correlations are
-  computed between <code>x</code> and <code>y=x</code>.</dd>
+      <dd>a matrix or an object with suitable methods <code><a href='basis-coef-methods.html'>basis</a></code>
+or <code><a href='basis-coef-methods.html'>coef</a></code>, and dimensions compatible with <code>x</code>.
+If missing the correlations are computed between <code>x</code> and <code>y=x</code>.</dd>
       <dt>...</dt>
       <dd>extra arguments passed to <code><a href='http://www.inside-r.org/r-doc/stats/cor'>cor</a></code>.</dd>
     </dl>
@@ -111,44 +110,32 @@ profcor(x, y, ...)</pre>
       <h2>Methods</h2>
       
       <p><ol>
-<li>basiscor<code>signature(x = "NMF", y =
-  "matrix")</code>: Computes the correlations between the basis
-  vectors of <code>x</code> and the columns of <code>y</code>.</p>
+<li>basiscor<code>signature(x = "NMF", y = "matrix")</code>: Computes the correlations between the basis vectors of <code>x</code> and
+the columns of <code>y</code>.</p>
   
       <p></li>
-<li>basiscor<code>signature(x = "matrix", y =
-  "NMF")</code>: Computes the correlations between the columns of
-  <code>x</code> and the the basis vectors of <code>y</code>.</p>
+<li>basiscor<code>signature(x = "matrix", y = "NMF")</code>: Computes the correlations between the columns of <code>x</code>
+and the the basis vectors of <code>y</code>.</p>
   
       <p></li>
-<li>basiscor<code>signature(x = "NMF", y = "NMF")</code>:
-  Computes the correlations between the basis vectors of
-  <code>x</code> and <code>y</code>.</p>
+<li>basiscor<code>signature(x = "NMF", y = "NMF")</code>: Computes the correlations between the basis vectors of <code>x</code> and <code>y</code>.</p>
   
       <p></li>
-<li>basiscor<code>signature(x = "NMF", y =
-  "missing")</code>: Computes the correlations between the basis
-  vectors of <code>x</code>.</p>
+<li>basiscor<code>signature(x = "NMF", y = "missing")</code>: Computes the correlations between the basis vectors of <code>x</code>.</p>
   
       <p></li>
-<li>profcor<code>signature(x = "NMF", y = "matrix")</code>:
-  Computes the correlations between the basis profiles of
-  <code>x</code> and the rows of <code>y</code>.</p>
+<li>profcor<code>signature(x = "NMF", y = "matrix")</code>: Computes the correlations between the basis profiles of <code>x</code> and
+the rows of <code>y</code>.</p>
   
       <p></li>
-<li>profcor<code>signature(x = "matrix", y = "NMF")</code>:
-  Computes the correlations between the rows of <code>x</code>
-  and the basis profiles of <code>y</code>.</p>
+<li>profcor<code>signature(x = "matrix", y = "NMF")</code>: Computes the correlations between the rows of <code>x</code> and the basis
+profiles of <code>y</code>.</p>
   
       <p></li>
-<li>profcor<code>signature(x = "NMF", y = "NMF")</code>:
-  Computes the correlations between the basis profiles of
-  <code>x</code> and <code>y</code>.</p>
+<li>profcor<code>signature(x = "NMF", y = "NMF")</code>: Computes the correlations between the basis profiles of <code>x</code> and <code>y</code>.</p>
   
       <p></li>
-<li>profcor<code>signature(x = "NMF", y =
-  "missing")</code>: Computes the correlations between the basis
-  profiles of <code>x</code>.</p>
+<li>profcor<code>signature(x = "NMF", y = "missing")</code>: Computes the correlations between the basis profiles of <code>x</code>.</p>
   
       <p></li>
 </ol></p>
@@ -158,10 +145,7 @@ profcor(x, y, ...)</pre>
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre><code class="r">## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
+    <pre><code class="r">
 
 # generate two random NMF models
 a &lt;- rnmf(3, 100, 20)
@@ -172,37 +156,37 @@ basiscor(a)
 </code></pre>
 
 <pre><code>##          [,1]     [,2]    [,3]
-## [1,]  1.00000 -0.06594 0.01369
-## [2,] -0.06594  1.00000 0.12961
-## [3,]  0.01369  0.12961 1.00000
+## [1,] 1.000000 0.008916 0.02871
+## [2,] 0.008916 1.000000 0.06549
+## [3,] 0.028707 0.065488 1.00000
 </code></pre>
 
 <pre><code class="r">profcor(a)
 </code></pre>
 
-<pre><code>##          [,1]    [,2]     [,3]
-## [1,]  1.00000 0.13727 -0.03842
-## [2,]  0.13727 1.00000  0.03874
-## [3,] -0.03842 0.03874  1.00000
+<pre><code>##        [,1]   [,2]   [,3]
+## [1,] 1.0000 0.1837 0.1166
+## [2,] 0.1837 1.0000 0.1679
+## [3,] 0.1166 0.1679 1.0000
 </code></pre>
 
 <pre><code class="r"># Compute correlations with b
 basiscor(a, b)
 </code></pre>
 
-<pre><code>##          [,1]     [,2]     [,3]
-## [1,] -0.02377 -0.01871  0.01477
-## [2,] -0.00685 -0.05252 -0.01595
-## [3,]  0.05875 -0.04295  0.07180
+<pre><code>##          [,1]    [,2]    [,3]
+## [1,] -0.14060 0.16473 0.01796
+## [2,]  0.06827 0.02217 0.17472
+## [3,]  0.11693 0.02711 0.08066
 </code></pre>
 
 <pre><code class="r">profcor(a, b)
 </code></pre>
 
-<pre><code>##          [,1]    [,2]     [,3]
-## [1,]  0.22494 -0.4130  0.01009
-## [2,]  0.08723  0.2187  0.16280
-## [3,] -0.69638  0.3385 -0.08793
+<pre><code>##           [,1]    [,2]     [,3]
+## [1,] -0.464198  0.2895  0.02205
+## [2,]  0.045081  0.1672  0.17565
+## [3,]  0.001342 -0.2884 -0.03817
 </code></pre>
 
 <pre><code class="r"># try to recover the underlying NMF model &#39;a&#39; from noisy data
@@ -212,19 +196,19 @@ res &lt;- nmf(fitted(a) + rmatrix(a), 3)
 basiscor(a, res)
 </code></pre>
 
-<pre><code>##         [,1]     [,2]    [,3]
-## [1,] -0.1427 -0.04523  0.9208
-## [2,]  0.2068  0.91363 -0.1923
-## [3,]  0.9273 -0.11575  0.1046
+<pre><code>##         [,1]     [,2]   [,3]
+## [1,]  0.9069  0.05245 0.1134
+## [2,] -0.1922 -0.07665 0.9180
+## [3,]  0.1198  0.93109 0.1624
 </code></pre>
 
 <pre><code class="r">profcor(a, res)
 </code></pre>
 
-<pre><code>##         [,1]    [,2]      [,3]
-## [1,] -0.1493  0.2173  0.963979
-## [2,]  0.1203  0.9616 -0.007469
-## [3,]  0.9729 -0.1178  0.116284
+<pre><code>##          [,1]     [,2]   [,3]
+## [1,]  0.95384 -0.09468 0.3227
+## [2,]  0.02291  0.08693 0.9603
+## [3,] -0.11511  0.96372 0.2491
 </code></pre>
 
 <pre><code class="r"># Compute correlations with a random compatible matrix
@@ -232,10 +216,10 @@ W &lt;- rmatrix(basis(a))
 basiscor(a, W)
 </code></pre>
 
-<pre><code>##          [,1]     [,2]     [,3]
-## [1,] -0.01967 -0.06403 -0.10381
-## [2,] -0.10156 -0.09009 -0.03564
-## [3,]  0.06827  0.01140  0.02168
+<pre><code>##          [,1]     [,2]       [,3]
+## [1,] -0.15509  0.02437 -0.0002242
+## [2,]  0.07726  0.02785 -0.0321913
+## [3,] -0.05843 -0.02621 -0.0349820
 </code></pre>
 
 <pre><code class="r">identical(basiscor(a, W), basiscor(W, a))
@@ -248,10 +232,10 @@ basiscor(a, W)
 profcor(a, H)
 </code></pre>
 
-<pre><code>##         [,1]     [,2]   [,3]
-## [1,] 0.03272 -0.14345 0.2781
-## [2,] 0.12405 -0.06738 0.1324
-## [3,] 0.06409 -0.04107 0.1160
+<pre><code>##          [,1]     [,2]     [,3]
+## [1,] -0.07040 -0.06834 0.306598
+## [2,] -0.01400  0.12091 0.161607
+## [3,] -0.04708 -0.13841 0.001737
 </code></pre>
 
 <pre><code class="r">identical(profcor(a, H), profcor(H, a))
