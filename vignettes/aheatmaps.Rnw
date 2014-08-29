@@ -45,6 +45,8 @@ pkgmaker::latex_bibliography('NMF')
 \usepackage{float}
 \floatstyle{boxed} 
 \restylefloat{figure}
+\usepackage{wrapfig}
+\usepackage{adjustbox}
 
 \usepackage{array}
 \usepackage{tabularx}
@@ -148,9 +150,8 @@ For the purpose of illustrating the capabilities of the function
 the vignette:
 
 <<sample_data>>=
-set.seed(1234)
 # data matrix
-x <- rmatrix(20, 10)
+x <- rmatrix(20, 10, .rng = 1234)
 @
 
 \section{Components}
@@ -193,8 +194,8 @@ and columns -- passed as a single string.}
 
 The rows and/or columns of heatmaps are generally ordered in a way that
 highlight shared value patterns.
-This ordering can be automatically computed from the data itself, e.g., using
-clustering algorithms, or forced to match known groups/order.
+This ordering can be automatically computed from the data itself, using
+hierarchical clustering algorithms, or forced to match known groups/order.
 Arguments \code{Rowv}, \code{Colv}, as well as \code{distfun} and
 \code{hclustfun} for automatic clustering, control how the ordering is
 performed and displayed.
@@ -205,23 +206,23 @@ section.
 We refer to the corresponding argument description on the man page
 \code{?aheatmap} for a list of all supported values.
 
-\subsection{Dendrograms}
+\subsection{Hierarchical clustering and dendrograms}
+Dendrograms display result of applying a hierarchical clutering
+algorithm to the rows or columns, typically using the base function \code{hclust}.
 
-Dendrograms result from applying a hierarchical clutering algorithm to the rows
-or columns, typically using the base function \code{hclust}.
-
-\subsubsection{Algorithms}
 By default \code{aheatmap} performs hierarchical clustering and show the
-resulting dedrograms of both rows and columns, using the \code{"euclidean"}
+associated dedrograms of both rows and columns, using the \code{"euclidean"}
 distance and the linkage method \code{"complete"}.
-However more custom ordering can be achieved using suitable
-arguments:
+However more custom clustering can also be specified:
 
-<<clustering>>=
+<<clustering, out.width = "0.33\\textwidth", tidy = FALSE>>=
 # default
 aheatmap(x)
 # use different clustering method for rows
 aheatmap(x, Rowv = c('manhattan', 'average'), info = TRUE)
+# use enternally computed clustering
+hc <- hclust(dist(x, method = 'minkowski'), method = 'centroid')
+aheatmap(x, Rowv = hc, info = TRUE)
 @
 
 \subsubsection{Display}
@@ -232,15 +233,74 @@ aheatmap(x, Rowv = FALSE)
 # cut column dendrogram into 3 clusters
 aheatmap(x, Rowv = FALSE, Colv = 3L)
 aheatmap(x, Rowv = FALSE, Colv = -3L)
-
-# cluster highlighting
-aheatmap(x, Rowv = "#4", Colv = FALSE)
-aheatmap(x, Rowv = "#4|!", Colv = FALSE)
-aheatmap(x, Colv = list("#3@2", text_col = 'red', text = 'Cluster B'), Rowv = FALSE)
 @
 
+\code{aheatmap} also provides some convenient shortcuts to use the
+\CRANpkg{dendextend} and produce enhanced cluster highlighting, with colors,
+text and boxes:
+<<dendrogram_dendextend, out.width = "0.33\\textwidth", tidy = FALSE>>=
+# cluster highlighting
+aheatmap(x, Rowv = "#4", Colv = FALSE, main = "Colored clusters")
+aheatmap(x, Rowv = "#4|!", Colv = FALSE, main = "Boxed clusters")
+# highlight cluster #2 only adding some red text
+aheatmap(x, Colv = list("#3@2", text_col = 'red', text = 'Cluster B'), Rowv = FALSE
+            , main = "Partial highlithing")
+@
 
-\subsection{Forced ordering}
+A completely custom pre-formatted dendrogram can also be build and passed to
+\code{Rowv} (or \code{Colv}), controlling both ordering and display.
+For example, using the \pkgname{dendextend} package\footnote{Code borrowed
+from
+\url{http://cran.r-project.org/web/packages/dendextend/vignettes/introduction.html}},
+one can format a dendrogram in a complex way and simply ``plug" it into the row
+or column dendrogram panel:
+
+\begin{adjustbox}{valign=t}
+\begin{minipage}{.59\linewidth}
+<<dendrogram_custom, fig.show='hide'>>=
+# use pre-formatted dedrogram
+library(dendextend)
+hc <- hclust(dist(t(x)))
+hc <- as.dendrogram(hc) %>% 
+        set("nodes_pch", c(19,1,4)) %>% 
+        set("nodes_cex", c(2,1,2)) %>% 
+        set("nodes_col", c(3,4))
+hc <- hc %>% set("branches_lwd", c(4,1)) %>%    
+           set("branches_lty", c(1,1,3)) %>%  
+           set("branches_col", c(1,2,3)) 
+aheatmap(x, Colv = hc, Rowv = FALSE
+            , main = "Custom dendrogram")
+@
+\end{minipage}
+
+\begin{minipage}{.4\linewidth}
+<<dendrogram_custom_plot, out.width = "\\textwidth", ref.label='dendrogram_custom', echo = FALSE>>=
+@
+\end{minipage}
+\end{adjustbox}
+
+
+\subsection{Forced order}
+
+Column and row order can also be forced to a given order by passing an
+\textbf{integer} indexing vector or \code{NA} for keeping the original order.
+It is important that the indexing vector is effectively an integer
+vector, as passing a numeric vector would only provides weights used
+when re-ordering the computed dendrogram.
+When weights are used, the resulting dendrogram is essentially the same, with
+branches (and leaves) ordered in different ways (see the two last heatmaps
+below).
+
+<<dendrogram_custom_plot, out.width = ".23\\textwidth">>=
+# orignal order
+aheatmap(x, Rowv = NA, Colv = NA, main = 'Original')
+# indexing vector
+aheatmap(x, Rowv = NA, Colv = seq(ncol(x), 1), main = 'Forced (inverse)')
+# not the same as numeric weight vector
+aheatmap(x, Rowv = NA, Colv = as.numeric(seq(nrow(x), 1)), main = 'Values used as weights')
+# compare with no weights
+aheatmap(x, Rowv = NA, main = 'Default weighting')
+@
 
 \section{Colours}
 \section{Labels}
