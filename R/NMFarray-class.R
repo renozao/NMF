@@ -65,6 +65,8 @@ setMethod('icterms', 'NMFarray', function(object){})
 #' 
 #' This function returns slot \code{W} of \code{object}.
 #' 
+#' @param slice optional slice (3rd margin) to extract 
+#' @inline 
 setMethod('.basis', 'NMFarray',
     function(object, slice = NULL){
         if( is.null(slice) ) object@W
@@ -73,6 +75,7 @@ setMethod('.basis', 'NMFarray',
 )
 
 #' Replaces a slice of the basis array.
+#' @inline
 setReplaceMethod('.basis', signature(object='NMFarray', value='matrix'), 
     function(object, ..., slice = 1L, value){
         # error if passed extra arguments
@@ -99,6 +102,7 @@ setReplaceMethod('.basis', signature(object='NMFarray', value='array'),
 #' Get the mixture coefficient array in standard NMF array models 
 #' 
 #' This function returns slot \code{H} of \code{object}.
+#' @inline
 setMethod('.coef', 'NMFarray',
     function(object, slice = NULL){
         if( is.null(slice) ) object@H
@@ -116,6 +120,7 @@ setReplaceMethod('.coef', signature(object='NMFarray', value='array'),
 )
 
 #' Replaces a slice of the coefficent array.
+#' @inline
 setReplaceMethod('.coef', signature(object='NMFarray', value='matrix'), 
     function(object, ..., slice = 1L, value){
         # error if passed extra arguments
