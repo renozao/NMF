@@ -7,13 +7,11 @@ amongst which \code{object} was selected as the best fit.}
   \S4method{consensus}{NMFfitX1}(object, no.attrib = FALSE)
 }
 \arguments{
-  \item{object}{an object with a suitable
-  \code{\link{predict}} method.}
+  \item{object}{an object with a suitable \code{\link{predict}} method.}
 
-  \item{no.attrib}{a logical that indicates if attributes
-  containing information about the NMF model should be
-  attached to the result (\code{TRUE}) or not
-  (\code{FALSE}).}
+  \item{no.attrib}{a logical that indicates if attributes containing information
+about the NMF model should be attached to the result (\code{TRUE}) or not
+(\code{FALSE}).}
 }
 \description{
   The result is the matrix stored in slot

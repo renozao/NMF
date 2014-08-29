@@ -22,33 +22,28 @@
   \S4method{fitted}{NMFarray}(object, W, H)
 }
 \arguments{
-  \item{object}{an object that inherit from class
-  \code{NMF}}
+  \item{object}{an object that inherit from class \code{NMF}}
 
   \item{...}{extra arguments to allow extension}
 
-  \item{W}{a matrix to use in the computation as the basis
-  matrix in place of \code{basis(object)}. It must be
-  compatible with the coefficient matrix used in the
-  computation (i.e. number of columns in \code{W} = number
-  of rows in \code{H}).}
+  \item{W}{a matrix to use in the computation as the basis matrix in place of
+\code{basis(object)}.
+It must be compatible with the coefficient matrix used
+in the computation (i.e. number of columns in \code{W} = number of rows in \code{H}).}
 
-  \item{H}{a matrix to use in the computation as the
-  coefficient matrix in place of \code{coef(object)}. It
-  must be compatible with the basis matrix used in the
-  computation (i.e. number of rows in \code{H} = number of
-  columns in \code{W}).}
+  \item{H}{a matrix to use in the computation as the coefficient matrix in place of
+\code{coef(object)}.
+It must be compatible with the basis matrix used
+in the computation (i.e. number of rows in \code{H} = number of columns in \code{W}).}
 
   \item{offset}{offset vector}
 
-  \item{S}{smoothing matrix to use instead of
-  \code{smoothing(object)} It must be a square matrix
-  compatible with the basis and coefficient matrices used
-  in the computation.}
+  \item{S}{smoothing matrix to use instead of \code{smoothing(object)}
+It must be a square matrix compatible with the basis and coefficient matrices
+used in the computation.}
 }
 \value{
-  the target matrix estimate as fitted by the model
-  \code{object}
+  the target matrix estimate as fitted by the model \code{object}
 }
 \description{
   Computes the estimated target matrix based on a given
@@ -70,49 +65,45 @@
   \code{\linkS4class{NMF}} for more details.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{fitted}{\code{signature(object = "NMF")}: Pure
-  virtual method for objects of class
-  \code{\linkS4class{NMF}}, that should be overloaded by
-  sub-classes, and throws an error if called. }
+\item{fitted}{\code{signature(object = "NMF")}: Pure virtual method for objects of class \code{\linkS4class{NMF}}, that
+should be overloaded by sub-classes, and throws an error if called.
+}
 
-  \item{fitted}{\code{signature(object = "NMFstd")}:
-  Compute the target matrix estimate in \emph{standard NMF
-  models}.
+\item{fitted}{\code{signature(object = "NMFstd")}: Compute the target matrix estimate in \emph{standard NMF models}.
 
-  The estimate matrix is computed as the product of the two
-  matrix slots \code{W} and \code{H}: \deqn{\hat{V} = W
-  H}{V ~ W H} }
+The estimate matrix is computed as the product of the two matrix slots
+\code{W} and \code{H}:
+\deqn{\hat{V} = W H}{V ~ W H}
+}
 
-  \item{fitted}{\code{signature(object = "NMFOffset")}:
-  Computes the target matrix estimate for an NMFOffset
-  object.
+\item{fitted}{\code{signature(object = "NMFOffset")}: Computes the target matrix estimate for an NMFOffset object.
 
-  The estimate is computed as: \deqn{ W H + offset } }
+The estimate is computed as:
+\deqn{ W H + offset }
+}
 
-  \item{fitted}{\code{signature(object = "NMFns")}: Compute
-  estimate for an NMFns object, according to the Nonsmooth
-  NMF model (cf. \code{\link{NMFns-class}}).
+\item{fitted}{\code{signature(object = "NMFns")}: Compute estimate for an NMFns object, according to the Nonsmooth NMF model
+(cf. \code{\link{NMFns-class}}).
 
-  Extra arguments in \code{...} are passed to method
-  \code{smoothing}, and are typically used to pass a value
-  for \code{theta}, which is used to compute the smoothing
-  matrix instead of the one stored in \code{object}. }
+Extra arguments in \code{...} are passed to method \code{smoothing}, and are
+typically used to pass a value for \code{theta}, which is used to compute
+the smoothing matrix instead of the one stored in \code{object}.
+}
 
-  \item{fitted}{\code{signature(object = "NMFarray")}:
-  Computes the target matrix estimate for an NMF array
-  model. }
+\item{fitted}{\code{signature(object = "NMFarray")}: Computes the target matrix estimate for an NMF array model.
+}
 
-  \item{fitted}{\code{signature(object = "NMFfit")}:
-  Computes and return the estimated target matrix from an
-  NMF model fitted with function \code{\link{nmf}}.
+\item{fitted}{\code{signature(object = "NMFfit")}: Computes and return the estimated target matrix from an NMF model fitted with
+function \code{\link{nmf}}.
 
-  It is a shortcut for \code{fitted(fit(object), ...)},
-  dispatching the call to the \code{fitted} method of the
-  actual NMF model. }
+It is a shortcut for \code{fitted(fit(object), ...)}, dispatching the call to
+the \code{fitted} method of the actual NMF model.
+}
 
-  }
+}
+
 }
 \examples{
 \dontshow{# roxygen generated flag

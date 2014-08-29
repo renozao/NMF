@@ -7,14 +7,13 @@
 \arguments{
   \item{x}{a object of class \code{NMFns}.}
 
-  \item{theta}{the smoothing parameter (numeric) between 0
-  and 1.}
+  \item{theta}{the smoothing parameter (numeric) between 0 and 1.}
 
   \item{...}{extra arguments to allow extension (not used)}
 }
 \value{
-  if \code{x} estimates a \eqn{r}-rank NMF, then the result
-  is a \eqn{r \times r} square matrix.
+  if \code{x} estimates a \eqn{r}-rank NMF,
+then the result is a \eqn{r \times r} square matrix.
 }
 \description{
   The function \code{smoothing} builds a smoothing matrix

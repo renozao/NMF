@@ -11,14 +11,13 @@
   existsNMFSeed(name, exact = TRUE)
 }
 \arguments{
-  \item{name}{access key of a seeding method stored in
-  registry. If missing, \code{nmfSeed} returns the list of
-  all available seeding methods.}
+  \item{name}{access key of a seeding method stored in registry.
+If missing, \code{nmfSeed} returns the list of all available seeding methods.}
 
   \item{...}{extra arguments used for internal calls}
 
-  \item{exact}{a logical that indicates if the access key
-  should be matched exactly or partially.}
+  \item{exact}{a logical that indicates if the access key should be matched
+exactly or partially.}
 }
 \description{
   \code{nmfSeed} lists and retrieves NMF seeding methods.

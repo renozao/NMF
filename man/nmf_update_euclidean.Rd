@@ -17,17 +17,15 @@
   nmf_update.euclidean.w_R(v, w, h, wh = NULL, eps = 10^-9)
 }
 \arguments{
-  \item{eps}{small numeric value used to ensure numeric
-  stability, by shifting up entries from zero to this fixed
-  value.}
+  \item{eps}{small numeric value used to ensure numeric stability, by shifting up
+entries from zero to this fixed value.}
 
-  \item{wh}{already computed NMF estimate used to compute
-  the denominator term.}
+  \item{wh}{already computed NMF estimate used to compute the denominator term.}
 
-  \item{weight}{numeric vector of sample weights, e.g.,
-  used to normalise samples coming from multiple datasets.
-  It must be of the same length as the number of
-  samples/columns in \code{v} -- and \code{h}.}
+  \item{weight}{numeric vector of sample weights, e.g., used to normalise samples
+coming from multiple datasets.
+It must be of the same length as the number of samples/columns in \code{v}
+-- and \code{h}.}
 
   \item{v}{target matrix}
 
@@ -39,19 +37,17 @@
 
   \item{ncterms}{number of fixed coefficient terms}
 
-  \item{copy}{logical that indicates if the update should
-  be made on the original matrix directly (\code{FALSE}) or
-  on a copy (\code{TRUE} - default). With \code{copy=FALSE}
-  the memory footprint is very small, and some speed-up may
-  be achieved in the case of big matrices. However, greater
-  care should be taken due the side effect. We recommend
-  that only experienced users use \code{copy=TRUE}.}
+  \item{copy}{logical that indicates if the update should be made on the original
+matrix directly (\code{FALSE}) or on a copy (\code{TRUE} - default).
+With \code{copy=FALSE} the memory footprint is very small, and some speed-up may be
+achieved in the case of big matrices.
+However, greater care should be taken due the side effect.
+We recommend that only experienced users use \code{copy=TRUE}.}
 }
 \value{
-  a matrix of the same dimension as the input matrix to
-  update (i.e. \code{w} or \code{h}). If \code{copy=FALSE},
-  the returned matrix uses the same memory as the input
-  object.
+  a matrix of the same dimension as the input matrix to update
+(i.e. \code{w} or \code{h}).
+If \code{copy=FALSE}, the returned matrix uses the same memory as the input object.
 }
 \description{
   Multiplicative updates from \cite{Lee et al. (2001)} for
@@ -88,7 +84,7 @@
 \author{
   Update definitions by \cite{Lee2001}.
 
-  C++ optimised implementation by Renaud Gaujoux.
+C++ optimised implementation by Renaud Gaujoux.
 }
 \references{
   Lee DD and Seung H (2001). "Algorithms for non-negative

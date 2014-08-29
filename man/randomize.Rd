@@ -5,12 +5,10 @@
   randomize(x, ...)
 }
 \arguments{
-  \item{x}{data to be permutated. It must be an object
-  suitable to be passed to the function
-  \code{\link{apply}}.}
+  \item{x}{data to be permutated. It must be an object suitable to be
+passed to the function \code{\link{apply}}.}
 
-  \item{...}{extra arguments passed to the function
-  \code{\link{sample}}.}
+  \item{...}{extra arguments passed to the function \code{\link{sample}}.}
 }
 \value{
   a matrix

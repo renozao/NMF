@@ -17,13 +17,12 @@
 
   \item{constraints}{constraint specification.}
 
-  \item{ratio}{fixed ratio on which the constraint
-  applies.}
+  \item{ratio}{fixed ratio on which the constraint applies.}
 
   \item{value}{fixed value to enforce.}
 
-  \item{copy}{a logical that indicates if \code{x} should
-  be updated in place or not.}
+  \item{copy}{a logical that indicates if \code{x} should be updated in place
+or not.}
 }
 \description{
   These functions modify objects (mainly matrix objects) in

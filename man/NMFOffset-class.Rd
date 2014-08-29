@@ -7,15 +7,13 @@
   \S4method{initialize}{NMFOffset}(.Object, ..., offset)
 }
 \arguments{
-  \item{offset}{optional numeric vector used to initialise
-  slot \sQuote{offset}.}
+  \item{offset}{optional numeric vector used to initialise slot \sQuote{offset}.}
 
-  \item{.Object}{ An object: see the Details section.}
+  \item{.Object}{ An object:  see the Details section.}
 
-  \item{...}{data to include in the new object.  Named
-  arguments correspond to slots in the class definition.
-  Unnamed arguments must be objects from classes that this
-  class extends.}
+  \item{...}{data to include in the new object.  Named arguments
+    correspond to slots in the class definition. Unnamed arguments must
+    be objects from classes that this class extends.}
 }
 \description{
   This class implements the \emph{Nonnegative Matrix
@@ -32,61 +30,62 @@
   constant across samples.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{fitted}{\code{signature(object = "NMFOffset")}:
-  Computes the target matrix estimate for an NMFOffset
-  object.
+\item{fitted}{\code{signature(object = "NMFOffset")}: Computes the target matrix estimate for an NMFOffset object.
 
-  The estimate is computed as: \deqn{ W H + offset } }
+The estimate is computed as:
+\deqn{ W H + offset }
+}
 
-  \item{offset}{\code{signature(object = "NMFOffset")}: The
-  function \code{offset} returns the offset vector from an
-  NMF model that has an offset, e.g. an \code{NMFOffset}
-  model. }
 
-  \item{rnmf}{\code{signature(x = "NMFOffset", target =
-  "numeric")}: Generates a random NMF model with offset,
-  from class \code{NMFOffset}.
+\item{offset}{\code{signature(object = "NMFOffset")}: The function \code{offset} returns the offset vector from an NMF model
+that has an offset, e.g. an \code{NMFOffset} model.
+}
 
-  The offset values are drawn from a uniform distribution
-  between 0 and the maximum entry of the basis and
-  coefficient matrices, which are drawn by the next
-  suitable \code{\link{rnmf}} method, which is the
-  workhorse method \code{rnmf,NMF,numeric}. }
 
-  \item{show}{\code{signature(object = "NMFOffset")}: Show
-  method for objects of class \code{NMFOffset} }
+\item{rnmf}{\code{signature(x = "NMFOffset", target = "numeric")}: Generates a random NMF model with offset, from class \code{NMFOffset}.
 
-  }
+The offset values are drawn from a uniform distribution between 0 and
+the maximum entry of the basis and coefficient matrices, which are drawn
+by the next suitable \code{\link{rnmf}} method, which is the workhorse
+method \code{rnmf,NMF,numeric}.
+}
+
+
+\item{show}{\code{signature(object = "NMFOffset")}: Show method for objects of class \code{NMFOffset}
+}
+
+}
+
 }
 \section{Creating objects from the Class}{
-  Object of class \code{NMFOffset} can be created using the
-  standard way with operator \code{\link{new}}
 
-  However, as for all NMF model classes -- that extend
-  class \code{\linkS4class{NMF}}, objects of class
-  \code{NMFOffset} should be created using factory method
-  \code{\link{nmfModel}} :
 
-  \code{new('NMFOffset')}
+Object of class \code{NMFOffset} can be created using the standard way with
+operator \code{\link{new}}
 
-  \code{nmfModel(model='NMFOffset')}
+However, as for all NMF model classes -- that extend class
+\code{\linkS4class{NMF}}, objects of class \code{NMFOffset} should be
+created using factory method \code{\link{nmfModel}} :
 
-  \code{nmfModel(model='NMFOffset', W=w, offset=rep(1,
-  nrow(w)))}
+\code{new('NMFOffset')}
 
-  See \code{\link{nmfModel}} for more details on how to use
-  the factory method.
+\code{nmfModel(model='NMFOffset')}
+
+\code{nmfModel(model='NMFOffset', W=w, offset=rep(1, nrow(w)))}
+
+See \code{\link{nmfModel}} for more details on how to use the factory
+method.
 }
 
 \section{Initialize method}{
-  The initialize method for \code{NMFOffset} objects tries
-  to correct the initial value passed for slot
-  \code{offset}, so that it is consistent with the
-  dimensions of the \code{NMF} model: it will pad the
-  offset vector with NA values to get the length equal to
-  the number of rows in the basis matrix.
+
+The initialize method for \code{NMFOffset} objects tries to correct the initial
+value passed for slot \code{offset}, so that it is consistent with the dimensions
+of the \code{NMF} model:
+it will pad the offset vector with NA values to get the length equal to the
+number of rows in the basis matrix.
 }
 \examples{
 \dontshow{# roxygen generated flag
@@ -118,8 +117,7 @@ rnmf(3, 10, 5, model='NMFOffset')
   http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
 }
 \seealso{
-  Other NMF-model: \code{\link{NMFarray-class}},
-  \code{\link{NMFns-class}}, \code{\link{NMFstd-class}}
+  Other NMF-model: \code{\link{NMFarray-class}}, \code{\link{NMFns-class}}, \code{\link{NMFstd-class}}
 }
 \keyword{methods}
 

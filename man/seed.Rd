@@ -23,24 +23,20 @@
 \arguments{
   \item{x}{target matrix one wants to approximate with NMF}
 
-  \item{model}{specification of the NMF model, e.g., the
-  factorization rank.}
+  \item{model}{specification of the NMF model, e.g., the factorization rank.}
 
-  \item{method}{specification of a seeding method. See each
-  method for details on the supported formats.}
+  \item{method}{specification of a seeding method.
+See each method for details on the supported formats.}
 
-  \item{...}{extra to allow extensions and passed down to
-  the actual seeding method.}
+  \item{...}{extra to allow extensions and passed down to the actual seeding method.}
 
-  \item{rng}{rng setting to use. If not missing the RNG
-  settings are set and restored on exit using
-  \code{\link{setRNG}}.
+  \item{rng}{rng setting to use.
+If not missing the RNG settings are set and restored on exit using
+\code{\link{setRNG}}.
 
-  All arguments in \code{...} are passed to teh seeding
-  strategy.}
+All arguments in \code{...} are passed to teh seeding strategy.}
 
-  \item{name}{optional name of the seeding method for
-  custom seeding strategies.}
+  \item{name}{optional name of the seeding method for custom seeding strategies.}
 }
 \value{
   an \code{\linkS4class{NMFfit}} object.
@@ -58,56 +54,49 @@
   experimental and is subject to changes in future release.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{seed}{\code{signature(x = "matrix", model = "NMF",
-  method = "NMFSeed")}: This is the workhorse method that
-  seeds an NMF model object using a given seeding strategy
-  defined by an \code{NMFSeed} object, to fit a given
-  target matrix. }
+\item{seed}{\code{signature(x = "matrix", model = "NMF", method = "NMFSeed")}: This is the workhorse method that seeds an NMF model object using a given
+seeding strategy defined by an \code{NMFSeed} object, to fit a given
+target matrix.
+}
 
-  \item{seed}{\code{signature(x = "ANY", model = "ANY",
-  method = "function")}: Seeds an NMF model using a custom
-  seeding strategy, defined by a function.
+\item{seed}{\code{signature(x = "ANY", model = "ANY", method = "function")}: Seeds an NMF model using a custom seeding strategy, defined by a function.
 
-  \code{method} must have signature \code{(x='NMFfit',
-  y='matrix', ...)}, where \code{x} is the unseeded NMF
-  model and \code{y} is the target matrix to fit. It must
-  return an \code{\linkS4class{NMF}} object, that contains
-  the seeded NMF model. }
+\code{method} must have signature \code{(x='NMFfit', y='matrix', ...)}, where
+\code{x} is the unseeded NMF model and \code{y} is the target matrix to fit.
+It must return an \code{\linkS4class{NMF}} object, that contains the seeded
+NMF model.
+}
 
-  \item{seed}{\code{signature(x = "ANY", model = "ANY",
-  method = "missing")}: Seeds the model with the default
-  seeding method given by
-  \code{nmf.getOption('default.seed')} }
+\item{seed}{\code{signature(x = "ANY", model = "ANY", method = "missing")}: Seeds the model with the default seeding method given by
+\code{nmf.getOption('default.seed')}
+}
 
-  \item{seed}{\code{signature(x = "ANY", model = "ANY",
-  method = "NULL")}: Use NMF method \code{'none'}. }
+\item{seed}{\code{signature(x = "ANY", model = "ANY", method = "NULL")}: Use NMF method \code{'none'}.
+}
 
-  \item{seed}{\code{signature(x = "ANY", model = "ANY",
-  method = "numeric")}: Use \code{method} to set the RNG
-  with \code{\link{setRNG}} and use method \dQuote{random}
-  to seed the NMF model.
+\item{seed}{\code{signature(x = "ANY", model = "ANY", method = "numeric")}: Use \code{method} to set the RNG with \code{\link{setRNG}} and use method
+\dQuote{random} to seed the NMF model.
 
-  Note that in this case the RNG settings are not restored.
-  This is due to some internal technical reasons, and might
-  change in future releases. }
+Note that in this case the RNG settings are not restored.
+This is due to some internal technical reasons, and might change in future
+releases.
+}
 
-  \item{seed}{\code{signature(x = "ANY", model = "ANY",
-  method = "character")}: Use the registered seeding method
-  whose access key is \code{method}. }
+\item{seed}{\code{signature(x = "ANY", model = "ANY", method = "character")}: Use the registered seeding method whose access key is \code{method}.
+}
 
-  \item{seed}{\code{signature(x = "ANY", model = "list",
-  method = "NMFSeed")}: Seed a model using the elements in
-  \code{model} to instantiate it with
-  \code{\link{nmfModel}}. }
+\item{seed}{\code{signature(x = "ANY", model = "list", method = "NMFSeed")}: Seed a model using the elements in \code{model} to instantiate it with
+\code{\link{nmfModel}}.
+}
 
-  \item{seed}{\code{signature(x = "ANY", model = "numeric",
-  method = "NMFSeed")}: Seeds a standard NMF model (i.e. of
-  class \code{\linkS4class{NMFstd}}) of rank \code{model}.
-  }
+\item{seed}{\code{signature(x = "ANY", model = "numeric", method = "NMFSeed")}: Seeds a standard NMF model (i.e. of class \code{\linkS4class{NMFstd}}) of rank
+\code{model}.
+}
 
-  }
+}
+
 }
 \keyword{methods}
 

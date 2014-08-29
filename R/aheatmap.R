@@ -486,6 +486,9 @@ draw_annotation_legend = function(annotation_colors, border_color, gp = gpar()){
 #' data matrix (m), labels (l) and legend (L).
 #' See section \emph{Layout syntax} for a complete specification  
 #'
+#' @param size list defining the size of each component (mainly for internal use).
+#' 
+#' 
 #' @details Layout syntax:
 #' 
 #' Layouts are specified as character strings that can contain the following characters, 
@@ -507,7 +510,7 @@ draw_annotation_legend = function(annotation_colors, border_color, gp = gpar()){
 #' \item{\sQuote{_}}{ align bottom (resp. right) for horizontal (resp. vertical) layout.
 #' If used alone (i.e. \code{layout = "_"}), then this is equivalent to \code{"|.L_"}, 
 #' which places the legend horizontally on the bottom-right corner.}  
-#' \item{\sQuote{*}}{ used either alone or after after \code{\sQuote{L}} to specifiy that the 
+#' \item{\sQuote{*}}{ used either alone or after after \sQuote{L} to specifiy that the 
 #' legend should expand to full height/width.}
 #' }
 #' The specification must contain one instance of each of these character.
@@ -565,12 +568,18 @@ draw_annotation_legend = function(annotation_colors, border_color, gp = gpar()){
 #' 
 aheatmap_layout <- function(layout = 'daml', size = NULL){
     
-    # define dummy sizes
-    if( is.null(size) ){
-        l <- unit(2, 'line')
-        size <- list(list(rtree = 2 * l, rann = l, mat = unit(1, 'null'), rnam = l, leg = l, aleg = l)
-                , list(main=l, ctree = 2 * l, cann = l, mat = unit(1, 'null'), cnam = l, leg = l, sub = l, info = 1.5 * l))
+    # default sizes
+    l <- unit(2, 'line')
+    size0 <- list(list(rtree = 2 * l, rann = l, mat = unit(1, 'null'), rnam = l, leg = l, aleg = l)
+            , list(main=l, ctree = 2 * l, cann = l, mat = unit(1, 'null'), cnam = l, leg = l, sub = l, info = 1.5 * l))
+    
+    if( is_NA(size) ){
+        if( nargs() == 1L ) return( size0 )
+        size <- NULL
     }
+    
+    # define dummy sizes
+    if( is.null(size) ) size <- size0
     
     # compute layout
     gl <- vplayout(NULL, layout = layout, size = size)
@@ -1179,8 +1188,8 @@ cutheight <- function(x, n){
 }
 
 .dendextend <- function(){
-    qlibrary(colorspace)
-    qlibrary(dendextend)
+    qlibrary('colorspace')
+    qlibrary('dendextend')
 }
 
 #' Fade Out the Upper Branches from a Dendrogram
@@ -1190,7 +1199,7 @@ cutheight <- function(x, n){
 #' 
 #' @import digest
 #' @keywords internal
-#' @import dendextend magrittr
+#' @import dendextend
 cutdendro <- function(x, n){
 	
     use_dendextend <- FALSE

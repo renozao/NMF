@@ -15,8 +15,7 @@
 \arguments{
   \item{object}{NMF object to be updated.}
 
-  \item{value}{specification of the replacement value for
-  fixed-terms.}
+  \item{value}{specification of the replacement value for fixed-terms.}
 }
 \description{
   These functions are for internal use and should not be
@@ -32,17 +31,19 @@
   to generate suitable term matrices.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{bterms<-}{\code{signature(object = "NMFstd")}:
-  Default method tries to coerce \code{value} into a
-  \code{data.frame} with \code{\link{as.data.frame}}. }
+\item{bterms<-}{\code{signature(object = "NMFstd")}: Default method tries to coerce \code{value} into a \code{data.frame} with
+\code{\link{as.data.frame}}.
+}
 
-  \item{cterms<-}{\code{signature(object = "NMFstd")}:
-  Default method tries to coerce \code{value} into a
-  \code{data.frame} with \code{\link{as.data.frame}}. }
 
-  }
+\item{cterms<-}{\code{signature(object = "NMFstd")}: Default method tries to coerce \code{value} into a \code{data.frame} with
+\code{\link{as.data.frame}}.
+}
+
+}
+
 }
 \keyword{internal}
 \keyword{methods}

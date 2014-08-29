@@ -5,16 +5,16 @@
   aheatmap_layout(layout = "daml", size = NULL)
 }
 \arguments{
-  \item{layout}{layout specification that indicates the
-  relative position of the heatmap's components. Two
-  layouts can be defined: one horizontal, which relates to
-  components associated to rows, and one vertical, which
-  relates to components associated with columns. Each
-  layout is specified as a character strings, composed of
-  characters that encode the order of each component:
-  dendrogram (d), annotation tracks (a), data matrix (m),
-  labels (l) and legend (L). See section \emph{Layout
-  syntax} for a complete specification}
+  \item{layout}{layout specification that indicates the relative position
+of the heatmap's components.
+Two layouts can be defined: one horizontal, which relates to components associated to rows,
+and one vertical, which relates to components associated with columns.
+Each layout is specified as a character strings, composed of characters
+that encode the order of each component: dendrogram (d), annotation tracks (a),
+data matrix (m), labels (l) and legend (L).
+See section \emph{Layout syntax} for a complete specification}
+
+  \item{size}{list defining the size of each component (mainly for internal use).}
 }
 \description{
   Shows a diagram of an annotated heatmap layout for given
@@ -39,12 +39,12 @@
   horizontal (resp. vertical) layout.} \item{\sQuote{_}}{
   align bottom (resp. right) for horizontal (resp.
   vertical) layout. If used alone (i.e. \code{layout =
-  "_"}), then this is equivalent to \code{"|L_"}, which
-  make places the legend horizontally on the bottom-right
+  "_"}), then this is equivalent to \code{"|.L_"}, which
+  places the legend horizontally on the bottom-right
   corner.} \item{\sQuote{*}}{ used either alone or after
-  after \code{\sQuote{L}} to specifiy that the legend
-  should expand to full height/width.} } The specification
-  must contain one instance of each of these character.
+  after \sQuote{L} to specifiy that the legend should
+  expand to full height/width.} } The specification must
+  contain one instance of each of these character.
 
   The default horizontal/vertical layout is \code{"daml"},
   and can also be specified as \code{"."}.

@@ -53,96 +53,93 @@
   \link{bioc-NMF} for more details.
 }
 \section{Slots}{
-  \describe{
+\describe{
 
-  \item{W}{A \code{matrix} that contains the basis matrix,
-  i.e. the \emph{first} matrix factor of the factorisation}
+\item{W}{A \code{matrix} that contains the basis matrix, i.e. the \emph{first}
+matrix factor of the factorisation}
 
-  \item{H}{A \code{matrix} that contains the coefficient
-  matrix, i.e. the \emph{second} matrix factor of the
-  factorisation}
+\item{H}{A \code{matrix} that contains the coefficient matrix, i.e. the
+\emph{second} matrix factor of the factorisation}
 
-  \item{bterms}{a \code{data.frame} that contains the
-  primary data that define fixed basis terms. See
-  \code{\link{bterms}}.}
+\item{bterms}{a \code{data.frame} that contains the primary data that
+define fixed basis terms. See \code{\link{bterms}}.}
 
-  \item{ibterms}{integer vector that contains the indexes
-  of the basis components that are fixed, i.e. for which
-  only the coefficient are estimated.
+\item{ibterms}{integer vector that contains the indexes of the basis components
+that are fixed, i.e. for which only the coefficient are estimated.
 
-  IMPORTANT: This slot is set on construction of an NMF
-  model via
-  \code{\link[=nmfModel,formula,ANY-method]{nmfModel}} and
-  is not recommended to not be subsequently changed by the
-  end-user.}
+IMPORTANT: This slot is set on construction of an NMF model via
+\code{\link[=nmfModel,formula,ANY-method]{nmfModel}} and is not recommended to
+not be subsequently changed by the end-user.}
 
-  \item{cterms}{a \code{data.frame} that contains the
-  primary data that define fixed coefficient terms. See
-  \code{\link{cterms}}.}
+\item{cterms}{a \code{data.frame} that contains the primary data that
+define fixed coefficient terms. See \code{\link{cterms}}.}
 
-  \item{icterms}{integer vector that contains the indexes
-  of the basis components that have fixed coefficients,
-  i.e. for which only the basis vectors are estimated.
+\item{icterms}{integer vector that contains the indexes of the basis components
+that have fixed coefficients, i.e. for which only the basis vectors are estimated.
 
-  IMPORTANT: This slot is set on construction of an NMF
-  model via
-  \code{\link[=nmfModel,formula,ANY-method]{nmfModel}} and
-  is not recommended to not be subsequently changed by the
-  end-user.}
+IMPORTANT: This slot is set on construction of an NMF model via
+\code{\link[=nmfModel,formula,ANY-method]{nmfModel}} and is not recommended to
+not be subsequently changed by the end-user.}
 
-  }
+}
+
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{.basis}{\code{signature(object = "NMFstd")}: Get
-  the basis matrix in standard NMF models
+\item{.basis}{\code{signature(object = "NMFstd")}: Get the basis matrix in standard NMF models
 
-  This function returns slot \code{W} of \code{object}. }
+This function returns slot \code{W} of \code{object}.
+}
 
-  \item{.basis<-}{\code{signature(object = "NMFstd", value
-  = "matrix")}: Set the basis matrix in standard NMF models
 
-  This function sets slot \code{W} of \code{object}. }
+\item{.basis<-}{\code{signature(object = "NMFstd", value = "matrix")}: Set the basis matrix in standard NMF models
 
-  \item{bterms<-}{\code{signature(object = "NMFstd")}:
-  Default method tries to coerce \code{value} into a
-  \code{data.frame} with \code{\link{as.data.frame}}. }
+This function sets slot \code{W} of \code{object}.
+}
 
-  \item{.coef}{\code{signature(object = "NMFstd")}: Get the
-  mixture coefficient matrix in standard NMF models
 
-  This function returns slot \code{H} of \code{object}. }
+\item{bterms<-}{\code{signature(object = "NMFstd")}: Default method tries to coerce \code{value} into a \code{data.frame} with
+\code{\link{as.data.frame}}.
+}
 
-  \item{.coef<-}{\code{signature(object = "NMFstd", value =
-  "matrix")}: Set the mixture coefficient matrix in
-  standard NMF models
 
-  This function sets slot \code{H} of \code{object}. }
+\item{.coef}{\code{signature(object = "NMFstd")}: Get the mixture coefficient matrix in standard NMF models
 
-  \item{cterms<-}{\code{signature(object = "NMFstd")}:
-  Default method tries to coerce \code{value} into a
-  \code{data.frame} with \code{\link{as.data.frame}}. }
+This function returns slot \code{H} of \code{object}.
+}
 
-  \item{fitted}{\code{signature(object = "NMFstd")}:
-  Compute the target matrix estimate in \emph{standard NMF
-  models}.
 
-  The estimate matrix is computed as the product of the two
-  matrix slots \code{W} and \code{H}: \deqn{\hat{V} = W
-  H}{V ~ W H} }
+\item{.coef<-}{\code{signature(object = "NMFstd", value = "matrix")}: Set the mixture coefficient matrix in standard NMF models
 
-  \item{ibterms}{\code{signature(object = "NMFstd")}:
-  Method for standard NMF models, which returns the integer
-  vector that is stored in slot \code{ibterms} when a
-  formula-based NMF model is instantiated. }
+This function sets slot \code{H} of \code{object}.
+}
 
-  \item{icterms}{\code{signature(object = "NMFstd")}:
-  Method for standard NMF models, which returns the integer
-  vector that is stored in slot \code{icterms} when a
-  formula-based NMF model is instantiated. }
 
-  }
+\item{cterms<-}{\code{signature(object = "NMFstd")}: Default method tries to coerce \code{value} into a \code{data.frame} with
+\code{\link{as.data.frame}}.
+}
+
+
+\item{fitted}{\code{signature(object = "NMFstd")}: Compute the target matrix estimate in \emph{standard NMF models}.
+
+The estimate matrix is computed as the product of the two matrix slots
+\code{W} and \code{H}:
+\deqn{\hat{V} = W H}{V ~ W H}
+}
+
+
+\item{ibterms}{\code{signature(object = "NMFstd")}: Method for standard NMF models, which returns the integer vector that is
+stored in slot \code{ibterms} when a formula-based NMF model is instantiated.
+}
+
+
+\item{icterms}{\code{signature(object = "NMFstd")}: Method for standard NMF models, which returns the integer vector that is
+stored in slot \code{icterms} when a formula-based NMF model is instantiated.
+}
+
+}
+
 }
 \examples{
 \dontshow{# roxygen generated flag
@@ -179,9 +176,6 @@ nmfModel(r, W=w, H=h)
   http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
 }
 \seealso{
-  Other NMF-model:
-  \code{\link{initialize,NMFOffset-method}},
-  \code{\link{NMFarray-class}}, \code{\link{NMFns-class}},
-  \code{\link{NMFOffset-class}}
+  Other NMF-model: \code{\link{initialize,NMFOffset-method}}, \code{\link{NMFarray-class}}, \code{\link{NMFns-class}}, \code{\link{NMFOffset-class}}
 }
 

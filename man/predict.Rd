@@ -19,24 +19,20 @@
 \arguments{
   \item{object}{an NMF model}
 
-  \item{what}{a character string that indicates the type of
-  cluster membership should be returned: \sQuote{columns}
-  or \sQuote{rows} for clustering the colmuns or the rows
-  of the target matrix respectively. The values
-  \sQuote{samples} and \sQuote{features} are aliases for
-  \sQuote{colmuns} and \sQuote{rows} respectively.}
+  \item{what}{a character string that indicates the type of cluster membership should
+be returned: \sQuote{columns} or \sQuote{rows} for clustering the colmuns or the
+rows of the target matrix respectively.
+The values \sQuote{samples} and \sQuote{features} are aliases for \sQuote{colmuns}
+and \sQuote{rows} respectively.}
 
-  \item{prob}{logical that indicates if the relative
-  contributions of/to the dominant basis component should
-  be computed and returned. See \emph{Details}.}
+  \item{prob}{logical that indicates if the relative contributions of/to the dominant
+basis component should be computed and returned. See \emph{Details}.}
 
-  \item{dmatrix}{logical that indicates if a dissimiliarity
-  matrix should be attached to the result. This is notably
-  used internally when computing NMF clustering
-  silhouettes.}
+  \item{dmatrix}{logical that indicates if a dissimiliarity matrix should be
+attached to the result.
+This is notably used internally when computing NMF clustering silhouettes.}
 
-  \item{...}{additional arguments affecting the predictions
-  produced.}
+  \item{...}{additional arguments affecting the predictions produced.}
 }
 \description{
   The methods \code{predict} for NMF models return the
@@ -84,34 +80,33 @@
   }
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{predict}{\code{signature(object = "NMF")}: Default
-  method for NMF models }
+\item{predict}{\code{signature(object = "NMF")}: Default method for NMF models
+}
 
-  \item{predict}{\code{signature(object = "NMFfitX")}:
-  Returns the cluster membership index from an NMF model
-  fitted with multiple runs.
+\item{predict}{\code{signature(object = "NMFfitX")}: Returns the cluster membership index from an NMF model fitted with multiple
+runs.
 
-  Besides the type of clustering available for any NMF
-  models (\code{'columns', 'rows', 'samples', 'features'}),
-  this method can return the cluster membership index based
-  on the consensus matrix, computed from the multiple NMF
-  runs.
+Besides the type of clustering available for any NMF models
+(\code{'columns', 'rows', 'samples', 'features'}), this method can return
+the cluster membership index based on the consensus matrix, computed from
+the multiple NMF runs.
 
-  Argument \code{what} accepts the following extra types:
-  \describe{ \item{\code{'chc'}}{ returns the cluster
-  membership based on the hierarchical clustering of the
-  consensus matrix, as performed by
-  \code{\link{consensushc}}.} \item{\code{'consensus'}}{
-  same as \code{'chc'} but the levels of the membership
-  index are re-labeled to match the order of the clusters
-  as they would be displayed on the associated dendrogram,
-  as re-ordered on the default annotation track in
-  consensus heatmap produced by
-  \code{\link{consensusmap}}.} } }
+Argument \code{what} accepts the following extra types:
+\describe{
+\item{\code{'chc'}}{ returns the cluster membership based on the
+hierarchical clustering of the consensus matrix, as performed by
+\code{\link{consensushc}}.}
+\item{\code{'consensus'}}{ same as \code{'chc'} but the levels of the membership
+index are re-labeled to match the order of the clusters as they would be displayed on the
+associated dendrogram, as re-ordered on the default annotation track in consensus
+heatmap produced by \code{\link{consensusmap}}.}
+}
+}
 
-  }
+}
+
 }
 \examples{
 \dontshow{# roxygen generated flag

@@ -32,73 +32,63 @@
     check.interval = 5 * check.niter, check.niter = 10L)
 }
 \arguments{
-  \item{rescale}{logical that indicates if the basis matrix
-  \eqn{W} should be rescaled so that its columns sum up to
-  one.}
+  \item{rescale}{logical that indicates if the basis matrix \eqn{W} should be
+rescaled so that its columns sum up to one.}
 
   \item{i}{current iteration number.}
 
   \item{v}{target matrix.}
 
-  \item{x}{current NMF model, as an
-  \code{\linkS4class{NMF}} object.}
+  \item{x}{current NMF model, as an \code{\linkS4class{NMF}} object.}
 
-  \item{eps}{small numeric value used to ensure numeric
-  stability, by shifting up entries from zero to this fixed
-  value.}
+  \item{eps}{small numeric value used to ensure numeric stability, by shifting up
+entries from zero to this fixed value.}
 
-  \item{...}{extra arguments. These are generally not used
-  and present only to allow other arguments from the main
-  call to be passed to the initialisation and stopping
-  criterion functions (slots \code{onInit} and \code{Stop}
-  respectively).}
+  \item{...}{extra arguments. These are generally not used and present
+only to allow other arguments from the main call to be passed to the
+initialisation and stopping criterion functions (slots \code{onInit} and
+\code{Stop} respectively).}
 
-  \item{copy}{logical that indicates if the update should
-  be made on the original matrix directly (\code{FALSE}) or
-  on a copy (\code{TRUE} - default). With \code{copy=FALSE}
-  the memory footprint is very small, and some speed-up may
-  be achieved in the case of big matrices. However, greater
-  care should be taken due the side effect. We recommend
-  that only experienced users use \code{copy=TRUE}.}
+  \item{copy}{logical that indicates if the update should be made on the original
+matrix directly (\code{FALSE}) or on a copy (\code{TRUE} - default).
+With \code{copy=FALSE} the memory footprint is very small, and some speed-up may be
+achieved in the case of big matrices.
+However, greater care should be taken due the side effect.
+We recommend that only experienced users use \code{copy=TRUE}.}
 
-  \item{.stop}{specification of a stopping criterion, that
-  is used instead of the one associated to the NMF
-  algorithm. It may be specified as: \itemize{ \item the
-  access key of a registered stopping criterion; \item a
-  single integer that specifies the exact number of
-  iterations to perform, which will be honoured unless a
-  lower value is explicitly passed in argument
-  \code{maxIter}. \item a single numeric value that
-  specifies the stationnarity threshold for the objective
-  function, used in with \code{\link{nmf.stop.stationary}};
-  \item a function with signature
-  \code{(object="NMFStrategy", i="integer", y="matrix",
-  x="NMF", ...)}, where \code{object} is the
-  \code{NMFStrategy} object that describes the algorithm
-  being run, \code{i} is the current iteration, \code{y} is
-  the target matrix and \code{x} is the current value of
-  the NMF model. }}
+  \item{.stop}{specification of a stopping criterion, that is used instead of the
+one associated to the NMF algorithm.
+It may be specified as:
+\itemize{
+\item the access key of a registered stopping criterion;
+\item a single integer that specifies the exact number of iterations to perform, which will
+be honoured unless a lower value is explicitly passed in argument \code{maxIter}.
+\item a single numeric value that specifies the stationnarity threshold for the
+objective function, used in with \code{\link{nmf.stop.stationary}};
+\item a function with signature \code{(object="NMFStrategy", i="integer", y="matrix", x="NMF", ...)},
+where \code{object} is the \code{NMFStrategy} object that describes the algorithm being run,
+\code{i} is the current iteration, \code{y} is the target matrix and \code{x} is the current value of
+the NMF model.
+}}
 
   \item{maxIter}{maximum number of iterations to perform.}
 
-  \item{stopconv}{number of iterations intervals over which
-  the connectivity matrix must not change for stationarity
-  to be achieved.}
+  \item{stopconv}{number of iterations intervals over which the connectivity
+matrix must not change for stationarity to be achieved.}
 
-  \item{check.interval}{interval (in number of iterations)
-  on which the stopping criterion is computed.}
+  \item{check.interval}{interval (in number of iterations) on which the stopping
+criterion is computed.}
 
-  \item{stationary.th}{maximum absolute value of the
-  gradient, for the objective function to be considered
-  stationary.}
+  \item{stationary.th}{maximum absolute value of the gradient, for the objective
+function to be considered stationary.}
 
-  \item{check.niter}{number of successive iteration used to
-  compute the stationnary criterion.}
+  \item{check.niter}{number of successive iteration used to compute the stationnary
+criterion.}
 
-  \item{weight}{numeric vector of sample weights, e.g.,
-  used to normalise samples coming from multiple datasets.
-  It must be of the same length as the number of
-  samples/columns in \code{v} -- and \code{h}.}
+  \item{weight}{numeric vector of sample weights, e.g., used to normalise samples
+coming from multiple datasets.
+It must be of the same length as the number of samples/columns in \code{v}
+-- and \code{h}.}
 }
 \description{
   The built-in NMF algorithms described here minimise the
@@ -132,7 +122,7 @@
 \author{
   Original update definition: D D Lee and HS Seung
 
-  Port to R and optimisation in C++: Renaud Gaujoux
+Port to R and optimisation in C++: Renaud Gaujoux
 }
 \references{
   Lee DD and Seung H (2001). "Algorithms for non-negative

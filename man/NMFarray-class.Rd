@@ -8,41 +8,47 @@
   coefficient data is stored in a multidimensional array.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{.basis}{\code{signature(object = "NMFarray")}: This
-  function returns slot \code{W} of \code{object}. }
+\item{.basis}{\code{signature(object = "NMFarray")}: Get the basis matrix in NMF array models
 
-  \item{.basis<-}{\code{signature(object = "NMFarray",
-  value = "matrix")}: Replaces a slice of the basis array.
-  }
+This function returns slot \code{W} of \code{object}.
+}
 
-  \item{.basis<-}{\code{signature(object = "NMFarray",
-  value = "array")}: Set the basis array in NMF array
-  models
 
-  This function sets slot \code{W} of \code{object}. }
+\item{.basis<-}{\code{signature(object = "NMFarray", value = "matrix")}: Replaces a slice of the basis array.
+}
 
-  \item{.coef}{\code{signature(object = "NMFarray")}: This
-  function returns slot \code{H} of \code{object}. }
+\item{.basis<-}{\code{signature(object = "NMFarray", value = "array")}: Set the basis array in NMF array models
 
-  \item{.coef<-}{\code{signature(object = "NMFarray", value
-  = "array")}: Set the mixture coefficient matrix in
-  standard NMF models
+This function sets slot \code{W} of \code{object}.
+}
 
-  This function sets slot \code{H} of \code{object}. }
 
-  \item{.coef<-}{\code{signature(object = "NMFarray", value
-  = "matrix")}: Replaces a slice of the coefficent array. }
+\item{.coef}{\code{signature(object = "NMFarray")}: Get the mixture coefficient array in standard NMF array models
 
-  \item{fitted}{\code{signature(object = "NMFarray")}:
-  Computes the target matrix estimate for an NMF array
-  model. }
+This function returns slot \code{H} of \code{object}.
+}
 
-  \item{show}{\code{signature(object = "NMFarray")}: Show
-  method for objects of class \code{NMFarray} }
 
-  }
+\item{.coef<-}{\code{signature(object = "NMFarray", value = "array")}: Set the mixture coefficient matrix in standard NMF models
+
+This function sets slot \code{H} of \code{object}.
+}
+
+\item{.coef<-}{\code{signature(object = "NMFarray", value = "matrix")}: Replaces a slice of the coefficent array.
+}
+
+
+\item{fitted}{\code{signature(object = "NMFarray")}: Computes the target matrix estimate for an NMF array model.
+}
+
+
+\item{show}{\code{signature(object = "NMFarray")}: Show method for objects of class \code{NMFarray}
+}
+
+}
+
 }
 \examples{
 \dontshow{# roxygen generated flag
@@ -59,9 +65,6 @@ h <- rmatrix(r, p)
 new('NMFarray', W=w, H=h)
 }
 \seealso{
-  Other NMF-model:
-  \code{\link{initialize,NMFOffset-method}},
-  \code{\link{NMFns-class}}, \code{\link{NMFOffset-class}},
-  \code{\link{NMFstd-class}}
+  Other NMF-model: \code{\link{initialize,NMFOffset-method}}, \code{\link{NMFns-class}}, \code{\link{NMFOffset-class}}, \code{\link{NMFstd-class}}
 }
 

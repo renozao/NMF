@@ -13,39 +13,33 @@
     pseudo = TRUE, ...)
 }
 \arguments{
-  \item{...}{extra arguments passed to the internal
-  function \code{.fcnnls}. Currently not used.}
+  \item{...}{extra arguments passed to the internal function \code{.fcnnls}.
+Currently not used.}
 
-  \item{verbose}{toggle verbosity (default is
-  \code{FALSE}).}
+  \item{verbose}{toggle verbosity (default is \code{FALSE}).}
 
   \item{x}{the coefficient matrix}
 
-  \item{y}{the target matrix to be approximated by \eqn{X
-  K}.}
+  \item{y}{the target matrix to be approximated by \eqn{X K}.}
 
-  \item{pseudo}{By default (\code{pseudo=FALSE}) the
-  algorithm uses Gaussian elimination to solve the
-  successive internal linear problems, using the
-  \code{\link{solve}} function.  If \code{pseudo=TRUE} the
-  algorithm uses Moore-Penrose generalized
-  \code{\link[corpcor]{pseudoinverse}} from the
-  \code{corpcor} package instead of \link{solve}.}
+  \item{pseudo}{By default (\code{pseudo=FALSE}) the algorithm uses Gaussian
+elimination to solve the successive internal linear problems, using the
+\code{\link{solve}} function.  If \code{pseudo=TRUE} the algorithm uses
+Moore-Penrose generalized \code{\link[corpcor]{pseudoinverse}} from the
+\code{corpcor} package instead of \link{solve}.}
 }
 \value{
   A list containing the following components:
 
-  \item{x}{ the estimated optimal matrix \eqn{K}.}
-  \item{fitted}{ the fitted matrix \eqn{X K}.}
-  \item{residuals}{ the residual matrix \eqn{Y - X K}.}
-  \item{deviance}{ the residual sum of squares between the
-  fitted matrix \eqn{X K} and the target matrix \eqn{Y}.
-  That is the sum of the square residuals.} \item{passive}{
-  a \eqn{r x p} logical matrix containing the passive set,
-  that is the set of entries in \eqn{K} that are not null
-  (i.e. strictly positive).} \item{pseudo}{ a logical that
-  is \code{TRUE} if the computation was performed using the
-  pseudoinverse. See argument \code{pseudo}.}
+\item{x}{ the estimated optimal matrix \eqn{K}.} \item{fitted}{ the fitted
+matrix \eqn{X K}.} \item{residuals}{ the residual matrix \eqn{Y - X K}.}
+\item{deviance}{ the residual sum of squares between the fitted matrix
+\eqn{X K} and the target matrix \eqn{Y}. That is the sum of the square
+residuals.} \item{passive}{ a \eqn{r x p} logical matrix containing the
+passive set, that is the set of entries in \eqn{K} that are not null (i.e.
+strictly positive).} \item{pseudo}{ a logical that is \code{TRUE} if the
+computation was performed using the pseudoinverse. See argument
+\code{pseudo}.}
 }
 \description{
   This function solves the following nonnegative least
@@ -93,22 +87,21 @@
   MATLAB code provided by \cite{Kim et al. (2007)}.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{fcnnls}{\code{signature(x = "matrix", y =
-  "matrix")}: This method wraps a call to the internal
-  function \code{.fcnnls}, and formats the results in a
-  similar way as other lest-squares methods such as
-  \code{\link{lm}}. }
+\item{fcnnls}{\code{signature(x = "matrix", y = "matrix")}: This method wraps a call to the internal function \code{.fcnnls}, and
+formats the results in a similar way as other lest-squares methods such
+as \code{\link{lm}}.
+}
 
-  \item{fcnnls}{\code{signature(x = "numeric", y =
-  "matrix")}: Shortcut for \code{fcnnls(as.matrix(x), y,
-  ...)}. }
+\item{fcnnls}{\code{signature(x = "numeric", y = "matrix")}: Shortcut for \code{fcnnls(as.matrix(x), y, ...)}.
+}
 
-  \item{fcnnls}{\code{signature(x = "ANY", y = "numeric")}:
-  Shortcut for \code{fcnnls(x, as.matrix(y), ...)}. }
+\item{fcnnls}{\code{signature(x = "ANY", y = "numeric")}: Shortcut for \code{fcnnls(x, as.matrix(y), ...)}.
+}
 
-  }
+}
+
 }
 \examples{
 \dontshow{# roxygen generated flag
@@ -135,9 +128,9 @@ res <- fcnnls(X[,1], y)
 \author{
   Original MATLAB code : Van Benthem and Keenan
 
-  Adaption of MATLAB code for SNMF/R(L): H. Kim
+Adaption of MATLAB code for SNMF/R(L): H. Kim
 
-  Adaptation to the NMF package framework: Renaud Gaujoux
+Adaptation to the NMF package framework: Renaud Gaujoux
 }
 \references{
   Original MATLAB code from Van Benthem and Keenan,

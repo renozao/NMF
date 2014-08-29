@@ -24,8 +24,8 @@
   minfit(object, ...)
 }
 \arguments{
-  \item{object}{an object fitted by some algorithm, e.g. as
-  returned by the function \code{\link{nmf}}.}
+  \item{object}{an object fitted by some algorithm, e.g. as returned by the
+function \code{\link{nmf}}.}
 
   \item{value}{replacement value}
 
@@ -59,65 +59,60 @@
   performed the fit(s).
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{fit}{\code{signature(object = "NMFfit")}: Returns
-  the NMF model object stored in slot \code{'fit'}. }
+\item{fit}{\code{signature(object = "NMFfit")}: Returns the NMF model object stored in slot \code{'fit'}.
+}
 
-  \item{fit}{\code{signature(object = "NMFfitX")}: Returns
-  the model object that achieves the lowest residual
-  approximation error across all the runs.
+\item{fit}{\code{signature(object = "NMFfitX")}: Returns the model object that achieves the lowest residual approximation
+error across all the runs.
 
-  It is a pure virtual method defined to ensure \code{fit}
-  is defined for sub-classes of \code{NMFfitX}, which
-  throws an error if called. }
+It is a pure virtual method defined to ensure \code{fit} is defined
+for sub-classes of \code{NMFfitX}, which throws an error if called.
+}
 
-  \item{fit}{\code{signature(object = "NMFfitX1")}: Returns
-  the model object associated with the best fit, amongst
-  all the runs performed when fitting \code{object}.
+\item{fit}{\code{signature(object = "NMFfitX1")}: Returns the model object associated with the best fit, amongst all the
+runs performed when fitting \code{object}.
 
-  Since \code{NMFfitX1} objects only hold the best fit,
-  this method simply returns the NMF model fitted by
-  \code{object} -- that is stored in slot \sQuote{fit}. }
+Since \code{NMFfitX1} objects only hold the best fit, this method simply
+returns the NMF model fitted by \code{object} -- that is stored in slot
+\sQuote{fit}.
+}
 
-  \item{fit}{\code{signature(object = "NMFfitXn")}: Returns
-  the best NMF fit object amongst all the fits stored in
-  \code{object}, i.e. the fit that achieves the lowest
-  estimation residuals. }
+\item{fit}{\code{signature(object = "NMFfitXn")}: Returns the best NMF fit object amongst all the fits stored in \code{object},
+i.e. the fit that achieves the lowest estimation residuals.
+}
 
-  \item{fit<-}{\code{signature(object = "NMFfit", value =
-  "NMF")}: Updates the NMF model object stored in slot
-  \code{'fit'} with a new value. }
 
-  \item{minfit}{\code{signature(object = "NMFfit")}:
-  Returns the object its self, since there it is the result
-  of a single NMF run. }
+\item{fit<-}{\code{signature(object = "NMFfit", value = "NMF")}: Updates the NMF model object stored in slot \code{'fit'} with a new value.
+}
 
-  \item{minfit}{\code{signature(object = "NMFfitX")}:
-  Returns the fit object that achieves the lowest residual
-  approximation error across all the runs.
 
-  It is a pure virtual method defined to ensure
-  \code{minfit} is defined for sub-classes of
-  \code{NMFfitX}, which throws an error if called. }
+\item{minfit}{\code{signature(object = "NMFfit")}: Returns the object its self, since there it is the result of a single NMF run.
+}
 
-  \item{minfit}{\code{signature(object = "NMFfitX1")}:
-  Returns the fit object associated with the best fit,
-  amongst all the runs performed when fitting
-  \code{object}.
+\item{minfit}{\code{signature(object = "NMFfitX")}: Returns the fit object that achieves the lowest residual approximation
+error across all the runs.
 
-  Since \code{NMFfitX1} objects only hold the best fit,
-  this method simply returns \code{object} coerced into an
-  \code{NMFfit} object. }
+It is a pure virtual method defined to ensure \code{minfit} is defined
+for sub-classes of \code{NMFfitX}, which throws an error if called.
+}
 
-  \item{minfit}{\code{signature(object = "NMFfitXn")}:
-  Returns the best NMF model in the list, i.e. the run that
-  achieved the lower estimation residuals.
+\item{minfit}{\code{signature(object = "NMFfitX1")}: Returns the fit object associated with the best fit, amongst all the
+runs performed when fitting \code{object}.
 
-  The model is selected based on its \code{deviance} value.
-  }
+Since \code{NMFfitX1} objects only hold the best fit, this method simply
+returns \code{object} coerced into an \code{NMFfit} object.
+}
 
-  }
+\item{minfit}{\code{signature(object = "NMFfitXn")}: Returns the best NMF model in the list, i.e. the run that achieved the lower
+estimation residuals.
+
+The model is selected based on its \code{deviance} value.
+}
+
+}
+
 }
 \keyword{methods}
 

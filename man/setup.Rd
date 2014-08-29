@@ -18,35 +18,28 @@
   setupRNG(seed, n, verbose = FALSE)
 }
 \arguments{
-  \item{spec}{target parallel specification: either
-  \code{TRUE} or \code{FALSE}, or a single numeric value
-  that specifies the number of cores to setup.}
+  \item{spec}{target parallel specification: either \code{TRUE} or \code{FALSE},
+or a single numeric value that specifies the number of cores to setup.}
 
-  \item{backend}{value from argument \code{.pbackend} of
-  \code{nmf}.}
+  \item{backend}{value from argument \code{.pbackend} of \code{nmf}.}
 
-  \item{optional}{a logical that indicates if the
-  specification must be fully satisfied, throwing an error
-  if it is not, or if one can switch back to sequential,
-  only outputting a verbose message.}
+  \item{optional}{a logical that indicates if the specification must be fully
+satisfied, throwing an error if it is not, or if one can switch back to
+sequential, only outputting a verbose message.}
 
-  \item{verbose}{logical or integer level of verbosity for
-  message outputs.}
+  \item{verbose}{logical or integer level of verbosity for message outputs.}
 
-  \item{pkg}{package name whose path should be exported the
-  workers.}
+  \item{pkg}{package name whose path should be exported the workers.}
 
   \item{seed}{initial RNG seed specification}
 
   \item{n}{number of RNG seeds to generate}
 }
 \value{
-  Returns \code{FALSE} if no foreach backend is to be used,
-  \code{NA} if the currently registered backend is to be
-  used, or, if this function call registered a new backend,
-  the previously registered backend as a \code{foreach}
-  object, so that it can be restored after the computation
-  is over.
+  Returns \code{FALSE} if no foreach backend is to be used, \code{NA} if the currently
+registered backend is to be used, or, if this function call registered a new backend,
+the previously registered backend as a \code{foreach} object, so that it can be restored
+after the computation is over.
 }
 \description{
   Functions used internally to setup the computational

@@ -8,8 +8,7 @@
 \arguments{
   \item{x}{a function}
 
-  \item{exdent}{indentation for extra lines if the output
-  takes more than one line.}
+  \item{exdent}{indentation for extra lines if the output takes more than one line.}
 }
 \description{
   Utility Function in the NMF Package

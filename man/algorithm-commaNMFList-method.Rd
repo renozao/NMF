@@ -8,16 +8,15 @@ It returns \code{NULL} if the list is empty.}
     unique = TRUE)
 }
 \arguments{
-  \item{string}{a logical that indicate whether the names
-  should be collapsed into a comma-separated string.}
+  \item{string}{a logical that indicate whether the names should be collapsed
+into a comma-separated string.}
 
-  \item{unique}{a logical that indicates whether the result
-  should contain the set of method names, removing
-  duplicated names. This argument is forced to \code{TRUE}
-  when \code{string=TRUE}.}
+  \item{unique}{a logical that indicates whether the result should contain the
+set of method names, removing duplicated names.
+This argument is forced to \code{TRUE} when \code{string=TRUE}.}
 
-  \item{object}{an object computed using some algorithm, or
-  that describes an algorithm itself.}
+  \item{object}{an object computed using some algorithm, or that describes an algorithm
+itself.}
 }
 \description{
   Returns the method names used to compute the NMF fits in

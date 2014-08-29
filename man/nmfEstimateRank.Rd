@@ -16,84 +16,72 @@
     main = "NMF rank survey", ...)
 }
 \arguments{
-  \item{x}{For \code{nmfEstimateRank} a target object to be
-  estimated, in one of the format accepted by interface
-  \code{\link{nmf}}.
+  \item{x}{For \code{nmfEstimateRank} a target object to be estimated, in one
+of the format accepted by interface \code{\link{nmf}}.
 
-  For \code{plot.NMF.rank} an object of class
-  \code{NMF.rank} as returned by function
-  \code{nmfEstimateRank}.}
+For \code{plot.NMF.rank} an object of class \code{NMF.rank} as returned by
+function \code{nmfEstimateRank}.}
 
-  \item{range}{a \code{numeric} vector containing the ranks
-  of factorization to try. Note that duplicates are removed
-  and values are sorted in increasing order. The results
-  are notably returned in this order.}
+  \item{range}{a \code{numeric} vector containing the ranks of factorization
+to try.
+Note that duplicates are removed and values are sorted in increasing order.
+The results are notably returned in this order.}
 
-  \item{method}{A single NMF algorithm, in one of the
-  format accepted by the function \code{\link{nmf}}.}
+  \item{method}{A single NMF algorithm, in one of the format accepted by
+the function \code{\link{nmf}}.}
 
-  \item{nrun}{a \code{numeric} giving the number of run to
-  perform for each value in \code{range}.}
+  \item{nrun}{a \code{numeric} giving the number of run to perform for each
+value in \code{range}.}
 
-  \item{model}{model specification passed to each
-  \code{nmf} call. In particular, when \code{x} is a
-  formula, it is passed to argument \code{data} of
-  \code{\link{nmfModel}} to determine the target matrix --
-  and fixed terms.}
+  \item{model}{model specification passed to each \code{nmf} call.
+In particular, when \code{x} is a formula, it is passed to argument
+\code{data} of \code{\link{nmfModel}} to determine the target matrix -- and
+fixed terms.}
 
-  \item{verbose}{toggle verbosity.  This parameter only
-  affects the verbosity of the outer loop over the values
-  in \code{range}. To print verbose (resp. debug) messages
-  from each NMF run, one can use \code{.options='v'} (resp.
-  \code{.options='d'}) that will be passed to the function
-  \code{\link{nmf}}.}
+  \item{verbose}{toggle verbosity.  This parameter only affects the verbosity
+of the outer loop over the values in \code{range}.
+To print verbose (resp. debug) messages from each NMF run, one can use
+\code{.options='v'} (resp. \code{.options='d'})
+that will be passed to the function \code{\link{nmf}}.}
 
-  \item{stop}{logical flag for running the estimation
-  process with fault tolerance.  When \code{TRUE}, the
-  whole execution will stop if any error is raised.  When
-  \code{FALSE} (default), the runs that raise an error will
-  be skipped, and the execution will carry on. The summary
-  measures for the runs with errors are set to NA values,
-  and a warning is thrown.}
+  \item{stop}{logical flag for running the estimation process with fault
+tolerance.  When \code{TRUE}, the whole execution will stop if any error is
+raised.  When \code{FALSE} (default), the runs that raise an error will be
+skipped, and the execution will carry on. The summary measures for the runs
+with errors are set to NA values, and a warning is thrown.}
 
-  \item{...}{For \code{nmfEstimateRank}, these are extra
-  parameters passed to interface \code{nmf}. Note that the
-  same parameters are used for each value of the rank.  See
-  \code{\link{nmf}}.
+  \item{...}{For \code{nmfEstimateRank}, these are extra parameters passed
+to interface \code{nmf}. Note that the same parameters are used for each
+value of the rank.  See \code{\link{nmf}}.
 
-  For \code{plot.NMF.rank}, these are extra graphical
-  parameter passed to the standard function \code{plot}.
-  See \code{\link{plot}}.}
+For \code{plot.NMF.rank}, these are extra graphical parameter passed to the
+standard function \code{plot}. See \code{\link{plot}}.}
 
-  \item{y}{reference object of class \code{NMF.rank}, as
-  returned by function \code{nmfEstimateRank}. The measures
-  contained in \code{y} are used and plotted as a
-  reference. It is typically used to plot results obtained
-  from randomized data. The associated curves are drawn in
-  \emph{red} (and \emph{pink}), while those from \code{x}
-  are drawn in \emph{blue} (and \emph{green}).}
+  \item{y}{reference object of class \code{NMF.rank}, as returned by
+function \code{nmfEstimateRank}.
+The measures contained in \code{y} are used and plotted as a reference.
+It is typically used to plot results obtained from randomized data.
+The associated curves are drawn in \emph{red} (and \emph{pink}),
+while those from \code{x} are drawn in \emph{blue} (and \emph{green}).}
 
-  \item{what}{a \code{character} vector whose elements
-  partially match one of the following item, which
-  correspond to the measures computed by
-  \code{\link{summary}} on each -- multi-run -- NMF result:
-  \sQuote{all}, \sQuote{cophenetic}, \sQuote{rss},
-  \sQuote{residuals}, \sQuote{dispersion}, \sQuote{evar},
-  \sQuote{silhouette} (and more specific *.coef, *.basis,
-  *.consensus), \sQuote{sparseness} (and more specific
-  *.coef, *.basis). It specifies which measure must be
-  plotted (\code{what='all'} plots all the measures).}
+  \item{what}{a \code{character} vector whose elements partially match
+one of the following item, which correspond to the measures computed
+by \code{\link{summary}} on each -- multi-run -- NMF result:
+\sQuote{all}, \sQuote{cophenetic}, \sQuote{rss},
+\sQuote{residuals}, \sQuote{dispersion}, \sQuote{evar},
+\sQuote{silhouette} (and more specific *.coef, *.basis, *.consensus),
+\sQuote{sparseness} (and more specific *.coef, *.basis).
+It specifies which measure must be plotted (\code{what='all'} plots
+all the measures).}
 
-  \item{na.rm}{single logical that specifies if the rank
-  for which the measures are NA values should be removed
-  from the graph or not (default to \code{FALSE}).  This is
-  useful when plotting results which include NAs due to
-  error during the estimation process. See argument
-  \code{stop} for \code{nmfEstimateRank}.}
+  \item{na.rm}{single logical that specifies if the rank for which the
+measures are NA values should be removed from the graph or not (default to
+\code{FALSE}).  This is useful when plotting results which include NAs due
+to error during the estimation process. See argument \code{stop} for
+\code{nmfEstimateRank}.}
 
-  \item{xname,yname}{legend labels for the curves
-  corresponding to measures from \code{x} and \code{y}
-  respectively}
+  \item{xname,yname}{legend labels for the curves corresponding to measures from
+\code{x} and \code{y} respectively}
 
   \item{xlab}{x-axis label}
 
@@ -102,17 +90,17 @@
   \item{main}{main title}
 }
 \value{
-  \code{nmfEstimateRank} returns a S3 object (i.e. a list)
-  of class \code{NMF.rank} with the following elements:
+  \code{nmfEstimateRank} returns a S3 object (i.e. a list) of class
+\code{NMF.rank} with the following elements:
 
-  \item{measures }{a \code{data.frame} containing the
-  quality measures for each rank of factorizations in
-  \code{range}. Each row corresponds to a measure, each
-  column to a rank. } \item{consensus }{ a \code{list} of
-  consensus matrices, indexed by the rank of factorization
-  (as a character string).} \item{fit }{ a \code{list} of
-  the fits, indexed by the rank of factorization (as a
-  character string).}
+\item{measures }{a \code{data.frame} containing the quality
+measures for each rank of factorizations in \code{range}. Each row
+corresponds to a measure, each column to a rank. }
+\item{consensus }{ a
+\code{list} of consensus matrices, indexed by the rank of factorization (as
+a character string).}
+\item{fit }{ a \code{list} of the fits, indexed by the rank of factorization
+(as a character string).}
 }
 \description{
   A critical parameter in NMF algorithms is the

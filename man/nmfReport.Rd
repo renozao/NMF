@@ -21,10 +21,10 @@
   \item{template}{template Rmd file}
 }
 \value{
-  a list with the following elements: \item{fits}{the
-  fit(s) for each method and each value of the rank.}
-  \item{accuracy}{a data.frame that contains the summary
-  assessment measures, for each fit.}
+  a list with the following elements:
+\item{fits}{the fit(s) for each method and each value of the rank.}
+\item{accuracy}{a data.frame that contains the summary assessment measures,
+for each fit.}
 }
 \description{
   Generates an HTML report from running a set of method on

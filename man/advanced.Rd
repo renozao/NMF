@@ -8,8 +8,7 @@
 \arguments{
   \item{object}{an NMF model fitted by multiple runs.}
 
-  \item{FUN}{the function that computes the quantitative
-  measure.}
+  \item{FUN}{the function that computes the quantitative measure.}
 
   \item{...}{extra arguments passed to \code{FUN}.}
 }

@@ -21,54 +21,46 @@
 
   \item{object}{current NMF model}
 
-  \item{weight}{value for \eqn{\Sigma}{S}, i.e. the weights
-  that are applied to each entry in \code{X} by \code{X *
-  weight} (= entry wise product). Weights are usually
-  specified as a matrix of the same dimension as \code{X}
-  (e.g. uncertainty estimates for each measurement), but
-  may also be passed as a vector, in which case the
-  standard rules for entry wise product between matrices
-  and vectors apply (e.g. recycling elements).
+  \item{weight}{value for \eqn{\Sigma}{S}, i.e. the weights that are applied to each
+entry in \code{X} by \code{X * weight} (= entry wise product).
+Weights are usually specified as a matrix of the same dimension as \code{X}
+(e.g. uncertainty estimates for each measurement), but may also be passed as a vector,
+in which case the standard rules for entry wise product between matrices and vectors apply
+(e.g. recycling elements).
 
-  Null weights can be used to handle missing values in the
-  target matrix. In particular, using \code{weight=NA}
-  cancels out all missing values (see examples).}
+Null weights can be used to handle missing values in the target matrix.
+In particular, using \code{weight=NA} cancels out all missing values (see examples).}
 
-  \item{eps}{small number passed to the standard
-  euclidean-based NMF updates (see
-  \code{\link{nmf_update.euclidean}}).}
+  \item{eps}{small number passed to the standard euclidean-based NMF updates
+(see \code{\link{nmf_update.euclidean}}).}
 
   \item{...}{extra arguments (not used)}
 
-  \item{.stop}{specification of a stopping criterion, that
-  is used instead of the one associated to the NMF
-  algorithm. It may be specified as: \itemize{ \item the
-  access key of a registered stopping criterion; \item a
-  single integer that specifies the exact number of
-  iterations to perform, which will be honoured unless a
-  lower value is explicitly passed in argument
-  \code{maxIter}. \item a single numeric value that
-  specifies the stationnarity threshold for the objective
-  function, used in with \code{\link{nmf.stop.stationary}};
-  \item a function with signature
-  \code{(object="NMFStrategy", i="integer", y="matrix",
-  x="NMF", ...)}, where \code{object} is the
-  \code{NMFStrategy} object that describes the algorithm
-  being run, \code{i} is the current iteration, \code{y} is
-  the target matrix and \code{x} is the current value of
-  the NMF model. }}
+  \item{.stop}{specification of a stopping criterion, that is used instead of the
+one associated to the NMF algorithm.
+It may be specified as:
+\itemize{
+\item the access key of a registered stopping criterion;
+\item a single integer that specifies the exact number of iterations to perform, which will
+be honoured unless a lower value is explicitly passed in argument \code{maxIter}.
+\item a single numeric value that specifies the stationnarity threshold for the
+objective function, used in with \code{\link{nmf.stop.stationary}};
+\item a function with signature \code{(object="NMFStrategy", i="integer", y="matrix", x="NMF", ...)},
+where \code{object} is the \code{NMFStrategy} object that describes the algorithm being run,
+\code{i} is the current iteration, \code{y} is the target matrix and \code{x} is the current value of
+the NMF model.
+}}
 
   \item{maxIter}{maximum number of iterations to perform.}
 
-  \item{stationary.th}{maximum absolute value of the
-  gradient, for the objective function to be considered
-  stationary.}
+  \item{stationary.th}{maximum absolute value of the gradient, for the objective
+function to be considered stationary.}
 
-  \item{check.interval}{interval (in number of iterations)
-  on which the stopping criterion is computed.}
+  \item{check.interval}{interval (in number of iterations) on which the stopping
+criterion is computed.}
 
-  \item{check.niter}{number of successive iteration used to
-  compute the stationnary criterion.}
+  \item{check.niter}{number of successive iteration used to compute the stationnary
+criterion.}
 }
 \value{
   updated object \code{object}

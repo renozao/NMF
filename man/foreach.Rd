@@ -46,27 +46,23 @@
   getDoParNHosts(object)
 }
 \arguments{
-  \item{object}{specification of a foreach backend, e.g.
-  \sQuote{SEQ}, \sQuote{PAR} (for doParallel),
-  \sQuote{MPI}, etc\ldots}
+  \item{object}{specification of a foreach backend, e.g. \sQuote{SEQ},
+\sQuote{PAR} (for doParallel), \sQuote{MPI}, etc\ldots}
 
-  \item{...}{extra arguments passed to the backend own
-  registration function.}
+  \item{...}{extra arguments passed to the backend own registration function.}
 
-  \item{data}{internal data of a foreach \%dopar\%
-  backend.}
+  \item{data}{internal data of a foreach \%dopar\% backend.}
 
   \item{cleanup}{logical that indicates if the previous
-  backend's cleanup procedure should be run,
-  \strong{before} setting the new backend.}
+backend's cleanup procedure should be run, \strong{before}
+setting the new backend.}
 
   \item{x}{specification of a foreach backend}
 
-  \item{cl}{cluster specification: a cluster object or a
-  numeric that indicates the number of nodes to use.}
+  \item{cl}{cluster specification: a cluster object or a numeric that indicates the
+number of nodes to use.}
 
-  \item{type}{type of cluster, See
-  \code{\link[parallel]{makeCluster}}.}
+  \item{type}{type of cluster, See \code{\link[parallel]{makeCluster}}.}
 }
 \description{
   \code{registerDoBackend} is a unified register function
@@ -93,71 +89,61 @@
   a backend.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{ForeachBackend}{\code{signature(object = "ANY")}:
-  Default method defined to throw an informative error
-  message, when no other method was found. }
+\item{ForeachBackend}{\code{signature(object = "ANY")}: Default method defined to throw an informative error message, when no other
+method was found.
+}
 
-  \item{ForeachBackend}{\code{signature(object =
-  "character")}: Creates a foreach backend object based on
-  its name. }
+\item{ForeachBackend}{\code{signature(object = "character")}: Creates a foreach backend object based on its name.
+}
 
-  \item{ForeachBackend}{\code{signature(object =
-  "missing")}: Creates a foreach backend object for the
-  currently registered backend. }
+\item{ForeachBackend}{\code{signature(object = "missing")}: Creates a foreach backend object for the currently registered backend.
+}
 
-  \item{ForeachBackend}{\code{signature(object = "NULL")}:
-  Dummy method that returns \code{NULL}, defined for
-  correct dispatch. }
+\item{ForeachBackend}{\code{signature(object = "NULL")}: Dummy method that returns \code{NULL}, defined for correct dispatch.
+}
 
-  \item{ForeachBackend}{\code{signature(object =
-  "cluster")}: Creates a doParallel foreach backend that
-  uses the cluster described in \code{object}. }
+\item{ForeachBackend}{\code{signature(object = "cluster")}: Creates a doParallel foreach backend that uses the cluster described in
+\code{object}.
+}
 
-  \item{ForeachBackend}{\code{signature(object =
-  "numeric")}: Creates a doParallel foreach backend with
-  \code{object} processes. }
+\item{ForeachBackend}{\code{signature(object = "numeric")}: Creates a doParallel foreach backend with \code{object} processes.
+}
 
-  \item{ForeachBackend}{\code{signature(object =
-  "doParallel_backend")}: doParallel-specific backend
-  factory }
+\item{ForeachBackend}{\code{signature(object = "doParallel_backend")}: doParallel-specific backend factory
+}
 
-  \item{ForeachBackend}{\code{signature(object =
-  "doParallelMC_backend")}: doParallel-specific backend
-  factory for multicore (fork) clusters
+\item{ForeachBackend}{\code{signature(object = "doParallelMC_backend")}: doParallel-specific backend factory for multicore (fork) clusters
 
-  This method is needed since version 1.0.7 of
-  \pkg{doParallel}, which removed internal function
-  \code{info} and defined separate backend names for mc and
-  snow clusters. }
+This method is needed since version 1.0.7 of \pkg{doParallel}, which removed
+internal function \code{info} and defined separate backend names for mc and snow clusters.
+}
 
-  \item{ForeachBackend}{\code{signature(object =
-  "doParallelSNOW_backend")}: doParallel-specific backend
-  factory for SNOW clusters.
+\item{ForeachBackend}{\code{signature(object = "doParallelSNOW_backend")}: doParallel-specific backend factory for SNOW clusters.
 
-  This method is needed since version 1.0.7 of
-  \pkg{doParallel}, which removed internal function
-  \code{info} and defined separate backend names for mc and
-  snow clusters. }
+This method is needed since version 1.0.7 of \pkg{doParallel}, which removed
+internal function \code{info} and defined separate backend names for mc and snow clusters.
+}
 
-  \item{ForeachBackend}{\code{signature(object =
-  "doPSOCK_backend")}: doSNOW-specific backend factory }
+\item{ForeachBackend}{\code{signature(object = "doPSOCK_backend")}: doSNOW-specific backend factory
+}
 
-  \item{ForeachBackend}{\code{signature(object =
-  "mpicluster")}: Creates a doMPI foreach backend that uses
-  the MPI cluster described in \code{object}. }
+\item{ForeachBackend}{\code{signature(object = "mpicluster")}: Creates a doMPI foreach backend that uses the MPI cluster described in
+\code{object}.
+}
 
-  \item{ForeachBackend}{\code{signature(object =
-  "doMPI_backend")}: doMPI-specific backend factory }
+\item{ForeachBackend}{\code{signature(object = "doMPI_backend")}: doMPI-specific backend factory
+}
 
-  \item{getDoParHosts}{\code{signature(object = "ANY")}:
-  Default method that tries to heuristaically infer the
-  number of hosts and in last resort temporarly register
-  the backend and performs a foreach loop, to retrieve the
-  nodename from each worker. }
 
-  }
+\item{getDoParHosts}{\code{signature(object = "ANY")}: Default method that tries to heuristaically infer the number of hosts and in last
+resort temporarly register the backend and performs a foreach loop, to retrieve the
+nodename from each worker.
+}
+
+}
+
 }
 \keyword{internal}
 \keyword{methods}

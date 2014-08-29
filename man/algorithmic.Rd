@@ -98,8 +98,8 @@
   compare(object, ...)
 }
 \arguments{
-  \item{object}{an object computed using some algorithm, or
-  that describes an algorithm itself.}
+  \item{object}{an object computed using some algorithm, or that describes an algorithm
+itself.}
 
   \item{value}{replacement value}
 
@@ -107,8 +107,8 @@
 
   \item{y}{data object, e.g. a target matrix}
 
-  \item{x}{a model object used as a starting point by the
-  algorithm, e.g. a non-empty NMF model.}
+  \item{x}{a model object used as a starting point by the algorithm,
+e.g. a non-empty NMF model.}
 }
 \description{
   The functions documented here are S4 generics that define
@@ -177,231 +177,205 @@
   separate algorithms.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{algorithm}{\code{signature(object = "NMFfit")}:
-  Returns the name of the algorithm that fitted the NMF
-  model \code{object}. }
+\item{algorithm}{\code{signature(object = "NMFfit")}: Returns the name of the algorithm that fitted the NMF model \code{object}.
+}
 
-  \item{algorithm}{\code{signature(object = "NMFList")}:
-  Returns the method names used to compute the NMF fits in
-  the list. It returns \code{NULL} if the list is empty.
+\item{algorithm}{\code{signature(object = "NMFList")}: Returns the method names used to compute the NMF fits in the list.
+It returns \code{NULL} if the list is empty.
 
-  See \code{\link{algorithm,NMFList-method}} for more
-  details. }
+See \code{\link{algorithm,NMFList-method}} for more details.
+}
 
-  \item{algorithm}{\code{signature(object = "NMFfitXn")}:
-  Returns the name of the common NMF algorithm used to
-  compute all fits stored in \code{object}
+\item{algorithm}{\code{signature(object = "NMFfitXn")}: Returns the name of the common NMF algorithm used to compute all fits
+stored in \code{object}
 
-  Since all fits are computed with the same algorithm, this
-  method returns the name of algorithm that computed the
-  first fit. It returns \code{NULL} if the object is empty.
-  }
+Since all fits are computed with the same algorithm, this method returns the
+name of algorithm that computed the first fit.
+It returns \code{NULL} if the object is empty.
+}
 
-  \item{algorithm}{\code{signature(object = "NMFSeed")}:
-  Returns the workhorse function of the seeding method
-  described by \code{object}. }
+\item{algorithm}{\code{signature(object = "NMFSeed")}: Returns the workhorse function of the seeding method described by \code{object}.
+}
 
-  \item{algorithm}{\code{signature(object =
-  "NMFStrategyFunction")}: Returns the single R function
-  that implements the NMF algorithm -- as stored in slot
-  \code{algorithm}. }
+\item{algorithm}{\code{signature(object = "NMFStrategyFunction")}: Returns the single R function that implements the NMF algorithm -- as stored in
+slot \code{algorithm}.
+}
 
-  \item{algorithm}{\code{signature(object =
-  "NMFStrategyOctave")}: Returns the name of the
-  Octave/Matlab function that implements the NMF algorithm
-  -- as stored in slot \code{algorithm}.
+\item{algorithm}{\code{signature(object = "NMFStrategyOctave")}: Returns the name of the Octave/Matlab function that implements the NMF algorithm -- as stored in
+slot \code{algorithm}.
 
-  See \code{\link{algorithm,NMFStrategyOctave-method}} for
-  more details. }
+See \code{\link{algorithm,NMFStrategyOctave-method}} for more details.
+}
 
-  \item{algorithm<-}{\code{signature(object = "NMFSeed",
-  value = "function")}: Sets the workhorse function of the
-  seeding method described by \code{object}. }
 
-  \item{algorithm<-}{\code{signature(object =
-  "NMFStrategyFunction", value = "function")}: Sets the
-  function that implements the NMF algorithm, stored in
-  slot \code{algorithm}. }
+\item{algorithm<-}{\code{signature(object = "NMFSeed", value = "function")}: Sets the workhorse function of the seeding method described by \code{object}.
+}
 
-  \item{algorithm<-}{\code{signature(object =
-  "NMFStrategyOctave", value = "character")}: Sets the name
-  of the Octave/Matlab function that implements the NMF
-  algorithm. It is stored in slot \code{algorithm}. }
+\item{algorithm<-}{\code{signature(object = "NMFStrategyFunction", value = "function")}: Sets the function that implements the NMF algorithm, stored in slot \code{algorithm}.
+}
 
-  \item{compare}{\code{signature(object = "NMFfitXn")}:
-  Compares the fits obtained by separate runs of NMF, in a
-  single call to \code{\link{nmf}}. }
+\item{algorithm<-}{\code{signature(object = "NMFStrategyOctave", value = "character")}: Sets the name of the Octave/Matlab function that implements the NMF algorithm.
+It is stored in slot \code{algorithm}.
+}
 
-  \item{logs}{\code{signature(object = "ANY")}: Default
-  method that returns the value of attribute/slot
-  \code{'logs'} or, if this latter does not exists, the
-  value of element \code{'logs'} if \code{object} is a
-  \code{list}. It returns \code{NULL} if no logging data
-  was found. }
 
-  \item{modelname}{\code{signature(object = "ANY")}:
-  Default method which returns the class name(s) of
-  \code{object}. This should work for objects representing
-  models on their own.
+\item{compare}{\code{signature(object = "NMFfitXn")}: Compares the fits obtained by separate runs of NMF, in a single
+call to \code{\link{nmf}}.
+}
 
-  For NMF objects, this is the type of NMF model, that
-  corresponds to the name of the S4 sub-class of
-  \code{\linkS4class{NMF}}, inherited by \code{object}. }
 
-  \item{modelname}{\code{signature(object = "NMFfit")}:
-  Returns the type of a fitted NMF model. It is a shortcut
-  for \code{modelname(fit(object)}. }
+\item{logs}{\code{signature(object = "ANY")}: Default method that returns the value of attribute/slot \code{'logs'} or, if this latter
+does not exists, the value of element \code{'logs'} if \code{object} is a \code{list}.
+It returns \code{NULL} if no logging data was found.
+}
 
-  \item{modelname}{\code{signature(object = "NMFfitXn")}:
-  Returns the common type NMF model of all fits stored in
-  \code{object}
 
-  Since all fits are from the same NMF model, this method
-  returns the model type of the first fit. It returns
-  \code{NULL} if the object is empty. }
+\item{modelname}{\code{signature(object = "ANY")}: Default method which returns the class name(s) of \code{object}.
+This should work for objects representing models on their own.
 
-  \item{modelname}{\code{signature(object =
-  "NMFStrategy")}: Returns the model(s) that an NMF
-  algorithm can fit. }
+For NMF objects, this is the type of NMF model, that corresponds to the
+name of the S4 sub-class of \code{\linkS4class{NMF}}, inherited by \code{object}.
+}
 
-  \item{niter}{\code{signature(object = "NMFfit")}: Returns
-  the number of iteration performed to fit an NMF model,
-  typically with function \code{\link{nmf}}.
+\item{modelname}{\code{signature(object = "NMFfit")}: Returns the type of a fitted NMF model.
+It is a shortcut for \code{modelname(fit(object)}.
+}
 
-  Currently this data is stored in slot \code{'extra'}, but
-  this might change in the future. }
+\item{modelname}{\code{signature(object = "NMFfitXn")}: Returns the common type NMF model of all fits stored in \code{object}
 
-  \item{niter<-}{\code{signature(object = "NMFfit", value =
-  "numeric")}: Sets the number of iteration performed to
-  fit an NMF model.
+Since all fits are from the same NMF model, this method returns the
+model type of the first fit.
+It returns \code{NULL} if the object is empty.
+}
 
-  This function is used internally by the function
-  \code{\link{nmf}}. It is not meant to be called by the
-  user, except when developing new NMF algorithms
-  implemented as single function, to set the number of
-  iterations performed by the algorithm on the seed, before
-  returning it (see
-  \code{\linkS4class{NMFStrategyFunction}}). }
+\item{modelname}{\code{signature(object = "NMFStrategy")}: Returns the model(s) that an NMF algorithm can fit.
+}
 
-  \item{nrun}{\code{signature(object = "ANY")}: Default
-  method that returns the value of attribute \sQuote{nrun}.
 
-  Such an attribute my be attached to objects to keep track
-  of data about the parent fit object (e.g. by method
-  \code{\link{consensus}}), which can be used by subsequent
-  function calls such as plot functions (e.g. see
-  \code{\link{consensusmap}}). This method returns
-  \code{NULL} if no suitable data was found. }
+\item{niter}{\code{signature(object = "NMFfit")}: Returns the number of iteration performed to fit an NMF model, typically
+with function \code{\link{nmf}}.
 
-  \item{nrun}{\code{signature(object = "NMFfitX")}: Returns
-  the number of NMF runs performed to create \code{object}.
+Currently this data is stored in slot \code{'extra'}, but this might change
+in the future.
+}
 
-  It is a pure virtual method defined to ensure \code{nrun}
-  is defined for sub-classes of \code{NMFfitX}, which
-  throws an error if called.
 
-  Note that because the \code{\link{nmf}} function allows
-  to run the NMF computation keeping only the best fit,
-  \code{nrun} may return a value greater than one, while
-  only the result of the best run is stored in the object
-  (cf. option \code{'k'} in method \code{\link{nmf}}). }
+\item{niter<-}{\code{signature(object = "NMFfit", value = "numeric")}: Sets the number of iteration performed to fit an NMF model.
 
-  \item{nrun}{\code{signature(object = "NMFfit")}: This
-  method always returns 1, since an \code{NMFfit} object is
-  obtained from a single NMF run. }
+This function is used internally by the function \code{\link{nmf}}.
+It is not meant to be called by the user, except when developing
+new NMF algorithms implemented as single function, to set the number
+of iterations performed by the algorithm on the seed, before returning it
+(see \code{\linkS4class{NMFStrategyFunction}}).
+}
 
-  \item{nrun}{\code{signature(object = "NMFfitX1")}:
-  Returns the number of NMF runs performed, amongst which
-  \code{object} was selected as the best fit. }
 
-  \item{nrun}{\code{signature(object = "NMFfitXn")}:
-  Returns the number of runs performed to compute the fits
-  stored in the list (i.e. the length of the list itself).
-  }
+\item{nrun}{\code{signature(object = "ANY")}: Default method that returns the value of attribute \sQuote{nrun}.
 
-  \item{objective}{\code{signature(object = "NMFfit")}:
-  Returns the objective function associated with the
-  algorithm that computed the fitted NMF model
-  \code{object}, or the objective value with respect to a
-  given target matrix \code{y} if it is supplied.
+Such an attribute my be attached to objects to keep track of data about
+the parent fit object (e.g. by method \code{\link{consensus}}), which
+can be used by subsequent function calls such as plot functions
+(e.g. see \code{\link{consensusmap}}).
+This method returns \code{NULL} if no suitable data was found.
+}
 
-  See \code{\link{objective,NMFfit-method}} for more
-  details. }
+\item{nrun}{\code{signature(object = "NMFfitX")}: Returns the number of NMF runs performed to create \code{object}.
 
-  \item{runtime}{\code{signature(object = "NMFfit")}:
-  Returns the CPU time required to compute a single NMF
-  fit. }
+It is a pure virtual method defined to ensure \code{nrun} is defined
+for sub-classes of \code{NMFfitX}, which throws an error if called.
 
-  \item{runtime}{\code{signature(object = "NMFList")}:
-  Returns the CPU time required to compute all NMF fits in
-  the list. It returns \code{NULL} if the list is empty. If
-  no timing data are available, the sequential time is
-  returned.
+Note that because the \code{\link{nmf}} function allows to run the NMF
+computation keeping only the best fit, \code{nrun} may return a value
+greater than one, while only the result of the best run is stored in
+the object (cf. option \code{'k'} in method \code{\link{nmf}}).
+}
 
-  See \code{\link{runtime,NMFList-method}} for more
-  details. }
+\item{nrun}{\code{signature(object = "NMFfit")}: This method always returns 1, since an \code{NMFfit} object is obtained
+from a single NMF run.
+}
 
-  \item{runtime.all}{\code{signature(object = "NMFfit")}:
-  Identical to \code{runtime}, since their is a single fit.
-  }
+\item{nrun}{\code{signature(object = "NMFfitX1")}: Returns the number of NMF runs performed, amongst which \code{object} was
+selected as the best fit.
+}
 
-  \item{runtime.all}{\code{signature(object = "NMFfitX")}:
-  Returns the CPU time required to compute all the NMF
-  runs. It returns \code{NULL} if no CPU data is available.
-  }
+\item{nrun}{\code{signature(object = "NMFfitXn")}: Returns the number of runs performed to compute the fits stored in the list
+(i.e. the length of the list itself).
+}
 
-  \item{runtime.all}{\code{signature(object = "NMFfitXn")}:
-  If no time data is available from in slot
-  \sQuote{runtime.all} and argument \code{null=TRUE}, then
-  the sequential time as computed by \code{\link{seqtime}}
-  is returned, and a warning is thrown unless
-  \code{warning=FALSE}.
 
-  See \code{\link{runtime.all,NMFfitXn-method}} for more
-  details. }
+\item{objective}{\code{signature(object = "NMFfit")}: Returns the objective function associated with the algorithm that computed the
+fitted NMF model \code{object}, or the objective value with respect to a given
+target matrix \code{y} if it is supplied.
 
-  \item{seeding}{\code{signature(object = "NMFfit")}:
-  Returns the name of the seeding method that generated the
-  starting point for the NMF algorithm that fitted the NMF
-  model \code{object}. }
+See \code{\link{objective,NMFfit-method}} for more details.
+}
 
-  \item{seeding}{\code{signature(object = "NMFfitXn")}:
-  Returns the name of the common seeding method used the
-  computation of all fits stored in \code{object}
 
-  Since all fits are seeded using the same method, this
-  method returns the name of the seeding method used for
-  the first fit. It returns \code{NULL} if the object is
-  empty. }
+\item{runtime}{\code{signature(object = "NMFfit")}: Returns the CPU time required to compute a single NMF fit.
+}
 
-  \item{seqtime}{\code{signature(object = "NMFList")}:
-  Returns the CPU time that would be required to
-  sequentially compute all NMF fits stored in
-  \code{object}.
+\item{runtime}{\code{signature(object = "NMFList")}: Returns the CPU time required to compute all NMF fits in the list.
+It returns \code{NULL} if the list is empty.
+If no timing data are available, the sequential time is returned.
 
-  This method calls the function \code{runtime} on each fit
-  and sum up the results. It returns \code{NULL} on an
-  empty object. }
+See \code{\link{runtime,NMFList-method}} for more details.
+}
 
-  \item{seqtime}{\code{signature(object = "NMFfitXn")}:
-  Returns the CPU time that would be required to
-  sequentially compute all NMF fits stored in
-  \code{object}.
 
-  This method calls the function \code{runtime} on each fit
-  and sum up the results. It returns \code{NULL} on an
-  empty object. }
+\item{runtime.all}{\code{signature(object = "NMFfit")}: Identical to \code{runtime}, since their is a single fit.
+}
 
-  }
+\item{runtime.all}{\code{signature(object = "NMFfitX")}: Returns the CPU time required to compute all the NMF runs.
+It returns \code{NULL} if no CPU data is available.
+}
+
+\item{runtime.all}{\code{signature(object = "NMFfitXn")}: If no time data is available from in slot \sQuote{runtime.all} and argument
+\code{null=TRUE}, then the sequential time as computed by
+\code{\link{seqtime}} is returned, and a warning is thrown unless \code{warning=FALSE}.
+
+See \code{\link{runtime.all,NMFfitXn-method}} for more details.
+}
+
+
+\item{seeding}{\code{signature(object = "NMFfit")}: Returns the name of the seeding method that generated the starting point
+for the NMF algorithm that fitted the NMF model \code{object}.
+}
+
+\item{seeding}{\code{signature(object = "NMFfitXn")}: Returns the name of the common seeding method used the computation of all fits
+stored in \code{object}
+
+Since all fits are seeded using the same method, this method returns the
+name of the seeding method used for the first fit.
+It returns \code{NULL} if the object is empty.
+}
+
+
+\item{seqtime}{\code{signature(object = "NMFList")}: Returns the CPU time that would be required to sequentially compute all NMF
+fits stored in \code{object}.
+
+This method calls the function \code{runtime} on each fit and sum up the
+results.
+It returns \code{NULL} on an empty object.
+}
+
+\item{seqtime}{\code{signature(object = "NMFfitXn")}: Returns the CPU time that would be required to sequentially compute all NMF
+fits stored in \code{object}.
+
+This method calls the function \code{runtime} on each fit and sum up the
+results.
+It returns \code{NULL} on an empty object.
+}
+
+}
+
 }
 \section{Interface fo NMF algorithms}{
-  This interface is implemented for NMF algorithms by the
-  classes \code{\link{NMFfit}}, \code{\link{NMFfitX}} and
-  \code{\link{NMFStrategy}}, and their respective
-  sub-classes. The examples given in this documentation
-  page are mainly based on this implementation.
+
+This interface is implemented for NMF algorithms by the classes \code{\link{NMFfit}},
+\code{\link{NMFfitX}} and \code{\link{NMFStrategy}}, and their respective sub-classes.
+The examples given in this documentation page are mainly based on this implementation.
 }
 \examples{
 \dontshow{# roxygen generated flag

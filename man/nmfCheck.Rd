@@ -10,14 +10,11 @@
 
   \item{rank}{rank of the factorization}
 
-  \item{x}{target data. If \code{NULL}, a random 20 x 10
-  matrix is generated}
+  \item{x}{target data. If \code{NULL}, a random 20 x 10 matrix is generated}
 
-  \item{seed}{specifies a seed or seeding method for the
-  computation.}
+  \item{seed}{specifies a seed or seeding method for the computation.}
 
-  \item{...}{other arguments passed to the call to
-  \code{\link{nmf}}.}
+  \item{...}{other arguments passed to the call to \code{\link{nmf}}.}
 }
 \value{
   the result of the NMF fit invisibly.

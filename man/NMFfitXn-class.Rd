@@ -23,133 +23,139 @@
   supported in the next release of the package.
 }
 \section{Slots}{
-  \describe{
+\describe{
 
-  \item{.Data}{standard slot that contains the S3
-  \code{list} object data. See R documentation on S3/S4
-  classes for more details (e.g.,
-  \code{\link{setOldClass}}).}
+\item{.Data}{standard slot that contains the S3 \code{list} object data.
+See R documentation on S3/S4 classes for more details (e.g., \code{\link{setOldClass}}).}
 
-  }
+}
+
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{algorithm}{\code{signature(object = "NMFfitXn")}:
-  Returns the name of the common NMF algorithm used to
-  compute all fits stored in \code{object}
+\item{algorithm}{\code{signature(object = "NMFfitXn")}: Returns the name of the common NMF algorithm used to compute all fits
+stored in \code{object}
 
-  Since all fits are computed with the same algorithm, this
-  method returns the name of algorithm that computed the
-  first fit. It returns \code{NULL} if the object is empty.
-  }
+Since all fits are computed with the same algorithm, this method returns the
+name of algorithm that computed the first fit.
+It returns \code{NULL} if the object is empty.
+}
 
-  \item{basis}{\code{signature(object = "NMFfitXn")}:
-  Returns the basis matrix of the best fit amongst all the
-  fits stored in \code{object}. It is a shortcut for
-  \code{basis(fit(object))}. }
 
-  \item{coef}{\code{signature(object = "NMFfitXn")}:
-  Returns the coefficient matrix of the best fit amongst
-  all the fits stored in \code{object}. It is a shortcut
-  for \code{coef(fit(object))}. }
+\item{basis}{\code{signature(object = "NMFfitXn")}: Returns the basis matrix of the best fit amongst all the fits stored in
+\code{object}.
+It is a shortcut for \code{basis(fit(object))}.
+}
 
-  \item{compare}{\code{signature(object = "NMFfitXn")}:
-  Compares the fits obtained by separate runs of NMF, in a
-  single call to \code{\link{nmf}}. }
 
-  \item{consensus}{\code{signature(object = "NMFfitXn")}:
-  This method returns \code{NULL} on an empty object. The
-  result is a matrix with several attributes attached, that
-  are used by plotting functions such as
-  \code{\link{consensusmap}} to annotate the plots. }
+\item{coef}{\code{signature(object = "NMFfitXn")}: Returns the coefficient matrix of the best fit amongst all the fits stored in
+\code{object}.
+It is a shortcut for \code{coef(fit(object))}.
+}
 
-  \item{dim}{\code{signature(x = "NMFfitXn")}: Returns the
-  dimension common to all fits.
 
-  Since all fits have the same dimensions, it returns the
-  dimension of the first fit. This method returns
-  \code{NULL} if the object is empty. }
+\item{compare}{\code{signature(object = "NMFfitXn")}: Compares the fits obtained by separate runs of NMF, in a single
+call to \code{\link{nmf}}.
+}
 
-  \item{entropy}{\code{signature(x = "NMFfitXn", y =
-  "ANY")}: Computes the best or mean entropy across all NMF
-  fits stored in \code{x}. }
 
-  \item{fit}{\code{signature(object = "NMFfitXn")}: Returns
-  the best NMF fit object amongst all the fits stored in
-  \code{object}, i.e. the fit that achieves the lowest
-  estimation residuals. }
+\item{consensus}{\code{signature(object = "NMFfitXn")}: This method returns \code{NULL} on an empty object.
+The result is a matrix with several attributes attached, that are used by
+plotting functions such as \code{\link{consensusmap}} to annotate the plots.
+}
 
-  \item{.getRNG}{\code{signature(object = "NMFfitXn")}:
-  Returns the RNG settings used for the best fit.
 
-  This method throws an error if the object is empty. }
+\item{dim}{\code{signature(x = "NMFfitXn")}: Returns the dimension common to all fits.
 
-  \item{getRNG1}{\code{signature(object = "NMFfitXn")}:
-  Returns the RNG settings used for the first run.
+Since all fits have the same dimensions, it returns the dimension of the
+first fit.
+This method returns \code{NULL} if the object is empty.
+}
 
-  This method throws an error if the object is empty. }
 
-  \item{minfit}{\code{signature(object = "NMFfitXn")}:
-  Returns the best NMF model in the list, i.e. the run that
-  achieved the lower estimation residuals.
+\item{entropy}{\code{signature(x = "NMFfitXn", y = "ANY")}: Computes the best or mean entropy across all NMF fits stored in \code{x}.
+}
 
-  The model is selected based on its \code{deviance} value.
-  }
 
-  \item{modelname}{\code{signature(object = "NMFfitXn")}:
-  Returns the common type NMF model of all fits stored in
-  \code{object}
+\item{fit}{\code{signature(object = "NMFfitXn")}: Returns the best NMF fit object amongst all the fits stored in \code{object},
+i.e. the fit that achieves the lowest estimation residuals.
+}
 
-  Since all fits are from the same NMF model, this method
-  returns the model type of the first fit. It returns
-  \code{NULL} if the object is empty. }
 
-  \item{nbasis}{\code{signature(x = "NMFfitXn")}: Returns
-  the number of basis components common to all fits.
+\item{.getRNG}{\code{signature(object = "NMFfitXn")}: Returns the RNG settings used for the best fit.
 
-  Since all fits have been computed using the same rank, it
-  returns the factorization rank of the first fit. This
-  method returns \code{NULL} if the object is empty. }
+This method throws an error if the object is empty.
+}
 
-  \item{nrun}{\code{signature(object = "NMFfitXn")}:
-  Returns the number of runs performed to compute the fits
-  stored in the list (i.e. the length of the list itself).
-  }
 
-  \item{purity}{\code{signature(x = "NMFfitXn", y =
-  "ANY")}: Computes the best or mean purity across all NMF
-  fits stored in \code{x}. }
+\item{getRNG1}{\code{signature(object = "NMFfitXn")}: Returns the RNG settings used for the first run.
 
-  \item{runtime.all}{\code{signature(object = "NMFfitXn")}:
-  If no time data is available from in slot
-  \sQuote{runtime.all} and argument \code{null=TRUE}, then
-  the sequential time as computed by \code{\link{seqtime}}
-  is returned, and a warning is thrown unless
-  \code{warning=FALSE}. }
+This method throws an error if the object is empty.
+}
 
-  \item{seeding}{\code{signature(object = "NMFfitXn")}:
-  Returns the name of the common seeding method used the
-  computation of all fits stored in \code{object}
 
-  Since all fits are seeded using the same method, this
-  method returns the name of the seeding method used for
-  the first fit. It returns \code{NULL} if the object is
-  empty. }
+\item{minfit}{\code{signature(object = "NMFfitXn")}: Returns the best NMF model in the list, i.e. the run that achieved the lower
+estimation residuals.
 
-  \item{seqtime}{\code{signature(object = "NMFfitXn")}:
-  Returns the CPU time that would be required to
-  sequentially compute all NMF fits stored in
-  \code{object}.
+The model is selected based on its \code{deviance} value.
+}
 
-  This method calls the function \code{runtime} on each fit
-  and sum up the results. It returns \code{NULL} on an
-  empty object. }
 
-  \item{show}{\code{signature(object = "NMFfitXn")}: Show
-  method for objects of class \code{NMFfitXn} }
+\item{modelname}{\code{signature(object = "NMFfitXn")}: Returns the common type NMF model of all fits stored in \code{object}
 
-  }
+Since all fits are from the same NMF model, this method returns the
+model type of the first fit.
+It returns \code{NULL} if the object is empty.
+}
+
+
+\item{nbasis}{\code{signature(x = "NMFfitXn")}: Returns the number of basis components common to all fits.
+
+Since all fits have been computed using the same rank, it returns the
+factorization rank of the first fit.
+This method returns \code{NULL} if the object is empty.
+}
+
+
+\item{nrun}{\code{signature(object = "NMFfitXn")}: Returns the number of runs performed to compute the fits stored in the list
+(i.e. the length of the list itself).
+}
+
+
+\item{purity}{\code{signature(x = "NMFfitXn", y = "ANY")}: Computes the best or mean purity across all NMF fits stored in \code{x}.
+}
+
+
+\item{runtime.all}{\code{signature(object = "NMFfitXn")}: If no time data is available from in slot \sQuote{runtime.all} and argument
+\code{null=TRUE}, then the sequential time as computed by
+\code{\link{seqtime}} is returned, and a warning is thrown unless \code{warning=FALSE}.
+}
+
+
+\item{seeding}{\code{signature(object = "NMFfitXn")}: Returns the name of the common seeding method used the computation of all fits
+stored in \code{object}
+
+Since all fits are seeded using the same method, this method returns the
+name of the seeding method used for the first fit.
+It returns \code{NULL} if the object is empty.
+}
+
+
+\item{seqtime}{\code{signature(object = "NMFfitXn")}: Returns the CPU time that would be required to sequentially compute all NMF
+fits stored in \code{object}.
+
+This method calls the function \code{runtime} on each fit and sum up the
+results.
+It returns \code{NULL} on an empty object.
+}
+
+
+\item{show}{\code{signature(object = "NMFfitXn")}: Show method for objects of class \code{NMFfitXn}
+}
+
+}
+
 }
 \examples{
 \dontshow{# roxygen generated flag
@@ -179,7 +185,6 @@ seqtime(res)
 \dontrun{ consensusmap(res, annCol=groups) }
 }
 \seealso{
-  Other multipleNMF: \code{\link{NMFfitX1-class}},
-  \code{\link{NMFfitX-class}}
+  Other multipleNMF: \code{\link{NMFfitX1-class}}, \code{\link{NMFfitX-class}}
 }
 

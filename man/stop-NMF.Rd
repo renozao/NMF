@@ -22,13 +22,11 @@
     check.interval = 10, ...)
 }
 \arguments{
-  \item{s}{specification of the stopping criterion. See
-  section \emph{Details} for the supported formats and how
-  they are processed.}
+  \item{s}{specification of the stopping criterion.
+See section \emph{Details} for the supported formats and how they are processed.}
 
-  \item{check}{logical that indicates if the validity of
-  the stopping criterion function should be checked before
-  returning it.}
+  \item{check}{logical that indicates if the validity of the stopping criterion
+function should be checked before returning it.}
 
   \item{n}{maximum number of iteration to perform.}
 
@@ -42,36 +40,31 @@
 
   \item{x}{the current NMF model}
 
-  \item{stationary.th}{maximum absolute value of the
-  gradient, for the objective function to be considered
-  stationary.}
+  \item{stationary.th}{maximum absolute value of the gradient, for the objective
+function to be considered stationary.}
 
-  \item{check.interval}{interval (in number of iterations)
-  on which the stopping criterion is computed.}
+  \item{check.interval}{interval (in number of iterations) on which the stopping
+criterion is computed.}
 
-  \item{check.niter}{number of successive iteration used to
-  compute the stationnary criterion.}
+  \item{check.niter}{number of successive iteration used to compute the stationnary
+criterion.}
 
-  \item{...}{extra arguments passed to the function
-  \code{\link{objective}}, which computes the objective
-  value between \code{x} and \code{y}.}
+  \item{...}{extra arguments passed to the function \code{\link{objective}},
+which computes the objective value between \code{x} and \code{y}.}
 
-  \item{stopconv}{number of iterations intervals over which
-  the connectivity matrix must not change for stationarity
-  to be achieved.}
+  \item{stopconv}{number of iterations intervals over which the connectivity
+matrix must not change for stationarity to be achieved.}
 }
 \value{
-  a function that can be passed to argument \code{.stop} of
-  function \code{\link{nmf}}, which is typically used when
-  the algorith is implemented as an iterative strategy.
+  a function that can be passed to argument \code{.stop} of function
+\code{\link{nmf}}, which is typically used when the algorith is implemented as
+an iterative strategy.
 
-  a function that can be used as a stopping criterion for
-  NMF algorithms defined as
-  \code{\linkS4class{NMFStrategyIterative}} objects. That
-  is a function with arguments \code{(strategy, i, target,
-  data, ...)} that returns \code{TRUE} if the stopping
-  criterion is satisfied -- which in turn stops the
-  iterative process, and \code{FALSE} otherwise.
+a function that can be used as a stopping criterion for NMF algorithms
+defined as \code{\linkS4class{NMFStrategyIterative}} objects.
+That is a function with arguments \code{(strategy, i, target, data, ...)}
+that returns \code{TRUE} if the stopping criterion is satisfied -- which in
+turn stops the iterative process, and \code{FALSE} otherwise.
 }
 \description{
   The function documented here implement

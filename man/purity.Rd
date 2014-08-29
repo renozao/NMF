@@ -25,27 +25,22 @@
     ...)
 }
 \arguments{
-  \item{x}{an object that can be interpreted as a factor or
-  can generate such an object, e.g. via a suitable method
-  \code{\link{predict}}, which gives the cluster membership
-  for each sample.}
+  \item{x}{an object that can be interpreted as a factor or can generate such an object, e.g. via
+a suitable method \code{\link{predict}}, which gives the cluster membership for each sample.}
 
-  \item{y}{a factor or an object coerced into a factor that
-  gives the true class labels for each sample. It may be
-  missing if \code{x} is a contingency table.}
+  \item{y}{a factor or an object coerced into a factor that gives the true class labels for each sample.
+It may be missing if \code{x} is a contingency table.}
 
-  \item{...}{extra arguments to allow extension, and
-  usually passed to the next method.}
+  \item{...}{extra arguments to allow extension, and usually passed to the next method.}
 
-  \item{method}{a character string that specifies how the
-  value is computed. It may be either \code{'best'} or
-  \code{'mean'} to compute the best or mean purity
-  respectively.}
+  \item{method}{a character string that specifies how the value is computed.
+It may be either \code{'best'} or \code{'mean'} to compute the best or mean
+purity respectively.}
 }
 \value{
   a single numeric value
 
-  the entropy (i.e. a single numeric value)
+the entropy (i.e. a single numeric value)
 }
 \description{
   The functions \code{purity} and \code{entropy}
@@ -93,50 +88,43 @@
   performance.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{entropy}{\code{signature(x = "table", y =
-  "missing")}: Computes the purity directly from the
-  contingency table \code{x}.
+\item{entropy}{\code{signature(x = "table", y = "missing")}: Computes the purity directly from the contingency table \code{x}.
 
-  This is the workhorse method that is eventually called by
-  all other methods. }
+This is the workhorse method that is eventually called by all other methods.
+}
 
-  \item{entropy}{\code{signature(x = "factor", y = "ANY")}:
-  Computes the purity on the contingency table of \code{x}
-  and \code{y}, that is coerced into a factor if necessary.
-  }
+\item{entropy}{\code{signature(x = "factor", y = "ANY")}: Computes the purity on the contingency table of \code{x} and \code{y}, that is
+coerced into a factor if necessary.
+}
 
-  \item{entropy}{\code{signature(x = "ANY", y = "ANY")}:
-  Default method that should work for results of clustering
-  algorithms, that have a suitable \code{predict} method
-  that returns the cluster membership vector: the purity is
-  computed between \code{x} and \code{predict{y}} }
+\item{entropy}{\code{signature(x = "ANY", y = "ANY")}: Default method that should work for results of clustering algorithms, that have a
+suitable \code{predict} method that returns the cluster membership vector:
+the purity is computed between \code{x} and \code{predict{y}}
+}
 
-  \item{entropy}{\code{signature(x = "NMFfitXn", y =
-  "ANY")}: Computes the best or mean entropy across all NMF
-  fits stored in \code{x}. }
+\item{entropy}{\code{signature(x = "NMFfitXn", y = "ANY")}: Computes the best or mean entropy across all NMF fits stored in \code{x}.
+}
 
-  \item{purity}{\code{signature(x = "table", y =
-  "missing")}: Computes the purity directly from the
-  contingency table \code{x} }
 
-  \item{purity}{\code{signature(x = "factor", y = "ANY")}:
-  Computes the purity on the contingency table of \code{x}
-  and \code{y}, that is coerced into a factor if necessary.
-  }
+\item{purity}{\code{signature(x = "table", y = "missing")}: Computes the purity directly from the contingency table \code{x}
+}
 
-  \item{purity}{\code{signature(x = "ANY", y = "ANY")}:
-  Default method that should work for results of clustering
-  algorithms, that have a suitable \code{predict} method
-  that returns the cluster membership vector: the purity is
-  computed between \code{x} and \code{predict{y}} }
+\item{purity}{\code{signature(x = "factor", y = "ANY")}: Computes the purity on the contingency table of \code{x} and \code{y}, that is
+coerced into a factor if necessary.
+}
 
-  \item{purity}{\code{signature(x = "NMFfitXn", y =
-  "ANY")}: Computes the best or mean purity across all NMF
-  fits stored in \code{x}. }
+\item{purity}{\code{signature(x = "ANY", y = "ANY")}: Default method that should work for results of clustering algorithms, that have a
+suitable \code{predict} method that returns the cluster membership vector:
+the purity is computed between \code{x} and \code{predict{y}}
+}
 
-  }
+\item{purity}{\code{signature(x = "NMFfitXn", y = "ANY")}: Computes the best or mean purity across all NMF fits stored in \code{x}.
+}
+
+}
+
 }
 \examples{
 \dontshow{# roxygen generated flag

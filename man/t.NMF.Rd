@@ -35,7 +35,6 @@ stopifnot( identical(basis(y), t(coef(x))) )
 stopifnot( identical(coef(y), t(basis(x))) )
 }
 \seealso{
-  Other transforms: \code{\link{nneg}},
-  \code{\link{posneg}}, \code{\link{rposneg}}
+  Other transforms: \code{\link{nneg}}, \code{\link{posneg}}, \code{\link{rposneg}}
 }
 

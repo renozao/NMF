@@ -2146,7 +2146,7 @@ setGeneric('connectivity', function(object, ...) standardGeneric('connectivity')
 #' 
 #' # clustering of random data
 #' h <- hclust(dist(rmatrix(10,20)))
-#' connectivity(cutree(h, 2))
+#' connectivity(stats::cutree(h, 2))
 #' 
 setMethod('connectivity', 'ANY', 
 	function(object, ...){
@@ -2523,7 +2523,7 @@ match.basis <- function(object, return.table=FALSE){
 	# build the tree from consensus matrix
 	h <- hclust(as.dist(1-consensus(object)), method='average')
 	# extract membership from the tree
-	cl <- cutree(h, k=nbasis(object))
+	cl <- stats::cutree(h, k=nbasis(object))
 	# change the class indexed to match the order of the consensus clusters 
 	cl <- match(cl, unique(cl[h$order]))
 	pcmap <- as.factor(cl)

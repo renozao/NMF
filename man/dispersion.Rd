@@ -9,8 +9,7 @@
   dispersion(object, ...)
 }
 \arguments{
-  \item{object}{an object from which the dispersion is
-  computed}
+  \item{object}{an object from which the dispersion is computed}
 
   \item{...}{extra arguments to allow extension}
 }
@@ -37,17 +36,17 @@
   \cite{Kim et al. (2007)}.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{dispersion}{\code{signature(object = "matrix")}:
-  Workhorse method that computes the dispersion on a given
-  matrix. }
+\item{dispersion}{\code{signature(object = "matrix")}: Workhorse method that computes the dispersion on a given matrix.
+}
 
-  \item{dispersion}{\code{signature(object = "NMFfitX")}:
-  Computes the dispersion on the consensus matrix obtained
-  from multiple NMF runs. }
+\item{dispersion}{\code{signature(object = "NMFfitX")}: Computes the dispersion on the consensus matrix obtained from multiple NMF
+runs.
+}
 
-  }
+}
+
 }
 \references{
   Kim H and Park H (2007). "Sparse non-negative matrix

@@ -10,6 +10,8 @@
 \alias{basis<--methods}
 \alias{basis-methods}
 \alias{.basis<-,NMFarray,array-method}
+\alias{.basis<-,NMFarray,matrix-method}
+\alias{.basis,NMFarray-method}
 \alias{.basis<-,NMFfit,matrix-method}
 \alias{.basis,NMFfit-method}
 \alias{basis,NMFfitXn-method}
@@ -31,6 +33,8 @@
 \alias{coef<--methods}
 \alias{coef-methods}
 \alias{.coef<-,NMFarray,array-method}
+\alias{.coef<-,NMFarray,matrix-method}
+\alias{.coef,NMFarray-method}
 \alias{.coef<-,NMFfit,matrix-method}
 \alias{.coef,NMFfit-method}
 \alias{coef,NMFfitXn-method}
@@ -84,39 +88,46 @@
   \S4method{scoef}{NMF}(object, scale = 1)
 
   \S4method{scoef}{matrix}(object, scale = 1)
+
+  \S4method{.basis}{NMFarray}(object, slice = NULL)
+
+  \S4method{.basis}{NMFarray,matrix}(object, ...,
+    slice = 1)<-value
+
+  \S4method{.coef}{NMFarray}(object, slice = NULL)
+
+  \S4method{.coef}{NMFarray,matrix}(object, ...,
+    slice = 1)<-value
 }
 \arguments{
-  \item{object}{an object from which to extract the factor
-  matrices, typically an object of class
-  \code{\linkS4class{NMF}}.}
+  \item{object}{an object from which to extract the factor matrices, typically an
+object of class \code{\linkS4class{NMF}}.}
 
-  \item{...}{extra arguments to allow extension and passed
-  to the low-level access functions \code{.coef} and
-  \code{.basis}.
+  \item{...}{extra arguments to allow extension and passed to the low-level
+access functions \code{.coef} and \code{.basis}.
 
-  Note that these throw an error if used in replacement
-  functions \code{}.}
+Note that these throw an error if used in replacement functions \code{}.}
 
-  \item{all}{a logical that indicates whether the complete
-  matrix factor should be returned (\code{TRUE}) or only
-  the non-fixed part. This is relevant only for
-  formula-based NMF models that include fixed basis or
-  coefficient terms.}
+  \item{all}{a logical that indicates whether the complete matrix factor
+should be returned (\code{TRUE}) or only the non-fixed part.
+This is relevant only for formula-based NMF models that include fixed basis or
+coefficient terms.}
 
-  \item{use.dimnames}{logical that indicates if the
-  object's dim names should be set using those from the new
-  value, or left unchanged -- after truncating them to fit
-  new dimensions if necessary. This is useful to only set
-  the entries of a factor.}
+  \item{use.dimnames}{logical that indicates if the object's dim names should be
+set using those from the new value, or left unchanged -- after truncating
+them to fit new dimensions if necessary.
+This is useful to only set the entries of a factor.}
 
   \item{value}{replacement value}
 
-  \item{scale}{scaling factor, which indicates to the value
-  the columns of the coefficient matrix should sum up to.}
+  \item{scale}{scaling factor, which indicates to the value the columns of the
+coefficient matrix should sum up to.}
+
+  \item{slice}{optional slice (3rd margin) to extract}
 
   \item{x}{an object of class \code{"\link{factanal}"} or
-  \code{"\link{princomp}"} or the \code{loadings} component
-  of such an object.}
+    \code{"\link{princomp}"} or the \code{loadings} component of such an
+    object.}
 }
 \description{
   \code{basis} and \code{basis<-} are S4 generic functions
@@ -177,163 +188,153 @@
   dimension compatibility.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{basis}{\code{signature(object = "ANY")}: Default
-  method returns the value of S3 slot or attribute
-  \code{'basis'}. It returns \code{NULL} if none of these
-  are set.
+\item{basis}{\code{signature(object = "ANY")}: Default method returns the value of S3 slot or attribute \code{'basis'}.
+It returns \code{NULL} if none of these are set.
 
-  Arguments \code{...} are not used by this method. }
+Arguments \code{...} are not used by this method.
+}
 
-  \item{basis}{\code{signature(object = "NMFfitXn")}:
-  Returns the basis matrix of the best fit amongst all the
-  fits stored in \code{object}. It is a shortcut for
-  \code{basis(fit(object))}. }
+\item{basis}{\code{signature(object = "NMFfitXn")}: Returns the basis matrix of the best fit amongst all the fits stored in
+\code{object}.
+It is a shortcut for \code{basis(fit(object))}.
+}
 
-  \item{.basis}{\code{signature(object = "NMF")}: Pure
-  virtual method for objects of class
-  \code{\linkS4class{NMF}}, that should be overloaded by
-  sub-classes, and throws an error if called. }
 
-  \item{.basis}{\code{signature(object = "NMFstd")}: Get
-  the basis matrix in standard NMF models
+\item{.basis}{\code{signature(object = "NMF")}: Pure virtual method for objects of class \code{\linkS4class{NMF}}, that
+should be overloaded by sub-classes, and throws an error if called.
+}
 
-  This function returns slot \code{W} of \code{object}. }
+\item{.basis}{\code{signature(object = "NMFstd")}: Get the basis matrix in standard NMF models
 
-  \item{.basis}{\code{signature(object = "NMFarray")}: This
-  function returns slot \code{W} of \code{object}.
+This function returns slot \code{W} of \code{object}.
+}
 
-  See \code{\link{.basis,NMFarray-method}} for more
-  details. }
+\item{.basis}{\code{signature(object = "NMFarray")}: Get the basis matrix in NMF array models
 
-  \item{.basis}{\code{signature(object = "NMFfit")}:
-  Returns the basis matrix from an NMF model fitted with
-  function \code{\link{nmf}}.
+This function returns slot \code{W} of \code{object}.
+}
 
-  It is a shortcut for \code{.basis(fit(object), ...)},
-  dispatching the call to the \code{.basis} method of the
-  actual NMF model. }
+\item{.basis}{\code{signature(object = "NMFfit")}: Returns the basis matrix from an NMF model fitted with
+function \code{\link{nmf}}.
 
-  \item{.basis<-}{\code{signature(object = "NMF", value =
-  "matrix")}: Pure virtual method for objects of class
-  \code{\linkS4class{NMF}}, that should be overloaded by
-  sub-classes, and throws an error if called. }
+It is a shortcut for \code{.basis(fit(object), ...)}, dispatching the call to
+the \code{.basis} method of the actual NMF model.
+}
 
-  \item{.basis<-}{\code{signature(object = "NMFstd", value
-  = "matrix")}: Set the basis matrix in standard NMF models
 
-  This function sets slot \code{W} of \code{object}. }
+\item{.basis<-}{\code{signature(object = "NMF", value = "matrix")}: Pure virtual method for objects of class \code{\linkS4class{NMF}}, that
+should be overloaded by sub-classes, and throws an error if called.
+}
 
-  \item{.basis<-}{\code{signature(object = "NMFarray",
-  value = "matrix")}: Replaces a slice of the basis array.
+\item{.basis<-}{\code{signature(object = "NMFstd", value = "matrix")}: Set the basis matrix in standard NMF models
 
-  See \code{\link{.basis<-,NMFarray,matrix-method}} for
-  more details. }
+This function sets slot \code{W} of \code{object}.
+}
 
-  \item{.basis<-}{\code{signature(object = "NMFarray",
-  value = "array")}: Set the basis array in NMF array
-  models
+\item{.basis<-}{\code{signature(object = "NMFarray", value = "matrix")}: Replaces a slice of the basis array.
+}
 
-  This function sets slot \code{W} of \code{object}. }
+\item{.basis<-}{\code{signature(object = "NMFarray", value = "array")}: Set the basis array in NMF array models
 
-  \item{.basis<-}{\code{signature(object = "NMFfit", value
-  = "matrix")}: Sets the the basis matrix of an NMF model
-  fitted with function \code{\link{nmf}}.
+This function sets slot \code{W} of \code{object}.
+}
 
-  It is a shortcut for \code{.basis(fit(object)) <- value},
-  dispatching the call to the \code{.basis<-} method of the
-  actual NMF model. It is not meant to be used by the user,
-  except when developing NMF algorithms, to update the
-  basis matrix of the seed object before returning it. }
+\item{.basis<-}{\code{signature(object = "NMFfit", value = "matrix")}: Sets the the basis matrix of an NMF model fitted with
+function \code{\link{nmf}}.
 
-  \item{basis<-}{\code{signature(object = "NMF")}: Default
-  methods that calls \code{.basis<-} and check the validity
-  of the updated object. }
+It is a shortcut for \code{.basis(fit(object)) <- value}, dispatching the call to
+the \code{.basis<-} method of the actual NMF model.
+It is not meant to be used by the user, except when developing
+NMF algorithms, to update the basis matrix of the seed object before
+returning it.
+}
 
-  \item{coef}{\code{signature(object = "NMFfitXn")}:
-  Returns the coefficient matrix of the best fit amongst
-  all the fits stored in \code{object}. It is a shortcut
-  for \code{coef(fit(object))}. }
 
-  \item{.coef}{\code{signature(object = "NMF")}: Pure
-  virtual method for objects of class
-  \code{\linkS4class{NMF}}, that should be overloaded by
-  sub-classes, and throws an error if called. }
+\item{basis<-}{\code{signature(object = "NMF")}: Default methods that calls \code{.basis<-} and check the validity of the
+updated object.
+}
 
-  \item{.coef}{\code{signature(object = "NMFstd")}: Get the
-  mixture coefficient matrix in standard NMF models
 
-  This function returns slot \code{H} of \code{object}. }
+\item{coef}{\code{signature(object = "NMFfitXn")}: Returns the coefficient matrix of the best fit amongst all the fits stored in
+\code{object}.
+It is a shortcut for \code{coef(fit(object))}.
+}
 
-  \item{.coef}{\code{signature(object = "NMFarray")}: This
-  function returns slot \code{H} of \code{object}.
 
-  See \code{\link{.coef,NMFarray-method}} for more details.
-  }
+\item{.coef}{\code{signature(object = "NMF")}: Pure virtual method for objects of class \code{\linkS4class{NMF}}, that
+should be overloaded by sub-classes, and throws an error if called.
+}
 
-  \item{.coef}{\code{signature(object = "NMFfit")}: Returns
-  the the coefficient matrix from an NMF model fitted with
-  function \code{\link{nmf}}.
+\item{.coef}{\code{signature(object = "NMFstd")}: Get the mixture coefficient matrix in standard NMF models
 
-  It is a shortcut for \code{.coef(fit(object), ...)},
-  dispatching the call to the \code{.coef} method of the
-  actual NMF model. }
+This function returns slot \code{H} of \code{object}.
+}
 
-  \item{.coef<-}{\code{signature(object = "NMF", value =
-  "matrix")}: Pure virtual method for objects of class
-  \code{\linkS4class{NMF}}, that should be overloaded by
-  sub-classes, and throws an error if called. }
+\item{.coef}{\code{signature(object = "NMFarray")}: Get the mixture coefficient array in standard NMF array models
 
-  \item{.coef<-}{\code{signature(object = "NMFstd", value =
-  "matrix")}: Set the mixture coefficient matrix in
-  standard NMF models
+This function returns slot \code{H} of \code{object}.
+}
 
-  This function sets slot \code{H} of \code{object}. }
+\item{.coef}{\code{signature(object = "NMFfit")}: Returns the the coefficient matrix from an NMF model fitted with
+function \code{\link{nmf}}.
 
-  \item{.coef<-}{\code{signature(object = "NMFarray", value
-  = "array")}: Set the mixture coefficient matrix in
-  standard NMF models
+It is a shortcut for \code{.coef(fit(object), ...)}, dispatching the call to
+the \code{.coef} method of the actual NMF model.
+}
 
-  This function sets slot \code{H} of \code{object}. }
 
-  \item{.coef<-}{\code{signature(object = "NMFarray", value
-  = "matrix")}: Replaces a slice of the coefficent array.
+\item{.coef<-}{\code{signature(object = "NMF", value = "matrix")}: Pure virtual method for objects of class \code{\linkS4class{NMF}}, that
+should be overloaded by sub-classes, and throws an error if called.
+}
 
-  See \code{\link{.coef<-,NMFarray,matrix-method}} for more
-  details. }
+\item{.coef<-}{\code{signature(object = "NMFstd", value = "matrix")}: Set the mixture coefficient matrix in standard NMF models
 
-  \item{.coef<-}{\code{signature(object = "NMFfit", value =
-  "matrix")}: Sets the the coefficient matrix of an NMF
-  model fitted with function \code{\link{nmf}}.
+This function sets slot \code{H} of \code{object}.
+}
 
-  It is a shortcut for \code{.coef(fit(object)) <- value},
-  dispatching the call to the \code{.coef<-} method of the
-  actual NMF model. It is not meant to be used by the user,
-  except when developing NMF algorithms, to update the
-  coefficient matrix in the seed object before returning
-  it. }
+\item{.coef<-}{\code{signature(object = "NMFarray", value = "array")}: Set the mixture coefficient matrix in standard NMF models
 
-  \item{coef<-}{\code{signature(object = "NMF")}: Default
-  methods that calls \code{.coef<-} and check the validity
-  of the updated object. }
+This function sets slot \code{H} of \code{object}.
+}
 
-  \item{coefficients}{\code{signature(object = "NMF")}:
-  Alias to \code{coef,NMF}, therefore also pure virtual. }
+\item{.coef<-}{\code{signature(object = "NMFarray", value = "matrix")}: Replaces a slice of the coefficent array.
+}
 
-  \item{loadings}{\code{signature(x = "NMF")}: Method
-  loadings for NMF Models
+\item{.coef<-}{\code{signature(object = "NMFfit", value = "matrix")}: Sets the the coefficient matrix of an NMF model fitted with
+function \code{\link{nmf}}.
 
-  The method \code{loadings} is identical to \code{basis},
-  but do not accept any extra argument.
+It is a shortcut for \code{.coef(fit(object)) <- value}, dispatching the call to
+the \code{.coef<-} method of the actual NMF model.
+It is not meant to be used by the user, except when developing
+NMF algorithms, to update the coefficient matrix in the seed object before
+returning it.
+}
 
-  The method \code{loadings} is provided to standardise the
-  NMF interface against the one defined in the
-  \code{\link{stats}} package, and emphasises the
-  similarities between NMF and PCA or factorial analysis
-  (see \code{\link{loadings}}). }
 
-  }
+\item{coef<-}{\code{signature(object = "NMF")}: Default methods that calls \code{.coef<-} and check the validity of the
+updated object.
+}
+
+
+\item{coefficients}{\code{signature(object = "NMF")}: Alias to \code{coef,NMF}, therefore also pure virtual.
+}
+
+
+\item{loadings}{\code{signature(x = "NMF")}: Method loadings for NMF Models
+
+The method \code{loadings} is identical to \code{basis}, but do
+not accept any extra argument.
+
+The method \code{loadings} is provided to standardise the NMF interface
+against the one defined in the \code{\link{stats}} package,
+and emphasises the similarities between NMF and PCA or factorial analysis
+(see \code{\link{loadings}}).
+}
+
+}
+
 }
 \examples{
 \dontshow{# roxygen generated flag
@@ -370,12 +371,7 @@ try( coef(x) <- matrix(1, nbasis(x)-1, nrow(x)) )
 try( validObject(x) )
 }
 \seealso{
-  Other NMF-interface:
-  \code{\link{.DollarNames,NMF-method}},
-  \code{\link{misc}}, \code{\link{NMF-class}},
-  \code{\link{$<-,NMF-method}}, \code{\link{$,NMF-method}},
-  \code{\link{nmfModel}}, \code{\link{nmfModels}},
-  \code{\link{rnmf}}
+  Other NMF-interface: \code{\link{.DollarNames,NMF-method}}, \code{\link{misc}}, \code{\link{NMF-class}}, \code{\link{$<-,NMF-method}}, \code{\link{$,NMF-method}}, \code{\link{nmfModel}}, \code{\link{nmfModels}}, \code{\link{rnmf}}
 }
 \keyword{methods}
 

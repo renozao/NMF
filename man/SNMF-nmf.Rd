@@ -14,32 +14,29 @@
 \arguments{
   \item{maxIter}{maximum number of iterations.}
 
-  \item{eta}{parameter to suppress/bound the L2-norm of
-  \code{W} and in \code{H} in \sQuote{SNMF/R} and
-  \sQuote{SNMF/L} respectively.
+  \item{eta}{parameter to suppress/bound the L2-norm of \code{W} and in
+\code{H} in \sQuote{SNMF/R} and \sQuote{SNMF/L} respectively.
 
-  If \code{eta < 0}, then it is set to the maximum value in
-  the target matrix is used.}
+If \code{eta < 0}, then it is set to the maximum value in the target matrix is used.}
 
-  \item{beta}{regularisation parameter for sparsity
-  control, which balances the trade-off between the
-  accuracy of the approximation and the sparseness of
-  \code{H} and \code{W} in \sQuote{SNMF/R} and
-  \sQuote{SNMF/L} respectively.
+  \item{beta}{regularisation parameter for sparsity control, which
+balances the trade-off between the accuracy of the approximation and the
+sparseness of \code{H} and \code{W} in \sQuote{SNMF/R} and \sQuote{SNMF/L} respectively.
 
-  Larger beta generates higher sparseness on \code{H}
-  (resp. \code{W}). Too large beta is not recommended.}
+Larger beta generates higher sparseness on \code{H} (resp. \code{W}).
+Too large beta is not recommended.}
 
-  \item{bi_conv}{parameter of the biclustering convergence
-  test. It must be a size 2 numeric vector
-  \code{bi_conv=c(wminchange, iconv)}, with: \describe{
-  \item{\code{wminchange}:}{the minimal allowance of change
-  in row-clusters.} \item{\code{iconv}:}{ decide
-  convergence if row-clusters (within the allowance of
-  \code{wminchange}) and column-clusters have not changed
-  for \code{iconv} convergence checks.} }
+  \item{bi_conv}{parameter of the biclustering convergence test.
+It must be a size 2 numeric vector \code{bi_conv=c(wminchange, iconv)},
+with:
+\describe{
+\item{\code{wminchange}:}{the minimal allowance of change in row-clusters.}
+\item{\code{iconv}:}{ decide convergence if row-clusters
+(within the allowance of \code{wminchange})
+and column-clusters have not changed for \code{iconv} convergence checks.}
+}
 
-  Convergence checks are performed every 5 iterations.}
+Convergence checks are performed every 5 iterations.}
 
   \item{eps_conv}{threshold for the KKT convergence test.}
 

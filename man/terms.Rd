@@ -46,8 +46,7 @@
 \arguments{
   \item{object}{NMF object}
 
-  \item{...}{extra parameters to allow extension (currently
-  not used)}
+  \item{...}{extra parameters to allow extension (currently not used)}
 }
 \description{
   Formula-based NMF models may contain fixed basis and/or
@@ -82,41 +81,39 @@
   NMF model.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{ibterms}{\code{signature(object = "NMF")}: Default
-  pure virtual method that ensure a method is defined for
-  concrete NMF model classes. }
+\item{ibterms}{\code{signature(object = "NMF")}: Default pure virtual method that ensure a method is defined for concrete
+NMF model classes.
+}
 
-  \item{ibterms}{\code{signature(object = "NMFstd")}:
-  Method for standard NMF models, which returns the integer
-  vector that is stored in slot \code{ibterms} when a
-  formula-based NMF model is instantiated. }
+\item{ibterms}{\code{signature(object = "NMFstd")}: Method for standard NMF models, which returns the integer vector that is
+stored in slot \code{ibterms} when a formula-based NMF model is instantiated.
+}
 
-  \item{ibterms}{\code{signature(object = "NMFfit")}:
-  Method for single NMF fit objects, which returns the
-  indexes of fixed basis terms from the fitted model. }
+\item{ibterms}{\code{signature(object = "NMFfit")}: Method for single NMF fit objects, which returns the indexes of fixed
+basis terms from the fitted model.
+}
 
-  \item{ibterms}{\code{signature(object = "NMFfitX")}:
-  Method for multiple NMF fit objects, which returns the
-  indexes of fixed basis terms from the best fitted model.
-  }
+\item{ibterms}{\code{signature(object = "NMFfitX")}: Method for multiple NMF fit objects, which returns the indexes of fixed basis
+terms from the best fitted model.
+}
 
-  \item{icterms}{\code{signature(object = "NMF")}: Default
-  pure virtual method that ensure a method is defined for
-  concrete NMF model classes. }
 
-  \item{icterms}{\code{signature(object = "NMFstd")}:
-  Method for standard NMF models, which returns the integer
-  vector that is stored in slot \code{icterms} when a
-  formula-based NMF model is instantiated. }
+\item{icterms}{\code{signature(object = "NMF")}: Default pure virtual method that ensure a method is defined for concrete
+NMF model classes.
+}
 
-  \item{icterms}{\code{signature(object = "NMFfit")}:
-  Method for single NMF fit objects, which returns the
-  indexes of fixed coefficient terms from the fitted model.
-  }
+\item{icterms}{\code{signature(object = "NMFstd")}: Method for standard NMF models, which returns the integer vector that is
+stored in slot \code{icterms} when a formula-based NMF model is instantiated.
+}
 
-  }
+\item{icterms}{\code{signature(object = "NMFfit")}: Method for single NMF fit objects, which returns the indexes of fixed
+coefficient terms from the fitted model.
+}
+
+}
+
 }
 \keyword{methods}
 

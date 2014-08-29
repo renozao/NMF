@@ -18,36 +18,31 @@
   gVariable(init, shared = FALSE)
 }
 \arguments{
-  \item{mutex}{a mutex or a mutex descriptor. If missing, a
-  new mutex is created via the function
-  \code{\link[synchronicity]{boost.mutex}}.}
+  \item{mutex}{a mutex or a mutex descriptor.
+If missing, a new mutex is created via the function \code{\link[synchronicity]{boost.mutex}}.}
 
-  \item{verbose}{a logical that indicates if messages
-  should be printed when locking and unlocking the mutex.}
+  \item{verbose}{a logical that indicates if messages should be printed when
+locking and unlocking the mutex.}
 
-  \item{...}{extra arguments passed to
-  \code{\link[base]{tempfile}}.}
+  \item{...}{extra arguments passed to \code{\link[base]{tempfile}}.}
 
-  \item{host}{logical that indicates if the host machine
-  name should be appear in the filename.}
+  \item{host}{logical that indicates if the host machine name should
+be appear in the filename.}
 
-  \item{pid}{logical that indicates if the current process
-  id be appear in the filename.}
+  \item{pid}{logical that indicates if the current process id
+be appear in the filename.}
 
   \item{init}{initial value}
 
-  \item{shared}{a logical that indicates if the variable
-  should be stored in shared memory or in a local
-  environment.}
+  \item{shared}{a logical that indicates if the variable should be stored in shared
+memory or in a local environment.}
 
-  \item{pattern}{a non-empty character vector giving the
-  initial part of the name.}
+  \item{pattern}{a non-empty character vector giving the initial part
+    of the name.}
 
-  \item{tmpdir}{a non-empty character vector giving the
-  directory name}
+  \item{tmpdir}{a non-empty character vector giving the directory name}
 
-  \item{fileext}{a non-empty character vector giving the
-  file extension}
+  \item{fileext}{a non-empty character vector giving the file extension}
 }
 \description{
   Utilities for Parallel Computations

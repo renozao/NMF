@@ -13,30 +13,32 @@
   change in the future.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{algorithm}{\code{signature(object = "NMFList")}:
-  Returns the method names used to compute the NMF fits in
-  the list. It returns \code{NULL} if the list is empty. }
+\item{algorithm}{\code{signature(object = "NMFList")}: Returns the method names used to compute the NMF fits in the list.
+It returns \code{NULL} if the list is empty.
+}
 
-  \item{runtime}{\code{signature(object = "NMFList")}:
-  Returns the CPU time required to compute all NMF fits in
-  the list. It returns \code{NULL} if the list is empty. If
-  no timing data are available, the sequential time is
-  returned. }
 
-  \item{seqtime}{\code{signature(object = "NMFList")}:
-  Returns the CPU time that would be required to
-  sequentially compute all NMF fits stored in
-  \code{object}.
+\item{runtime}{\code{signature(object = "NMFList")}: Returns the CPU time required to compute all NMF fits in the list.
+It returns \code{NULL} if the list is empty.
+If no timing data are available, the sequential time is returned.
+}
 
-  This method calls the function \code{runtime} on each fit
-  and sum up the results. It returns \code{NULL} on an
-  empty object. }
 
-  \item{show}{\code{signature(object = "NMFList")}: Show
-  method for objects of class \code{NMFList} }
+\item{seqtime}{\code{signature(object = "NMFList")}: Returns the CPU time that would be required to sequentially compute all NMF
+fits stored in \code{object}.
 
-  }
+This method calls the function \code{runtime} on each fit and sum up the
+results.
+It returns \code{NULL} on an empty object.
+}
+
+
+\item{show}{\code{signature(object = "NMFList")}: Show method for objects of class \code{NMFList}
+}
+
+}
+
 }
 

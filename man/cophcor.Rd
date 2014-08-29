@@ -11,14 +11,12 @@
   \S4method{cophcor}{matrix}(object, linkage = "average")
 }
 \arguments{
-  \item{object}{an object from which is extracted a
-  consensus matrix.}
+  \item{object}{an object from which is extracted a consensus matrix.}
 
-  \item{...}{extra arguments to allow extension and passed
-  to subsequent calls.}
+  \item{...}{extra arguments to allow extension and passed to subsequent calls.}
 
-  \item{linkage}{linkage method used in the hierarchical
-  clustering. It is passed to \code{\link{hclust}}.}
+  \item{linkage}{linkage method used in the hierarchical clustering.
+It is passed to \code{\link{hclust}}.}
 }
 \description{
   The function \code{cophcor} computes the cophenetic
@@ -40,18 +38,18 @@
   \cite{Brunet et al. (2004)}.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{cophcor}{\code{signature(object = "matrix")}:
-  Workhorse method for matrices. }
+\item{cophcor}{\code{signature(object = "matrix")}: Workhorse method for matrices.
+}
 
-  \item{cophcor}{\code{signature(object = "NMFfitX")}:
-  Computes the cophenetic correlation coefficient on the
-  consensus matrix of \code{object}. All arguments in
-  \code{...} are passed to the method
-  \code{cophcor,matrix}. }
+\item{cophcor}{\code{signature(object = "NMFfitX")}: Computes the cophenetic correlation coefficient on the consensus matrix
+of \code{object}.
+All arguments in \code{...} are passed to the method \code{cophcor,matrix}.
+}
 
-  }
+}
+
 }
 \references{
   Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).

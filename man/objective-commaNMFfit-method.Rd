@@ -8,11 +8,10 @@ target matrix \code{y} if it is supplied.}
   \S4method{objective}{NMFfit}(object, y)
 }
 \arguments{
-  \item{y}{optional target matrix used to compute the
-  objective value.}
+  \item{y}{optional target matrix used to compute the objective value.}
 
-  \item{object}{an object computed using some algorithm, or
-  that describes an algorithm itself.}
+  \item{object}{an object computed using some algorithm, or that describes an algorithm
+itself.}
 }
 \description{
   Returns the objective function associated with the

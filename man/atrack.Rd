@@ -35,57 +35,53 @@
   annotationTrack(x = list())
 }
 \arguments{
-  \item{object}{an object from which is extracted
-  annotation tracks}
+  \item{object}{an object from which is extracted annotation tracks}
 
-  \item{...}{extra arguments to allow extensions and passed
-  to the next method call. For \code{atrack}, arguments in
-  \code{...} are concatenated into a single
-  \code{annotationTrack} object.}
+  \item{...}{extra arguments to allow extensions and passed to the next method
+call.
+For \code{atrack}, arguments in \code{...} are concatenated into a single
+\code{annotationTrack} object.}
 
   \item{x}{an R object}
 
-  \item{value}{replacement value for the complete
-  annotation data list}
+  \item{value}{replacement value for the complete annotation data list}
 
-  \item{default.margin}{margin to use if no margin data is
-  stored in the \code{x}.}
+  \item{default.margin}{margin to use if no margin data is stored in the
+\code{x}.}
 
-  \item{data}{object used to extend the annotation track
-  within a given data context. It is typically a
-  matrix-like object, against which annotation
-  specifications are matched using
-  \code{\link{match_atrack}}.}
+  \item{data}{object used to extend the annotation track within a given data
+context.
+It is typically a matrix-like object, against which annotation specifications
+are matched using \code{\link{match_atrack}}.}
 
-  \item{order}{an integer vector that indicates the order
-  of the annotation tracks in the result list}
+  \item{order}{an integer vector that indicates the order of the annotation
+tracks in the result list}
 
-  \item{enforceNames}{logical that indicates if missing
-  track names should be generated as \code{X<i>}}
+  \item{enforceNames}{logical that indicates if missing track names should
+be generated as \code{X<i>}}
 
-  \item{.SPECIAL}{an optional list of functions (with no
-  arguments) that are called to generate special annotation
-  tracks defined by codes of the form \code{':NAME'}. e.g.,
-  the function \code{link{consensusmap}} defines special
-  tracks \code{':basis'} and \code{':consensus'}.
+  \item{.SPECIAL}{an optional list of functions (with no arguments) that are
+called to generate special annotation tracks defined by codes of the form
+\code{':NAME'}.
+e.g., the function \code{link{consensusmap}} defines special tracks
+\code{':basis'} and \code{':consensus'}.
 
-  If \code{.SPECIAL=FALSE}, then any special tracks is
-  discarded and a warning is thrown.}
+If \code{.SPECIAL=FALSE}, then any special tracks is discarded and a warning
+is thrown.}
 
-  \item{.DATA}{data used to match and extend annotation
-  specifications. It is passed to argument \code{data} of
-  the \code{.atrack} methods, which in turn use pass it to
-  \code{\link{match_atrack}}.}
+  \item{.DATA}{data used to match and extend annotation specifications.
+It is passed to argument \code{data} of the \code{.atrack} methods, which
+in turn use pass it to \code{\link{match_atrack}}.}
 
-  \item{.CACHE}{an \code{annotationTrack} object with which
-  the generated annotation track should be consistent. This
-  argument is more for internal/advanced usage and should
-  not be used by the end-user.}
+  \item{.CACHE}{an \code{annotationTrack} object with which the generated
+annotation track should be consistent.
+This argument is more for internal/advanced usage and should not be used
+by the end-user.}
 }
 \value{
   \code{atrack} returns a list, decorated with class
-  \code{'annotationTrack'}, where each element contains the
-  description of an annotation track.
+\code{'annotationTrack'}, where each element contains the description
+of an annotation track.
 }
 \description{
   \code{.atrack} is an S4 generic method that converts an
@@ -126,18 +122,17 @@
   supported type.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{.atrack}{\code{signature(object = "ANY")}: The
-  default method converts character or integer vectors into
-  factors. Numeric vectors, factors, a single NA or
-  \code{annotationTrack} objects are returned unchanged
-  (except from reordering by argument \code{order}). Data
-  frames are not changed either, but class
-  'annotationTrack' is appended to their original class
-  set. }
+\item{.atrack}{\code{signature(object = "ANY")}: The default method converts character or integer vectors into factors.
+Numeric vectors, factors, a single NA or \code{annotationTrack} objects are
+returned unchanged (except from reordering by argument \code{order}).
+Data frames are not changed either, but class 'annotationTrack' is appended
+to their original class set.
+}
 
-  }
+}
+
 }
 \keyword{internal}
 \keyword{methods}

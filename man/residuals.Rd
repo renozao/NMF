@@ -26,32 +26,28 @@
   trackError(object, value, niter, force = FALSE)
 }
 \arguments{
-  \item{object}{an \code{NMFfit} object as fitted by
-  function \code{\link{nmf}}, in single run mode.}
+  \item{object}{an \code{NMFfit} object as fitted by function \code{\link{nmf}},
+in single run mode.}
 
   \item{...}{extra parameters (not used)}
 
-  \item{track}{a logical that indicates if the complete
-  track of residuals should be returned (if it has been
-  computed during the fit), or only the last value.}
+  \item{track}{a logical that indicates if the complete track of residuals
+should be returned (if it has been computed during the fit), or only the last
+value.}
 
-  \item{niter}{specifies the iteration number for which one
-  wants to get/set/test a residual value. This argument is
-  used only if not \code{NULL}}
+  \item{niter}{specifies the iteration number for which one wants
+to get/set/test a residual value. This argument is used only if not \code{NULL}}
 
   \item{value}{residual value}
 
-  \item{force}{logical that indicates if the value should
-  be added to the track even if there already is a value
-  for this iteration number or if the iteration does not
-  conform to the tracking interval
-  \code{nmf.getOption('track.interval')}.}
+  \item{force}{logical that indicates if the value should be added to the track
+even if there already is a value for this iteration number or if the iteration
+does not conform to the tracking interval \code{nmf.getOption('track.interval')}.}
 }
 \value{
-  \code{residuals} returns a single numeric value if
-  \code{track=FALSE} or a numeric vector containing the
-  residual values at some iterations. The names correspond
-  to the iterations at which the residuals were computed.
+  \code{residuals} returns a single numeric value if \code{track=FALSE}
+or a numeric vector containing the residual values at some iterations.
+The names correspond to the iterations at which the residuals were computed.
 }
 \description{
   The package NMF defines methods for the function
@@ -88,23 +84,21 @@
   to make it behave as it should.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{residuals}{\code{signature(object = "NMFfit")}:
-  Returns the residuals -- track -- between the target
-  matrix and the NMF fit \code{object}. }
+\item{residuals}{\code{signature(object = "NMFfit")}: Returns the residuals -- track -- between the target matrix and the NMF
+fit \code{object}.
+}
 
-  \item{residuals}{\code{signature(object = "NMFfitX")}:
-  Returns the residuals achieved by the best fit object,
-  i.e. the lowest residual approximation error achieved
-  across all NMF runs. }
+\item{residuals}{\code{signature(object = "NMFfitX")}: Returns the residuals achieved by the best fit object, i.e. the lowest
+residual approximation error achieved across all NMF runs.
+}
 
-  }
+}
+
 }
 \seealso{
-  Other stats: \code{\link{deviance}},
-  \code{\link{deviance,NMF-method}},
-  \code{\link{nmfDistance}}
+  Other stats: \code{\link{deviance}}, \code{\link{deviance,NMF-method}}, \code{\link{nmfDistance}}
 }
 \keyword{methods}
 

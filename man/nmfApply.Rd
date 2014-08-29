@@ -6,34 +6,29 @@
     USE.NAMES = TRUE)
 }
 \arguments{
-  \item{X}{an object that has suitable \code{\link{basis}}
-  and \code{coef} methods, e.g. an NMF model.}
+  \item{X}{an object that has suitable \code{\link{basis}} and \code{coef} methods,
+e.g. an NMF model.}
 
-  \item{MARGIN}{a single numeric (integer) value that
-  specifies over which margin(s) the function \code{FUN} is
-  applied. See section \emph{Details} for a list of
-  possible values.}
+  \item{MARGIN}{a single numeric (integer) value that specifies over which margin(s)
+the function \code{FUN} is applied.
+See section \emph{Details} for a list of possible values.}
 
-  \item{FUN}{a function to apply over the specified
-  margins.}
+  \item{FUN}{a function to apply over the specified margins.}
 
   \item{...}{extra arguments passed to \code{FUN}}
 
-  \item{simplify}{a logical only used when \code{MARGIN=3},
-  that indicates if \code{sapply} should try to simplify
-  result if possible. Since this argument follows
-  \sQuote{...} its name cannot be abbreviated.}
+  \item{simplify}{a logical only used when \code{MARGIN=3}, that indicates if \code{sapply}
+should try to simplify result if possible.
+Since this argument follows \sQuote{...} its name cannot be abbreviated.}
 
-  \item{USE.NAMES}{a logical only used when
-  \code{MARGIN=3}, that indicates if \code{sapply} should
-  use the names of the basis components to name the results
-  if present. Since this argument follows \sQuote{...} its
-  name cannot be abbreviated.}
+  \item{USE.NAMES}{a logical only used when \code{MARGIN=3}, that indicates if \code{sapply}
+should use the names of the basis components to name the results if present.
+Since this argument follows \sQuote{...} its name cannot be abbreviated.}
 }
 \value{
-  a vector or a list. See \code{\link[base]{apply}} and
-  \code{\link[base]{sapply}} for more details on the output
-  format.
+  a vector or a list.
+See \code{\link[base]{apply}} and \code{\link[base]{sapply}} for more details on
+the output format.
 }
 \description{
   The function \code{nmfApply} provides exteneded

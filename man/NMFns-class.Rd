@@ -51,54 +51,57 @@
   nonzero.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{fitted}{\code{signature(object = "NMFns")}: Compute
-  estimate for an NMFns object, according to the Nonsmooth
-  NMF model (cf. \code{\link{NMFns-class}}).
+\item{fitted}{\code{signature(object = "NMFns")}: Compute estimate for an NMFns object, according to the Nonsmooth NMF model
+(cf. \code{\link{NMFns-class}}).
 
-  Extra arguments in \code{...} are passed to method
-  \code{smoothing}, and are typically used to pass a value
-  for \code{theta}, which is used to compute the smoothing
-  matrix instead of the one stored in \code{object}. }
+Extra arguments in \code{...} are passed to method \code{smoothing}, and are
+typically used to pass a value for \code{theta}, which is used to compute
+the smoothing matrix instead of the one stored in \code{object}.
+}
 
-  \item{show}{\code{signature(object = "NMFns")}: Show
-  method for objects of class \code{NMFns} }
 
-  }
+\item{show}{\code{signature(object = "NMFns")}: Show method for objects of class \code{NMFns}
+}
+
+}
+
 }
 \section{Creating objects from the Class}{
-  Object of class \code{NMFns} can be created using the
-  standard way with operator \code{\link{new}}
 
-  However, as for all NMF model classes -- that extend
-  class \code{\linkS4class{NMF}}, objects of class
-  \code{NMFns} should be created using factory method
-  \code{\link{nmfModel}} :
 
-  \code{new('NMFns')}
+Object of class \code{NMFns} can be created using the standard way with
+operator \code{\link{new}}
 
-  \code{nmfModel(model='NMFns')}
+However, as for all NMF model classes -- that extend class
+\code{\linkS4class{NMF}}, objects of class \code{NMFns} should be
+created using factory method \code{\link{nmfModel}} :
 
-  \code{nmfModel(model='NMFns', W=w, theta=0.3}
+\code{new('NMFns')}
 
-  See \code{\link{nmfModel}} for more details on how to use
-  the factory method.
+\code{nmfModel(model='NMFns')}
+
+\code{nmfModel(model='NMFns', W=w, theta=0.3}
+
+See \code{\link{nmfModel}} for more details on how to use the factory
+method.
 }
 
 \section{Algorithm}{
-  The Nonsmooth NMF algorithm uses a modified version of
-  the multiplicative update equations in Lee & Seung's
-  method for Kullback-Leibler divergence minimization. The
-  update equations are modified to take into account the --
-  constant -- smoothing matrix. The modification reduces to
-  using matrix \eqn{W S} instead of matrix \eqn{W} in the
-  update of matrix \eqn{H}, and similarly using matrix
-  \eqn{S H} instead of matrix \eqn{H} in the update of
-  matrix \eqn{W}.
 
-  After the matrix \eqn{W} has been updated, each of its
-  columns is scaled so that it sums up to 1.
+
+The Nonsmooth NMF algorithm uses a modified version of the multiplicative
+update equations in Lee & Seung's method for Kullback-Leibler divergence
+minimization.
+The update equations are modified to take into account the --
+constant -- smoothing matrix.
+The modification reduces to using matrix \eqn{W S} instead of matrix \eqn{W}
+in the update of matrix \eqn{H}, and similarly using matrix \eqn{S H}
+instead of matrix \eqn{H} in the update of matrix \eqn{W}.
+
+After the matrix \eqn{W} has been updated, each of its columns is scaled so
+that it sums up to 1.
 }
 \examples{
 \dontshow{# roxygen generated flag
@@ -128,9 +131,6 @@ rnmf(3, 10, 5, model='NMFns', theta=0.3)
   Intell_, *28*, pp. 403-415.
 }
 \seealso{
-  Other NMF-model:
-  \code{\link{initialize,NMFOffset-method}},
-  \code{\link{NMFarray-class}},
-  \code{\link{NMFOffset-class}}, \code{\link{NMFstd-class}}
+  Other NMF-model: \code{\link{initialize,NMFOffset-method}}, \code{\link{NMFarray-class}}, \code{\link{NMFOffset-class}}, \code{\link{NMFstd-class}}
 }
 

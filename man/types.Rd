@@ -20,26 +20,23 @@
   isNMFfit(object, recursive = TRUE)
 }
 \arguments{
-  \item{x}{an R object. See section \emph{Details}, for how
-  each function uses this argument.}
+  \item{x}{an R object. See section \emph{Details}, for how each function
+uses this argument.}
 
-  \item{...}{extra parameters to allow extension or passed
-  to subsequent calls}
+  \item{...}{extra parameters to allow extension or passed to subsequent calls}
 
   \item{object}{any R object.}
 
-  \item{recursive}{if \code{TRUE} and \code{object} is a
-  plain list then \code{isNMFfit} tests each element of the
-  list. Note that the recursive test only applies in the
-  case of lists that are not themselves NMFfit objects,
-  like \code{NMFfitXn} objects for which the result of
-  \code{isNMFfit} will always be \code{TRUE}, although they
-  are list objects (a single logical value).}
+  \item{recursive}{if \code{TRUE} and \code{object} is a plain list then
+\code{isNMFfit} tests each element of the list.
+Note that the recursive test only applies in the case of lists that are
+not themselves NMFfit objects, like \code{NMFfitXn} objects for which
+the result of \code{isNMFfit} will always be \code{TRUE}, although they are
+list objects (a single logical value).}
 }
 \value{
-  \code{isNMFfit} returns a \code{logical} vector (or a
-  list if \code{object} is a list of list) of the same
-  length as \code{object}.
+  \code{isNMFfit} returns a \code{logical} vector (or a list if
+\code{object} is a list of list) of the same length as \code{object}.
 }
 \description{
   The functions documented here tests different
@@ -142,8 +139,7 @@ isNMFfit(list(res, list(resm, resM), 'not a result')) # list of list
 isNMFfit(list(res, resm, resM, 'not a result'), recursive=FALSE)
 }
 \seealso{
-  \code{\linkS4class{NMFfit}},
-  \code{\linkS4class{NMFfitX}},
-  \code{\linkS4class{NMFfitXn}}
+  \code{\linkS4class{NMFfit}}, \code{\linkS4class{NMFfitX}},
+\code{\linkS4class{NMFfitXn}}
 }
 

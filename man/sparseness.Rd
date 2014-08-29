@@ -15,8 +15,8 @@
   \item{...}{extra arguments to allow extension}
 }
 \value{
-  usually a single numeric value -- in [0,1], or a numeric
-  vector. See each method for more details.
+  usually a single numeric value -- in [0,1], or a numeric vector.
+See each method for more details.
 }
 \description{
   Generic function that computes the \emph{sparseness} of
@@ -45,28 +45,26 @@
   column vectors.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{sparseness}{\code{signature(x = "numeric")}: Base
-  method that computes the sparseness of a numeric vector.
+\item{sparseness}{\code{signature(x = "numeric")}: Base method that computes the sparseness of a numeric vector.
 
-  It returns a single numeric value, computed following the
-  definition given in section \emph{Description}. }
+It returns a single numeric value, computed following the definition
+given in section \emph{Description}.
+}
 
-  \item{sparseness}{\code{signature(x = "matrix")}:
-  Computes the sparseness of a matrix as the mean
-  sparseness of its column vectors. It returns a single
-  numeric value. }
+\item{sparseness}{\code{signature(x = "matrix")}: Computes the sparseness of a matrix as the mean sparseness of its column vectors.
+It returns a single numeric value.
+}
 
-  \item{sparseness}{\code{signature(x = "NMF")}: Compute
-  the sparseness of an object of class \code{NMF}, as the
-  sparseness of the basis and coefficient matrices computed
-  separately.
+\item{sparseness}{\code{signature(x = "NMF")}: Compute the sparseness of an object of class \code{NMF}, as the sparseness of
+the basis and coefficient matrices computed separately.
 
-  It returns the two values in a numeric vector with names
-  \sQuote{basis} and \sQuote{coef}. }
+It returns the two values in a numeric vector with names \sQuote{basis} and \sQuote{coef}.
+}
 
-  }
+}
+
 }
 \references{
   Hoyer P (2004). "Non-negative matrix factorization with

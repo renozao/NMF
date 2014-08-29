@@ -19,21 +19,19 @@
   consensus(object, ...)
 }
 \arguments{
-  \item{object}{an object with a suitable
-  \code{\link{predict}} method.}
+  \item{object}{an object with a suitable \code{\link{predict}} method.}
 
-  \item{...}{extra arguments to allow extension. They are
-  passed to \code{\link{predict}}, except for the
-  \code{vector} and \code{factor} methods.}
+  \item{...}{extra arguments to allow extension.
+They are passed to \code{\link{predict}}, except for the \code{vector} and
+\code{factor} methods.}
 
-  \item{no.attrib}{a logical that indicates if attributes
-  containing information about the NMF model should be
-  attached to the result (\code{TRUE}) or not
-  (\code{FALSE}).}
+  \item{no.attrib}{a logical that indicates if attributes containing information
+about the NMF model should be attached to the result (\code{TRUE}) or not
+(\code{FALSE}).}
 }
 \value{
-  a square matrix of dimension the number of samples in the
-  model, full of 0s or 1s.
+  a square matrix of dimension the number of samples in the model, full
+of 0s or 1s.
 }
 \description{
   \code{connectivity} is an S4 generic that computes the
@@ -58,55 +56,48 @@
   otherwise}
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{connectivity}{\code{signature(object = "ANY")}:
-  Default method which computes the connectivity matrix
-  using the result of \code{predict(x, ...)} as cluster
-  membership index. }
+\item{connectivity}{\code{signature(object = "ANY")}: Default method which computes the connectivity matrix
+using the result of \code{predict(x, ...)} as cluster membership index.
+}
 
-  \item{connectivity}{\code{signature(object = "factor")}:
-  Computes the connectivity matrix using \code{x} as
-  cluster membership index. }
+\item{connectivity}{\code{signature(object = "factor")}: Computes the connectivity matrix using \code{x} as cluster membership index.
+}
 
-  \item{connectivity}{\code{signature(object = "numeric")}:
-  Equivalent to \code{connectivity(as.factor(x))}. }
+\item{connectivity}{\code{signature(object = "numeric")}: Equivalent to \code{connectivity(as.factor(x))}.
+}
 
-  \item{connectivity}{\code{signature(object = "NMF")}:
-  Computes the connectivity matrix for an NMF model, for
-  which cluster membership is given by the most
-  contributing basis component in each sample. See
-  \code{\link{predict,NMF-method}}. }
+\item{connectivity}{\code{signature(object = "NMF")}: Computes the connectivity matrix for an NMF model, for which cluster
+membership is given by the most contributing basis component in each sample.
+See \code{\link{predict,NMF-method}}.
+}
 
-  \item{consensus}{\code{signature(object = "NMFfitX")}:
-  Pure virtual method defined to ensure \code{consensus} is
-  defined for sub-classes of \code{NMFfitX}. It throws an
-  error if called. }
 
-  \item{consensus}{\code{signature(object = "NMF")}: This
-  method is provided for completeness and is identical to
-  \code{\link{connectivity}}, and returns the connectivity
-  matrix, which, in the case of a single NMF model, is also
-  the consensus matrix. }
+\item{consensus}{\code{signature(object = "NMFfitX")}: Pure virtual method defined to ensure \code{consensus} is defined for sub-classes of \code{NMFfitX}.
+It throws an error if called.
+}
 
-  \item{consensus}{\code{signature(object = "NMFfitX1")}:
-  The result is the matrix stored in slot
-  \sQuote{consensus}. This method returns \code{NULL} if
-  the consensus matrix is empty.
+\item{consensus}{\code{signature(object = "NMF")}: This method is provided for completeness and is identical to
+\code{\link{connectivity}}, and returns the connectivity matrix,
+which, in the case of a single NMF model, is also the consensus matrix.
+}
 
-  See \code{\link{consensus,NMFfitX1-method}} for more
-  details. }
+\item{consensus}{\code{signature(object = "NMFfitX1")}: The result is the matrix stored in slot \sQuote{consensus}.
+This method returns \code{NULL} if the consensus matrix is empty.
 
-  \item{consensus}{\code{signature(object = "NMFfitXn")}:
-  This method returns \code{NULL} on an empty object. The
-  result is a matrix with several attributes attached, that
-  are used by plotting functions such as
-  \code{\link{consensusmap}} to annotate the plots.
+See \code{\link{consensus,NMFfitX1-method}} for more details.
+}
 
-  See \code{\link{consensus,NMFfitXn-method}} for more
-  details. }
+\item{consensus}{\code{signature(object = "NMFfitXn")}: This method returns \code{NULL} on an empty object.
+The result is a matrix with several attributes attached, that are used by
+plotting functions such as \code{\link{consensusmap}} to annotate the plots.
 
-  }
+See \code{\link{consensus,NMFfitXn-method}} for more details.
+}
+
+}
+
 }
 \examples{
 \dontshow{# roxygen generated flag
@@ -118,7 +109,7 @@ options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
 #----------
 # clustering of random data
 h <- hclust(dist(rmatrix(10,20)))
-connectivity(cutree(h, 2))
+connectivity(stats::cutree(h, 2))
 
 #----------
 # connectivity,factor-method

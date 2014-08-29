@@ -7,31 +7,26 @@
 \arguments{
   \item{x}{the coefficient matrix}
 
-  \item{y}{the target matrix to be approximated by \eqn{X
-  K}.}
+  \item{y}{the target matrix to be approximated by \eqn{X K}.}
 
-  \item{verbose}{logical that indicates if log messages
-  should be shown.}
+  \item{verbose}{logical that indicates if log messages should be shown.}
 
-  \item{pseudo}{By default (\code{pseudo=FALSE}) the
-  algorithm uses Gaussian elimination to solve the
-  successive internal linear problems, using the
-  \code{\link{solve}} function.  If \code{pseudo=TRUE} the
-  algorithm uses Moore-Penrose generalized
-  \code{\link[corpcor]{pseudoinverse}} from the
-  \code{corpcor} package instead of \link{solve}.}
+  \item{pseudo}{By default (\code{pseudo=FALSE}) the algorithm uses Gaussian
+elimination to solve the successive internal linear problems, using the
+\code{\link{solve}} function.  If \code{pseudo=TRUE} the algorithm uses
+Moore-Penrose generalized \code{\link[corpcor]{pseudoinverse}} from the
+\code{corpcor} package instead of \link{solve}.}
 
-  \item{eps}{threshold for considering entries as
-  nonnegative. This is an experimental parameter, and it is
-  recommended to leave it at 0.}
+  \item{eps}{threshold for considering entries as nonnegative.
+This is an experimental parameter, and it is recommended to
+leave it at 0.}
 }
 \value{
   A list with the following elements:
 
-  \item{coef}{the fitted coefficient matrix.}
-  \item{Pset}{the set of passive constraints, as a logical
-  matrix of the same size as \code{K} that indicates which
-  element is positive.}
+\item{coef}{the fitted coefficient matrix.}
+\item{Pset}{the set of passive constraints, as a logical matrix of
+the same size as \code{K} that indicates which element is positive.}
 }
 \description{
   This is the workhorse function for the higher-level

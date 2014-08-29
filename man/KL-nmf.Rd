@@ -13,18 +13,17 @@
 \source{
   Original MATLAB files and references can be found at:
 
-  \url{http://www.broadinstitute.org/mpr/publications/projects/NMF/nmf.m}
+\url{http://www.broadinstitute.org/mpr/publications/projects/NMF/nmf.m}
 
-  \url{http://www.broadinstitute.org/publications/broad872}
+\url{http://www.broadinstitute.org/publications/broad872}
 
-  Original license terms:
+Original license terms:
 
-  This software and its documentation are copyright 2004 by
-  the Broad Institute/Massachusetts Institute of
-  Technology. All rights are reserved. This software is
-  supplied without any warranty or guaranteed support
-  whatsoever. Neither the Broad Institute nor MIT can not
-  be responsible for its use, misuse, or functionality.
+This software and its documentation are copyright 2004 by the
+Broad Institute/Massachusetts Institute of Technology. All rights are reserved.
+This software is supplied without any warranty or guaranteed support whatsoever.
+Neither the Broad Institute nor MIT can not be responsible for its use, misuse,
+or functionality.
 }
 \usage{
   nmf_update.brunet_R(i, v, x, eps = .Machine$double.eps,
@@ -56,65 +55,56 @@
 
   \item{v}{target matrix.}
 
-  \item{x}{current NMF model, as an
-  \code{\linkS4class{NMF}} object.}
+  \item{x}{current NMF model, as an \code{\linkS4class{NMF}} object.}
 
-  \item{eps}{small numeric value used to ensure numeric
-  stability, by shifting up entries from zero to this fixed
-  value.}
+  \item{eps}{small numeric value used to ensure numeric stability, by shifting up
+entries from zero to this fixed value.}
 
-  \item{...}{extra arguments. These are generally not used
-  and present only to allow other arguments from the main
-  call to be passed to the initialisation and stopping
-  criterion functions (slots \code{onInit} and \code{Stop}
-  respectively).}
+  \item{...}{extra arguments. These are generally not used and present
+only to allow other arguments from the main call to be passed to the
+initialisation and stopping criterion functions (slots \code{onInit} and
+\code{Stop} respectively).}
 
-  \item{copy}{logical that indicates if the update should
-  be made on the original matrix directly (\code{FALSE}) or
-  on a copy (\code{TRUE} - default). With \code{copy=FALSE}
-  the memory footprint is very small, and some speed-up may
-  be achieved in the case of big matrices. However, greater
-  care should be taken due the side effect. We recommend
-  that only experienced users use \code{copy=TRUE}.}
+  \item{copy}{logical that indicates if the update should be made on the original
+matrix directly (\code{FALSE}) or on a copy (\code{TRUE} - default).
+With \code{copy=FALSE} the memory footprint is very small, and some speed-up may be
+achieved in the case of big matrices.
+However, greater care should be taken due the side effect.
+We recommend that only experienced users use \code{copy=TRUE}.}
 
-  \item{.stop}{specification of a stopping criterion, that
-  is used instead of the one associated to the NMF
-  algorithm. It may be specified as: \itemize{ \item the
-  access key of a registered stopping criterion; \item a
-  single integer that specifies the exact number of
-  iterations to perform, which will be honoured unless a
-  lower value is explicitly passed in argument
-  \code{maxIter}. \item a single numeric value that
-  specifies the stationnarity threshold for the objective
-  function, used in with \code{\link{nmf.stop.stationary}};
-  \item a function with signature
-  \code{(object="NMFStrategy", i="integer", y="matrix",
-  x="NMF", ...)}, where \code{object} is the
-  \code{NMFStrategy} object that describes the algorithm
-  being run, \code{i} is the current iteration, \code{y} is
-  the target matrix and \code{x} is the current value of
-  the NMF model. }}
+  \item{.stop}{specification of a stopping criterion, that is used instead of the
+one associated to the NMF algorithm.
+It may be specified as:
+\itemize{
+\item the access key of a registered stopping criterion;
+\item a single integer that specifies the exact number of iterations to perform, which will
+be honoured unless a lower value is explicitly passed in argument \code{maxIter}.
+\item a single numeric value that specifies the stationnarity threshold for the
+objective function, used in with \code{\link{nmf.stop.stationary}};
+\item a function with signature \code{(object="NMFStrategy", i="integer", y="matrix", x="NMF", ...)},
+where \code{object} is the \code{NMFStrategy} object that describes the algorithm being run,
+\code{i} is the current iteration, \code{y} is the target matrix and \code{x} is the current value of
+the NMF model.
+}}
 
   \item{maxIter}{maximum number of iterations to perform.}
 
-  \item{object}{an object computed using some algorithm, or
-  that describes an algorithm itself.}
+  \item{object}{an object computed using some algorithm, or that describes an algorithm
+itself.}
 
   \item{y}{data object, e.g. a target matrix}
 
-  \item{stopconv}{number of iterations intervals over which
-  the connectivity matrix must not change for stationarity
-  to be achieved.}
+  \item{stopconv}{number of iterations intervals over which the connectivity
+matrix must not change for stationarity to be achieved.}
 
-  \item{check.interval}{interval (in number of iterations)
-  on which the stopping criterion is computed.}
+  \item{check.interval}{interval (in number of iterations) on which the stopping
+criterion is computed.}
 
-  \item{stationary.th}{maximum absolute value of the
-  gradient, for the objective function to be considered
-  stationary.}
+  \item{stationary.th}{maximum absolute value of the gradient, for the objective
+function to be considered stationary.}
 
-  \item{check.niter}{number of successive iteration used to
-  compute the stationnary criterion.}
+  \item{check.niter}{number of successive iteration used to compute the stationnary
+criterion.}
 }
 \description{
   The built-in NMF algorithms described here minimise the
@@ -152,10 +142,9 @@
   update step, i.e. it updates both matrices.
 }
 \author{
-  Original implementation in MATLAB: Jean-Philippe Brunet
-  \email{brunet@broad.mit.edu}
+  Original implementation in MATLAB: Jean-Philippe Brunet \email{brunet@broad.mit.edu}
 
-  Port to R and optimisation in C++: Renaud Gaujoux
+Port to R and optimisation in C++: Renaud Gaujoux
 }
 \references{
   Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).

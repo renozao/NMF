@@ -10,24 +10,25 @@
   rmatrix(x, ...)
 
   \S4method{rmatrix}{numeric}(x, y = NULL, dist = runif,
-    byrow = FALSE, dimnames = NULL, ...)
+    byrow = FALSE, dimnames = NULL, ..., .rng = NULL)
 }
 \arguments{
   \item{x}{object from which to generate a random matrix}
 
   \item{y}{optional specification of number of columns}
 
-  \item{dist}{a random distribution function or a numeric
-  seed (see details of method \code{rmatrix,numeric})}
+  \item{dist}{a random distribution function or a numeric seed (see details of method
+\code{rmatrix,numeric})}
 
-  \item{byrow}{a logical passed in the internal call to the
-  function \code{\link{matrix}}}
+  \item{byrow}{a logical passed in the internal call to the function
+\code{\link{matrix}}}
 
-  \item{dimnames}{\code{NULL} or a \code{list} passed in
-  the internal call to the function \code{\link{matrix}}}
+  \item{dimnames}{\code{NULL} or a \code{list} passed in the internal call to
+the function \code{\link{matrix}}}
 
-  \item{...}{extra arguments passed to the distribution
-  function \code{dist}.}
+  \item{...}{extra arguments passed to the distribution function \code{dist}.}
+
+  \item{.rng}{any RNG seed specification supported by \code{\link[rngtools]{setRNG}}.}
 }
 \description{
   The S4 generic \code{rmatrix} generates a random matrix
@@ -37,56 +38,54 @@
   \code{\link{rnorm}}.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{rmatrix}{\code{signature(x = "numeric")}: Generates
-  a random matrix of given dimensions, whose entries are
-  drawn using the distribution function \code{dist}.
+\item{rmatrix}{\code{signature(x = "numeric")}: Generates a random matrix of given dimensions, whose entries
+are drawn using the distribution function \code{dist}.
 
-  This is the workhorse method that is eventually called by
-  all other methods. It returns a matrix with: \itemize{
-  \item \code{x} rows and \code{y} columns if \code{y} is
-  not missing and not \code{NULL}; \item dimension
-  \code{x[1]} x \code{x[2]} if \code{x} has at least two
-  elements; \item dimension \code{x} (i.e. a square matrix)
-  otherwise. }
+This is the workhorse method that is eventually called by all other methods.
+It returns a matrix with:
+\itemize{
+\item \code{x} rows and \code{y} columns if \code{y} is not missing and
+not \code{NULL};
+\item dimension \code{x[1]} x \code{x[2]} if \code{x} has at least two elements;
+\item dimension \code{x} (i.e. a square matrix) otherwise.
+}
 
-  The default is to draw its entries from the standard
-  uniform distribution using the base function
-  \code{\link{runif}}, but any other function that
-  generates random numeric vectors of a given length may be
-  specified in argument \code{dist}. All arguments in
-  \code{...} are passed to the function specified in
-  \code{dist}.
+The default is to draw its entries from the standard uniform distribution using
+the base function \code{\link{runif}}, but any other function that generates
+random numeric vectors of a given length may be specified in argument \code{dist}.
+All arguments in \code{...} are passed to the function specified in \code{dist}.
 
-  The only requirement is that the function in \code{dist}
-  is of the following form:
+The only requirement is that the function in \code{dist} is of the following form:
 
-  \samp{ function(n, ...){ # return vector of length n ...
-  }}
+\samp{
+function(n, ...){
+# return vector of length n
+...
+}}
 
-  This is the case of all base random draw function such as
-  \code{\link{rnorm}}, \code{\link{rgamma}}, etc\ldots }
+This is the case of all base random draw function such as \code{\link{rnorm}},
+\code{\link{rgamma}}, etc\ldots
+}
 
-  \item{rmatrix}{\code{signature(x = "ANY")}: Default
-  method which calls \code{rmatrix,vector} on the
-  dimensions of \code{x} that is assumed to be returned by
-  a suitable \code{dim} method: it is equivalent to
-  \code{rmatrix(dim(x), y=NULL, ...)}. }
+\item{rmatrix}{\code{signature(x = "ANY")}: Default method which calls \code{rmatrix,vector} on the dimensions of \code{x}
+that is assumed to be returned by a suitable \code{dim} method:
+it is equivalent to \code{rmatrix(dim(x), y=NULL, ...)}.
+}
 
-  \item{rmatrix}{\code{signature(x = "NMF")}: Returns the
-  target matrix estimate of the NMF model \code{x},
-  perturbated by adding a random matrix generated using the
-  default method of \code{rmatrix}: it is a equivalent to
-  \code{fitted(x) + rmatrix(fitted(x), ...)}.
+\item{rmatrix}{\code{signature(x = "NMF")}: Returns the target matrix estimate of the NMF model \code{x}, perturbated by
+adding a random matrix generated using the default method of \code{rmatrix}:
+it is a equivalent to \code{fitted(x) + rmatrix(fitted(x), ...)}.
 
-  This method can be used to generate random target
-  matrices that depart from a known NMF model to a
-  controlled extend. This is useful to test the robustness
-  of NMF algorithms to the presence of certain types of
-  noise in the data. }
+This method can be used to generate random target matrices that depart from
+a known NMF model to a controlled extend.
+This is useful to test the robustness of NMF algorithms to the presence of
+certain types of noise in the data.
+}
 
-  }
+}
+
 }
 \examples{
 \dontshow{# roxygen generated flag

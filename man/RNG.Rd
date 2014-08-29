@@ -33,28 +33,28 @@
   \code{\link[rngtools]{getRNG1}}.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{.getRNG}{\code{signature(object = "NMFfitXn")}:
-  Returns the RNG settings used for the best fit.
+\item{.getRNG}{\code{signature(object = "NMFfitXn")}: Returns the RNG settings used for the best fit.
 
-  This method throws an error if the object is empty. }
+This method throws an error if the object is empty.
+}
 
-  \item{getRNG1}{\code{signature(object = "NMFfitX")}:
-  Returns the RNG settings used for the first NMF run of
-  multiple NMF runs. }
 
-  \item{getRNG1}{\code{signature(object = "NMFfitX1")}:
-  Returns the RNG settings used to compute the first of all
-  NMF runs, amongst which \code{object} was selected as the
-  best fit. }
+\item{getRNG1}{\code{signature(object = "NMFfitX")}: Returns the RNG settings used for the first NMF run of multiple NMF runs.
+}
 
-  \item{getRNG1}{\code{signature(object = "NMFfitXn")}:
-  Returns the RNG settings used for the first run.
+\item{getRNG1}{\code{signature(object = "NMFfitX1")}: Returns the RNG settings used to compute the first of all NMF runs, amongst
+which \code{object} was selected as the best fit.
+}
 
-  This method throws an error if the object is empty. }
+\item{getRNG1}{\code{signature(object = "NMFfitXn")}: Returns the RNG settings used for the first run.
 
-  }
+This method throws an error if the object is empty.
+}
+
+}
+
 }
 \examples{
 \dontshow{# roxygen generated flag

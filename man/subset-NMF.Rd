@@ -6,38 +6,34 @@
   \S4method{[}{NMF}(x, i, j, ..., drop = FALSE)
 }
 \arguments{
-  \item{i}{index used to subset on the \strong{rows} of the
-  basis matrix (i.e. the features). It can be a
-  \code{numeric}, \code{logical}, or \code{character}
-  vector (whose elements must match the row names of
-  \code{x}). In the case of a \code{logical} vector the
-  entries are recycled if necessary.}
+  \item{i}{index used to subset on the \strong{rows} of the basis matrix (i.e.
+the features).
+It can be a \code{numeric}, \code{logical}, or \code{character} vector
+(whose elements must match the row names of \code{x}).
+In the case of a \code{logical} vector the entries are recycled if necessary.}
 
-  \item{j}{index used to subset on the \strong{columns} of
-  the mixture coefficient matrix (i.e. the samples). It can
-  be a \code{numeric}, \code{logical}, or \code{character}
-  vector (whose elements must match the column names of
-  \code{x}). In the case of a \code{logical} vector the
-  entries are recycled if necessary.}
+  \item{j}{index used to subset on the \strong{columns} of the mixture
+coefficient matrix (i.e. the samples).
+It can be a \code{numeric}, \code{logical}, or \code{character} vector
+(whose elements must match the column names of \code{x}).
+In the case of a \code{logical} vector the entries are recycled if necessary.}
 
-  \item{...}{used to specify a third index to subset on the
-  basis components, i.e. on both the columns and rows of
-  the basis matrix and mixture coefficient respectively. It
-  can be a \code{numeric}, \code{logical}, or
-  \code{character} vector (whose elements must match the
-  basis names of \code{x}). In the case of a \code{logical}
-  vector the entries are recycled if necessary.
+  \item{...}{used to specify a third index to subset on the basis components,
+i.e. on both the columns and rows of the basis matrix and mixture
+coefficient respectively.
+It can be a \code{numeric}, \code{logical}, or \code{character} vector
+(whose elements must match the basis names of \code{x}).
+In the case of a \code{logical} vector the entries are recycled if necessary.
 
-  Note that only the first extra subset index is used. A
-  warning is thrown if more than one extra argument is
-  passed in \code{...}.}
+Note that only the first extra subset index is used.
+A warning is thrown if more than one extra argument is passed in \code{...}.}
 
-  \item{drop}{single \code{logical} value used to drop the
-  \code{NMF-class} wrapping and only return subsets of one
-  of the factor matrices (see \emph{Details})}
+  \item{drop}{single \code{logical} value used to drop the \code{NMF-class}
+wrapping and only return subsets of one of the factor matrices (see \emph{Details})}
 
-  \item{x}{ object from which to extract element(s) or in
-  which to replace element(s).  }
+  \item{x}{
+    object from which to extract element(s) or in which to replace element(s).
+  }
 }
 \description{
   This method provides a convenient way of sub-setting

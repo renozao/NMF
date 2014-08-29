@@ -26,54 +26,49 @@
 \arguments{
   \item{object}{The data object to transform}
 
-  \item{...}{extra arguments to allow extension or passed
-  down to \code{nneg,matrix} or \code{rposneg,matrix} in
-  subsequent calls.}
+  \item{...}{extra arguments to allow extension or passed down to \code{nneg,matrix}
+or \code{rposneg,matrix} in subsequent calls.}
 
-  \item{method}{Name of the transformation method to use,
-  that is partially matched against the following possible
-  methods: \describe{ \item{pmax}{Each entry is constrained
-  to be above threshold \code{threshold}.}
+  \item{method}{Name of the transformation method to use, that is partially
+matched against the following possible methods:
+\describe{
+\item{pmax}{Each entry is constrained to be above threshold \code{threshold}.}
 
-  \item{posneg}{The matrix is split into its "positive" and
-  "negative" parts, with the entries of each part
-  constrained to be above threshold \code{threshold}. The
-  result consists in these two parts stacked in rows (i.e.
-  \code{\link{rbind}}-ed) into a single matrix, which has
-  double the number of rows of the input matrix
-  \code{object}.}
+\item{posneg}{The matrix is split into its "positive" and "negative" parts,
+with the entries of each part constrained to be above threshold \code{threshold}.
+The result consists in these two parts stacked in rows (i.e. \code{\link{rbind}}-ed)
+into a single matrix, which has double the number of rows of the input
+matrix \code{object}.}
 
-  \item{absolute}{The absolute value of each entry is
-  constrained to be above threshold \code{threshold}.}
+\item{absolute}{The absolute value of each entry is constrained to be above
+threshold \code{threshold}.}
 
-  \item{min}{Global shift by adding the minimum entry to
-  each entry, only if it is negative, and then apply
-  threshold. }
+\item{min}{Global shift by adding the minimum entry to each entry, only if
+it is negative, and then apply threshold.
+}
 
-  }}
+}}
 
-  \item{threshold}{Nonnegative lower threshold value
-  (single numeric). See argument \code{shit} for details on
-  how the threshold is used and affects the result.}
+  \item{threshold}{Nonnegative lower threshold value (single numeric).
+See argument \code{shit} for details on how the threshold is used and affects
+the result.}
 
-  \item{shift}{a logical indicating whether the entries
-  below the threshold value \code{threshold} should be
-  forced (shifted) to 0 (default) or to the threshold value
-  itself. In other words, if \code{shift=TRUE} (default)
-  all entries in the result matrix are either 0 or strictly
-  greater than \code{threshold}. They are all greater or
-  equal than \code{threshold} otherwise.}
+  \item{shift}{a logical indicating whether the entries below the threshold
+value \code{threshold} should be forced (shifted) to 0 (default) or to
+the threshold value itself.
+In other words, if \code{shift=TRUE} (default) all entries in
+the result matrix are either 0 or strictly greater than \code{threshold}.
+They are all greater or equal than \code{threshold} otherwise.}
 
-  \item{unstack}{Logical indicating whether the positive
-  and negative parts should be unstacked and combined into
-  a matrix as \code{pos - neg}, which contains half the
-  number of rows of \code{object} (default), or left
-  stacked as \code{[pos; -neg]}.}
+  \item{unstack}{Logical indicating whether the positive and negative parts
+should be unstacked and combined into a matrix as \code{pos - neg}, which contains
+half the number of rows of \code{object} (default), or left
+stacked as \code{[pos; -neg]}.}
 }
 \value{
   an object of the same class as argument \code{object}.
 
-  an object of the same type of \code{object}
+an object of the same type of \code{object}
 }
 \description{
   \code{nneg} is a generic function to transform a data
@@ -90,25 +85,25 @@
   the \code{\link{posneg}} function.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{nneg}{\code{signature(object = "matrix")}:
-  Transforms a mixed-sign matrix into a nonnegative matrix,
-  optionally apply a lower threshold. This is the workhorse
-  method, that is eventually called by all other methods
-  defined in the \code{\link{NMF}} package. }
+\item{nneg}{\code{signature(object = "matrix")}: Transforms a mixed-sign matrix into a nonnegative matrix, optionally apply a
+lower threshold.
+This is the workhorse method, that is eventually called by all other
+methods defined in the \code{\link{NMF}} package.
+}
 
-  \item{nneg}{\code{signature(object = "NMF")}: Apply
-  \code{nneg} to the basis matrix of an \code{\link{NMF}}
-  object (i.e. \code{basis(object)}). All extra arguments
-  in \code{...} are passed to the method
-  \code{nneg,matrix}. }
+\item{nneg}{\code{signature(object = "NMF")}: Apply \code{nneg} to the basis matrix of an \code{\link{NMF}}
+object (i.e. \code{basis(object)}).
+All extra arguments in \code{...} are passed to the method \code{nneg,matrix}.
+}
 
-  \item{rposneg}{\code{signature(object = "NMF")}: Apply
-  \code{rposneg} to the basis matrix of an
-  \code{\link{NMF}} object. }
 
-  }
+\item{rposneg}{\code{signature(object = "NMF")}: Apply \code{rposneg} to the basis matrix of an \code{\link{NMF}} object.
+}
+
+}
+
 }
 \examples{
 \dontshow{# roxygen generated flag
@@ -192,7 +187,7 @@ identical(M, M2)
 \seealso{
   \code{\link{pmax}}
 
-  Other transforms: \code{\link{t.NMF}}
+Other transforms: \code{\link{t.NMF}}
 }
 \keyword{methods}
 

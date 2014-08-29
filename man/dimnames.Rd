@@ -20,15 +20,13 @@
   \S4method{dimnames}{NMF}(x)<-value
 }
 \arguments{
-  \item{x}{an object with suitable \code{basis} and
-  \code{coef} methods, such as an object that inherit from
-  \code{\linkS4class{NMF}}.}
+  \item{x}{an object with suitable \code{basis} and \code{coef} methods, such
+as an object that inherit from \code{\linkS4class{NMF}}.}
 
   \item{...}{extra argument to allow extension.}
 
-  \item{value}{a character vector, or \code{NULL} or, in
-  the case of \code{dimnames<-}, a list 2 or 3-length list
-  of character vectors.}
+  \item{value}{a character vector, or \code{NULL} or, in the case of
+\code{dimnames<-}, a list 2 or 3-length list of character vectors.}
 }
 \description{
   The methods \code{dimnames}, \code{rownames},
@@ -70,44 +68,44 @@
   \code{coef<-} methods method defined for its class.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{basisnames}{\code{signature(x = "ANY")}: Default
-  method which returns the column names of the basis matrix
-  extracted from \code{x}, using the \code{basis} method.
+\item{basisnames}{\code{signature(x = "ANY")}: Default method which returns the column names of the basis matrix extracted from
+\code{x}, using the \code{basis} method.
 
-  For NMF objects these also correspond to the row names of
-  the coefficient matrix. }
+For NMF objects these also correspond to the row names of the coefficient matrix.
+}
 
-  \item{basisnames<-}{\code{signature(x = "ANY")}: Default
-  method which sets, respectively, the row and the column
-  names of the basis matrix and coefficient matrix of
-  \code{x} to \code{value}. }
 
-  \item{dimnames}{\code{signature(x = "NMF")}: Returns the
-  dimension names of the NMF model \code{x}.
+\item{basisnames<-}{\code{signature(x = "ANY")}: Default method which sets, respectively, the row and the column names of the basis
+matrix and coefficient matrix of \code{x} to \code{value}.
+}
 
-  It returns either NULL if no dimnames are set on the
-  object, or a 3-length list containing the row names of
-  the basis matrix, the column names of the mixture
-  coefficient matrix, and the column names of the basis
-  matrix (i.e. the names of the basis components). }
 
-  \item{dimnames<-}{\code{signature(x = "NMF")}: sets the
-  dimension names of the NMF model \code{x}.
+\item{dimnames}{\code{signature(x = "NMF")}: Returns the dimension names of the NMF model \code{x}.
 
-  \code{value} can be \code{NULL} which resets all
-  dimension names, or a 1, 2 or 3-length list providing
-  names at least for the rows of the basis matrix.
+It returns either NULL if no dimnames are set on the object,
+or a 3-length list containing the row names of the basis matrix,
+the column names of the mixture coefficient matrix, and the column names of
+the basis matrix (i.e. the names of the basis components).
+}
 
-  The optional second element of \code{value} (NULL if
-  absent) is used to set the column names of the
-  coefficient matrix. The optional third element of
-  \code{value} (NULL if absent) is used to set both the
-  column names of the basis matrix and the row names of the
-  coefficient matrix. }
 
-  }
+\item{dimnames<-}{\code{signature(x = "NMF")}: sets the dimension names of the NMF model \code{x}.
+
+\code{value} can be \code{NULL} which resets all dimension names, or a
+1, 2 or 3-length list providing names at least for the rows of the basis
+matrix.
+
+The optional second element of \code{value} (NULL if absent) is used to set
+the column names of the coefficient matrix.
+The optional third element of \code{value} (NULL if absent) is used to set
+both the column names of the basis matrix and the row names of the
+coefficient matrix.
+}
+
+}
+
 }
 \examples{
 \dontshow{# roxygen generated flag

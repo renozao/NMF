@@ -24,61 +24,64 @@
   been performed.
 }
 \section{Slots}{
-  \describe{
+\describe{
 
-  \item{consensus}{object of class \code{matrix} used to
-  store the consensus matrix based on all the runs.}
+\item{consensus}{object of class \code{matrix} used to store the
+consensus matrix based on all the runs.}
 
-  \item{nrun}{an \code{integer} that contains the number of
-  runs performed to compute the object.}
+\item{nrun}{an \code{integer} that contains the number of runs
+performed to compute the object.}
 
-  \item{rng1}{an object that contains RNG settings used for
-  the first run. See \code{\link{getRNG1}}.}
+\item{rng1}{an object that contains RNG settings used for the first
+run. See \code{\link{getRNG1}}.}
 
-  }
+}
+
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{consensus}{\code{signature(object = "NMFfitX1")}:
-  The result is the matrix stored in slot
-  \sQuote{consensus}. This method returns \code{NULL} if
-  the consensus matrix is empty. }
+\item{consensus}{\code{signature(object = "NMFfitX1")}: The result is the matrix stored in slot \sQuote{consensus}.
+This method returns \code{NULL} if the consensus matrix is empty.
+}
 
-  \item{fit}{\code{signature(object = "NMFfitX1")}: Returns
-  the model object associated with the best fit, amongst
-  all the runs performed when fitting \code{object}.
 
-  Since \code{NMFfitX1} objects only hold the best fit,
-  this method simply returns the NMF model fitted by
-  \code{object} -- that is stored in slot \sQuote{fit}. }
+\item{fit}{\code{signature(object = "NMFfitX1")}: Returns the model object associated with the best fit, amongst all the
+runs performed when fitting \code{object}.
 
-  \item{getRNG1}{\code{signature(object = "NMFfitX1")}:
-  Returns the RNG settings used to compute the first of all
-  NMF runs, amongst which \code{object} was selected as the
-  best fit. }
+Since \code{NMFfitX1} objects only hold the best fit, this method simply
+returns the NMF model fitted by \code{object} -- that is stored in slot
+\sQuote{fit}.
+}
 
-  \item{minfit}{\code{signature(object = "NMFfitX1")}:
-  Returns the fit object associated with the best fit,
-  amongst all the runs performed when fitting
-  \code{object}.
 
-  Since \code{NMFfitX1} objects only hold the best fit,
-  this method simply returns \code{object} coerced into an
-  \code{NMFfit} object. }
+\item{getRNG1}{\code{signature(object = "NMFfitX1")}: Returns the RNG settings used to compute the first of all NMF runs, amongst
+which \code{object} was selected as the best fit.
+}
 
-  \item{nmf.equal}{\code{signature(x = "NMFfitX1", y =
-  "NMFfitX1")}: Compares the NMF models fitted by multiple
-  runs, that only kept the best fits. }
 
-  \item{nrun}{\code{signature(object = "NMFfitX1")}:
-  Returns the number of NMF runs performed, amongst which
-  \code{object} was selected as the best fit. }
+\item{minfit}{\code{signature(object = "NMFfitX1")}: Returns the fit object associated with the best fit, amongst all the
+runs performed when fitting \code{object}.
 
-  \item{show}{\code{signature(object = "NMFfitX1")}: Show
-  method for objects of class \code{NMFfitX1} }
+Since \code{NMFfitX1} objects only hold the best fit, this method simply
+returns \code{object} coerced into an \code{NMFfit} object.
+}
 
-  }
+
+\item{nmf.equal}{\code{signature(x = "NMFfitX1", y = "NMFfitX1")}: Compares the NMF models fitted by multiple runs, that only kept the best fits.
+}
+
+
+\item{nrun}{\code{signature(object = "NMFfitX1")}: Returns the number of NMF runs performed, amongst which \code{object} was
+selected as the best fit.
+}
+
+
+\item{show}{\code{signature(object = "NMFfitX1")}: Show method for objects of class \code{NMFfitX1}
+}
+
+}
+
 }
 \examples{
 \dontshow{# roxygen generated flag
@@ -109,7 +112,6 @@ runtime.all(res)
 \dontrun{ consensusmap(res, annCol=groups) }
 }
 \seealso{
-  Other multipleNMF: \code{\link{NMFfitX-class}},
-  \code{\link{NMFfitXn-class}}
+  Other multipleNMF: \code{\link{NMFfitX-class}}, \code{\link{NMFfitXn-class}}
 }
 

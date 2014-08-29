@@ -8,19 +8,15 @@
 \arguments{
   \item{x}{an NMF object}
 
-  \item{center}{either a numeric normalising vector
-  \eqn{\delta}{delta}, or either \code{'basis'} or
-  \code{'coef'}, which respectively correspond to using the
-  column sums of the basis matrix or the inverse of the row
-  sums of the coefficient matrix as a normalising vector.
-  If numeric, \code{center} should be a single value or a
-  vector of length the rank of the NMF model, i.e. the
-  number of columns in the basis matrix.}
+  \item{center}{either a numeric normalising vector \eqn{\delta}{delta}, or either
+\code{'basis'} or \code{'coef'}, which respectively correspond to using the
+column sums of the basis matrix or the inverse of the row sums of the
+coefficient matrix as a normalising vector.
+If numeric, \code{center} should be a single value or a vector of length the
+rank of the NMF model, i.e. the number of columns in the basis matrix.}
 
-  \item{scale}{scaling coefficient applied to \eqn{D}, i.e.
-  the value of \eqn{\alpha}{alpha}, or, if
-  \code{center='coef'}, the value of
-  \eqn{1/\alpha}{1/alpha} (see section \emph{Details}).}
+  \item{scale}{scaling coefficient applied to \eqn{D}, i.e. the value of \eqn{\alpha}{alpha},
+or, if \code{center='coef'}, the value of \eqn{1/\alpha}{1/alpha} (see section \emph{Details}).}
 }
 \value{
   an NMF object
