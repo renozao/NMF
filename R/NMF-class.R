@@ -1001,26 +1001,46 @@ setReplaceMethod('dimnames', 'NMF',
 		if( !is.list(value) && !is.null(value) )
 			stop("NMF::dimnames - Invalid value: must be a list or NULL.")
 		
+#        str(value)
 		if( length(value) == 0 )
 			value <- NULL
 		else if( length(value) == 1 )
 			value <- c(value, list(NULL, NULL))			
 		else if( length(value) == 2 ) # if only the two first dimensions reset the third one
 			value <- c(value, list(NULL))
-		else if( length(value)!=3 ) # check length of value
+        else if( !is_nmf_array(x) && length(value) != 3 ) # check length of value
 			stop("NMF::dimnames - invalid argument 'value' [a 2 or 3-length list is expected]")
-		
-		# only set relevant dimensions
+        
+        i_b <- c(1, 3)
+        i_c <- c(3, 2)
+        if( is_nmf_array(x) ){
+            if( length(value) == 3 ) # if only the two first dimensions reset the third one
+                value <- c(value, list(NULL))
+            else if( length(value) != 4 ) # check length of value
+			    stop("NMF::dimnames - invalid argument 'value' [a 2, 3 or 4-length list is expected]")
+            
+            if( length(dim(.basis(x))) > 2 ) i_b <- c(i_b, 4)
+            if( length(dim(.coef(x))) > 2 ) i_c <- c(i_c, 4)
+        }
+        
+        # only set relevant dimensions
 		if( length(w <- which(dim(x) == 0)) ){
 			value[w] <- sapply(value[w], function(x) NULL, simplify=FALSE)
 		}
+        
+#       str(value)
 		# set dimnames 
-		dimnames(.basis(x)) <- value[c(1,3)]
-		dimnames(.coef(x)) <- value[c(3,2)]
+		dimnames(.basis(x)) <- value[i_b]
+		dimnames(.coef(x)) <- value[i_c]
 		# return updated model
 		x	
 	}
 )
+
+is_nmf_array <- function(x){
+    length(dim(x)) > 3
+}
+
 
 #' Sub-setting NMF Objects
 #' 

@@ -117,7 +117,7 @@ rnmf(3, 10, 5, model='NMFOffset')
   http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
 }
 \seealso{
-  Other NMF-model: \code{\link{NMFarray-class}}, \code{\link{NMFns-class}}, \code{\link{NMFstd-class}}
+  Other NMF-model: \code{\link{NMFns-class}}, \code{\link{NMFstd-class}}
 }
 \keyword{methods}
 

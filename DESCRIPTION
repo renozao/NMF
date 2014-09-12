@@ -75,7 +75,6 @@ Collate:
     'NMFns-class.R'
     'nmfModel.R'
     'fixed-terms.R'
-    'NMFarray-class.R'
     'NMFfit-class.R'
     'NMFSet-class.R'
     'NMFStrategy-class.R'

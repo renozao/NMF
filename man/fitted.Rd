@@ -2,7 +2,6 @@
 \name{fitted}
 \alias{fitted}
 \alias{fitted-methods}
-\alias{fitted,NMFarray-method}
 \alias{fitted,NMFfit-method}
 \alias{fitted,NMF-method}
 \alias{fitted,NMFns-method}
@@ -12,14 +11,12 @@
 \usage{
   fitted(object, ...)
 
-  \S4method{fitted}{NMFstd}(object, W, H, ...)
+  \S4method{fitted}{NMFstd}(object, W, H)
 
   \S4method{fitted}{NMFOffset}(object, W, H,
     offset = object@offset)
 
   \S4method{fitted}{NMFns}(object, W, H, S, ...)
-
-  \S4method{fitted}{NMFarray}(object, W, H)
 }
 \arguments{
   \item{object}{an object that inherit from class \code{NMF}}
@@ -90,9 +87,6 @@ The estimate is computed as:
 Extra arguments in \code{...} are passed to method \code{smoothing}, and are
 typically used to pass a value for \code{theta}, which is used to compute
 the smoothing matrix instead of the one stored in \code{object}.
-}
-
-\item{fitted}{\code{signature(object = "NMFarray")}: Computes the target matrix estimate for an NMF array model.
 }
 
 \item{fitted}{\code{signature(object = "NMFfit")}: Computes and return the estimated target matrix from an NMF model fitted with

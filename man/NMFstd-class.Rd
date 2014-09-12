@@ -93,9 +93,12 @@ This function returns slot \code{W} of \code{object}.
 }
 
 
-\item{.basis<-}{\code{signature(object = "NMFstd", value = "matrix")}: Set the basis matrix in standard NMF models
+\item{.basis<-}{\code{signature(object = "NMFstd", value = "array")}: Set the basis matrix in standard NMF models
 
 This function sets slot \code{W} of \code{object}.
+}
+
+\item{.basis<-}{\code{signature(object = "NMFstd", value = "matrix")}: Replaces a slice of the basis array.
 }
 
 
@@ -110,9 +113,12 @@ This function returns slot \code{H} of \code{object}.
 }
 
 
-\item{.coef<-}{\code{signature(object = "NMFstd", value = "matrix")}: Set the mixture coefficient matrix in standard NMF models
+\item{.coef<-}{\code{signature(object = "NMFstd", value = "array")}: Set the mixture coefficient matrix in standard NMF models
 
 This function sets slot \code{H} of \code{object}.
+}
+
+\item{.coef<-}{\code{signature(object = "NMFstd", value = "matrix")}: Replaces a slice of the coefficent array.
 }
 
 
@@ -168,6 +174,13 @@ try( nmfModel(w, h) )
 # Giving target dimensions to the factory method allow for coping with dimension
 # incompatibilty (a warning is thrown in such case)
 nmfModel(r, W=w, H=h)
+
+# create a NMF array object based on random (compatible) arrays
+# extra dimension (levels)
+q <- 2
+w <- array(seq(n*r*q), dim = c(n, r, q))
+h <- rmatrix(r, p)
+nmfModel(W = w, H = h)
 }
 \references{
   Lee DD and Seung H (2001). "Algorithms for non-negative
@@ -176,6 +189,6 @@ nmfModel(r, W=w, H=h)
   http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
 }
 \seealso{
-  Other NMF-model: \code{\link{initialize,NMFOffset-method}}, \code{\link{NMFarray-class}}, \code{\link{NMFns-class}}, \code{\link{NMFOffset-class}}
+  Other NMF-model: \code{\link{initialize,NMFOffset-method}}, \code{\link{NMFns-class}}, \code{\link{NMFOffset-class}}
 }
 
