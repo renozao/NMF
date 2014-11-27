@@ -1421,7 +1421,7 @@ cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, s
             if(distfun == "correlation") distfun <- 'pearson'
 			if(distfun %in% corr.methods){ # distance from correlation matrix 
                 if( verbose ) message("Using distance method: correlation (", distfun, ')')
-                d <- dist(1 - cor(t(mat), method = distfun))
+                d <- as.dist(1 - cor(t(mat), method = distfun))
                 attr(d, 'method') <- distfun
                 d 
             }else{
