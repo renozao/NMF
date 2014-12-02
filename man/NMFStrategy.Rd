@@ -71,8 +71,8 @@ itself.}
 e.g. a non-empty NMF model.}
 }
 \description{
-  Creates NMFStrategy objects that wraps implementation of
-  NMF algorithms into a unified interface.
+  Creates NMFStrategy objects that wraps implementation of NMF algorithms into
+a unified interface.
 }
 \section{Methods}{
 \describe{

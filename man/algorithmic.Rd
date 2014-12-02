@@ -111,70 +111,58 @@ itself.}
 e.g. a non-empty NMF model.}
 }
 \description{
-  The functions documented here are S4 generics that define
-  an general interface for -- optimisation -- algorithms.
+  The functions documented here are S4 generics that define an general interface for
+-- optimisation -- algorithms.
 
-  This interface builds upon the broad definition of an
-  algorithm as a workhorse function to which is associated
-  auxiliary objects such as an underlying model or an
-  objective function that measures the adequation of the
-  model with observed data. It aims at complementing the
-  interface provided by the \code{\link{stats}} package.
+This interface builds upon the broad definition of an algorithm as a workhorse function
+to which is associated auxiliary objects such as an underlying model or an objective function
+that measures the adequation of the model with observed data.
+It aims at complementing the interface provided by the \code{\link{stats}} package.
 }
 \details{
-  \code{algorithm} and \code{algorithm<-} get/set an object
-  that describes the algorithm used to compute another
-  object, or with which it is associated. It may be a
-  simple character string that gives the algorithm's names,
-  or an object that includes the algorithm's definition
-  itself (e.g. an \code{\link{NMFStrategy}} object).
+  \code{algorithm} and \code{algorithm<-} get/set an object that describes the
+algorithm used to compute another object, or with which it is associated.
+It may be a simple character string that gives the algorithm's names, or an object that
+includes the algorithm's definition itself (e.g. an \code{\link{NMFStrategy}} object).
 
-  \code{seeding} get/set the seeding method used to
-  initialise the computation of an object, i.e. usually the
-  function that sets the starting point of an algorithm.
+\code{seeding} get/set the seeding method used to initialise the computation of an object,
+i.e. usually the function that sets the starting point of an algorithm.
 
-  \code{niter} and \code{niter<-} get/set the number of
-  iterations performed to compute an object. The function
-  \code{niter<-} would usually be called just before
-  returning the result of an algorithm, when putting
-  together data about the fit.
+\code{niter} and \code{niter<-} get/set the number of iterations performed
+to compute an object.
+The function \code{niter<-} would usually be called just before returning the result
+of an algorithm, when putting together data about the fit.
 
-  \code{nrun} returns the number of times the algorithm has
-  been run to compute an object. Usually this will be 1,
-  but may be be more if the algorithm involves multiple
-  starting points.
+\code{nrun} returns the number of times the algorithm has been run to compute
+an object.
+Usually this will be 1, but may be be more if the algorithm involves multiple
+starting points.
 
-  \code{objective} and \code{objective<-} get/set the
-  objective function associated with an object. Some
-  methods for \code{objective} may also compute the
-  objective value with respect to some target/observed
-  data.
+\code{objective} and \code{objective<-} get/set the objective function associated
+with an object.
+Some methods for \code{objective} may also compute the objective value with respect to
+some target/observed data.
 
-  \code{runtime} returns the CPU time required to compute
-  an object. This would generally be an object of class
-  \code{\link[=proc.time]{proc_time}}.
+\code{runtime} returns the CPU time required to compute an object.
+This would generally be an object of class \code{\link[=proc.time]{proc_time}}.
 
-  \code{runtime.all} returns the CPU time required to
-  compute a collection of objects, e.g. a sequence of
-  independent fits.
+\code{runtime.all} returns the CPU time required to compute a collection of
+objects, e.g. a sequence of independent fits.
 
-  \code{seqtime} returns the sequential CPU time -- that
-  would be -- required to compute a collection of objects.
-  It would differ from \code{runtime.all} if the
-  computations were performed in parallel.
+\code{seqtime} returns the sequential CPU time -- that would be -- required
+to compute a collection of objects.
+It would differ from \code{runtime.all} if the computations were performed
+in parallel.
 
-  \code{modelname} returns a the type of model associated
-  with an object.
+\code{modelname} returns a the type of model associated with an object.
 
-  \code{run} calls the workhorse function that actually
-  implements a strategy/algorithm, and run it on some data
-  object.
+\code{run} calls the workhorse function that actually implements a strategy/algorithm,
+and run it on some data object.
 
-  \code{logs} returns the log messages output during the
-  computation of an object.
+\code{logs} returns the log messages output during the computation of an
+object.
 
-  \code{compare} compares objects obtained from running
-  separate algorithms.
+\code{compare} compares objects obtained from running separate algorithms.
 }
 \section{Methods}{
 \describe{

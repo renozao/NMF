@@ -53,9 +53,9 @@ the second a given value or a range of values (as a 2-length vector) to be force
 
   \item{breaks}{a sequence of numbers that covers the range of values in \code{x} and is one
 element longer than color vector. Used for mapping values to colors. Useful, if needed
-to map certain values to certain colors. If value is NA then the
+to map certain values to certain colors. If NA then the
 breaks are calculated automatically. If \code{breaks} is a single value,
-then the colour palette is centered on this value.}
+then the colour palette is forced to be centered on this value.}
 
   \item{border_color}{color of cell borders on heatmap, use NA if no border should be
 drawn.}
@@ -254,29 +254,27 @@ purposes.}
 \code{\link{grid.text}}, see \code{\link{gpar}}.}
 }
 \description{
-  The function \code{aheatmap} plots high-quality heatmaps,
-  with a detailed legend and unlimited annotation tracks
-  for both columns and rows. The annotations are coloured
-  differently according to their type (factor or numeric
-  covariate). Although it uses grid graphics, the generated
-  plot is compatible with base layouts such as the ones
-  defined with \code{'mfrow'} or \code{\link{layout}},
-  enabling the easy drawing of multiple heatmaps on a
-  single a plot -- at last!.
+  The function \code{aheatmap} plots high-quality heatmaps, with a detailed legend
+and unlimited annotation tracks for both columns and rows.
+The annotations are coloured differently according to their type
+(factor or numeric covariate).
+Although it uses grid graphics, the generated plot is compatible with base
+layouts such as the ones defined with \code{'mfrow'} or \code{\link{layout}},
+enabling the easy drawing of multiple heatmaps on a single a plot -- at last!.
 }
 \details{
-  The development of this function started as a fork of the
-  function \code{pheatmap} from the \pkg{pheatmap} package,
-  and provides several enhancements such as: \itemize{
-  \item argument names match those used in the base
-  function \code{\link{heatmap}}; \item unlimited number of
-  annotation for \strong{both} columns and rows, with
-  simplified and more flexible interface; \item easy
-  specification of clustering methods and colors; \item
-  return clustering data, as well as grid grob object. }
+  The development of this function started as a fork of the function
+\code{pheatmap} from the \pkg{pheatmap} package, and provides
+several enhancements such as:
+\itemize{
+\item argument names match those used in the base function \code{\link{heatmap}};
+\item unlimited number of annotation for \strong{both} columns and rows,
+with simplified and more flexible interface;
+\item easy specification of clustering methods and colors;
+\item return clustering data, as well as grid grob object.
+}
 
-  Please read the associated vignette for more information
-  and sample code.
+Please read the associated vignette for more information and sample code.
 }
 \section{PDF graphic devices}{
  if plotting on a PDF graphic device -- started with \code{\link{pdf}},

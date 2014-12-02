@@ -35,11 +35,10 @@ bar is to be used by multiple processes.}
     the console: \code{\link{stderr}()} might be useful here.}
 }
 \description{
-  Creates a simple progress bar with title. This function
-  is identical to \code{utils::txtProgressBar} but allow
-  adding a title to the progress bar, and can be shared by
-  multiple processes, e.g., in multicore or multi-hosts
-  computations.
+  Creates a simple progress bar with title.
+This function is identical to \code{utils::txtProgressBar} but allow adding
+a title to the progress bar, and can be shared by multiple processes,
+e.g., in multicore or multi-hosts computations.
 }
 \author{
   R Core Team

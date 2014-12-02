@@ -25,17 +25,15 @@
 or not.}
 }
 \description{
-  These functions modify objects (mainly matrix objects) in
-  place, i.e. they act directly on the C pointer. Due to
-  their side-effect, they are not meant to be called by the
-  end-user.
+  These functions modify objects (mainly matrix objects) in place, i.e. they
+act directly on the C pointer.
+Due to their side-effect, they are not meant to be called by the end-user.
 
-  \code{neq.constraints.inplace} apply unequality
-  constraints in place.
+\code{neq.constraints.inplace} apply unequality constraints in place.
 }
 \details{
-  \code{pmax.inplace} is a version of \code{\link{pmax}}
-  that updates its first argument.
+  \code{pmax.inplace} is a version of \code{\link{pmax}} that updates its first
+argument.
 }
 \keyword{internal}
 

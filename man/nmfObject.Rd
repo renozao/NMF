@@ -11,15 +11,13 @@
   \item{verbose}{logical to toggle verbose messages.}
 }
 \description{
-  This function serves to update an objects created with
-  previous versions of the NMF package, which would
-  otherwise be incompatible with the current version, due
-  to changes in their S4 class definition.
+  This function serves to update an objects created with previous versions of the
+NMF package, which would otherwise be incompatible with the current version,
+due to changes in their S4 class definition.
 }
 \details{
-  This function makes use of heuristics to automatically
-  update object slots, which have been borrowed from the
-  BiocGenerics package, the function
-  \code{updateObjectFromSlots} in particular.
+  This function makes use of heuristics to automatically update object slots,
+which have been borrowed from the BiocGenerics package, the function
+\code{updateObjectFromSlots} in particular.
 }
 

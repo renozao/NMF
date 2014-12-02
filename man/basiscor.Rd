@@ -29,19 +29,17 @@ If missing the correlations are computed between \code{x} and \code{y=x}.}
   \item{...}{extra arguments passed to \code{\link{cor}}.}
 }
 \description{
-  \code{basiscor} computes the correlation matrix between
-  basis vectors, i.e. the \emph{columns} of its basis
-  matrix -- which is the model's first matrix factor.
+  \code{basiscor} computes the correlation matrix between basis vectors, i.e.
+the \emph{columns} of its basis matrix -- which is the model's first matrix factor.
 
-  \code{profcor} computes the correlation matrix between
-  basis profiles, i.e. the \emph{rows} of the coefficient
-  matrix -- which is the model's second matrix factor.
+\code{profcor} computes the correlation matrix between basis profiles,
+i.e. the \emph{rows} of the coefficient matrix -- which is the model's second
+matrix factor.
 }
 \details{
-  Each generic has methods defined for computing
-  correlations between NMF models and/or compatible
-  matrices. The computation is performed by the base
-  function \code{\link{cor}}.
+  Each generic has methods defined for computing correlations between NMF models
+and/or compatible matrices.
+The computation is performed by the base function \code{\link{cor}}.
 }
 \section{Methods}{
 \describe{

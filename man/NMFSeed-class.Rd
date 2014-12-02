@@ -3,10 +3,9 @@
 \alias{NMFSeed-class}
 \title{Base class that defines the interface for NMF seeding methods.}
 \description{
-  This class implements a simple wrapper strategy object
-  that defines a unified interface to seeding methods, that
-  are used to initialise NMF models before fitting them
-  with any NMF algorithm.
+  This class implements a simple wrapper strategy object that defines a unified
+interface to seeding methods, that are used to initialise NMF models before
+fitting them with any NMF algorithm.
 }
 \section{Slots}{
 \describe{

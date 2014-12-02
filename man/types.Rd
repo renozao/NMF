@@ -39,56 +39,46 @@ list objects (a single logical value).}
 \code{object} is a list of list) of the same length as \code{object}.
 }
 \description{
-  The functions documented here tests different
-  characteristics of NMF objects.
+  The functions documented here tests different characteristics of NMF objects.
 
-  \code{is.nmf} tests if an object is an NMF model or a
-  class that extends the class NMF.
+\code{is.nmf} tests if an object is an NMF model or a class that extends
+the class NMF.
 
-  \code{hasBasis} tests whether an objects contains a basis
-  matrix -- returned by a suitable method \code{basis} --
-  with at least one row.
+\code{hasBasis} tests whether an objects contains a basis matrix -- returned by
+a suitable method \code{basis} -- with at least one row.
 
-  \code{hasBasis} tests whether an objects contains a
-  coefficient matrix -- returned by a suitable method
-  \code{coef} -- with at least one column.
+\code{hasBasis} tests whether an objects contains a coefficient matrix
+-- returned by a suitable method \code{coef} -- with at least one column.
 
-  \code{is.partial.nmf} tests whether an NMF model object
-  contains either an empty basis or coefficient matrix. It
-  is a shorcut for \code{!hasCoef(x) || !hasBasis(x)}.
+\code{is.partial.nmf} tests whether an NMF model object contains either an empty
+basis or coefficient matrix.
+It is a shorcut for \code{!hasCoef(x) || !hasBasis(x)}.
 }
 \details{
-  \code{is.nmf} tests if \code{object} is the name of a
-  class (if a \code{character} string), or inherits from a
-  class, that extends \code{\linkS4class{NMF}}.
+  \code{is.nmf} tests if \code{object} is the name of a class (if a \code{character}
+string), or inherits from a class, that extends \code{\linkS4class{NMF}}.
 
-  \code{is.empty.nmf} returns \code{TRUE} if the basis and
-  coefficient matrices of \code{x} have respectively zero
-  rows and zero columns. It returns \code{FALSE} otherwise.
+\code{is.empty.nmf} returns \code{TRUE} if the basis and coefficient matrices of
+\code{x} have respectively zero rows and zero columns.
+It returns \code{FALSE} otherwise.
 
-  In particular, this means that an empty model can still
-  have a non-zero number of basis components, i.e. a
-  factorization rank that is not null. This happens, for
-  example, in the case of NMF models created calling the
-  factory method \code{\link{nmfModel}} with a value only
-  for the factorization rank.
+In particular, this means that an empty model can still have a non-zero number
+of basis components, i.e. a factorization rank that is not null.
+This happens, for example, in the case of NMF models created calling the factory method
+\code{\link{nmfModel}} with a value only for the factorization rank.
 
-  \emph{isNMFfit} checks if \code{object} inherits from
-  class \code{\linkS4class{NMFfit}} or
-  \code{\linkS4class{NMFfitX}}, which are the two types of
-  objects returned by the function \code{\link{nmf}}. If
-  \code{object} is a plain \code{list} and
-  \code{recursive=TRUE}, then the test is performed on each
-  element of the list, and the return value is a logical
-  vector (or a list if \code{object} is a list of list) of
-  the same length as \code{object}.
+\emph{isNMFfit} checks if \code{object} inherits from class
+\code{\linkS4class{NMFfit}} or \code{\linkS4class{NMFfitX}}, which are
+the two types of objects returned by the function \code{\link{nmf}}.
+If \code{object} is a plain \code{list} and \code{recursive=TRUE}, then
+the test is performed on each element of the list, and the return value
+is a logical vector (or a list if \code{object} is a list of list) of
+the same length as \code{object}.
 }
 \note{
-  The function \code{is.nmf} does some extra work with the
-  namespace as this function needs to return correct
-  results even when called in \code{.onLoad}. See
-  discussion on r-devel:
-  \url{https://stat.ethz.ch/pipermail/r-devel/2011-June/061357.html}
+  The function \code{is.nmf} does some extra work with the namespace as
+this function needs to return correct results even when called in \code{.onLoad}.
+See discussion on r-devel: \url{https://stat.ethz.ch/pipermail/r-devel/2011-June/061357.html}
 }
 \examples{
 \dontshow{# roxygen generated flag

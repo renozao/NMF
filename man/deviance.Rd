@@ -44,13 +44,12 @@ that effectively computes the deviance.}
 an NMF model and a matrix.
 }
 \description{
-  The NMF package defines methods for the generic
-  \code{deviance} from the package \code{stats}, to compute
-  approximation errors between NMF models and matrices,
-  using a variety of objective functions.
+  The NMF package defines methods for the generic \code{deviance} from the package \code{stats},
+to compute approximation errors between NMF models and matrices, using a variety of
+objective functions.
 
-  \code{nmfDistance} returns a function that computes the
-  distance between an NMF model and a compatible matrix.
+\code{nmfDistance} returns a function that computes the distance between an NMF model and a
+compatible matrix.
 }
 \section{Methods}{
 \describe{

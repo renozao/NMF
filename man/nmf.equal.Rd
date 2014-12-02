@@ -42,25 +42,20 @@ all fits must be equal for \code{x} and \code{y} to be declared equal, or
 if one wants to return the result of each comparison in a vector.}
 }
 \description{
-  The function \code{nmf.equal} tests if two NMF models are
-  the same, i.e. they contain -- almost -- identical data:
-  same basis and coefficient matrices, as well as same
-  extra parameters.
+  The function \code{nmf.equal} tests if two NMF models are the same, i.e. they
+contain -- almost -- identical data: same basis and coefficient matrices, as
+well as same extra parameters.
 }
 \details{
-  \code{nmf.equal} compares two NMF models, and return
-  \code{TRUE} iff they are identical acording to the
-  function \code{\link{identical}} when
-  \code{identical=TRUE}, or equal up to some tolerance
-  acording to the function \code{\link{all.equal}}. This
-  means that all data contained in the objects are
-  compared, which includes at least the basis and
-  coefficient matrices, as well as the extra parameters
-  stored in slot \sQuote{misc}.
+  \code{nmf.equal} compares two NMF models, and return \code{TRUE} iff they are
+identical acording to the function \code{\link{identical}} when \code{identical=TRUE},
+or equal up to some tolerance acording to the function \code{\link{all.equal}}.
+This means that all data contained in the objects are compared, which includes
+at least the basis and coefficient matrices, as well as the extra parameters
+stored in slot \sQuote{misc}.
 
-  If extra arguments are specified in \code{...}, then the
-  comparison is performed using \code{\link{all.equal}},
-  irrespective of the value of argument \code{identical}.
+If extra arguments are specified in \code{...}, then the comparison is performed
+using \code{\link{all.equal}}, irrespective of the value of argument \code{identical}.
 }
 \section{Methods}{
 \describe{

@@ -42,16 +42,15 @@ All arguments in \code{...} are passed to teh seeding strategy.}
   an \code{\linkS4class{NMFfit}} object.
 }
 \description{
-  The function \code{seed} provides a single interface for
-  calling all seeding methods used to initialise NMF
-  computations. These methods at least set the basis and
-  coefficient matrices of the initial \code{object} to
-  valid nonnegative matrices. They will be used as a
-  starting point by any NMF algorithm that accept
-  initialisation.
+  The function \code{seed} provides a single interface for calling all seeding
+methods used to initialise NMF computations.
+These methods at least set the basis and coefficient matrices of the initial
+\code{object} to valid nonnegative matrices.
+They will be used as a starting point by any NMF algorithm that accept
+initialisation.
 
-  IMPORTANT: this interface is still considered
-  experimental and is subject to changes in future release.
+IMPORTANT: this interface is still considered experimental and is subject
+to changes in future release.
 }
 \section{Methods}{
 \describe{

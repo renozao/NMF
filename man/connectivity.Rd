@@ -34,26 +34,25 @@ about the NMF model should be attached to the result (\code{TRUE}) or not
 of 0s or 1s.
 }
 \description{
-  \code{connectivity} is an S4 generic that computes the
-  connectivity matrix based on the clustering of samples
-  obtained from a model's \code{\link{predict}} method.
+  \code{connectivity} is an S4 generic that computes the connectivity matrix
+based on the clustering of samples obtained from a model's \code{\link{predict}}
+method.
 
-  The consensus matrix has been proposed by \cite{Brunet et
-  al. (2004)} to help visualising and measuring the
-  stability of the clusters obtained by NMF approaches. For
-  objects of class \code{NMF} (e.g. results of a single NMF
-  run, or NMF models), the consensus matrix reduces to the
-  connectivity matrix.
+The consensus matrix has been proposed by \cite{Brunet et al. (2004)} to help
+visualising and measuring the stability of the clusters obtained by
+NMF approaches.
+For objects of class \code{NMF} (e.g. results of a single NMF run, or NMF
+models), the consensus matrix reduces to the connectivity matrix.
 }
 \details{
-  The connectivity matrix of a given partition of a set of
-  samples (e.g. given as a cluster membership index) is the
-  matrix \eqn{C} containing only 0 or 1 entries such that:
-  \deqn{C_{ij} = \left\{\begin{array}{l} 1\mbox{ if sample
-  }i\mbox{ belongs to the same cluster as sample }j\\
-  0\mbox{ otherwise} \end{array}\right..}{ C_{ij} = 1 if
-  sample i belongs to the same cluster as sample j, 0
-  otherwise}
+  The connectivity matrix of a given partition of a set of samples (e.g. given
+as  a cluster membership index) is the matrix \eqn{C} containing only 0 or 1
+entries such that:
+\deqn{C_{ij} = \left\{\begin{array}{l}
+1\mbox{ if sample }i\mbox{ belongs to the same cluster as sample }j\\
+0\mbox{ otherwise}
+\end{array}\right..}{
+C_{ij} = 1 if sample i belongs to the same cluster as sample j, 0 otherwise}
 }
 \section{Methods}{
 \describe{
@@ -117,13 +116,9 @@ connectivity(stats::cutree(h, 2))
 connectivity(gl(2, 4))
 }
 \references{
-  Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).
-  "Metagenes and molecular pattern discovery using matrix
-  factorization." _Proceedings of the National Academy of
-  Sciences of the United States of America_, *101*(12), pp.
-  4164-9. ISSN 0027-8424, <URL:
-  http://dx.doi.org/10.1073/pnas.0308531101>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/15016911>.
+  Brunet J, Tamayo P, Golub TR and Mesirov JP (2004). "Metagenes and molecular pattern discovery using matrix factorization."
+_Proceedings of the National Academy of Sciences of the United States of America_, *101*(12), pp. 4164-9. ISSN 0027-8424,
+<URL: http://dx.doi.org/10.1073/pnas.0308531101>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/15016911>.
 }
 \seealso{
   \code{\link{predict}}

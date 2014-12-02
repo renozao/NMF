@@ -57,10 +57,10 @@ In particular, methods \code{\link{coef}} and \code{\link{basis}} will work as e
 and return the true underlying coefficient and basis matrices respectively.
 }
 \description{
-  The function \code{syntheticNMF} generates random target
-  matrices that follow some defined NMF model, and may be
-  used to test NMF algorithms. It is designed to designed
-  to produce data with known or clear classes of samples.
+  The function \code{syntheticNMF} generates random target matrices that follow
+some defined NMF model, and may be used to test NMF algorithms.
+It is designed to designed to produce data with known or clear classes of
+samples.
 }
 \examples{
 \dontshow{# roxygen generated flag

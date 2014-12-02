@@ -29,43 +29,36 @@ as an object that inherit from \code{\linkS4class{NMF}}.}
 \code{dimnames<-}, a list 2 or 3-length list of character vectors.}
 }
 \description{
-  The methods \code{dimnames}, \code{rownames},
-  \code{colnames} and \code{basisnames} and their
-  respective replacement form allow to get and set the
-  dimension names of the matrix factors in a NMF model.
+  The methods \code{dimnames}, \code{rownames}, \code{colnames} and
+\code{basisnames} and their respective replacement form allow to get and set
+the dimension names of the matrix factors in a NMF model.
 
-  \code{dimnames} returns all the dimension names in a
-  single list. Its replacement form \code{dimnames<-}
-  allows to set all dimension names at once.
+\code{dimnames} returns all the dimension names in a single list.
+Its replacement form \code{dimnames<-} allows to set all dimension names at once.
 
-  \code{rownames}, \code{colnames} and \code{basisnames}
-  provide separate access to each of these dimension names
-  respectively. Their respective replacement form allow to
-  set each dimension names separately.
+\code{rownames}, \code{colnames} and \code{basisnames} provide separate access
+to each of these dimension names respectively.
+Their respective replacement form allow to set each dimension names separately.
 }
 \details{
-  The function \code{basisnames} is a new S4 generic
-  defined in the package NMF, that returns the names of the
-  basis components of an object. Its default method should
-  work for any object, that has a suitable \code{basis}
-  method defined for its class.
+  The function \code{basisnames} is a new S4 generic defined in the package NMF,
+that returns the names of the basis components of an object.
+Its default method should work for any object, that has a suitable \code{basis}
+method defined for its class.
 
-  The method \code{dimnames} is implemented for the base
-  generic \code{\link{dimnames}}, which make the base
-  function \code{\link{rownames}} and
-  \code{\link{colnames}} work directly.
+The method \code{dimnames} is implemented for the base generic \code{\link{dimnames}},
+which make the base function \code{\link{rownames}} and \code{\link{colnames}}
+work directly.
 
-  Overall, these methods behave as their equivalent on
-  \code{matrix} objects. The function \code{basisnames<-}
-  ensures that the dimension names are handled in a
-  consistent way on both factors, enforcing the names on
-  both matrix factors simultaneously.
+Overall, these methods behave as their equivalent on \code{matrix} objects.
+The function \code{basisnames<-} ensures that the dimension names are handled
+in a consistent way on both factors, enforcing the names on both matrix factors
+simultaneously.
 
-  The function \code{basisnames<-} is a new S4 generic
-  defined in the package NMF, that sets the names of the
-  basis components of an object. Its default method should
-  work for any object, that has suitable \code{basis<-} and
-  \code{coef<-} methods method defined for its class.
+The function \code{basisnames<-} is a new S4 generic defined in the package NMF,
+that sets the names of the basis components of an object.
+Its default method should work for any object, that has suitable \code{basis<-}
+and \code{coef<-} methods method defined for its class.
 }
 \section{Methods}{
 \describe{

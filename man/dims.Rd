@@ -27,32 +27,27 @@ e.g. \code{c(2000, 30, 3)} for an \code{NMF} model that fits a 2000 x 30
 matrix using 3 basis components.
 }
 \description{
-  The methods \code{dim}, \code{nrow}, \code{ncol} and
-  \code{nbasis} return the different dimensions associated
-  with an NMF model.
+  The methods \code{dim}, \code{nrow}, \code{ncol} and \code{nbasis} return
+the different dimensions associated with an NMF model.
 
-  \code{dim} returns all dimensions in a length-3 integer
-  vector: the number of row and columns of the estimated
-  target matrix, as well as the factorization rank (i.e.
-  the number of basis components).
+\code{dim} returns all dimensions in a length-3 integer vector:
+the number of row and columns of the estimated target matrix,
+as well as the factorization rank (i.e. the number of basis components).
 
-  \code{nrow}, \code{ncol} and \code{nbasis} provide
-  separate access to each of these dimensions respectively.
+\code{nrow}, \code{ncol} and \code{nbasis} provide separate access to each
+of these dimensions respectively.
 }
 \details{
-  The NMF package does not implement specific functions
-  \code{nrow} and \code{ncol}, but rather the S4 method
-  \code{dim} for objects of class \code{\linkS4class{NMF}}.
-  This allows the base methods \code{\link{nrow}} and
-  \code{\link{ncol}} to directly work with such objects, to
-  get the number of rows and columns of the target matrix
-  estimated by an NMF model.
+  The NMF package does not implement specific functions \code{nrow} and \code{ncol},
+but rather the S4 method \code{dim} for objects of class \code{\linkS4class{NMF}}.
+This allows the base methods \code{\link{nrow}} and \code{\link{ncol}} to
+directly work with such objects, to get the number of rows and columns of
+the target matrix estimated by an NMF model.
 
-  The function \code{nbasis} is a new S4 generic defined in
-  the package NMF, that returns the number of basis
-  components of an object. Its default method should work
-  for any object, that has a suitable \code{basis} method
-  defined for its class.
+The function \code{nbasis} is a new S4 generic defined in the package NMF, that
+returns the number of basis components of an object.
+Its default method should work for any object, that has a suitable
+\code{basis} method defined for its class.
 }
 \section{Methods}{
 \describe{

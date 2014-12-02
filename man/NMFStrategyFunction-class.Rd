@@ -3,9 +3,8 @@
 \alias{NMFStrategyFunction-class}
 \title{Interface for Single Function NMF Strategies}
 \description{
-  This class implements the virtual interface
-  \code{\link{NMFStrategy}} for NMF algorithms that are
-  implemented by a single workhorse R function.
+  This class implements the virtual interface \code{\link{NMFStrategy}} for
+NMF algorithms that are implemented by a single workhorse R function.
 }
 \section{Slots}{
 \describe{

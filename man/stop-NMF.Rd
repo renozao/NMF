@@ -67,63 +67,52 @@ that returns \code{TRUE} if the stopping criterion is satisfied -- which in
 turn stops the iterative process, and \code{FALSE} otherwise.
 }
 \description{
-  The function documented here implement
-  stopping/convergence criteria commonly used in NMF
-  algorithms.
+  The function documented here implement stopping/convergence criteria
+commonly used in NMF algorithms.
 
-  \code{NMFStop} acts as a factory method that creates
-  stopping criterion functions from different types of
-  values, which are subsequently used by
-  \code{\linkS4class{NMFStrategyIterative}} objects to
-  determine when to stop their iterative process.
+\code{NMFStop} acts as a factory method that creates stopping criterion functions
+from different types of values, which are subsequently used by
+\code{\linkS4class{NMFStrategyIterative}} objects to determine when to stop their
+iterative process.
 
-  \code{nmf.stop.iteration} generates a function that
-  implements the stopping criterion that limits the number
-  of iterations to a maximum of \code{n}), i.e. that
-  returns \code{TRUE} if \code{i>=n}, \code{FALSE}
-  otherwise.
+\code{nmf.stop.iteration} generates a function that implements the stopping
+criterion that limits the number of iterations to a maximum of \code{n}),
+i.e. that returns \code{TRUE} if \code{i>=n}, \code{FALSE} otherwise.
 
-  \code{nmf.stop.threshold} generates a function that
-  implements the stopping criterion that stops when a given
-  stationarity threshold is achieved by successive
-  iterations. The returned function is identical to
-  \code{nmf.stop.stationary}, but with the default
-  threshold set to \code{threshold}.
+\code{nmf.stop.threshold} generates a function that implements the stopping
+criterion that stops when a given stationarity threshold is achieved by
+successive iterations.
+The returned function is identical to \code{nmf.stop.stationary}, but with
+the default threshold set to \code{threshold}.
 
-  More precisely, the objective function is computed over
-  \eqn{n} successive iterations (specified in argument
-  \code{check.niter}), every \code{check.interval}
-  iterations. The criterion stops when the absolute
-  difference between the maximum and the minimum objective
-  values over these iterations is lower than a given
-  threshold \eqn{\alpha} (specified in
-  \code{stationary.th}):
+More precisely, the objective function is computed over \eqn{n} successive iterations (specified
+in argument \code{check.niter}), every \code{check.interval} iterations.
+The criterion stops when the absolute difference between the maximum and the minimum
+objective values over these iterations is lower than a given threshold \eqn{\alpha}
+(specified in \code{stationary.th}):
 
-  \code{nmf.stop.connectivity} implements the stopping
-  criterion that is based on the stationarity of the
-  connectivity matrix.
+\code{nmf.stop.connectivity} implements the stopping criterion that is based
+on the stationarity of the connectivity matrix.
 }
 \details{
-  \code{NMFStop} can take the following values: \describe{
-  \item{function}{ is returned unchanged, except when it
-  has no arguments, in which case it assumed to be a
-  generator, which is immediately called and should return
-  a function that implements the actual stopping
-  criterion;} \item{integer}{ the value is used to create a
-  stopping criterion that stops at that exact number of
-  iterations via \code{nmf.stop.iteration};}
-  \item{numeric}{ the value is used to create a stopping
-  criterion that stops when at that stationary threshold
-  via \code{nmf.stop.threshold};} \item{character}{ must be
-  a single string which must be an access key for
-  registered criteria (currently available:
-  \dQuote{connectivity} and \dQuote{stationary}), or the
-  name of a function in the global environment or the
-  namespace of the loading package.} }
+  \code{NMFStop} can take the following values:
+\describe{
+\item{function}{ is returned unchanged, except when it has no arguments,
+in which case it assumed to be a generator, which is immediately called and should return
+a function that implements the actual stopping criterion;}
+\item{integer}{ the value is used to create a stopping criterion that stops at
+that exact number of iterations via \code{nmf.stop.iteration};}
+\item{numeric}{ the value is used to create a stopping criterion that stops when
+at that stationary threshold via \code{nmf.stop.threshold};}
+\item{character}{ must be a single string which must be an access key
+for registered criteria (currently available: \dQuote{connectivity} and \dQuote{stationary}),
+or the name of a function in the global environment or the namespace of the loading package.}
+}
 
-  \deqn{ \left| \frac{\max_{i- N_s + 1 \leq k \leq i} D_k -
-  \min_{i - N_s +1 \leq k \leq i} D_k}{n} \right| \leq
-  \alpha, }{ | [max( D(i- N_s + 1), ..., D(i) ) - min( D(i-
-  N_s + 1), ..., D(i) )] / n | <= alpha }
+\deqn{
+\left| \frac{\max_{i- N_s + 1 \leq k \leq i} D_k - \min_{i - N_s +1 \leq k \leq i} D_k}{n} \right| \leq \alpha,
+}{
+| [max( D(i- N_s + 1), ..., D(i) ) - min( D(i- N_s + 1), ..., D(i) )] / n | <= alpha
+}
 }
 

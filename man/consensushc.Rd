@@ -35,9 +35,10 @@ computation.}
 value of argument \code{dendrogram}.
 }
 \description{
-  The function \code{consensushc} computes the hierarchical
-  clustering of a consensus matrix, using the matrix itself
-  as a similarity matrix and average linkage. It is
+  The function \code{consensushc} computes the hierarchical clustering of
+a consensus matrix, using the matrix itself as a similarity matrix and
+average linkage.
+It is
 }
 \section{Methods}{
 \describe{

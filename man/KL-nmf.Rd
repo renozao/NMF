@@ -107,39 +107,33 @@ function to be considered stationary.}
 criterion.}
 }
 \description{
-  The built-in NMF algorithms described here minimise the
-  Kullback-Leibler divergence (KL) between an NMF model and
-  a target matrix. They use the updates for the basis and
-  coefficient matrices (\eqn{W} and \eqn{H}) defined by
-  \cite{Brunet et al. (2004)}, which are essentially those
-  from \cite{Lee et al. (2001)}, with an stabilisation step
-  that shift up all entries from zero every 10 iterations,
-  to a very small positive value.
+  The built-in NMF algorithms described here minimise
+the Kullback-Leibler divergence (KL) between an NMF model and a target matrix.
+They use the updates for the basis and coefficient matrices (\eqn{W} and \eqn{H})
+defined by \cite{Brunet et al. (2004)}, which are essentially those from \cite{Lee et al. (2001)},
+with an stabilisation step that shift up all entries from zero every 10 iterations,
+to a very small positive value.
 
-  \code{nmf_update.brunet} implements in C++ an optimised
-  version of the single update step.
+\code{nmf_update.brunet} implements in C++ an optimised version of the single update step.
 
-  Algorithms \sQuote{brunet} and \sQuote{.R#brunet} provide
-  the complete NMF algorithm from \cite{Brunet et al.
-  (2004)}, using the C++-optimised and pure R updates
-  \code{\link{nmf_update.brunet}} and
-  \code{\link{nmf_update.brunet_R}} respectively.
+Algorithms \sQuote{brunet} and \sQuote{.R#brunet} provide the complete NMF algorithm from \cite{Brunet et al. (2004)},
+using the C++-optimised and pure R updates \code{\link{nmf_update.brunet}} and \code{\link{nmf_update.brunet_R}}
+respectively.
 
-  Algorithm \sQuote{KL} provides an NMF algorithm based on
-  the C++-optimised version of the updates from
-  \cite{Brunet et al. (2004)}, which uses the stationarity
-  of the objective value as a stopping criterion
-  \code{\link{nmf.stop.stationary}}, instead of the
-  stationarity of the connectivity matrix
-  \code{\link{nmf.stop.connectivity}} as used by
-  \sQuote{brunet}.
+Algorithm \sQuote{KL} provides an NMF algorithm based on the C++-optimised version of
+the updates from \cite{Brunet et al. (2004)}, which uses the stationarity of the objective value
+as a stopping criterion \code{\link{nmf.stop.stationary}}, instead of the
+stationarity of the connectivity matrix \code{\link{nmf.stop.connectivity}} as used by
+\sQuote{brunet}.
 
-  \samp{ library(RcppOctave)
-  file.show(system.mfile('brunet.m', package='NMF')) }
+\samp{
+library(RcppOctave)
+file.show(system.mfile('brunet.m', package='NMF'))
+}
 }
 \details{
-  \code{nmf_update.brunet_R} implements in pure R a single
-  update step, i.e. it updates both matrices.
+  \code{nmf_update.brunet_R} implements in pure R a single update step, i.e. it updates
+both matrices.
 }
 \author{
   Original implementation in MATLAB: Jean-Philippe Brunet \email{brunet@broad.mit.edu}
@@ -147,17 +141,11 @@ criterion.}
 Port to R and optimisation in C++: Renaud Gaujoux
 }
 \references{
-  Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).
-  "Metagenes and molecular pattern discovery using matrix
-  factorization." _Proceedings of the National Academy of
-  Sciences of the United States of America_, *101*(12), pp.
-  4164-9. ISSN 0027-8424, <URL:
-  http://dx.doi.org/10.1073/pnas.0308531101>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/15016911>.
+  Brunet J, Tamayo P, Golub TR and Mesirov JP (2004). "Metagenes and molecular pattern discovery using matrix factorization."
+_Proceedings of the National Academy of Sciences of the United States of America_, *101*(12), pp. 4164-9. ISSN 0027-8424,
+<URL: http://dx.doi.org/10.1073/pnas.0308531101>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/15016911>.
 
-  Lee DD and Seung H (2001). "Algorithms for non-negative
-  matrix factorization." _Advances in neural information
-  processing systems_. <URL:
-  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
+Lee DD and Seung H (2001). "Algorithms for non-negative matrix factorization." _Advances in neural information processing
+systems_. <URL: http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
 }
 

@@ -91,33 +91,26 @@ It must be of the same length as the number of samples/columns in \code{v}
 -- and \code{h}.}
 }
 \description{
-  The built-in NMF algorithms described here minimise the
-  Frobenius norm (Euclidean distance) between an NMF model
-  and a target matrix. They use the updates for the basis
-  and coefficient matrices (\eqn{W} and \eqn{H}) defined by
-  \cite{Lee et al. (2001)}.
+  The built-in NMF algorithms described here minimise
+the Frobenius norm (Euclidean distance) between an NMF model and a target matrix.
+They use the updates for the basis and coefficient matrices (\eqn{W} and \eqn{H})
+defined by \cite{Lee et al. (2001)}.
 
-  \code{nmf_update.lee} implements in C++ an optimised
-  version of the single update step.
+\code{nmf_update.lee} implements in C++ an optimised version of the single update step.
 
-  Algorithms \sQuote{lee} and \sQuote{.R#lee} provide the
-  complete NMF algorithm from \cite{Lee et al. (2001)},
-  using the C++-optimised and pure R updates
-  \code{\link{nmf_update.lee}} and
-  \code{\link{nmf_update.lee_R}} respectively.
+Algorithms \sQuote{lee} and \sQuote{.R#lee} provide the complete NMF algorithm from \cite{Lee et al. (2001)},
+using the C++-optimised and pure R updates \code{\link{nmf_update.lee}} and \code{\link{nmf_update.lee_R}}
+respectively.
 
-  Algorithm \sQuote{Frobenius} provides an NMF algorithm
-  based on the C++-optimised version of the updates from
-  \cite{Lee et al. (2001)}, which uses the stationarity of
-  the objective value as a stopping criterion
-  \code{\link{nmf.stop.stationary}}, instead of the
-  stationarity of the connectivity matrix
-  \code{\link{nmf.stop.connectivity}} as used by
-  \sQuote{lee}.
+Algorithm \sQuote{Frobenius} provides an NMF algorithm based on the C++-optimised version of
+the updates from \cite{Lee et al. (2001)}, which uses the stationarity of the objective value
+as a stopping criterion \code{\link{nmf.stop.stationary}}, instead of the
+stationarity of the connectivity matrix \code{\link{nmf.stop.connectivity}} as used by
+\sQuote{lee}.
 }
 \details{
-  \code{nmf_update.lee_R} implements in pure R a single
-  update step, i.e. it updates both matrices.
+  \code{nmf_update.lee_R} implements in pure R a single update step, i.e. it updates
+both matrices.
 }
 \author{
   Original update definition: D D Lee and HS Seung
@@ -125,9 +118,7 @@ It must be of the same length as the number of samples/columns in \code{v}
 Port to R and optimisation in C++: Renaud Gaujoux
 }
 \references{
-  Lee DD and Seung H (2001). "Algorithms for non-negative
-  matrix factorization." _Advances in neural information
-  processing systems_. <URL:
-  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
+  Lee DD and Seung H (2001). "Algorithms for non-negative matrix factorization." _Advances in neural information processing
+systems_. <URL: http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
 }
 

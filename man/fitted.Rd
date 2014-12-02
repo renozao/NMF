@@ -43,23 +43,21 @@ used in the computation.}
   the target matrix estimate as fitted by the model \code{object}
 }
 \description{
-  Computes the estimated target matrix based on a given
-  \emph{NMF} model. The estimation depends on the
-  underlying NMF model. For example in the standard model
-  \eqn{V \equiv W H}{V ~ W H}, the target matrix is
-  estimated by the matrix product \eqn{W H}. In other
-  models, the estimate may depend on extra
-  parameters/matrix (cf. Non-smooth NMF in
-  \code{\link{NMFns-class}}).
+  Computes the estimated target matrix based on a given \emph{NMF} model.
+The estimation depends on the underlying NMF model.
+For example in the standard model \eqn{V \equiv W H}{V ~ W H}, the target matrix is
+estimated by the matrix product \eqn{W H}.
+In other models, the estimate may depend on extra parameters/matrix
+(cf. Non-smooth NMF in \code{\link{NMFns-class}}).
 }
 \details{
-  This function is a S4 generic function imported from
-  \link[stats]{fitted} in the package \emph{stats}. It is
-  implemented as a pure virtual method for objects of class
-  \code{NMF}, meaning that concrete NMF models must provide
-  a definition for their corresponding class (i.e.
-  sub-classes of class \code{NMF}). See
-  \code{\linkS4class{NMF}} for more details.
+  This function is a S4 generic function imported from \link[stats]{fitted} in
+the package \emph{stats}.
+It is implemented as a pure virtual method for objects of class
+\code{NMF}, meaning that concrete NMF models must provide a
+definition for their corresponding class (i.e. sub-classes of
+class \code{NMF}).
+See \code{\linkS4class{NMF}} for more details.
 }
 \section{Methods}{
 \describe{

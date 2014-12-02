@@ -36,20 +36,18 @@ no other argument is present. This is fixed in version 0.9.1.}
 \description{
   NMF Package Specific Options
 
-  \code{nmf.options} sets/get single or multiple options,
-  that are specific to the NMF package. It behaves in the
-  same way as \code{\link[base]{options}}.
+\code{nmf.options} sets/get single or multiple options, that are specific
+to the NMF package.
+It behaves in the same way as \code{\link[base]{options}}.
 
-  \code{nmf.getOption} returns the value of a single
-  option, that is specific to the NMF package. It behaves
-  in the same way as \code{\link[base]{getOption}}.
+\code{nmf.getOption} returns the value of a single option, that is specific
+to the NMF package.
+It behaves in the same way as \code{\link[base]{getOption}}.
 
-  \code{nmf.resetOptions} reset all NMF specific options to
-  their default values.
+\code{nmf.resetOptions} reset all NMF specific options to their default values.
 
-  \code{nmf.printOptions} prints all NMF specific options
-  along with their default values, in a relatively compact
-  way.
+\code{nmf.printOptions} prints all NMF specific options along with their default values,
+in a relatively compact way.
 }
 \section{Available options}{
 

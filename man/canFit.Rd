@@ -24,8 +24,8 @@ only the models that it explicitly declares (\code{TRUE}), or if it should be
 considered able to also fit models that extend models that it explicitly fits.}
 }
 \description{
-  \code{canFit} is an S4 generic that tests if an algorithm
-  can fit a particular model.
+  \code{canFit} is an S4 generic that tests if an algorithm can
+fit a particular model.
 }
 \section{Methods}{
 \describe{

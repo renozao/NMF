@@ -43,16 +43,13 @@ or NULL if no suitable algorithm was found.
 \description{
   Registry for NMF Algorithms
 
-  \code{selectNMFMethod} tries to select an appropriate NMF
-  algorithm that is able to fit a given the NMF model.
+\code{selectNMFMethod} tries to select an appropriate NMF algorithm that is
+able to fit a given the NMF model.
 
-  \code{getNMFMethod} retrieves NMF algorithm objects from
-  the registry.
+\code{getNMFMethod} retrieves NMF algorithm objects from the registry.
 
-  \code{existsNMFMethod} tells if an NMF algorithm is
-  registered under the
+\code{existsNMFMethod} tells if an NMF algorithm is registered under the
 
-  \code{removeNMFMethod} removes an NMF algorithm from the
-  registry.
+\code{removeNMFMethod} removes an NMF algorithm from the registry.
 }
 

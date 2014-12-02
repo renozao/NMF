@@ -16,40 +16,34 @@
 \code{\link{.Random.seed}}).}
 }
 \description{
-  Base class to handle the results of general
-  \strong{Nonnegative Matrix Factorisation} algorithms
-  (NMF).
+  Base class to handle the results of general \strong{Nonnegative Matrix
+Factorisation} algorithms (NMF).
 
-  The function \code{NMFfit} is a factory method for NMFfit
-  objects, that should not need to be called by the user.
-  It is used internally by the functions \code{\link{nmf}}
-  and \code{seed} to instantiate the starting point of NMF
-  algorithms.
+The function \code{NMFfit} is a factory method for NMFfit objects, that should
+not need to be called by the user.
+It is used internally by the functions \code{\link{nmf}} and \code{seed} to
+instantiate the starting point of NMF algorithms.
 }
 \details{
-  It provides a general structure and generic functions to
-  manage the results of NMF algorithms.  It contains a slot
-  with the fitted NMF model (see slot \code{fit}) as well
-  as data about the methods and parameters used to compute
-  the factorization.
+  It provides a general structure and generic functions to manage the results
+of NMF algorithms.  It contains a slot with the fitted NMF model (see slot
+\code{fit}) as well as data about the methods and parameters used to compute
+the factorization.
 
-  The purpose of this class is to handle in a generic way
-  the results of NMF algorithms. Its slot \code{fit}
-  contains the fitted NMF model as an object of class
-  \code{\linkS4class{NMF}}.
+The purpose of this class is to handle in a generic way the results of NMF
+algorithms. Its slot \code{fit} contains the fitted NMF model as an object
+of class \code{\linkS4class{NMF}}.
 
-  Other slots contains data about how the factorization has
-  been computed, such as the algorithm and seeding method,
-  the computation time, the final residuals, etc\dots{}
+Other slots contains data about how the factorization has been computed,
+such as the algorithm and seeding method, the computation time, the final
+residuals, etc\dots{}
 
-  Class \code{NMFfit} acts as a wrapper class for its slot
-  \code{fit}.  It inherits from interface class
-  \code{\linkS4class{NMF}} defined for generic NMF models.
-  Therefore, all the methods defined by this interface can
-  be called directly on objects of class \code{NMFfit}. The
-  calls are simply dispatched on slot \code{fit}, i.e.  the
-  results are the same as if calling the methods directly
-  on slot \code{fit}.
+Class \code{NMFfit} acts as a wrapper class for its slot \code{fit}.  It
+inherits from interface class \code{\linkS4class{NMF}} defined for generic
+NMF models.  Therefore, all the methods defined by this interface can be
+called directly on objects of class \code{NMFfit}. The calls are simply
+dispatched on slot \code{fit}, i.e.  the results are the same as if calling
+the methods directly on slot \code{fit}.
 }
 \section{Slots}{
 \describe{

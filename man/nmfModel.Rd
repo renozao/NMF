@@ -85,34 +85,29 @@ i.e. defined within the NMF package, should be listed.}
 a list
 }
 \description{
-  \code{nmfModel} is a S4 generic function which provides a
-  convenient way to build NMF models. It implements a
-  unified interface for creating \code{NMF} objects from
-  any NMF models, which is designed to resolve potential
-  dimensions inconsistencies.
+  \code{nmfModel} is a S4 generic function which provides a convenient way to
+build NMF models.
+It implements a unified interface for creating \code{NMF} objects from any
+NMF models, which is designed to resolve potential dimensions inconsistencies.
 
-  \code{nmfModels} lists all available NMF models currently
-  defined that can be used to create NMF objects, i.e. --
-  more or less -- all S4 classes that inherit from class
-  \code{\linkS4class{NMF}}.
+\code{nmfModels} lists all available NMF models currently defined that can be
+used to create NMF objects, i.e. -- more or less -- all S4 classes that
+inherit from class \code{\linkS4class{NMF}}.
 }
 \details{
-  All \code{nmfModel} methods return an object that
-  inherits from class \code{NMF}, that is suitable for
-  seeding NMF algorithms via arguments \code{rank} or
-  \code{seed} of the \code{\link{nmf}} method, in which
-  case the factorisation rank is implicitly set by the
-  number of basis components in the seeding model (see
-  \code{\link{nmf}}).
+  All \code{nmfModel} methods return an object that inherits from class \code{NMF},
+that is suitable for seeding NMF algorithms via arguments \code{rank} or
+\code{seed} of the \code{\link{nmf}} method, in which case the factorisation
+rank is implicitly set by the number of basis components in the seeding
+model (see \code{\link{nmf}}).
 
-  For convenience, shortcut methods and internal
-  conversions for working on \code{data.frame} objects
-  directly are implemented. However, note that conversion
-  of a \code{data.frame} into a \code{matrix} object may
-  take some non-negligible time, for large datasets. If
-  using this method or other NMF-related methods several
-  times, consider converting your data \code{data.frame}
-  object into a matrix once for good, when first loaded.
+For convenience, shortcut methods and internal conversions for working on
+\code{data.frame} objects directly are implemented.
+However, note that conversion of a \code{data.frame} into a \code{matrix}
+object may take some non-negligible time, for large datasets.
+If using this method or other NMF-related methods several times, consider
+converting your data \code{data.frame} object into a matrix once for good,
+when first loaded.
 }
 \section{Methods}{
 \describe{
@@ -389,11 +384,8 @@ nmfModels()
 nmfModels(builtin.only=TRUE)
 }
 \references{
-  Lee DD and Seung HS (1999). "Learning the parts of
-  objects by non-negative matrix factorization." _Nature_,
-  *401*(6755), pp. 788-91. ISSN 0028-0836, <URL:
-  http://dx.doi.org/10.1038/44565>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/10548103>.
+  Lee DD and Seung HS (1999). "Learning the parts of objects by non-negative matrix factorization." _Nature_, *401*(6755), pp.
+788-91. ISSN 0028-0836, <URL: http://dx.doi.org/10.1038/44565>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/10548103>.
 }
 \seealso{
   \code{\link{is.empty.nmf}}

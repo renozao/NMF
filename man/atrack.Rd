@@ -84,42 +84,33 @@ by the end-user.}
 of an annotation track.
 }
 \description{
-  \code{.atrack} is an S4 generic method that converts an
-  object into an annotation track object. It provides a
-  general and flexible annotation framework that is used by
-  \code{\link{aheatmap}} to annotates heatmap rows and
-  columns.
+  \code{.atrack} is an S4 generic method that converts an object into
+an annotation track object.
+It provides a general and flexible annotation framework that is used
+by \code{\link{aheatmap}} to annotates heatmap rows and columns.
 
-  \code{is.atrack} tests if an object is an
-  \code{annotationTrack} object.
+\code{is.atrack} tests if an object is an \code{annotationTrack} object.
 
-  \code{adata} get/sets the annotation parameters on an
-  object
+\code{adata} get/sets the annotation parameters on an object
 
-  \code{amargin} get/sets the annotation margin, i.e. along
-  which dimension of the data the annotations are to be
-  considered.
+\code{amargin} get/sets the annotation margin, i.e. along which dimension of
+the data the annotations are to be considered.
 
-  \code{anames} returns the reference margin names for
-  annotation tracks, from their embedded annotation data
-  object.
+\code{anames} returns the reference margin names for annotation tracks,
+from their embedded annotation data object.
 
-  \code{alength} returns the reference length for
-  annotation tracks, from their embedded annotation data
-  object
+\code{alength} returns the reference length for annotation tracks,
+from their embedded annotation data object
 
-  \code{atrack} creates/concatenates \code{annotationTrack}
-  objects
+\code{atrack} creates/concatenates \code{annotationTrack} objects
 
-  \code{annotationTrack} is constructor function for
-  \code{annotationTrack} object
+\code{annotationTrack} is constructor function for \code{annotationTrack} object
 }
 \details{
-  Methods for \code{.atrack} exist for common type of
-  objects, which should provide enough options for new
-  methods to define how annotation track are extracted from
-  more complex objects, by coercing/filtering them into a
-  supported type.
+  Methods for \code{.atrack} exist for common type of objects, which
+should provide enough options for new methods to define how annotation
+track are extracted from more complex objects, by coercing/filtering
+them into a supported type.
 }
 \section{Methods}{
 \describe{

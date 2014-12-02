@@ -19,8 +19,8 @@ This argument is forced to \code{TRUE} when \code{string=TRUE}.}
 itself.}
 }
 \description{
-  Returns the method names used to compute the NMF fits in
-  the list. It returns \code{NULL} if the list is empty.
+  Returns the method names used to compute the NMF fits in the list.
+It returns \code{NULL} if the list is empty.
 }
 \keyword{methods}
 

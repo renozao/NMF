@@ -27,8 +27,8 @@ should be considered as fixed.}
 in \code{...} in the call to \code{nmfWrapper}.
 }
 \description{
-  This function creates a wrapper function for calling the
-  function \code{\link{nmf}} with a given NMF algorithm.
+  This function creates a wrapper function for calling the function \code{\link{nmf}}
+with a given NMF algorithm.
 }
 \examples{
 \dontshow{# roxygen generated flag

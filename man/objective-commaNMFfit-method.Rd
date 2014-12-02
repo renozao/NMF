@@ -14,10 +14,9 @@ target matrix \code{y} if it is supplied.}
 itself.}
 }
 \description{
-  Returns the objective function associated with the
-  algorithm that computed the fitted NMF model
-  \code{object}, or the objective value with respect to a
-  given target matrix \code{y} if it is supplied.
+  Returns the objective function associated with the algorithm that computed the
+fitted NMF model \code{object}, or the objective value with respect to a given
+target matrix \code{y} if it is supplied.
 }
 \keyword{methods}
 

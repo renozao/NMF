@@ -65,28 +65,21 @@ number of nodes to use.}
   \item{type}{type of cluster, See \code{\link[parallel]{makeCluster}}.}
 }
 \description{
-  \code{registerDoBackend} is a unified register function
-  for foreach backends.
+  \code{registerDoBackend} is a unified register function for foreach backends.
 
-  \code{getDoBackend} returns the internal data of the
-  currently registered foreach \%dopar\% backend.
+\code{getDoBackend} returns the internal data of the currently registered foreach \%dopar\% backend.
 
-  \code{setDoBackend} is identical to
-  \code{\link[foreach]{setDoPar}}, but returns the internal
-  of the previously registered backend.
+\code{setDoBackend} is identical to \code{\link[foreach]{setDoPar}}, but
+returns the internal of the previously registered backend.
 
-  \code{register} is a generic function that register
-  objects. It is used to as a unified interface to register
-  foreach backends.
+\code{register} is a generic function that register objects.
+It is used to as a unified interface to register foreach backends.
 
-  \code{ForeachBackend} is a factory method for foreach
-  backend objects.
+\code{ForeachBackend} is a factory method for foreach backend objects.
 
-  \code{getDoParHosts} is a generic function that returns
-  the hostname of the worker nodes used by a backend.
+\code{getDoParHosts} is a generic function that returns the hostname of the worker nodes used by a backend.
 
-  \code{getDoParNHosts} returns the number of hosts used by
-  a backend.
+\code{getDoParNHosts} returns the number of hosts used by a backend.
 }
 \section{Methods}{
 \describe{

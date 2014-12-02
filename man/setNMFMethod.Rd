@@ -26,11 +26,11 @@ should be printed (\code{TRUE}) or not (\code{FALSE}).}
   \item{method}{definition of the algorithm}
 }
 \description{
-  Adds a new algorithm to the registry of algorithms that
-  perform Nonnegative Matrix Factorization.
+  Adds a new algorithm to the registry of algorithms that perform
+Nonnegative Matrix Factorization.
 
-  \code{nmfRegisterAlgorithm} is an alias to
-  \code{setNMFMethod} for backward compatibility.
+\code{nmfRegisterAlgorithm} is an alias to \code{setNMFMethod} for backward
+compatibility.
 }
 \examples{
 \dontshow{# roxygen generated flag

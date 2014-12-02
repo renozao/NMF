@@ -16,10 +16,9 @@ the fits in \code{object}.}
 itself.}
 }
 \description{
-  Returns the CPU time required to compute all NMF fits in
-  the list. It returns \code{NULL} if the list is empty. If
-  no timing data are available, the sequential time is
-  returned.
+  Returns the CPU time required to compute all NMF fits in the list.
+It returns \code{NULL} if the list is empty.
+If no timing data are available, the sequential time is returned.
 }
 \keyword{methods}
 

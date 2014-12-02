@@ -24,27 +24,20 @@ that is supported by the functions \code{\link{entropy}} and \code{\link{purity}
 functions \code{\link{rss}} and \code{\link{evar}}}
 }
 \description{
-  The NMF package defines \code{summary} methods for
-  different classes of objects, which helps assessing and
-  comparing the quality of NMF models by computing a set of
-  quantitative measures, e.g. with respect to their ability
-  to recover known classes and/or the original target
-  matrix.
+  The NMF package defines \code{summary} methods for different classes of objects,
+which helps assessing and comparing the quality of NMF models by computing a set
+of quantitative measures, e.g. with respect to their ability to recover known
+classes and/or the original target matrix.
 
-  The most useful methods are for classes
-  \code{\linkS4class{NMF}}, \code{\linkS4class{NMFfit}},
-  \code{\linkS4class{NMFfitX}} and
-  \code{\linkS4class{NMFList}}, which compute summary
-  measures for, respectively, a single NMF model, a single
-  fit, a multiple-run fit and a list of heterogenous fits
-  performed with the function \code{\link{nmf}}.
+The most useful methods are for classes \code{\linkS4class{NMF}}, \code{\linkS4class{NMFfit}},
+\code{\linkS4class{NMFfitX}} and \code{\linkS4class{NMFList}}, which compute summary measures
+for, respectively, a single NMF model, a single fit, a multiple-run fit and a list of heterogenous
+fits performed with the function \code{\link{nmf}}.
 }
 \details{
-  Due to the somehow hierarchical structure of the classes
-  mentionned in \emph{Description}, their respective
-  \code{summary} methods call each other in chain, each
-  super-class adding some extra measures, only relevant for
-  objects of a specific class.
+  Due to the somehow hierarchical structure of the classes mentionned in \emph{Description},
+their respective \code{summary} methods call each other in chain, each super-class adding some
+extra measures, only relevant for objects of a specific class.
 }
 \section{Methods}{
 \describe{

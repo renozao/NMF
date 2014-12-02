@@ -4,19 +4,22 @@
 \alias{NMF-package}
 \title{Algorithms and framework for Nonnegative Matrix Factorization (NMF)}
 \description{
-  This package provides a framework to perform Non-negative
-  Matrix Factorization (NMF). It implements a set of
-  already published algorithms and seeding methods, and
-  provides a framework to test, develop and plug new/custom
-  algorithms. Most of the built-in algorithms have been
-  optimized in C++, and the main interface function
-  provides an easy way of performing parallel computations
-  on multicore machines.
+  This package provides a framework to perform Non-negative Matrix
+Factorization (NMF). It implements a set of already published algorithms
+and seeding methods, and provides a framework to test, develop and plug
+new/custom algorithms. Most of the built-in algorithms have been optimized
+in C++, and the main interface function provides an easy way of performing
+parallel computations on multicore machines.
 }
 \details{
-  \tabular{ll}{ Package: \tab NMF\cr Type: \tab Package\cr
-  Version: \tab 0.21.3\cr Date: \tab 2013-09-17\cr License:
-  \tab GPL (>=2)\cr LazyLoad: \tab yes\cr }
+  \tabular{ll}{
+Package: \tab NMF\cr
+Type: \tab Package\cr
+Version: \tab 0.21.3\cr
+Date: \tab 2013-09-17\cr
+License: \tab GPL (>=2)\cr
+LazyLoad: \tab yes\cr
+}
 }
 \examples{
 \dontshow{# roxygen generated flag
@@ -43,7 +46,7 @@ Maintainer: Renaud Gaujoux <renaud@tx.technion.ac.il>
 \references{
   \url{http://cran.r-project.org/}
 
-  \url{http://renozao.github.io/NMF}
+\url{http://renozao.github.io/NMF}
 }
 \seealso{
   \code{\link{nmf}}

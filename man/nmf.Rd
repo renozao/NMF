@@ -363,37 +363,34 @@ is not \code{list}, this method returns an object of class \code{\linkS4class{NM
 is a \code{list}, this method returns an object of class \code{\linkS4class{NMFList}}.}
 }
 \description{
-  The function \code{nmf} is a S4 generic defines the main
-  interface to run NMF algorithms within the framework
-  defined in package \code{NMF}. It has many methods that
-  facilitates applying, developing and testing NMF
-  algorithms.
+  The function \code{nmf} is a S4 generic defines the main interface to run NMF
+algorithms within the framework defined in package \code{NMF}.
+It has many methods that facilitates applying, developing and testing NMF
+algorithms.
 
-  The package vignette \code{vignette('NMF')} contains an
-  introduction to the interface, through a sample data
-  analysis.
+The package vignette \code{vignette('NMF')} contains an introduction to the
+interface, through a sample data analysis.
 }
 \details{
-  The \code{nmf} function has multiple methods that compose
-  a very flexible interface allowing to: \itemize{ \item
-  combine NMF algorithms with seeding methods and/or
-  stopping/convergence criterion at runtime;
+  The \code{nmf} function has multiple methods that compose a very flexible
+interface allowing to:
+\itemize{
+\item combine NMF algorithms with seeding methods and/or stopping/convergence
+criterion at runtime;
 
-  \item perform multiple NMF runs, which are computed in
-  parallel whenever the host machine allows it;
+\item perform multiple NMF runs, which are computed in parallel whenever the host
+machine allows it;
 
-  \item run multiple algorithms with a common set of
-  parameters, ensuring a consistent environment (notably
-  the RNG settings). }
+\item run multiple algorithms with a common set of parameters, ensuring a
+consistent environment (notably the RNG settings).
+}
 
-  The workhorse method is
-  \code{nmf,matrix,numeric,NMFStrategy}, which is
-  eventually called by all other methods. The other methods
-  provides convenient ways of specifying the NMF
-  algorithm(s), the factorization rank, or the seed to be
-  used. Some allow to directly run NMF algorithms on
-  different types of objects, such as \code{data.frame} or
-  \code{\link[Biobase]{ExpressionSet}} objects.
+The workhorse method is \code{nmf,matrix,numeric,NMFStrategy}, which is eventually
+called by all other methods.
+The other methods provides convenient ways of specifying the NMF algorithm(s),
+the factorization rank, or the seed to be used.
+Some allow to directly run NMF algorithms on different types of objects, such
+as \code{data.frame} or \code{\link[Biobase]{ExpressionSet}} objects.
 }
 \section{Methods}{
 \describe{
@@ -651,52 +648,31 @@ res <- nmf(x, 2, .options='v3')
 }
 }
 \references{
-  Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).
-  "Metagenes and molecular pattern discovery using matrix
-  factorization." _Proceedings of the National Academy of
-  Sciences of the United States of America_, *101*(12), pp.
-  4164-9. ISSN 0027-8424, <URL:
-  http://dx.doi.org/10.1073/pnas.0308531101>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/15016911>.
+  Brunet J, Tamayo P, Golub TR and Mesirov JP (2004). "Metagenes and molecular pattern discovery using matrix factorization."
+_Proceedings of the National Academy of Sciences of the United States of America_, *101*(12), pp. 4164-9. ISSN 0027-8424,
+<URL: http://dx.doi.org/10.1073/pnas.0308531101>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/15016911>.
 
-  Lee DD and Seung H (2001). "Algorithms for non-negative
-  matrix factorization." _Advances in neural information
-  processing systems_. <URL:
-  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
+Lee DD and Seung H (2001). "Algorithms for non-negative matrix factorization." _Advances in neural information processing
+systems_. <URL: http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
 
-  Wang G, Kossenkov AV and Ochs MF (2006). "LS-NMF: a
-  modified non-negative matrix factorization algorithm
-  utilizing uncertainty estimates." _BMC bioinformatics_,
-  *7*, pp. 175. ISSN 1471-2105, <URL:
-  http://dx.doi.org/10.1186/1471-2105-7-175>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/16569230>.
+Wang G, Kossenkov AV and Ochs MF (2006). "LS-NMF: a modified non-negative matrix factorization algorithm utilizing
+uncertainty estimates." _BMC bioinformatics_, *7*, pp. 175. ISSN 1471-2105, <URL: http://dx.doi.org/10.1186/1471-2105-7-175>,
+<URL: http://www.ncbi.nlm.nih.gov/pubmed/16569230>.
 
-  Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and
-  Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix
-  factorization (nsNMF)." _IEEE Trans. Pattern Anal. Mach.
-  Intell_, *28*, pp. 403-415.
+Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix factorization
+(nsNMF)." _IEEE Trans. Pattern Anal. Mach. Intell_, *28*, pp. 403-415.
 
-  Badea L (2008). "Extracting gene expression profiles
-  common to colon and pancreatic adenocarcinoma using
-  simultaneous nonnegative matrix factorization." _Pacific
-  Symposium on Biocomputing. Pacific Symposium on
-  Biocomputing_, *290*, pp. 267-78. ISSN 1793-5091, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
+Badea L (2008). "Extracting gene expression profiles common to colon and pancreatic adenocarcinoma using simultaneous
+nonnegative matrix factorization." _Pacific Symposium on Biocomputing. Pacific Symposium on Biocomputing_, *290*, pp. 267-78.
+ISSN 1793-5091, <URL: http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
 
-  Kim H and Park H (2007). "Sparse non-negative matrix
-  factorizations via alternating non-negativity-constrained
-  least squares for microarray data analysis."
-  _Bioinformatics (Oxford, England)_, *23*(12), pp.
-  1495-502. ISSN 1460-2059, <URL:
-  http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/17483501>.
+Kim H and Park H (2007). "Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares
+for microarray data analysis." _Bioinformatics (Oxford, England)_, *23*(12), pp. 1495-502. ISSN 1460-2059, <URL:
+http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/17483501>.
 
-  Van Benthem M and Keenan MR (2004). "Fast algorithm for
-  the solution of large-scale non-negativity-constrained
-  least squares problems." _Journal of Chemometrics_,
-  *18*(10), pp. 441-450. ISSN 0886-9383, <URL:
-  http://dx.doi.org/10.1002/cem.889>, <URL:
-  http://doi.wiley.com/10.1002/cem.889>.
+Van Benthem M and Keenan MR (2004). "Fast algorithm for the solution of large-scale non-negativity-constrained least squares
+problems." _Journal of Chemometrics_, *18*(10), pp. 441-450. ISSN 0886-9383, <URL: http://dx.doi.org/10.1002/cem.889>, <URL:
+http://doi.wiley.com/10.1002/cem.889>.
 }
 \seealso{
   \code{\link{nmfAlgorithm}}

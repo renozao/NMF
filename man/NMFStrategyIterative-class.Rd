@@ -3,26 +3,24 @@
 \alias{NMFStrategyIterative-class}
 \title{Interface for Algorithms: Implementation for Iterative NMF Algorithms}
 \description{
-  This class provides a specific implementation for the
-  generic function \code{run} -- concretising the virtual
-  interface class \code{\linkS4class{NMFStrategy}}, for NMF
-  algorithms that conform to the following iterative schema
-  (starred numbers indicate mandatory steps):
+  This class provides a specific implementation for the generic function \code{run}
+-- concretising the virtual interface class \code{\linkS4class{NMFStrategy}},
+for NMF algorithms that conform to the following iterative schema (starred numbers
+indicate mandatory steps):
 
-  \itemize{ \item 1. Initialisation \item 2*. Update the
-  model at each iteration \item 3. Stop if some criterion
-  is satisfied \item 4. Wrap up }
+\itemize{
+\item 1. Initialisation
+\item 2*. Update the model at each iteration
+\item 3. Stop if some criterion is satisfied
+\item 4. Wrap up
+}
 
-  This schema could possibly apply to all NMF algorithms,
-  since these are essentially optimisation algorithms,
-  almost all of which use iterative methods to approximate
-  a solution of the optimisation problem. The main
-  advantage is that it allows to implement updates and
-  stopping criterion separately, and combine them in
-  different ways. In particular, many NMF algorithms are
-  based on multiplicative updates, following the approach
-  from \cite{Lee et al. (2001)}, which are specially
-  suitable to be cast into this simple schema.
+This schema could possibly apply to all NMF algorithms, since these are essentially optimisation algorithms,
+almost all of which use iterative methods to approximate a solution of the optimisation problem.
+The main advantage is that it allows to implement updates and stopping criterion separately, and combine them
+in different ways.
+In particular, many NMF algorithms are based on multiplicative updates, following the approach from
+\cite{Lee et al. (2001)}, which are specially suitable to be cast into this simple schema.
 }
 \section{Slots}{
 \describe{
@@ -59,9 +57,7 @@ It is called just before returning the}
 
 }
 \references{
-  Lee DD and Seung H (2001). "Algorithms for non-negative
-  matrix factorization." _Advances in neural information
-  processing systems_. <URL:
-  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
+  Lee DD and Seung H (2001). "Algorithms for non-negative matrix factorization." _Advances in neural information processing
+systems_. <URL: http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
 }
 

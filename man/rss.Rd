@@ -30,23 +30,19 @@ in \code{evar} calls.}
   a single numeric value
 }
 \description{
-  \code{rss} and \code{evar} are S4 generic functions that
-  respectively computes the Residual Sum of Squares (RSS)
-  and explained variance achieved by a model.
+  \code{rss} and \code{evar} are S4 generic functions that respectively computes
+the Residual Sum of Squares (RSS) and explained variance achieved by a model.
 
-  The explained variance for a target \eqn{V} is computed
-  as: \deqn{evar = 1 - \frac{RSS}{\sum_{i,j} v_{ij}^2}
-  }{evar = 1 - RSS/sum v_{ij}^2},
+The explained variance for a target \eqn{V} is computed as:
+\deqn{evar = 1 - \frac{RSS}{\sum_{i,j} v_{ij}^2} }{evar = 1 - RSS/sum v_{ij}^2},
 }
 \details{
   where RSS is the residual sum of squares.
 
-  The explained variance is usefull to compare the
-  performance of different models and their ability to
-  accurately reproduce the original target matrix. Note,
-  however, that a possible caveat is that some models
-  explicitly aim at minimizing the RSS (i.e. maximizing the
-  explained variance), while others do not.
+The explained variance is usefull to compare the performance of different
+models and their ability to accurately reproduce the original target matrix.
+Note, however, that a possible caveat is that some models explicitly aim at
+minimizing the RSS (i.e. maximizing the explained variance), while others do not.
 }
 \section{Methods}{
 \describe{
@@ -117,19 +113,12 @@ y2 <- nmf(x, 3, 'lee') # 'lee' minimizes the RSS
 rss(y2, x)
 }
 \references{
-  Hutchins LN, Murphy SM, Singh P and Graber JH (2008).
-  "Position-dependent motif characterization using
-  non-negative matrix factorization." _Bioinformatics
-  (Oxford, England)_, *24*(23), pp. 2684-90. ISSN
-  1367-4811, <URL:
-  http://dx.doi.org/10.1093/bioinformatics/btn526>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/18852176>.
+  Hutchins LN, Murphy SM, Singh P and Graber JH (2008). "Position-dependent motif characterization using non-negative matrix
+factorization." _Bioinformatics (Oxford, England)_, *24*(23), pp. 2684-90. ISSN 1367-4811, <URL:
+http://dx.doi.org/10.1093/bioinformatics/btn526>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/18852176>.
 
-  Lee DD and Seung HS (1999). "Learning the parts of
-  objects by non-negative matrix factorization." _Nature_,
-  *401*(6755), pp. 788-91. ISSN 0028-0836, <URL:
-  http://dx.doi.org/10.1038/44565>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/10548103>.
+Lee DD and Seung HS (1999). "Learning the parts of objects by non-negative matrix factorization." _Nature_, *401*(6755), pp.
+788-91. ISSN 0028-0836, <URL: http://dx.doi.org/10.1038/44565>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/10548103>.
 }
 \keyword{methods}
 

@@ -96,36 +96,30 @@ target matrix should be set on the returned NMF model.}
 \code{\linkS4class{NMF}}.
 }
 \description{
-  Generates NMF models with random values drawn from a
-  uniform distribution. It returns an NMF model with basis
-  and mixture coefficient matrices filled with random
-  values. The main purpose of the function \code{rnmf} is
-  to provide a common interface to generate random seeds
-  used by the \code{\link{nmf}} function.
+  Generates NMF models with random values drawn from a uniform distribution.
+It returns an NMF model with basis and mixture coefficient matrices filled
+with random values.
+The main purpose of the function \code{rnmf} is to provide a common
+interface to generate random seeds used by the \code{\link{nmf}} function.
 }
 \details{
-  If necessary, extensions of the standard NMF model or
-  custom models must define a method
-  "rnmf,<NMF.MODEL.CLASS>,numeric" for initialising their
-  specific slots other than the basis and mixture
-  coefficient matrices. In order to benefit from the
-  complete built-in interface, the overloading methods
-  should call the generic version using function
-  \code{\link{callNextMethod}}, prior to set the values of
-  the specific slots. See for example the method
-  \code{\link[=rnmf,NMFOffset,numeric-method]{rnmf}}
-  defined for \code{\linkS4class{NMFOffset}} models:
-  \code{showMethods(rnmf, class='NMFOffset',
-  include=TRUE))}.
+  If necessary, extensions of the standard NMF model or custom models must
+define a method "rnmf,<NMF.MODEL.CLASS>,numeric" for initialising their
+specific slots other than the basis and mixture coefficient matrices.
+In order to benefit from the complete built-in interface, the overloading
+methods should call the generic version using function
+\code{\link{callNextMethod}}, prior to set the values of the specific slots.
+See for example the method \code{\link[=rnmf,NMFOffset,numeric-method]{rnmf}}
+defined for \code{\linkS4class{NMFOffset}} models:
+\code{showMethods(rnmf, class='NMFOffset', include=TRUE))}.
 
-  For convenience, shortcut methods for working on
-  \code{data.frame} objects directly are implemented.
-  However, note that conversion of a \code{data.frame} into
-  a \code{matrix} object may take some non-negligible time,
-  for large datasets. If using this method or other
-  NMF-related methods several times, consider converting
-  your data \code{data.frame} object into a matrix once for
-  good, when first loaded.
+For convenience, shortcut methods for working on \code{data.frame} objects
+directly are implemented.
+However, note that conversion of a \code{data.frame} into a \code{matrix}
+object may take some non-negligible time, for large datasets.
+If using this method or other NMF-related methods several times, consider
+converting your data \code{data.frame} object into a matrix once for good,
+when first loaded.
 }
 \section{Methods}{
 \describe{

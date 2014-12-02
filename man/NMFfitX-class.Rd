@@ -3,19 +3,16 @@
 \alias{NMFfitX-class}
 \title{Virtual Class to Handle Results from Multiple Runs of NMF Algorithms}
 \description{
-  This class defines a common interface to handle the
-  results from multiple runs of a single NMF algorithm,
-  performed with the \code{\link{nmf}} method.
+  This class defines a common interface to handle the results from multiple
+runs of a single NMF algorithm, performed with the \code{\link{nmf}} method.
 }
 \details{
   Currently, this interface is implemented by two classes,
-  \code{\linkS4class{NMFfitX1}} and
-  \code{\linkS4class{NMFfitXn}}, which respectively handle
-  the case where only the best fit is kept, and the case
-  where the list of all the fits is returned.
+\code{\linkS4class{NMFfitX1}} and \code{\linkS4class{NMFfitXn}}, which
+respectively handle the case where only the best fit is kept, and the case
+where the list of all the fits is returned.
 
-  See \code{\link{nmf}} for more details on the method
-  arguments.
+See \code{\link{nmf}} for more details on the method arguments.
 }
 \section{Slots}{
 \describe{

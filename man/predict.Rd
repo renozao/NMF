@@ -35,49 +35,39 @@ This is notably used internally when computing NMF clustering silhouettes.}
   \item{...}{additional arguments affecting the predictions produced.}
 }
 \description{
-  The methods \code{predict} for NMF models return the
-  cluster membership of each sample or each feature.
-  Currently the classification/prediction of new data is
-  not implemented.
+  The methods \code{predict} for NMF models return the cluster membership
+of each sample or each feature.
+Currently the classification/prediction of new data is not implemented.
 }
 \details{
-  The cluster membership is computed as the index of the
-  dominant basis component for each sample
-  (\code{what='samples' or 'columns'}) or each feature
-  (\code{what='features' or 'rows'}), based on their
-  corresponding entries in the coefficient matrix or basis
-  matrix respectively.
+  The cluster membership is computed as the index of the dominant basis
+component for each sample (\code{what='samples' or 'columns'}) or each feature
+(\code{what='features' or 'rows'}), based on their corresponding
+entries in the coefficient matrix or basis matrix respectively.
 
-  For example, if \code{what='samples'}, then the dominant
-  basis component is computed for each column of the
-  coefficient matrix as the row index of the maximum within
-  the column.
+For example, if \code{what='samples'}, then the dominant basis component
+is computed for each column of the coefficient matrix as the row index
+of the maximum within the column.
 
-  If argument \code{prob=FALSE} (default), the result is a
-  \code{factor}. Otherwise a list with two elements is
-  returned: element \code{predict} contains the cluster
-  membership index (as a \code{factor}) and element
-  \code{prob} contains the relative contribution of the
-  dominant component to each sample (resp. the relative
-  contribution of each feature to the dominant basis
-  component):
+If argument \code{prob=FALSE} (default), the result is a \code{factor}.
+Otherwise a list with two elements is returned: element \code{predict}
+contains the cluster membership index (as a \code{factor}) and element
+\code{prob} contains the relative contribution of
+the dominant component to each sample (resp. the relative contribution of
+each feature to the dominant basis component):
 
-  \itemize{ \item Samples: \deqn{p_j = x_{k_0} / \sum_k
-  x_k}{p(j) = x(k0) / sum_k x(k)}, for each sample
-  \eqn{1\leq j \leq p}, where \eqn{x_k}{x(k)} is the
-  contribution of the \eqn{k}-th basis component to
-  \eqn{j}-th sample (i.e. \code{H[k ,j]}), and
-  \eqn{x_{k_0}}{x(k0)} is the maximum of these
-  contributions.
+\itemize{
+\item Samples: \deqn{p_j = x_{k_0} / \sum_k x_k}{p(j) = x(k0) / sum_k x(k)},
+for each sample \eqn{1\leq j \leq p}, where \eqn{x_k}{x(k)} is the contribution
+of the \eqn{k}-th basis component to \eqn{j}-th sample (i.e. \code{H[k ,j]}), and
+\eqn{x_{k_0}}{x(k0)} is the maximum of these contributions.
 
-  \item Features: \deqn{p_i = y_{k_0} / \sum_k y_k}{p(i) =
-  y(k0) / sum_k y(k)}, for each feature \eqn{1\leq i \leq
-  p}, where \eqn{y_k}{y(k)} is the contribution of the
-  \eqn{k}-th basis component to \eqn{i}-th feature (i.e.
-  \code{W[i, k]}), and \eqn{y_{k_0}}{y(k0)} is the maximum
-  of these contributions.
+\item Features: \deqn{p_i = y_{k_0} / \sum_k y_k}{p(i) = y(k0) / sum_k y(k)},
+for each feature \eqn{1\leq i \leq p}, where \eqn{y_k}{y(k)} is the contribution
+of the \eqn{k}-th basis component to \eqn{i}-th feature (i.e. \code{W[i, k]}), and
+\eqn{y_{k_0}}{y(k0)} is the maximum of these contributions.
 
-  }
+}
 }
 \section{Methods}{
 \describe{
@@ -127,18 +117,12 @@ predict(x, prob=TRUE)
 predict(x, 'rows', prob=TRUE)
 }
 \references{
-  Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).
-  "Metagenes and molecular pattern discovery using matrix
-  factorization." _Proceedings of the National Academy of
-  Sciences of the United States of America_, *101*(12), pp.
-  4164-9. ISSN 0027-8424, <URL:
-  http://dx.doi.org/10.1073/pnas.0308531101>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/15016911>.
+  Brunet J, Tamayo P, Golub TR and Mesirov JP (2004). "Metagenes and molecular pattern discovery using matrix factorization."
+_Proceedings of the National Academy of Sciences of the United States of America_, *101*(12), pp. 4164-9. ISSN 0027-8424,
+<URL: http://dx.doi.org/10.1073/pnas.0308531101>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/15016911>.
 
-  Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and
-  Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix
-  factorization (nsNMF)." _IEEE Trans. Pattern Anal. Mach.
-  Intell_, *28*, pp. 403-415.
+Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix factorization
+(nsNMF)." _IEEE Trans. Pattern Anal. Mach. Intell_, *28*, pp. 403-415.
 }
 \keyword{methods}
 

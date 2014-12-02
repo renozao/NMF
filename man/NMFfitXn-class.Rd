@@ -3,24 +3,21 @@
 \alias{NMFfitXn-class}
 \title{Structure for Storing All Fits from Multiple NMF Runs}
 \description{
-  This class is used to return the result from a multiple
-  run of a single NMF algorithm performed with function
-  \code{nmf} with option \code{keep.all=TRUE} (cf.
-  \code{\link{nmf}}).
+  This class is used to return the result from a multiple run of a single NMF
+algorithm performed with function \code{nmf} with option
+\code{keep.all=TRUE} (cf. \code{\link{nmf}}).
 }
 \details{
-  It extends both classes \code{\linkS4class{NMFfitX}} and
-  \code{list}, and stores the result of each run (i.e. a
-  \code{NMFfit} object) in its \code{list} structure.
+  It extends both classes \code{\linkS4class{NMFfitX}} and \code{list}, and
+stores the result of each run (i.e. a \code{NMFfit} object) in its
+\code{list} structure.
 
-  IMPORTANT NOTE: This class is designed to be
-  \strong{read-only}, even though all the
-  \code{list}-methods can be used on its instances. Adding
-  or removing elements would most probably lead to
-  incorrect results in subsequent calls. Capability for
-  concatenating and merging NMF results is for the moment
-  only used internally, and should be included and
-  supported in the next release of the package.
+IMPORTANT NOTE: This class is designed to be \strong{read-only}, even though
+all the \code{list}-methods can be used on its instances. Adding or removing
+elements would most probably lead to incorrect results in subsequent calls.
+Capability for concatenating and merging NMF results is for the moment only
+used internally, and should be included and supported in the next release of
+the package.
 }
 \section{Slots}{
 \describe{

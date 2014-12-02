@@ -3,25 +3,22 @@
 \alias{NMFfitX1-class}
 \title{Structure for Storing the Best Fit Amongst Multiple NMF Runs}
 \description{
-  This class is used to return the result from a multiple
-  run of a single NMF algorithm performed with function
-  \code{nmf} with the -- default -- option
-  \code{keep.all=FALSE} (cf. \code{\link{nmf}}).
+  This class is used to return the result from a multiple run of a single NMF
+algorithm performed with function \code{nmf} with the -- default -- option
+\code{keep.all=FALSE} (cf. \code{\link{nmf}}).
 }
 \details{
   It extends both classes \code{\linkS4class{NMFfitX}} and
-  \code{\linkS4class{NMFfit}}, and stores a the result of
-  the best fit in its \code{NMFfit} structure.
+\code{\linkS4class{NMFfit}}, and stores a the result of the best fit in its
+\code{NMFfit} structure.
 
-  Beside the best fit, this class allows to hold data about
-  the computation of the multiple runs, such as the number
-  of runs, the CPU time used to perform all the runs, as
-  well as the consensus matrix.
+Beside the best fit, this class allows to hold data about the computation of
+the multiple runs, such as the number of runs, the CPU time used to perform
+all the runs, as well as the consensus matrix.
 
-  Due to the inheritance from class \code{NMFfit}, objects
-  of class \code{NMFfitX1} can be handled exactly as the
-  results of single NMF run -- as if only the best run had
-  been performed.
+Due to the inheritance from class \code{NMFfit}, objects of class
+\code{NMFfitX1} can be handled exactly as the results of single NMF run --
+as if only the best run had been performed.
 }
 \section{Slots}{
 \describe{

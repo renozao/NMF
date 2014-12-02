@@ -23,17 +23,19 @@
 \alias{seed,ExpressionSet,ANY,ANY-method}
 \title{Specific NMF Layer for Bioconductor}
 \description{
-  The package NMF provides an optional layer for working
-  with common objects and functions defined in the
-  Bioconductor platform.
+  The package NMF provides an optional layer for working with common objects
+and functions defined in the Bioconductor platform.
 }
 \details{
-  It provides: \itemize{ \item computation functions that
-  support \code{ExpressionSet} objects as inputs. \item
-  aliases and methods for generic functions defined and
-  widely used by Bioconductor base packages. \item
-  specialised visualisation methods that adapt the titles
-  and legend using bioinformatics terminology. \item
-  functions to link the results with annotations, etc... }
+  It provides:
+\itemize{
+\item computation functions that support \code{ExpressionSet} objects as
+inputs.
+\item aliases and methods for generic functions defined and widely used by
+Bioconductor base packages.
+\item specialised visualisation methods that adapt the titles and legend
+using bioinformatics terminology.
+\item functions to link the results with annotations, etc...
+}
 }
 

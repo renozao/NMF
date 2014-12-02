@@ -40,8 +40,9 @@ and the other uses optimised C updates (\sQuote{lee}), which will all get
 named \sQuote{lee}.
 }
 \description{
-  \code{nmfAlgorithm} lists access keys or retrieves NMF
-  algorithms that are stored in registry. It allows to list
+  \code{nmfAlgorithm} lists access keys or retrieves NMF algorithms that are
+stored in registry.
+It allows to list
 }
 \examples{
 \dontshow{# roxygen generated flag

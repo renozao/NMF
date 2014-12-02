@@ -65,16 +65,16 @@ See section \emph{Row/column ordering and display} for details on all supported 
   \item{main}{Main title as a character string or a grob.}
 }
 \description{
-  The functions documented here allow to compare the fits
-  computed in different NMF runs. The fits do not need to
-  be from the same algorithm, nor have the same dimension.
+  The functions documented here allow to compare the fits computed in
+different NMF runs.
+The fits do not need to be from the same algorithm, nor have the same
+dimension.
 }
 \details{
-  The methods \code{compare} enables to compare multiple
-  NMF fits either passed as arguments or as a list of fits.
-  These methods eventually call the method
-  \code{summary,NMFList}, so that all its arguments can be
-  passed \strong{named} in \code{...}.
+  The methods \code{compare} enables to compare multiple NMF fits either
+passed as arguments or as a list of fits.
+These methods eventually call the method \code{summary,NMFList}, so that
+all its arguments can be passed \strong{named} in \code{...}.
 }
 \section{Methods}{
 \describe{

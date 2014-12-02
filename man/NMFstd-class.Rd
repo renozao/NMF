@@ -3,54 +3,55 @@
 \alias{NMFstd-class}
 \title{NMF Model - Standard model}
 \description{
-  This class implements the standard model of Nonnegative
-  Matrix Factorization. It provides a general structure and
-  generic functions to manage factorizations that follow
-  the standard NMF model, as defined by \cite{Lee et al.
-  (2001)}.
+  This class implements the standard model of Nonnegative Matrix
+Factorization.
+It provides a general structure and generic functions to manage
+factorizations that follow the standard NMF model, as defined by
+\cite{Lee et al. (2001)}.
 }
 \details{
-  Let \eqn{V} be a \eqn{n \times m} non-negative matrix and
-  \eqn{r} a positive integer.  In its standard form (see
-  references below), a NMF of \eqn{V} is commonly defined
-  as a pair of matrices \eqn{(W, H)} such that:
+  Let \eqn{V} be a \eqn{n \times m} non-negative matrix and \eqn{r} a positive
+integer.  In its standard form (see references below), a NMF of \eqn{V} is
+commonly defined as a pair of matrices \eqn{(W, H)} such that:
 
-  \deqn{V \equiv W H,}
+\deqn{V \equiv W H,}
 
-  where: \itemize{ \item \eqn{W} and \eqn{H} are \eqn{n
-  \times r} and \eqn{r \times m} matrices respectively with
-  non-negative entries; \item \eqn{\equiv} is to be
-  understood with respect to some loss function. Common
-  choices of loss functions are based on Frobenius norm or
-  Kullback-Leibler divergence. }
+where:
+\itemize{
+\item \eqn{W} and \eqn{H} are \eqn{n \times r} and \eqn{r
+\times m} matrices respectively with non-negative entries;
+\item \eqn{\equiv} is to be understood with respect to some loss function.
+Common choices of loss functions are based on Frobenius norm or Kullback-Leibler
+divergence.
+}
 
-  Integer \eqn{r} is called the \emph{factorization rank}.
-  Depending on the context of application of NMF, the
-  columns of \eqn{W} and \eqn{H} are given different names:
-  \describe{ \item{columns of \code{W}}{basis vector,
-  metagenes, factors, source, image basis} \item{columns of
-  \code{H}}{mixture coefficients, metagene sample
-  expression profiles, weights} \item{rows of
-  \code{H}}{basis profiles, metagene expression profiles} }
+Integer \eqn{r} is called the \emph{factorization rank}.
+Depending on the context of application of NMF, the columns of \eqn{W}
+and \eqn{H} are given different names:
+\describe{
+\item{columns of \code{W}}{basis vector, metagenes, factors, source, image basis}
+\item{columns of \code{H}}{mixture coefficients, metagene sample expression profiles, weights}
+\item{rows of \code{H}}{basis profiles, metagene expression profiles}
+}
 
-  NMF approaches have been successfully applied to several
-  fields. The package NMF was implemented trying to use
-  names as generic as possible for objects and methods.
+NMF approaches have been successfully applied to several fields.
+The package NMF was implemented trying to use names as generic as possible
+for objects and methods.
 
-  The following terminology is used: \describe{
-  \item{samples}{the columns of the target matrix \eqn{V}}
-  \item{features}{the rows of the target matrix \eqn{V}}
-  \item{basis matrix}{the first matrix factor \eqn{W}}
-  \item{basis vectors}{the columns of first matrix factor
-  \eqn{W}} \item{mixture matrix}{the second matrix factor
-  \eqn{H}} \item{mixtures coefficients}{the columns of
-  second matrix factor \eqn{H}} }
+The following terminology is used:
+\describe{
+\item{samples}{the columns of the target matrix \eqn{V}}
+\item{features}{the rows of the target matrix \eqn{V}}
+\item{basis matrix}{the first matrix factor \eqn{W}}
+\item{basis vectors}{the columns of first matrix factor \eqn{W}}
+\item{mixture matrix}{the second matrix factor \eqn{H}} \item{mixtures
+coefficients}{the columns of second matrix factor \eqn{H}}
+}
 
-  However, because the package NMF was primarily
-  implemented to work with gene expression microarray data,
-  it also provides a layer to easily and intuitively work
-  with objects from the Bioconductor base framework. See
-  \link{bioc-NMF} for more details.
+However, because the package NMF was primarily implemented to work with gene
+expression microarray data, it also provides a layer to easily and
+intuitively work with objects from the Bioconductor base framework.
+See \link{bioc-NMF} for more details.
 }
 \section{Slots}{
 \describe{
@@ -183,10 +184,8 @@ h <- rmatrix(r, p)
 nmfModel(W = w, H = h)
 }
 \references{
-  Lee DD and Seung H (2001). "Algorithms for non-negative
-  matrix factorization." _Advances in neural information
-  processing systems_. <URL:
-  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
+  Lee DD and Seung H (2001). "Algorithms for non-negative matrix factorization." _Advances in neural information processing
+systems_. <URL: http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
 }
 \seealso{
   Other NMF-model: \code{\link{initialize,NMFOffset-method}}, \code{\link{NMFns-class}}, \code{\link{NMFOffset-class}}

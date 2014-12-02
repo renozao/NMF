@@ -10,14 +10,13 @@
   \item{object}{Any R object}
 }
 \description{
-  This class implements the virtual interface
-  \code{\linkS4class{NMFStrategy}} for NMF algorithms that
-  are implemented in Octave/Matlab, and provided as a set
-  of .m files or as plain code.
+  This class implements the virtual interface \code{\linkS4class{NMFStrategy}}
+for NMF algorithms that are implemented in Octave/Matlab, and provided as
+a set of .m files or as plain code.
 }
 \details{
-  The \code{run} method for this class runs the algorithms
-  via the \code{\link[RcppOctave]{RcppOctave}} package.
+  The \code{run} method for this class runs the algorithms via the
+\code{\link[RcppOctave]{RcppOctave}} package.
 }
 \section{Slots}{
 \describe{

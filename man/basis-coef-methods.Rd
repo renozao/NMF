@@ -126,62 +126,52 @@ coefficient matrix should sum up to.}
     object.}
 }
 \description{
-  \code{basis} and \code{basis<-} are S4 generic functions
-  which respectively extract and set the matrix of basis
-  components of an NMF model (i.e. the first matrix
-  factor).
+  \code{basis} and \code{basis<-} are S4 generic functions which respectively
+extract and set the matrix of basis components of an NMF model
+(i.e. the first matrix factor).
 
-  The methods \code{.basis}, \code{.coef} and their
-  replacement versions are implemented as pure virtual
-  methods for the interface class \code{NMF}, meaning that
-  concrete NMF models must provide a definition for their
-  corresponding class (i.e. sub-classes of class
-  \code{NMF}). See \code{\linkS4class{NMF}} for more
-  details.
+The methods \code{.basis}, \code{.coef} and their replacement versions
+are implemented as pure virtual methods for the interface class
+\code{NMF}, meaning that concrete NMF models must provide a
+definition for their corresponding class (i.e. sub-classes of
+class \code{NMF}).
+See \code{\linkS4class{NMF}} for more details.
 
-  \code{coef} and \code{coef<-} respectively extract and
-  set the coefficient matrix of an NMF model (i.e. the
-  second matrix factor). For example, in the case of the
-  standard NMF model \eqn{V \equiv WH}{V ~ W H}, the method
-  \code{coef} will return the matrix \eqn{H}.
+\code{coef} and \code{coef<-} respectively extract and set the
+coefficient matrix of an NMF model (i.e. the second matrix factor).
+For example, in the case of the standard NMF model \eqn{V \equiv WH}{V ~ W H},
+the method \code{coef} will return the matrix \eqn{H}.
 
-  \code{.coef} and \code{.coef<-} are low-level S4 generics
-  that simply return/set coefficient data in an object,
-  leaving some common processing to be performed in
-  \code{coef} and \code{coef<-}.
+\code{.coef} and \code{.coef<-} are low-level S4 generics that simply
+return/set coefficient data in an object, leaving some common processing
+to be performed in \code{coef} and \code{coef<-}.
 
-  Methods \code{coefficients} and \code{coefficients<-} are
-  simple aliases for methods \code{coef} and \code{coef<-}
-  respectively.
+Methods \code{coefficients} and \code{coefficients<-} are
+simple aliases for methods \code{coef} and \code{coef<-} respectively.
 
-  \code{scoef} is similar to \code{coef}, but returns the
-  mixture coefficient matrix of an NMF model, with the
-  columns scaled so that they sum up to a given value (1 by
-  default).
+\code{scoef} is similar to \code{coef}, but returns the mixture
+coefficient matrix of an NMF model, with the columns scaled so that they
+sum up to a given value (1 by default).
 }
 \details{
-  For example, in the case of the standard NMF model \eqn{V
-  \equiv W H}{V ~ W H}, the method \code{basis} will return
-  the matrix \eqn{W}.
+  For example, in the case of the standard NMF model \eqn{V \equiv W H}{V ~ W H},
+the method \code{basis} will return the matrix \eqn{W}.
 
-  \code{basis} and \code{basis<-} are defined for the top
-  virtual class \code{\linkS4class{NMF}} only, and rely
-  internally on the low-level S4 generics \code{.basis} and
-  \code{.basis<-} respectively that effectively extract/set
-  the coefficient data. These data are post/pre-processed,
-  e.g., to extract/set only their non-fixed terms or check
-  dimension compatibility.
+\code{basis} and \code{basis<-} are defined for the top
+virtual class \code{\linkS4class{NMF}} only, and rely internally on the low-level
+S4 generics \code{.basis} and \code{.basis<-} respectively that effectively
+extract/set the coefficient data.
+These data are post/pre-processed, e.g., to extract/set only their
+non-fixed terms or check dimension compatibility.
 
-  \code{coef} and \code{coef<-} are S4 methods defined for
-  the corresponding generic functions from package
-  \code{stats} (See \link[stats]{coef}). Similarly to
-  \code{basis} and \code{basis<-}, they are defined for the
-  top virtual class \code{\linkS4class{NMF}} only, and rely
-  internally on the S4 generics \code{.coef} and
-  \code{.coef<-} respectively that effectively extract/set
-  the coefficient data. These data are post/pre-processed,
-  e.g., to extract/set only their non-fixed terms or check
-  dimension compatibility.
+\code{coef} and \code{coef<-} are S4 methods defined for the corresponding
+generic functions from package \code{stats} (See \link[stats]{coef}).
+Similarly to \code{basis} and \code{basis<-}, they are defined for the top
+virtual class \code{\linkS4class{NMF}} only, and rely internally on the S4
+generics \code{.coef} and \code{.coef<-} respectively that effectively
+extract/set the coefficient data.
+These data are post/pre-processed, e.g., to extract/set only their
+non-fixed terms or check dimension compatibility.
 }
 \section{Methods}{
 \describe{

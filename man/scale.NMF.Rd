@@ -22,23 +22,18 @@ or, if \code{center='coef'}, the value of \eqn{1/\alpha}{1/alpha} (see section \
   an NMF object
 }
 \description{
-  Rescales an NMF model keeping the fitted target matrix
-  identical.
+  Rescales an NMF model keeping the fitted target matrix identical.
 }
 \details{
-  Standard NMF models are identifiable modulo a scaling
-  factor, meaning that the basis components and basis
-  profiles can be rescaled without changing the fitted
-  values:
+  Standard NMF models are identifiable modulo a scaling factor, meaning that the
+basis components and basis profiles can be rescaled without changing the fitted
+values:
 
-  \deqn{X = W_1 H_1 = (W_1 D) (D^{-1} H_1) = W_2 H_2}{X = W
-  H = (W D) (D^-1 H)} with \eqn{D= \alpha diag(1/\delta_1,
-  \ldots, 1\delta_r)}{D= alpha * diag(1/delta_1, ...,
-  1/delta_r)}
+\deqn{X = W_1 H_1 = (W_1 D) (D^{-1} H_1) = W_2 H_2}{X = W H = (W D) (D^-1 H)}
+with \eqn{D= \alpha diag(1/\delta_1, \ldots, 1\delta_r)}{D= alpha * diag(1/delta_1, ..., 1/delta_r)}
 
-  The default call \code{scale(object)} rescales the basis
-  NMF object so that each column of the basis matrix sums
-  up to one.
+The default call \code{scale(object)} rescales the basis NMF object so that each
+column of the basis matrix sums up to one.
 }
 \examples{
 \dontshow{# roxygen generated flag

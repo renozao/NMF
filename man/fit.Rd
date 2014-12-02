@@ -32,31 +32,26 @@ function \code{\link{nmf}}.}
   \item{...}{extra arguments to allow extension}
 }
 \description{
-  The functions \code{fit} and \code{minfit} are S4
-  genetics that extract the best model object and the best
-  fit object respectively, from a collection of models or
-  from a wrapper object.
+  The functions \code{fit} and \code{minfit} are S4 genetics that extract
+the best model object and the best fit object respectively, from a collection
+of models or from a wrapper object.
 
-  \code{fit<-} sets the fitted model in a fit object. It is
-  meant to be called only when developing new NMF
-  algorithms, e.g. to update the value of the model stored
-  in the starting point.
+\code{fit<-} sets the fitted model in a fit object.
+It is meant to be called only when developing new NMF algorithms, e.g. to update
+the value of the model stored in the starting point.
 }
 \details{
-  A fit object differs from a model object in that it
-  contains data about the fit, such as the initial RNG
-  settings, the CPU time used, etc\ldots, while a model
-  object only contains the actual modelling data such as
-  regression coefficients, loadings, etc\ldots
+  A fit object differs from a model object in that it contains data about the
+fit, such as the initial RNG settings, the CPU time used, etc\ldots, while
+a model object only contains the actual modelling data such as regression
+coefficients, loadings, etc\ldots
 
-  That best model is generally defined as the one that
-  achieves the maximum/minimum some quantitative measure,
-  amongst all models in a collection.
+That best model is generally defined as the one that achieves the
+maximum/minimum some quantitative measure, amongst all models in a collection.
 
-  In the case of NMF models, the best model is the one that
-  achieves the best approximation error, according to the
-  objective function associated with the algorithm that
-  performed the fit(s).
+In the case of NMF models, the best model is the one that achieves the best
+approximation error, according to the objective function associated with the
+algorithm that performed the fit(s).
 }
 \section{Methods}{
 \describe{

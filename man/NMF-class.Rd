@@ -39,34 +39,30 @@
   }
 }
 \description{
-  The class \code{NMF} is a \emph{virtual class} that
-  defines a common interface to handle Nonnegative Matrix
-  Factorization models (NMF models) in a generic way.
-  Provided a minimum set of generic methods is implemented
-  by concrete model classes, these benefit from a whole set
-  of functions and utilities to perform common computations
-  and tasks in the context of Nonnegative Matrix
-  Factorization.
+  The class \code{NMF} is a \emph{virtual class} that defines a common
+interface to handle Nonnegative Matrix Factorization models (NMF models)
+in a generic way.
+Provided a minimum set of generic methods is implemented by concrete
+model classes, these benefit from a whole set of functions and utilities
+to perform common computations and tasks in the context of Nonnegative Matrix
+Factorization.
 
-  The function \code{misc} provides access to miscellaneous
-  data members stored in slot \code{misc} (as a
-  \code{list}), which allow extensions of NMF models to be
-  implemented, without defining a new S4 class.
+The function \code{misc} provides access to miscellaneous data members stored
+in slot \code{misc} (as a \code{list}), which allow extensions of NMF models
+to be implemented, without defining a new S4 class.
 }
 \details{
-  Class \code{NMF} makes it easy to develop new models that
-  integrate well into the general framework implemented by
-  the \emph{NMF} package.
+  Class \code{NMF} makes it easy to develop new models that integrate well
+into the general framework implemented by the \emph{NMF} package.
 
-  Following a few simple guidelines, new types of NMF
-  models benefit from all the functionalities available for
-  the built-in NMF models -- that derive themselves from
-  class \code{NMF}. See section \emph{Implementing NMF
-  models} below.
+Following a few simple guidelines, new types of NMF models benefit from all the
+functionalities available for the built-in NMF models -- that derive themselves
+from class \code{NMF}.
+See section \emph{Implementing NMF models} below.
 
-  See \code{\linkS4class{NMFstd}}, and references and links
-  therein for details on the built-in implementations of
-  the standard NMF model and its extensions.
+See \code{\linkS4class{NMFstd}}, and references and links therein for
+details on the built-in implementations of the standard NMF model and its
+extensions.
 }
 \section{Slots}{
 \describe{
@@ -437,24 +433,16 @@ nmfModel(3)
 nmfModel(3, model='NMFns')
 }
 \references{
-  Definition of Nonnegative Matrix Factorization in its
-  modern formulation: \cite{Lee et al. (1999)}
+  Definition of Nonnegative Matrix Factorization in its modern formulation: \cite{Lee et al. (1999)}
 
-  Historical first definition and algorithms: \cite{Paatero
-  et al. (1994)}
+Historical first definition and algorithms: \cite{Paatero et al. (1994)}
 
-  Lee DD and Seung HS (1999). "Learning the parts of
-  objects by non-negative matrix factorization." _Nature_,
-  *401*(6755), pp. 788-91. ISSN 0028-0836, <URL:
-  http://dx.doi.org/10.1038/44565>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/10548103>.
+Lee DD and Seung HS (1999). "Learning the parts of objects by non-negative matrix factorization." _Nature_, *401*(6755), pp.
+788-91. ISSN 0028-0836, <URL: http://dx.doi.org/10.1038/44565>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/10548103>.
 
-  Paatero P and Tapper U (1994). "Positive matrix
-  factorization: A non-negative factor model with optimal
-  utilization of error estimates of data values."
-  _Environmetrics_, *5*(2), pp. 111-126. <URL:
-  http://dx.doi.org/10.1002/env.3170050203>, <URL:
-  http://www3.interscience.wiley.com/cgi-bin/abstract/113468839/ABSTRACT>.
+Paatero P and Tapper U (1994). "Positive matrix factorization: A non-negative factor model with optimal utilization of error
+estimates of data values." _Environmetrics_, *5*(2), pp. 111-126. <URL: http://dx.doi.org/10.1002/env.3170050203>, <URL:
+http://www3.interscience.wiley.com/cgi-bin/abstract/113468839/ABSTRACT>.
 }
 \seealso{
   Main interface to perform NMF in \code{\link{nmf-methods}}.

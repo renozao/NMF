@@ -47,26 +47,22 @@ memory or in a local environment.}
 \description{
   Utilities for Parallel Computations
 
-  \code{ts_eval} generates a thread safe version of
-  \code{\link{eval}}. It uses boost mutexes provided by the
-  \code{\link[synchronicity]{synchronicity}} package. The
-  generated function has arguments \code{expr} and
-  \code{envir}, which are passed to \code{\link{eval}}.
+\code{ts_eval} generates a thread safe version of \code{\link{eval}}.
+It uses boost mutexes provided by the \code{\link[synchronicity]{synchronicity}}
+package.
+The generated function has arguments \code{expr} and \code{envir}, which are passed
+to \code{\link{eval}}.
 
-  \code{ts_tempfile} generates a \emph{unique} temporary
-  filename that includes the name of the host machine
-  and/or the caller's process id, so that it is thread
-  safe.
+\code{ts_tempfile} generates a \emph{unique} temporary filename
+that includes the name of the host machine and/or the caller's process id,
+so that it is thread safe.
 
-  \code{hostfile} generates a temporary filename composed
-  with the name of the host machine and/or the current
-  process id.
+\code{hostfile} generates a temporary filename composed with
+the name of the host machine and/or the current process id.
 
-  \code{gVariable} generates a function that access a
-  global static variable, possibly in shared memory (only
-  for numeric matrix-coercible data in this case). It is
-  used primarily in parallel computations, to preserve data
-  accross computations that are performed by the same
-  process.
+\code{gVariable} generates a function that access a global static variable,
+possibly in shared memory (only for numeric matrix-coercible data in this case).
+It is used primarily in parallel computations, to preserve data accross
+computations that are performed by the same process.
 }
 

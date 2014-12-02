@@ -39,7 +39,7 @@ skipped, if present in the track (it associated with iteration 0).}
       All other \code{type}s give a warning or an error; using, e.g.,
       \code{type = "punkte"} being equivalent to \code{type = "p"} for S
       compatibility.  Note that some methods,
-      e.g. \code{\link{plot.factor}}, do not accept this.
+      e.g.\ifelse{{latex}{\out{~}}{ }}{}\code{\link{plot.factor}}, do not accept this.
     }
     \item{\code{main}}{an overall title for the plot: see \code{\link{title}}.}
     \item{\code{sub}}{a sub title for the plot: see \code{\link{title}}.}
@@ -51,8 +51,8 @@ skipped, if present in the track (it associated with iteration 0).}
   }
 }
 \description{
-  Plots the residual track computed at regular interval
-  during the fit of the NMF model \code{x}.
+  Plots the residual track computed at regular interval during the fit of
+the NMF model \code{x}.
 }
 \keyword{methods}
 

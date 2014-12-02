@@ -20,9 +20,8 @@
   the result of the NMF fit invisibly.
 }
 \description{
-  \code{nmfCheck} enables to quickly check that a given NMF
-  algorithm runs properly, by applying it to some small
-  random data.
+  \code{nmfCheck} enables to quickly check that a given NMF algorithm runs
+properly, by applying it to some small random data.
 }
 \examples{
 \dontshow{# roxygen generated flag

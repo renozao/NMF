@@ -20,10 +20,9 @@ about the NMF model should be attached to the result (\code{TRUE}) or not
 (\code{FALSE}).}
 }
 \description{
-  This method returns \code{NULL} on an empty object. The
-  result is a matrix with several attributes attached, that
-  are used by plotting functions such as
-  \code{\link{consensusmap}} to annotate the plots.
+  This method returns \code{NULL} on an empty object.
+The result is a matrix with several attributes attached, that are used by
+plotting functions such as \code{\link{consensusmap}} to annotate the plots.
 }
 \keyword{methods}
 

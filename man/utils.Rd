@@ -13,8 +13,8 @@
 \description{
   Utility Function in the NMF Package
 
-  \code{str_args} formats the arguments of a function using
-  \code{\link{args}}, but returns the output as a string.
+\code{str_args} formats the arguments of a function using \code{\link{args}},
+but returns the output as a string.
 }
 \examples{
 \dontshow{# roxygen generated flag

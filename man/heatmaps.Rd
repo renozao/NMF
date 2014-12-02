@@ -187,78 +187,75 @@ Possible values are:
 }}
 }
 \description{
-  The NMF package ships an advanced heatmap engine
-  implemented by the function \code{\link{aheatmap}}. Some
-  convenience heatmap functions have been implemented for
-  NMF models, which redefine default values for some of the
-  arguments of \code{\link{aheatmap}}, hence tuning the
-  output specifically for NMF models.
+  The NMF package ships an advanced heatmap engine implemented by the function
+\code{\link{aheatmap}}.
+Some convenience heatmap functions have been implemented for NMF models,
+which redefine default values for some of the arguments of \code{\link{aheatmap}},
+hence tuning the output specifically for NMF models.
 }
 \details{
-  \strong{IMPORTANT:} although they essentially have the
-  same set of arguments, their order sometimes differ
-  between them, as well as from \code{\link{aheatmap}}. We
-  therefore strongly recommend to use fully named arguments
-  when calling these functions.
+  \strong{IMPORTANT:} although they essentially have the same set of arguments,
+their order sometimes differ between them, as well as from \code{\link{aheatmap}}.
+We therefore strongly recommend to use fully named arguments when calling these functions.
 
-  \code{basimap} default values for the following arguments
-  of \code{\link{aheatmap}}: \itemize{ \item the color
-  palette; \item the scaling specification, which by
-  default scales each row separately so that they sum up to
-  one (\code{scale='r1'}); \item the column ordering which
-  is disabled; \item allowing for passing feature
-  extraction methods in argument \code{subsetRow}, that are
-  passed to \code{\link{extractFeatures}}. See argument
-  description here and therein. \item the addition of a
-  default named annotation track, that shows the dominant
-  basis component for each row (i.e. each feature).
+\code{basimap} default values for the following arguments of \code{\link{aheatmap}}:
+\itemize{
+\item the color palette;
+\item the scaling specification, which by default scales each
+row separately so that they sum up to one (\code{scale='r1'});
+\item the column ordering which is disabled;
+\item allowing for passing feature extraction methods in argument
+\code{subsetRow}, that are passed to \code{\link{extractFeatures}}.
+See argument description here and therein.
+\item the addition of a default named annotation track, that shows
+the dominant basis component for each row (i.e. each feature).
 
-  This track is specified in argument \code{tracks} (see
-  its argument description). By default, a matching column
-  annotation track is also displayed, but may be disabled
-  using \code{tracks=':basis'}.
+This track is specified in argument \code{tracks} (see its argument description).
+By default, a matching column annotation track is also displayed, but may be
+disabled using \code{tracks=':basis'}.
 
-  \item a suitable title and extra information like the
-  fitting algorithm, when \code{object} is a fitted NMF
-  model. }
+\item a suitable title and extra information like the fitting algorithm,
+when \code{object} is a fitted NMF model.
+}
 
-  \code{coefmap} redefines default values for the following
-  arguments of \code{\link{aheatmap}}: \itemize{ \item the
-  color palette; \item the scaling specification, which by
-  default scales each column separately so that they sum up
-  to one (\code{scale='c1'}); \item the row ordering which
-  is disabled; \item the addition of a default annotation
-  track, that shows the most contributing basis component
-  for each column (i.e. each sample).
+\code{coefmap} redefines default values for the following arguments of
+\code{\link{aheatmap}}:
+\itemize{
+\item the color palette;
+\item the scaling specification, which by default scales each
+column separately so that they sum up to one (\code{scale='c1'});
+\item the row ordering which is disabled;
+\item the addition of a default annotation track, that shows the most
+contributing basis component for each column (i.e. each sample).
 
-  This track is specified in argument \code{tracks} (see
-  its argument description). By default, a matching row
-  annotation track is also displayed, but can be disabled
-  using \code{tracks='basis:'}. \item a suitable title and
-  extra information like the fitting algorithm, when
-  \code{object} is a fitted NMF model. }
+This track is specified in argument \code{tracks} (see its argument description).
+By default, a matching row annotation track is also displayed, but can be disabled
+using \code{tracks='basis:'}.
+\item a suitable title and extra information like the fitting algorithm,
+when \code{object} is a fitted NMF model.
+}
 
-  \code{consensusmap} redefines default values for the
-  following arguments of \code{\link{aheatmap}}: \itemize{
-  \item the colour palette; \item the column ordering which
-  is set equal to the row ordering, since a consensus
-  matrix is symmetric; \item the distance and linkage
-  methods used to order the rows (and columns). The default
-  is to use 1 minus the consensus matrix itself as
-  distance, and average linkage. \item the addition of two
-  special named annotation tracks, \code{'basis:'} and
-  \code{'consensus:'}, that show, for each column (i.e.
-  each sample), the dominant basis component in the best
-  fit and the hierarchical clustering of the consensus
-  matrix respectively (using 1-consensus as distance and
-  average linkage).
+\code{consensusmap} redefines default values for the following arguments of
+\code{\link{aheatmap}}:
+\itemize{
+\item the colour palette;
+\item the column ordering which is set equal to the row ordering, since
+a consensus matrix is symmetric;
+\item the distance and linkage methods used to order the rows (and columns).
+The default is to use 1 minus the consensus matrix itself as distance, and
+average linkage.
+\item the addition of two special named annotation tracks, \code{'basis:'} and
+\code{'consensus:'}, that show, for each column (i.e. each sample),
+the dominant basis component in the best fit and the hierarchical clustering
+of the consensus matrix respectively (using 1-consensus as distance and average
+linkage).
 
-  These tracks are specified in argument \code{tracks},
-  which behaves as in \code{\link{basismap}}.
+These tracks are specified in argument \code{tracks}, which behaves as in
+\code{\link{basismap}}.
 
-  \item a suitable title and extra information like the
-  type of NMF model or the fitting algorithm, when
-  \code{object} is a fitted NMF model. }
+\item a suitable title and extra information like the type of NMF model or the
+fitting algorithm, when \code{object} is a fitted NMF model.
+}
 }
 \section{Methods}{
 \describe{

@@ -64,16 +64,14 @@ it is used to annotate the plot, unless \code{annotation=NA}.}
 \description{
   Plotting Expression Profiles
 
-  When using NMF for clustering in particular, one looks
-  for strong associations between the basis and a priori
-  known groups of samples. Plotting the profiles may
-  highlight such patterns.
+When using NMF for clustering in particular, one looks for strong
+associations between the basis and a priori known groups of samples.
+Plotting the profiles may highlight such patterns.
 }
 \details{
-  The function can also be used to compare the profiles
-  from two NMF models or mixture coefficient matrices. In
-  this case, it draws a scatter plot of the paired
-  profiles.
+  The function can also be used to compare the profiles from two NMF models or
+mixture coefficient matrices. In this case, it draws a scatter plot of the
+paired profiles.
 }
 \examples{
 \dontshow{# roxygen generated flag

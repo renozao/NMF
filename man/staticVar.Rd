@@ -17,13 +17,11 @@ if the variable should be set to the new value only if it does not exist yet
   The value of the static variable
 }
 \description{
-  This function is used in iterative NMF algorithms to
-  manage variables stored in a local workspace, that are
-  accessible to all functions that define the iterative
-  schema described in
-  \code{\linkS4class{NMFStrategyIterative}}.
+  This function is used in iterative NMF algorithms to manage variables
+stored in a local workspace, that are accessible to all functions that
+define the iterative schema described in \code{\linkS4class{NMFStrategyIterative}}.
 
-  It is specially useful for computing stopping criteria,
-  which often require model data from different iterations.
+It is specially useful for computing stopping criteria, which often require model data from
+different iterations.
 }
 

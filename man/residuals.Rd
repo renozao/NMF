@@ -50,38 +50,32 @@ or a numeric vector containing the residual values at some iterations.
 The names correspond to the iterations at which the residuals were computed.
 }
 \description{
-  The package NMF defines methods for the function
-  \code{\link[stats]{residuals}} that returns the final
-  residuals of an NMF fit or the track of the residuals
-  along the fit process, computed according to the
-  objective function associated with the algorithm that
-  fitted the model.
+  The package NMF defines methods for the function \code{\link[stats]{residuals}}
+that returns the final residuals of an NMF fit or the track of the residuals
+along the fit process, computed according to the objective function
+associated with the algorithm that fitted the model.
 
-  \code{residuals<-} sets the value of the last residuals,
-  or, optionally, of the complete residual track.
+\code{residuals<-} sets the value of the last residuals, or, optionally,
+of the complete residual track.
 
-  Tells if an \code{NMFfit} object contains a recorded
-  residual track.
+Tells if an \code{NMFfit} object contains a recorded residual track.
 
-  \code{trackError} adds a residual value to the track of
-  residuals.
+\code{trackError} adds a residual value to the track of residuals.
 }
 \details{
-  When called with \code{track=TRUE}, the whole residuals
-  track is returned, if available. Note that method
-  \code{\link{nmf}} does not compute the residuals track,
-  unless explicitly required.
+  When called with \code{track=TRUE}, the whole residuals track is returned,
+if available.
+Note that method \code{\link{nmf}} does not compute the residuals track,
+unless explicitly required.
 
-  It is a S4 methods defined for the associated generic
-  functions from package \code{stats} (See
-  \link[stats]{residuals}).
+It is a S4 methods defined for the associated generic functions from package
+\code{stats} (See \link[stats]{residuals}).
 }
 \note{
-  Stricly speaking, the method \code{residuals,NMFfit} does
-  not fulfill its contract as defined by the package
-  \code{stats}, but rather acts as function
-  \code{deviance}. The might be changed in a later release
-  to make it behave as it should.
+  Stricly speaking, the method \code{residuals,NMFfit} does not fulfill
+its contract as defined by the package \code{stats}, but rather acts as function
+\code{deviance}.
+The might be changed in a later release to make it behave as it should.
 }
 \section{Methods}{
 \describe{

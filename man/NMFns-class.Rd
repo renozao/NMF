@@ -3,52 +3,45 @@
 \alias{NMFns-class}
 \title{NMF Model - Nonsmooth Nonnegative Matrix Factorization}
 \description{
-  This class implements the \emph{Nonsmooth Nonnegative
-  Matrix Factorization} (nsNMF) model, required by the
-  Nonsmooth NMF algorithm.
+  This class implements the \emph{Nonsmooth Nonnegative Matrix Factorization}
+(nsNMF) model, required by the Nonsmooth NMF algorithm.
 
-  The Nonsmooth NMF algorithm is defined by
-  \cite{Pascual-Montano et al. (2006)} as a modification of
-  the standard divergence based NMF algorithm (see section
-  Details and references below).  It aims at obtaining
-  sparser factor matrices, by the introduction of a
-  smoothing matrix.
+The Nonsmooth NMF algorithm is defined by \cite{Pascual-Montano et al. (2006)} as a
+modification of the standard divergence based NMF algorithm (see section
+Details and references below).  It aims at obtaining sparser factor
+matrices, by the introduction of a smoothing matrix.
 }
 \details{
-  The Nonsmooth NMF algorithm is a modification of the
-  standard divergence based NMF algorithm (see
-  \code{\linkS4class{NMF}}). Given a non-negative \eqn{n
-  \times p}{n x p} matrix \eqn{V} and a factorization rank
-  \eqn{r}, it fits the following model:
+  The Nonsmooth NMF algorithm is a modification of the standard divergence
+based NMF algorithm (see \code{\linkS4class{NMF}}).
+Given a non-negative \eqn{n \times p}{n x p} matrix \eqn{V} and a
+factorization rank \eqn{r}, it fits the following model:
 
-  \deqn{V \equiv W S(\theta) H,}{V &#126; W S(theta) H,}
-  where: \itemize{
+\deqn{V \equiv W S(\theta) H,}{V &#126; W S(theta) H,}
+where:
+\itemize{
 
-  \item \eqn{W} and \eqn{H} are such as in the standard
-  model, i.e. non-negative matrices of dimension \eqn{n
-  \times r}{n x r} and \eqn{r \times p}{r x p}
-  respectively;
+\item \eqn{W} and \eqn{H} are such as in the standard model, i.e.
+non-negative matrices of dimension \eqn{n \times r}{n x r}
+and \eqn{r \times p}{r x p} respectively;
 
-  \item \eqn{S} is a \eqn{r \times r} square matrix whose
-  entries depends on an extra parameter \eqn{0\leq \theta
-  \leq 1} in the following way: \deqn{S = (1-\theta)I +
-  \frac{\theta}{r} 11^T ,} where \eqn{I} is the identity
-  matrix and \eqn{1} is a vector of ones.
+\item \eqn{S} is a \eqn{r \times r} square matrix whose entries depends on
+an extra parameter \eqn{0\leq \theta \leq 1} in the following way:
+\deqn{S = (1-\theta)I + \frac{\theta}{r} 11^T ,}
+where \eqn{I} is the identity matrix and \eqn{1}
+is a vector of ones.
 
-  }
+}
 
-  The interpretation of S as a smoothing matrix can be
-  explained as follows: Let \eqn{X} be a positive, nonzero,
-  vector. Consider the transformed vector \eqn{Y = S X}. If
-  \eqn{\theta = 0}, then \eqn{Y = X} and no smoothing on
-  \eqn{X} has occurred.  However, as \eqn{\theta \to
-  1}{theta tends to 1}, the vector \eqn{Y} tends to the
-  constant vector with all elements almost equal to the
-  average of the elements of \eqn{X}. This is the smoothest
-  possible vector in the sense of non-sparseness because
-  all entries are equal to the same nonzero value, instead
-  of having some values close to zero and others clearly
-  nonzero.
+The interpretation of S as a smoothing matrix can be explained as follows:
+Let \eqn{X} be a positive, nonzero, vector. Consider the transformed vector
+\eqn{Y = S X}. If \eqn{\theta = 0}, then \eqn{Y = X} and no smoothing on
+\eqn{X} has occurred.  However, as \eqn{\theta \to 1}{theta tends to 1}, the
+vector \eqn{Y} tends to the constant vector with all elements almost equal
+to the average of the elements of \eqn{X}. This is the smoothest possible
+vector in the sense of non-sparseness because all entries are equal to the
+same nonzero value, instead of having some values close to zero and others
+clearly nonzero.
 }
 \section{Methods}{
 \describe{
@@ -125,10 +118,8 @@ V <- rmatrix(n, p)
 rnmf(3, 10, 5, model='NMFns', theta=0.3)
 }
 \references{
-  Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and
-  Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix
-  factorization (nsNMF)." _IEEE Trans. Pattern Anal. Mach.
-  Intell_, *28*, pp. 403-415.
+  Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix factorization
+(nsNMF)." _IEEE Trans. Pattern Anal. Mach. Intell_, *28*, pp. 403-415.
 }
 \seealso{
   Other NMF-model: \code{\link{initialize,NMFOffset-method}}, \code{\link{NMFOffset-class}}, \code{\link{NMFstd-class}}

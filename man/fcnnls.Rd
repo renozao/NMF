@@ -42,49 +42,44 @@ computation was performed using the pseudoinverse. See argument
 \code{pseudo}.}
 }
 \description{
-  This function solves the following nonnegative least
-  square linear problem using normal equations and the fast
-  combinatorial strategy from \cite{Van Benthem et al.
-  (2004)}:
+  This function solves the following nonnegative least square linear problem
+using normal equations and the fast combinatorial strategy from \cite{Van Benthem et al. (2004)}:
 
-  \deqn{ \begin{array}{l} \min \|Y - X K\|_F\\ \mbox{s.t. }
-  K>=0 \end{array} }{min ||Y - X K||_F, s.t. K>=0}
+\deqn{
+ \begin{array}{l}
+ \min \|Y - X K\|_F\\
+ \mbox{s.t. } K>=0
+ \end{array}
+}{min ||Y - X K||_F, s.t. K>=0}
 
-  where \eqn{Y} and \eqn{X} are two real matrices of
-  dimension \eqn{n \times p}{n x p} and \eqn{n \times r}{n
-  x r} respectively, and \eqn{\|.\|_F}{|.|_F} is the
-  Frobenius norm.
+where \eqn{Y} and \eqn{X} are two real matrices of dimension \eqn{n \times p}{n x p}
+and \eqn{n \times r}{n x r} respectively,
+and \eqn{\|.\|_F}{|.|_F} is the Frobenius norm.
 
-  The algorithm is very fast compared to other approaches,
-  as it is optimised for handling multiple right-hand
-  sides.
+The algorithm is very fast compared to other approaches, as it is optimised
+for handling multiple right-hand sides.
 }
 \details{
-  Within the \code{NMF} package, this algorithm is used
-  internally by the SNMF/R(L) algorithm from \cite{Kim et
-  al. (2007)} to solve general Nonnegative Matrix
-  Factorization (NMF) problems, using alternating
-  nonnegative constrained least-squares. That is by
-  iteratively and alternatively estimate each matrix
-  factor.
+  Within the \code{NMF} package, this algorithm is used internally by the
+SNMF/R(L) algorithm from \cite{Kim et al. (2007)} to solve general Nonnegative
+Matrix Factorization (NMF) problems, using alternating nonnegative
+constrained least-squares.
+That is by iteratively and alternatively estimate each matrix factor.
 
-  The algorithm is an active/passive set method, which
-  rearrange the right-hand side to reduce the number of
-  pseudo-inverse calculations. It uses the unconstrained
-  solution \eqn{K_u} obtained from the unconstrained least
-  squares problem, i.e. \eqn{\min \|Y - X K\|_F^2}{min ||Y
-  - X K||_F^2} , so as to determine the initial passive
-  sets.
+The algorithm is an active/passive set method, which rearrange the
+right-hand side to reduce the number of pseudo-inverse calculations.
+It uses the unconstrained solution \eqn{K_u} obtained from the
+unconstrained least squares problem,
+i.e. \eqn{\min \|Y - X K\|_F^2}{min ||Y - X K||_F^2} , so as to determine
+the initial passive sets.
 
-  The function \code{fcnnls} is provided separately so that
-  it can be used to solve other types of nonnegative least
-  squares problem. For faster computation, when multiple
-  nonnegative least square fits are needed, it is
-  recommended to directly use the function
-  \code{\link{.fcnnls}}.
+The function \code{fcnnls} is provided separately so that it can be
+used to solve other types of nonnegative least squares problem.
+For faster computation, when multiple nonnegative least square fits
+are needed, it is recommended to directly use the function \code{\link{.fcnnls}}.
 
-  The code of this function is a port from the original
-  MATLAB code provided by \cite{Kim et al. (2007)}.
+The code of this function is a port from the original MATLAB code
+provided by \cite{Kim et al. (2007)}.
 }
 \section{Methods}{
 \describe{
@@ -133,24 +128,16 @@ Adaption of MATLAB code for SNMF/R(L): H. Kim
 Adaptation to the NMF package framework: Renaud Gaujoux
 }
 \references{
-  Original MATLAB code from Van Benthem and Keenan,
-  slightly modified by H. Kim:\cr
-  \url{http://www.cc.gatech.edu/~hpark/software/fcnnls.m}
+  Original MATLAB code from Van Benthem and Keenan, slightly modified by H.
+Kim:\cr \url{http://www.cc.gatech.edu/~hpark/software/fcnnls.m}
 
-  Van Benthem M and Keenan MR (2004). "Fast algorithm for
-  the solution of large-scale non-negativity-constrained
-  least squares problems." _Journal of Chemometrics_,
-  *18*(10), pp. 441-450. ISSN 0886-9383, <URL:
-  http://dx.doi.org/10.1002/cem.889>, <URL:
-  http://doi.wiley.com/10.1002/cem.889>.
+Van Benthem M and Keenan MR (2004). "Fast algorithm for the solution of large-scale non-negativity-constrained least squares
+problems." _Journal of Chemometrics_, *18*(10), pp. 441-450. ISSN 0886-9383, <URL: http://dx.doi.org/10.1002/cem.889>, <URL:
+http://doi.wiley.com/10.1002/cem.889>.
 
-  Kim H and Park H (2007). "Sparse non-negative matrix
-  factorizations via alternating non-negativity-constrained
-  least squares for microarray data analysis."
-  _Bioinformatics (Oxford, England)_, *23*(12), pp.
-  1495-502. ISSN 1460-2059, <URL:
-  http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/17483501>.
+Kim H and Park H (2007). "Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares
+for microarray data analysis." _Bioinformatics (Oxford, England)_, *23*(12), pp. 1495-502. ISSN 1460-2059, <URL:
+http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/17483501>.
 }
 \seealso{
   \code{\link{nmf}}

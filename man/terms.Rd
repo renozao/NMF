@@ -47,36 +47,30 @@
   \item{...}{extra parameters to allow extension (currently not used)}
 }
 \description{
-  Formula-based NMF models may contain fixed basis and/or
-  coefficient terms. The functions documented here provide
-  access to these data, which are read-only and defined
-  when the model object is instantiated (e.g., see
-  \code{\link[=nmfModel,formula,ANY-method]{nmfModel,formula-method}}).
+  Formula-based NMF models may contain fixed basis and/or coefficient terms.
+The functions documented here provide access to these data, which are
+read-only and defined when the model object is instantiated
+(e.g., see \code{\link[=nmfModel,formula,ANY-method]{nmfModel,formula-method}}).
 
-  \code{ibterms}, \code{icterms} and \code{iterms}
-  respectively return the indexes of the fixed basis terms,
-  the fixed coefficient terms and all fixed terms, within
-  the basis and/or coefficient matrix of an NMF model.
+\code{ibterms}, \code{icterms} and \code{iterms} respectively return the
+indexes of the fixed basis terms, the fixed coefficient terms and all fixed
+terms, within the basis and/or coefficient matrix of an NMF model.
 
-  \code{nterms}, \code{nbterms}, and \code{ncterms} return,
-  respectively, the number of all fixed terms, fixed basis
-  terms and fixed coefficient terms in an NMF model. In
-  particular: i.e. \code{nterms(object) = nbterms(object) +
-  ncterms(object)}.
+\code{nterms}, \code{nbterms}, and \code{ncterms} return, respectively,
+the number of all fixed terms, fixed basis terms and fixed coefficient terms
+in an NMF model.
+In particular: i.e. \code{nterms(object) = nbterms(object) + ncterms(object)}.
 
-  \code{bterms} and \code{cterms} return, respectively, the
-  primary data for fixed basis and coefficient terms in an
-  NMF model -- as stored in slots \code{bterms} and
-  \code{cterms} . These are factors or numeric vectors
-  which define fixed basis components, e.g., used for
-  defining separate offsets for different \emph{a priori}
-  groups of samples, or to incorporate/correct for some
-  known covariate.
+\code{bterms} and \code{cterms} return, respectively, the primary data for
+fixed basis and coefficient terms in an NMF model -- as stored in slots
+\code{bterms} and \code{cterms} .
+These are factors or numeric vectors which define fixed basis components,
+e.g., used for defining separate offsets for different \emph{a priori} groups
+of samples, or to incorporate/correct for some known covariate.
 
-  \code{ibasis} and \code{icoef} return, respectively, the
-  indexes of all latent basis vectors and estimated
-  coefficients within the basis or coefficient matrix of an
-  NMF model.
+\code{ibasis} and \code{icoef} return, respectively, the
+indexes of all latent basis vectors and estimated coefficients within the
+basis or coefficient matrix of an NMF model.
 }
 \section{Methods}{
 \describe{

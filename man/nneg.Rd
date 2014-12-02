@@ -71,18 +71,15 @@ stacked as \code{[pos; -neg]}.}
 an object of the same type of \code{object}
 }
 \description{
-  \code{nneg} is a generic function to transform a data
-  objects that contains negative values into a similar
-  object that only contains values that are nonnegative or
-  greater than a given threshold.
+  \code{nneg}  is a generic function to transform a data objects that
+contains negative values into a similar object that only contains
+values that are nonnegative or greater than a given threshold.
 
-  \code{posneg} is a shortcut for \code{nneg(...,
-  method='posneg')}, to split mixed-sign data into its
-  positive and negative part. See description for method
-  \code{"posneg"}, in \code{\link{nneg}}.
+\code{posneg} is a shortcut for \code{nneg(..., method='posneg')}, to split
+mixed-sign data into its positive and negative part.
+See description for method \code{"posneg"}, in \code{\link{nneg}}.
 
-  \code{rposneg} performs the "reverse" transformation of
-  the \code{\link{posneg}} function.
+\code{rposneg} performs the "reverse" transformation of the \code{\link{posneg}} function.
 }
 \section{Methods}{
 \describe{

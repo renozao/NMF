@@ -66,11 +66,9 @@ criterion.}
   updated object \code{object}
 }
 \description{
-  Implementation of the updates for the LS-NMF algorithm
-  from \cite{Wang et al. (2006)}.
+  Implementation of the updates for the LS-NMF algorithm from \cite{Wang et al. (2006)}.
 
-  \code{wrss} implements the objective function used by the
-  LS-NMF algorithm.
+\code{wrss} implements the objective function used by the LS-NMF algorithm.
 }
 \examples{
 \dontshow{# roxygen generated flag
@@ -91,11 +89,8 @@ res <- nmf(x, 2, 'ls-nmf', .opt='v')
 anyNA(res)
 }
 \references{
-  Wang G, Kossenkov AV and Ochs MF (2006). "LS-NMF: a
-  modified non-negative matrix factorization algorithm
-  utilizing uncertainty estimates." _BMC bioinformatics_,
-  *7*, pp. 175. ISSN 1471-2105, <URL:
-  http://dx.doi.org/10.1186/1471-2105-7-175>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/16569230>.
+  Wang G, Kossenkov AV and Ochs MF (2006). "LS-NMF: a modified non-negative matrix factorization algorithm utilizing
+uncertainty estimates." _BMC bioinformatics_, *7*, pp. 175. ISSN 1471-2105, <URL: http://dx.doi.org/10.1186/1471-2105-7-175>,
+<URL: http://www.ncbi.nlm.nih.gov/pubmed/16569230>.
 }
 

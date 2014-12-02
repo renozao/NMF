@@ -84,37 +84,30 @@ criterion is computed.}
   an \code{\linkS4class{NMFOffset}} model object.
 }
 \description{
-  These update rules proposed by \cite{Badea (2008)} are
-  modified version of the updates from \cite{Lee et al.
-  (2001)}, that include an offset/intercept vector, which
-  models a common baseline for each feature accross all
-  samples: \deqn{V \approx W H + I}
+  These update rules proposed by \cite{Badea (2008)} are modified version of
+the updates from \cite{Lee et al. (2001)}, that include an offset/intercept vector,
+which models a common baseline for each feature accross all samples:
+\deqn{V \approx W H + I}
 
-  \code{nmf_update.euclidean_offset.h} and
-  \code{nmf_update.euclidean_offset.w} compute the updated
-  NMFOffset model, using the optimized \emph{C++}
-  implementations.
+\code{nmf_update.euclidean_offset.h} and \code{nmf_update.euclidean_offset.w}
+compute the updated NMFOffset model, using the optimized \emph{C++} implementations.
 
-  \code{nmf_update.offset_R} implements a complete single
-  update step, using plain R updates.
+\code{nmf_update.offset_R} implements a complete single update step,
+using plain R updates.
 
-  \code{nmf_update.offset} implements a complete single
-  update step, using C++-optimised updates.
+\code{nmf_update.offset} implements a complete single update step,
+using C++-optimised updates.
 
-  Algorithms \sQuote{offset} and \sQuote{.R#offset} provide
-  the complete NMF-with-offset algorithm from \cite{Badea
-  (2008)}, using the C++-optimised and pure R updates
-  \code{\link{nmf_update.offset}} and
-  \code{\link{nmf_update.offset_R}} respectively.
+Algorithms \sQuote{offset} and \sQuote{.R#offset} provide the complete NMF-with-offset algorithm
+from \cite{Badea (2008)}, using the C++-optimised and pure R updates \code{\link{nmf_update.offset}}
+and \code{\link{nmf_update.offset_R}} respectively.
 }
 \details{
-  The associated model is defined as an
-  \code{\linkS4class{NMFOffset}} object. The details of the
-  multiplicative updates can be found in \cite{Badea
-  (2008)}. Note that the updates are the ones defined for a
-  single datasets, not the simultaneous NMF model, which is
-  fit by algorithm \sQuote{siNMF} from formula-based NMF
-  models.
+  The associated model is defined as an \code{\linkS4class{NMFOffset}} object.
+The details of the multiplicative updates can be found in \cite{Badea (2008)}.
+Note that the updates are the ones defined for a single datasets, not the
+simultaneous NMF model, which is fit by algorithm \sQuote{siNMF} from
+formula-based NMF models.
 }
 \author{
   Original update definition: Liviu Badea
@@ -122,16 +115,11 @@ criterion is computed.}
 Port to R and optimisation in C++: Renaud Gaujoux
 }
 \references{
-  Badea L (2008). "Extracting gene expression profiles
-  common to colon and pancreatic adenocarcinoma using
-  simultaneous nonnegative matrix factorization." _Pacific
-  Symposium on Biocomputing. Pacific Symposium on
-  Biocomputing_, *290*, pp. 267-78. ISSN 1793-5091, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
+  Badea L (2008). "Extracting gene expression profiles common to colon and pancreatic adenocarcinoma using simultaneous
+nonnegative matrix factorization." _Pacific Symposium on Biocomputing. Pacific Symposium on Biocomputing_, *290*, pp. 267-78.
+ISSN 1793-5091, <URL: http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
 
-  Lee DD and Seung H (2001). "Algorithms for non-negative
-  matrix factorization." _Advances in neural information
-  processing systems_. <URL:
-  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
+Lee DD and Seung H (2001). "Algorithms for non-negative matrix factorization." _Advances in neural information processing
+systems_. <URL: http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
 }
 

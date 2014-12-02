@@ -3,14 +3,11 @@
 \alias{NMFList-class}
 \title{Class for Storing Heterogeneous NMF fits}
 \description{
-  This class wraps a list of NMF fit objects, which may
-  come from different runs of the function
-  \code{\link{nmf}}, using different parameters, methods,
-  etc.. These can be either from a single run (NMFfit) or
-  multiple runs (NMFfitX).
+  This class wraps a list of NMF fit objects, which may come from different
+runs of the function \code{\link{nmf}}, using different parameters, methods, etc..
+These can be either from a single run (NMFfit) or multiple runs (NMFfitX).
 
-  Note that its definition/interface is very likely to
-  change in the future.
+Note that its definition/interface is very likely to change in the future.
 }
 \section{Methods}{
 \describe{

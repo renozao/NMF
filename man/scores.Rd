@@ -75,29 +75,24 @@ a single integer vector or an object of the same class as \code{object}
 that only contains the selected features.
 }
 \description{
-  The function \code{featureScore} implements different
-  methods to computes basis-specificity scores for each
-  feature in the data.
+  The function \code{featureScore} implements different methods to computes
+basis-specificity scores for each feature in the data.
 
-  The function \code{extractFeatures} implements different
-  methods to select the most basis-specific features of
-  each basis component.
+The function \code{extractFeatures} implements different methods to select the
+most basis-specific features of each basis component.
 }
 \details{
-  One of the properties of Nonnegative Matrix Factorization
-  is that is tend to produce sparse representation of the
-  observed data, leading to a natural application to
-  bi-clustering, that characterises groups of samples by a
-  small number of features.
+  One of the properties of Nonnegative Matrix Factorization is that is tend to
+produce sparse representation of the observed data, leading to a natural
+application to bi-clustering, that characterises groups of samples by
+a small number of features.
 
-  In NMF models, samples are grouped according to the basis
-  components that contributes the most to each sample, i.e.
-  the basis components that have the greatest coefficient
-  in each column of the coefficient matrix (see
-  \code{\link{predict,NMF-method}}). Each group of samples
-  is then characterised by a set of features selected based
-  on basis-specifity scores that are computed on the basis
-  matrix.
+In NMF models, samples are grouped according to the basis
+components that contributes the most to each sample, i.e. the basis
+components that have the greatest coefficient in each column of the coefficient
+matrix (see \code{\link{predict,NMF-method}}).
+Each group of samples is then characterised by a set of features selected
+based on basis-specifity scores that are computed on the basis matrix.
 }
 \section{Methods}{
 \describe{
@@ -201,21 +196,13 @@ extractFeatures(x, 1) # means relative contribution above 100\%
 extractFeatures(x, 1L) # means top contributing feature in each component
 }
 \references{
-  Kim H and Park H (2007). "Sparse non-negative matrix
-  factorizations via alternating non-negativity-constrained
-  least squares for microarray data analysis."
-  _Bioinformatics (Oxford, England)_, *23*(12), pp.
-  1495-502. ISSN 1460-2059, <URL:
-  http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/17483501>.
+  Kim H and Park H (2007). "Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares
+for microarray data analysis." _Bioinformatics (Oxford, England)_, *23*(12), pp. 1495-502. ISSN 1460-2059, <URL:
+http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/17483501>.
 
-  Carmona-Saez P, Pascual-Marqui RD, Tirado F, Carazo JM
-  and Pascual-Montano A (2006). "Biclustering of gene
-  expression data by Non-smooth Non-negative Matrix
-  Factorization." _BMC bioinformatics_, *7*, pp. 78. ISSN
-  1471-2105, <URL:
-  http://dx.doi.org/10.1186/1471-2105-7-78>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/16503973>.
+Carmona-Saez P, Pascual-Marqui RD, Tirado F, Carazo JM and Pascual-Montano A (2006). "Biclustering of gene expression data by
+Non-smooth Non-negative Matrix Factorization." _BMC bioinformatics_, *7*, pp. 78. ISSN 1471-2105, <URL:
+http://dx.doi.org/10.1186/1471-2105-7-78>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/16503973>.
 }
 \keyword{methods}
 

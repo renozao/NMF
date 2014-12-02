@@ -25,12 +25,10 @@
   \code{.setRNG}.}
 }
 \description{
-  The \code{\link{nmf}} function returns objects that
-  contain embedded RNG data, that can be used to exactly
-  reproduce any computation. These data can be extracted
-  using dedicated methods for the S4 generics
-  \code{\link[rngtools]{getRNG}} and
-  \code{\link[rngtools]{getRNG1}}.
+  The \code{\link{nmf}} function returns objects that contain embedded RNG data,
+that can be used to exactly reproduce any computation.
+These data can be extracted using dedicated methods for the S4 generics
+\code{\link[rngtools]{getRNG}} and \code{\link[rngtools]{getRNG1}}.
 }
 \section{Methods}{
 \describe{

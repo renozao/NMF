@@ -31,11 +31,10 @@ the function \code{\link{matrix}}}
   \item{.rng}{any RNG seed specification supported by \code{\link[rngtools]{setRNG}}.}
 }
 \description{
-  The S4 generic \code{rmatrix} generates a random matrix
-  from a given object. Methods are provided to generate
-  matrices with entries drawn from any given random
-  distribution function, e.g. \code{\link{runif}} or
-  \code{\link{rnorm}}.
+  The S4 generic \code{rmatrix} generates a random matrix from a given object.
+Methods are provided to generate matrices with entries drawn from any
+given random distribution function, e.g. \code{\link{runif}} or
+\code{\link{rnorm}}.
 }
 \section{Methods}{
 \describe{

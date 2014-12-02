@@ -14,9 +14,8 @@ about the NMF model should be attached to the result (\code{TRUE}) or not
 (\code{FALSE}).}
 }
 \description{
-  The result is the matrix stored in slot
-  \sQuote{consensus}. This method returns \code{NULL} if
-  the consensus matrix is empty.
+  The result is the matrix stored in slot \sQuote{consensus}.
+This method returns \code{NULL} if the consensus matrix is empty.
 }
 \keyword{methods}
 

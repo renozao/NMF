@@ -8,16 +8,14 @@
   \item{x}{NMF model object.}
 }
 \description{
-  \code{t} transpose an NMF model, by transposing and
-  swapping its basis and coefficient matrices:
-  \eqn{t([W,H]) = [t(H), t(W)]}.
+  \code{t} transpose an NMF model, by transposing and swapping its basis and
+coefficient matrices: \eqn{t([W,H]) = [t(H), t(W)]}.
 }
 \details{
-  The function \code{t} is a generic defined in the
-  \pkg{base} package. The method \code{t.NMF} defines the
-  trasnformation for the general NMF interface. This method
-  may need to be overloaded for NMF models, whose structure
-  requires specific handling.
+  The function \code{t} is a generic defined in the \pkg{base} package.
+The method \code{t.NMF} defines the trasnformation for the general NMF interface.
+This method may need to be overloaded for NMF models, whose structure requires
+specific handling.
 }
 \examples{
 \dontshow{# roxygen generated flag

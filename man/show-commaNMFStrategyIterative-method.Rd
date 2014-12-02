@@ -9,8 +9,7 @@
   \item{object}{Any R object}
 }
 \description{
-  Show method for objects of class
-  \code{NMFStrategyIterative}
+  Show method for objects of class \code{NMFStrategyIterative}
 }
 \keyword{methods}
 

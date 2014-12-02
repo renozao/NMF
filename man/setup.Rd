@@ -42,34 +42,27 @@ the previously registered backend as a \code{foreach} object, so that it can be 
 after the computation is over.
 }
 \description{
-  Functions used internally to setup the computational
-  environment.
+  Functions used internally to setup the computational environment.
 
-  \code{setupBackend} sets up a foreach backend given some
-  specifications.
+\code{setupBackend} sets up a foreach backend given some specifications.
 
-  \code{setupSharedMemory} checks if one can use the
-  packages \emph{bigmemory} and \emph{sychronicity} to
-  speed-up parallel computations when not keeping all the
-  fits. When both these packages are available, only one
-  result per host is written on disk, with its achieved
-  deviance stored in shared memory, that is accessible to
-  all cores on a same host. It returns \code{TRUE} if both
-  packages are available and NMF option \code{'shared'} is
-  toggled on.
+\code{setupSharedMemory} checks if one can use the packages \emph{bigmemory} and \emph{sychronicity}
+to speed-up parallel computations when not keeping all the fits.
+When both these packages are available, only one result per host is written on disk,
+with its achieved deviance stored in shared memory, that is accessible to all cores on
+a same host.
+It returns \code{TRUE} if both packages are available and NMF option \code{'shared'} is
+toggled on.
 
-  \code{setupTempDirectory} creates a temporary directory
-  to store the best fits computed on each host. It ensures
-  each worker process has access to it.
+\code{setupTempDirectory} creates a temporary directory to store the best fits computed on each host.
+It ensures each worker process has access to it.
 
-  \code{setupLibPaths} add the path to the NMF package to
-  each workers' libPaths.
+\code{setupLibPaths} add the path to the NMF package to each workers' libPaths.
 
-  \code{setupRNG} sets the RNG for use by the function nmf.
-  It returns the old RNG as an rstream object or the result
-  of set.seed if the RNG is not changed due to one of the
-  following reason: - the settings are not compatible with
-  rstream
+\code{setupRNG} sets the RNG for use by the function nmf.
+It returns the old RNG as an rstream object or the result of set.seed
+ if the RNG is not changed due to one of the following reason:
+ - the settings are not compatible with rstream
 }
 \keyword{internals}
 

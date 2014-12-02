@@ -19,30 +19,25 @@
 See each method for more details.
 }
 \description{
-  Generic function that computes the \emph{sparseness} of
-  an object, as defined by \cite{Hoyer (2004)}. The
-  sparseness quantifies how much energy of a vector is
-  packed into only few components.
+  Generic function that computes the \emph{sparseness} of an object, as defined
+by \cite{Hoyer (2004)}.
+The sparseness quantifies how much energy of a vector is packed into only few components.
 }
 \details{
-  In \cite{Hoyer (2004)}, the sparseness is defined for a
-  real vector \eqn{x} as: \deqn{Sparseness(x) =
-  \frac{\sqrt{n} - \frac{\sum |x_i|}{\sqrt{\sum
-  x_i^2}}}{\sqrt{n}-1}}{ (srqt(n) - ||x||_1 / ||x||_2) /
-  (sqrt(n) - 1)}
+  In \cite{Hoyer (2004)}, the sparseness is defined for a real vector \eqn{x} as:
+\deqn{Sparseness(x) = \frac{\sqrt{n} - \frac{\sum |x_i|}{\sqrt{\sum x_i^2}}}{\sqrt{n}-1}}{
+(srqt(n) - ||x||_1 / ||x||_2) / (sqrt(n) - 1)}
 
-  , where \eqn{n} is the length of \eqn{x}.
+, where \eqn{n} is the length of \eqn{x}.
 
-  The sparseness is a real number in \eqn{[0,1]}. It is
-  equal to 1 if and only if \code{x} contains a single
-  nonzero component, and is equal to 0 if and only if all
-  components of \code{x} are equal. It interpolates
-  smoothly between these two extreme values. The closer to
-  1 is the sparseness the sparser is the vector.
+The sparseness is a real number in \eqn{[0,1]}.
+It is equal to 1 if and only if \code{x} contains a single nonzero component,
+and is equal to 0 if and only if all components of \code{x} are equal.
+It interpolates smoothly between these two extreme values.
+The closer to 1 is the sparseness the sparser is the vector.
 
-  The basic definition is for a \code{numeric} vector, and
-  is extended for matrices as the mean sparseness of its
-  column vectors.
+The basic definition is for a \code{numeric} vector, and is extended for matrices as the
+mean sparseness of its column vectors.
 }
 \section{Methods}{
 \describe{
@@ -67,10 +62,8 @@ It returns the two values in a numeric vector with names \sQuote{basis} and \sQu
 
 }
 \references{
-  Hoyer P (2004). "Non-negative matrix factorization with
-  sparseness constraints." _The Journal of Machine Learning
-  Research_, *5*, pp. 1457-1469. <URL:
-  http://portal.acm.org/citation.cfm?id=1044709>.
+  Hoyer P (2004). "Non-negative matrix factorization with sparseness constraints." _The Journal of Machine Learning Research_,
+*5*, pp. 1457-1469. <URL: http://portal.acm.org/citation.cfm?id=1044709>.
 }
 \seealso{
   Other assess: \code{\link{entropy}}, \code{\link{purity}}

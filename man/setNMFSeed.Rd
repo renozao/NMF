@@ -43,15 +43,12 @@ should be printed (\code{TRUE}) or not (\code{FALSE}).}
 }
 \description{
   \code{NMFSeed} is a constructor method that instantiate
-  \code{\linkS4class{NMFSeed}} objects.
+\code{\linkS4class{NMFSeed}} objects.
 
-  NMF seeding methods are registered via the function
-  \code{setNMFSeed}, which stores them as
-  \code{\linkS4class{NMFSeed}} objects in a dedicated
-  registry.
+NMF seeding methods are registered via the function \code{setNMFSeed}, which
+stores them as \code{\linkS4class{NMFSeed}} objects in a dedicated registry.
 
-  \code{removeNMFSeed} removes an NMF seeding method from
-  the registry.
+\code{removeNMFSeed} removes an NMF seeding method from the registry.
 }
 \section{Methods}{
 \describe{

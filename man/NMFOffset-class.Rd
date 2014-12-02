@@ -16,18 +16,16 @@
     be objects from classes that this class extends.}
 }
 \description{
-  This class implements the \emph{Nonnegative Matrix
-  Factorization with Offset} model, required by the NMF
-  with Offset algorithm.
+  This class implements the \emph{Nonnegative Matrix Factorization with
+Offset} model, required by the NMF with Offset algorithm.
 }
 \details{
-  The NMF with Offset algorithm is defined by \cite{Badea
-  (2008)} as a modification of the euclidean based NMF
-  algorithm from \code{Lee2001} (see section Details and
-  references below). It aims at obtaining 'cleaner' factor
-  matrices, by the introduction of an offset matrix,
-  explicitly modelling a feature specific baseline --
-  constant across samples.
+  The NMF with Offset algorithm is defined by \cite{Badea (2008)} as a modification
+of the euclidean based NMF algorithm from \code{Lee2001} (see section Details and
+references below).
+It aims at obtaining 'cleaner' factor matrices, by the introduction of an
+offset matrix, explicitly modelling a feature specific baseline
+-- constant across samples.
 }
 \section{Methods}{
 \describe{
@@ -109,12 +107,9 @@ V <- rmatrix(n, p)
 rnmf(3, 10, 5, model='NMFOffset')
 }
 \references{
-  Badea L (2008). "Extracting gene expression profiles
-  common to colon and pancreatic adenocarcinoma using
-  simultaneous nonnegative matrix factorization." _Pacific
-  Symposium on Biocomputing. Pacific Symposium on
-  Biocomputing_, *290*, pp. 267-78. ISSN 1793-5091, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
+  Badea L (2008). "Extracting gene expression profiles common to colon and pancreatic adenocarcinoma using simultaneous
+nonnegative matrix factorization." _Pacific Symposium on Biocomputing. Pacific Symposium on Biocomputing_, *290*, pp. 267-78.
+ISSN 1793-5091, <URL: http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
 }
 \seealso{
   Other NMF-model: \code{\link{NMFns-class}}, \code{\link{NMFstd-class}}

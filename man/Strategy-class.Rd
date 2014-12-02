@@ -26,13 +26,11 @@
 should be returned (\code{TRUE}), or only the first (primary) one (\code{FALSE}).}
 }
 \description{
-  This class defines a common interface for generic
-  algorithm strategies (e.g.,
-  \code{\linkS4class{NMFStrategy}}).
+  This class defines a common interface for generic algorithm strategies
+(e.g., \code{\linkS4class{NMFStrategy}}).
 
-  \code{name} and \code{name<-} gets and sets the name
-  associated with an object. In the case of \code{Strategy}
-  objects it is the the name of the algorithm.
+\code{name} and \code{name<-} gets and sets the name associated with an object.
+In the case of \code{Strategy} objects it is the the name of the algorithm.
 }
 \section{Slots}{
 \describe{

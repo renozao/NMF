@@ -15,9 +15,8 @@ R function.}
 itself.}
 }
 \description{
-  Returns the name of the Octave/Matlab function that
-  implements the NMF algorithm -- as stored in slot
-  \code{algorithm}.
+  Returns the name of the Octave/Matlab function that implements the NMF algorithm -- as stored in
+slot \code{algorithm}.
 }
 \keyword{methods}
 
