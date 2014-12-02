@@ -2491,7 +2491,9 @@ aheatmap = function(x
         if( !is.null(breaks) ) colour_scale <- ccRamp(color, breaks = breaks, data = as.vector(mat))
         else{
             colour_scale <- sort(unique(as.vector(mat)))
-            if( isTRUE(legend) ) legend <- unname(colour_scale)
+            if( isTRUE(legend) ){
+                legend <- setNames(unname(colour_scale), names(color))                
+            }
             if( is.character(legend) ) legend <- setNames(unname(colour_scale), legend[seq_along(colour_scale)])
             colour_scale <- ccRamp(color, breaks = c(colour_scale-0.5, max(colour_scale) + .5), data = as.vector(mat))             
         }
