@@ -368,6 +368,7 @@ draw_legend = function(color, breaks, legend, gp = gpar(), opts = NULL, dims.onl
     breaks = (breaks - min(breaks)) / (max(breaks) - min(breaks))
     h <- diff(breaks)
     
+    legend_txt <- names(legend) %||% legend
     txt_shift <- thickness + space + padding
     
     flip_coord <- function(x, flip, max = unit(1, 'npc')){
@@ -378,11 +379,11 @@ draw_legend = function(color, breaks, legend, gp = gpar(), opts = NULL, dims.onl
     if( !isTRUE(opts$horizontal) ){
     	grid.rect(x = flip_coord(padding, opts$flip$h, unit(1, 'npc') - thickness), y = breaks[-length(breaks)], width = thickness, height = h, hjust = 0, vjust = 0
                 , gp = gpar(fill = color, col = "#FFFFFF00"))
-        grid.text(legend, x = flip_coord(txt_shift, opts$flip$h, txt_shift), y = tick_pos, hjust = 0, gp = gp)
+        grid.text(legend_txt, x = flip_coord(txt_shift, opts$flip$h, txt_shift), y = tick_pos, hjust = 0, gp = gp)
     }else{
         grid.rect(y = flip_coord(padding, !opts$flip$v), x = breaks[-length(breaks)], height = thickness, width = h, hjust = 0, vjust = 0
                 , gp = gpar(fill = color, col = "#FFFFFF00"))
-        grid.text(legend, y = flip_coord(txt_shift, !opts$flip$v), x = tick_pos, vjust = 0, gp = gp)
+        grid.text(legend_txt, y = flip_coord(txt_shift, !opts$flip$v), x = tick_pos, vjust = 0, gp = gp)
     }
 }
 
@@ -1480,7 +1481,7 @@ scale_mat = function(x, scale, na.rm=TRUE){
 	av <- c("none", "row", "column", 'r1', 'c1')
 	i <- pmatch(scale, av)	
 	if( is_NA(i) )
-		stop("scale argument shoud take values: 'none', 'row' or 'column'")
+		stop("scale argument shoud take values: ", str_out(av, Inf))
 	scale <- av[i]
 		
 	switch(scale, none = x
@@ -1905,9 +1906,9 @@ subset_index <- function(x, margin, subset){
 #' 
 #' @param breaks a sequence of numbers that covers the range of values in \code{x} and is one 
 #' element longer than color vector. Used for mapping values to colors. Useful, if needed 
-#' to map certain values to certain colors. If value is NA then the 
+#' to map certain values to certain colors. If NA then the 
 #' breaks are calculated automatically. If \code{breaks} is a single value, 
-#' then the colour palette is centered on this value. 
+#' then the colour palette is forced to be centered on this value. 
 #' 
 #' @param border_color color of cell borders on heatmap, use NA if no border should be 
 #' drawn.
@@ -2477,14 +2478,34 @@ aheatmap = function(x
 	
 	# Preprocess matrix
 	if( verbose ) message("Scale matrix")
+    isINT <- is.integer(mat)
 	mat = as.matrix(mat)
-	mat = scale_mat(mat, scale)
 	
 	## Colors and scales
     # generate colour scale
     if( verbose ) message("Generate colour scale (palette + breaks)")
     if( is_NA(breaks) ) breaks <- NULL
-	colour_scale <- ccRamp(color, breaks = breaks, data = as.vector(mat))
+    if( isINT ){
+        if( !is_NA(scale) && is.na(pmatch(scale, 'none')) )
+            warning("Input matirx is an integer matrix: discarding argument `scale`.")
+        if( !is.null(breaks) ) colour_scale <- ccRamp(color, breaks = breaks, data = as.vector(mat))
+        else{
+            colour_scale <- sort(unique(as.vector(mat)))
+            if( isTRUE(legend) ) legend <- unname(colour_scale)
+            if( is.character(legend) ) legend <- setNames(unname(colour_scale), legend[seq_along(colour_scale)])
+            colour_scale <- ccRamp(color, breaks = c(colour_scale-0.5, max(colour_scale) + .5), data = as.vector(mat))             
+        }
+    }else{
+        mat = scale_mat(mat, scale)
+        colour_scale <- ccRamp(color, breaks = breaks, data = as.vector(mat))
+    }
+    
+#    # fix infinite breaks
+#    m_range <- range(mat, na.rm = TRUE)
+#    b_range <- range(colour_scale[is.finite(colour_scale)], na.rm = TRUE)
+#    colour_scale[colour_scale == -Inf] <- min(m_range[1], b_range[1]) - .001
+#    colour_scale[colour_scale == Inf] <- max(m_range[2], b_range[2]) + .001
+    
     # store into result list
     res$col <- colour_scale
     # assign as separate objects (legacy)
@@ -2493,9 +2514,8 @@ aheatmap = function(x
         
     if( isTRUE(legend) ){
 		if( verbose ) message("Generate colour scale ticks")
-		legend = grid.pretty(range(as.vector(breaks)))
-	}
-	else {
+		legend = grid.pretty(range(as.vector(breaks), na.rm = TRUE))
+	}else if( !is.numeric(legend) ){
 		legend = NA
 	}
     
@@ -2506,7 +2526,10 @@ aheatmap = function(x
         if( length(na_range) == 1L ) mat[mat %in% na_range] <- NA
         else mat[mat >= na_range[1L] & mat <= na_range[2L] ] <- NA
     }
-    mat = scale_colours(mat, col = color, breaks = breaks)
+    
+    if( isINT ) mat <- matrix(color[mat], nrow(mat))
+    else mat <- scale_colours(mat, col = color, breaks = breaks)
+
     if( !is_NA(na.color) ){ # use specified color for NA values
         mat[is.na(mat)] <- na.color[[1L]]
     }
