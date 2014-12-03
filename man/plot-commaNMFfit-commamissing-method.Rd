@@ -7,17 +7,14 @@ the NMF model \code{x}.}
   \S4method{plot}{NMFfit,missing}(x, y, skip = -1, ...)
 }
 \arguments{
+  \item{x}{an NMF object as returned by \code{\link{nmf}}.}
+
+  \item{y}{other object (missing)}
+
   \item{skip}{an integer that indicates the number of points to skip/remove from the beginning
 of the curve.
 If \code{skip=1L} (default) only the initial residual -- that is computed before any iteration, is
 skipped, if present in the track (it associated with iteration 0).}
-
-  \item{x}{the coordinates of points in the plot. Alternatively, a
-      single plotting structure, function or \emph{any \R object with a
-        \code{plot} method} can be provided.}
-
-  \item{y}{the y coordinates of points in the plot, \emph{optional}
-    if \code{x} is an appropriate structure.}
 
   \item{...}{Arguments to be passed to methods, such as
     \link{graphical parameters} (see \code{\link{par}}).
