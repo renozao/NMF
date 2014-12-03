@@ -9,6 +9,8 @@ library(gridBase)
 # extends gpar objects
 c_gpar <- function(gp, ...){
     x <- list(...)
+    if( length(x) == 1L && is.null(names(x)) && is.list(x[[1]]) ) 
+        x <- x[[1]]
     do.call(gpar, c(gp, x[!names(x) %in% names(gp)]))
 }
 
@@ -273,7 +275,8 @@ draw_matrix = function(matrix, border_color, txt = NULL, gp = gpar()){
     if( !is.null(txt) ) txt[is.na(txt)] <- ''
      
     for(i in 1:m){
-		grid.rect(x = x[i], y = y, width = 1/m, height = 1/n, gp = gpar(fill = matrix[,i], col = border_color))
+        rgp <- c_gpar(list(fill = matrix[,i]), border_color)
+		grid.rect(x = x[i], y = y, width = 1/m, height = 1/n, gp = rgp)
         if( !is.null(txt) ){
             grid.text(label=txt[, i],
                                 x=x[i],
@@ -431,15 +434,15 @@ draw_annotations = function(converted_annotations, border_color, horizontal=TRUE
 		x = (1:m)/m - 1/2/m
 		y = cumsum(rep(size + 2, n)) - cex * base_size / 2
 		for(i in 1:m){
-			grid.rect(x = x[i], unit(y[n:1], "bigpts"), width = 1/m, height = psize, gp = gpar(fill = converted_annotations[i, ], col = border_color))
+			grid.rect(x = x[i], unit(y[n:1], "bigpts"), width = 1/m, height = psize
+                    , gp = c_gpar(list(fill = converted_annotations[i, ]), border_color))
 		}
 	}else{
 		x = cumsum(rep(size + 2, n)) - cex * base_size / 2
 		y = (1:m)/m - 1/2/m
 		for (i in 1:m) {
 			grid.rect(x = unit(x[1:n], "bigpts"), y=y[i], width = psize, 
-					height = 1/m, gp = gpar(fill = converted_annotations[i,]
-					, col = border_color))
+					height = 1/m, gp = c_gpar(list(fill = converted_annotations[i,]), border_color))
 		}
 	}
 }
@@ -456,7 +459,8 @@ draw_annotation_legend = function(annotation_colors, border_color, gp = gpar()){
 		acol <- annotation_colors[[i]]
 		if( attr(acol, 'afactor') ){
 			sapply(seq_along(acol), function(j){
-				grid.rect(x = unit(0, "npc"), y = y, hjust = 0, vjust = 1, height = text_height, width = text_height, gp = gpar(col = border_color, fill = acol[j]))
+				grid.rect(x = unit(0, "npc"), y = y, hjust = 0, vjust = 1, height = text_height, width = text_height
+                            , gp = c_gpar(list(fill = acol[j]), border_color))
 				grid.text(names(acol)[j], x = text_height * 1.3, y = y, hjust = 0, vjust = 1, gp = gp)
 				y <<- y - 1.5 * text_height
 			})
@@ -924,6 +928,13 @@ d <- function(x){
 	invisible(basename(tempfile()))
 }
 
+border_gpar <- function(x, as.list = FALSE){
+    gp <- if( is.list(x) ) x else list(col = x)
+    if( !as.list ) do.call(gpar,gp) else gp
+}
+
+border_gpar_list <- function(...) border_gpar(..., as.list = TRUE)
+
 heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	, tree_col, tree_row, treeheight_col, treeheight_row
 	, filename=NA, width=NA, height=NA
@@ -1040,10 +1051,22 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	}
 
 	#grid.show.layout(glo$layout); return()
-	mindim <- glo$mindim
-	# Omit border color if cell size is too small 
-	if(mindim < 3) border_color = NA
-
+	
+    # load border specifications
+    border_color <- if( !is.list(border_color) ) list(base = border_color) else border_color 
+	for( b in c('base', 'cell', 'matrix', 'annRow', 'annCol', 'annLeg') ){
+        val <- border_color[[b]] %||% border_color[['base']] %||% NA
+        border_color[[b]] <- border_gpar_list(val) 
+    }
+    #
+    
+    # Omit border color if cell size is too small
+    mindim <- glo$mindim
+    if(mindim < 3 && !is_NA(border_color$cell$col) ){
+        warning("Forcing no-border on cells due to their small dimensions.")
+        border_color$cell <- list(col=NA)
+    }
+    
 	# Draw tree for the columns
 	if (!is_NA(tree_col) &&  treeheight_col != 0 && vplayout('ctree') ){
 		draw_dendrogram(tree_col, horizontal = FALSE, flip = loptions$dendrogram$flip$v)
@@ -1062,9 +1085,13 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
     
 	# Draw matrix
 	if( vplayout('mat') ){
-    	draw_matrix(matrix, border_color, txt = txt, gp = gpar(fontsize = fontsize_row))
+    	draw_matrix(matrix, border_color$cell
+                            , txt = txt, gp = gpar(fontsize = fontsize_row))
     	#d(matrix)
-    	#grid.rect()
+        # outer border
+        if( !is_NA(border_color$matrix) ){
+            grid.rect(gp = border_gpar(border_color$matrix))
+        }
     	upViewport()
     }
 
@@ -1082,19 +1109,19 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 
 	# Draw annotation tracks
 	if( !is_NA(annotation) && vplayout('cann') ){
-		draw_annotations(annotation, border_color, cex = cexAnn[2L])
+		draw_annotations(annotation, border_color$annCol, cex = cexAnn[2L])
 		upViewport()
 	}	
 	
 	# add row annotations if necessary	
 	if ( !is_NA(row_annotation) && vplayout('rann') ) {
-		draw_annotations(row_annotation, border_color, horizontal=FALSE, cex = cexAnn[1L])
+		draw_annotations(row_annotation, border_color$annRow, horizontal=FALSE, cex = cexAnn[1L])
 		upViewport()
 	}
 	
 	# Draw annotation legend
 	if( annotation_legend && !is_NA(annotation_colors) && vplayout('aleg') ){
-		draw_annotation_legend(annotation_colors, border_color, gp = c_gpar(gp, fontsize = fontsize))
+		draw_annotation_legend(annotation_colors, border_color$annLeg, gp = c_gpar(gp, fontsize = fontsize))
 		upViewport()
 	}
 
