@@ -124,7 +124,7 @@
 , backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 %\bibliography{Rpackages}
-\bibliography{/tmp/Rpkglib_6164314533a0/NMF/REFERENCES}
+\bibliography{/tmp/Rpkglib_19e63d90e436/NMF/REFERENCES}
 
 \newcommand{\citet}[1]{\textcite{#1}}
 \renewcommand{\cite}[1]{\parencite{#1}}
@@ -231,7 +231,7 @@ with the following commands:
 \hlcom{# latest stable}
 \hlkwd{intall.pacakges}\hlstd{(}\hlstr{'NMF'}\hlstd{)}
 \hlcom{# development version}
-\hlstd{devtools::}\hlkwd{install_github}\hlstd{(}\hlstr{'NMF'}\hlstd{,} \hlstr{'renozao'}\hlstd{,} \hlstr{'devel'}\hlstd{)}
+\hlstd{devtools}\hlopt{::}\hlkwd{install_github}\hlstd{(}\hlstr{'NMF'}\hlstd{,} \hlstr{'renozao'}\hlstd{,} \hlstr{'devel'}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -246,6 +246,7 @@ the vignette:
 \begin{alltt}
 \hlcom{# data matrix}
 \hlstd{x} \hlkwb{<-} \hlkwd{rmatrix}\hlstd{(}\hlnum{20}\hlstd{,} \hlnum{10}\hlstd{,} \hlkwc{.rng} \hlstd{=} \hlnum{1234}\hlstd{)}
+\hlstd{ann_col} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlkwc{Groups} \hlstd{=} \hlkwd{gl}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{5}\hlstd{))}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -281,8 +282,8 @@ the above listed components into a complete annotated heatmap.
 \hlkwd{aheatmap_layout}\hlstd{(}\hlstr{"amld | dlma"}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=.48\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-layout1} 
-\includegraphics[width=.48\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-layout2} 
+\includegraphics[width=.48\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-layout-1} 
+\includegraphics[width=.48\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-layout-2} 
 
 \end{knitrout}
 \caption{Grid layout diagram of annotated heatmaps: (left) default layout and
@@ -330,9 +331,9 @@ However more custom clustering can also be specified:
 \hlkwd{aheatmap}\hlstd{(x,} \hlkwc{Rowv} \hlstd{= hc,} \hlkwc{info} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-clustering1} 
-\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-clustering2} 
-\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-clustering3} 
+\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-clustering-1} 
+\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-clustering-2} 
+\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-clustering-3} 
 
 \end{knitrout}
 
@@ -348,9 +349,9 @@ However more custom clustering can also be specified:
 \hlkwd{aheatmap}\hlstd{(x,} \hlkwc{Rowv} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{Colv} \hlstd{=} \hlopt{-}\hlnum{3L}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram1} 
-\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram2} 
-\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram3} 
+\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram-1} 
+\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram-2} 
+\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram-3} 
 
 \end{knitrout}
 
@@ -368,9 +369,9 @@ text and boxes:
             \hlstd{,} \hlkwc{main} \hlstd{=} \hlstr{"Partial highlithing"}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram_dendextend1} 
-\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram_dendextend2} 
-\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram_dendextend3} 
+\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram_dendextend-1} 
+\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram_dendextend-2} 
+\includegraphics[width=0.33\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram_dendextend-3} 
 
 \end{knitrout}
 
@@ -407,7 +408,7 @@ or column dendrogram panel:
 \begin{minipage}{.4\linewidth}
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram_custom_plot} 
+\includegraphics[width=\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram_custom_plot-1} 
 
 \end{knitrout}
 \end{minipage}
@@ -438,12 +439,53 @@ below).
 \hlkwd{aheatmap}\hlstd{(x,} \hlkwc{Rowv} \hlstd{=} \hlnum{NA}\hlstd{,} \hlkwc{main} \hlstd{=} \hlstr{'Default weighting'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=.23\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram_custom_plot1} 
-\includegraphics[width=.23\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram_custom_plot2} 
-\includegraphics[width=.23\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram_custom_plot3} 
-\includegraphics[width=.23\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram_custom_plot4} 
+\includegraphics[width=.23\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram_custom_plot-1} 
+\includegraphics[width=.23\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram_custom_plot-2} 
+\includegraphics[width=.23\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram_custom_plot-3} 
+\includegraphics[width=.23\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-dendrogram_custom_plot-4} 
 
 \end{knitrout}
+
+\section{Borders}
+
+Borders of the different elements can be controlled using argument
+\code{border}. Passing a single value draws a border on all relevant elements
+using the specified color, and a finer control is possible
+by providing a list of border graphical parameters for specific element
+separately (\cref{fig:borders}):
+
+\begin{description}
+  \item[cell] border around each cell in the data matrix;
+  \item[matrix] border around the data matrix;
+  \item[annCol] border around each cell in the column annotation;
+  \item[annRow] border around each cell in the row annotation;
+  \item[annLeg] border around each cell in the annotation legend(s);
+  \item[base] default specification to use for each element -- if not otherwise
+  defined.
+\end{description}
+
+\begin{figure}[!h]
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# all borders}
+\hlkwd{aheatmap}\hlstd{(x,} \hlkwc{annCol} \hlstd{= ann_col,} \hlkwc{border} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlcom{# around data matrix}
+\hlkwd{aheatmap}\hlstd{(x,} \hlkwc{annCol} \hlstd{= ann_col,} \hlkwc{border} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{matrix} \hlstd{=} \hlnum{TRUE}\hlstd{))}
+\hlcom{# finer control on each element}
+\hlkwd{aheatmap}\hlstd{(x,} \hlkwc{annCol} \hlstd{= ann_col,} \hlkwc{border} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{cell} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{)}
+                                            \hlstd{,} \hlkwc{matrix} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{col}\hlstd{=}\hlstr{'blue'}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{4}\hlstd{)}
+                                            \hlstd{,} \hlkwc{annCol}\hlstd{=}\hlstr{'green'}
+                                            \hlstd{,} \hlkwc{annLeg} \hlstd{=} \hlstr{'red'}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=.3\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-borders_all-1} 
+\includegraphics[width=.3\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-borders_all-2} 
+\includegraphics[width=.3\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-borders_all-3} 
+
+\end{knitrout}
+\caption{Border control}\label{fig:borders}
+\end{figure}
 
 \section{Colours}
 \section{Labels}
@@ -493,10 +535,10 @@ More options are available, as detailed in the manual page for
 \hlkwd{aheatmap}\hlstd{(x,} \hlkwc{Rowv} \hlstd{=} \hlnum{NA}\hlstd{,} \hlkwc{layout} \hlstd{=} \hlstr{'^'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=0.23\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-layout_scale1} 
-\includegraphics[width=0.23\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-layout_scale2} 
-\includegraphics[width=0.23\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-layout_scale3} 
-\includegraphics[width=0.23\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-layout_scale4} 
+\includegraphics[width=0.23\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-layout_scale-1} 
+\includegraphics[width=0.23\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-layout_scale-2} 
+\includegraphics[width=0.23\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-layout_scale-3} 
+\includegraphics[width=0.23\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/aheatmaps-layout_scale-4} 
 
 \end{knitrout}
 \caption{Colour scale alternative layouts: the scale can be placed in different
@@ -509,23 +551,23 @@ areas around the data matrix and expanded to full height/width.}
 
 \section{Session Info}
 \begin{itemize}\raggedright
-  \item R version 3.1.1 (2014-07-10), \verb|x86_64-pc-linux-gnu|
+  \item R version 3.1.2 (2014-10-31), \verb|x86_64-pc-linux-gnu|
   \item Locale: \verb|LC_CTYPE=en_US.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_ZA.UTF-8|, \verb|LC_COLLATE=en_US.UTF-8|, \verb|LC_MONETARY=en_ZA.UTF-8|, \verb|LC_MESSAGES=en_US.UTF-8|, \verb|LC_PAPER=en_ZA.UTF-8|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_ZA.UTF-8|, \verb|LC_IDENTIFICATION=C|
   \item Base packages: base, datasets, graphics, grDevices,
     methods, parallel, stats, utils
-  \item Other packages: BH~1.54.0-3, bigmemory~4.4.6,
-    bigmemory.sri~0.1.3, Biobase~2.24.0, BiocGenerics~0.10.0,
-    cluster~1.15.2, colorspace~1.2-4, dendextend~0.17.1,
-    knitr~1.6, NMF~0.21.3, pkgmaker~0.25.7, RColorBrewer~1.0-5,
+  \item Other packages: BH~1.54.0-5, bigmemory~4.4.6,
+    bigmemory.sri~0.1.3, Biobase~2.26.0, BiocGenerics~0.12.1,
+    cluster~1.15.3, colorspace~1.2-4, dendextend~0.17.5,
+    knitr~1.8, NMF~0.21.3, pkgmaker~0.25.9, RColorBrewer~1.0-5,
     registry~0.2, rngtools~1.2.4, synchronicity~1.1.4
   \item Loaded via a namespace (and not attached):
     codetools~0.2-9, digest~0.6.4, doParallel~1.0.8,
     evaluate~0.5.5, foreach~1.4.2, formatR~1.0, ggplot2~1.0.0,
-    grid~3.1.1, gridBase~0.4-7, gtable~0.1.2, highr~0.3,
-    iterators~1.0.7, magrittr~1.0.1, MASS~7.3-34, munsell~0.4.2,
-    plyr~1.8.1, proto~0.3-10, Rcpp~0.11.2, reshape2~1.4,
-    scales~0.2.4, stringr~0.6.2, tools~3.1.1, whisker~0.3-2,
-    xtable~1.7-3
+    grid~3.1.2, gridBase~0.4-7, gtable~0.1.2, highr~0.4,
+    iterators~1.0.7, magrittr~1.5, MASS~7.3-35, munsell~0.4.2,
+    plyr~1.8.1, proto~0.3-10, Rcpp~0.11.3, reshape2~1.4,
+    scales~0.2.4, stringr~0.6.2, tools~3.1.2, whisker~0.3-2,
+    xtable~1.7-4
 \end{itemize}
 
 

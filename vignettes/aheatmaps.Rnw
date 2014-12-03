@@ -152,6 +152,7 @@ the vignette:
 <<sample_data>>=
 # data matrix
 x <- rmatrix(20, 10, .rng = 1234)
+ann_col <- list(Groups = gl(2, 5))
 @
 
 \section{Components}
@@ -301,6 +302,39 @@ aheatmap(x, Rowv = NA, Colv = as.numeric(seq(nrow(x), 1)), main = 'Values used a
 # compare with no weights
 aheatmap(x, Rowv = NA, main = 'Default weighting')
 @
+
+\section{Borders}
+
+Borders of the different elements can be controlled using argument
+\code{border}. Passing a single value draws a border on all relevant elements
+using the specified color, and a finer control is possible
+by providing a list of border graphical parameters for specific element
+separately (\cref{fig:borders}):
+
+\begin{description}
+  \item[cell] border around each cell in the data matrix;
+  \item[matrix] border around the data matrix;
+  \item[annCol] border around each cell in the column annotation;
+  \item[annRow] border around each cell in the row annotation;
+  \item[annLeg] border around each cell in the annotation legend(s);
+  \item[base] default specification to use for each element -- if not otherwise
+  defined.
+\end{description}
+
+\begin{figure}[!h]
+<<borders_all, out.width = ".3\\textwidth">>=
+# all borders
+aheatmap(x, annCol = ann_col, border = TRUE)
+# around data matrix
+aheatmap(x, annCol = ann_col, border = list(matrix = TRUE))
+# finer control on each element
+aheatmap(x, annCol = ann_col, border = list(cell = list(lwd=2)
+                                            , matrix = list(col='blue', lwd=4)
+                                            , annCol='green'
+                                            , annLeg = 'red'))
+@
+\caption{Border control}\label{fig:borders}
+\end{figure}
 
 \section{Colours}
 \section{Labels}
