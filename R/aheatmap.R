@@ -1090,7 +1090,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
                             , txt = txt, gp = gpar(fontsize = fontsize_row))
     	#d(matrix)
         # outer border
-        if( !is_NA(border_color$matrix) ){
+        if( !is_NA(border_color$matrix$col) ){
             grid.rect(gp = border_gpar(border_color$matrix))
         }
     	upViewport()
