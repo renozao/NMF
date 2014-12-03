@@ -623,6 +623,8 @@ setGeneric('plot', package='graphics' )
 #' Plots the residual track computed at regular interval during the fit of 
 #' the NMF model \code{x}.
 #' 
+#' @param x an NMF object as returned by \code{\link{nmf}}.
+#' @param y other object (missing) 
 #' @param skip an integer that indicates the number of points to skip/remove from the beginning
 #' of the curve.
 #' If \code{skip=1L} (default) only the initial residual -- that is computed before any iteration, is
