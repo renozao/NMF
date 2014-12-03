@@ -58,7 +58,8 @@ breaks are calculated automatically. If \code{breaks} is a single value,
 then the colour palette is forced to be centered on this value.}
 
   \item{border_color}{color of cell borders on heatmap, use NA if no border should be
-drawn.}
+drawn.
+This argument allows for a finer control of borders (see dedicated demos and vignettes).}
 
   \item{cellwidth}{individual cell width in points. If left as NA, then the values
 depend on the size of plotting window.}
