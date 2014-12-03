@@ -73,19 +73,14 @@ C++ optimised implementation by Renaud Gaujoux.
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>Multiplicative updates from <cite>Lee et al. (2001)</cite> for
-  standard Nonnegative Matrix Factorization models <code class = 'eq'>V
-  \approx W H</code>, where the distance between the target
-  matrix and its NMF estimate is measured by the --
-  euclidean -- Frobenius norm.</p>
-<p><code>nmf_update.euclidean.w</code> and
-  <code>nmf_update.euclidean.h</code> compute the updated basis
-  and coefficient matrices respectively. They use a
-  <em>C++</em> implementation which is optimised for speed
-  and memory usage.</p>
-<p><code>nmf_update.euclidean.w_R</code> and
-  <code>nmf_update.euclidean.h_R</code> implement the same
-  updates in <em>plain R</em>.</p></p>
+      <p><p>Multiplicative updates from <cite>Lee et al. (2001)</cite> for standard Nonnegative Matrix Factorization
+models <code class = 'eq'>V \approx W H</code>, where the distance between the target matrix and its NMF
+estimate is measured by the -- euclidean -- Frobenius norm.</p>
+<p><code>nmf_update.euclidean.w</code> and <code>nmf_update.euclidean.h</code> compute the updated basis and coefficient
+matrices respectively.
+They use a <em>C++</em> implementation which is optimised for speed and memory usage.</p>
+<p><code>nmf_update.euclidean.w_R</code> and <code>nmf_update.euclidean.h_R</code> implement the same updates
+in <em>plain R</em>.</p></p>
   
     </div>
     
@@ -143,25 +138,25 @@ If <code>copy=FALSE</code>, the returned matrix uses the same memory as the inpu
       <h2>Details</h2>
       
       <p>The coefficient matrix (<code>H</code>) is updated as follows:
-  <pre class = 'eq'> H_kj <-
-  max(H_kj (W^T V)_kj, eps) / ( (W^T W H)_kj + eps ) </code></p>
+<pre class = 'eq'>
+H_kj <- max(H_kj (W^T V)_kj, eps) / ( (W^T W H)_kj + eps )
+</code></p>
   
-      <p>These updates are used by the built-in NMF algorithms
-  <code><a href='Frobenius-nmf.html'>Frobenius</a></code> and
-  <code><a href='Frobenius-nmf.html'>lee</a></code>.</p>
+      <p>These updates are used by the built-in NMF algorithms <code><a href='Frobenius-nmf.html'>Frobenius</a></code> and
+<code><a href='Frobenius-nmf.html'>lee</a></code>.</p>
   
-      <p>The basis matrix (<code>W</code>) is updated as follows: <pre class = 'eq'> W_ik <- max(W_ik (V
-  H^T)_ik, eps) / ( (W H H^T)_ik + eps ) </code></p>
+      <p>The basis matrix (<code>W</code>) is updated as follows:
+<pre class = 'eq'>
+W_ik <- max(W_ik (V H^T)_ik, eps) / ( (W H H^T)_ik + eps )
+</code></p>
   
     </div>
 
     <div class="References">
       <h2>References</h2>
       
-      <p>Lee DD and Seung H (2001). "Algorithms for non-negative
-  matrix factorization." _Advances in neural information
-  processing systems_. <URL:
-  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
+      <p>Lee DD and Seung H (2001). "Algorithms for non-negative matrix factorization." _Advances in neural information processing
+systems_. <URL: http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
   
     </div>
       </div>

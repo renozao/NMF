@@ -73,17 +73,14 @@ C++ optimised implementation by Renaud Gaujoux.
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>Multiplicative updates from <cite>Lee et al. (2001)</cite> for
-  standard Nonnegative Matrix Factorization models <code class = 'eq'>V
-  \approx W H</code>, where the distance between the target
-  matrix and its NMF estimate is measured by the
-  Kullback-Leibler divergence.</p>
-<p><code>nmf_update.KL.w</code> and <code>nmf_update.KL.h</code> compute
-  the updated basis and coefficient matrices respectively.
-  They use a <em>C++</em> implementation which is optimised
-  for speed and memory usage.</p>
-<p><code>nmf_update.KL.w_R</code> and <code>nmf_update.KL.h_R</code>
-  implement the same updates in <em>plain R</em>.</p></p>
+      <p><p>Multiplicative updates from <cite>Lee et al. (2001)</cite> for standard Nonnegative Matrix Factorization
+models <code class = 'eq'>V \approx W H</code>, where the distance between the target matrix and its NMF
+estimate is measured by the Kullback-Leibler divergence.</p>
+<p><code>nmf_update.KL.w</code> and <code>nmf_update.KL.h</code> compute the updated basis and coefficient
+matrices respectively.
+They use a <em>C++</em> implementation which is optimised for speed and memory usage.</p>
+<p><code>nmf_update.KL.w_R</code> and <code>nmf_update.KL.h_R</code> implement the same updates
+in <em>plain R</em>.</p></p>
   
     </div>
     
@@ -132,25 +129,25 @@ If <code>copy=FALSE</code>, the returned matrix uses the same memory as the inpu
       <h2>Details</h2>
       
       <p>The coefficient matrix (<code>H</code>) is updated as follows:
-  <pre class = 'eq'> H_kj <- H_kj ( sum_i [ W_ik V_ij / (WH)_ij ] ) / (
-  sum_i W_ik ) </code></p>
+<pre class = 'eq'>
+H_kj <- H_kj ( sum_i [ W_ik V_ij / (WH)_ij ] ) / ( sum_i W_ik )
+</code></p>
   
-      <p>These updates are used in built-in NMF algorithms
-  <code><a href='KL-nmf.html'>KL</a></code> and
-  <code><a href='KL-nmf.html'>brunet</a></code>.</p>
+      <p>These updates are used in built-in NMF algorithms <code><a href='KL-nmf.html'>KL</a></code> and
+<code><a href='KL-nmf.html'>brunet</a></code>.</p>
   
-      <p>The basis matrix (<code>W</code>) is updated as follows: <pre class = 'eq'> W_ik <- W_ik (
-  sum_u [H_kl A_il / (WH)_il ] ) / ( sum_l H_kl ) </code></p>
+      <p>The basis matrix (<code>W</code>) is updated as follows:
+<pre class = 'eq'>
+W_ik <- W_ik ( sum_u [H_kl A_il / (WH)_il ] ) / ( sum_l H_kl )
+</code></p>
   
     </div>
 
     <div class="References">
       <h2>References</h2>
       
-      <p>Lee DD and Seung H (2001). "Algorithms for non-negative
-  matrix factorization." _Advances in neural information
-  processing systems_. <URL:
-  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
+      <p>Lee DD and Seung H (2001). "Algorithms for non-negative matrix factorization." _Advances in neural information processing
+systems_. <URL: http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
   
     </div>
       </div>

@@ -69,15 +69,12 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>This class implements the <em>Nonsmooth Nonnegative
-  Matrix Factorization</em> (nsNMF) model, required by the
-  Nonsmooth NMF algorithm.</p>
-<p>The Nonsmooth NMF algorithm is defined by
-  <cite>Pascual-Montano et al. (2006)</cite> as a modification of
-  the standard divergence based NMF algorithm (see section
-  Details and references below).  It aims at obtaining
-  sparser factor matrices, by the introduction of a
-  smoothing matrix.</p></p>
+      <p><p>This class implements the <em>Nonsmooth Nonnegative Matrix Factorization</em>
+(nsNMF) model, required by the Nonsmooth NMF algorithm.</p>
+<p>The Nonsmooth NMF algorithm is defined by <cite>Pascual-Montano et al. (2006)</cite> as a
+modification of the standard divergence based NMF algorithm (see section
+Details and references below).  It aims at obtaining sparser factor
+matrices, by the introduction of a smoothing matrix.</p></p>
   
     </div>
     
@@ -86,38 +83,37 @@
     <div class="Details">
       <h2>Details</h2>
       
-      <p>The Nonsmooth NMF algorithm is a modification of the
-  standard divergence based NMF algorithm (see
-  <code><a href='NMF-class.html'>NMF-class</a></code>). Given a non-negative <code class = 'eq'>n x p</code> matrix <code class = 'eq'>V</code> and a factorization rank
-  <code class = 'eq'>r</code>, it fits the following model:</p>
+      <p>The Nonsmooth NMF algorithm is a modification of the standard divergence
+based NMF algorithm (see <code><a href='NMF-class.html'>NMF-class</a></code>).
+Given a non-negative <code class = 'eq'>n x p</code> matrix <code class = 'eq'>V</code> and a
+factorization rank <code class = 'eq'>r</code>, it fits the following model:</p>
   
       <p><pre class = 'eq'>V &#126; W S(theta) H,</code>
-  where: <ul>
-<li> <code class = 'eq'>W</code> and <code class = 'eq'>H</code> are such as in the standard
-  model, i.e. non-negative matrices of dimension <code class = 'eq'>n x r</code> and <code class = 'eq'>r x p</code>
-  respectively;</p>
+where:
+<ul>
+<li> <code class = 'eq'>W</code> and <code class = 'eq'>H</code> are such as in the standard model, i.e.
+non-negative matrices of dimension <code class = 'eq'>n x r</code>
+and <code class = 'eq'>r x p</code> respectively;</p>
   
       <p></li>
-<li> <code class = 'eq'>S</code> is a <code class = 'eq'>r \times r</code> square matrix whose
-  entries depends on an extra parameter <code class = 'eq'>0\leq \theta
-  \leq 1</code> in the following way: <pre class = 'eq'>S = (1-\theta)I +
-  \frac{\theta}{r} 11^T ,</code> where <code class = 'eq'>I</code> is the identity
-  matrix and <code class = 'eq'>1</code> is a vector of ones.</p>
+<li> <code class = 'eq'>S</code> is a <code class = 'eq'>r \times r</code> square matrix whose entries depends on
+an extra parameter <code class = 'eq'>0\leq \theta \leq 1</code> in the following way:
+<pre class = 'eq'>S = (1-\theta)I + \frac{\theta}{r} 11^T ,</code>
+where <code class = 'eq'>I</code> is the identity matrix and <code class = 'eq'>1</code>
+is a vector of ones.</p>
   
       <p></li>
 </ul></p>
   
-      <p>The interpretation of S as a smoothing matrix can be
-  explained as follows: Let <code class = 'eq'>X</code> be a positive, nonzero,
-  vector. Consider the transformed vector <code class = 'eq'>Y = S X</code>. If
-  <code class = 'eq'>\theta = 0</code>, then <code class = 'eq'>Y = X</code> and no smoothing on
-  <code class = 'eq'>X</code> has occurred.  However, as <code class = 'eq'>theta tends to 1</code>, the vector <code class = 'eq'>Y</code> tends to the
-  constant vector with all elements almost equal to the
-  average of the elements of <code class = 'eq'>X</code>. This is the smoothest
-  possible vector in the sense of non-sparseness because
-  all entries are equal to the same nonzero value, instead
-  of having some values close to zero and others clearly
-  nonzero.</p>
+      <p>The interpretation of S as a smoothing matrix can be explained as follows:
+Let <code class = 'eq'>X</code> be a positive, nonzero, vector. Consider the transformed vector
+<code class = 'eq'>Y = S X</code>. If <code class = 'eq'>\theta = 0</code>, then <code class = 'eq'>Y = X</code> and no smoothing on
+<code class = 'eq'>X</code> has occurred.  However, as <code class = 'eq'>theta tends to 1</code>, the
+vector <code class = 'eq'>Y</code> tends to the constant vector with all elements almost equal
+to the average of the elements of <code class = 'eq'>X</code>. This is the smoothest possible
+vector in the sense of non-sparseness because all entries are equal to the
+same nonzero value, instead of having some values close to zero and others
+clearly nonzero.</p>
   
     </div>
 
@@ -187,10 +183,8 @@ that it sums up to 1.</p>
     <div class="References">
       <h2>References</h2>
       
-      <p>Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and
-  Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix
-  factorization (nsNMF)." _IEEE Trans. Pattern Anal. Mach.
-  Intell_, *28*, pp. 403-415.</p>
+      <p>Pascual-Montano A, Carazo JM, Kochi K, Lehmann D and Pascual-marqui RD (2006). "Nonsmooth nonnegative matrix factorization
+(nsNMF)." _IEEE Trans. Pattern Anal. Mach. Intell_, *28*, pp. 403-415.</p>
   
     </div>
     
@@ -248,7 +242,7 @@ rnmf(3, 10, 5, model=&#39;NMFns&#39;, theta=0.3)
       
     <h2>See also</h2>
     
-  Other NMF-model: <code><a href='NMFOffset-class.html'>initialize,NMFOffset-method</a></code>, <code><a href='NMFarray-class.html'>NMFarray-class</a></code>, <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code>, <code><a href='NMFstd-class.html'>NMFstd-class</a></code>
+  Other NMF-model: <code><a href='NMFOffset-class.html'>initialize,NMFOffset-method</a></code>, <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code>, <code><a href='NMFstd-class.html'>NMFstd-class</a></code>
 
         
   </div>

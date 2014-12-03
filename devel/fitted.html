@@ -69,14 +69,12 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>Computes the estimated target matrix based on a given
-  <em>NMF</em> model. The estimation depends on the
-  underlying NMF model. For example in the standard model
-  <code class = 'eq'>V ~ W H</code>, the target matrix is
-  estimated by the matrix product <code class = 'eq'>W H</code>. In other
-  models, the estimate may depend on extra
-  parameters/matrix (cf. Non-smooth NMF in
-  <code><a href='NMFns-class.html'>NMFns-class</a></code>).</p></p>
+      <p><p>Computes the estimated target matrix based on a given <em>NMF</em> model.
+The estimation depends on the underlying NMF model.
+For example in the standard model <code class = 'eq'>V ~ W H</code>, the target matrix is
+estimated by the matrix product <code class = 'eq'>W H</code>.
+In other models, the estimate may depend on extra parameters/matrix
+(cf. Non-smooth NMF in <code><a href='NMFns-class.html'>NMFns-class</a></code>).</p></p>
   
     </div>
     
@@ -84,16 +82,13 @@
     <pre>fitted(object, ...)
 
 <span class="label label-success">S4</span> (NMFstd)
-`fitted`(object, W, H, ...)
+`fitted`(object, W, H)
 
 <span class="label label-success">S4</span> (NMFOffset)
 `fitted`(object, W, H, offset = object@offset)
 
 <span class="label label-success">S4</span> (NMFns)
-`fitted`(object, W, H, S, ...)
-
-<span class="label label-success">S4</span> (NMFarray)
-`fitted`(object, W, H)</pre>
+`fitted`(object, W, H, S, ...)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -129,13 +124,13 @@ used in the computation.</dd>
     <div class="Details">
       <h2>Details</h2>
       
-      <p>This function is a S4 generic function imported from
-  <a href='http://www.inside-r.org/r-doc/stats/fitted.values'>fitted</a> in the package <em>stats</em>. It is
-  implemented as a pure virtual method for objects of class
-  <code>NMF</code>, meaning that concrete NMF models must provide
-  a definition for their corresponding class (i.e.
-  sub-classes of class <code>NMF</code>). See
-  <code><a href='NMF-class.html'>NMF-class</a></code> for more details.</p>
+      <p>This function is a S4 generic function imported from <a href='http://www.inside-r.org/r-doc/stats/fitted.values'>fitted</a> in
+the package <em>stats</em>.
+It is implemented as a pure virtual method for objects of class
+<code>NMF</code>, meaning that concrete NMF models must provide a
+definition for their corresponding class (i.e. sub-classes of
+class <code>NMF</code>).
+See <code><a href='NMF-class.html'>NMF-class</a></code> for more details.</p>
   
     </div>
 
@@ -168,9 +163,6 @@ typically used to pass a value for <code>theta</code>, which is used to compute
 the smoothing matrix instead of the one stored in <code>object</code>.</p>
   
       <p></li>
-<li>fitted<code>signature(object = "NMFarray")</code>: Computes the target matrix estimate for an NMF array model.</p>
-  
-      <p></li>
 <li>fitted<code>signature(object = "NMFfit")</code>: Computes and return the estimated target matrix from an NMF model fitted with
 function <code><a href='nmf.html'>nmf</a></code>.</p>
   
@@ -198,7 +190,7 @@ all.equal(fitted(x), basis(x) %*% coef(x))
   </div>
   <div class="span4">
     <!-- <ul>
-      <li>fitted</li><li>fitted-methods</li><li>fitted,NMFarray-method</li><li>fitted,NMFfit-method</li><li>fitted,NMF-method</li><li>fitted,NMFns-method</li><li>fitted,NMFOffset-method</li><li>fitted,NMFstd-method</li>
+      <li>fitted</li><li>fitted-methods</li><li>fitted,NMFfit-method</li><li>fitted,NMF-method</li><li>fitted,NMFns-method</li><li>fitted,NMFOffset-method</li><li>fitted,NMFstd-method</li>
     </ul>
     <ul>
       <li>methods</li>

@@ -69,12 +69,11 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>Generates NMF models with random values drawn from a
-  uniform distribution. It returns an NMF model with basis
-  and mixture coefficient matrices filled with random
-  values. The main purpose of the function <code>rnmf</code> is
-  to provide a common interface to generate random seeds
-  used by the <code><a href='nmf.html'>nmf</a></code> function.</p></p>
+      <p><p>Generates NMF models with random values drawn from a uniform distribution.
+It returns an NMF model with basis and mixture coefficient matrices filled
+with random values.
+The main purpose of the function <code>rnmf</code> is to provide a common
+interface to generate random seeds used by the <code><a href='nmf.html'>nmf</a></code> function.</p></p>
   
     </div>
     
@@ -176,28 +175,23 @@ target matrix should be set on the returned NMF model.</dd>
     <div class="Details">
       <h2>Details</h2>
       
-      <p>If necessary, extensions of the standard NMF model or
-  custom models must define a method
-  "rnmf,<NMF.MODEL.CLASS>,numeric" for initialising their
-  specific slots other than the basis and mixture
-  coefficient matrices. In order to benefit from the
-  complete built-in interface, the overloading methods
-  should call the generic version using function
-  <code><a href='http://www.inside-r.org/r-doc/methods/NextMethod'>callNextMethod</a></code>, prior to set the values of
-  the specific slots. See for example the method
-  <code><a href='rnmf.html'>rnmf</a></code>
-  defined for <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code> models:
-  <code>showMethods(rnmf, class='NMFOffset',
-  include=TRUE))</code>.</p>
+      <p>If necessary, extensions of the standard NMF model or custom models must
+define a method "rnmf,<NMF.MODEL.CLASS>,numeric" for initialising their
+specific slots other than the basis and mixture coefficient matrices.
+In order to benefit from the complete built-in interface, the overloading
+methods should call the generic version using function
+<code><a href='http://www.inside-r.org/r-doc/methods/NextMethod'>callNextMethod</a></code>, prior to set the values of the specific slots.
+See for example the method <code><a href='rnmf.html'>rnmf</a></code>
+defined for <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code> models:
+<code>showMethods(rnmf, class='NMFOffset', include=TRUE))</code>.</p>
   
-      <p>For convenience, shortcut methods for working on
-  <code>data.frame</code> objects directly are implemented.
-  However, note that conversion of a <code>data.frame</code> into
-  a <code>matrix</code> object may take some non-negligible time,
-  for large datasets. If using this method or other
-  NMF-related methods several times, consider converting
-  your data <code>data.frame</code> object into a matrix once for
-  good, when first loaded.</p>
+      <p>For convenience, shortcut methods for working on <code>data.frame</code> objects
+directly are implemented.
+However, note that conversion of a <code>data.frame</code> into a <code>matrix</code>
+object may take some non-negligible time, for large datasets.
+If using this method or other NMF-related methods several times, consider
+converting your data <code>data.frame</code> object into a matrix once for good,
+when first loaded.</p>
   
     </div>
 
@@ -346,13 +340,13 @@ x
 ## features: 3 
 ## basis/rank: 2 
 ## samples: 3 
-## offset: [ 0.8593 0.4552 0.1415 ]
+## offset: [ 0.8592685 0.4551622 0.1415146 ]
 </code></pre>
 
 <pre><code class="r">offset(x)
 </code></pre>
 
-<pre><code>## [1] 0.8593 0.4552 0.1415
+<pre><code>## [1] 0.8592685 0.4551622 0.1415146
 </code></pre>
 
 <pre><code class="r"># from a matrix
@@ -360,7 +354,7 @@ x &lt;- rnmf(2, rmatrix(5,3, max=10), model=&#39;NMFOffset&#39;)
 offset(x)
 </code></pre>
 
-<pre><code>## [1] 0.1676 1.4397 0.0907 1.6305 8.4577
+<pre><code>## [1] 0.16758674 1.43967155 0.09070254 1.63053459 8.45767822
 </code></pre>
 
 <pre><code class="r">#----------
@@ -483,10 +477,10 @@ basis(x) # fixed
 <pre><code class="r">coef(x) # random
 </code></pre>
 
-<pre><code>##         [,1]   [,2]   [,3]   [,4]   [,5]
-## [1,] 0.66625 0.5059 0.2495 0.2319 0.1443
-## [2,] 0.56969 0.2239 0.1809 0.4358 0.8978
-## [3,] 0.06515 0.6946 0.9902 0.7095 0.7371
+<pre><code>##            [,1]      [,2]      [,3]      [,4]      [,5]
+## [1,] 0.66625268 0.5058676 0.2494622 0.2318956 0.1442813
+## [2,] 0.56969379 0.2239450 0.1809491 0.4358441 0.8977739
+## [3,] 0.06515073 0.6945659 0.9901529 0.7095178 0.7370808
 </code></pre>
 
 <pre><code class="r"># random NMF model with known coefficient matrix
@@ -494,12 +488,12 @@ x &lt;- rnmf(5, H=matrix(1:18, 3)) # 5 x 6 model with rank=3
 basis(x) # random
 </code></pre>
 
-<pre><code>##         [,1]    [,2]   [,3]
-## [1,] 0.92839 0.73168 0.1459
-## [2,] 0.30243 0.74252 0.4800
-## [3,] 0.58870 0.46922 0.4528
-## [4,] 0.90568 0.32728 0.4540
-## [5,] 0.01955 0.05723 0.7322
+<pre><code>##            [,1]       [,2]      [,3]
+## [1,] 0.92838625 0.73168391 0.1459492
+## [2,] 0.30243457 0.74252112 0.4800287
+## [3,] 0.58870158 0.46922472 0.4528269
+## [4,] 0.90567564 0.32727591 0.4540061
+## [5,] 0.01954534 0.05723243 0.7321966
 </code></pre>
 
 <pre><code class="r">coef(x) # fixed
@@ -516,12 +510,12 @@ x &lt;- rnmf(5, H=matrix(1:18, 3), model=&#39;NMFOffset&#39;)
 basis(x) # random
 </code></pre>
 
-<pre><code>##         [,1]    [,2]    [,3]
-## [1,] 0.33448 0.30402 0.17421
-## [2,] 0.95253 0.08696 0.21987
-## [3,] 0.29234 0.86826 0.33064
-## [4,] 0.24446 0.26103 0.83145
-## [5,] 0.08534 0.14251 0.07539
+<pre><code>##            [,1]       [,2]       [,3]
+## [1,] 0.33447760 0.30402157 0.17421267
+## [2,] 0.95252663 0.08696039 0.21986531
+## [3,] 0.29234074 0.86826034 0.33064428
+## [4,] 0.24446469 0.26103160 0.83145425
+## [5,] 0.08533845 0.14251250 0.07538546
 </code></pre>
 
 <pre><code class="r">coef(x) # fixed
@@ -536,7 +530,7 @@ basis(x) # random
 <pre><code class="r">offset(x) # random
 </code></pre>
 
-<pre><code>## [1]  6.757  5.272  1.035 15.726 15.844
+<pre><code>## [1]  6.757098  5.271827  1.034839 15.725844 15.843636
 </code></pre>
 
 <pre><code class="r">#----------
@@ -568,7 +562,7 @@ basis(x) # fixed
 <pre><code class="r">offset(x) # random
 </code></pre>
 
-<pre><code>## [1]  1.139  9.845  7.353 31.626  1.325 32.649
+<pre><code>## [1]  1.139168  9.845028  7.353051 31.625840  1.324927 32.648738
 </code></pre>
 
 <pre><code class="r">#----------

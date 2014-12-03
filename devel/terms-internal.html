@@ -69,12 +69,10 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>These functions are for internal use and should not be
-  called by the end-user.</p>
-<p><code>cterms<-</code> sets fixed coefficient terms or indexes
-  and should only be called on a newly created NMF object,
-  i.e. in the constructor/factory generic
-  <code><a href='nmfModel.html'>nmfModel</a></code>.</p></p>
+      <p><p>These functions are for internal use and should not be called by the end-user.</p>
+<p><code>cterms<-</code> sets fixed coefficient terms or indexes and should only be
+called on a newly created NMF object, i.e. in the constructor/factory generic
+<code><a href='nmfModel.html'>nmfModel</a></code>.</p></p>
   
     </div>
     
@@ -94,8 +92,8 @@ cterms(object) <- value</pre>
     <div class="Details">
       <h2>Details</h2>
       
-      <p>They use <code><a href='http://www.inside-r.org/r-doc/stats/model.matrix'>model.matrix</a>(~ -1 + ., data=value)</code>
-  to generate suitable term matrices.</p>
+      <p>They use <code><a href='http://www.inside-r.org/r-doc/stats/model.matrix'>model.matrix</a>(~ -1 + ., data=value)</code> to generate suitable
+term matrices.</p>
   
     </div>
 

@@ -73,24 +73,19 @@ Port to R and optimisation in C++: Renaud Gaujoux
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>These update rules proposed by <cite>Badea (2008)</cite> are
-  modified version of the updates from <cite>Lee et al.
-  (2001)</cite>, that include an offset/intercept vector, which
-  models a common baseline for each feature accross all
-  samples: <pre class = 'eq'>V \approx W H + I</code></p>
-<p><code>nmf_update.euclidean_offset.h</code> and
-  <code>nmf_update.euclidean_offset.w</code> compute the updated
-  NMFOffset model, using the optimized <em>C++</em>
-  implementations.</p>
-<p><code>nmf_update.offset_R</code> implements a complete single
-  update step, using plain R updates.</p>
-<p><code>nmf_update.offset</code> implements a complete single
-  update step, using C++-optimised updates.</p>
-<p>Algorithms &#145;offset&#146; and &#145;.R#offset&#146; provide
-  the complete NMF-with-offset algorithm from <cite>Badea
-  (2008)</cite>, using the C++-optimised and pure R updates
-  <code><a href='offset-nmf.html'>nmf_update.offset</a></code> and
-  <code><a href='offset-nmf.html'>nmf_update.offset_R</a></code> respectively.</p></p>
+      <p><p>These update rules proposed by <cite>Badea (2008)</cite> are modified version of
+the updates from <cite>Lee et al. (2001)</cite>, that include an offset/intercept vector,
+which models a common baseline for each feature accross all samples:
+<pre class = 'eq'>V \approx W H + I</code></p>
+<p><code>nmf_update.euclidean_offset.h</code> and <code>nmf_update.euclidean_offset.w</code>
+compute the updated NMFOffset model, using the optimized <em>C++</em> implementations.</p>
+<p><code>nmf_update.offset_R</code> implements a complete single update step,
+using plain R updates.</p>
+<p><code>nmf_update.offset</code> implements a complete single update step,
+using C++-optimised updates.</p>
+<p>Algorithms &#145;offset&#146; and &#145;.R#offset&#146; provide the complete NMF-with-offset algorithm
+from <cite>Badea (2008)</cite>, using the C++-optimised and pure R updates <code><a href='offset-nmf.html'>nmf_update.offset</a></code>
+and <code><a href='offset-nmf.html'>nmf_update.offset_R</a></code> respectively.</p></p>
   
     </div>
     
@@ -179,30 +174,23 @@ criterion is computed.</dd>
     <div class="Details">
       <h2>Details</h2>
       
-      <p>The associated model is defined as an
-  <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code> object. The details of the
-  multiplicative updates can be found in <cite>Badea
-  (2008)</cite>. Note that the updates are the ones defined for a
-  single datasets, not the simultaneous NMF model, which is
-  fit by algorithm &#145;siNMF&#146; from formula-based NMF
-  models.</p>
+      <p>The associated model is defined as an <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code> object.
+The details of the multiplicative updates can be found in <cite>Badea (2008)</cite>.
+Note that the updates are the ones defined for a single datasets, not the
+simultaneous NMF model, which is fit by algorithm &#145;siNMF&#146; from
+formula-based NMF models.</p>
   
     </div>
 
     <div class="References">
       <h2>References</h2>
       
-      <p>Badea L (2008). "Extracting gene expression profiles
-  common to colon and pancreatic adenocarcinoma using
-  simultaneous nonnegative matrix factorization." _Pacific
-  Symposium on Biocomputing. Pacific Symposium on
-  Biocomputing_, *290*, pp. 267-78. ISSN 1793-5091, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/18229692>.</p>
+      <p>Badea L (2008). "Extracting gene expression profiles common to colon and pancreatic adenocarcinoma using simultaneous
+nonnegative matrix factorization." _Pacific Symposium on Biocomputing. Pacific Symposium on Biocomputing_, *290*, pp. 267-78.
+ISSN 1793-5091, <URL: http://www.ncbi.nlm.nih.gov/pubmed/18229692>.</p>
   
-      <p>Lee DD and Seung H (2001). "Algorithms for non-negative
-  matrix factorization." _Advances in neural information
-  processing systems_. <URL:
-  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
+      <p>Lee DD and Seung H (2001). "Algorithms for non-negative matrix factorization." _Advances in neural information processing
+systems_. <URL: http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
   
     </div>
       </div>

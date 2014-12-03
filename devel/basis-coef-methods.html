@@ -69,33 +69,27 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p><code>basis</code> and <code>basis<-</code> are S4 generic functions
-  which respectively extract and set the matrix of basis
-  components of an NMF model (i.e. the first matrix
-  factor).</p>
-<p>The methods <code>.basis</code>, <code>.coef</code> and their
-  replacement versions are implemented as pure virtual
-  methods for the interface class <code>NMF</code>, meaning that
-  concrete NMF models must provide a definition for their
-  corresponding class (i.e. sub-classes of class
-  <code>NMF</code>). See <code><a href='NMF-class.html'>NMF-class</a></code> for more
-  details.</p>
-<p><code>coef</code> and <code>coef<-</code> respectively extract and
-  set the coefficient matrix of an NMF model (i.e. the
-  second matrix factor). For example, in the case of the
-  standard NMF model <code class = 'eq'>V ~ W H</code>, the method
-  <code>coef</code> will return the matrix <code class = 'eq'>H</code>.</p>
-<p><code>.coef</code> and <code>.coef<-</code> are low-level S4 generics
-  that simply return/set coefficient data in an object,
-  leaving some common processing to be performed in
-  <code>coef</code> and <code>coef<-</code>.</p>
+      <p><p><code>basis</code> and <code>basis<-</code> are S4 generic functions which respectively
+extract and set the matrix of basis components of an NMF model
+(i.e. the first matrix factor).</p>
+<p>The methods <code>.basis</code>, <code>.coef</code> and their replacement versions
+are implemented as pure virtual methods for the interface class
+<code>NMF</code>, meaning that concrete NMF models must provide a
+definition for their corresponding class (i.e. sub-classes of
+class <code>NMF</code>).
+See <code><a href='NMF-class.html'>NMF-class</a></code> for more details.</p>
+<p><code>coef</code> and <code>coef<-</code> respectively extract and set the
+coefficient matrix of an NMF model (i.e. the second matrix factor).
+For example, in the case of the standard NMF model <code class = 'eq'>V ~ W H</code>,
+the method <code>coef</code> will return the matrix <code class = 'eq'>H</code>.</p>
+<p><code>.coef</code> and <code>.coef<-</code> are low-level S4 generics that simply
+return/set coefficient data in an object, leaving some common processing
+to be performed in <code>coef</code> and <code>coef<-</code>.</p>
 <p>Methods <code>coefficients</code> and <code>coefficients<-</code> are
-  simple aliases for methods <code>coef</code> and <code>coef<-</code>
-  respectively.</p>
-<p><code>scoef</code> is similar to <code>coef</code>, but returns the
-  mixture coefficient matrix of an NMF model, with the
-  columns scaled so that they sum up to a given value (1 by
-  default).</p></p>
+simple aliases for methods <code>coef</code> and <code>coef<-</code> respectively.</p>
+<p><code>scoef</code> is similar to <code>coef</code>, but returns the mixture
+coefficient matrix of an NMF model, with the columns scaled so that they
+sum up to a given value (1 by default).</p></p>
   
     </div>
     
@@ -144,16 +138,16 @@ scoef(object, ...)
 <span class="label label-success">S4</span> (matrix)
 `scoef`(object, scale = 1)
 
-<span class="label label-success">S4</span> (NMFarray)
+<span class="label label-success">S4</span> (NMFstd)
 `.basis`(object, slice = NULL)
 
-<span class="label label-success">S4</span> (NMFarray,matrix)
+<span class="label label-success">S4</span> (NMFstd,matrix)
 `.basis`(object, ..., slice = 1) <- value
 
-<span class="label label-success">S4</span> (NMFarray)
+<span class="label label-success">S4</span> (NMFstd)
 `.coef`(object, slice = NULL)
 
-<span class="label label-success">S4</span> (NMFarray,matrix)
+<span class="label label-success">S4</span> (NMFstd,matrix)
 `.coef`(object, ..., slice = 1) <- value</pre>
     
     <h2>Arguments</h2>
@@ -192,27 +186,24 @@ coefficient matrix should sum up to.</dd>
     <div class="Details">
       <h2>Details</h2>
       
-      <p>For example, in the case of the standard NMF model <code class = 'eq'>V ~ W H</code>, the method <code>basis</code> will return
-  the matrix <code class = 'eq'>W</code>.</p>
+      <p>For example, in the case of the standard NMF model <code class = 'eq'>V ~ W H</code>,
+the method <code>basis</code> will return the matrix <code class = 'eq'>W</code>.</p>
   
       <p><code>basis</code> and <code>basis<-</code> are defined for the top
-  virtual class <code><a href='NMF-class.html'>NMF-class</a></code> only, and rely
-  internally on the low-level S4 generics <code>.basis</code> and
-  <code>.basis<-</code> respectively that effectively extract/set
-  the coefficient data. These data are post/pre-processed,
-  e.g., to extract/set only their non-fixed terms or check
-  dimension compatibility.</p>
+virtual class <code><a href='NMF-class.html'>NMF-class</a></code> only, and rely internally on the low-level
+S4 generics <code>.basis</code> and <code>.basis<-</code> respectively that effectively
+extract/set the coefficient data.
+These data are post/pre-processed, e.g., to extract/set only their
+non-fixed terms or check dimension compatibility.</p>
   
-      <p><code>coef</code> and <code>coef<-</code> are S4 methods defined for
-  the corresponding generic functions from package
-  <code>stats</code> (See <a href='http://www.inside-r.org/r-doc/stats/coef'>coef</a>). Similarly to
-  <code>basis</code> and <code>basis<-</code>, they are defined for the
-  top virtual class <code><a href='NMF-class.html'>NMF-class</a></code> only, and rely
-  internally on the S4 generics <code>.coef</code> and
-  <code>.coef<-</code> respectively that effectively extract/set
-  the coefficient data. These data are post/pre-processed,
-  e.g., to extract/set only their non-fixed terms or check
-  dimension compatibility.</p>
+      <p><code>coef</code> and <code>coef<-</code> are S4 methods defined for the corresponding
+generic functions from package <code>stats</code> (See <a href='http://www.inside-r.org/r-doc/stats/coef'>coef</a>).
+Similarly to <code>basis</code> and <code>basis<-</code>, they are defined for the top
+virtual class <code><a href='NMF-class.html'>NMF-class</a></code> only, and rely internally on the S4
+generics <code>.coef</code> and <code>.coef<-</code> respectively that effectively
+extract/set the coefficient data.
+These data are post/pre-processed, e.g., to extract/set only their
+non-fixed terms or check dimension compatibility.</p>
   
     </div>
 
@@ -240,11 +231,6 @@ should be overloaded by sub-classes, and throws an error if called.</p>
       <p>This function returns slot <code>W</code> of <code>object</code>.</p>
   
       <p></li>
-<li>.basis<code>signature(object = "NMFarray")</code>: Get the basis matrix in NMF array models</p>
-  
-      <p>This function returns slot <code>W</code> of <code>object</code>.</p>
-  
-      <p></li>
 <li>.basis<code>signature(object = "NMFfit")</code>: Returns the basis matrix from an NMF model fitted with
 function <code><a href='nmf.html'>nmf</a></code>.</p>
   
@@ -256,17 +242,12 @@ the <code>.basis</code> method of the actual NMF model.</p>
 should be overloaded by sub-classes, and throws an error if called.</p>
   
       <p></li>
-<li>.basis<-<code>signature(object = "NMFstd", value = "matrix")</code>: Set the basis matrix in standard NMF models</p>
+<li>.basis<-<code>signature(object = "NMFstd", value = "array")</code>: Set the basis matrix in standard NMF models</p>
   
       <p>This function sets slot <code>W</code> of <code>object</code>.</p>
   
       <p></li>
-<li>.basis<-<code>signature(object = "NMFarray", value = "matrix")</code>: Replaces a slice of the basis array.</p>
-  
-      <p></li>
-<li>.basis<-<code>signature(object = "NMFarray", value = "array")</code>: Set the basis array in NMF array models</p>
-  
-      <p>This function sets slot <code>W</code> of <code>object</code>.</p>
+<li>.basis<-<code>signature(object = "NMFstd", value = "matrix")</code>: Replaces a slice of the basis array.</p>
   
       <p></li>
 <li>.basis<-<code>signature(object = "NMFfit", value = "matrix")</code>: Sets the the basis matrix of an NMF model fitted with
@@ -297,11 +278,6 @@ should be overloaded by sub-classes, and throws an error if called.</p>
       <p>This function returns slot <code>H</code> of <code>object</code>.</p>
   
       <p></li>
-<li>.coef<code>signature(object = "NMFarray")</code>: Get the mixture coefficient array in standard NMF array models</p>
-  
-      <p>This function returns slot <code>H</code> of <code>object</code>.</p>
-  
-      <p></li>
 <li>.coef<code>signature(object = "NMFfit")</code>: Returns the the coefficient matrix from an NMF model fitted with
 function <code><a href='nmf.html'>nmf</a></code>.</p>
   
@@ -313,17 +289,12 @@ the <code>.coef</code> method of the actual NMF model.</p>
 should be overloaded by sub-classes, and throws an error if called.</p>
   
       <p></li>
-<li>.coef<-<code>signature(object = "NMFstd", value = "matrix")</code>: Set the mixture coefficient matrix in standard NMF models</p>
+<li>.coef<-<code>signature(object = "NMFstd", value = "array")</code>: Set the mixture coefficient matrix in standard NMF models</p>
   
       <p>This function sets slot <code>H</code> of <code>object</code>.</p>
   
       <p></li>
-<li>.coef<-<code>signature(object = "NMFarray", value = "array")</code>: Set the mixture coefficient matrix in standard NMF models</p>
-  
-      <p>This function sets slot <code>H</code> of <code>object</code>.</p>
-  
-      <p></li>
-<li>.coef<-<code>signature(object = "NMFarray", value = "matrix")</code>: Replaces a slice of the coefficent array.</p>
+<li>.coef<-<code>signature(object = "NMFstd", value = "matrix")</code>: Replaces a slice of the coefficent array.</p>
   
       <p></li>
 <li>.coef<-<code>signature(object = "NMFfit", value = "matrix")</code>: Sets the the coefficient matrix of an NMF model fitted with
@@ -362,7 +333,7 @@ and emphasises the similarities between NMF and PCA or factorial analysis
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>basis</li><li>.basis</li><li>.basis&lt;-</li><li>basis&lt;-</li><li>basis,ANY-method</li><li>.basis&lt;--methods</li><li>.basis-methods</li><li>basis&lt;--methods</li><li>basis-methods</li><li>.basis&lt;-,NMFarray,array-method</li><li>.basis&lt;-,NMFarray,matrix-method</li><li>.basis,NMFarray-method</li><li>.basis&lt;-,NMFfit,matrix-method</li><li>.basis,NMFfit-method</li><li>basis,NMFfitXn-method</li><li>.basis&lt;-,NMF,matrix-method</li><li>.basis,NMF-method</li><li>basis&lt;-,NMF-method</li><li>basis,NMF-method</li><li>.basis&lt;-,NMFstd,matrix-method</li><li>.basis,NMFstd-method</li><li>coef</li><li>.coef</li><li>.coef&lt;-</li><li>coef&lt;-</li><li>coefficients</li><li>coefficients-methods</li><li>coefficients,NMF-method</li><li>.coef&lt;--methods</li><li>.coef-methods</li><li>coef&lt;--methods</li><li>coef-methods</li><li>.coef&lt;-,NMFarray,array-method</li><li>.coef&lt;-,NMFarray,matrix-method</li><li>.coef,NMFarray-method</li><li>.coef&lt;-,NMFfit,matrix-method</li><li>.coef,NMFfit-method</li><li>coef,NMFfitXn-method</li><li>.coef&lt;-,NMF,matrix-method</li><li>.coef,NMF-method</li><li>coef&lt;-,NMF-method</li><li>coef,NMF-method</li><li>.coef&lt;-,NMFstd,matrix-method</li><li>.coef,NMFstd-method</li><li>loadings,NMF-method</li><li>scoef</li><li>scoef,matrix-method</li><li>scoef-methods</li><li>scoef,NMF-method</li>
+      <li>basis</li><li>.basis</li><li>.basis&lt;-</li><li>basis&lt;-</li><li>basis,ANY-method</li><li>.basis&lt;--methods</li><li>.basis-methods</li><li>basis&lt;--methods</li><li>basis-methods</li><li>.basis&lt;-,NMFfit,matrix-method</li><li>.basis,NMFfit-method</li><li>basis,NMFfitXn-method</li><li>.basis&lt;-,NMF,matrix-method</li><li>.basis,NMF-method</li><li>basis&lt;-,NMF-method</li><li>basis,NMF-method</li><li>.basis&lt;-,NMFstd,array-method</li><li>.basis&lt;-,NMFstd,matrix-method</li><li>.basis,NMFstd-method</li><li>coef</li><li>.coef</li><li>.coef&lt;-</li><li>coef&lt;-</li><li>coefficients</li><li>coefficients-methods</li><li>coefficients,NMF-method</li><li>.coef&lt;--methods</li><li>.coef-methods</li><li>coef&lt;--methods</li><li>coef-methods</li><li>.coef&lt;-,NMFfit,matrix-method</li><li>.coef,NMFfit-method</li><li>coef,NMFfitXn-method</li><li>.coef&lt;-,NMF,matrix-method</li><li>.coef,NMF-method</li><li>coef&lt;-,NMF-method</li><li>coef,NMF-method</li><li>.coef&lt;-,NMFstd,array-method</li><li>.coef&lt;-,NMFstd,matrix-method</li><li>.coef,NMFstd-method</li><li>loadings,NMF-method</li><li>scoef</li><li>scoef,matrix-method</li><li>scoef-methods</li><li>scoef,NMF-method</li>
     </ul>
     <ul>
       <li>methods</li>

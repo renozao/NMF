@@ -71,8 +71,7 @@
       
       <p><p><code>nmfSeed</code> lists and retrieves NMF seeding methods.</p>
 <p><code>getNMFSeed</code> is an alias for <code>nmfSeed</code>.</p>
-<p><code>existsNMFSeed</code> tells if a given seeding method
-  exists in the registry.</p></p>
+<p><code>existsNMFSeed</code> tells if a given seeding method exists in the registry.</p></p>
   
     </div>
     
@@ -98,38 +97,35 @@ exactly or partially.</dd>
     <div class="Details">
       <h2>Details</h2>
       
-      <p>Currently the internal registry contains the following
-  seeding methods, which may be specified to the function
-  <code><a href='nmf.html'>nmf</a></code> via its argument <code>seed</code> using
-  their access keys:</p>
+      <p>Currently the internal registry contains the following seeding methods,
+which may be specified to the function <code><a href='nmf.html'>nmf</a></code> via its argument
+<code>seed</code> using their access keys:</p>
   
       <p><ol>
-<li>random The entries of each factors are
-  drawn from a uniform distribution over <code class = 'eq'>[0, max(x)]</code>,
-  where $x$ is the target matrix. </li>
-<li>nndsvd
-  Nonnegative Double Singular Value Decomposition.</p>
+<li>random The entries of each factors are drawn from a uniform
+distribution over <code class = 'eq'>[0, max(x)]</code>, where $x$ is the target matrix.
+</li>
+<li>nndsvd Nonnegative Double Singular Value Decomposition.</p>
   
-      <p>The basic algorithm contains no randomization and is
-  based on two SVD processes, one approximating the data
-  matrix, the other approximating positive sections of the
-  resulting partial SVD factors utilising an algebraic
-  property of unit rank matrices.</p>
+      <p>The basic algorithm contains no randomization and is based on two SVD processes,
+one approximating the data matrix, the other approximating positive sections
+of the resulting partial SVD factors utilising an algebraic property of
+unit rank matrices.</p>
   
-      <p>It is well suited to initialise NMF algorithms with
-  sparse factors. Simple practical variants of the
-  algorithm allows to generate dense factors.</p>
+      <p>It is well suited to initialise NMF algorithms with sparse factors.
+Simple practical variants of the algorithm allows to generate dense factors.</p>
   
       <p><strong>Reference:</strong> <cite>Boutsidis et al. (2008)</cite>
-  </li>
-<li>ica Uses the result of an Independent Component
-  Analysis (ICA) (from the <code>fastICA</code> package). Only
-  the positive part of the result are used to initialise
-  the factors. </li>
+</li>
+<li>ica Uses the result of an Independent Component Analysis (ICA)
+(from the <code>fastICA</code> package).
+Only the positive part of the result are used to initialise the factors.
+</li>
 <li>none Fixed seed.</p>
   
-      <p>This method allows the user to manually provide initial
-  values for both matrix factors. </li>
+      <p>This method allows the user to manually provide initial values for
+both matrix factors.
+</li>
 </ol></p>
   
       <p></p>
@@ -139,12 +135,9 @@ exactly or partially.</dd>
     <div class="References">
       <h2>References</h2>
       
-      <p>Boutsidis C and Gallopoulos E (2008). "SVD based
-  initialization: A head start for nonnegative matrix
-  factorization." _Pattern Recognition_, *41*(4), pp.
-  1350-1362. ISSN 00313203, <URL:
-  http://dx.doi.org/10.1016/j.patcog.2007.09.010>, <URL:
-  http://linkinghub.elsevier.com/retrieve/pii/S0031320307004359>.</p>
+      <p>Boutsidis C and Gallopoulos E (2008). "SVD based initialization: A head start for nonnegative matrix factorization." _Pattern
+Recognition_, *41*(4), pp. 1350-1362. ISSN 00313203, <URL: http://dx.doi.org/10.1016/j.patcog.2007.09.010>, <URL:
+http://linkinghub.elsevier.com/retrieve/pii/S0031320307004359>.</p>
   
     </div>
     

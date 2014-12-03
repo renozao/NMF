@@ -69,17 +69,14 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>The methods <code>dimnames</code>, <code>rownames</code>,
-  <code>colnames</code> and <code>basisnames</code> and their
-  respective replacement form allow to get and set the
-  dimension names of the matrix factors in a NMF model.</p>
-<p><code>dimnames</code> returns all the dimension names in a
-  single list. Its replacement form <code>dimnames<-</code>
-  allows to set all dimension names at once.</p>
-<p><code>rownames</code>, <code>colnames</code> and <code>basisnames</code>
-  provide separate access to each of these dimension names
-  respectively. Their respective replacement form allow to
-  set each dimension names separately.</p></p>
+      <p><p>The methods <code>dimnames</code>, <code>rownames</code>, <code>colnames</code> and
+<code>basisnames</code> and their respective replacement form allow to get and set
+the dimension names of the matrix factors in a NMF model.</p>
+<p><code>dimnames</code> returns all the dimension names in a single list.
+Its replacement form <code>dimnames<-</code> allows to set all dimension names at once.</p>
+<p><code>rownames</code>, <code>colnames</code> and <code>basisnames</code> provide separate access
+to each of these dimension names respectively.
+Their respective replacement form allow to set each dimension names separately.</p></p>
   
     </div>
     
@@ -109,28 +106,24 @@ as an object that inherit from <code><a href='NMF-class.html'>NMF-class</a></cod
     <div class="Details">
       <h2>Details</h2>
       
-      <p>The function <code>basisnames</code> is a new S4 generic
-  defined in the package NMF, that returns the names of the
-  basis components of an object. Its default method should
-  work for any object, that has a suitable <code>basis</code>
-  method defined for its class.</p>
+      <p>The function <code>basisnames</code> is a new S4 generic defined in the package NMF,
+that returns the names of the basis components of an object.
+Its default method should work for any object, that has a suitable <code>basis</code>
+method defined for its class.</p>
   
-      <p>The method <code>dimnames</code> is implemented for the base
-  generic <code><a href='http://www.inside-r.org/r-doc/base/dimnames'>dimnames</a></code>, which make the base
-  function <code><a href='http://www.inside-r.org/r-doc/base/colnames'>rownames</a></code> and
-  <code><a href='http://www.inside-r.org/r-doc/base/colnames'>colnames</a></code> work directly.</p>
+      <p>The method <code>dimnames</code> is implemented for the base generic <code><a href='http://www.inside-r.org/r-doc/base/dimnames'>dimnames</a></code>,
+which make the base function <code><a href='http://www.inside-r.org/r-doc/base/colnames'>rownames</a></code> and <code><a href='http://www.inside-r.org/r-doc/base/colnames'>colnames</a></code>
+work directly.</p>
   
-      <p>Overall, these methods behave as their equivalent on
-  <code>matrix</code> objects. The function <code>basisnames<-</code>
-  ensures that the dimension names are handled in a
-  consistent way on both factors, enforcing the names on
-  both matrix factors simultaneously.</p>
+      <p>Overall, these methods behave as their equivalent on <code>matrix</code> objects.
+The function <code>basisnames<-</code> ensures that the dimension names are handled
+in a consistent way on both factors, enforcing the names on both matrix factors
+simultaneously.</p>
   
-      <p>The function <code>basisnames<-</code> is a new S4 generic
-  defined in the package NMF, that sets the names of the
-  basis components of an object. Its default method should
-  work for any object, that has suitable <code>basis<-</code> and
-  <code>coef<-</code> methods method defined for its class.</p>
+      <p>The function <code>basisnames<-</code> is a new S4 generic defined in the package NMF,
+that sets the names of the basis components of an object.
+Its default method should work for any object, that has suitable <code>basis<-</code>
+and <code>coef<-</code> methods method defined for its class.</p>
   
     </div>
 

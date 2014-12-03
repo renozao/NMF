@@ -69,8 +69,8 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>The function <code>smoothing</code> builds a smoothing matrix
-  for using in Nonsmooth NMF models.</p></p>
+      <p><p>The function <code>smoothing</code> builds a smoothing matrix for using in Nonsmooth
+NMF models.</p></p>
   
     </div>
     
@@ -98,11 +98,11 @@ then the result is a <code class = 'eq'>r \times r</code> square matrix.</p>
     <div class="Details">
       <h2>Details</h2>
       
-      <p>For a <code class = 'eq'>r</code>-rank NMF, the smoothing matrix of parameter
-  <code class = 'eq'>\theta</code> is built as follows: <pre class = 'eq'>S = (1-\theta)I +
-  \frac{\theta}{r} 11^T ,</code> where <code class = 'eq'>I</code> is the identity
-  matrix and <code class = 'eq'>1</code> is a vector of ones (cf.
-  <code><a href='NMFns-class.html'>NMFns-class</a></code> for more details).</p>
+      <p>For a <code class = 'eq'>r</code>-rank NMF, the smoothing matrix of parameter <code class = 'eq'>\theta</code> is
+built as follows:
+<pre class = 'eq'>S = (1-\theta)I + \frac{\theta}{r} 11^T ,</code>
+where <code class = 'eq'>I</code> is the identity matrix and <code class = 'eq'>1</code> is a vector of ones
+(cf. <code><a href='NMFns-class.html'>NMFns-class</a></code> for more details).</p>
   
     </div>
     
@@ -113,19 +113,19 @@ x &lt;- nmfModel(3, model=&#39;NMFns&#39;)
 smoothing(x)
 </code></pre>
 
-<pre><code>##        [,1]   [,2]   [,3]
-## [1,] 0.6667 0.1667 0.1667
-## [2,] 0.1667 0.6667 0.1667
-## [3,] 0.1667 0.1667 0.6667
+<pre><code>##           [,1]      [,2]      [,3]
+## [1,] 0.6666667 0.1666667 0.1666667
+## [2,] 0.1666667 0.6666667 0.1666667
+## [3,] 0.1666667 0.1666667 0.6666667
 </code></pre>
 
 <pre><code class="r">smoothing(x, 0.1)
 </code></pre>
 
-<pre><code>##         [,1]    [,2]    [,3]
-## [1,] 0.93333 0.03333 0.03333
-## [2,] 0.03333 0.93333 0.03333
-## [3,] 0.03333 0.03333 0.93333
+<pre><code>##            [,1]       [,2]       [,3]
+## [1,] 0.93333333 0.03333333 0.03333333
+## [2,] 0.03333333 0.93333333 0.03333333
+## [3,] 0.03333333 0.03333333 0.93333333
 </code></pre>
 
   </div>

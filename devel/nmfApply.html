@@ -69,10 +69,10 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>The function <code>nmfApply</code> provides exteneded
-  <code>apply</code>-like functionality for objects of class
-  <code>NMF</code>. It enables to easily apply a function over
-  different margins of NMF models.</p></p>
+      <p><p>The function <code>nmfApply</code> provides exteneded <code>apply</code>-like
+functionality for objects of class <code>NMF</code>.
+It enables to easily apply a function over different margins of
+NMF models.</p></p>
   
     </div>
     
@@ -114,39 +114,34 @@ the output format.</p>
     <div class="Details">
       <h2>Details</h2>
       
-      <p>The function <code>FUN</code> is applied via a call to
-  <code><a href='http://www.inside-r.org/r-doc/base/apply'>apply</a></code> or <code><a href='http://www.inside-r.org/r-doc/base/lapply'>sapply</a></code> according to
-  the value of argument <code>MARGIN</code> as follows:</p>
+      <p>The function <code>FUN</code> is applied via a call to <code><a href='http://www.inside-r.org/r-doc/base/apply'>apply</a></code>
+or <code><a href='http://www.inside-r.org/r-doc/base/lapply'>sapply</a></code> according to the value of argument <code>MARGIN</code>
+as follows:</p>
   
       <p><ol>
-<li>MARGIN=1 apply <code>FUN</code> to each
-  <em>row</em> of the basis matrix: <code>apply(basis(X), 1L,
-  FUN, ...)</code>.</p>
+<li>MARGIN=1 apply <code>FUN</code> to each <em>row</em> of the basis matrix:
+<code>apply(basis(X), 1L, FUN, ...)</code>.</p>
   
       <p></li>
-<li>MARGIN=2 apply <code>FUN</code> to each <em>column</em>
-  of the coefficient matrix: <code>apply(coef(X), 2L, FUN,
-  ...)</code>.</p>
+<li>MARGIN=2 apply <code>FUN</code> to each <em>column</em> of the coefficient matrix:
+<code>apply(coef(X), 2L, FUN, ...)</code>.</p>
   
       <p></li>
-<li>MARGIN=3 apply <code>FUN</code> to each <em>pair</em> of
-  associated basis component and basis profile: more or
-  less <code>sapply(seq(nbasis(X)), function(i, ...)
-  FUN(basis(X)[,i], coef(X)[i, ], ...), ...)</code>.</p>
+<li>MARGIN=3 apply <code>FUN</code> to each <em>pair</em> of associated basis component
+and basis profile:
+more or less <code>sapply(seq(nbasis(X)), function(i, ...) FUN(basis(X)[,i], coef(X)[i, ], ...), ...)</code>.</p>
   
-      <p>In this case <code>FUN</code> must be have at least two
-  arguments, to which are passed each basis components and
-  basis profiles respectively -- as numeric vectors.</p>
+      <p>In this case <code>FUN</code> must be have at least two arguments, to which are passed
+each basis components and basis profiles respectively -- as numeric vectors.</p>
   
       <p></li>
-<li>MARGIN=4 apply <code>FUN</code> to each <em>column</em>
-  of the basis matrix, i.e. to each basis component:
-  <code>apply(basis(X), 2L, FUN, ...)</code>.</p>
+<li>MARGIN=4 apply <code>FUN</code> to each <em>column</em> of the basis matrix, i.e. to each
+basis component:
+<code>apply(basis(X), 2L, FUN, ...)</code>.</p>
   
       <p></li>
-<li>MARGIN=5 apply <code>FUN</code> to each <em>row</em> of
-  the coefficient matrix: <code>apply(coef(X), 1L, FUN,
-  ...)</code>.</p>
+<li>MARGIN=5 apply <code>FUN</code> to each <em>row</em> of the coefficient matrix:
+<code>apply(coef(X), 1L, FUN, ...)</code>.</p>
   
       <p></li>
 </ol></p>

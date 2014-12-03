@@ -69,15 +69,13 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>The methods <code>dim</code>, <code>nrow</code>, <code>ncol</code> and
-  <code>nbasis</code> return the different dimensions associated
-  with an NMF model.</p>
-<p><code>dim</code> returns all dimensions in a length-3 integer
-  vector: the number of row and columns of the estimated
-  target matrix, as well as the factorization rank (i.e.
-  the number of basis components).</p>
-<p><code>nrow</code>, <code>ncol</code> and <code>nbasis</code> provide
-  separate access to each of these dimensions respectively.</p></p>
+      <p><p>The methods <code>dim</code>, <code>nrow</code>, <code>ncol</code> and <code>nbasis</code> return
+the different dimensions associated with an NMF model.</p>
+<p><code>dim</code> returns all dimensions in a length-3 integer vector:
+the number of row and columns of the estimated target matrix,
+as well as the factorization rank (i.e. the number of basis components).</p>
+<p><code>nrow</code>, <code>ncol</code> and <code>nbasis</code> provide separate access to each
+of these dimensions respectively.</p></p>
   
     </div>
     
@@ -111,19 +109,16 @@ matrix using 3 basis components.</p>
     <div class="Details">
       <h2>Details</h2>
       
-      <p>The NMF package does not implement specific functions
-  <code>nrow</code> and <code>ncol</code>, but rather the S4 method
-  <code>dim</code> for objects of class <code><a href='NMF-class.html'>NMF-class</a></code>.
-  This allows the base methods <code><a href='http://www.inside-r.org/r-doc/base/nrow'>nrow</a></code> and
-  <code><a href='http://www.inside-r.org/r-doc/base/nrow'>ncol</a></code> to directly work with such objects, to
-  get the number of rows and columns of the target matrix
-  estimated by an NMF model.</p>
+      <p>The NMF package does not implement specific functions <code>nrow</code> and <code>ncol</code>,
+but rather the S4 method <code>dim</code> for objects of class <code><a href='NMF-class.html'>NMF-class</a></code>.
+This allows the base methods <code><a href='http://www.inside-r.org/r-doc/base/nrow'>nrow</a></code> and <code><a href='http://www.inside-r.org/r-doc/base/nrow'>ncol</a></code> to
+directly work with such objects, to get the number of rows and columns of
+the target matrix estimated by an NMF model.</p>
   
-      <p>The function <code>nbasis</code> is a new S4 generic defined in
-  the package NMF, that returns the number of basis
-  components of an object. Its default method should work
-  for any object, that has a suitable <code>basis</code> method
-  defined for its class.</p>
+      <p>The function <code>nbasis</code> is a new S4 generic defined in the package NMF, that
+returns the number of basis components of an object.
+Its default method should work for any object, that has a suitable
+<code>basis</code> method defined for its class.</p>
   
     </div>
 

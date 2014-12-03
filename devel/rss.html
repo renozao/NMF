@@ -69,11 +69,10 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p><code>rss</code> and <code>evar</code> are S4 generic functions that
-  respectively computes the Residual Sum of Squares (RSS)
-  and explained variance achieved by a model.</p>
-<p>The explained variance for a target <code class = 'eq'>V</code> is computed
-  as: <pre class = 'eq'>evar = 1 - RSS/sum v_{ij}^2</code>,</p></p>
+      <p><p><code>rss</code> and <code>evar</code> are S4 generic functions that respectively computes
+the Residual Sum of Squares (RSS) and explained variance achieved by a model.</p>
+<p>The explained variance for a target <code class = 'eq'>V</code> is computed as:
+<pre class = 'eq'>evar = 1 - RSS/sum v_{ij}^2</code>,</p></p>
   
     </div>
     
@@ -112,12 +111,10 @@ in <code>evar</code> calls.</dd>
       
       <p>where RSS is the residual sum of squares.</p>
   
-      <p>The explained variance is usefull to compare the
-  performance of different models and their ability to
-  accurately reproduce the original target matrix. Note,
-  however, that a possible caveat is that some models
-  explicitly aim at minimizing the RSS (i.e. maximizing the
-  explained variance), while others do not.</p>
+      <p>The explained variance is usefull to compare the performance of different
+models and their ability to accurately reproduce the original target matrix.
+Note, however, that a possible caveat is that some models explicitly aim at
+minimizing the RSS (i.e. maximizing the explained variance), while others do not.</p>
   
     </div>
 
@@ -167,19 +164,12 @@ However, it is often the case that it still decreases with the rank.</p>
     <div class="References">
       <h2>References</h2>
       
-      <p>Hutchins LN, Murphy SM, Singh P and Graber JH (2008).
-  "Position-dependent motif characterization using
-  non-negative matrix factorization." _Bioinformatics
-  (Oxford, England)_, *24*(23), pp. 2684-90. ISSN
-  1367-4811, <URL:
-  http://dx.doi.org/10.1093/bioinformatics/btn526>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/18852176>.</p>
+      <p>Hutchins LN, Murphy SM, Singh P and Graber JH (2008). "Position-dependent motif characterization using non-negative matrix
+factorization." _Bioinformatics (Oxford, England)_, *24*(23), pp. 2684-90. ISSN 1367-4811, <URL:
+http://dx.doi.org/10.1093/bioinformatics/btn526>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/18852176>.</p>
   
-      <p>Lee DD and Seung HS (1999). "Learning the parts of
-  objects by non-negative matrix factorization." _Nature_,
-  *401*(6755), pp. 788-91. ISSN 0028-0836, <URL:
-  http://dx.doi.org/10.1038/44565>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/10548103>.</p>
+      <p>Lee DD and Seung HS (1999). "Learning the parts of objects by non-negative matrix factorization." _Nature_, *401*(6755), pp.
+788-91. ISSN 0028-0836, <URL: http://dx.doi.org/10.1038/44565>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/10548103>.</p>
   
     </div>
     
@@ -195,13 +185,13 @@ y &lt;- rmatrix(20,10, max=50)
 rss(x, y)
 </code></pre>
 
-<pre><code>## [1] 90637
+<pre><code>## [1] 90637.08
 </code></pre>
 
 <pre><code class="r">rss(x, x + rmatrix(x, max=0.1))
 </code></pre>
 
-<pre><code>## [1] 0.7383
+<pre><code>## [1] 0.738311
 </code></pre>
 
 <pre><code class="r">#----------
@@ -213,7 +203,7 @@ y &lt;- rnmf(3, x) # random compatible model
 rss(y, x)
 </code></pre>
 
-<pre><code>## [1] 62.7
+<pre><code>## [1] 62.70333
 </code></pre>
 
 <pre><code class="r"># fit a model with nmf(): one should do better
@@ -221,14 +211,14 @@ y2 &lt;- nmf(x, 3) # default minimizes the KL-divergence
 rss(y2, x)
 </code></pre>
 
-<pre><code>## [1] 8.047
+<pre><code>## [1] 8.046892
 </code></pre>
 
 <pre><code class="r">y2 &lt;- nmf(x, 3, &#39;lee&#39;) # &#39;lee&#39; minimizes the RSS
 rss(y2, x)
 </code></pre>
 
-<pre><code>## [1] 7.359
+<pre><code>## [1] 7.358595
 </code></pre>
 
   </div>

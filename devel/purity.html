@@ -69,16 +69,13 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>The functions <code>purity</code> and <code>entropy</code>
-  respectively compute the purity and the entropy of a
-  clustering given <em>a priori</em> known classes.</p>
-<p>The purity and entropy measure the ability of a
-  clustering method, to recover known classes (e.g. one
-  knows the true class labels of each sample), that are
-  applicable even when the number of cluster is different
-  from the number of known classes. <cite>Kim et al.
-  (2007)</cite> used these measures to evaluate the performance
-  of their alternate least-squares NMF algorithm.</p></p>
+      <p><p>The functions <code>purity</code> and <code>entropy</code> respectively compute the purity and the entropy
+of a clustering given <em>a priori</em> known classes.</p>
+<p>The purity and entropy measure the ability of a clustering method, to recover
+known classes (e.g. one knows the true class labels of each sample), that are
+applicable even when the number of cluster is different from the number of known classes.
+<cite>Kim et al. (2007)</cite> used these measures to evaluate the performance of their alternate least-squares
+NMF algorithm.</p></p>
   
     </div>
     
@@ -121,41 +118,40 @@ purity respectively.</dd>
     <div class="Details">
       <h2>Details</h2>
       
-      <p>Suppose we are given <code class = 'eq'>l</code> categories, while the
-  clustering method generates <code class = 'eq'>k</code> clusters.</p>
+      <p>Suppose we are given <code class = 'eq'>l</code> categories, while the clustering method generates
+<code class = 'eq'>k</code> clusters.</p>
   
-      <p>The purity of the clustering with respect to the known
-  categories is given by: <pre class = 'eq'>Purity = \frac{1}{n}
-  \sum_{q=1}^k \max_{1 \leq j \leq l} n_q^j</code> ,</p>
+      <p>The purity of the clustering with respect to the known categories is given by:
+<pre class = 'eq'>Purity = \frac{1}{n} \sum_{q=1}^k \max_{1 \leq j \leq l} n_q^j</code> ,</p>
   
-      <p>where: <ul>
-<li> <code class = 'eq'>n</code> is the total number of
-  samples; </li>
-<li> <code class = 'eq'>n_q^j</code> is the number of samples in
-  cluster <code class = 'eq'>q</code> that belongs to original class <code class = 'eq'>j</code>
-  (<code class = 'eq'>1 \leq j \leq l</code>). </li>
+      <p>where:
+<ul>
+<li> <code class = 'eq'>n</code> is the total number of samples;
+</li>
+<li> <code class = 'eq'>n_q^j</code> is the number of samples in cluster <code class = 'eq'>q</code> that belongs to
+original class <code class = 'eq'>j</code> (<code class = 'eq'>1 \leq j \leq l</code>).
+</li>
 </ul></p>
   
-      <p>The purity is therefore a real number in <code class = 'eq'>[0,1]</code>. The
-  larger the purity, the better the clustering performance.</p>
+      <p>The purity is therefore a real number in <code class = 'eq'>[0,1]</code>.
+The larger the purity, the better the clustering performance.</p>
   
-      <p>The entropy of the clustering with respect to the known
-  categories is given by: <pre class = 'eq'> - 1/(n log2(l) ) sum_q sum_j n(q,j)
-  log2( n(q,j) / n_q )</code>,</p>
+      <p>The entropy of the clustering with respect to the known categories is given by:
+<pre class = 'eq'>
+- 1/(n log2(l) ) sum_q sum_j n(q,j) log2( n(q,j) / n_q )</code>,</p>
   
-      <p>where: <ul>
-<li> <code class = 'eq'>n</code> is the total number of
-  samples; </li>
-<li> <code class = 'eq'>n_q</code> is the total number of
-  samples in cluster <code class = 'eq'>q</code> (<code class = 'eq'>1 \leq q \leq k</code>); </li>
-<li>
-  <code class = 'eq'>n(q,j)</code> is the number of samples in cluster
-  <code class = 'eq'>q</code> that belongs to original class <code class = 'eq'>j</code> (<code class = 'eq'>1
-  \leq j \leq l</code>). </li>
+      <p>where:
+<ul>
+<li> <code class = 'eq'>n</code> is the total number of samples;
+</li>
+<li> <code class = 'eq'>n_q</code> is the total number of samples in cluster <code class = 'eq'>q</code> (<code class = 'eq'>1 \leq q \leq k</code>);
+</li>
+<li> <code class = 'eq'>n(q,j)</code> is the number of samples in cluster <code class = 'eq'>q</code> that belongs to
+original class <code class = 'eq'>j</code> (<code class = 'eq'>1 \leq j \leq l</code>).
+</li>
 </ul></p>
   
-      <p>The smaller the entropy, the better the clustering
-  performance.</p>
+      <p>The smaller the entropy, the better the clustering performance.</p>
   
     </div>
 
@@ -204,13 +200,9 @@ the purity is computed between <code>x</code> and <code>predict{y}</code></p>
     <div class="References">
       <h2>References</h2>
       
-      <p>Kim H and Park H (2007). "Sparse non-negative matrix
-  factorizations via alternating non-negativity-constrained
-  least squares for microarray data analysis."
-  _Bioinformatics (Oxford, England)_, *23*(12), pp.
-  1495-502. ISSN 1460-2059, <URL:
-  http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
+      <p>Kim H and Park H (2007). "Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares
+for microarray data analysis." _Bioinformatics (Oxford, England)_, *23*(12), pp. 1495-502. ISSN 1460-2059, <URL:
+http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
   
     </div>
     
@@ -227,13 +219,13 @@ x2 &lt;- nmf(V, 2)
 purity(x2, cl)
 </code></pre>
 
-<pre><code>## [1] 0.7222
+<pre><code>## [1] 0.7222222
 </code></pre>
 
 <pre><code class="r">entropy(x2, cl)
 </code></pre>
 
-<pre><code>## [1] 0.438
+<pre><code>## [1] 0.4380081
 </code></pre>
 
 <pre><code class="r"># perform default NMF with rank=2

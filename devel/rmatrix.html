@@ -69,11 +69,10 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>The S4 generic <code>rmatrix</code> generates a random matrix
-  from a given object. Methods are provided to generate
-  matrices with entries drawn from any given random
-  distribution function, e.g. <code><a href='http://www.inside-r.org/r-doc/stats/Uniform'>runif</a></code> or
-  <code><a href='http://www.inside-r.org/r-doc/stats/Normal'>rnorm</a></code>.</p></p>
+      <p><p>The S4 generic <code>rmatrix</code> generates a random matrix from a given object.
+Methods are provided to generate matrices with entries drawn from any
+given random distribution function, e.g. <code><a href='http://www.inside-r.org/r-doc/stats/Uniform'>runif</a></code> or
+<code><a href='http://www.inside-r.org/r-doc/stats/Normal'>rnorm</a></code>.</p></p>
   
     </div>
     
@@ -172,12 +171,12 @@ certain types of noise in the data.</p>
 rmatrix(5, 3)
 </code></pre>
 
-<pre><code>##         [,1]   [,2]   [,3]
-## [1,] 0.06243 0.1101 0.8997
-## [2,] 0.90294 0.5133 0.3080
-## [3,] 0.02825 0.8323 0.5569
-## [4,] 0.32196 0.4457 0.9992
-## [5,] 0.12815 0.7559 0.2021
+<pre><code>##            [,1]      [,2]      [,3]
+## [1,] 0.06243016 0.1101419 0.8997295
+## [2,] 0.90294478 0.5133422 0.3080472
+## [3,] 0.02825208 0.8322932 0.5568540
+## [4,] 0.32196286 0.4457090 0.9991947
+## [5,] 0.12814938 0.7559115 0.2020942
 </code></pre>
 
 <pre><code class="r">
@@ -187,10 +186,10 @@ a &lt;- matrix(1, 3, 4)
 rmatrix(a)
 </code></pre>
 
-<pre><code>##        [,1]   [,2]   [,3]   [,4]
-## [1,] 0.5755 0.1902 0.5678 0.3842
-## [2,] 0.4891 0.8384 0.3627 0.5724
-## [3,] 0.2043 0.8881 0.2311 0.5999
+<pre><code>##           [,1]      [,2]      [,3]      [,4]
+## [1,] 0.5755040 0.1902230 0.5677783 0.3842288
+## [2,] 0.4890726 0.8383846 0.3627005 0.5724400
+## [3,] 0.2042821 0.8880539 0.2311141 0.5999191
 </code></pre>
 
 <pre><code class="r">

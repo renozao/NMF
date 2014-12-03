@@ -69,18 +69,14 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>The package NMF defines methods for the function
-  <code><a href='http://www.inside-r.org/r-doc/stats/residuals'>residuals</a></code> that returns the final
-  residuals of an NMF fit or the track of the residuals
-  along the fit process, computed according to the
-  objective function associated with the algorithm that
-  fitted the model.</p>
-<p><code>residuals<-</code> sets the value of the last residuals,
-  or, optionally, of the complete residual track.</p>
-<p>Tells if an <code>NMFfit</code> object contains a recorded
-  residual track.</p>
-<p><code>trackError</code> adds a residual value to the track of
-  residuals.</p></p>
+      <p><p>The package NMF defines methods for the function <code><a href='http://www.inside-r.org/r-doc/stats/residuals'>residuals</a></code>
+that returns the final residuals of an NMF fit or the track of the residuals
+along the fit process, computed according to the objective function
+associated with the algorithm that fitted the model.</p>
+<p><code>residuals<-</code> sets the value of the last residuals, or, optionally,
+of the complete residual track.</p>
+<p>Tells if an <code>NMFfit</code> object contains a recorded residual track.</p>
+<p><code>trackError</code> adds a residual value to the track of residuals.</p></p>
   
     </div>
     
@@ -133,25 +129,23 @@ The names correspond to the iterations at which the residuals were computed.</p>
     <div class="Details">
       <h2>Details</h2>
       
-      <p>When called with <code>track=TRUE</code>, the whole residuals
-  track is returned, if available. Note that method
-  <code><a href='nmf.html'>nmf</a></code> does not compute the residuals track,
-  unless explicitly required.</p>
+      <p>When called with <code>track=TRUE</code>, the whole residuals track is returned,
+if available.
+Note that method <code><a href='nmf.html'>nmf</a></code> does not compute the residuals track,
+unless explicitly required.</p>
   
-      <p>It is a S4 methods defined for the associated generic
-  functions from package <code>stats</code> (See
-  <a href='http://www.inside-r.org/r-doc/stats/residuals'>residuals</a>).</p>
+      <p>It is a S4 methods defined for the associated generic functions from package
+<code>stats</code> (See <a href='http://www.inside-r.org/r-doc/stats/residuals'>residuals</a>).</p>
   
     </div>
 
     <div class="Note">
       <h2>Note</h2>
       
-      <p>Stricly speaking, the method <code>residuals,NMFfit</code> does
-  not fulfill its contract as defined by the package
-  <code>stats</code>, but rather acts as function
-  <code>deviance</code>. The might be changed in a later release
-  to make it behave as it should.</p>
+      <p>Stricly speaking, the method <code>residuals,NMFfit</code> does not fulfill
+its contract as defined by the package <code>stats</code>, but rather acts as function
+<code>deviance</code>.
+The might be changed in a later release to make it behave as it should.</p>
   
     </div>
 

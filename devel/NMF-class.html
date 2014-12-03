@@ -69,18 +69,16 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>The class <code>NMF</code> is a <em>virtual class</em> that
-  defines a common interface to handle Nonnegative Matrix
-  Factorization models (NMF models) in a generic way.
-  Provided a minimum set of generic methods is implemented
-  by concrete model classes, these benefit from a whole set
-  of functions and utilities to perform common computations
-  and tasks in the context of Nonnegative Matrix
-  Factorization.</p>
-<p>The function <code>misc</code> provides access to miscellaneous
-  data members stored in slot <code>misc</code> (as a
-  <code>list</code>), which allow extensions of NMF models to be
-  implemented, without defining a new S4 class.</p></p>
+      <p><p>The class <code>NMF</code> is a <em>virtual class</em> that defines a common
+interface to handle Nonnegative Matrix Factorization models (NMF models)
+in a generic way.
+Provided a minimum set of generic methods is implemented by concrete
+model classes, these benefit from a whole set of functions and utilities
+to perform common computations and tasks in the context of Nonnegative Matrix
+Factorization.</p>
+<p>The function <code>misc</code> provides access to miscellaneous data members stored
+in slot <code>misc</code> (as a <code>list</code>), which allow extensions of NMF models
+to be implemented, without defining a new S4 class.</p></p>
   
     </div>
     
@@ -125,19 +123,17 @@
     <div class="Details">
       <h2>Details</h2>
       
-      <p>Class <code>NMF</code> makes it easy to develop new models that
-  integrate well into the general framework implemented by
-  the <em>NMF</em> package.</p>
+      <p>Class <code>NMF</code> makes it easy to develop new models that integrate well
+into the general framework implemented by the <em>NMF</em> package.</p>
   
-      <p>Following a few simple guidelines, new types of NMF
-  models benefit from all the functionalities available for
-  the built-in NMF models -- that derive themselves from
-  class <code>NMF</code>. See section <em>Implementing NMF
-  models</em> below.</p>
+      <p>Following a few simple guidelines, new types of NMF models benefit from all the
+functionalities available for the built-in NMF models -- that derive themselves
+from class <code>NMF</code>.
+See section <em>Implementing NMF models</em> below.</p>
   
-      <p>See <code><a href='NMFstd-class.html'>NMFstd-class</a></code>, and references and links
-  therein for details on the built-in implementations of
-  the standard NMF model and its extensions.</p>
+      <p>See <code><a href='NMFstd-class.html'>NMFstd-class</a></code>, and references and links therein for
+details on the built-in implementations of the standard NMF model and its
+extensions.</p>
   
     </div>
 
@@ -479,24 +475,16 @@ more details.</p>
     <div class="References">
       <h2>References</h2>
       
-      <p>Definition of Nonnegative Matrix Factorization in its
-  modern formulation: <cite>Lee et al. (1999)</cite></p>
+      <p>Definition of Nonnegative Matrix Factorization in its modern formulation: <cite>Lee et al. (1999)</cite></p>
   
-      <p>Historical first definition and algorithms: <cite>Paatero
-  et al. (1994)</cite></p>
+      <p>Historical first definition and algorithms: <cite>Paatero et al. (1994)</cite></p>
   
-      <p>Lee DD and Seung HS (1999). "Learning the parts of
-  objects by non-negative matrix factorization." _Nature_,
-  *401*(6755), pp. 788-91. ISSN 0028-0836, <URL:
-  http://dx.doi.org/10.1038/44565>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/10548103>.</p>
+      <p>Lee DD and Seung HS (1999). "Learning the parts of objects by non-negative matrix factorization." _Nature_, *401*(6755), pp.
+788-91. ISSN 0028-0836, <URL: http://dx.doi.org/10.1038/44565>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/10548103>.</p>
   
-      <p>Paatero P and Tapper U (1994). "Positive matrix
-  factorization: A non-negative factor model with optimal
-  utilization of error estimates of data values."
-  _Environmetrics_, *5*(2), pp. 111-126. <URL:
-  http://dx.doi.org/10.1002/env.3170050203>, <URL:
-  http://www3.interscience.wiley.com/cgi-bin/abstract/113468839/ABSTRACT>.</p>
+      <p>Paatero P and Tapper U (1994). "Positive matrix factorization: A non-negative factor model with optimal utilization of error
+estimates of data values." _Environmetrics_, *5*(2), pp. 111-126. <URL: http://dx.doi.org/10.1002/env.3170050203>, <URL:
+http://www3.interscience.wiley.com/cgi-bin/abstract/113468839/ABSTRACT>.</p>
   
     </div>
     
@@ -507,14 +495,14 @@ more details.</p>
 nmfModels()
 </code></pre>
 
-<pre><code>## [1] &quot;NMFstd&quot;    &quot;NMFarray&quot;  &quot;NMFOffset&quot; &quot;NMFns&quot;
+<pre><code>## [1] &quot;NMFstd&quot;    &quot;NMFOffset&quot; &quot;NMFns&quot;
 </code></pre>
 
 <pre><code class="r"># show all the built-in NMF models available
 nmfModels(builtin.only=TRUE)
 </code></pre>
 
-<pre><code>## [1] &quot;NMFstd&quot;    &quot;NMFarray&quot;  &quot;NMFOffset&quot; &quot;NMFns&quot;
+<pre><code>## [1] &quot;NMFstd&quot;    &quot;NMFOffset&quot; &quot;NMFns&quot;
 </code></pre>
 
 <pre><code class="r"># class NMF is a virtual class so cannot be instantiated:

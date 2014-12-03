@@ -69,14 +69,12 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>The functions documented here are S4 generics that define
-  an general interface for -- optimisation -- algorithms.</p>
-<p>This interface builds upon the broad definition of an
-  algorithm as a workhorse function to which is associated
-  auxiliary objects such as an underlying model or an
-  objective function that measures the adequation of the
-  model with observed data. It aims at complementing the
-  interface provided by the <code><a href='http://www.inside-r.org/r-doc/stats/stats-package'>stats</a></code> package.</p></p>
+      <p><p>The functions documented here are S4 generics that define an general interface for
+-- optimisation -- algorithms.</p>
+<p>This interface builds upon the broad definition of an algorithm as a workhorse function
+to which is associated auxiliary objects such as an underlying model or an objective function
+that measures the adequation of the model with observed data.
+It aims at complementing the interface provided by the <code><a href='http://www.inside-r.org/r-doc/stats/stats-package'>stats</a></code> package.</p></p>
   
     </div>
     
@@ -132,59 +130,49 @@ e.g. a non-empty NMF model.</dd>
     <div class="Details">
       <h2>Details</h2>
       
-      <p><code>algorithm</code> and <code>algorithm<-</code> get/set an object
-  that describes the algorithm used to compute another
-  object, or with which it is associated. It may be a
-  simple character string that gives the algorithm's names,
-  or an object that includes the algorithm's definition
-  itself (e.g. an <code><a href='NMFStrategy.html'>NMFStrategy</a></code> object).</p>
+      <p><code>algorithm</code> and <code>algorithm<-</code> get/set an object that describes the
+algorithm used to compute another object, or with which it is associated.
+It may be a simple character string that gives the algorithm's names, or an object that
+includes the algorithm's definition itself (e.g. an <code><a href='NMFStrategy.html'>NMFStrategy</a></code> object).</p>
   
-      <p><code>seeding</code> get/set the seeding method used to
-  initialise the computation of an object, i.e. usually the
-  function that sets the starting point of an algorithm.</p>
+      <p><code>seeding</code> get/set the seeding method used to initialise the computation of an object,
+i.e. usually the function that sets the starting point of an algorithm.</p>
   
-      <p><code>niter</code> and <code>niter<-</code> get/set the number of
-  iterations performed to compute an object. The function
-  <code>niter<-</code> would usually be called just before
-  returning the result of an algorithm, when putting
-  together data about the fit.</p>
+      <p><code>niter</code> and <code>niter<-</code> get/set the number of iterations performed
+to compute an object.
+The function <code>niter<-</code> would usually be called just before returning the result
+of an algorithm, when putting together data about the fit.</p>
   
-      <p><code>nrun</code> returns the number of times the algorithm has
-  been run to compute an object. Usually this will be 1,
-  but may be be more if the algorithm involves multiple
-  starting points.</p>
+      <p><code>nrun</code> returns the number of times the algorithm has been run to compute
+an object.
+Usually this will be 1, but may be be more if the algorithm involves multiple
+starting points.</p>
   
-      <p><code>objective</code> and <code>objective<-</code> get/set the
-  objective function associated with an object. Some
-  methods for <code>objective</code> may also compute the
-  objective value with respect to some target/observed
-  data.</p>
+      <p><code>objective</code> and <code>objective<-</code> get/set the objective function associated
+with an object.
+Some methods for <code>objective</code> may also compute the objective value with respect to
+some target/observed data.</p>
   
-      <p><code>runtime</code> returns the CPU time required to compute
-  an object. This would generally be an object of class
-  <code><a href='http://www.inside-r.org/r-doc/base/proc.time'>proc_time</a></code>.</p>
+      <p><code>runtime</code> returns the CPU time required to compute an object.
+This would generally be an object of class <code><a href='http://www.inside-r.org/r-doc/base/proc.time'>proc_time</a></code>.</p>
   
-      <p><code>runtime.all</code> returns the CPU time required to
-  compute a collection of objects, e.g. a sequence of
-  independent fits.</p>
+      <p><code>runtime.all</code> returns the CPU time required to compute a collection of
+objects, e.g. a sequence of independent fits.</p>
   
-      <p><code>seqtime</code> returns the sequential CPU time -- that
-  would be -- required to compute a collection of objects.
-  It would differ from <code>runtime.all</code> if the
-  computations were performed in parallel.</p>
+      <p><code>seqtime</code> returns the sequential CPU time -- that would be -- required
+to compute a collection of objects.
+It would differ from <code>runtime.all</code> if the computations were performed
+in parallel.</p>
   
-      <p><code>modelname</code> returns a the type of model associated
-  with an object.</p>
+      <p><code>modelname</code> returns a the type of model associated with an object.</p>
   
-      <p><code>run</code> calls the workhorse function that actually
-  implements a strategy/algorithm, and run it on some data
-  object.</p>
+      <p><code>run</code> calls the workhorse function that actually implements a strategy/algorithm,
+and run it on some data object.</p>
   
-      <p><code>logs</code> returns the log messages output during the
-  computation of an object.</p>
+      <p><code>logs</code> returns the log messages output during the computation of an
+object.</p>
   
-      <p><code>compare</code> compares objects obtained from running
-  separate algorithms.</p>
+      <p><code>compare</code> compares objects obtained from running separate algorithms.</p>
   
     </div>
 

@@ -69,15 +69,13 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p><code>nmfModel</code> is a S4 generic function which provides a
-  convenient way to build NMF models. It implements a
-  unified interface for creating <code>NMF</code> objects from
-  any NMF models, which is designed to resolve potential
-  dimensions inconsistencies.</p>
-<p><code>nmfModels</code> lists all available NMF models currently
-  defined that can be used to create NMF objects, i.e. --
-  more or less -- all S4 classes that inherit from class
-  <code><a href='NMF-class.html'>NMF-class</a></code>.</p></p>
+      <p><p><code>nmfModel</code> is a S4 generic function which provides a convenient way to
+build NMF models.
+It implements a unified interface for creating <code>NMF</code> objects from any
+NMF models, which is designed to resolve potential dimensions inconsistencies.</p>
+<p><code>nmfModels</code> lists all available NMF models currently defined that can be
+used to create NMF objects, i.e. -- more or less -- all S4 classes that
+inherit from class <code><a href='NMF-class.html'>NMF-class</a></code>.</p></p>
   
     </div>
     
@@ -161,22 +159,19 @@ i.e. defined within the NMF package, should be listed.</dd>
     <div class="Details">
       <h2>Details</h2>
       
-      <p>All <code>nmfModel</code> methods return an object that
-  inherits from class <code>NMF</code>, that is suitable for
-  seeding NMF algorithms via arguments <code>rank</code> or
-  <code>seed</code> of the <code><a href='nmf.html'>nmf</a></code> method, in which
-  case the factorisation rank is implicitly set by the
-  number of basis components in the seeding model (see
-  <code><a href='nmf.html'>nmf</a></code>).</p>
+      <p>All <code>nmfModel</code> methods return an object that inherits from class <code>NMF</code>,
+that is suitable for seeding NMF algorithms via arguments <code>rank</code> or
+<code>seed</code> of the <code><a href='nmf.html'>nmf</a></code> method, in which case the factorisation
+rank is implicitly set by the number of basis components in the seeding
+model (see <code><a href='nmf.html'>nmf</a></code>).</p>
   
-      <p>For convenience, shortcut methods and internal
-  conversions for working on <code>data.frame</code> objects
-  directly are implemented. However, note that conversion
-  of a <code>data.frame</code> into a <code>matrix</code> object may
-  take some non-negligible time, for large datasets. If
-  using this method or other NMF-related methods several
-  times, consider converting your data <code>data.frame</code>
-  object into a matrix once for good, when first loaded.</p>
+      <p>For convenience, shortcut methods and internal conversions for working on
+<code>data.frame</code> objects directly are implemented.
+However, note that conversion of a <code>data.frame</code> into a <code>matrix</code>
+object may take some non-negligible time, for large datasets.
+If using this method or other NMF-related methods several times, consider
+converting your data <code>data.frame</code> object into a matrix once for good,
+when first loaded.</p>
   
     </div>
 
@@ -337,11 +332,8 @@ of basis components in the seed.</p>
     <div class="References">
       <h2>References</h2>
       
-      <p>Lee DD and Seung HS (1999). "Learning the parts of
-  objects by non-negative matrix factorization." _Nature_,
-  *401*(6755), pp. 788-91. ISSN 0028-0836, <URL:
-  http://dx.doi.org/10.1038/44565>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/10548103>.</p>
+      <p>Lee DD and Seung HS (1999). "Learning the parts of objects by non-negative matrix factorization." _Nature_, *401*(6755), pp.
+788-91. ISSN 0028-0836, <URL: http://dx.doi.org/10.1038/44565>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/10548103>.</p>
   
     </div>
     
@@ -395,8 +387,9 @@ try( nmfModel(r+1, W=w, H=h) )
 nmfModel(r, W=w, H=h)
 </code></pre>
 
-<pre><code>## Warning: nmfModel - Objective rank [3] is lower than the number of rows in
-## H [4]: only the first 3 rows of H will be used
+<pre><code>## Warning in .local(rank, target, ...): nmfModel - Objective rank [3] is
+## lower than the number of rows in H [4]: only the first 3 rows of H will be
+## used
 </code></pre>
 
 <pre><code>## &lt;Object of class:NMFstd&gt;
@@ -408,8 +401,14 @@ nmfModel(r, W=w, H=h)
 <pre><code class="r">nmfModel(r, n-1, W=w, H=h)
 </code></pre>
 
-<pre><code>## Warning: nmfModel - Number of rows in target is lower than the number of rows in W [20]: only the first 19 rows of W will be used
-## Warning: nmfModel - Objective rank [3] is lower than the number of rows in H [4]: only the first 3 rows of H  will be used
+<pre><code>## Warning in .local(rank, target, ...): nmfModel - Number of rows in target
+## is lower than the number of rows in W [20]: only the first 19 rows of W
+## will be used
+</code></pre>
+
+<pre><code>## Warning in .local(rank, target, ...): nmfModel - Objective rank [3] is
+## lower than the number of rows in H [4]: only the first 3 rows of H will be
+## used
 </code></pre>
 
 <pre><code>## &lt;Object of class:NMFstd&gt;
@@ -626,7 +625,7 @@ nmfModel(x ~ 3 + gr + b, data=list(b=runif(10)))
 ## samples: 10 
 ## fixed coef [3]:
 ##   gr = &lt;1, 2&gt;
-##   b = 0.108168445993215, 0.0201862454414368, ..., 0.824667210225016
+##   b = 0.664863257668912, 0.56742530176416, ..., 0.0675396302249283
 </code></pre>
 
 <pre><code class="r"># 3-rank model that fits a given ExpressionSet (with fixed coef terms)
@@ -641,7 +640,7 @@ nmfModel(e ~ 3 + gr + a) # `a` is looked up in the phenotypic data of x pData(x)
 ## samples: 10 
 ## fixed coef [3]:
 ##   gr = &lt;1, 2&gt;
-##   a = 0.569387156283483, 0.744083884637803, ..., 0.0507975923828781
+##   a = 0.740817883284763, 0.829198891995475, ..., 0.406106327660382
 </code></pre>
 
 <pre><code class="r">#----------
@@ -651,14 +650,14 @@ nmfModel(e ~ 3 + gr + a) # `a` is looked up in the phenotypic data of x pData(x)
 nmfModels()
 </code></pre>
 
-<pre><code>## [1] &quot;NMFstd&quot;    &quot;NMFarray&quot;  &quot;NMFOffset&quot; &quot;NMFns&quot;
+<pre><code>## [1] &quot;NMFstd&quot;    &quot;NMFOffset&quot; &quot;NMFns&quot;
 </code></pre>
 
 <pre><code class="r"># show all the built-in NMF models available
 nmfModels(builtin.only=TRUE)
 </code></pre>
 
-<pre><code>## [1] &quot;NMFstd&quot;    &quot;NMFarray&quot;  &quot;NMFOffset&quot; &quot;NMFns&quot;
+<pre><code>## [1] &quot;NMFstd&quot;    &quot;NMFOffset&quot; &quot;NMFns&quot;
 </code></pre>
 
   </div>

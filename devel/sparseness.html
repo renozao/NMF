@@ -69,10 +69,9 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>Generic function that computes the <em>sparseness</em> of
-  an object, as defined by <cite>Hoyer (2004)</cite>. The
-  sparseness quantifies how much energy of a vector is
-  packed into only few components.</p></p>
+      <p><p>Generic function that computes the <em>sparseness</em> of an object, as defined
+by <cite>Hoyer (2004)</cite>.
+The sparseness quantifies how much energy of a vector is packed into only few components.</p></p>
   
     </div>
     
@@ -98,22 +97,20 @@ See each method for more details.</p>
     <div class="Details">
       <h2>Details</h2>
       
-      <p>In <cite>Hoyer (2004)</cite>, the sparseness is defined for a
-  real vector <code class = 'eq'>x</code> as: <pre class = 'eq'> (srqt(n) - ||x||_1 / ||x||_2) /
-  (sqrt(n) - 1)</code></p>
+      <p>In <cite>Hoyer (2004)</cite>, the sparseness is defined for a real vector <code class = 'eq'>x</code> as:
+<pre class = 'eq'>
+(srqt(n) - ||x||_1 / ||x||_2) / (sqrt(n) - 1)</code></p>
   
       <p>, where <code class = 'eq'>n</code> is the length of <code class = 'eq'>x</code>.</p>
   
-      <p>The sparseness is a real number in <code class = 'eq'>[0,1]</code>. It is
-  equal to 1 if and only if <code>x</code> contains a single
-  nonzero component, and is equal to 0 if and only if all
-  components of <code>x</code> are equal. It interpolates
-  smoothly between these two extreme values. The closer to
-  1 is the sparseness the sparser is the vector.</p>
+      <p>The sparseness is a real number in <code class = 'eq'>[0,1]</code>.
+It is equal to 1 if and only if <code>x</code> contains a single nonzero component,
+and is equal to 0 if and only if all components of <code>x</code> are equal.
+It interpolates smoothly between these two extreme values.
+The closer to 1 is the sparseness the sparser is the vector.</p>
   
-      <p>The basic definition is for a <code>numeric</code> vector, and
-  is extended for matrices as the mean sparseness of its
-  column vectors.</p>
+      <p>The basic definition is for a <code>numeric</code> vector, and is extended for matrices as the
+mean sparseness of its column vectors.</p>
   
     </div>
 
@@ -146,10 +143,8 @@ the basis and coefficient matrices computed separately.</p>
     <div class="References">
       <h2>References</h2>
       
-      <p>Hoyer P (2004). "Non-negative matrix factorization with
-  sparseness constraints." _The Journal of Machine Learning
-  Research_, *5*, pp. 1457-1469. <URL:
-  http://portal.acm.org/citation.cfm?id=1044709>.</p>
+      <p>Hoyer P (2004). "Non-negative matrix factorization with sparseness constraints." _The Journal of Machine Learning Research_,
+*5*, pp. 1457-1469. <URL: http://portal.acm.org/citation.cfm?id=1044709>.</p>
   
     </div>
       </div>

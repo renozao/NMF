@@ -69,29 +69,26 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>This class provides a specific implementation for the
-  generic function <code>run</code> -- concretising the virtual
-  interface class <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code>, for NMF
-  algorithms that conform to the following iterative schema
-  (starred numbers indicate mandatory steps):</p>
+      <p><p>This class provides a specific implementation for the generic function <code>run</code>
+-- concretising the virtual interface class <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code>,
+for NMF algorithms that conform to the following iterative schema (starred numbers
+indicate mandatory steps):</p>
 <p><ul>
-<li> 1. Initialisation </li>
-<li> 2*. Update the
-  model at each iteration </li>
-<li> 3. Stop if some criterion
-  is satisfied </li>
-<li> 4. Wrap up </li>
+<li> 1. Initialisation
+</li>
+<li> 2*. Update the model at each iteration
+</li>
+<li> 3. Stop if some criterion is satisfied
+</li>
+<li> 4. Wrap up
+</li>
 </ul></p>
-<p>This schema could possibly apply to all NMF algorithms,
-  since these are essentially optimisation algorithms,
-  almost all of which use iterative methods to approximate
-  a solution of the optimisation problem. The main
-  advantage is that it allows to implement updates and
-  stopping criterion separately, and combine them in
-  different ways. In particular, many NMF algorithms are
-  based on multiplicative updates, following the approach
-  from <cite>Lee et al. (2001)</cite>, which are specially
-  suitable to be cast into this simple schema.</p></p>
+<p>This schema could possibly apply to all NMF algorithms, since these are essentially optimisation algorithms,
+almost all of which use iterative methods to approximate a solution of the optimisation problem.
+The main advantage is that it allows to implement updates and stopping criterion separately, and combine them
+in different ways.
+In particular, many NMF algorithms are based on multiplicative updates, following the approach from
+<cite>Lee et al. (2001)</cite>, which are specially suitable to be cast into this simple schema.</p></p>
   
     </div>
     
@@ -145,10 +142,8 @@ It is called just before returning the</p>
     <div class="References">
       <h2>References</h2>
       
-      <p>Lee DD and Seung H (2001). "Algorithms for non-negative
-  matrix factorization." _Advances in neural information
-  processing systems_. <URL:
-  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
+      <p>Lee DD and Seung H (2001). "Algorithms for non-negative matrix factorization." _Advances in neural information processing
+systems_. <URL: http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
   
     </div>
       </div>

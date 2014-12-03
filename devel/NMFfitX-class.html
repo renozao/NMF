@@ -69,9 +69,8 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>This class defines a common interface to handle the
-  results from multiple runs of a single NMF algorithm,
-  performed with the <code><a href='nmf.html'>nmf</a></code> method.</p></p>
+      <p><p>This class defines a common interface to handle the results from multiple
+runs of a single NMF algorithm, performed with the <code><a href='nmf.html'>nmf</a></code> method.</p></p>
   
     </div>
     
@@ -81,13 +80,11 @@
       <h2>Details</h2>
       
       <p>Currently, this interface is implemented by two classes,
-  <code><a href='NMFfitX1-class.html'>NMFfitX1-class</a></code> and
-  <code><a href='NMFfitXn-class.html'>NMFfitXn-class</a></code>, which respectively handle
-  the case where only the best fit is kept, and the case
-  where the list of all the fits is returned.</p>
+<code><a href='NMFfitX1-class.html'>NMFfitX1-class</a></code> and <code><a href='NMFfitXn-class.html'>NMFfitXn-class</a></code>, which
+respectively handle the case where only the best fit is kept, and the case
+where the list of all the fits is returned.</p>
   
-      <p>See <code><a href='nmf.html'>nmf</a></code> for more details on the method
-  arguments.</p>
+      <p>See <code><a href='nmf.html'>nmf</a></code> for more details on the method arguments.</p>
   
     </div>
 
@@ -251,10 +248,10 @@ res &lt;- nmf(V, 3, nrun=3)
 ##   Method: brunet 
 ##   Runs:  3 
 ##   RNG:
-##    407L, 1955220281L, -1547099738L, -2140446737L, -1446382236L, 764646677L, -1831505198L 
+##    407L, 1295808998L, 1703168815L, 1307613092L, 956351061L, 1909387026L, -1813292181L 
 ##   Total timing:
 ##    user  system elapsed 
-##   1.981   0.199   2.486
+##   1.700   0.158   2.152
 </code></pre>
 
 <pre><code class="r"># plot a heatmap of the consensus matrix
@@ -275,13 +272,13 @@ res &lt;- nmf(V, 3, nrun=3, .options=&#39;k&#39;)
 ##   Method: brunet 
 ##   Runs:  3 
 ##   RNG:
-##    407L, -410941499L, 2120464834L, 825947L, 1212758496L, -730613663L, -1184329042L 
+##    407L, -1855137047L, -701357674L, 862946079L, 1561563860L, 435509189L, -1766766142L 
 ##   Total timing:
 ##    user  system elapsed 
-##   2.882   0.275   2.037 
+##   2.517   0.260   1.919 
 ##   Sequential timing:
 ##    user  system elapsed 
-##   0.359   0.000   0.360
+##   0.431   0.004   0.436
 </code></pre>
 
   </div>

@@ -69,10 +69,9 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>The function <code>nmf.equal</code> tests if two NMF models are
-  the same, i.e. they contain -- almost -- identical data:
-  same basis and coefficient matrices, as well as same
-  extra parameters.</p></p>
+      <p><p>The function <code>nmf.equal</code> tests if two NMF models are the same, i.e. they
+contain -- almost -- identical data: same basis and coefficient matrices, as
+well as same extra parameters.</p></p>
   
     </div>
     
@@ -111,19 +110,15 @@ if one wants to return the result of each comparison in a vector.</dd>
     <div class="Details">
       <h2>Details</h2>
       
-      <p><code>nmf.equal</code> compares two NMF models, and return
-  <code>TRUE</code> iff they are identical acording to the
-  function <code><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></code> when
-  <code>identical=TRUE</code>, or equal up to some tolerance
-  acording to the function <code><a href='http://www.inside-r.org/r-doc/base/all.equal'>all.equal</a></code>. This
-  means that all data contained in the objects are
-  compared, which includes at least the basis and
-  coefficient matrices, as well as the extra parameters
-  stored in slot &#145;misc&#146;.</p>
+      <p><code>nmf.equal</code> compares two NMF models, and return <code>TRUE</code> iff they are
+identical acording to the function <code><a href='http://www.inside-r.org/r-doc/base/identical'>identical</a></code> when <code>identical=TRUE</code>,
+or equal up to some tolerance acording to the function <code><a href='http://www.inside-r.org/r-doc/base/all.equal'>all.equal</a></code>.
+This means that all data contained in the objects are compared, which includes
+at least the basis and coefficient matrices, as well as the extra parameters
+stored in slot &#145;misc&#146;.</p>
   
-      <p>If extra arguments are specified in <code>...</code>, then the
-  comparison is performed using <code><a href='http://www.inside-r.org/r-doc/base/all.equal'>all.equal</a></code>,
-  irrespective of the value of argument <code>identical</code>.</p>
+      <p>If extra arguments are specified in <code>...</code>, then the comparison is performed
+using <code><a href='http://www.inside-r.org/r-doc/base/all.equal'>all.equal</a></code>, irrespective of the value of argument <code>identical</code>.</p>
   
     </div>
 

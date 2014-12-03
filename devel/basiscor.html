@@ -69,12 +69,11 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p><code>basiscor</code> computes the correlation matrix between
-  basis vectors, i.e. the <em>columns</em> of its basis
-  matrix -- which is the model's first matrix factor.</p>
-<p><code>profcor</code> computes the correlation matrix between
-  basis profiles, i.e. the <em>rows</em> of the coefficient
-  matrix -- which is the model's second matrix factor.</p></p>
+      <p><p><code>basiscor</code> computes the correlation matrix between basis vectors, i.e.
+the <em>columns</em> of its basis matrix -- which is the model's first matrix factor.</p>
+<p><code>profcor</code> computes the correlation matrix between basis profiles,
+i.e. the <em>rows</em> of the coefficient matrix -- which is the model's second
+matrix factor.</p></p>
   
     </div>
     
@@ -99,10 +98,9 @@ If missing the correlations are computed between <code>x</code> and <code>y=x</c
     <div class="Details">
       <h2>Details</h2>
       
-      <p>Each generic has methods defined for computing
-  correlations between NMF models and/or compatible
-  matrices. The computation is performed by the base
-  function <code><a href='http://www.inside-r.org/r-doc/stats/cor'>cor</a></code>.</p>
+      <p>Each generic has methods defined for computing correlations between NMF models
+and/or compatible matrices.
+The computation is performed by the base function <code><a href='http://www.inside-r.org/r-doc/stats/cor'>cor</a></code>.</p>
   
     </div>
 
@@ -155,38 +153,38 @@ b &lt;- rnmf(3, 100, 20)
 basiscor(a)
 </code></pre>
 
-<pre><code>##          [,1]     [,2]    [,3]
-## [1,] 1.000000 0.008916 0.02871
-## [2,] 0.008916 1.000000 0.06549
-## [3,] 0.028707 0.065488 1.00000
+<pre><code>##            [,1]        [,2]        [,3]
+## [1,] 1.00000000  0.01044776  0.03079927
+## [2,] 0.01044776  1.00000000 -0.04340251
+## [3,] 0.03079927 -0.04340251  1.00000000
 </code></pre>
 
 <pre><code class="r">profcor(a)
 </code></pre>
 
-<pre><code>##        [,1]   [,2]   [,3]
-## [1,] 1.0000 0.1837 0.1166
-## [2,] 0.1837 1.0000 0.1679
-## [3,] 0.1166 0.1679 1.0000
+<pre><code>##            [,1]        [,2]        [,3]
+## [1,]  1.0000000 -0.30733885  0.25081717
+## [2,] -0.3073389  1.00000000 -0.07369722
+## [3,]  0.2508172 -0.07369722  1.00000000
 </code></pre>
 
 <pre><code class="r"># Compute correlations with b
 basiscor(a, b)
 </code></pre>
 
-<pre><code>##          [,1]    [,2]    [,3]
-## [1,] -0.14060 0.16473 0.01796
-## [2,]  0.06827 0.02217 0.17472
-## [3,]  0.11693 0.02711 0.08066
+<pre><code>##             [,1]        [,2]        [,3]
+## [1,]  0.08673118 -0.02441214 -0.02539042
+## [2,] -0.14071935 -0.03032942 -0.21364064
+## [3,]  0.04562310 -0.06697652 -0.10307478
 </code></pre>
 
 <pre><code class="r">profcor(a, b)
 </code></pre>
 
-<pre><code>##           [,1]    [,2]     [,3]
-## [1,] -0.464198  0.2895  0.02205
-## [2,]  0.045081  0.1672  0.17565
-## [3,]  0.001342 -0.2884 -0.03817
+<pre><code>##             [,1]        [,2]        [,3]
+## [1,] -0.32758165 -0.24998105 -0.25849446
+## [2,]  0.23411590 -0.05892927  0.07139982
+## [3,] -0.03497159  0.21961911 -0.18525249
 </code></pre>
 
 <pre><code class="r"># try to recover the underlying NMF model &#39;a&#39; from noisy data
@@ -196,19 +194,19 @@ res &lt;- nmf(fitted(a) + rmatrix(a), 3)
 basiscor(a, res)
 </code></pre>
 
-<pre><code>##         [,1]     [,2]   [,3]
-## [1,]  0.9069  0.05245 0.1134
-## [2,] -0.1922 -0.07665 0.9180
-## [3,]  0.1198  0.93109 0.1624
+<pre><code>##             [,1]        [,2]       [,3]
+## [1,] -0.09147293  0.81973569  0.3013364
+## [2,]  0.93145052  0.07884044 -0.2567599
+## [3,]  0.04880190 -0.21648499  0.8649757
 </code></pre>
 
 <pre><code class="r">profcor(a, res)
 </code></pre>
 
-<pre><code>##          [,1]     [,2]   [,3]
-## [1,]  0.95384 -0.09468 0.3227
-## [2,]  0.02291  0.08693 0.9603
-## [3,] -0.11511  0.96372 0.2491
+<pre><code>##            [,1]       [,2]       [,3]
+## [1,] -0.2812397  0.8417395  0.3992358
+## [2,]  0.9531181 -0.1747055 -0.2967662
+## [3,]  0.2070102 -0.2439429  0.9629952
 </code></pre>
 
 <pre><code class="r"># Compute correlations with a random compatible matrix
@@ -216,10 +214,10 @@ W &lt;- rmatrix(basis(a))
 basiscor(a, W)
 </code></pre>
 
-<pre><code>##          [,1]     [,2]       [,3]
-## [1,] -0.15509  0.02437 -0.0002242
-## [2,]  0.07726  0.02785 -0.0321913
-## [3,] -0.05843 -0.02621 -0.0349820
+<pre><code>##             [,1]         [,2]         [,3]
+## [1,] 0.020234013 -0.016398979 -0.004877532
+## [2,] 0.112319835  0.131665514 -0.163358549
+## [3,] 0.005580104 -0.007458963 -0.095135265
 </code></pre>
 
 <pre><code class="r">identical(basiscor(a, W), basiscor(W, a))
@@ -232,10 +230,10 @@ basiscor(a, W)
 profcor(a, H)
 </code></pre>
 
-<pre><code>##          [,1]     [,2]     [,3]
-## [1,] -0.07040 -0.06834 0.306598
-## [2,] -0.01400  0.12091 0.161607
-## [3,] -0.04708 -0.13841 0.001737
+<pre><code>##            [,1]         [,2]       [,3]
+## [1,] -0.3852647  0.008417837 -0.3661387
+## [2,]  0.2263946 -0.007160106  0.1819250
+## [3,] -0.1912703 -0.030863439  0.1581374
 </code></pre>
 
 <pre><code class="r">identical(profcor(a, H), profcor(H, a))

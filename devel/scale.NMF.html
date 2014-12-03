@@ -69,8 +69,7 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>Rescales an NMF model keeping the fitted target matrix
-  identical.</p></p>
+      <p><p>Rescales an NMF model keeping the fitted target matrix identical.</p></p>
   
     </div>
     
@@ -104,18 +103,15 @@ or, if <code>center='coef'</code>, the value of <code class = 'eq'>1/alpha</code
     <div class="Details">
       <h2>Details</h2>
       
-      <p>Standard NMF models are identifiable modulo a scaling
-  factor, meaning that the basis components and basis
-  profiles can be rescaled without changing the fitted
-  values:</p>
+      <p>Standard NMF models are identifiable modulo a scaling factor, meaning that the
+basis components and basis profiles can be rescaled without changing the fitted
+values:</p>
   
-      <p><pre class = 'eq'>X = W
-  H = (W D) (D^-1 H)</code> with <code class = 'eq'>D= alpha * diag(1/delta_1, ...,
-  1/delta_r)</code></p>
+      <p><pre class = 'eq'>X = W H = (W D) (D^-1 H)</code>
+with <code class = 'eq'>D= alpha * diag(1/delta_1, ..., 1/delta_r)</code></p>
   
-      <p>The default call <code>scale(object)</code> rescales the basis
-  NMF object so that each column of the basis matrix sums
-  up to one.</p>
+      <p>The default call <code>scale(object)</code> rescales the basis NMF object so that each
+column of the basis matrix sums up to one.</p>
   
     </div>
     
@@ -129,7 +125,7 @@ x &lt;- rnmf(3, 10, 5)
 colSums(basis(x))
 </code></pre>
 
-<pre><code>## [1] 4.822 4.774 5.044
+<pre><code>## [1] 4.821564 4.774258 5.044443
 </code></pre>
 
 <pre><code class="r">colSums(basis(scale(x)))
@@ -148,14 +144,14 @@ colSums(basis(rx))
 <pre><code class="r">rowSums(coef(rx))
 </code></pre>
 
-<pre><code>## [1] 0.7124 1.1672 1.6006
+<pre><code>## [1] 0.712381 1.167180 1.600620
 </code></pre>
 
 <pre><code class="r"># rescale based on coef
 rowSums(coef(x))
 </code></pre>
 
-<pre><code>## [1] 1.477 2.445 3.173
+<pre><code>## [1] 1.477490 2.444735 3.173035
 </code></pre>
 
 <pre><code class="r">rowSums(coef(scale(x, &#39;coef&#39;)))
@@ -174,7 +170,7 @@ rowSums(coef(rx))
 <pre><code class="r">colSums(basis(rx))
 </code></pre>
 
-<pre><code>## [1] 0.7124 1.1672 1.6006
+<pre><code>## [1] 0.712381 1.167180 1.600620
 </code></pre>
 
 <pre><code class="r"># fitted target matrix is identical but the factors have been rescaled
@@ -188,7 +184,7 @@ all.equal(fitted(x), fitted(rx))
 <pre><code class="r">all.equal(basis(x), basis(rx))
 </code></pre>
 
-<pre><code>## [1] &quot;Mean relative difference: 0.7951&quot;
+<pre><code>## [1] &quot;Mean relative difference: 0.7950857&quot;
 </code></pre>
 
   </div>

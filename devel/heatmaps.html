@@ -69,12 +69,11 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>The NMF package ships an advanced heatmap engine
-  implemented by the function <code><a href='aheatmap.html'>aheatmap</a></code>. Some
-  convenience heatmap functions have been implemented for
-  NMF models, which redefine default values for some of the
-  arguments of <code><a href='aheatmap.html'>aheatmap</a></code>, hence tuning the
-  output specifically for NMF models.</p></p>
+      <p><p>The NMF package ships an advanced heatmap engine implemented by the function
+<code><a href='aheatmap.html'>aheatmap</a></code>.
+Some convenience heatmap functions have been implemented for NMF models,
+which redefine default values for some of the arguments of <code><a href='aheatmap.html'>aheatmap</a></code>,
+hence tuning the output specifically for NMF models.</p></p>
   
     </div>
     
@@ -274,87 +273,83 @@ Possible values are:
     <div class="Details">
       <h2>Details</h2>
       
-      <p><strong>IMPORTANT:</strong> although they essentially have the
-  same set of arguments, their order sometimes differ
-  between them, as well as from <code><a href='aheatmap.html'>aheatmap</a></code>. We
-  therefore strongly recommend to use fully named arguments
-  when calling these functions.</p>
+      <p><strong>IMPORTANT:</strong> although they essentially have the same set of arguments,
+their order sometimes differ between them, as well as from <code><a href='aheatmap.html'>aheatmap</a></code>.
+We therefore strongly recommend to use fully named arguments when calling these functions.</p>
   
-      <p><code>basimap</code> default values for the following arguments
-  of <code><a href='aheatmap.html'>aheatmap</a></code>: <ul>
-<li> the color
-  palette; </li>
-<li> the scaling specification, which by
-  default scales each row separately so that they sum up to
-  one (<code>scale='r1'</code>); </li>
-<li> the column ordering which
-  is disabled; </li>
-<li> allowing for passing feature
-  extraction methods in argument <code>subsetRow</code>, that are
-  passed to <code><a href='scores.html'>extractFeatures</a></code>. See argument
-  description here and therein. </li>
-<li> the addition of a
-  default named annotation track, that shows the dominant
-  basis component for each row (i.e. each feature).</p>
+      <p><code>basimap</code> default values for the following arguments of <code><a href='aheatmap.html'>aheatmap</a></code>:
+<ul>
+<li> the color palette;
+</li>
+<li> the scaling specification, which by default scales each
+row separately so that they sum up to one (<code>scale='r1'</code>);
+</li>
+<li> the column ordering which is disabled;
+</li>
+<li> allowing for passing feature extraction methods in argument
+<code>subsetRow</code>, that are passed to <code><a href='scores.html'>extractFeatures</a></code>.
+See argument description here and therein.
+</li>
+<li> the addition of a default named annotation track, that shows
+the dominant basis component for each row (i.e. each feature).</p>
   
-      <p>This track is specified in argument <code>tracks</code> (see
-  its argument description). By default, a matching column
-  annotation track is also displayed, but may be disabled
-  using <code>tracks=':basis'</code>.</p>
+      <p>This track is specified in argument <code>tracks</code> (see its argument description).
+By default, a matching column annotation track is also displayed, but may be
+disabled using <code>tracks=':basis'</code>.</p>
   
       <p></li>
-<li> a suitable title and extra information like the
-  fitting algorithm, when <code>object</code> is a fitted NMF
-  model. </li>
+<li> a suitable title and extra information like the fitting algorithm,
+when <code>object</code> is a fitted NMF model.
+</li>
 </ul></p>
   
-      <p><code>coefmap</code> redefines default values for the following
-  arguments of <code><a href='aheatmap.html'>aheatmap</a></code>: <ul>
-<li> the
-  color palette; </li>
-<li> the scaling specification, which by
-  default scales each column separately so that they sum up
-  to one (<code>scale='c1'</code>); </li>
-<li> the row ordering which
-  is disabled; </li>
-<li> the addition of a default annotation
-  track, that shows the most contributing basis component
-  for each column (i.e. each sample).</p>
+      <p><code>coefmap</code> redefines default values for the following arguments of
+<code><a href='aheatmap.html'>aheatmap</a></code>:
+<ul>
+<li> the color palette;
+</li>
+<li> the scaling specification, which by default scales each
+column separately so that they sum up to one (<code>scale='c1'</code>);
+</li>
+<li> the row ordering which is disabled;
+</li>
+<li> the addition of a default annotation track, that shows the most
+contributing basis component for each column (i.e. each sample).</p>
   
-      <p>This track is specified in argument <code>tracks</code> (see
-  its argument description). By default, a matching row
-  annotation track is also displayed, but can be disabled
-  using <code>tracks='basis:'</code>. </li>
-<li> a suitable title and
-  extra information like the fitting algorithm, when
-  <code>object</code> is a fitted NMF model. </li>
+      <p>This track is specified in argument <code>tracks</code> (see its argument description).
+By default, a matching row annotation track is also displayed, but can be disabled
+using <code>tracks='basis:'</code>.
+</li>
+<li> a suitable title and extra information like the fitting algorithm,
+when <code>object</code> is a fitted NMF model.
+</li>
 </ul></p>
   
-      <p><code>consensusmap</code> redefines default values for the
-  following arguments of <code><a href='aheatmap.html'>aheatmap</a></code>: <ul>
-<li> the colour palette; </li>
-<li> the column ordering which
-  is set equal to the row ordering, since a consensus
-  matrix is symmetric; </li>
-<li> the distance and linkage
-  methods used to order the rows (and columns). The default
-  is to use 1 minus the consensus matrix itself as
-  distance, and average linkage. </li>
-<li> the addition of two
-  special named annotation tracks, <code>'basis:'</code> and
-  <code>'consensus:'</code>, that show, for each column (i.e.
-  each sample), the dominant basis component in the best
-  fit and the hierarchical clustering of the consensus
-  matrix respectively (using 1-consensus as distance and
-  average linkage).</p>
+      <p><code>consensusmap</code> redefines default values for the following arguments of
+<code><a href='aheatmap.html'>aheatmap</a></code>:
+<ul>
+<li> the colour palette;
+</li>
+<li> the column ordering which is set equal to the row ordering, since
+a consensus matrix is symmetric;
+</li>
+<li> the distance and linkage methods used to order the rows (and columns).
+The default is to use 1 minus the consensus matrix itself as distance, and
+average linkage.
+</li>
+<li> the addition of two special named annotation tracks, <code>'basis:'</code> and
+<code>'consensus:'</code>, that show, for each column (i.e. each sample),
+the dominant basis component in the best fit and the hierarchical clustering
+of the consensus matrix respectively (using 1-consensus as distance and average
+linkage).</p>
   
-      <p>These tracks are specified in argument <code>tracks</code>,
-  which behaves as in <code><a href='heatmaps.html'>basismap</a></code>.</p>
+      <p>These tracks are specified in argument <code>tracks</code>, which behaves as in
+<code><a href='heatmaps.html'>basismap</a></code>.</p>
   
       <p></li>
-<li> a suitable title and extra information like the
-  type of NMF model or the fitting algorithm, when
-  <code>object</code> is a fitted NMF model. </li>
+<li> a suitable title and extra information like the type of NMF model or the
+fitting algorithm, when <code>object</code> is a fitted NMF model.
+</li>
 </ul></p>
   
       <p></p>

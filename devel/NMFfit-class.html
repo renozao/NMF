@@ -69,14 +69,12 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>Base class to handle the results of general
-  <strong>Nonnegative Matrix Factorisation</strong> algorithms
-  (NMF).</p>
-<p>The function <code>NMFfit</code> is a factory method for NMFfit
-  objects, that should not need to be called by the user.
-  It is used internally by the functions <code><a href='nmf.html'>nmf</a></code>
-  and <code>seed</code> to instantiate the starting point of NMF
-  algorithms.</p></p>
+      <p><p>Base class to handle the results of general <strong>Nonnegative Matrix
+Factorisation</strong> algorithms (NMF).</p>
+<p>The function <code>NMFfit</code> is a factory method for NMFfit objects, that should
+not need to be called by the user.
+It is used internally by the functions <code><a href='nmf.html'>nmf</a></code> and <code>seed</code> to
+instantiate the starting point of NMF algorithms.</p></p>
   
     </div>
     
@@ -98,29 +96,25 @@
     <div class="Details">
       <h2>Details</h2>
       
-      <p>It provides a general structure and generic functions to
-  manage the results of NMF algorithms.  It contains a slot
-  with the fitted NMF model (see slot <code>fit</code>) as well
-  as data about the methods and parameters used to compute
-  the factorization.</p>
+      <p>It provides a general structure and generic functions to manage the results
+of NMF algorithms.  It contains a slot with the fitted NMF model (see slot
+<code>fit</code>) as well as data about the methods and parameters used to compute
+the factorization.</p>
   
-      <p>The purpose of this class is to handle in a generic way
-  the results of NMF algorithms. Its slot <code>fit</code>
-  contains the fitted NMF model as an object of class
-  <code><a href='NMF-class.html'>NMF-class</a></code>.</p>
+      <p>The purpose of this class is to handle in a generic way the results of NMF
+algorithms. Its slot <code>fit</code> contains the fitted NMF model as an object
+of class <code><a href='NMF-class.html'>NMF-class</a></code>.</p>
   
-      <p>Other slots contains data about how the factorization has
-  been computed, such as the algorithm and seeding method,
-  the computation time, the final residuals, etc...</p>
+      <p>Other slots contains data about how the factorization has been computed,
+such as the algorithm and seeding method, the computation time, the final
+residuals, etc...</p>
   
-      <p>Class <code>NMFfit</code> acts as a wrapper class for its slot
-  <code>fit</code>.  It inherits from interface class
-  <code><a href='NMF-class.html'>NMF-class</a></code> defined for generic NMF models.
-  Therefore, all the methods defined by this interface can
-  be called directly on objects of class <code>NMFfit</code>. The
-  calls are simply dispatched on slot <code>fit</code>, i.e.  the
-  results are the same as if calling the methods directly
-  on slot <code>fit</code>.</p>
+      <p>Class <code>NMFfit</code> acts as a wrapper class for its slot <code>fit</code>.  It
+inherits from interface class <code><a href='NMF-class.html'>NMF-class</a></code> defined for generic
+NMF models.  Therefore, all the methods defined by this interface can be
+called directly on objects of class <code>NMFfit</code>. The calls are simply
+dispatched on slot <code>fit</code>, i.e.  the results are the same as if calling
+the methods directly on slot <code>fit</code>.</p>
   
     </div>
 
@@ -404,13 +398,13 @@ res
 ##  # Details:
 ##   algorithm:  brunet 
 ##   seed:  random 
-##   RNG: 403L, 269L, ..., 1574159912L [44c8913592fc48846a505995fae32c01]
+##   RNG: 403L, 254L, ..., -1600999339L [103239bb0396db60503b902db74b870c]
 ##   distance metric:  &#39;KL&#39; 
-##   residuals:  74.35 
-##   Iterations: 720 
+##   residuals:  71.44099 
+##   Iterations: 810 
 ##   Timing:
 ##      user  system elapsed 
-##     0.166   0.000   0.167
+##     0.183   0.000   0.184
 </code></pre>
 
 <pre><code class="r"># compute summary measures

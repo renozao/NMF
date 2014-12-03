@@ -69,14 +69,12 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>The functions <code>fit</code> and <code>minfit</code> are S4
-  genetics that extract the best model object and the best
-  fit object respectively, from a collection of models or
-  from a wrapper object.</p>
-<p><code>fit<-</code> sets the fitted model in a fit object. It is
-  meant to be called only when developing new NMF
-  algorithms, e.g. to update the value of the model stored
-  in the starting point.</p></p>
+      <p><p>The functions <code>fit</code> and <code>minfit</code> are S4 genetics that extract
+the best model object and the best fit object respectively, from a collection
+of models or from a wrapper object.</p>
+<p><code>fit<-</code> sets the fitted model in a fit object.
+It is meant to be called only when developing new NMF algorithms, e.g. to update
+the value of the model stored in the starting point.</p></p>
   
     </div>
     
@@ -101,20 +99,17 @@ function <code><a href='nmf.html'>nmf</a></code>.</dd>
     <div class="Details">
       <h2>Details</h2>
       
-      <p>A fit object differs from a model object in that it
-  contains data about the fit, such as the initial RNG
-  settings, the CPU time used, etc..., while a model
-  object only contains the actual modelling data such as
-  regression coefficients, loadings, etc...</p>
+      <p>A fit object differs from a model object in that it contains data about the
+fit, such as the initial RNG settings, the CPU time used, etc..., while
+a model object only contains the actual modelling data such as regression
+coefficients, loadings, etc...</p>
   
-      <p>That best model is generally defined as the one that
-  achieves the maximum/minimum some quantitative measure,
-  amongst all models in a collection.</p>
+      <p>That best model is generally defined as the one that achieves the
+maximum/minimum some quantitative measure, amongst all models in a collection.</p>
   
-      <p>In the case of NMF models, the best model is the one that
-  achieves the best approximation error, according to the
-  objective function associated with the algorithm that
-  performed the fit(s).</p>
+      <p>In the case of NMF models, the best model is the one that achieves the best
+approximation error, according to the objective function associated with the
+algorithm that performed the fit(s).</p>
   
     </div>
 

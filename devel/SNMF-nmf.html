@@ -69,10 +69,9 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>NMF algorithms proposed by <cite>Kim et al. (2007)</cite> that
-  enforces sparsity constraint on the basis matrix
-  (algorithm &#145;SNMF/L&#146;) or the mixture coefficient
-  matrix (algorithm &#145;SNMF/R&#146;).</p></p>
+      <p><p>NMF algorithms proposed by <cite>Kim et al. (2007)</cite> that enforces sparsity
+constraint on the basis matrix (algorithm &#145;SNMF/L&#146;) or the
+mixture coefficient matrix (algorithm &#145;SNMF/R&#146;).</p></p>
   
     </div>
     
@@ -123,30 +122,26 @@ Convergence checks are performed every 5 iterations.</dd>
     <div class="Details">
       <h2>Details</h2>
       
-      <p>The algorithm &#145;SNMF/R&#146; solves the following NMF
-  optimization problem on a given target matrix <code class = 'eq'>A</code> of
-  dimension <code class = 'eq'>n x p</code>: <pre class = 'eq'> min_{W,H} 1/2 (|| A - WH ||_F^2 + eta
-  ||W||_F^2 + beta (sum_j ||H[,j]||_1^2))</p>
+      <p>The algorithm &#145;SNMF/R&#146; solves the following NMF optimization problem on
+a given target matrix <code class = 'eq'>A</code> of dimension <code class = 'eq'>n x p</code>:
+<pre class = 'eq'>
+min_{W,H} 1/2 (|| A - WH ||_F^2 + eta ||W||_F^2
+	               + beta (sum_j ||H[,j]||_1^2))</p>
   
-      <p>s.t. W>=0, H>=0 </code></p>
+      <p>s.t. W>=0, H>=0
+</code></p>
   
-      <p>The algorithm &#145;SNMF/L&#146; solves a similar problem on
-  the transposed target matrix <code class = 'eq'>A</code>, where <code class = 'eq'>H</code> and
-  <code class = 'eq'>W</code> swap roles, i.e. with sparsity constraints
-  applied to <code>W</code>.</p>
+      <p>The algorithm &#145;SNMF/L&#146; solves a similar problem on the transposed target matrix <code class = 'eq'>A</code>,
+where <code class = 'eq'>H</code> and <code class = 'eq'>W</code> swap roles, i.e. with sparsity constraints applied to <code>W</code>.</p>
   
     </div>
 
     <div class="References">
       <h2>References</h2>
       
-      <p>Kim H and Park H (2007). "Sparse non-negative matrix
-  factorizations via alternating non-negativity-constrained
-  least squares for microarray data analysis."
-  _Bioinformatics (Oxford, England)_, *23*(12), pp.
-  1495-502. ISSN 1460-2059, <URL:
-  http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
+      <p>Kim H and Park H (2007). "Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares
+for microarray data analysis." _Bioinformatics (Oxford, England)_, *23*(12), pp. 1495-502. ISSN 1460-2059, <URL:
+http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
   
     </div>
       </div>
