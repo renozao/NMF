@@ -2317,11 +2317,18 @@ aheatmap = function(x
 	on.exit( lverbose(ol) )
 	
 	# convert ExpressionSet into 
+    vLEVELs <- NULL
 	if( is(x, 'ExpressionSet') ){
 		library(Biobase)
 		if( isTRUE(annCol) ) annCol <- atrack(x)
 		x <- Biobase::exprs(x)
-	}
+        
+	}else if( is.character(x) ){ # switch to integer matrix
+        fx <- factor(x)
+        x <- matrix(as.integer(fx), nrow(x))
+        vLEVELs <- levels(fx)
+        rm(fx)
+    } 
 
 	# rename to old parameter name
 	mat <- x
@@ -2531,9 +2538,14 @@ aheatmap = function(x
         else{
             colour_scale <- sort(unique(as.vector(mat)))
             if( isTRUE(legend) ){
-                legend <- setNames(unname(colour_scale), names(color))                
-            }
-            if( is.character(legend) ) legend <- setNames(unname(colour_scale), legend[seq_along(colour_scale)])
+                legend <- setNames(unname(colour_scale), names(color)[seq_along(colour_scale)])
+                
+            }else if( is.character(legend) ) 
+                legend <- setNames(unname(colour_scale), legend[seq_along(colour_scale)])
+            # use levels for legend if necessary
+            if( !is.null(vLEVELs) && is.null(names(legend)) )
+                names(legend) <- vLEVELs 
+                        
             colour_scale <- ccRamp(color, n = length(colour_scale), breaks = c(colour_scale-0.5, max(colour_scale) + .5), data = as.vector(mat))             
         }
     }else{
