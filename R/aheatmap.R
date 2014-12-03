@@ -339,9 +339,11 @@ draw_legend = function(color, breaks, legend, gp = gpar(), opts = NULL, dims.onl
     thickness <- unit(10, 'bigpts')
     space <- unit(2, 'bigpts')
     
+    legend_txt <- as.character(names(legend) %||% legend)
+    
     if( dims.only ){
-    	longest_break = which.max(nchar(as.character(legend)))
-    	longest_break = unit(1.1, "grobwidth", textGrob(as.character(legend)[longest_break], gp = gp))
+    	longest_break = which.max(nchar(legend_txt))
+    	longest_break = unit(1.1, "grobwidth", textGrob(legend_txt[longest_break], gp = gp))
     	# minimum fixed width: plan for 2 decimals and a sign 
     	min_lw = unit(1.1, "grobwidth", textGrob("-00.00", gp = gp))
     	longest_break = min(longest_break, min_lw)
@@ -371,7 +373,6 @@ draw_legend = function(color, breaks, legend, gp = gpar(), opts = NULL, dims.onl
     breaks = (breaks - min(breaks)) / (max(breaks) - min(breaks))
     h <- diff(breaks)
     
-    legend_txt <- names(legend) %||% legend
     txt_shift <- thickness + space + padding
     
     flip_coord <- function(x, flip, max = unit(1, 'npc')){
