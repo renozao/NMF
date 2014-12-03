@@ -1939,6 +1939,7 @@ subset_index <- function(x, margin, subset){
 #' 
 #' @param border_color color of cell borders on heatmap, use NA if no border should be 
 #' drawn.
+#' This argument allows for a finer control of borders (see dedicated demos and vignettes).
 #' 
 #' @param cellwidth individual cell width in points. If left as NA, then the values 
 #' depend on the size of plotting window.
@@ -2281,6 +2282,16 @@ subset_index <- function(x, margin, subset){
 #' t.na <- t
 #' t.na[sample(length(t.na), 500)] <- NA # half of the cells
 #' aheatmap(x, txt = t.na)
+#' 
+#' # Borders
+#' # all
+#' aheatmap(x, annCol = annotation, border = TRUE)
+#' # around data matrix
+#' aheatmap(x, annCol = annotation, border = list(matrix = TRUE))
+#' # around cells only
+#' aheatmap(x, annCol = annotation, border = list(cell = TRUE))
+#' # finer control
+#' aheatmap(x, annCol = annotation, border = list(matrix = list(col = 'blue', lwd=2), annCol = 'green', annLeg = 'grey'))
 #' 
 #' @export
 aheatmap = function(x

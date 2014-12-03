@@ -65,3 +65,13 @@ aheatmap(x, txt = t)
 t.na <- t
 t.na[sample(length(t.na), 500)] <- NA # half of the cells
 aheatmap(x, txt = t.na)
+
+# Borders
+# all
+aheatmap(x, annCol = annotation, border = TRUE)
+# around data matrix
+aheatmap(x, annCol = annotation, border = list(matrix = TRUE))
+# around cells only
+aheatmap(x, annCol = annotation, border = list(cell = TRUE))
+# finer control
+aheatmap(x, annCol = annotation, border = list(matrix = list(col = 'blue', lwd=2), annCol = 'green', annLeg = 'grey'))
