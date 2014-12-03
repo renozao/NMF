@@ -2534,7 +2534,7 @@ aheatmap = function(x
                 legend <- setNames(unname(colour_scale), names(color))                
             }
             if( is.character(legend) ) legend <- setNames(unname(colour_scale), legend[seq_along(colour_scale)])
-            colour_scale <- ccRamp(color, breaks = c(colour_scale-0.5, max(colour_scale) + .5), data = as.vector(mat))             
+            colour_scale <- ccRamp(color, n = length(colour_scale), breaks = c(colour_scale-0.5, max(colour_scale) + .5), data = as.vector(mat))             
         }
     }else{
         mat = scale_mat(mat, scale)
@@ -2568,7 +2568,7 @@ aheatmap = function(x
         else mat[mat >= na_range[1L] & mat <= na_range[2L] ] <- NA
     }
     
-    if( isINT ) mat <- matrix(color[mat], nrow(mat))
+    if( isINT ) mat <- matrix(color[as.numeric(factor(mat))], nrow(mat))
     else mat <- scale_colours(mat, col = color, breaks = breaks)
 
     if( !is_NA(na.color) ){ # use specified color for NA values
