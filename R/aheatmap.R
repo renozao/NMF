@@ -381,13 +381,21 @@ draw_legend = function(color, breaks, legend, gp = gpar(), opts = NULL, dims.onl
     }
     
     if( !isTRUE(opts$horizontal) ){
-    	grid.rect(x = flip_coord(padding, opts$flip$h, unit(1, 'npc') - thickness), y = breaks[-length(breaks)], width = thickness, height = h, hjust = 0, vjust = 0
+        x.scale <- unit(opts$flip$h+0, 'npc')
+    	grid.rect(x = x.scale, y = breaks[-length(breaks)], width = thickness, height = h
+                , hjust = opts$flip$h + 0, vjust = 0
                 , gp = gpar(fill = color, col = "#FFFFFF00"))
-        grid.text(legend_txt, x = flip_coord(txt_shift, opts$flip$h, txt_shift), y = tick_pos, hjust = 0, gp = gp)
+        grid.text(legend_txt, x = flip_coord(txt_shift, opts$flip$h, x.scale), y = tick_pos
+                            , hjust = opts$flip$h + 0
+                            , gp = gp)
     }else{
-        grid.rect(y = flip_coord(padding, !opts$flip$v), x = breaks[-length(breaks)], height = thickness, width = h, hjust = 0, vjust = 0
+        y.scale <- unit(!opts$flip$v+0, 'npc')
+        grid.rect(y = y.scale, x = breaks[-length(breaks)], height = thickness, width = h
+                , hjust = 0, vjust = !opts$flip$v
                 , gp = gpar(fill = color, col = "#FFFFFF00"))
-        grid.text(legend_txt, y = flip_coord(txt_shift, !opts$flip$v), x = tick_pos, vjust = 0, gp = gp)
+        grid.text(legend_txt, y = flip_coord(txt_shift, !opts$flip$v, y.scale), x = tick_pos
+                            , hjust = 0.5, vjust = !opts$flip$v + 0
+                            , gp = gp)
     }
 }
 
@@ -2145,6 +2153,8 @@ trace_vp <- local({.on <- FALSE
 #' @param verbose if \code{TRUE} then verbose messages are displayed and the 
 #' borders of some viewports are highlighted. It is entended for debugging 
 #' purposes.
+#' @param trace logical that indicates if the different grid viewports should be 
+#' traced with a blue border (debugging purpose).
 #' 
 #' @param gp graphical parameters for the text used in plot. Parameters passed to 
 #' \code{\link{grid.text}}, see \code{\link{gpar}}. 
