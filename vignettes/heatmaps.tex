@@ -124,7 +124,7 @@
 , backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 \bibliography{Rpackages}
-\bibliography{/tmp/Rpkglib_6164314533a0/NMF/REFERENCES}
+\bibliography{/tmp/Rpkglib_44fe7fce7239/NMF/REFERENCES}
 
 \newcommand{\citet}[1]{\textcite{#1}}
 \renewcommand{\cite}[1]{\parencite{#1}}
@@ -296,7 +296,7 @@ As an example, one can conveniently visualize the target matrix as a heatmap, wi
 \hlkwd{aheatmap}\hlstd{(X)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-heatmap_data} 
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-heatmap_data-1} 
 
 \end{knitrout}
 
@@ -348,7 +348,7 @@ only the clusters from the fit are displayed.
 \hlkwd{coefmap}\hlstd{(}\hlkwd{minfit}\hlstd{(res))}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-coefmap_res} 
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-coefmap_res-1} 
 \begin{kframe}\begin{alltt}
 \hlkwd{par}\hlstd{(opar)}
 \end{alltt}
@@ -418,7 +418,7 @@ more details).
         \hlstd{,} \hlkwc{info} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-coefmap_custom} 
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-coefmap_custom-1} 
 \begin{kframe}\begin{alltt}
 \hlkwd{par}\hlstd{(opar)}
 \end{alltt}
@@ -451,7 +451,7 @@ row annotations can be added using the same argument \code{annRow}.
 \hlkwd{basismap}\hlstd{(res,} \hlkwc{main}\hlstd{=}\hlstr{"Metagenes"}\hlstd{,} \hlkwc{annRow}\hlstd{=}\hlkwd{list}\hlstd{(d, e),} \hlkwc{tracks}\hlstd{=}\hlkwd{c}\hlstd{(}\hlkwc{Metagene}\hlstd{=}\hlstr{':basis'}\hlstd{))}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-basismap_res} 
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-basismap_res-1} 
 \begin{kframe}\begin{alltt}
 \hlkwd{par}\hlstd{(opar)}
 \end{alltt}
@@ -527,7 +527,7 @@ same kind of customization as the other NMF heatmap functions:
                 \hlstd{,} \hlkwc{sub}\hlstd{=}\hlstr{'Consensus matrix and all covariates'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_res} 
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_res-1} 
 \begin{kframe}\begin{alltt}
 \hlkwd{par}\hlstd{(opar)}
 \end{alltt}
@@ -601,7 +601,7 @@ which plots all the consensus matrices on the same plot:
 \hlkwd{consensusmap}\hlstd{(res2_7)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_estimate} 
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_estimate-1} 
 
 \end{knitrout}
 
@@ -652,7 +652,7 @@ As previously, the sequence of consensus matrices is plotted with \code{consensu
 \hlkwd{consensusmap}\hlstd{(res_methods)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_methods} 
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/heatmaps-consensusmap_methods-1} 
 
 \end{knitrout}
 
@@ -700,24 +700,23 @@ These demos and the plots they generate can also be browsed online at
 
 \section{Session Info}
 \begin{itemize}\raggedright
-  \item R version 3.1.1 (2014-07-10), \verb|x86_64-pc-linux-gnu|
+  \item R version 3.1.2 (2014-10-31), \verb|x86_64-pc-linux-gnu|
   \item Locale: \verb|LC_CTYPE=en_US.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_ZA.UTF-8|, \verb|LC_COLLATE=en_US.UTF-8|, \verb|LC_MONETARY=en_ZA.UTF-8|, \verb|LC_MESSAGES=en_US.UTF-8|, \verb|LC_PAPER=en_ZA.UTF-8|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_ZA.UTF-8|, \verb|LC_IDENTIFICATION=C|
   \item Base packages: base, datasets, graphics, grDevices,
     methods, parallel, stats, utils
-  \item Other packages: BH~1.54.0-3, bigmemory~4.4.6,
-    bigmemory.sri~0.1.3, Biobase~2.24.0, BiocGenerics~0.10.0,
-    cluster~1.15.2, doParallel~1.0.8, foreach~1.4.2,
-    iterators~1.0.7, knitr~1.6, NMF~0.21.3, pkgmaker~0.25.7,
+  \item Other packages: BH~1.54.0-5, bigmemory~4.4.6,
+    bigmemory.sri~0.1.3, Biobase~2.26.0, BiocGenerics~0.12.0,
+    cluster~1.15.3, knitr~1.7, NMF~0.21.3, pkgmaker~0.25.9,
     RColorBrewer~1.0-5, registry~0.2, rngtools~1.2.4,
     synchronicity~1.1.4
   \item Loaded via a namespace (and not attached):
-    codetools~0.2-9, colorspace~1.2-4, compiler~3.1.1,
-    dendextend~0.17.1, digest~0.6.4, evaluate~0.5.5, formatR~1.0,
-    ggplot2~1.0.0, grid~3.1.1, gridBase~0.4-7, gtable~0.1.2,
-    highr~0.3, magrittr~1.0.1, MASS~7.3-34, munsell~0.4.2,
-    plyr~1.8.1, proto~0.3-10, Rcpp~0.11.2, reshape2~1.4,
-    scales~0.2.4, stringr~0.6.2, tools~3.1.1, whisker~0.3-2,
-    xtable~1.7-3
+    codetools~0.2-9, colorspace~1.2-4, dendextend~0.17.5,
+    digest~0.6.4, doParallel~1.0.8, evaluate~0.5.5, foreach~1.4.2,
+    formatR~1.0, ggplot2~1.0.0, grid~3.1.2, gridBase~0.4-7,
+    gtable~0.1.2, highr~0.4, iterators~1.0.7, magrittr~1.0.1,
+    MASS~7.3-35, munsell~0.4.2, plyr~1.8.1, proto~0.3-10,
+    Rcpp~0.11.3, reshape2~1.4, scales~0.2.4, stringr~0.6.2,
+    tools~3.1.2, whisker~0.3-2, xtable~1.7-4
 \end{itemize}
 
 
