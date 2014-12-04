@@ -2623,8 +2623,8 @@ aheatmap = function(x
     ## Annotation legend
     # handle specific on/off annotation legend
     if( isString(annLegend) ){
-        annLegend <- match.arg(annLegend, c('row', 'column', 'both'))
-        annLegend <- c('row', 'column') %in% annLegend | annLegend == 'both' 
+        annLegend <- match.arg(annLegend, c('row', 'column', 'both', 'none'))
+        annLegend <- (c('row', 'column') %in% annLegend | annLegend == 'both') & annLegend != 'none' 
     }
     if( is.logical(annLegend) ) annLegend <- rep(annLegend, length.out = 2L)
     # disable annotation legends as requested
