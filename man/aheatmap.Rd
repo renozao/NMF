@@ -19,7 +19,7 @@
     cexCol = min(0.2 + 1/log10(nc), 1.2), filename = NA,
     width = NA, height = NA, main = NULL, sub = NULL,
     info = NULL, verbose = getOption("verbose"),
-    gp = gpar())
+    trace = verbose > 1, gp = gpar())
 }
 \arguments{
   \item{x}{numeric matrix of the values to be plotted.
@@ -250,6 +250,9 @@ unless specified otherwise.}
   \item{verbose}{if \code{TRUE} then verbose messages are displayed and the
 borders of some viewports are highlighted. It is entended for debugging
 purposes.}
+
+  \item{trace}{logical that indicates if the different grid viewports should be
+traced with a blue border (debugging purpose).}
 
   \item{gp}{graphical parameters for the text used in plot. Parameters passed to
 \code{\link{grid.text}}, see \code{\link{gpar}}.}
