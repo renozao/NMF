@@ -2,9 +2,20 @@
 Changes in version 0.22
 *************************************************************************
 
+NEW FEATURES
+    o aheatmap now handles integer matrices in a special way, 
+    allowing for specifying categories.
+    o aheatmap now allow selective display of row, column (or both) 
+    annotation legend
+    o New function rmatrix_int generates random integer matrices
+    o nmf() gains a new argument .tmpdir to specify the base location 
+    of the temporary directory (used in foreach-backed runs)
+     
+
 FIXES
     o Fixed a bug in aheatmap: correlation distance was incorrectly 
     computed (Thanks to Joe Burns for reporting it)
+    o Fixed some alignment issues in aheatmap
 
 *************************************************************************
 Changes in version 0.21
