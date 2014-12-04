@@ -46,7 +46,7 @@
     rng = NULL, nrun = if (length(rank) > 1) 30 else 1,
     model = NULL, .options = list(),
     .pbackend = nmf.getOption("pbackend"),
-    .callback = NULL, ...)
+    .callback = NULL, .tmpdir = getwd(), ...)
 }
 \arguments{
   \item{x}{target data to fit, i.e. a matrix-like object}
@@ -350,6 +350,10 @@ If any error occurs in one of the callback calls, then the whole computation is
 in place of the result.
 
 See the examples for sample code.}
+
+  \item{.tmpdir}{path to the directory where a temporary directory is created to
+store intermediate results. This is only relevant for multi-runs performed using
+a foreach backend (including the sequential backend \code{'doSEQ'}).}
 }
 \value{
   The returned value depends on the run mode:

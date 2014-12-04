@@ -862,10 +862,10 @@ is.doSEQ <- function(){
 #' It ensures each worker process has access to it.
 #' 
 #' @rdname setup
-setupTempDirectory <- function(verbose){
+setupTempDirectory <- function(verbose, dir = getwd()){
 	
 	# - Create a temporary directory to store the best fits computed on each host
-	NMF_TMPDIR <- tempfile('NMF_', getwd())
+	NMF_TMPDIR <- tempfile('NMF_', dir)
 	if( verbose > 2 ) message("# Setup temporary directory: '", NMF_TMPDIR, "' ... ", appendLF=FALSE)
 	dir.create(NMF_TMPDIR)
 	if( !is.dir(NMF_TMPDIR) ){

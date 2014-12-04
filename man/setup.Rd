@@ -11,7 +11,7 @@
 
   setupSharedMemory(verbose)
 
-  setupTempDirectory(verbose)
+  setupTempDirectory(verbose, dir = getwd())
 
   setupLibPaths(pkg = "NMF", verbose = FALSE)
 

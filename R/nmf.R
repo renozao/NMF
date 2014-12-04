@@ -1068,6 +1068,10 @@ checkErrors <- function(object, element=NULL){
 #' 
 #' See the examples for sample code.
 #' 
+#' @param .tmpdir path to the directory where a temporary directory is created to 
+#' store intermediate results. This is only relevant for multi-runs performed using 
+#' a foreach backend (including the sequential backend \code{'doSEQ'}).
+#' 
 #' @return The returned value depends on the run mode:
 #' 
 #' \item{Single run:}{An object of class \code{\linkS4class{NMFfit}}.} 
@@ -1183,7 +1187,8 @@ function(x, rank, method
 		, seed=nmf.getOption('default.seed'), rng = NULL
 		, nrun=if( length(rank) > 1L ) 30 else 1, model=NULL, .options=list()
 		, .pbackend=nmf.getOption('pbackend')
-		, .callback=NULL #callback function called after a run  
+		, .callback=NULL #callback function called after a run
+        , .tmpdir = getwd()
 		, ...)
 {
 	fwarning <- function(...) nmf_warning('nmf', ...)
@@ -1471,7 +1476,7 @@ function(x, rank, method
 			
 			# setup temporary directory when not keeping all fits
 			if( !keep.all || verbose ){
-				NMF_TMPDIR <- setupTempDirectory(verbose)
+				NMF_TMPDIR <- setupTempDirectory(verbose, .tmpdir)
 				# delete on exit
 				if( .CLEANUP ){
 					on.exit({
