@@ -33,7 +33,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
 		longest_coln = which.max(nchar(coln))
 		coln_height <- unit(10, "bigpts") +  unit(1.1, "grobheight", textGrob(coln[longest_coln], rot = 90, gp = c_gpar(gp, fontsize = fontsize_col)))
 	}
-
+    
 	rown_width <- rown_width_min <- unit(10, "bigpts")
 	if(!is.null(rown)){
 		longest_rown = which.max(nchar(rown))
@@ -87,7 +87,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
 		if( annotation_legend && !is_NA(annotation_colors) ){ 
 			.annLegend.dim(annotation_colors, fontsize)
 		}else unit(0, "bigpts")
-
+    
 	# Tree height
 	treeheight_col = unit(treeheight_col, "bigpts") + unit(5, "bigpts")
 	treeheight_row = unit(treeheight_row, "bigpts") + unit(5, "bigpts") 
@@ -128,8 +128,8 @@ lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
 	else{
 		matheight = unit(cellheight * nrow, "bigpts")
 	}	
-		
-	# HACK: 
+	
+    # HACK: 
 	# - use 6 instead of 5 column for the row_annotation
 	# - take into account the associated legend's width
 	# Produce layout()
@@ -224,7 +224,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
 #	suppressWarnings( opar <- par(plt = gridPLT(), new = TRUE) )
 	( opar <- par(plt = gridPLT(), new = TRUE) )
 	on.exit(par(opar))
-	if( getOption('verbose') ) grid.rect(gp = gpar(col = "blue", lwd = 2))
+	trace_vp()
 	if( !is(hc, 'dendrogram') )
 		hc <- as.dendrogram(hc)
 	res <- plot(hc, horiz = horiz, xaxs="i", yaxs="i", axes=FALSE, leaflab="none", ...)
@@ -1093,60 +1093,70 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
         if( !is_NA(border_color$matrix$col) ){
             grid.rect(gp = border_gpar(border_color$matrix))
         }
+        trace_vp()
     	upViewport()
     }
 
 	# Draw colnames
 	if(length(colnames(matrix)) != 0 && vplayout('cnam') ){
 		draw_colnames(colnames(matrix), gp = c_gpar(gp, fontsize = fontsize_col))
+        trace_vp()
 		upViewport()
 	}
 	
 	# Draw rownames
 	if(length(rownames(matrix)) != 0 && vplayout('rnam') ){
 		draw_rownames(rownames(matrix), gp = c_gpar(gp, fontsize = fontsize_row))
+        trace_vp()
 		upViewport()
 	}
 
 	# Draw annotation tracks
 	if( !is_NA(annotation) && vplayout('cann') ){
 		draw_annotations(annotation, border_color$annCol, cex = cexAnn[2L])
+        trace_vp()
 		upViewport()
 	}	
 	
 	# add row annotations if necessary	
 	if ( !is_NA(row_annotation) && vplayout('rann') ) {
 		draw_annotations(row_annotation, border_color$annRow, horizontal=FALSE, cex = cexAnn[1L])
+        trace_vp()
 		upViewport()
 	}
 	
 	# Draw annotation legend
 	if( annotation_legend && !is_NA(annotation_colors) && vplayout('aleg') ){
 		draw_annotation_legend(annotation_colors, border_color$annLeg, gp = c_gpar(gp, fontsize = fontsize))
+        trace_vp()
 		upViewport()
 	}
 
 	# Draw legend
 	if(!is_NA(legend) && vplayout('leg') ){
 		draw_legend(color, breaks, legend, gp = c_gpar(gp, fontsize = fontsize), opts = loptions$legend)
+        trace_vp()
 		upViewport()
 	}
 
 	# Draw main title
 	if(!is.null(mainGrob) && vplayout('main') ){
 		grid.draw(mainGrob)
+        trace_vp()
 		upViewport()
 	}
 	
 	# Draw subtitle
 	if(!is.null(subGrob) && vplayout('sub') ){
 		grid.draw(subGrob)
+        trace_vp()
 		upViewport()
 	}
 	
 	# Draw info
 	if(!is.null(infoGrob) && vplayout('info') ){
 		grid.draw(infoGrob)
+        trace_vp()
 		upViewport()
 	}
 		
@@ -1869,6 +1879,17 @@ subset_index <- function(x, margin, subset){
 	sort(subIdx)
 }
 
+trace_vp <- local({.on <- FALSE
+    function(on){
+        if( !missing(on) ){
+            old <- .on
+            .on <<- on
+            return(old)
+        }
+        if( .on ) grid.rect(gp = gpar(col = "blue", lwd = 2))
+    }
+})
+
 #' Annotated Heatmaps
 #' 
 #' The function \code{aheatmap} plots high-quality heatmaps, with a detailed legend 
@@ -2310,11 +2331,12 @@ aheatmap = function(x
 , fontsize=10, cexRow = min(0.2 + 1/log10(nr), 1.2), cexCol = min(0.2 + 1/log10(nc), 1.2)
 , filename = NA, width = NA, height = NA
 , main = NULL, sub = NULL, info = NULL
-, verbose=getOption('verbose'), gp = gpar()){
+, verbose=getOption('verbose'), trace = verbose > 1, gp = gpar()){
 
 	# set verbosity level
 	ol <- lverbose(verbose)
-	on.exit( lverbose(ol) )
+    trace_vp(trace)
+	on.exit( {lverbose(ol); trace_vp(FALSE)} )
 	
 	# convert ExpressionSet into 
     vLEVELs <- NULL
@@ -2602,7 +2624,7 @@ aheatmap = function(x
     # handle specific on/off annotation legend
     if( isString(annLegend) ){
         annLegend <- match.arg(annLegend, c('row', 'column', 'both'))
-        annLegend <- c('row', 'column') %in% annLegend | annLegend == 'both'
+        annLegend <- c('row', 'column') %in% annLegend | annLegend == 'both' 
     }
     if( is.logical(annLegend) ) annLegend <- rep(annLegend, length.out = 2L)
     # disable annotation legends as requested
