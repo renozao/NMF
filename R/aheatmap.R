@@ -83,7 +83,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
 	}
 	
 	# Width of the annotation legend
-	annot_legend_width <- 
+    annot_legend_width <- 
 		if( annotation_legend && !is_NA(annotation_colors) ){ 
 			.annLegend.dim(annotation_colors, fontsize)
 		}else unit(0, "bigpts")
@@ -2587,10 +2587,8 @@ aheatmap = function(x
         mat[is.na(mat)] <- na.color[[1L]]
     }
     
-	annotation_legend <- annLegend
-	annotation_colors <- annColors
-	
 	# render annotation tracks for both rows and columns
+    annotation_colors <- annColors
 	annCol_processed <- atrack(annCol, order=res$colInd, .SPECIAL=specialAnnotation(2L), .DATA=amargin(x,2L), .CACHE=annRow)
 	annRow_processed <- atrack(annRow, order=res$rowInd, .SPECIAL=specialAnnotation(1L), .DATA=amargin(x,1L), .CACHE=annCol)
 	specialAnnotation(clear=TRUE)
@@ -2598,6 +2596,20 @@ aheatmap = function(x
 								, annotation_colors = annotation_colors
 								, verbose=verbose)
 	#
+
+    ## Annotation legend
+    # handle specific on/off annotation legend
+    if( isString(annLegend) ){
+        annLegend <- match.arg(annLegend, c('row', 'column', 'both'))
+        annLegend <- c('row', 'column') %in% annLegend | annLegend == 'both'
+    }
+    if( is.logical(annLegend) ) annLegend <- rep(annLegend, length.out = 2L)
+    # disable annotation legends as requested
+    if( !annLegend[1L] ) annTracks$colors <- annTracks$colors[colnames(annTracks$annCol)]
+    if( !annLegend[2L] ) annTracks$colors <- annTracks$colors[colnames(annTracks$annRow)]
+    annotation_legend <- any(annLegend)
+    ##
+
 	
 	# retrieve dimension for computing cexRow and cexCol (evaluated from the arguments)
 	nr <- nrow(mat); nc <- ncol(mat)
