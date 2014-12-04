@@ -2580,8 +2580,9 @@ aheatmap = function(x
         else mat[mat >= na_range[1L] & mat <= na_range[2L] ] <- NA
     }
     
-    if( isINT ) mat <- matrix(color[as.numeric(factor(mat))], nrow(mat))
-    else mat <- scale_colours(mat, col = color, breaks = breaks)
+    if( isINT ){ 
+        mat <- matrix(color[as.numeric(factor(mat))], nrow(mat), dimnames = dimnames(mat))
+    }else mat <- scale_colours(mat, col = color, breaks = breaks)
 
     if( !is_NA(na.color) ){ # use specified color for NA values
         mat[is.na(mat)] <- na.color[[1L]]
