@@ -271,12 +271,44 @@ draw_matrix = function(matrix, border_color, txt = NULL, gp = gpar()){
 	x = (1:m)/m - 1/2/m
 	y = (1:n)/n - 1/2/n
     
+    # extract graphical parameters
+    color_matrix <- attr(matrix, 'color')
+    type <- attr(matrix, 'type')
+    color_scale <- attr(matrix, 'scale')
+    
+    # define set of drawing functions
+    # rectangles
+    draw_cell.rect <- function(i, gp){
+        grid.rect(x = x[i], y = y, width = 1/m, height = 1/n, gp = gp)
+    }
+    # rounded rectangles
+    draw_cell.roundrect <- function(i, gp){
+        r <- .8 * (1 - radius[sign(matrix[,i]) + 2] * abs(matrix[,i]) / radius_base)
+        lapply(seq_along(y), function(j){
+            gp$fill <- color_matrix[j, i]
+            grid.roundrect(x = x[i], y = y[j]
+                            , r = unit(r[j], 'snpc')
+                            , width = 1/m, height = 1/n, gp = gp)
+        })
+        invisible()
+    }
+    # circles
+    radius_base <- min(1/n, 1/m)/2 
+    radius <- radius_base / abs(c(min(color_scale), max(color_scale)))
+    radius <- c(radius[1], 0, radius[2])
+    draw_cell.circle <- function(i, gp){
+        grid.circle(x = x[i], y = y, r = radius[sign(matrix[,i]) + 2] * abs(matrix[,i]), gp = gp)
+    }
+    #
+    draw_cell <- get(paste0('draw_cell.', type), mode = 'function', inherits = FALSE)
+    ## 
+    
     # substitute NA values with empty strings
     if( !is.null(txt) ) txt[is.na(txt)] <- ''
      
     for(i in 1:m){
-        rgp <- c_gpar(list(fill = matrix[,i]), border_color)
-		grid.rect(x = x[i], y = y, width = 1/m, height = 1/n, gp = rgp)
+        rgp <- c_gpar(list(fill = color_matrix[,i]), border_color)
+        draw_cell(i, gp = rgp)
         if( !is.null(txt) ){
             grid.text(label=txt[, i],
                                 x=x[i],
@@ -2327,7 +2359,7 @@ trace_vp <- local({.on <- FALSE
 #' 
 #' @export
 aheatmap = function(x
-, color = '-RdYlBu2:100', na.color = NA
+, color = '-RdYlBu2:100', type = c('rect', 'circle', 'roundrect'), na.color = NA
 , breaks = NA, border_color=NA, cellwidth = NA, cellheight = NA, scale = "none"
 , Rowv=TRUE, Colv=TRUE
 , revC = identical(Colv, "Rowv") || is_NA(Rowv) || (is.integer(Rowv) && length(Rowv) > 1)
@@ -2557,7 +2589,7 @@ aheatmap = function(x
 	# Preprocess matrix
 	if( verbose ) message("Scale matrix")
     isINT <- is.integer(mat)
-	mat = as.matrix(mat)
+	if( !is.matrix(mat) ) mat <- as.matrix(mat)
 	
 	## Colors and scales
     # generate colour scale
@@ -2613,11 +2645,11 @@ aheatmap = function(x
     }
     
     if( isINT ){ 
-        mat <- matrix(color[as.numeric(factor(mat))], nrow(mat), dimnames = dimnames(mat))
-    }else mat <- scale_colours(mat, col = color, breaks = breaks)
+        color_mat <- matrix(color[as.numeric(factor(mat))], nrow(mat), dimnames = dimnames(mat))
+    }else color_mat <- scale_colours(mat, col = color, breaks = breaks)
 
     if( !is_NA(na.color) ){ # use specified color for NA values
-        mat[is.na(mat)] <- na.color[[1L]]
+        color_mat[is.na(color_mat)] <- na.color[[1L]]
     }
     
 	# render annotation tracks for both rows and columns
@@ -2644,8 +2676,14 @@ aheatmap = function(x
     ##
 
 	
-	# retrieve dimension for computing cexRow and cexCol (evaluated from the arguments)
-	nr <- nrow(mat); nc <- ncol(mat)
+	# attach colors, shape, scale to data matrix 
+	class(mat) <- c(paste0(type, "_matrix"), "shaped_matrix")
+    attr(mat, 'type') <- match.arg(type)
+    attr(mat, 'color') <- color_mat
+    attr(mat, 'scale') <- colour_scale  
+    
+    # retrieve dimension for computing cexRow and cexCol (evaluated from the arguments)
+    nr <- nrow(mat); nc <- ncol(mat)
 	# Draw heatmap	
 	res$vp <- heatmap_motor(mat, border_color = border_color, cellwidth = cellwidth, cellheight = cellheight
 	, treeheight_col = treeheight_col, treeheight_row = treeheight_row, tree_col = tree_col, tree_row = tree_row
