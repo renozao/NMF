@@ -31,7 +31,9 @@ lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
 	coln_height <- unit(0, "bigpts")
 	if(!is.null(coln)){
 		longest_coln = which.max(nchar(coln))
-		coln_height <- unit(10, "bigpts") +  unit(1.1, "grobheight", textGrob(coln[longest_coln], rot = 90, gp = c_gpar(gp, fontsize = fontsize_col)))
+#		coln_height <- unit(10, "bigpts") +  unit(1.1, "grobheight", textGrob(coln[longest_coln], rot = 90, gp = c_gpar(gp, fontsize = fontsize_col)))
+#        coln_height <- convertHeight(unit(1, "grobheight", textGrob(coln[longest_coln], rot = 90, gp = c_gpar(gp, fontsize = fontsize_col))), 'bigpts')
+        coln_height <- unit(10, "bigpts") +  unit(1, "grobheight", textGrob(coln[longest_coln], rot = 90, gp = c_gpar(gp, fontsize = fontsize_col)))
 	}
     
 	rown_width <- rown_width_min <- unit(10, "bigpts")
@@ -801,6 +803,7 @@ aheatmap_layout <- function(layout = 'daml', size = NULL){
         if( cex.pad[1] ) wunits <- padd(wunits, cex.pad[1] * padding)
         if( cex.pad[1] ) hunits <- padd(hunits, cex.pad[2] * padding)
         
+#        print(hunits)
         lo <- grid.layout(nrow = length(hunits), ncol = length(wunits)
 	            , widths = do.call('unit.c', wunits)
 	            , heights = do.call('unit.c', hunits))
