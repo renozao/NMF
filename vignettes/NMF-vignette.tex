@@ -129,7 +129,7 @@
 , backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 \bibliography{Rpackages}
-\bibliography{/tmp/Rpkglib_7f5d2810c2c/NMF/REFERENCES}
+\bibliography{/tmp/Rpkglib_21df4678e6e5/NMF/REFERENCES}
 
 \newcommand{\citet}[1]{\textcite{#1}}
 \renewcommand{\cite}[1]{\parencite{#1}}
@@ -171,7 +171,7 @@
 
 
 \title{An introduction to NMF package\\
-\small Version 0.21.3}
+\small Version 0.22}
 \author{Renaud Gaujoux}
 % \\Address Computational Biology - University of Cape Town, South Africa,
 
@@ -569,8 +569,8 @@ The column \emph{Speed.up} contains the ratio $R/C$.
 \end{kframe}
 \end{knitrout}
 
-% latex table generated in R 3.1.1 by xtable 1.7-3 package
-% Fri Aug 29 15:07:56 2014
+% latex table generated in R 3.1.2 by xtable 1.7-4 package
+% Thu Dec  4 14:45:05 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrr}
@@ -690,7 +690,7 @@ The result of a single NMF run is an object of class \code{NMFfit}, that holds b
 ##   seed:  random 
 ##   RNG: 403L, 1L, ..., -1742836212L [1f1f4f8e4a81225c8ddcc7f5ab1945f1]
 ##   distance metric:  'KL' 
-##   residuals:  543535 
+##   residuals:  543535.1 
 ##   Iterations: 510 
 ##   Timing:
 ##      user  system elapsed 
@@ -738,11 +738,11 @@ Quality and performance measures about the factorization are computed by method 
 \end{alltt}
 \begin{verbatim}
 ##             rank sparseness.basis  sparseness.coef  silhouette.coef 
-##        3.000e+00        6.392e-01        6.213e-01        8.030e-01 
+##     3.000000e+00     6.392332e-01     6.212875e-01     8.029948e-01 
 ## silhouette.basis        residuals            niter              cpu 
-##        7.348e-01        5.435e+05        5.100e+02        2.400e-01 
+##     7.348131e-01     5.435351e+05     5.100000e+02     2.400000e-01 
 ##          cpu.all             nrun 
-##        2.400e-01        1.000e+00
+##     2.400000e-01     1.000000e+00
 \end{verbatim}
 \begin{alltt}
 \hlcom{# More quality measures are computed, if the target matrix is provided: }
@@ -750,11 +750,11 @@ Quality and performance measures about the factorization are computed by method 
 \end{alltt}
 \begin{verbatim}
 ##             rank sparseness.basis  sparseness.coef              rss 
-##        3.000e+00        6.392e-01        6.213e-01        1.535e+09 
+##     3.000000e+00     6.392332e-01     6.212875e-01     1.535434e+09 
 ##             evar  silhouette.coef silhouette.basis        residuals 
-##        8.233e-01        8.030e-01        7.348e-01        5.435e+05 
+##     8.232737e-01     8.029948e-01     7.348131e-01     5.435351e+05 
 ##            niter              cpu          cpu.all             nrun 
-##        5.100e+02        2.400e-01        2.400e-01        1.000e+00
+##     5.100000e+02     2.400000e-01     2.400000e-01     1.000000e+00
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -769,11 +769,11 @@ Here we use the phenotypic variable \code{Cell} found in the Golub dataset, that
 \end{alltt}
 \begin{verbatim}
 ##             rank sparseness.basis  sparseness.coef           purity 
-##        3.000e+00        6.392e-01        6.213e-01        8.421e-01 
+##     3.000000e+00     6.392332e-01     6.212875e-01     8.421053e-01 
 ##          entropy  silhouette.coef silhouette.basis        residuals 
-##        3.167e-01        8.030e-01        7.348e-01        5.435e+05 
+##     3.166523e-01     8.029948e-01     7.348131e-01     5.435351e+05 
 ##            niter              cpu          cpu.all             nrun 
-##        5.100e+02        2.400e-01        2.400e-01        1.000e+00
+##     5.100000e+02     2.400000e-01     2.400000e-01     1.000000e+00
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -856,8 +856,8 @@ The NMF package implements this procedure in methods \code{featureScore} and \co
 \hlkwd{summary}\hlstd{(s)}
 \end{alltt}
 \begin{verbatim}
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##  0.0001  0.0145  0.0596  0.1180  0.1320  0.9960
+##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+## 0.0000935 0.0145400 0.0596100 0.1179000 0.1319000 0.9956000
 \end{verbatim}
 \begin{alltt}
 \hlcom{# compute the scores and characterize each metagene}
@@ -1447,7 +1447,7 @@ The results are in fact much cleaner when using the full dataset (\cref{fig:heat
 \hlkwd{plot}\hlstd{(estim.r)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-estimate_rank_plot} 
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-estimate_rank_plot-1} 
 
 \end{knitrout}
 \caption{Estimation of the rank: Quality measures computed from 10 runs for each value of $r$. \label{fig:estim_all}}
@@ -1460,7 +1460,7 @@ The results are in fact much cleaner when using the full dataset (\cref{fig:heat
 \hlkwd{consensusmap}\hlstd{(estim.r,} \hlkwc{annCol}\hlstd{=esGolub,} \hlkwc{labCol}\hlstd{=}\hlnum{NA}\hlstd{,} \hlkwc{labRow}\hlstd{=}\hlnum{NA}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-estimate_rank_hm_include} 
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-estimate_rank_hm_include-1} 
 
 \end{knitrout}
 \caption{Estimation of the rank: Consensus matrices computed from 10 runs for each value of $r$. \label{fig:estim_all_hm}}
@@ -1524,13 +1524,17 @@ Passing the result to method \code{compare} produces a \code{data.frame} that co
 \end{alltt}
 \begin{verbatim}
 ##        method   seed rng    metric rank sparseness.basis sparseness.coef
-## brunet brunet random   1        KL    3           0.6393          0.6218
-## lee       lee random   1 euclidean    3           0.7269          0.4466
-## nsNMF   nsNMF random   1        KL    3           0.6777          0.7350
-##        silhouette.coef silhouette.basis residuals niter   cpu cpu.all nrun
-## brunet          0.8126           0.7488    543536   510 0.270   0.270    1
-## lee             0.7148           0.6764 673513121  1780 0.982   0.982    1
-## nsNMF           0.8654           0.7946    585106   970 0.696   0.696    1
+## brunet brunet random   1        KL    3        0.6392676       0.6217884
+## lee       lee random   1 euclidean    3        0.7268875       0.4465608
+## nsNMF   nsNMF random   1        KL    3        0.6777185       0.7350386
+##        silhouette.coef silhouette.basis   residuals niter   cpu cpu.all
+## brunet       0.8126484        0.7487792    543535.7   510 0.270   0.270
+## lee          0.7147803        0.6764436 673513120.5  1780 0.982   0.982
+## nsNMF        0.8654196        0.7946175    585106.4   970 0.696   0.696
+##        nrun
+## brunet    1
+## lee       1
+## nsNMF     1
 \end{verbatim}
 \begin{alltt}
 \hlcom{# If prior knowledge of classes is available}
@@ -1538,17 +1542,17 @@ Passing the result to method \code{compare} produces a \code{data.frame} that co
 \end{alltt}
 \begin{verbatim}
 ##        method   seed rng    metric rank sparseness.basis sparseness.coef
-## brunet brunet random   1        KL    3           0.6393          0.6218
-## lee       lee random   1 euclidean    3           0.7269          0.4466
-## nsNMF   nsNMF random   1        KL    3           0.6777          0.7350
-##        purity entropy silhouette.coef silhouette.basis residuals niter
-## brunet 0.8158  0.3927          0.8126           0.7488    543536   510
-## lee    0.5789  0.7231          0.7148           0.6764 673513121  1780
-## nsNMF  0.7895  0.4691          0.8654           0.7946    585106   970
-##          cpu cpu.all nrun
-## brunet 0.270   0.270    1
-## lee    0.982   0.982    1
-## nsNMF  0.696   0.696    1
+## brunet brunet random   1        KL    3        0.6392676       0.6217884
+## lee       lee random   1 euclidean    3        0.7268875       0.4465608
+## nsNMF   nsNMF random   1        KL    3        0.6777185       0.7350386
+##           purity   entropy silhouette.coef silhouette.basis   residuals
+## brunet 0.8157895 0.3926954       0.8126484        0.7487792    543535.7
+## lee    0.5789474 0.7231282       0.7147803        0.6764436 673513120.5
+## nsNMF  0.7894737 0.4691212       0.8654196        0.7946175    585106.4
+##        niter   cpu cpu.all nrun
+## brunet   510 0.270   0.270    1
+## lee     1780 0.982   0.982    1
+## nsNMF    970 0.696   0.696    1
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1583,8 +1587,8 @@ The trajectory can be plot with the method \code{plot} (\cref{fig:errorplot}):
 \hlkwd{plot}\hlstd{(res.multi.method)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=0.5\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-errorplot1} 
-\includegraphics[width=0.5\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-errorplot2} 
+\includegraphics[width=0.5\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-errorplot-1} 
+\includegraphics[width=0.5\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-errorplot-2} 
 
 \end{knitrout}
 \caption{Error track for a single NMF run (left) and multiple method
@@ -1631,7 +1635,7 @@ We refer to the relevant help pages \code{?basismap} and \code{?aheatmap} for mo
 \hlkwd{coefmap}\hlstd{(res)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-heatmap_coef_basis_inc} 
+\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-heatmap_coef_basis_inc-1} 
 
 \end{knitrout}
 \caption{Heatmap of the basis and the mixture coefficient matrices. The rows of the basis matrix were selected using the default feature selection method -- described in \cite{KimH2007}.}
@@ -1649,9 +1653,9 @@ Golub dataset):
 \hlkwd{consensusmap}\hlstd{(res.multirun,} \hlkwc{annCol}\hlstd{=esGolub,} \hlkwc{tracks}\hlstd{=}\hlnum{NA}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=0.49\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-heatmap_consensus_inc1} 
+\includegraphics[width=0.49\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-heatmap_consensus_inc-1} 
 
-\includegraphics[width=0.49\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-heatmap_consensus_inc2} 
+\includegraphics[width=0.49\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-heatmap_consensus_inc-2} 
 
 \end{knitrout}
 
@@ -1756,15 +1760,15 @@ Here we apply the algorithm to some matrix \code{V} randomly generated:
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_7ff64043af4a 
+##   algorithm:  nmf_321cbf859a9 
 ##   seed:  random 
 ##   RNG: 403L, 173L, ..., 1280296329L [0d87fde5bf092083bd059bcc33d58a3e]
 ##   distance metric:  'euclidean' 
-##   residuals:  554.9 
+##   residuals:  554.8518 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.009   0.000   0.010
+##     0.007   0.000   0.007
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1787,15 +1791,15 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_7ff6633562c1 
+##   algorithm:  nmf_321c446f52a0 
 ##   seed:  random 
 ##   RNG: 403L, 383L, ..., 1280296329L [2f2572f5c6b643d37859d97079951964]
 ##   distance metric:  'KL' 
-##   residuals:  1539 
+##   residuals:  1538.963 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.005   0.000   0.006
+##     0.006   0.000   0.005
 \end{verbatim}
 \begin{alltt}
 \hlcom{# based on custom distance metric}
@@ -1813,11 +1817,11 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_7ff62fae0207 
+##   algorithm:  nmf_321c6fcc4dba 
 ##   seed:  random 
 ##   RNG: 403L, 593L, ..., 1280296329L [7ed64fa772a4b1e68cebc0bfed3cb018]
 ##   distance metric:  <function> 
-##   residuals:  9.181 
+##   residuals:  9.180711 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
@@ -1871,15 +1875,15 @@ As an example, we reuse the previously defined custom algorithm\footnote{As it i
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_7ff65431a6e2 
+##   algorithm:  nmf_321c5f46fd8b 
 ##   seed:  random 
 ##   RNG: 403L, 179L, ..., -818492466L [850b670d66e22c6d00f5d79570d1ce8a]
 ##   distance metric:  'euclidean' 
-##   residuals:  561.4 
+##   residuals:  561.3586 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.007   0.000   0.007
+##     0.005   0.000   0.005
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1954,13 +1958,13 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   features: 50 
 ##   basis/rank: 3 
 ##   samples: 20 
-##   offset: [ 0.3677 0.9383 1.347 1.019 0.6695 ... ]
+##   offset: [ 0.3676544 0.9382504 1.346861 1.018936 0.6695097 ... ]
 ##  # Details:
-##   algorithm:  nmf_7ff6455ba364 
+##   algorithm:  nmf_321c7aaeb3f3 
 ##   seed:  random 
 ##   RNG: 403L, 389L, ..., -818492466L [7d13c1cc60f9b6390bf7ebfc74dce591]
 ##   distance metric:  'euclidean' 
-##   residuals:  334.3 
+##   residuals:  334.3211 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
@@ -2012,14 +2016,14 @@ To use the new seeding method:
 ##   samples: 20 
 ##  # Details:
 ##   algorithm:  snmf/r 
-##   seed:  NMF.seed.7ff610d5f053 
+##   seed:  NMF.seed.321c99e8db3 
 ##   RNG: 403L, 25L, ..., -1308220775L [e0cc5847b800083c2460eb9eaa25bd4e]
 ##   distance metric:  <function> 
-##   residuals:  195.6 
+##   residuals:  195.5716 
 ##   Iterations: 105 
 ##   Timing:
 ##      user  system elapsed 
-##     0.264   0.003   0.267
+##     0.213   0.004   0.217
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2190,24 +2194,23 @@ The default/current values of each options can be displayed using the function
 \pagebreak 
 \section{Session Info}
 \begin{itemize}\raggedright
-  \item R version 3.1.1 (2014-07-10), \verb|x86_64-pc-linux-gnu|
+  \item R version 3.1.2 (2014-10-31), \verb|x86_64-pc-linux-gnu|
   \item Locale: \verb|LC_CTYPE=en_US.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_ZA.UTF-8|, \verb|LC_COLLATE=en_US.UTF-8|, \verb|LC_MONETARY=en_ZA.UTF-8|, \verb|LC_MESSAGES=en_US.UTF-8|, \verb|LC_PAPER=en_ZA.UTF-8|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_ZA.UTF-8|, \verb|LC_IDENTIFICATION=C|
   \item Base packages: base, datasets, graphics, grDevices,
     methods, parallel, stats, utils
-  \item Other packages: BH~1.54.0-3, bigmemory~4.4.6,
-    bigmemory.sri~0.1.3, Biobase~2.24.0, BiocGenerics~0.10.0,
-    cluster~1.15.2, doParallel~1.0.8, foreach~1.4.2,
-    iterators~1.0.7, knitr~1.6, NMF~0.21.3, pkgmaker~0.25.7,
+  \item Other packages: BH~1.54.0-5, bigmemory~4.4.6,
+    bigmemory.sri~0.1.3, Biobase~2.26.0, BiocGenerics~0.12.1,
+    cluster~1.15.3, knitr~1.8, NMF~0.22, pkgmaker~0.25.9,
     RColorBrewer~1.0-5, registry~0.2, rngtools~1.2.4,
-    synchronicity~1.1.4, xtable~1.7-3
+    synchronicity~1.1.4, xtable~1.7-4
   \item Loaded via a namespace (and not attached):
-    codetools~0.2-9, colorspace~1.2-4, compiler~3.1.1,
-    dendextend~0.17.1, digest~0.6.4, evaluate~0.5.5, formatR~1.0,
-    ggplot2~1.0.0, grid~3.1.1, gridBase~0.4-7, gtable~0.1.2,
-    highr~0.3, labeling~0.3, magrittr~1.0.1, MASS~7.3-34,
-    munsell~0.4.2, plyr~1.8.1, proto~0.3-10, Rcpp~0.11.2,
-    reshape2~1.4, scales~0.2.4, stringr~0.6.2, tools~3.1.1,
-    whisker~0.3-2
+    codetools~0.2-9, colorspace~1.2-4, dendextend~0.17.5,
+    digest~0.6.4, doParallel~1.0.8, evaluate~0.5.5, foreach~1.4.2,
+    formatR~1.0, ggplot2~1.0.0, grid~3.1.2, gridBase~0.4-7,
+    gtable~0.1.2, highr~0.4, iterators~1.0.7, labeling~0.3,
+    magrittr~1.5, MASS~7.3-35, munsell~0.4.2, plyr~1.8.1,
+    proto~0.3-10, Rcpp~0.11.3, reshape2~1.4, scales~0.2.4,
+    stringr~0.6.2, tools~3.1.2, whisker~0.3-2
 \end{itemize}
 
 
