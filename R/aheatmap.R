@@ -1098,11 +1098,18 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	#grid.show.layout(glo$layout); return()
 	
     # load border specifications
-    border_color <- if( !is.list(border_color) ) list(base = border_color) else border_color 
-	for( b in c('base', 'cell', 'matrix', 'annRow', 'annCol', 'annLegend', 'legend') ){
-        val <- border_color[[b]] %||% border_color[['base']] %||% NA
+    border_color <- if( !is.list(border_color) ) list(base = border_color) else border_color
+    elmt <- c('base', 'cell', 'matrix', 'annRow', 'annCol', 'annLegend', 'legend', 'ann') 
+	for( b in elmt ){
+        val <- border_color[[b]] %||% {if( grepl('^ann', b) ) border_color[['ann']] } %||% border_color[['base']] %||% NA
         border_color[[b]] <- border_gpar_list(val) 
     }
+    if( any(w <- !names(border_color) %in% elmt) ){
+        warning(sprintf("Discarding unknown border specification: %s.\n  Available: %s."
+                                , str_out(names(border_color)[w], Inf)
+                                , str_out(elmt, Inf)))
+    }
+    border_color <- border_color[elmt]
     #
     
     # Omit border color if cell size is too small
@@ -2009,9 +2016,8 @@ trace_vp <- local({.on <- FALSE
 #' drawn.
 #' This argument allows for a finer control of borders for: 
 #' the cells (\code{'cell'}), the cell matrix panel (\code{'matrix'}), 
-#' the annotation cells (\code{'annCol'} and \code{'annRow'}), 
-#' the annotation legend (\code{'annLegend'}) or 
-#' the color scale legend (\code{'legend'}).
+#' the annotation cells (\code{'annCol'}, \code{'annRow'} or \code{'ann'} for columns, rows or both, respectively), 
+#' the annotation legend (\code{'annLegend'}) or the color scale legend (\code{'legend'}).
 #' 
 #' See examples in the \emph{aheatmap} demo and vignette.
 #' 

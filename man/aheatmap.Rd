@@ -63,7 +63,7 @@ then the colour palette is forced to be centered on this value.}
 drawn.
 This argument allows for a finer control of borders for:
 the cells (\code{'cell'}), the cell matrix panel (\code{'matrix'}),
-the annotation cells (\code{'annCol'} and \code{'annRow'}),
+the annotation cells (\code{'annCol'}, \code{'annRow'} or \code{'ann'} for columns, rows or both, respectively),
 the annotation legend (\code{'annLegend'}) or
 the color scale legend (\code{'legend'}).
 
