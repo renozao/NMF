@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfitXn-class. NMF 0.21.3</title>
+<title>NMFfitXn-class. NMF 0.23</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.23</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -244,13 +244,13 @@ res &lt;- nmf(V, 3, nrun=3, .options=&#39;k&#39;) # .options=list(keep.all=TRUE)
 ##   Method: brunet 
 ##   Runs:  3 
 ##   RNG:
-##    407L, -630598986L, 421984703L, 413380852L, -1140517019L, -374809374L, -1940759813L 
+##    407L, 1934160049L, -162350402L, 779694119L, -1901819332L, 520338957L, -994911894L 
 ##   Total timing:
 ##    user  system elapsed 
-##   2.581   0.252   1.789 
+##   2.500   0.233   1.801 
 ##   Sequential timing:
 ##    user  system elapsed 
-##   0.358   0.000   0.356
+##   0.364   0.000   0.366
 </code></pre>
 
 <pre><code class="r">summary(res)
@@ -277,14 +277,14 @@ runtime.all(res)
 </code></pre>
 
 <pre><code>##    user  system elapsed 
-##   2.581   0.252   1.789
+##   2.500   0.233   1.801
 </code></pre>
 
 <pre><code class="r">seqtime(res)
 </code></pre>
 
 <pre><code>##    user  system elapsed 
-##   0.358   0.000   0.356
+##   0.364   0.000   0.366
 </code></pre>
 
 <pre><code class="r"># plot the consensus matrix, computed on the fly

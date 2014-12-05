@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmf. NMF 0.21.3</title>
+<title>nmf. NMF 0.23</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.23</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -106,7 +106,7 @@ interface, through a sample data analysis.</p></p>
 <span class="label label-success">S4</span> (matrix,numeric,NMFStrategy)
 `nmf`(x, rank, method, seed = nmf.getOption("default.seed"), rng = NULL, 
       nrun = if (length(rank) > 1) 30 else 1, model = NULL, .options = list(), .pbackend = nmf.getOption("pbackend"), 
-      .callback = NULL, ...)</pre>
+      .callback = NULL, .tmpdir = getwd(), ...)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -435,6 +435,10 @@ If any error occurs in one of the callback calls, then the whole computation is
 in place of the result.
 
 See the examples for sample code.</dd>
+      <dt>.tmpdir</dt>
+      <dd>path to the directory where a temporary directory is created to
+store intermediate results. This is only relevant for multi-runs performed using
+a foreach backend (including the sequential backend <code>'doSEQ'</code>).</dd>
     </dl>
     
     <div class="Value">
@@ -970,7 +974,49 @@ Iterations:  400/2000
 Iterations:  400/2000 
 Iterations:  400/2000 
 Iterations:  400/2000
-## DONE (converged at 430/2000 iterations)
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000 
+Iterations:  450/2000
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000 
+Iterations:  500/2000
+## DONE (converged at 500/2000 iterations)
 </code></pre>
 
 <pre><code class="r">## Not run: 

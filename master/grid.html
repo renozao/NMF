@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>tryViewport. NMF 0.20.2</title>
+<title>tryViewport. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,20 +69,17 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>These functions enable mixing base and grid graphics in
-  <code><a href='aheatmap.html'>aheatmap</a></code>, by avoiding calls to the grid
-  internal function <code>'L_gridDirty'</code>. They are not
-  exported (i.e. not tampering core functions) and are only
-  meant for internal use within the <span class = "pkg">NMF</span> package.</p>
-<p><code>tryViewport</code> tries to go down to a viewport in the
-  current tree, given its name.</p>
-<p><code>current.vpPath_patched</code> aims at substituting
-  <code><a href='http://www.inside-r.org/r-doc/grid/current.viewport'>current.vpPath</a></code>, so that the graphic
-  engine is not reset. This is essentially to prevent
-  outputting a blank page at the beginning of PDF graphic
-  engines.</p>
-<p><code>.use.grid.patch</code> tells if the user enabled patching
-  grid.</p></p>
+      <p><p>These functions enable mixing base and grid graphics in <code><a href='aheatmap.html'>aheatmap</a></code>,
+by avoiding calls to the grid internal function <code>'L_gridDirty'</code>.
+They are not exported (i.e. not tampering core functions) and are only meant for internal
+use within the <span class = "pkg">NMF</span> package.</p>
+<p><code>tryViewport</code> tries to go down to a viewport in the current tree,
+given its name.</p>
+<p><code>current.vpPath_patched</code> aims at substituting <code><a href='http://www.inside-r.org/r-doc/grid/current.viewport'>current.vpPath</a></code>,
+so that the graphic engine is not reset.
+This is essentially to prevent outputting a blank page at the beginning of PDF
+graphic engines.</p>
+<p><code>.use.grid.patch</code> tells if the user enabled patching grid.</p></p>
   
     </div>
     
@@ -104,10 +101,9 @@ current.vpPath_patched()
     <div class="Details">
       <h2>Details</h2>
       
-      <p><code>tryViewport</code> uses <code><a href='http://www.inside-r.org/r-doc/grid/grid.ls'>grid.ls</a></code> and
-  not <code>seekViewport</code> as the latter would reset
-  the graphic device and break the mix grid/base graphic
-  capability.</p>
+      <p><code>tryViewport</code> uses <code><a href='http://www.inside-r.org/r-doc/grid/grid.ls'>grid.ls</a></code> and not
+<code><a href='http://www.inside-r.org/r-doc/grid/viewports'>seekViewport</a></code> as the latter would reset the graphic device
+and break the mix grid/base graphic capability.</p>
   
     </div>
       </div>

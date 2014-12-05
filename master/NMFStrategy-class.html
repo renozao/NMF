@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFStrategy-class. NMF 0.20.2</title>
+<title>NMFStrategy-class. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,11 +69,9 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>This class partially implements the generic interface
-  defined for general algorithms defined in the <span class = "pkg">NMF</span>
-  package (see <code><a href='algorithmic.html'>algorithmic-NMF</a></code>).</p>
-<p><code>is.mixed</code> tells if an NMF algorithm works on
-  mixed-sign data.</p></p>
+      <p><p>This class partially implements the generic interface defined for general
+algorithms defined in the <span class = "pkg">NMF</span> package (see <code><a href='algorithmic.html'>algorithmic-NMF</a></code>).</p>
+<p><code>is.mixed</code> tells if an NMF algorithm works on mixed-sign data.</p></p>
   
     </div>
     
@@ -104,22 +102,17 @@ is.mixed(object)</pre>
       <h2>Slots</h2>
       
       <p><ol>
-<li>objectivethe objective function associated with
-  the algorithm (Frobenius, Kullback-Leibler, etc...).  It
-  is either an access key of a registered objective
-  function or a function definition.  In the latter case,
-  the given function must have the following signature
-  <code>(x="NMF", y="matrix")</code> and return a nonnegative
-  real value.</p>
+<li>objectivethe objective function associated with the algorithm (Frobenius, Kullback-Leibler, etc...).
+ It is either an access key of a registered objective function or a function definition.
+ In the latter case, the given function must have the following signature <code>(x="NMF", y="matrix")</code>
+ and return a nonnegative real value.</p>
   
       <p></li>
-<li>modela character string giving either the
-  (sub)class name of the NMF-class instance used and
-  returned by the strategy, or a function name.</p>
+<li>modela character string giving either the (sub)class name of the NMF-class instance used
+and returned by the strategy, or a function name.</p>
   
       <p></li>
-<li>mixeda logical that indicates if the algorithm
-  works on mixed-sign data.</p>
+<li>mixeda logical that indicates if the algorithm works on mixed-sign data.</p>
   
       <p></li>
 </ol></p>
@@ -132,91 +125,60 @@ is.mixed(object)</pre>
       <h2>Methods</h2>
       
       <p><ol>
-<li>canFit<code>signature(x = "NMFStrategy", y =
-  "character")</code>: Tells if an NMF algorithm can fit a given
-  class of NMF models</p>
+<li>canFit<code>signature(x = "NMFStrategy", y = "character")</code>: Tells if an NMF algorithm can fit a given class of NMF models</p>
   
       <p></li>
-<li>canFit<code>signature(x = "NMFStrategy", y =
-  "NMF")</code>: Tells if an NMF algorithm can fit the same class
-  of models as <code>y</code></p>
+<li>canFit<code>signature(x = "NMFStrategy", y = "NMF")</code>: Tells if an NMF algorithm can fit the same class of models as <code>y</code></p>
   
       <p></li>
-<li>deviance<code>signature(object = "NMFStrategy")</code>:
-  Computes the value of the objective function between the
-  estimate <code>x</code> and the target <code>y</code>.</p>
+<li>deviance<code>signature(object = "NMFStrategy")</code>: Computes the value of the objective function between the estimate <code>x</code>
+and the target <code>y</code>.</p>
   
       <p></li>
-<li>modelname<code>signature(object =
-  "NMFStrategy")</code>: Returns the model(s) that an NMF
-  algorithm can fit.</p>
+<li>modelname<code>signature(object = "NMFStrategy")</code>: Returns the model(s) that an NMF algorithm can fit.</p>
   
       <p></li>
-<li>NMFStrategy<code>signature(name = "NMFStrategy",
-  method = "missing")</code>: Creates an <code>NMFStrategy</code> based
-  on a template object (Constructor-Copy), in particular it
-  uses the <strong>same</strong> name.</p>
+<li>NMFStrategy<code>signature(name = "NMFStrategy", method = "missing")</code>: Creates an <code>NMFStrategy</code> based on a template object (Constructor-Copy),
+in particular it uses the <strong>same</strong> name.</p>
   
       <p></li>
-<li>objective<code>signature(object =
-  "NMFStrategy")</code>: Gets the objective function associated
-  with an NMF algorithm.</p>
+<li>objective<code>signature(object = "NMFStrategy")</code>: Gets the objective function associated with an NMF algorithm.</p>
   
-      <p>It is used in
-  <code><a href='deviance.html'>deviance</a></code> to
-  compute the objective value for an NMF model with respect
-  to a given target matrix.</p>
+      <p>It is used in <code><a href='deviance.html'>deviance</a></code>
+to compute the objective value for an NMF model with respect to
+a given target matrix.</p>
   
       <p></li>
-<li>objective<code>signature(object =
-  "NMFStrategy")</code>: Gets the objective function associated
-  with an NMF algorithm.</p>
+<li>objective<code>signature(object = "NMFStrategy")</code>: Gets the objective function associated with an NMF algorithm.</p>
   
-      <p>It is used in
-  <code><a href='deviance.html'>deviance</a></code> to
-  compute the objective value for an NMF model with respect
-  to a given target matrix.</p>
+      <p>It is used in <code><a href='deviance.html'>deviance</a></code>
+to compute the objective value for an NMF model with respect to
+a given target matrix.</p>
   
       <p></li>
-<li>objective<-<code>signature(object =
-  "NMFStrategy", value = "character")</code>: Sets the objective
-  function associated with an NMF algorithm, with a
-  character string that must be a registered objective
-  function.</p>
+<li>objective<-<code>signature(object = "NMFStrategy", value = "character")</code>: Sets the objective function associated with an NMF algorithm, with a character string
+that must be a registered objective function.</p>
   
       <p></li>
-<li>objective<-<code>signature(object =
-  "NMFStrategy", value = "character")</code>: Sets the objective
-  function associated with an NMF algorithm, with a
-  character string that must be a registered objective
-  function.</p>
+<li>objective<-<code>signature(object = "NMFStrategy", value = "character")</code>: Sets the objective function associated with an NMF algorithm, with a character string
+that must be a registered objective function.</p>
   
       <p></li>
-<li>objective<-<code>signature(object =
-  "NMFStrategy", value = "function")</code>: Sets the objective
-  function associated with an NMF algorithm, with a
-  function that computes the approximation error between an
-  NMF model and a target matrix.</p>
+<li>objective<-<code>signature(object = "NMFStrategy", value = "function")</code>: Sets the objective function associated with an NMF algorithm, with a function
+that computes the approximation error between an NMF model and a target matrix.</p>
   
       <p></li>
-<li>objective<-<code>signature(object =
-  "NMFStrategy", value = "function")</code>: Sets the objective
-  function associated with an NMF algorithm, with a
-  function that computes the approximation error between an
-  NMF model and a target matrix.</p>
+<li>objective<-<code>signature(object = "NMFStrategy", value = "function")</code>: Sets the objective function associated with an NMF algorithm, with a function
+that computes the approximation error between an NMF model and a target matrix.</p>
   
       <p></li>
-<li>run<code>signature(object = "NMFStrategy", y =
-  "matrix", x = "NMFfit")</code>: Pure virtual method defined for
-  all NMF algorithms to ensure that a method <code>run</code> is
-  defined by sub-classes of <code>NMFStrategy</code>.</p>
+<li>run<code>signature(object = "NMFStrategy", y = "matrix", x = "NMFfit")</code>: Pure virtual method defined for all NMF algorithms to ensure
+that a method <code>run</code> is defined by sub-classes of <code>NMFStrategy</code>.</p>
   
       <p>It throws an error if called directly.</p>
   
       <p></li>
-<li>run<code>signature(object = "NMFStrategy", y =
-  "matrix", x = "NMF")</code>: Method to run an NMF algorithm
-  directly starting from a given NMF model.</p>
+<li>run<code>signature(object = "NMFStrategy", y = "matrix", x = "NMF")</code>: Method to run an NMF algorithm directly starting from a given NMF model.</p>
   
       <p></li>
 </ol></p>

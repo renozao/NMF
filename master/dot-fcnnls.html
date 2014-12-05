@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>.fcnnls. NMF 0.20.2</title>
+<title>.fcnnls. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,19 +69,16 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>This is the workhorse function for the higher-level
-  function <code><a href='fcnnls.html'>fcnnls</a></code>, which implements the fast
-  nonnegative least-square algorithm for multiple
-  right-hand-sides from <cite>Van Benthem et al. (2004)</cite> to
-  solve the following problem:</p>
+      <p><p>This is the workhorse function for the higher-level function
+<code><a href='fcnnls.html'>fcnnls</a></code>, which implements the fast nonnegative least-square
+algorithm for multiple right-hand-sides from <cite>Van Benthem et al. (2004)</cite> to solve
+the following problem:</p>
 <p><pre class = 'eq'>min ||Y - X K||_F, s.t. K>=0</code></p>
-<p>where <code class = 'eq'>Y</code> and <code class = 'eq'>X</code> are two real matrices of
-  dimension <code class = 'eq'>n x p</code> and <code class = 'eq'>n
-  x r</code> respectively, and <code class = 'eq'>|.|_F</code> is the
-  Frobenius norm.</p>
-<p>The algorithm is very fast compared to other approaches,
-  as it is optimised for handling multiple right-hand
-  sides.</p></p>
+<p>where <code class = 'eq'>Y</code> and <code class = 'eq'>X</code> are two real matrices of dimension <code class = 'eq'>n x p</code>
+and <code class = 'eq'>n x r</code> respectively,
+and <code class = 'eq'>|.|_F</code> is the Frobenius norm.</p>
+<p>The algorithm is very fast compared to other approaches, as it is optimised
+for handling multiple right-hand sides.</p></p>
   
     </div>
     
@@ -93,23 +90,19 @@
       <dt>x</dt>
       <dd>the coefficient matrix</dd>
       <dt>y</dt>
-      <dd>the target matrix to be approximated by <code class = 'eq'>X
-  K</code>.</dd>
+      <dd>the target matrix to be approximated by <code class = 'eq'>X K</code>.</dd>
       <dt>verbose</dt>
-      <dd>logical that indicates if log messages
-  should be shown.</dd>
+      <dd>logical that indicates if log messages should be shown.</dd>
       <dt>pseudo</dt>
-      <dd>By default (<code>pseudo=FALSE</code>) the
-  algorithm uses Gaussian elimination to solve the
-  successive internal linear problems, using the
-  <code><a href='http://www.inside-r.org/r-doc/base/solve'>solve</a></code> function.  If <code>pseudo=TRUE</code> the
-  algorithm uses Moore-Penrose generalized
-  <code><a href='http://www.inside-r.org/r-doc/corpcor/pseudoinverse'>pseudoinverse</a></code> from the
-  <code>corpcor</code> package instead of <a href='http://www.inside-r.org/r-doc/base/solve'>solve</a>.</dd>
+      <dd>By default (<code>pseudo=FALSE</code>) the algorithm uses Gaussian
+elimination to solve the successive internal linear problems, using the
+<code><a href='http://www.inside-r.org/r-doc/base/solve'>solve</a></code> function.  If <code>pseudo=TRUE</code> the algorithm uses
+Moore-Penrose generalized <code><a href='http://www.inside-r.org/r-doc/corpcor/pseudoinverse'>pseudoinverse</a></code> from the
+<code>corpcor</code> package instead of <a href='http://www.inside-r.org/r-doc/base/solve'>solve</a>.</dd>
       <dt>eps</dt>
-      <dd>threshold for considering entries as
-  nonnegative. This is an experimental parameter, and it is
-  recommended to leave it at 0.</dd>
+      <dd>threshold for considering entries as nonnegative.
+This is an experimental parameter, and it is recommended to
+leave it at 0.</dd>
     </dl>
     
     <div class="Value">
@@ -118,21 +111,17 @@
       <p>A list with the following elements:</p>
   
       <p>coefthe fitted coefficient matrix.
-  Psetthe set of passive constraints, as a logical
-  matrix of the same size as <code>K</code> that indicates which
-  element is positive.</p>
+Psetthe set of passive constraints, as a logical matrix of
+the same size as <code>K</code> that indicates which element is positive.</p>
   
     </div>
 
     <div class="References">
       <h2>References</h2>
       
-      <p>Van Benthem M and Keenan MR (2004). "Fast algorithm for
-  the solution of large-scale non-negativity-constrained
-  least squares problems." _Journal of Chemometrics_,
-  *18*(10), pp. 441-450. ISSN 0886-9383, <URL:
-  http://dx.doi.org/10.1002/cem.889>, <URL:
-  http://doi.wiley.com/10.1002/cem.889>.</p>
+      <p>Van Benthem M and Keenan MR (2004). "Fast algorithm for the solution of large-scale non-negativity-constrained least squares
+problems." _Journal of Chemometrics_, *18*(10), pp. 441-450. ISSN 0886-9383, <URL: http://dx.doi.org/10.1002/cem.889>, <URL:
+http://doi.wiley.com/10.1002/cem.889>.</p>
   
     </div>
       </div>

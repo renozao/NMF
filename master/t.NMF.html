@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>t.NMF. NMF 0.20.2</title>
+<title>t.NMF. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,9 +69,8 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p><code>t</code> transpose an NMF model, by transposing and
-  swapping its basis and coefficient matrices:
-  <code class = 'eq'>t([W,H]) = [t(H), t(W)]</code>.</p></p>
+      <p><p><code>t</code> transpose an NMF model, by transposing and swapping its basis and
+coefficient matrices: <code class = 'eq'>t([W,H]) = [t(H), t(W)]</code>.</p></p>
   
     </div>
     
@@ -88,20 +87,15 @@
     <div class="Details">
       <h2>Details</h2>
       
-      <p>The function <code>t</code> is a generic defined in the
-  <span class = "pkg">base</span> package. The method <code>t.NMF</code> defines the
-  trasnformation for the general NMF interface. This method
-  may need to be overloaded for NMF models, whose structure
-  requires specific handling.</p>
+      <p>The function <code>t</code> is a generic defined in the <span class = "pkg">base</span> package.
+The method <code>t.NMF</code> defines the trasnformation for the general NMF interface.
+This method may need to be overloaded for NMF models, whose structure requires
+specific handling.</p>
   
     </div>
     
     <h2 id="examples">Examples</h2>
     <pre><code class="r">
-## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
 
 x &lt;- rnmf(3, 100, 20)
 x
@@ -124,11 +118,9 @@ y
 ## samples: 100
 </code></pre>
 
-<pre><code class="r">
-# factors are swapped-transposed
+<pre><code class="r"># factors are swapped-transposed
 stopifnot( identical(basis(y), t(coef(x))) )
 stopifnot( identical(coef(y), t(basis(x))) )
-
 </code></pre>
 
   </div>
@@ -142,8 +134,7 @@ stopifnot( identical(coef(y), t(basis(x))) )
       
     <h2>See also</h2>
     
-  Other transforms: <code><a href='nneg.html'>nneg</a></code>,
-  <code><a href='nneg.html'>posneg</a></code>, <code><a href='nneg.html'>rposneg</a></code>
+  Other transforms: <code><a href='nneg.html'>nneg</a></code>, <code><a href='nneg.html'>posneg</a></code>, <code><a href='nneg.html'>rposneg</a></code>
 
         
   </div>

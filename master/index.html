@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>Index. NMF 0.20.2</title>
+<title>Index. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Renaud Gaujoux, Cathal Seoighe">
 
@@ -45,6 +45,8 @@
        <li><a href="PAGE-MAN.html">Documentation</a></li>
        <li><a href="PAGE-DEMOS.html">Demos</a></li>
        <li><a href="PAGE-REFERENCES.html">References</a></li>
+       <li><a href="PAGE-INSTALLATION.html">Installation</a></li>
+       <li><a href="PAGE-NEWS.html">News</a></li>
     </ul>
     <!-- <form class="navbar-form navbar-left" role="search">
       <div class="form-group">
@@ -54,7 +56,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,15 +71,25 @@
   <div class="col-xs-12 col-sm-6 col-md-8">
   	<h1>Algorithms and framework for Nonnegative Matrix Factorization (NMF)</h1>
   	
-	<div style='text-decoration:italic' class="alert alert-info">
-	<span class="glyphicon glyphicon-tag"></span>
-	Gaujoux R and Seoighe C (2010).
+	  	<div style="text-decoration:italic;padding:0px 10px 0px 10px" class="alert alert-info">
+			<span class="label label-info"><span class="glyphicon glyphicon-tag"></span> How to cite</span>
+		    <p style="padding:1px">Gaujoux R and Seoighe C (2010).
 &ldquo;A flexible R package for nonnegative matrix factorization.&rdquo;
 <EM>BMC Bioinformatics</EM>, <B>11</B>(1), pp. 367.
-ISSN 1471-2105, <a href="http://dx.doi.org/10.1186/1471-2105-11-367">http://dx.doi.org/10.1186/1471-2105-11-367</a>, <a href="http://www.biomedcentral.com/1471-2105/11/367">http://www.biomedcentral.com/1471-2105/11/367</a>.
-	</div>
-	  
-    <h2>Background</h2>
+ISSN 1471-2105, <a href="http://dx.doi.org/10.1186/1471-2105-11-367">http://dx.doi.org/10.1186/1471-2105-11-367</a>, <a href="http://www.biomedcentral.com/1471-2105/11/367">http://www.biomedcentral.com/1471-2105/11/367</a>. 
+</p>
+		</div>
+  	  
+    <p>This package provides a framework to perform Non-negative Matrix
+Factorization (NMF). It implements a set of already published algorithms
+and seeding methods, and provides a framework to test, develop and plug
+new/custom algorithms. Most of the built-in algorithms have been optimized
+in C++, and the main interface function provides an easy way of performing
+parallel computations on multicore machines.</p>
+
+<p><a href="#" onclick="return $('#readme_NMF').toggle();">+ Details ...</a></p>
+<div id="readme_NMF" style="display:none;">
+<h2>Background</h2>
 
 <p>Nonnegative Matrix Factorization (NMF) is an unsupervised learning technique that has been applied successfully in several fields, including signal processing, face recognition and text mining.
 Recent applications of NMF in bioinformatics have demonstrated its ability to extract meaningful information from high-dimensional data such as gene expression microarrays. Developments in NMF theory and applications have resulted in a variety of algorithms and methods.
@@ -100,16 +112,15 @@ Commonly used benchmark data and visualization methods are provided to help in t
 <p>Documentation, source code and sample data are available from:</p>
 
 <ul>
-<li><p><img src="img/r-icon.jpg" alt=""/> Latest stable release from CRAN: <a href="http://cran.r-project.org/package=NMF">http://cran.r-project.org/package=NMF</a></p></li>
-<li><p>Development versions: </p>
-
-<ul>
-<li><img src="img/r-forge-icon.png" alt=""/> project: <a href="http://r-forge.r-project.org/projects/nmf">http://r-forge.r-project.org/projects/nmf</a><br />
+<li><img src="img/r-icon.jpg" alt="R"/> Latest stable release from CRAN: <a href="http://cran.r-project.org/package=NMF">http://cran.r-project.org/package=NMF</a></li>
+<li>Development versions:</li>
+<li><img src="img/r-forge-icon.png" alt="R-forge"/> project: <a href="http://r-forge.r-project.org/projects/nmf">http://r-forge.r-project.org/projects/nmf</a><br />
 <em>NOTE: due to some unknown problem on R-forge build system, the package is not being built. Please use the MyCRAN repository until the issue is fixed.</em><br /><br /></li>
-<li>MyCRAN: personal CRAN-like repository at <a href="http://web.cbio.uct.ac.za/%7Erenaud/CRAN">http://web.cbio.uct.ac.za/~renaud/CRAN</a></li>
-</ul></li>
 </ul>
 
+<h2>* MyCRAN: personal CRAN-like repository at <a href="http://web.cbio.uct.ac.za/%7Erenaud/CRAN">http://web.cbio.uct.ac.za/~renaud/CRAN</a></h2>
+
+</div>
 
     <h2>Help topics</h2>
 
@@ -118,7 +129,7 @@ Commonly used benchmark data and visualization methods are provided to help in t
 var fill = d3.scale.category20();
   wordScale=d3.scale.log().domain([1, 63]).range([10, 100]);
   var w = 600, h = 600;
- var datawords=["advanced-NMF:2", "aheatmap:1", "algorithm,NMFList-method:1", "algorithm,NMFStrategyOctave-method:1", "algorithmic-NMF:63", "summary:6", "basis:43", "basiscor:12", "bioc-NMF:22", "canFit:5", "connectivity:10", "consensus,NMFfitX1-method:1", "consensus,NMFfitXn-method:2", "consensushc:5", "cophcor:4", "deviance:7", "basisnames:9", "nbasis:7", "dispersion:4", ".fcnnls:1", "esGolub:1", "fcnnls:5", "fit:15", "fitted:7", "nmf_update.lee_R:8", "heatmap-NMF:14", "nmf_update.brunet_R:10", "nmf_update.lsnmf:4", "match_atrack:1", "nmfAlgorithm:1", "nmfApply:1", "nmfCheck:1", "NMF-class:5", "compare-NMF:7", "NMF-defunct:6", "NMF-deprecated:1", "nmf.equal:11", "nmfEstimateRank:2", "NMFfit-class:2", "NMFfitX1-class:1", "NMFfitX-class:1", "NMFfitXn-class:1", "nmfFormals:2", "NMFList-class:1", "nmfModel:13", "NMFns-class:1", "nmfObject:1", "NMFOffset-class:2", "NMF-package:2", "nmf:15", "nmfReport:1", "NMFSeed-class:1", "nmfSeed:3", "NMFstd-class:1", "NMFStrategyFunction-class:1", "NMFStrategyIterative-class:1", "NMFStrategyOctave-class:2", "NMFStrategy:16", "nmf_update.euclidean.h:5", "nmf_update.KL.h:5", "nneg:9", "nmf_update.ns:5", "objective,NMFfit-method:1", "offset,NMFfit-method:1", "offset,NMFOffset-method:1", "nmf_update.euclidean_offset.h:7", "options-NMF:5", "parallel-NMF:5", "plot,NMFfit,missing-method:1", "predict:4", "profplot:2", "purity:12", "randomize:1", "methods-NMF:5", "residuals:9", "rmatrix:5", "getRNG1:8", "rnmf:11", "rss:7", "runtime.all,NMFfitXn-method:1", "runtime,NMFList-method:1", "scale.NMF:1", "featureScore:8", "seed:10", "setNMFMethod:2", "NMFSeed:6", "setupBackend:5", "show,NMFfit-method:1", "show,NMFfitX1-method:1", "show,NMFfitX-method:1", "show,NMFfitXn-method:1", "show,NMFList-method:1", "show,NMF-method:1", "show,NMFns-method:1", "show,NMFOffset-method:1", "show,NMFSeed-method:1", "show,NMFStrategyIterative-method:1", "silhouette.NMF:1", "smoothing:1", "nmfAlgorithm.SNMF_R:4", "sparseness:5", "staticVar:1", "NMFStop:6", "[,NMF-method:1", "syntheticNMF:1", "ibterms:19", "t.NMF:1", "is.nmf:6", "utils-NMF:2"];
+ var datawords=["advanced-NMF:2", "aheatmap_layout:1", "aheatmap:1", "algorithm,NMFList-method:1", "algorithm,NMFStrategyOctave-method:1", "algorithmic-NMF:63", "summary:6", "basis:45", "basiscor:12", "bioc-NMF:22", "canFit:5", "connectivity:10", "consensus,NMFfitX1-method:1", "consensus,NMFfitXn-method:2", "consensushc:5", "cophcor:4", "deviance:7", "basisnames:9", "nbasis:7", "dispersion:4", ".fcnnls:1", "esGolub:1", "fcnnls:5", "fit:15", "fitted:7", "nmf_update.lee_R:8", "heatmap-NMF:14", "nmf_update.brunet_R:10", "nmf_update.lsnmf:4", "match_atrack:1", "nmfAlgorithm:1", "nmfApply:1", "nmfCheck:1", "NMF-class:5", "compare-NMF:7", "NMF-defunct:6", "NMF-deprecated:1", "nmf.equal:11", "nmfEstimateRank:2", "NMFfit-class:2", "NMFfitX1-class:1", "NMFfitX-class:1", "NMFfitXn-class:1", "nmfFormals:2", "NMFList-class:1", "nmfModel:13", "NMFns-class:1", "nmfObject:1", "NMFOffset-class:2", "NMF-package:2", "nmf:15", "nmfReport:1", "NMFSeed-class:1", "nmfSeed:3", "NMFstd-class:1", "NMFStrategyFunction-class:1", "NMFStrategyIterative-class:1", "NMFStrategyOctave-class:2", "NMFStrategy:16", "nmf_update.euclidean.h:5", "nmf_update.KL.h:5", "nneg:9", "nmf_update.ns:5", "objective,NMFfit-method:1", "offset,NMFfit-method:1", "offset,NMFOffset-method:1", "nmf_update.euclidean_offset.h:7", "options-NMF:5", "parallel-NMF:5", "plot,NMFfit,missing-method:1", "predict:4", "profplot:2", "purity:12", "randomize:1", "methods-NMF:5", "residuals:9", "rmatrix:6", "getRNG1:8", "rnmf:11", "rss:7", "runtime.all,NMFfitXn-method:1", "runtime,NMFList-method:1", "scale.NMF:1", "featureScore:8", "seed:10", "setNMFMethod:2", "NMFSeed:6", "setupBackend:5", "show,NMFarray-method:1", "show,NMFfit-method:1", "show,NMFfitX1-method:1", "show,NMFfitX-method:1", "show,NMFfitXn-method:1", "show,NMFList-method:1", "show,NMF-method:1", "show,NMFns-method:1", "show,NMFOffset-method:1", "show,NMFSeed-method:1", "show,NMFStrategyIterative-method:1", "silhouette.NMF:1", "smoothing:1", "nmfAlgorithm.SNMF_R:4", "sparseness:5", "staticVar:1", "NMFStop:6", "[,NMF-method:1", "syntheticNMF:1", "ibterms:19", "t.NMF:1", "is.nmf:6", "utils-NMF:2"];
 
 d3.layout.cloud().size([w, h])
       .words(datawords.map(function(d) {
@@ -159,6 +170,7 @@ d3.layout.cloud().size([w, h])
   <div class="col-xs-6 col-sm-6 col-md-4">
     <h2>Vignettes</h2>
     <ul>
+      <li><a href="vignettes/aheatmaps.pdf">aheatmap: a Powerful Annotated Heatmap Engine</a></li>
       <li><a href="vignettes/heatmaps.pdf">NMF: generating heatmaps</a></li>
       <li><a href="vignettes/NMF-unitTests.pdf">NMF-unitTests</a></li>
       <li><a href="vignettes/NMF-vignette.pdf">An introduction to the package NMF</a></li>
@@ -169,13 +181,14 @@ d3.layout.cloud().size([w, h])
       <li><a href="demo-nmf.html">Using the main function nmf()</a></li>
       <li><a href="demo-heatmaps.html">Heatmaps of NMF objects</a></li>
       <li><a href="demo-aheatmap.html">Annotated heatmaps</a></li>
+      <li><a href="demo-lsNMF-nmf.html">Handling Missing Values in Data</a></li>
     </ul>
     
     <h2>Dependencies</h2>
     <ul>
-      <li><strong>R version</strong>: R &gt;= 3.0.0</li>
+      <li><strong>R version</strong>: R &gt;= 3.1.0</li>
       <li><strong>Depends</strong>: methods, utils, pkgmaker, registry, rngtools, cluster</li>
-      <li><strong>Imports</strong>: graphics, stats, stringr, digest, grid, grDevices, gridBase, colorspace, RColorBrewer, foreach, doParallel, ggplot2, reshape2</li>
+      <li><strong>Imports</strong>: graphics, stats, stringr, digest, grid, grDevices, gridBase, colorspace, RColorBrewer, foreach, doParallel, ggplot2, reshape2, dendextend</li>
       <li><strong>Suggests</strong>: RcppOctave, fastICA, doMPI, bigmemory, synchronicity, corpcor, xtable, devtools, knitr, bibtex, RUnit, mail, Biobase</li>
       
     </ul>
@@ -202,8 +215,9 @@ d3.layout.cloud().size([w, h])
   		
   			<li>Code repositories:
 		  	<p><table><tr>
-				<td style="padding-right:10px"><a href="https://github.com/renozao/NMF" title="https://github.com/renozao/NMF" target="_new"><img src="img/github.png" title="https://github.com/renozao/NMF" alt="https://github.com/renozao/NMF"/></a></td>
+				<td style="padding-right:10px"><a href="" title="" target="_new"><img src="img/" title="" alt=""/></a></td>
 				<td style="padding-right:10px"><a href="http://r-forge.r-project.org/projects/nmf" title="http://r-forge.r-project.org/projects/nmf" target="_new"><img src="img/r-forge-icon.png" title="http://r-forge.r-project.org/projects/nmf" alt="http://r-forge.r-project.org/projects/nmf"/></a></td>
+				<td style="padding-right:10px"><a href="https://github.com/renozao/NMF" title="https://github.com/renozao/NMF" target="_new"><img src="img/github.png" title="https://github.com/renozao/NMF" alt="https://github.com/renozao/NMF"/></a></td>
 		  	</tr></table></p>
   	</ul>
     

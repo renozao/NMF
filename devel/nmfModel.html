@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfModel. NMF 0.21.3</title>
+<title>nmfModel. NMF 0.23</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.23</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -625,7 +625,7 @@ nmfModel(x ~ 3 + gr + b, data=list(b=runif(10)))
 ## samples: 10 
 ## fixed coef [3]:
 ##   gr = &lt;1, 2&gt;
-##   b = 0.664863257668912, 0.56742530176416, ..., 0.0675396302249283
+##   b = 0.81324186292477, 0.736923338845372, ..., 0.621969578787684
 </code></pre>
 
 <pre><code class="r"># 3-rank model that fits a given ExpressionSet (with fixed coef terms)
@@ -640,7 +640,7 @@ nmfModel(e ~ 3 + gr + a) # `a` is looked up in the phenotypic data of x pData(x)
 ## samples: 10 
 ## fixed coef [3]:
 ##   gr = &lt;1, 2&gt;
-##   a = 0.740817883284763, 0.829198891995475, ..., 0.406106327660382
+##   a = 0.836717250524089, 0.881070992443711, ..., 0.388537713559344
 </code></pre>
 
 <pre><code class="r">#----------

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>. NMF 0.21.3</title>
+<title>. NMF 0.23</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Renaud Gaujoux, Cathal Seoighe">
 
@@ -56,7 +56,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.21.3</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.23</span>
       &nbsp;<span style="background-color:red" class="badge label-danger">devel</span>
       &nbsp;</p></li>
     </ul>
@@ -78,7 +78,11 @@
 <ul>
 <li>aheatmap now handles integer matrices in a special way, 
 allowing for specifying categories.</li>
+<li>aheatmap now allow selective display of row, column (or both) 
+annotation legend</li>
 <li>New function rmatrix_int generates random integer matrices</li>
+<li>nmf() gains a new argument .tmpdir to specify the base location 
+of the temporary directory (used in foreach-backed runs)</li>
 </ul>
 
 <h4>FIXES</h4>
@@ -86,6 +90,7 @@ allowing for specifying categories.</li>
 <ul>
 <li>Fixed a bug in aheatmap: correlation distance was incorrectly 
 computed (Thanks to Joe Burns for reporting it)</li>
+<li>Fixed some alignment issues in aheatmap</li>
 </ul>
 
 	  </div>

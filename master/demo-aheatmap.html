@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>Annotated heatmaps. NMF 0.20.2</title>
+<title>Annotated heatmaps. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -66,41 +66,70 @@
 
 <div class="row"><div class="span8">
   <pre>
-  <div class='input'># Generate random data</div><div class='input'>n <- 50; p <- 20
+  <div class='input'># Generate random data
+</div><div class='input'>n <- 50; p <- 20
 </div><div class='input'>x <- abs(rmatrix(n, p, rnorm, mean=4, sd=1))
 </div><div class='input'>x[1:10, seq(1, 10, 2)] <- x[1:10, seq(1, 10, 2)] + 3
 </div><div class='input'>x[11:20, seq(2, 10, 2)] <- x[11:20, seq(2, 10, 2)] + 2
 </div><div class='input'>rownames(x) <- paste("ROW", 1:n)
 </div><div class='input'>colnames(x) <- paste("COL", 1:p)
-</div><div class='input'></div><div class='input'>## Scaling</div><div class='input'>aheatmap(x, scale = "row")
+</div><div class='input'></div><div class='input'>## Scaling
+</div><div class='input'>aheatmap(x, scale = "row")
 </div><p><img src='aheatmap-demo1.png' alt='' width='400' height='400' /></p><p><img src='aheatmap-demo2.png' alt='' width='400' height='400' /></p><div class='input'>aheatmap(x, scale = "col") # partially matched to 'column'
 </div><p><img src='aheatmap-demo3.png' alt='' width='400' height='400' /></p><div class='input'>aheatmap(x, scale = "r1") # each row sum up to 1
 </div><p><img src='aheatmap-demo4.png' alt='' width='400' height='400' /></p><div class='input'>aheatmap(x, scale = "c1") # each colum sum up to 1
-</div><p><img src='aheatmap-demo5.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'>## Heatmap colors</div><div class='input'>aheatmap(x, color = colorRampPalette(c("navy", "white", "firebrick3"))(50))
-</div><p><img src='aheatmap-demo6.png' alt='' width='400' height='400' /></p><div class='input'># color specification as an integer: use R basic colors</div><div class='input'>aheatmap(x, color = 1L)
-</div><p><img src='aheatmap-demo7.png' alt='' width='400' height='400' /></p><div class='input'># color specification as a negative integer: use reverse basic palette</div><div class='input'>aheatmap(x, color = -1L)
-</div><p><img src='aheatmap-demo8.png' alt='' width='400' height='400' /></p><div class='input'># color specification as a numeric: use HCL color</div><div class='input'>aheatmap(x, color = 1)
-</div><p><img src='aheatmap-demo9.png' alt='' width='400' height='400' /></p><div class='input'># do not cluster the rows</div><div class='input'>aheatmap(x, Rowv = NA)
-</div><p><img src='aheatmap-demo10.png' alt='' width='400' height='400' /></p><div class='input'># no heatmap legend</div><div class='input'>aheatmap(x, legend = FALSE)
-</div><p><img src='aheatmap-demo11.png' alt='' width='400' height='400' /></p><div class='input'># cell and font size</div><div class='input'>aheatmap(x, cellwidth = 10, cellheight = 5)
-</div><p><img src='aheatmap-demo12.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># directly write into a file</div><div class='input'>aheatmap(x, cellwidth = 15, cellheight = 12, fontsize = 8, filename = "aheatmap.pdf")
+</div><p><img src='aheatmap-demo5.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'>## Heatmap colors
+</div><div class='input'>aheatmap(x, color = colorRampPalette(c("navy", "white", "firebrick3"))(50))
+</div><p><img src='aheatmap-demo6.png' alt='' width='400' height='400' /></p><div class='input'># color specification as an integer: use R basic colors
+</div><div class='input'>aheatmap(x, color = 1L)
+</div><p><img src='aheatmap-demo7.png' alt='' width='400' height='400' /></p><div class='input'># color specification as a negative integer: use reverse basic palette
+</div><div class='input'>aheatmap(x, color = -1L)
+</div><p><img src='aheatmap-demo8.png' alt='' width='400' height='400' /></p><div class='input'># color specification as a numeric: use HCL color
+</div><div class='input'>aheatmap(x, color = 1)
+</div><p><img src='aheatmap-demo9.png' alt='' width='400' height='400' /></p><div class='input'># color for NA values
+</div><div class='input'>y <- x
+</div><div class='input'>y[sample(length(y), p)] <- NA
+</div><div class='input'>aheatmap(y)
+</div><p><img src='aheatmap-demo10.png' alt='' width='400' height='400' /></p><div class='input'>aheatmap(y, na.color = 'black')
+</div><p><img src='aheatmap-demo11.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># do not cluster the rows
+</div><div class='input'>aheatmap(x, Rowv = NA)
+</div><p><img src='aheatmap-demo12.png' alt='' width='400' height='400' /></p><div class='input'># no heatmap legend
+</div><div class='input'>aheatmap(x, legend = FALSE)
+</div><p><img src='aheatmap-demo13.png' alt='' width='400' height='400' /></p><div class='input'># cell and font size
+</div><div class='input'>aheatmap(x, cellwidth = 10, cellheight = 5)
+</div><p><img src='aheatmap-demo14.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># directly write into a file
+</div><div class='input'>aheatmap(x, cellwidth = 15, cellheight = 12, fontsize = 8, filename = "aheatmap.pdf")
 </div><div class='input'>unlink('aheatmap.pdf')
-</div><div class='input'></div><div class='input'># Generate column annotations</div><div class='input'>annotation = data.frame(Var1 = factor(1:p %% 2 == 0, labels = c("Class1", "Class2")), Var2 = 1:10)
+</div><div class='input'></div><div class='input'># Generate column annotations
+</div><div class='input'>annotation = data.frame(Var1 = factor(1:p %% 2 == 0, labels = c("Class1", "Class2")), Var2 = 1:10)
 </div><div class='input'></div><div class='input'>aheatmap(x, annCol = annotation)
-</div><p><img src='aheatmap-demo13.png' alt='' width='400' height='400' /></p><div class='input'>aheatmap(x, annCol = annotation, annLegend = FALSE)
-</div><p><img src='aheatmap-demo14.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'></div><div class='input'># Specify colors</div><div class='input'>Var1 = c("navy", "darkgreen")
+</div><p><img src='aheatmap-demo15.png' alt='' width='400' height='400' /></p><div class='input'>aheatmap(x, annCol = annotation, annLegend = FALSE)
+</div><p><img src='aheatmap-demo16.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'></div><div class='input'># Specify colors
+</div><div class='input'>Var1 = c("navy", "darkgreen")
 </div><div class='input'>names(Var1) = c("Class1", "Class2")
 </div><div class='input'>Var2 = c("lightgreen", "navy")
 </div><div class='input'></div><div class='input'>ann_colors = list(Var1 = Var1, Var2 = Var2)
 </div><div class='input'></div><div class='input'>aheatmap(x, annCol = annotation, annColors = ann_colors)
-</div><p><img src='aheatmap-demo15.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># Specifying clustering from distance matrix</div><div class='input'>drows = dist(x, method = "minkowski")
+</div><p><img src='aheatmap-demo17.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># Specifying clustering from distance matrix
+</div><div class='input'>drows = dist(x, method = "minkowski")
 </div><div class='input'>dcols = dist(t(x), method = "minkowski")
 </div><div class='input'>aheatmap(x, Rowv = drows, Colv = dcols)
-</div><p><img src='aheatmap-demo16.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># Display text in each cells</div><div class='input'>t <- outer(as.character(outer(letters, letters, paste0)), letters, paste0)[1:n, 1:p]
+</div><p><img src='aheatmap-demo18.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># Display text in each cells
+</div><div class='input'>t <- outer(as.character(outer(letters, letters, paste0)), letters, paste0)[1:n, 1:p]
 </div><div class='input'>aheatmap(x, txt = t)
-</div><p><img src='aheatmap-demo17.png' alt='' width='400' height='400' /></p><div class='input'># NA values are shown as empty cells</div><div class='input'>t.na <- t
+</div><p><img src='aheatmap-demo19.png' alt='' width='400' height='400' /></p><div class='input'># NA values are shown as empty cells
+</div><div class='input'>t.na <- t
 </div><div class='input'>t.na[sample(length(t.na), 500)] <- NA # half of the cells
-</div><div class='input'>aheatmap(x, txt = t.na)</div><p><img src='aheatmap-demo18.png' alt='' width='400' height='400' /></p>
+</div><div class='input'>aheatmap(x, txt = t.na)
+</div><p><img src='aheatmap-demo20.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># Borders
+</div><div class='input'># all
+</div><div class='input'>aheatmap(x, annCol = annotation, border = TRUE)
+</div><p><img src='aheatmap-demo21.png' alt='' width='400' height='400' /></p><div class='input'># around data matrix
+</div><div class='input'>aheatmap(x, annCol = annotation, border = list(matrix = TRUE))
+</div><p><img src='aheatmap-demo22.png' alt='' width='400' height='400' /></p><div class='input'># around cells only
+</div><div class='input'>aheatmap(x, annCol = annotation, border = list(cell = TRUE))
+</div><p><img src='aheatmap-demo23.png' alt='' width='400' height='400' /></p><div class='input'># finer control
+</div><div class='input'>aheatmap(x, annCol = annotation, border = list(matrix = list(col = 'blue', lwd=2), annCol = 'green', annLeg = 'grey'))</div><p><img src='aheatmap-demo24.png' alt='' width='400' height='400' /></p>
   </pre>
 </div></div>
       

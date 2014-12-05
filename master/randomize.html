@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>randomize. NMF 0.20.2</title>
+<title>randomize. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,10 +69,9 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p><code>randomize</code> permutates independently the entries in
-  each column of a matrix-like object, to produce random
-  data that can be used in permutation tests or bootstrap
-  analysis.</p></p>
+      <p><p><code>randomize</code> permutates independently the entries in each column
+of a matrix-like object, to produce random data that can be used
+in permutation tests or bootstrap analysis.</p></p>
   
     </div>
     
@@ -82,12 +81,10 @@
     <h2>Arguments</h2>
     <dl>
       <dt>x</dt>
-      <dd>data to be permutated. It must be an object
-  suitable to be passed to the function
-  <code><a href='http://www.inside-r.org/r-doc/base/apply'>apply</a></code>.</dd>
+      <dd>data to be permutated. It must be an object suitable to be
+passed to the function <code><a href='http://www.inside-r.org/r-doc/base/apply'>apply</a></code>.</dd>
       <dt>...</dt>
-      <dd>extra arguments passed to the function
-  <code><a href='http://www.inside-r.org/r-doc/base/sample'>sample</a></code>.</dd>
+      <dd>extra arguments passed to the function <code><a href='http://www.inside-r.org/r-doc/base/sample'>sample</a></code>.</dd>
     </dl>
     
     <div class="Value">
@@ -100,19 +97,14 @@
     <div class="Details">
       <h2>Details</h2>
       
-      <p>In the context of NMF, it may be used to generate random
-  data, whose factorization serves as a reference for
-  selecting a factorization rank, that does not overfit the
-  data.</p>
+      <p>In the context of NMF, it may be used to generate random data, whose
+factorization serves as a reference for selecting a factorization rank,
+that does not overfit the data.</p>
   
     </div>
     
     <h2 id="examples">Examples</h2>
     <pre><code class="r">
-## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
 
 x &lt;- matrix(1:32, 4, 8)
 randomize(x)
@@ -133,9 +125,6 @@ randomize(x)
 ## [2,]    1    5   12   13   19   22   27   30
 ## [3,]    2    6   11   16   20   23   26   31
 ## [4,]    4    7   10   15   18   21   25   29
-</code></pre>
-
-<pre><code class="r">
 </code></pre>
 
   </div>

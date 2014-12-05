@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nneg. NMF 0.20.2</title>
+<title>nneg. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,16 +69,13 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p><code>nneg</code> is a generic function to transform a data
-  objects that contains negative values into a similar
-  object that only contains values that are nonnegative or
-  greater than a given threshold.</p>
-<p><code>posneg</code> is a shortcut for <code>nneg(...,
-  method='posneg')</code>, to split mixed-sign data into its
-  positive and negative part. See description for method
-  <code>"posneg"</code>, in <code><a href='nneg.html'>nneg</a></code>.</p>
-<p><code>rposneg</code> performs the "reverse" transformation of
-  the <code><a href='nneg.html'>posneg</a></code> function.</p></p>
+      <p><p><code>nneg</code>  is a generic function to transform a data objects that
+contains negative values into a similar object that only contains
+values that are nonnegative or greater than a given threshold.</p>
+<p><code>posneg</code> is a shortcut for <code>nneg(..., method='posneg')</code>, to split
+mixed-sign data into its positive and negative part.
+See description for method <code>"posneg"</code>, in <code><a href='nneg.html'>nneg</a></code>.</p>
+<p><code>rposneg</code> performs the "reverse" transformation of the <code><a href='nneg.html'>posneg</a></code> function.</p></p>
   
     </div>
     
@@ -101,55 +98,49 @@ rposneg(object, ...)
       <dt>object</dt>
       <dd>The data object to transform</dd>
       <dt>...</dt>
-      <dd>extra arguments to allow extension or passed
-  down to <code>nneg,matrix</code> or <code>rposneg,matrix</code> in
-  subsequent calls.</dd>
+      <dd>extra arguments to allow extension or passed down to <code>nneg,matrix</code>
+or <code>rposneg,matrix</code> in subsequent calls.</dd>
       <dt>method</dt>
-      <dd>Name of the transformation method to use,
-  that is partially matched against the following possible
-  methods: <ol>
-<li>pmaxEach entry is constrained
-  to be above threshold <code>threshold</code>.
+      <dd>Name of the transformation method to use, that is partially
+matched against the following possible methods:
+<ol>
+<li>pmaxEach entry is constrained to be above threshold <code>threshold</code>.
 
-  </li>
-<li>posnegThe matrix is split into its "positive" and
-  "negative" parts, with the entries of each part
-  constrained to be above threshold <code>threshold</code>. The
-  result consists in these two parts stacked in rows (i.e.
-  <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/cbind'>rbind</a></code>-ed) into a single matrix, which has
-  double the number of rows of the input matrix
-  <code>object</code>.
+</li>
+<li>posnegThe matrix is split into its "positive" and "negative" parts,
+with the entries of each part constrained to be above threshold <code>threshold</code>.
+The result consists in these two parts stacked in rows (i.e. <code><a href='http://www.inside-r.org/r-doc/base/cbind'>rbind</a></code>-ed)
+into a single matrix, which has double the number of rows of the input
+matrix <code>object</code>.
 
-  </li>
-<li>absoluteThe absolute value of each entry is
-  constrained to be above threshold <code>threshold</code>.
+</li>
+<li>absoluteThe absolute value of each entry is constrained to be above
+threshold <code>threshold</code>.
 
-  </li>
-<li>minGlobal shift by adding the minimum entry to
-  each entry, only if it is negative, and then apply
-  threshold. 
+</li>
+<li>minGlobal shift by adding the minimum entry to each entry, only if
+it is negative, and then apply threshold.
 
-  </li>
+
+</li>
 </ol>
 </dd>
       <dt>threshold</dt>
-      <dd>Nonnegative lower threshold value
-  (single numeric). See argument <code>shit</code> for details on
-  how the threshold is used and affects the result.</dd>
+      <dd>Nonnegative lower threshold value (single numeric).
+See argument <code>shit</code> for details on how the threshold is used and affects
+the result.</dd>
       <dt>shift</dt>
-      <dd>a logical indicating whether the entries
-  below the threshold value <code>threshold</code> should be
-  forced (shifted) to 0 (default) or to the threshold value
-  itself. In other words, if <code>shift=TRUE</code> (default)
-  all entries in the result matrix are either 0 or strictly
-  greater than <code>threshold</code>. They are all greater or
-  equal than <code>threshold</code> otherwise.</dd>
+      <dd>a logical indicating whether the entries below the threshold
+value <code>threshold</code> should be forced (shifted) to 0 (default) or to
+the threshold value itself.
+In other words, if <code>shift=TRUE</code> (default) all entries in
+the result matrix are either 0 or strictly greater than <code>threshold</code>.
+They are all greater or equal than <code>threshold</code> otherwise.</dd>
       <dt>unstack</dt>
-      <dd>Logical indicating whether the positive
-  and negative parts should be unstacked and combined into
-  a matrix as <code>pos - neg</code>, which contains half the
-  number of rows of <code>object</code> (default), or left
-  stacked as <code>[pos; -neg]</code>.</dd>
+      <dd>Logical indicating whether the positive and negative parts
+should be unstacked and combined into a matrix as <code>pos - neg</code>, which contains
+half the number of rows of <code>object</code> (default), or left
+stacked as <code>[pos; -neg]</code>.</dd>
     </dl>
     
     <div class="Value">
@@ -165,23 +156,18 @@ rposneg(object, ...)
       <h2>Methods</h2>
       
       <p><ol>
-<li>nneg<code>signature(object = "matrix")</code>:
-  Transforms a mixed-sign matrix into a nonnegative matrix,
-  optionally apply a lower threshold. This is the workhorse
-  method, that is eventually called by all other methods
-  defined in the <code><a href='NMF-package.html'>NMF</a></code> package.</p>
+<li>nneg<code>signature(object = "matrix")</code>: Transforms a mixed-sign matrix into a nonnegative matrix, optionally apply a
+lower threshold.
+This is the workhorse method, that is eventually called by all other
+methods defined in the <code><a href='NMF-package.html'>NMF</a></code> package.</p>
   
       <p></li>
-<li>nneg<code>signature(object = "NMF")</code>: Apply
-  <code>nneg</code> to the basis matrix of an <code><a href='NMF-package.html'>NMF</a></code>
-  object (i.e. <code>basis(object)</code>). All extra arguments
-  in <code>...</code> are passed to the method
-  <code>nneg,matrix</code>.</p>
+<li>nneg<code>signature(object = "NMF")</code>: Apply <code>nneg</code> to the basis matrix of an <code><a href='NMF-package.html'>NMF</a></code>
+object (i.e. <code>basis(object)</code>).
+All extra arguments in <code>...</code> are passed to the method <code>nneg,matrix</code>.</p>
   
       <p></li>
-<li>rposneg<code>signature(object = "NMF")</code>: Apply
-  <code>rposneg</code> to the basis matrix of an
-  <code><a href='NMF-package.html'>NMF</a></code> object.</p>
+<li>rposneg<code>signature(object = "NMF")</code>: Apply <code>rposneg</code> to the basis matrix of an <code><a href='NMF-package.html'>NMF</a></code> object.</p>
   
       <p></li>
 </ol></p>
@@ -192,10 +178,6 @@ rposneg(object, ...)
     
     <h2 id="examples">Examples</h2>
     <pre><code class="r">
-## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
 
 #----------
 # nneg,matrix-method
@@ -206,159 +188,156 @@ x &lt;- rmatrix(5,5, rnorm, mean=0, sd=5)
 x
 </code></pre>
 
-<pre><code>##         [,1]   [,2]    [,3]     [,4]    [,5]
-## [1,] -3.1323 -4.102   7.559 -0.22467  4.5949
-## [2,]  0.9182  2.437   1.949 -0.08095  3.9107
-## [3,] -4.1781  3.692  -3.106  4.71918  0.3728
-## [4,]  7.9764  2.879 -11.073  4.10611 -9.9468
-## [5,]  1.6475 -1.527   5.625  2.96951  3.0991
+<pre><code>##            [,1]      [,2]       [,3]        [,4]       [,5]
+## [1,] -3.1322691 -4.102342   7.558906 -0.22466805  4.5948869
+## [2,]  0.9182166  2.437145   1.949216 -0.08095132  3.9106815
+## [3,] -4.1781431  3.691624  -3.106203  4.71918105  0.3728249
+## [4,]  7.9764040  2.878907 -11.073499  4.10610598 -9.9467585
+## [5,]  1.6475389 -1.526942   5.624655  2.96950661  3.0991287
 </code></pre>
 
-<pre><code class="r">
-# pmax (default)
+<pre><code class="r"># pmax (default)
 nneg(x)
 </code></pre>
 
-<pre><code>##        [,1]  [,2]  [,3]  [,4]   [,5]
-## [1,] 0.0000 0.000 7.559 0.000 4.5949
-## [2,] 0.9182 2.437 1.949 0.000 3.9107
-## [3,] 0.0000 3.692 0.000 4.719 0.3728
-## [4,] 7.9764 2.879 0.000 4.106 0.0000
-## [5,] 1.6475 0.000 5.625 2.970 3.0991
+<pre><code>##           [,1]     [,2]     [,3]     [,4]      [,5]
+## [1,] 0.0000000 0.000000 7.558906 0.000000 4.5948869
+## [2,] 0.9182166 2.437145 1.949216 0.000000 3.9106815
+## [3,] 0.0000000 3.691624 0.000000 4.719181 0.3728249
+## [4,] 7.9764040 2.878907 0.000000 4.106106 0.0000000
+## [5,] 1.6475389 0.000000 5.624655 2.969507 3.0991287
 </code></pre>
 
 <pre><code class="r"># using a threshold
 nneg(x, threshold=2)
 </code></pre>
 
-<pre><code>##       [,1]  [,2]  [,3]  [,4]  [,5]
-## [1,] 0.000 0.000 7.559 0.000 4.595
-## [2,] 0.000 2.437 0.000 0.000 3.911
-## [3,] 0.000 3.692 0.000 4.719 0.000
-## [4,] 7.976 2.879 0.000 4.106 0.000
-## [5,] 0.000 0.000 5.625 2.970 3.099
+<pre><code>##          [,1]     [,2]     [,3]     [,4]     [,5]
+## [1,] 0.000000 0.000000 7.558906 0.000000 4.594887
+## [2,] 0.000000 2.437145 0.000000 0.000000 3.910682
+## [3,] 0.000000 3.691624 0.000000 4.719181 0.000000
+## [4,] 7.976404 2.878907 0.000000 4.106106 0.000000
+## [5,] 0.000000 0.000000 5.624655 2.969507 3.099129
 </code></pre>
 
 <pre><code class="r"># without shifting the entries lower than threshold
 nneg(x, threshold=2, shift=FALSE)
 </code></pre>
 
-<pre><code>##       [,1]  [,2]  [,3]  [,4]  [,5]
-## [1,] 2.000 2.000 7.559 2.000 4.595
-## [2,] 2.000 2.437 2.000 2.000 3.911
-## [3,] 2.000 3.692 2.000 4.719 2.000
-## [4,] 7.976 2.879 2.000 4.106 2.000
-## [5,] 2.000 2.000 5.625 2.970 3.099
+<pre><code>##          [,1]     [,2]     [,3]     [,4]     [,5]
+## [1,] 2.000000 2.000000 7.558906 2.000000 4.594887
+## [2,] 2.000000 2.437145 2.000000 2.000000 3.910682
+## [3,] 2.000000 3.691624 2.000000 4.719181 2.000000
+## [4,] 7.976404 2.878907 2.000000 4.106106 2.000000
+## [5,] 2.000000 2.000000 5.624655 2.969507 3.099129
 </code></pre>
 
-<pre><code class="r">
-# posneg: split positive and negative part
+<pre><code class="r"># posneg: split positive and negative part
 nneg(x, method=&#39;posneg&#39;)
 </code></pre>
 
-<pre><code>##         [,1]  [,2]   [,3]    [,4]   [,5]
-##  [1,] 0.0000 0.000  7.559 0.00000 4.5949
-##  [2,] 0.9182 2.437  1.949 0.00000 3.9107
-##  [3,] 0.0000 3.692  0.000 4.71918 0.3728
-##  [4,] 7.9764 2.879  0.000 4.10611 0.0000
-##  [5,] 1.6475 0.000  5.625 2.96951 3.0991
-##  [6,] 3.1323 4.102  0.000 0.22467 0.0000
-##  [7,] 0.0000 0.000  0.000 0.08095 0.0000
-##  [8,] 4.1781 0.000  3.106 0.00000 0.0000
-##  [9,] 0.0000 0.000 11.073 0.00000 9.9468
-## [10,] 0.0000 1.527  0.000 0.00000 0.0000
+<pre><code>##            [,1]     [,2]      [,3]       [,4]      [,5]
+##  [1,] 0.0000000 0.000000  7.558906 0.00000000 4.5948869
+##  [2,] 0.9182166 2.437145  1.949216 0.00000000 3.9106815
+##  [3,] 0.0000000 3.691624  0.000000 4.71918105 0.3728249
+##  [4,] 7.9764040 2.878907  0.000000 4.10610598 0.0000000
+##  [5,] 1.6475389 0.000000  5.624655 2.96950661 3.0991287
+##  [6,] 3.1322691 4.102342  0.000000 0.22466805 0.0000000
+##  [7,] 0.0000000 0.000000  0.000000 0.08095132 0.0000000
+##  [8,] 4.1781431 0.000000  3.106203 0.00000000 0.0000000
+##  [9,] 0.0000000 0.000000 11.073499 0.00000000 9.9467585
+## [10,] 0.0000000 1.526942  0.000000 0.00000000 0.0000000
 </code></pre>
 
 <pre><code class="r">nneg(x, method=&#39;pos&#39;, threshold=2)
 </code></pre>
 
-<pre><code>##        [,1]  [,2]   [,3]  [,4]  [,5]
-##  [1,] 0.000 0.000  7.559 0.000 4.595
-##  [2,] 0.000 2.437  0.000 0.000 3.911
-##  [3,] 0.000 3.692  0.000 4.719 0.000
-##  [4,] 7.976 2.879  0.000 4.106 0.000
-##  [5,] 0.000 0.000  5.625 2.970 3.099
-##  [6,] 3.132 4.102  0.000 0.000 0.000
-##  [7,] 0.000 0.000  0.000 0.000 0.000
-##  [8,] 4.178 0.000  3.106 0.000 0.000
-##  [9,] 0.000 0.000 11.073 0.000 9.947
-## [10,] 0.000 0.000  0.000 0.000 0.000
+<pre><code>##           [,1]     [,2]      [,3]     [,4]     [,5]
+##  [1,] 0.000000 0.000000  7.558906 0.000000 4.594887
+##  [2,] 0.000000 2.437145  0.000000 0.000000 3.910682
+##  [3,] 0.000000 3.691624  0.000000 4.719181 0.000000
+##  [4,] 7.976404 2.878907  0.000000 4.106106 0.000000
+##  [5,] 0.000000 0.000000  5.624655 2.969507 3.099129
+##  [6,] 3.132269 4.102342  0.000000 0.000000 0.000000
+##  [7,] 0.000000 0.000000  0.000000 0.000000 0.000000
+##  [8,] 4.178143 0.000000  3.106203 0.000000 0.000000
+##  [9,] 0.000000 0.000000 11.073499 0.000000 9.946758
+## [10,] 0.000000 0.000000  0.000000 0.000000 0.000000
 </code></pre>
 
-<pre><code class="r">
-# absolute
+<pre><code class="r"># absolute
 nneg(x, method=&#39;absolute&#39;)
 </code></pre>
 
-<pre><code>##        [,1]  [,2]   [,3]    [,4]   [,5]
-## [1,] 3.1323 4.102  7.559 0.22467 4.5949
-## [2,] 0.9182 2.437  1.949 0.08095 3.9107
-## [3,] 4.1781 3.692  3.106 4.71918 0.3728
-## [4,] 7.9764 2.879 11.073 4.10611 9.9468
-## [5,] 1.6475 1.527  5.625 2.96951 3.0991
+<pre><code>##           [,1]     [,2]      [,3]       [,4]      [,5]
+## [1,] 3.1322691 4.102342  7.558906 0.22466805 4.5948869
+## [2,] 0.9182166 2.437145  1.949216 0.08095132 3.9106815
+## [3,] 4.1781431 3.691624  3.106203 4.71918105 0.3728249
+## [4,] 7.9764040 2.878907 11.073499 4.10610598 9.9467585
+## [5,] 1.6475389 1.526942  5.624655 2.96950661 3.0991287
 </code></pre>
 
 <pre><code class="r">nneg(x, method=&#39;abs&#39;, threshold=2)
 </code></pre>
 
-<pre><code>##       [,1]  [,2]   [,3]  [,4]  [,5]
-## [1,] 3.132 4.102  7.559 0.000 4.595
-## [2,] 0.000 2.437  0.000 0.000 3.911
-## [3,] 4.178 3.692  3.106 4.719 0.000
-## [4,] 7.976 2.879 11.073 4.106 9.947
-## [5,] 0.000 0.000  5.625 2.970 3.099
+<pre><code>##          [,1]     [,2]      [,3]     [,4]     [,5]
+## [1,] 3.132269 4.102342  7.558906 0.000000 4.594887
+## [2,] 0.000000 2.437145  0.000000 0.000000 3.910682
+## [3,] 4.178143 3.691624  3.106203 4.719181 0.000000
+## [4,] 7.976404 2.878907 11.073499 4.106106 9.946758
+## [5,] 0.000000 0.000000  5.624655 2.969507 3.099129
 </code></pre>
 
-<pre><code class="r">
-# min
+<pre><code class="r"># min
 nneg(x, method=&#39;min&#39;)
 </code></pre>
 
-<pre><code>##        [,1]   [,2]   [,3]  [,4]   [,5]
-## [1,]  7.941  6.971 18.632 10.85 15.668
-## [2,] 11.992 13.511 13.023 10.99 14.984
-## [3,]  6.895 14.765  7.967 15.79 11.446
-## [4,] 19.050 13.952  0.000 15.18  1.127
-## [5,] 12.721  9.547 16.698 14.04 14.173
+<pre><code>##           [,1]      [,2]      [,3]     [,4]      [,5]
+## [1,]  7.941230  6.971158 18.632405 10.84883 15.668386
+## [2,] 11.991716 13.510645 13.022716 10.99255 14.984181
+## [3,]  6.895356 14.765123  7.967297 15.79268 11.446324
+## [4,] 19.049903 13.952406  0.000000 15.17961  1.126741
+## [5,] 12.721038  9.546558 16.698154 14.04301 14.172628
 </code></pre>
 
 <pre><code class="r">nneg(x, method=&#39;min&#39;, threshold=2)
 </code></pre>
 
-<pre><code>##        [,1]   [,2]   [,3]  [,4]  [,5]
-## [1,]  7.941  6.971 18.632 10.85 15.67
-## [2,] 11.992 13.511 13.023 10.99 14.98
-## [3,]  6.895 14.765  7.967 15.79 11.45
-## [4,] 19.050 13.952  0.000 15.18  0.00
-## [5,] 12.721  9.547 16.698 14.04 14.17
+<pre><code>##           [,1]      [,2]      [,3]     [,4]     [,5]
+## [1,]  7.941230  6.971158 18.632405 10.84883 15.66839
+## [2,] 11.991716 13.510645 13.022716 10.99255 14.98418
+## [3,]  6.895356 14.765123  7.967297 15.79268 11.44632
+## [4,] 19.049903 13.952406  0.000000 15.17961  0.00000
+## [5,] 12.721038  9.546558 16.698154 14.04301 14.17263
 </code></pre>
 
-<pre><code class="r">
-#----------
+<pre><code class="r">#----------
 # nneg,NMF-method
 #----------
 # random
 M &lt;- nmfModel(x, rmatrix(ncol(x), 3))
 </code></pre>
 
-<pre><code>## Warning: Dimensions of W and H look strange [ncol(W)= 5 &gt; ncol(H)= 3 ]
+<pre><code>## Warning in validityMethod(object): Dimensions of W and H look strange
+## [ncol(W)= 5 &gt; ncol(H)= 3 ]
 </code></pre>
 
 <pre><code class="r">nnM &lt;- nneg(M)
 </code></pre>
 
-<pre><code>## Warning: Dimensions of W and H look strange [ncol(W)= 5 &gt; ncol(H)= 3 ]
+<pre><code>## Warning in validityMethod(object): Dimensions of W and H look strange
+## [ncol(W)= 5 &gt; ncol(H)= 3 ]
 </code></pre>
 
 <pre><code class="r">basis(nnM)
 </code></pre>
 
-<pre><code>##        [,1]  [,2]  [,3]  [,4]   [,5]
-## [1,] 0.0000 0.000 7.559 0.000 4.5949
-## [2,] 0.9182 2.437 1.949 0.000 3.9107
-## [3,] 0.0000 3.692 0.000 4.719 0.3728
-## [4,] 7.9764 2.879 0.000 4.106 0.0000
-## [5,] 1.6475 0.000 5.625 2.970 3.0991
+<pre><code>##           [,1]     [,2]     [,3]     [,4]      [,5]
+## [1,] 0.0000000 0.000000 7.558906 0.000000 4.5948869
+## [2,] 0.9182166 2.437145 1.949216 0.000000 3.9106815
+## [3,] 0.0000000 3.691624 0.000000 4.719181 0.3728249
+## [4,] 7.9764040 2.878907 0.000000 4.106106 0.0000000
+## [5,] 1.6475389 0.000000 5.624655 2.969507 3.0991287
 </code></pre>
 
 <pre><code class="r"># mixture coefficients are not affected
@@ -368,45 +347,43 @@ identical( coef(M), coef(nnM) )
 <pre><code>## [1] TRUE
 </code></pre>
 
-<pre><code class="r">
-#----------
+<pre><code class="r">#----------
 # posneg
 #----------
 # shortcut for the &quot;posneg&quot; transformation
 posneg(x)
 </code></pre>
 
-<pre><code>##         [,1]  [,2]   [,3]    [,4]   [,5]
-##  [1,] 0.0000 0.000  7.559 0.00000 4.5949
-##  [2,] 0.9182 2.437  1.949 0.00000 3.9107
-##  [3,] 0.0000 3.692  0.000 4.71918 0.3728
-##  [4,] 7.9764 2.879  0.000 4.10611 0.0000
-##  [5,] 1.6475 0.000  5.625 2.96951 3.0991
-##  [6,] 3.1323 4.102  0.000 0.22467 0.0000
-##  [7,] 0.0000 0.000  0.000 0.08095 0.0000
-##  [8,] 4.1781 0.000  3.106 0.00000 0.0000
-##  [9,] 0.0000 0.000 11.073 0.00000 9.9468
-## [10,] 0.0000 1.527  0.000 0.00000 0.0000
+<pre><code>##            [,1]     [,2]      [,3]       [,4]      [,5]
+##  [1,] 0.0000000 0.000000  7.558906 0.00000000 4.5948869
+##  [2,] 0.9182166 2.437145  1.949216 0.00000000 3.9106815
+##  [3,] 0.0000000 3.691624  0.000000 4.71918105 0.3728249
+##  [4,] 7.9764040 2.878907  0.000000 4.10610598 0.0000000
+##  [5,] 1.6475389 0.000000  5.624655 2.96950661 3.0991287
+##  [6,] 3.1322691 4.102342  0.000000 0.22466805 0.0000000
+##  [7,] 0.0000000 0.000000  0.000000 0.08095132 0.0000000
+##  [8,] 4.1781431 0.000000  3.106203 0.00000000 0.0000000
+##  [9,] 0.0000000 0.000000 11.073499 0.00000000 9.9467585
+## [10,] 0.0000000 1.526942  0.000000 0.00000000 0.0000000
 </code></pre>
 
 <pre><code class="r">posneg(x, 2)
 </code></pre>
 
-<pre><code>##        [,1]  [,2]   [,3]  [,4]  [,5]
-##  [1,] 0.000 0.000  7.559 0.000 4.595
-##  [2,] 0.000 2.437  0.000 0.000 3.911
-##  [3,] 0.000 3.692  0.000 4.719 0.000
-##  [4,] 7.976 2.879  0.000 4.106 0.000
-##  [5,] 0.000 0.000  5.625 2.970 3.099
-##  [6,] 3.132 4.102  0.000 0.000 0.000
-##  [7,] 0.000 0.000  0.000 0.000 0.000
-##  [8,] 4.178 0.000  3.106 0.000 0.000
-##  [9,] 0.000 0.000 11.073 0.000 9.947
-## [10,] 0.000 0.000  0.000 0.000 0.000
+<pre><code>##           [,1]     [,2]      [,3]     [,4]     [,5]
+##  [1,] 0.000000 0.000000  7.558906 0.000000 4.594887
+##  [2,] 0.000000 2.437145  0.000000 0.000000 3.910682
+##  [3,] 0.000000 3.691624  0.000000 4.719181 0.000000
+##  [4,] 7.976404 2.878907  0.000000 4.106106 0.000000
+##  [5,] 0.000000 0.000000  5.624655 2.969507 3.099129
+##  [6,] 3.132269 4.102342  0.000000 0.000000 0.000000
+##  [7,] 0.000000 0.000000  0.000000 0.000000 0.000000
+##  [8,] 4.178143 0.000000  3.106203 0.000000 0.000000
+##  [9,] 0.000000 0.000000 11.073499 0.000000 9.946758
+## [10,] 0.000000 0.000000  0.000000 0.000000 0.000000
 </code></pre>
 
-<pre><code class="r">
-#----------
+<pre><code class="r">#----------
 # rposneg,matrix-method
 #----------
 # random mixed sign data (normal distribution)
@@ -415,16 +392,15 @@ x &lt;- rmatrix(5,5, rnorm, mean=0, sd=5)
 x
 </code></pre>
 
-<pre><code>##         [,1]   [,2]    [,3]     [,4]    [,5]
-## [1,] -3.1323 -4.102   7.559 -0.22467  4.5949
-## [2,]  0.9182  2.437   1.949 -0.08095  3.9107
-## [3,] -4.1781  3.692  -3.106  4.71918  0.3728
-## [4,]  7.9764  2.879 -11.073  4.10611 -9.9468
-## [5,]  1.6475 -1.527   5.625  2.96951  3.0991
+<pre><code>##            [,1]      [,2]       [,3]        [,4]       [,5]
+## [1,] -3.1322691 -4.102342   7.558906 -0.22466805  4.5948869
+## [2,]  0.9182166  2.437145   1.949216 -0.08095132  3.9106815
+## [3,] -4.1781431  3.691624  -3.106203  4.71918105  0.3728249
+## [4,]  7.9764040  2.878907 -11.073499  4.10610598 -9.9467585
+## [5,]  1.6475389 -1.526942   5.624655  2.96950661  3.0991287
 </code></pre>
 
-<pre><code class="r">
-# posneg-transform: split positive and negative part
+<pre><code class="r"># posneg-transform: split positive and negative part
 y &lt;- posneg(x)
 dim(y)
 </code></pre>
@@ -443,21 +419,20 @@ identical(x, z)
 <pre><code class="r">rposneg(y, unstack=FALSE)
 </code></pre>
 
-<pre><code>##          [,1]   [,2]    [,3]     [,4]    [,5]
-##  [1,]  0.0000  0.000   7.559  0.00000  4.5949
-##  [2,]  0.9182  2.437   1.949  0.00000  3.9107
-##  [3,]  0.0000  3.692   0.000  4.71918  0.3728
-##  [4,]  7.9764  2.879   0.000  4.10611  0.0000
-##  [5,]  1.6475  0.000   5.625  2.96951  3.0991
-##  [6,] -3.1323 -4.102   0.000 -0.22467  0.0000
-##  [7,]  0.0000  0.000   0.000 -0.08095  0.0000
-##  [8,] -4.1781  0.000  -3.106  0.00000  0.0000
-##  [9,]  0.0000  0.000 -11.073  0.00000 -9.9468
-## [10,]  0.0000 -1.527   0.000  0.00000  0.0000
+<pre><code>##             [,1]      [,2]       [,3]        [,4]       [,5]
+##  [1,]  0.0000000  0.000000   7.558906  0.00000000  4.5948869
+##  [2,]  0.9182166  2.437145   1.949216  0.00000000  3.9106815
+##  [3,]  0.0000000  3.691624   0.000000  4.71918105  0.3728249
+##  [4,]  7.9764040  2.878907   0.000000  4.10610598  0.0000000
+##  [5,]  1.6475389  0.000000   5.624655  2.96950661  3.0991287
+##  [6,] -3.1322691 -4.102342   0.000000 -0.22466805  0.0000000
+##  [7,]  0.0000000  0.000000   0.000000 -0.08095132  0.0000000
+##  [8,] -4.1781431  0.000000  -3.106203  0.00000000  0.0000000
+##  [9,]  0.0000000  0.000000 -11.073499  0.00000000 -9.9467585
+## [10,]  0.0000000 -1.526942   0.000000  0.00000000  0.0000000
 </code></pre>
 
-<pre><code class="r">
-# But posneg-transformation with a non zero threshold is not reversible
+<pre><code class="r"># But posneg-transformation with a non zero threshold is not reversible
 y1 &lt;- posneg(x, 1)
 identical(rposneg(y1), x)
 </code></pre>
@@ -465,8 +440,7 @@ identical(rposneg(y1), x)
 <pre><code>## [1] FALSE
 </code></pre>
 
-<pre><code class="r">
-#----------
+<pre><code class="r">#----------
 # rposneg,NMF-method
 #----------
 # random mixed signed NMF model
@@ -480,9 +454,6 @@ identical(M, M2)
 <pre><code>## [1] TRUE
 </code></pre>
 
-<pre><code class="r">
-</code></pre>
-
   </div>
   <div class="span4">
     <!-- <ul>
@@ -494,9 +465,9 @@ identical(M, M2)
       
     <h2>See also</h2>
     
-  <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/Extremes'>pmax</a></code>
+  <code><a href='http://www.inside-r.org/r-doc/base/Extremes'>pmax</a></code>
 
-  Other transforms: <code><a href='t.NMF.html'>t.NMF</a></code>
+Other transforms: <code><a href='t.NMF.html'>t.NMF</a></code>
 
         
   </div>

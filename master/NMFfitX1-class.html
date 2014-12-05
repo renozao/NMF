@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFfitX1-class. NMF 0.20.2</title>
+<title>NMFfitX1-class. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,10 +69,9 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>This class is used to return the result from a multiple
-  run of a single NMF algorithm performed with function
-  <code>nmf</code> with the -- default -- option
-  <code>keep.all=FALSE</code> (cf. <code><a href='nmf.html'>nmf</a></code>).</p></p>
+      <p><p>This class is used to return the result from a multiple run of a single NMF
+algorithm performed with function <code>nmf</code> with the -- default -- option
+<code>keep.all=FALSE</code> (cf. <code><a href='nmf.html'>nmf</a></code>).</p></p>
   
     </div>
     
@@ -82,18 +81,16 @@
       <h2>Details</h2>
       
       <p>It extends both classes <code><a href='NMFfitX-class.html'>NMFfitX-class</a></code> and
-  <code><a href='NMFfit-class.html'>NMFfit-class</a></code>, and stores a the result of
-  the best fit in its <code>NMFfit</code> structure.</p>
+<code><a href='NMFfit-class.html'>NMFfit-class</a></code>, and stores a the result of the best fit in its
+<code>NMFfit</code> structure.</p>
   
-      <p>Beside the best fit, this class allows to hold data about
-  the computation of the multiple runs, such as the number
-  of runs, the CPU time used to perform all the runs, as
-  well as the consensus matrix.</p>
+      <p>Beside the best fit, this class allows to hold data about the computation of
+the multiple runs, such as the number of runs, the CPU time used to perform
+all the runs, as well as the consensus matrix.</p>
   
-      <p>Due to the inheritance from class <code>NMFfit</code>, objects
-  of class <code>NMFfitX1</code> can be handled exactly as the
-  results of single NMF run -- as if only the best run had
-  been performed.</p>
+      <p>Due to the inheritance from class <code>NMFfit</code>, objects of class
+<code>NMFfitX1</code> can be handled exactly as the results of single NMF run --
+as if only the best run had been performed.</p>
   
     </div>
 
@@ -101,16 +98,16 @@
       <h2>Slots</h2>
       
       <p><ol>
-<li>consensusobject of class <code>matrix</code> used to
-  store the consensus matrix based on all the runs.</p>
+<li>consensusobject of class <code>matrix</code> used to store the
+consensus matrix based on all the runs.</p>
   
       <p></li>
-<li>nrunan <code>integer</code> that contains the number of
-  runs performed to compute the object.</p>
+<li>nrunan <code>integer</code> that contains the number of runs
+performed to compute the object.</p>
   
       <p></li>
-<li>rng1an object that contains RNG settings used for
-  the first run. See <code><a href='RNG.html'>getRNG1</a></code>.</p>
+<li>rng1an object that contains RNG settings used for the first
+run. See <code><a href='RNG.html'>getRNG1</a></code>.</p>
   
       <p></li>
 </ol></p>
@@ -123,49 +120,37 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>consensus<code>signature(object = "NMFfitX1")</code>:
-  The result is the matrix stored in slot
-  &#145;consensus&#146;. This method returns <code>NULL</code> if
-  the consensus matrix is empty.</p>
+<li>consensus<code>signature(object = "NMFfitX1")</code>: The result is the matrix stored in slot &#145;consensus&#146;.
+This method returns <code>NULL</code> if the consensus matrix is empty.</p>
   
       <p></li>
-<li>fit<code>signature(object = "NMFfitX1")</code>: Returns
-  the model object associated with the best fit, amongst
-  all the runs performed when fitting <code>object</code>.</p>
+<li>fit<code>signature(object = "NMFfitX1")</code>: Returns the model object associated with the best fit, amongst all the
+runs performed when fitting <code>object</code>.</p>
   
-      <p>Since <code>NMFfitX1</code> objects only hold the best fit,
-  this method simply returns the NMF model fitted by
-  <code>object</code> -- that is stored in slot &#145;fit&#146;.</p>
-  
-      <p></li>
-<li>getRNG1<code>signature(object = "NMFfitX1")</code>:
-  Returns the RNG settings used to compute the first of all
-  NMF runs, amongst which <code>object</code> was selected as the
-  best fit.</p>
+      <p>Since <code>NMFfitX1</code> objects only hold the best fit, this method simply
+returns the NMF model fitted by <code>object</code> -- that is stored in slot
+&#145;fit&#146;.</p>
   
       <p></li>
-<li>minfit<code>signature(object = "NMFfitX1")</code>:
-  Returns the fit object associated with the best fit,
-  amongst all the runs performed when fitting
-  <code>object</code>.</p>
-  
-      <p>Since <code>NMFfitX1</code> objects only hold the best fit,
-  this method simply returns <code>object</code> coerced into an
-  <code>NMFfit</code> object.</p>
+<li>getRNG1<code>signature(object = "NMFfitX1")</code>: Returns the RNG settings used to compute the first of all NMF runs, amongst
+which <code>object</code> was selected as the best fit.</p>
   
       <p></li>
-<li>nmf.equal<code>signature(x = "NMFfitX1", y =
-  "NMFfitX1")</code>: Compares the NMF models fitted by multiple
-  runs, that only kept the best fits.</p>
+<li>minfit<code>signature(object = "NMFfitX1")</code>: Returns the fit object associated with the best fit, amongst all the
+runs performed when fitting <code>object</code>.</p>
+  
+      <p>Since <code>NMFfitX1</code> objects only hold the best fit, this method simply
+returns <code>object</code> coerced into an <code>NMFfit</code> object.</p>
   
       <p></li>
-<li>nrun<code>signature(object = "NMFfitX1")</code>:
-  Returns the number of NMF runs performed, amongst which
-  <code>object</code> was selected as the best fit.</p>
+<li>nmf.equal<code>signature(x = "NMFfitX1", y = "NMFfitX1")</code>: Compares the NMF models fitted by multiple runs, that only kept the best fits.</p>
   
       <p></li>
-<li>show<code>signature(object = "NMFfitX1")</code>: Show
-  method for objects of class <code>NMFfitX1</code></p>
+<li>nrun<code>signature(object = "NMFfitX1")</code>: Returns the number of NMF runs performed, amongst which <code>object</code> was
+selected as the best fit.</p>
+  
+      <p></li>
+<li>show<code>signature(object = "NMFfitX1")</code>: Show method for objects of class <code>NMFfitX1</code></p>
   
       <p></li>
 </ol></p>
@@ -176,10 +161,6 @@
     
     <h2 id="examples">Examples</h2>
     <pre><code class="r">
-## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
 
 # generate a synthetic dataset with known classes
 n &lt;- 20; counts &lt;- c(5, 2, 3);
@@ -204,14 +185,13 @@ res &lt;- nmf(V, 3, nrun=3)
 ##   Method: brunet 
 ##   Runs:  3 
 ##   RNG:
-##    407L, 264094928L, 46475921L, 1704817438L, -787761913L, -1281863268L, -558217747L 
+##    407L, -1110387517L, 1875593000L, 529335049L, 1880875830L, 336900159L, -775727756L 
 ##   Total timing:
 ##    user  system elapsed 
-##   1.921   0.237   2.505
+##   2.159   0.217   2.826
 </code></pre>
 
-<pre><code class="r">
-# compute summary measures
+<pre><code class="r"># compute summary measures
 summary(res)
 </code></pre>
 
@@ -227,19 +207,16 @@ summary(res, target=V, class=groups)
 ##        1 NMFfitX1       S4
 </code></pre>
 
-<pre><code class="r">
-# show computational time
+<pre><code class="r"># show computational time
 runtime.all(res)
 </code></pre>
 
 <pre><code>##    user  system elapsed 
-##   1.921   0.237   2.505
+##   2.159   0.217   2.826
 </code></pre>
 
-<pre><code class="r">
-# plot the consensus matrix, as stored (pre-computed) in the object
+<pre><code class="r"># plot the consensus matrix, as stored (pre-computed) in the object
 ## Not run:  consensusmap(res, annCol=groups) 
-
 </code></pre>
 
   </div>
@@ -253,8 +230,7 @@ runtime.all(res)
       
     <h2>See also</h2>
     
-  Other multipleNMF: <code><a href='NMFfitX-class.html'>NMFfitX-class</a></code>,
-  <code><a href='NMFfitXn-class.html'>NMFfitXn-class</a></code>
+  Other multipleNMF: <code><a href='NMFfitX-class.html'>NMFfitX-class</a></code>, <code><a href='NMFfitXn-class.html'>NMFfitXn-class</a></code>
 
         
   </div>

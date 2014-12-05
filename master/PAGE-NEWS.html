@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>. NMF 0.22</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Renaud Gaujoux, Cathal Seoighe">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+<!-- knitr files -->
+<script src="js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">NMF</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+	  <li><a href=""><span class="glyphicon glyphicon-home"></span> Index</a></li>
+       <li><a href="PAGE-MAN.html">Documentation</a></li>
+       <li><a href="PAGE-DEMOS.html">Demos</a></li>
+       <li><a href="PAGE-REFERENCES.html">References</a></li>
+       <li><a href="PAGE-INSTALLATION.html">Installation</a></li>
+       <li class="active"><a href="PAGE-NEWS.html">News</a></li>
+    </ul>
+    <!-- <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>--> 
+    <ul class="nav navbar-nav navbar-right">
+      <li><p class="navbar-text">
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
+      &nbsp;</p></li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <div class="row"><div class="span8">
+  <ol>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.22</div>
+	  <div class="panel-body">
+	    <h4>NEW FEATURES</h4>
+
+<ul>
+<li>aheatmap now handles integer matrices in a special way, 
+allowing for specifying categories.</li>
+<li>aheatmap now allow selective display of row, column (or both) 
+annotation legend</li>
+<li>New function rmatrix_int generates random integer matrices</li>
+<li>nmf() gains a new argument .tmpdir to specify the base location 
+of the temporary directory (used in foreach-backed runs)</li>
+</ul>
+
+<h4>FIXES</h4>
+
+<ul>
+<li>Fixed a bug in aheatmap: correlation distance was incorrectly 
+computed (Thanks to Joe Burns for reporting it)</li>
+<li>Fixed some alignment issues in aheatmap</li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.21</div>
+	  <div class="panel-body">
+	    <h4>CHANGES</h4>
+
+<ul>
+<li>Package now depends on R &gt;= 3.1.0</li>
+</ul>
+
+<h4>NEW FEATURES</h4>
+
+<ul>
+<li>Algorithm LS-NMF (key: &#39;ls-nmf&#39;) now handles missing values in data
+matrix</li>
+<li>aheatmap gains a new argument <code>na.color</code> to specify the color to use
+for NA values.</li>
+<li>New method anyNA.NMF to check for NA values in the basis and/or 
+coefficient matrix of an NMF object</li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.20</div>
+	  <div class="panel-body">
+	    <h4>NEW FEATURES</h4>
+
+<ul>
+<li>aheatmap gains an argument txt that enables displaying text in each 
+cell of the heatmap.</li>
+</ul>
+
+<h4>FIXES</h4>
+
+<ul>
+<li>now all examples, vignettes and unit tests comply with CRAN policies 
+on the maximum number of cores to be used when checking packages (2). </li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.18</div>
+	  <div class="panel-body">
+	    <h4>NEW FEATURES</h4>
+
+<ul>
+<li>aheatmap gains distfun methods &#39;spearman&#39;, &#39;kendall&#39;, and, 
+for completeness, &#39;pearson&#39; (for which &#39;correlation&#39; is now an alias), 
+which specifies the correlation method to use when computing the 
+distance matrix.</li>
+</ul>
+
+<h4>CHANGES</h4>
+
+<ul>
+<li>In order to fully comply with CRAN policies, internals of the 
+aheatmap function slightly changed. In particular, this brings an 
+issue when directly plotting to PDF graphic devices, where a first 
+blank page may appear. See the dedicated section in the man page 
+?aheatmap for a work around.</li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.17.3</div>
+	  <div class="panel-body">
+	    <h4>NEW FEATURES</h4>
+
+<ul>
+<li><p>add silhouette computation for NMF results, which can be performed on 
+samples, features or consensus matrix.
+The average silhouette width is also computed by the summary methods.
+(Thanks to Gordon Robertson for this suggestion)</p></li>
+<li><p>New runtime option &#39;shared.memory&#39; (or &#39;m&#39;) for toggling usage of shared 
+memory (requires package synchronicity).</p></li>
+</ul>
+
+<h4>CHANGES</h4>
+
+<ul>
+<li>some plots are &ndash; finally &ndash; generated using ggplot2
+This adds an Imports dependency to ggplot2 and reshape2.</li>
+</ul>
+
+<h4>BUG FIXES</h4>
+
+<ul>
+<li>fix a bug when running parallel NMF computation with 
+algorithms defined in other packages (this most probably only affected my 
+own packages, e.g., CellMix)</li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.17.1</div>
+	  <div class="panel-body">
+	    <h4>CHANGES</h4>
+
+<ul>
+<li>Computations seeded with an NMF object now set slot @seed to &#39;NMF&#39;</li>
+<li>Added unit tests on seeding with an NMF object</li>
+<li>Removed some obsolete comments</li>
+</ul>
+
+<h4>BUG FIXES</h4>
+
+<ul>
+<li>an error was thrown when running multiple sequential NMF 
+computations with nrun&gt;=50: object &#39;.MODE_SEQ&#39; not found. 
+(reported by Kenneth Lopiano) </li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.16.5</div>
+	  <div class="panel-body">
+	    <h4>CHANGES</h4>
+
+<ul>
+<li>Now depends on pkgmaker 0.16</li>
+<li>Disabled shared memory on Mac machines by default, due to un-resolved
+bug that occurs with big-matrix descriptors.
+It can be restored using nmf.options(shared.memory=TRUE)</li>
+<li>Package version is now shown on startup message</li>
+<li>Re-enabled unit test checks on CRAN, using the new function 
+pkgmaker::isCHECK, that definitely identifies if tests are run 
+under R CMD check.</li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.15.2                       </div>
+	  <div class="panel-body">
+	    <h4>NEW FEATURES</h4>
+
+<ul>
+<li>New function nmfObject() to update old versions of NMF objects, 
+eg., saved on disk.</li>
+<li>NMF strategies can now define default values for their parameters,
+eg., <code>seed</code> to associate them with a seeding method that is not the 
+default method, <code>maxIter</code> to make default runs with more iterations 
+(for algorithms defined as NMFStrategyIterative), or any other
+algorithm-specific parameter.</li>
+<li>new general utility function hasArg2 that is identical to hasArg
+but takes the argument name as a character string, so that no 
+check NOTE is thrown.</li>
+</ul>
+
+<h4>CHANGES</h4>
+
+<ul>
+<li>All vignettes are now generated using knitr.</li>
+<li>New dependency to pkgmaker which incorporated many of the 
+general utility functions, initially defined for the NMF package.</li>
+<li>example check is faster (as requested by CRAN)</li>
+<li>the function selectMethodNMF was renamed into selectNMFMethod to 
+be consistent with the other related *NMFMethod functions (get, set, etc..)</li>
+</ul>
+
+<h4>FIXES</h4>
+
+<ul>
+<li>Fix computation of R-squared in profplot/corplot: now compute from 
+a linear fit that includes an intercept.</li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.8.6                        </div>
+	  <div class="panel-body">
+	    <h4>NEW FEATURES</h4>
+
+<ul>
+<li>Formula based NMF models that can incorporate fixed terms, which may 
+be used to correct for covariates or define group specific offsets.</li>
+</ul>
+
+<h4>CHANGES</h4>
+
+<p>o Subsetting an NMF object with a single index now returns an NMF object, 
+   except if argument drop is not missing (i.e. either TRUE or FALSE). </p>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.6.03                       </div>
+	  <div class="panel-body">
+	    <h4>WARNING</h4>
+
+<pre><code>Due to the major changes made in the internal structure of the standard NMF 
+models, previous NMF fits are not compatible with this version.
+</code></pre>
+
+<h4>NEW FEATURES</h4>
+
+<ul>
+<li><p>The factory function nmfModel has been enhanced and provides new 
+methods that makes more easier the creation of NMF objects.
+See ?nmfModel.</p></li>
+<li><p>A new heatmap drawing function &#39;aheatmap&#39; (for annotated heatmap) is 
+now used to generate the different heatmaps (basismap, coefmap and consensusmap). 
+It is a enhancement/fork of the function pheatmap from package pheatmap and draw 
+&ndash; I think &ndash; very nice heatmaps, providing a convenient and flexible 
+interface to add annotation tracks to both the columns and rows, with 
+sensible automatic legends.</p></li>
+</ul>
+
+<h4>CHANGES</h4>
+
+<ul>
+<li><p>Method nmfModel when called with no arguments does not return anymore
+the list of available NMF models, but an empty NMF model.
+To list the available models, directly call <code>nmfModels()</code>.</p></li>
+<li><p>The function <code>rmatrix</code> is now a S4 generic function.
+It gains methods for generating random matrices based on a template matrix 
+or an NMF model.
+See ?rmatrix.</p></li>
+<li><p>The function <code>rnmf</code> gains a method to generate a random NMF model
+given numerical dimensions.</p></li>
+<li><p>The function nmfEstimateRank now returns the fits for each value of the 
+rank in element &#39;fit&#39; of the result list. 
+See ?nmfEstimateRank.</p></li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.5.3                        </div>
+	  <div class="panel-body">
+	    <h4>NEW FEATURES</h4>
+
+<ul>
+<li><p>The state of the random number generator is systematically stored in the 
+&#39;NMFfit&#39; object returned by function &#39;nmf&#39;.
+It is stored in a new slot &#39;rng.seed&#39; and can be access via the new method 
+&#39;rngSeed&#39; of class &#39;NMFfit&#39;. 
+See ?rngSeed for more details.</p></li>
+<li><p>The number of cores to use in multicore computations can now also be
+ specified by the &#39;p - parallel&#39; runtime option (e.g. &#39;p4&#39; to use 4 cores).
+ Note that the value specified in option &#39;p&#39; takes precedence on the one 
+ passed via argument &#39;.pbackend&#39;.
+ See section &#39;Runtime options&#39; in ?nmf for more details. </p></li>
+<li><p>Function &#39;nmfApply&#39; now allows values 3 and 4 for argument &#39;MARGIN&#39; to 
+apply a given function to the basis vectors (i.e. columns of the basis matrix W) 
+and basis profiles (i.e. rows of the mixture coefficients H) respectively.
+See ?nmfApply for more details.</p></li>
+<li><p>New S4 generic &#39;basiscor&#39; and &#39;profcor&#39; to compute the 
+correlation matrices of the basis vectors and basis profiles respectively 
+from two NMF models or from an NMF model and a given compatible matrix. 
+See ?basiscor or ?profcor for more details.</p></li>
+<li><p>New S4 generic &#39;fitcmp&#39; to compare the NMF models fitted by two 
+different runs of function &#39;nmf&#39; (i.e. two &#39;NMFfit&#39; objects). 
+See ?fitcmp for more details.</p></li>
+<li><p>New S4 generic &#39;canFit&#39; that tells if an NMF method is able to 
+exactly or partly fit a given NMF model. 
+See ?canFit for more details.</p></li>
+<li><p>New function &#39;selectMethodNMF&#39; that selects an appropriate NMF method to 
+fit a given NMF model. 
+See ?selectMethodNMF for more details.</p></li>
+<li><p>The verbosity level can be controlled more finely by the &#39;v - verbose&#39; 
+runtime option (e.g. using .options=&#39;v1&#39; or &#39;v2&#39;). The greater is 
+the level the more information is printed.
+The verbose outputs have been cleaned-up and should be more consistent 
+across the run mode (sequential or multicore).
+See section &#39;Runtime options&#39; in ?nmf for more details.</p></li>
+</ul>
+
+<h4>CHANGES</h4>
+
+<ul>
+<li><p>The standard update equations have been optimised further, by making 
+them modify the factor matrices in place. This speeds up the computation 
+and greatly improves the algorithms&#39; memory footprint.</p></li>
+<li><p>The package NMF now depends on the package digest that is used to display 
+the state of random number generator in a concise way.</p></li>
+<li><p>The methods &#39;metaHeatmap&#39; are split into 3 new S4 generic &#39;basismap&#39; to 
+plot a heatmap of the basis matrix [formerly plotted by the call : 
+&#39;metaHeatmap(object.of.class.NMF, &#39;features&#39;, &hellip;) ], &#39;coefmap&#39; to plot a 
+heatmap of the mixture coefficient matrix [formerly plotted by the call : 
+&#39;metaHeatmap(object.of.class.NMF, &#39;samples&#39;, &hellip;) ], and &#39;consensusmap&#39; to 
+plot a heatmap of the consensus matrix associated with multiple runs of NMF 
+[formerly plotted by the call : &#39;metaHeatmap(object.of.class.NMFfitX, &hellip;) ].</p></li>
+</ul>
+
+<h4>BUG FIX</h4>
+
+<ul>
+<li>In factory method &#39;nmfModel&#39;: the colnames (resp. rownames) of 
+matrix W (resp. H) are now correctly set when the rownames of H 
+(resp. the colnames of W) are not null.</li>
+</ul>
+
+<h4>NEWLY DEPRECATED CLASSES, METHODS, FUNCTIONS, DATA SETS</h4>
+
+<ul>
+<li>Deprecated Generics/Methods
+   1) &#39;metaHeatmap,NMF&#39; and &#39;metaHeatmap,NMFfitX&#39; - S4 methods remain 
+   with .Deprecated message.
+   They are replaced by the definition of 3 new S4 generic &#39;basismap&#39;, 
+   &#39;coefmap&#39; and &#39;consensusmap&#39;. See the related point in section 
+   CHANGES above.
+   They will be completely removed from the package in the next version.<br/></li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.5.1                        </div>
+	  <div class="panel-body">
+	    <h4>BUG FIX</h4>
+
+<ul>
+<li>fix a small bug in method &#39;rss&#39; to allow argument &#39;target&#39; to be a 
+&#39;data.frame&#39;. This was generating errors when computing the summary 
+measures and especially when the function &#39;nmfEstimateRank&#39; was called 
+on a &#39;data.frame&#39;. Thanks to Pavel Goldstein for reporting this.</li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.5                          </div>
+	  <div class="panel-body">
+	    <h4>NEW FEATURES</h4>
+
+<ul>
+<li><p>Method &#39;fcnnls&#39; provides a user-friendly interface for the internal 
+function &#39;.fcnnls&#39; to solve non-nengative linear least square problems, 
+using the fast combinatorial approach from Benthem and Keenan (2004).
+See &#39;?fcnnls&#39; for more details.</p></li>
+<li><p>New argument &#39;callback&#39; in method &#39;nmf&#39; allows to provide a callback 
+function when running multiple runs in default mode, that only keeps the 
+best result. The callback function is applied to the result of each run 
+before it possibly gets discarding. The results are stored in the 
+miscellaneous slot &#39;.callback&#39; accessible via the &#39;\(&lsquo; operator (e.g. res\).callback).
+See &#39;?nmf&#39; for more details.</p></li>
+<li><p>New method &#39;niter&#39; to retrieve the number of iterations performed to fit 
+a NMF model. It is defined on objects of class &#39;NMFfit&#39;.</p></li>
+<li><p>New function &#39;isNMFfit&#39; to check if an object is a result from NMF fitting.</p></li>
+<li><p>New function &#39;rmatrix&#39; to easily generate random matrices, and allow to specify the 
+distribution from which the entries are drawn. For example:</p>
+
+<pre><code>* &#39;rmatrix(100, 10)&#39; generates a 100x10 matrix whose entries are drawn 
+from the uniform distribution
+
+* &#39;rmatrix(100, 10, rnorm)&#39; generates a 100x10 matrix whose entries are drawn 
+from the standard Normal distribution.
+</code></pre></li>
+<li><p>New methods &#39;basisnames&#39; and &#39;basisnames&lt;-&#39; to retrieve and set the basis vector 
+names. See &#39;?basisnames&#39;. </p></li>
+</ul>
+
+<h4>CHANGES</h4>
+
+<ul>
+<li><p>Add a CITATION file that provides the bibtex entries for citing the 
+BMC Bioinformatics paper for the package 
+(<a href="http://www.biomedcentral.com/1471-2105/11/367">http://www.biomedcentral.com/1471-2105/11/367</a>), the vignette and manual.
+See &#39;citation(&#39;NMF&#39;)&#39; for complete references.</p></li>
+<li><p>New argument &#39;ncol&#39; in method &#39;nmfModel&#39; to specify the target dimensions more 
+easily by calls like &#39;nmfModel(r, n, p)&#39; to create a r-rank NMF model that fits a 
+n x p target matrix.</p></li>
+<li><p>The subset method &#39;[]&#39; of objects of class &#39;NMF&#39; has been changed to be more convenient.
+See  </p></li>
+</ul>
+
+<h4>BUG FIX</h4>
+
+<ul>
+<li>Method &#39;dimnames&#39; for objects of class &#39;NMF&#39; now correctly sets the 
+names of each dimension.</li>
+</ul>
+
+<h4>REMOVED CLASSES, METHODS, FUNCTIONS, DATA SETS</h4>
+
+<ul>
+<li>Method &#39;extra&#39; has completely been removed.<br/></li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.4.8                        </div>
+	  <div class="panel-body">
+	    <h4>BUG FIX</h4>
+
+<ul>
+<li>When computing NMF with the SNMF/R(L) algorithms, an error could 
+occur if a restart (recomputation of the initial value) for the H 
+matrix (resp. W matrix) occured at the first iteration.
+Thanks to Joe Maisog for reporting this.<br/></li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.4.7                        </div>
+	  <div class="panel-body">
+	    <h4>BUG FIX</h4>
+
+<ul>
+<li>When computing the cophenetic correlation coefficient of a diagonal 
+matrix, the &#39;cophcor&#39; method was returning &#39;NA&#39; with a warning from 
+the &#39;cor&#39; function. It now correctly returns 1.
+Thanks to Joe Maisog for reporting this.</li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.4.4                        </div>
+	  <div class="panel-body">
+	    <h4>CHANGES</h4>
+
+<ul>
+<li><p>The major change is the explicit addition of the synchronicity package into 
+the suggested package dependencies. Since the publication of versions 4.x 
+of the bigmemory package, it is used by the NMF package to provide the mutex 
+functionality required by multicore computations.
+Note This is relevant only for Linux/Mac-like platforms as the multicore 
+package is not yet supported on MS Windows.
+Users using a recent version of the bigmemory package (i.e. &gt;=4.x) 
+DO NEED to install the synchronicity package to be able to run multicore NMF 
+computations.
+Versions of bigmemory prior to 4.x include the mutex functionality.</p></li>
+<li><p>Minor enhancement in error messages</p></li>
+<li><p>Method &#39;nmfModel&#39; can now be called with arguments &#39;rank&#39; and &#39;target&#39; 
+swapped. This is for convenience and ease of use.</p></li>
+</ul>
+
+<h4>BUG FIX</h4>
+
+<ul>
+<li>Argument &#39;RowSideColors&#39; of the &#39;metaHeatmap&#39; function is now correctly 
+subset according to the value of argument &#39;filter&#39;. However the argument 
+must be named with its complete name &#39;RowSideColors&#39;, not assuming 
+partial match. See KNOWN ISSUES. </li>
+</ul>
+
+<h4>KNOWN ISSUES</h4>
+
+<ul>
+<li>In the &#39;metaHeatmap&#39; function, when argument &#39;filter&#39; is not &#39;FALSE&#39;: 
+arguments &#39;RowSideColors&#39;, &#39;labRow&#39;, &#39;Rowv&#39; that are intended to the 
+&#39;heatmap.plus&#39;-like function (and are used to label the rows) should be 
+named using their complete name (i.e. not assuming partial match), 
+otherwise the filtering is not applied to these argument and an error 
+is generated. 
+This issue will be fixed in a future release.</li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.4.3                        </div>
+	  <div class="panel-body">
+	    <h4>CHANGES</h4>
+
+<ul>
+<li><p>function &#39;nmfEstimateRank&#39; has been enhanced: 
+   -run options can be passed to each internal call to the &#39;nmf&#39; function. 
+   See ?nmfEstiamteRank and ?nmf for details on the supported options.</p>
+
+<ul>
+<li>a new argument &#39;stop&#39; allows to run the estimation with fault tolerance,
+skipping runs that throw an error. Summary measures for these runs are set 
+to NAs and a warning is thrown with details about the errors.</li>
+</ul></li>
+<li><p>in function  &#39;plot.NMF.rank&#39;: a new argument &#39;na.rm&#39; allows to remove from 
+the plots the ranks for which the measures are NAs (due to errors during the 
+estimation process with &#39;nmfEstimateRank&#39;).</p></li>
+</ul>
+
+<h4>BUG FIX</h4>
+
+<ul>
+<li><p>Method &#39;consensus&#39; is now exported in the NAMESPACE file.
+Thanks to Gang Su for reporting this.</p></li>
+<li><p>Warnings and messages about loading packages are now suppressed.
+This was particularly confusing for users that do not have the packages 
+and/or platform required for parallel computation: warnings were printed 
+whereas the computation was &ndash; sequentially &ndash; performed without 
+problem.
+Thanks to Joe Maisog for reporting this.</p></li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.4.1                        </div>
+	  <div class="panel-body">
+	    <h4>BUG FIX</h4>
+
+<ul>
+<li><p>The &#39;metaHeatmap&#39; function was not correctly handling row labels 
+when argument filter was not FALSE. All usual row formating in heatmaps 
+(label and ordering) are now working as expected.
+Thanks to Andreas Schlicker, from The Netherlands Cancer Institute for 
+reporting this. </p></li>
+<li><p>An error was thrown on some environments/platforms (e.g. Solaris) 
+where not all the packages required for parallel computation were not 
+available &ndash; even when using option &#39;p&#39; (&#39;p&#39; in lower case), which 
+should have switched the computation to sequential. 
+This is solved and the error is only thrown when running NMF with 
+option &#39;P&#39; (capital &#39;P&#39;).</p></li>
+<li><p>Not all the options were passed (e.g. &#39;t&#39; for tracking) in sequential 
+mode (option &#39;-p&#39;).</p></li>
+<li><p>verbose/debug global nmf.options were not restored if a numerical random 
+seed were used.</p></li>
+</ul>
+
+<h4>CHANGES</h4>
+
+<ul>
+<li><p>The &#39;metaHeatmap&#39; function nows support passing the name of a filtering 
+method in argument &#39;filter&#39;, which is passed to method &#39;extractFeatures&#39;.
+See ?metaHeatmap.</p></li>
+<li><p>Verbose and debug messages are better handled. When running a parallel 
+computation of multiple runs, verbose messages from each run are shown only
+in debug mode.</p></li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.4                          </div>
+	  <div class="panel-body">
+	    <h4>NEW FEATURES</h4>
+
+<ul>
+<li><p>Part of the code has been optimised in C++ for speed and memory efficiency:</p>
+
+<pre><code>- the multiplicative updates for reducing the KL divergence and the euclidean 
+distance have been optimised in C++. This significantly reduces the 
+computation time of the methods that make use of them: &#39;lee&#39;, &#39;brunet&#39;, 
+&#39;offset&#39;, &#39;nsNMF&#39; and &#39;lnmf&#39;.
+Old R version of the algorithm are still accessible with the suffix &#39;.R#&#39;. 
+
+- the computation of euclidean distance and KL divergence are implemented 
+in C++, and do not require the duplication of the original matrices as done 
+in R.
+</code></pre></li>
+<li><p>Generic &#39;dimnames&#39; is now defined for objects of class &#39;NMF&#39; and returns</p>
+
+<h4>a list with 3 elements: the row names of the basis matrix, the column names</h4>
+
+<p>of the mixture coefficient matrix , and the column names of the basis matrix. </p>
+
+<h4>This implies that methods &#39;rownames&#39; and &#39;columnames&#39; are also available for</h4>
+
+<h4>&#39;NMF&#39; objects.</h4></li>
+<li><p>A new class structure has been developed to handle the results of multiple </p>
+
+<h4>NMF runs in a cleaner and more structured way:</h4>
+
+<pre><code>- Class &#39;NMFfitX&#39; defines a common interface for multiple NMF runs of a 
+</code></pre>
+
+<h4>single algorithm.</h4>
+
+<pre><code>- Class &#39;NMFfitX1&#39; handles the sub-case where only the best fit is returned.
+</code></pre>
+
+<h4>In particular, this class allows to handle such results as if coming</h4>
+
+<h4>from a single run.</h4>
+
+<pre><code>- Class &#39;NMFfitXn&#39; handles the sub-case where the list of all the fits 
+</code></pre>
+
+<h4>is returned.</h4>
+
+<pre><code>- Class &#39;NMFList&#39; handles the case of heterogeneous NMF runs (different 
+</code></pre>
+
+<h4>algorithms, different factorization rank, different dimension, etc&hellip;)</h4></li>
+<li><p>The vignette contains more examples and details about the use of package.</p></li>
+<li><p>The package is compatible with both versions 3.x and 4.x of the bigmemory
+package. This package is used when running multicore parallel computations. 
+With version 4.x of bigmemory, the synchronicity package is also required as 
+it provides the mutex functionality that used to be provided by bigmemory 3.x.</p></li>
+</ul>
+
+<h4>BUG FIX</h4>
+
+<ul>
+<li><p>Running in multicore mode from the GUI on MacOS X is not allowed anymore as 
+it is not safe and were throwing an error [&#39;The process has forked and &hellip;&#39;].
+Thanks to Stephen Henderson from the UCL Cancer Institute (UK) for reporting this.</p></li>
+<li><p>Function &#39;nmf&#39; now restores the random seed to its original value as before its call 
+with a numeric seed. This behaviour can be disabled with option &#39;restore.seed=FALSE&#39; or &#39;-r&#39;</p></li>
+</ul>
+
+<h4>NEWLY DEPRECATED CLASSES, METHODS, FUNCTIONS, DATA SETS</h4>
+
+<ul>
+<li><p>Deprecated Generics/Methods
+   1) &#39;errorPlot&#39; - S4 generic/methods remains with .Deprecated message.
+   It is replaced by a definition of the &#39;plot&#39; method for signatures 
+   &#39;NMFfit,missing&#39; and &#39;NMFList,missing&#39;
+   It will be completely removed from the package in the next version.</p></li>
+<li><p>Deprecated Class
+   1) &#39;NMFSet&#39; - S4 class remains for backward compatibility, but is not 
+   used anymore. It is replaced by the classes &#39;NMFfitX1&#39;, &#39;NMFfitXn&#39;, 
+   &#39;NMFList&#39;.</p></li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.3                          </div>
+	  <div class="panel-body">
+	    <h4>NEW FEATURES</h4>
+
+<ul>
+<li>Now requires R 2.10
+####<br/></li>
+<li>New list slot &#39;misc&#39; in class &#39;NMF&#39; to be able to define new NMF models, 
+####    without having to extend the S4 class. Access is done by methods &#39;\(&lsquo; and &rsquo;\)&lt;-&#39;.
+####<br/></li>
+<li>More robust and convenient interface &#39;nmf&#39;
+####<br/></li>
+<li>New built-in algorithm : PE-NMF [Zhang (2008)]
+####<br/></li>
+<li>The vignette and documentation have been enriched with more examples and 
+####    details on the functionalities.
+####<br/></li>
+<li>When possible the computation is run in parallel on all the available cores.
+####    See option &#39;p&#39; or &#39;parallel=TRUE&#39; in argument &#39;.options&#39; of function &#39;nmf&#39;.
+####<br/></li>
+<li>Algorithms have been optimized and run faster
+####<br/></li>
+<li>Plot for rank estimation: quality measure curves can be plotted together 
+####    with a set of reference measures.
+####    The reference measures could for example come from the rank estimation of 
+####    randomized data, to investigate overfitting.
+####<br/></li>
+<li>New methods &#39;\(&lsquo; and &rsquo;\)&lt;-&#39; to access slot &#39;extra&#39; in class &#39;NMFfit&#39;
+####    These methods replace method &#39;extra&#39; that is now defunct.
+####<br/></li>
+<li><p>Function &#39;randomize&#39; allows to randomise a target matrix or </p>
+
+<h4>&#39;ExpressionSet&#39; by permuting the entries within each columns using a</h4>
+
+<h4>different permutation for each column. It is useful when checking for</h4>
+
+<p>over-fitting. </p>
+
+<h4>CHANGES</h4></li>
+<li><p>The &#39;random&#39; method of class &#39;NMF&#39; is renamed &#39;rnmf&#39;, but is still </p>
+
+<h4>accessible through name &#39;random&#39; via the &#39;seed&#39; argument in the</h4>
+
+<h4>interface method &#39;nmf&#39;.</h4>
+
+<h4>NEWLY DEFUNCT CLASSES, METHODS, FUNCTIONS, DATA SETS</h4></li>
+<li><p>Defunct Generics/Methods
+   1) &#39;extra&#39; - S4 generic/methods remains with .Defunct message.
+   It will be completely removed from the package in the next version.</p></li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.2.4                        </div>
+	  <div class="panel-body">
+	    <h4>CHANGES</h4>
+
+<ul>
+<li>Class &#39;NMFStrategy&#39; has a new slot &#39;mixed&#39;, that specify if the algorithm 
+####    can handle mixed signed input matrices.
+####<br/></li>
+<li>Method &#39;nmf-matrix,numeric,function&#39; accepts a new parameter &#39;mixed&#39; to 
+####    specify if the custom algorithm can handle mixed signed input matrices.</li>
+</ul>
+
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Changes in version 0.2.3                        </div>
+	  <div class="panel-body">
+	    <h4>NEW FEATURES</h4>
+
+<ul>
+<li><p>Package &#39;Biobase&#39; is not required anymore, and only suggested.
+The definition and export of the NMF-BioConductor layer is done at 
+loading.</p></li>
+<li><p>&#39;nmfApply&#39; S4 generic/method: a &#39;apply&#39;-like method for objects of 
+class &#39;NMF&#39;.</p></li>
+<li><p>&#39;predict&#39; S4 method for objects of class &#39;NMF&#39;: the method replace the now
+deprecated &#39;clusters&#39; method.</p></li>
+<li><p>&#39;featureNames&#39; and &#39;sampleNames&#39; S4 method for objects of class &#39;NMFSet&#39;.</p></li>
+<li><p>sub-setting S4 method &#39;[&#39; for objects of class &#39;NMF&#39;: row subsets are 
+applied to the rows of the basis matrix, column subsets are applied to 
+the columns of the mixture coefficient matrix.</p></li>
+</ul>
+
+<h4>CHANGES</h4>
+
+<ul>
+<li>method &#39;featureScore&#39; has a new argument &#39;method&#39; to allow choosing between 
+####    different scoring schema.
+####<br/></li>
+<li>method &#39;extractFeatures&#39; has two new arguments: &#39;method&#39; allows choosing 
+####    between different scoring and selection methods; &#39;format&#39; allows to specify 
+####    the output format.
+####    NOTE: the default output format has changed. The default result is now a 
+####    list whose elements are integer vectors (one per basis component) that 
+####    contain the indices of the basis-specific features. It is in practice what 
+one is usually interested in.<br/></li>
+</ul>
+
+<h4>BUG FIXES</h4>
+
+<ul>
+<li><p>Methods &#39;basis&lt;-&#39; and &#39;coef&lt;-&#39; were not exported by file NAMESPACE.</p></li>
+<li><p>Method &#39;featureNames&#39; was returning the column names of the mixture 
+coefficient matrix, instead of the row names of the basis matrix.</p></li>
+<li><p>&#39;metaHeatmap&#39; with argument &#39;class&#39; set would throw an error.</p></li>
+</ul>
+
+<h4>NEWLY DEPRECATED CLASSES, METHODS, FUNCTIONS, DATA SETS</h4>
+
+<ul>
+<li>Deprecated Generics/Methods
+   1) clusters - S4 generic/methods remain with .Deprecated message</li>
+</ul>
+
+	  </div>
+	</div>
+  </ol>
+</div></div>
+      
+      <footer>
+      
+<p>Built by <a href="https://github.com/renozao/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfWrapper. NMF 0.20.2</title>
+<title>nmfWrapper. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,8 +69,8 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>This function creates a wrapper function for calling the
-  function <code><a href='nmf.html'>nmf</a></code> with a given NMF algorithm.</p></p>
+      <p><p>This function creates a wrapper function for calling the function <code><a href='nmf.html'>nmf</a></code>
+with a given NMF algorithm.</p></p>
   
     </div>
     
@@ -80,44 +80,34 @@
     <h2>Arguments</h2>
     <dl>
       <dt>method</dt>
-      <dd>Name of the NMF algorithm to be wrapped. It
-  should be the name of a registered algorithm as returned
-  by <code><a href='nmfAlgorithm.html'>nmfAlgorithm</a></code>, or an NMF algorithm object
-  (i.e. an instance of <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code>).</dd>
+      <dd>Name of the NMF algorithm to be wrapped.
+It should be the name of a registered algorithm as returned by <code><a href='nmfAlgorithm.html'>nmfAlgorithm</a></code>,
+or an NMF algorithm object (i.e. an instance of <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code>).</dd>
       <dt>...</dt>
-      <dd>extra named arguments that define default
-  values for any arguments of <code><a href='nmf.html'>nmf</a></code> or the
-  algorithm itself.</dd>
+      <dd>extra named arguments that define default values for any arguments
+of <code><a href='nmf.html'>nmf</a></code> or the algorithm itself.</dd>
       <dt>.FIXED</dt>
-      <dd>a logical that indicates if the default
-  arguments defined in <code>...</code> must be considered as
-  fixed, i.e. that they are forced to have the defined
-  values and cannot be used in a call to the wrapper
-  function, in which case, a warning about discarding them
-  is thrown if they are used. Non fixed arguments may have
-  their value changed at call time, in which case it is
-  honoured and passed to the <code>nmf</code> call.
+      <dd>a logical that indicates if the default arguments defined in <code>...</code>
+must be considered as fixed, i.e. that they are forced to have the defined values and cannot
+be used in a call to the wrapper function, in which case, a warning about discarding them
+is thrown if they are used.
+Non fixed arguments may have their value changed at call time, in which case it is honoured and
+passed to the <code>nmf</code> call.
 
-  <code>.FIXED</code> may also be a character vector that
-  specifies which argument amongst <code>...</code> should be
-  considered as fixed.</dd>
+<code>.FIXED</code> may also be a character vector that specifies which argument amongst <code>...</code>
+should be considered as fixed.</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
       
-      <p>a function with argument <code>...</code> and a set of default
-  arguments defined in <code>...</code> in the call to
-  <code>nmfWrapper</code>.</p>
+      <p>a function with argument <code>...</code> and a set of default arguments defined
+in <code>...</code> in the call to <code>nmfWrapper</code>.</p>
   
     </div>
     
     <h2 id="examples">Examples</h2>
     <pre><code class="r">
-## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
 
 # wrap Lee &amp; Seung algorithm into a function
 lee &lt;- nmfWrapper(&#39;lee&#39;, seed=12345)
@@ -130,8 +120,7 @@ args(lee)
 ## NULL
 </code></pre>
 
-<pre><code class="r">
-# test on random data
+<pre><code class="r"># test on random data
 x &lt;- rmatrix(100,20)
 res &lt;- nmf(x, 3, &#39;lee&#39;, seed=12345)
 res2 &lt;- lee(x, 3)
@@ -149,17 +138,13 @@ nmf.equal(res, res3)
 </code></pre>
 
 <pre><code class="r">
-## Don&#39;t show: 
-stopifnot(nmf.equal(res, res2))
-stopifnot( !nmf.equal(res, res3))
-## End Don&#39;t show
 
 # argument &#39;method&#39; has no effect
 res4 &lt;- lee(x, 3, method=&#39;brunet&#39;)
 </code></pre>
 
-<pre><code>## Warning: Discarding fixed arguments from wrapped call to nmfWrapper
-## [&#39;method&#39;].
+<pre><code>## Warning in .checkArgs(ca, args): Discarding fixed arguments from wrapped
+## call to nmfWrapper [&#39;method&#39;].
 </code></pre>
 
 <pre><code class="r">nmf.equal(res, res4)
@@ -169,10 +154,6 @@ res4 &lt;- lee(x, 3, method=&#39;brunet&#39;)
 </code></pre>
 
 <pre><code class="r">
-## Don&#39;t show: 
-stopifnot(nmf.equal(res, res4))
-## End Don&#39;t show
-
 </code></pre>
 
   </div>

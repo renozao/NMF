@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>Strategy-class. NMF 0.20.2</title>
+<title>Strategy-class. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,12 +69,10 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>This class defines a common interface for generic
-  algorithm strategies (e.g.,
-  <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code>).</p>
-<p><code>name</code> and <code>name<-</code> gets and sets the name
-  associated with an object. In the case of <code>Strategy</code>
-  objects it is the the name of the algorithm.</p></p>
+      <p><p>This class defines a common interface for generic algorithm strategies
+(e.g., <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code>).</p>
+<p><code>name</code> and <code>name<-</code> gets and sets the name associated with an object.
+In the case of <code>Strategy</code> objects it is the the name of the algorithm.</p></p>
   
     </div>
     
@@ -89,33 +87,27 @@ name(object, ...) <- value</pre>
     <h2>Arguments</h2>
     <dl>
       <dt>object</dt>
-      <dd>an R object with a defined <code>name</code>
-  method</dd>
+      <dd>an R object with a defined <code>name</code> method</dd>
       <dt>...</dt>
       <dd>extra arguments to allow extension</dd>
       <dt>value</dt>
       <dd>replacement value</dd>
       <dt>all</dt>
-      <dd>a logical that indicates if all the names
-  associated with a strategy should be returned
-  (<code>TRUE</code>), or only the first (primary) one
-  (<code>FALSE</code>).</dd>
+      <dd>a logical that indicates if all the names associated with a strategy
+should be returned (<code>TRUE</code>), or only the first (primary) one (<code>FALSE</code>).</dd>
     </dl>
     
     <div class="Slots">
       <h2>Slots</h2>
       
       <p><ol>
-<li>namecharacter string giving the name of the
-  algorithm</p>
+<li>namecharacter string giving the name of the algorithm</p>
   
       <p></li>
-<li>packagename of the package that defined the
-  strategy.</p>
+<li>packagename of the package that defined the strategy.</p>
   
       <p></li>
-<li>defaultsdefault values for some of the
-  algorithm's arguments.</p>
+<li>defaultsdefault values for some of the algorithm's arguments.</p>
   
       <p></li>
 </ol></p>
@@ -128,20 +120,16 @@ name(object, ...) <- value</pre>
       <h2>Methods</h2>
       
       <p><ol>
-<li>name<code>signature(object = "Strategy")</code>:
-  Returns the name of an algorithm</p>
+<li>name<code>signature(object = "Strategy")</code>: Returns the name of an algorithm</p>
   
       <p></li>
-<li>name<code>signature(object = "Strategy")</code>:
-  Returns the name of an algorithm</p>
+<li>name<code>signature(object = "Strategy")</code>: Returns the name of an algorithm</p>
   
       <p></li>
-<li>name<-<code>signature(object = "Strategy", value
-  = "character")</code>: Sets the name(s) of an NMF algorithm</p>
+<li>name<-<code>signature(object = "Strategy", value = "character")</code>: Sets the name(s) of an NMF algorithm</p>
   
       <p></li>
-<li>name<-<code>signature(object = "Strategy", value
-  = "character")</code>: Sets the name(s) of an NMF algorithm</p>
+<li>name<-<code>signature(object = "Strategy", value = "character")</code>: Sets the name(s) of an NMF algorithm</p>
   
       <p></li>
 </ol></p>

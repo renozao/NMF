@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>scale.NMF. NMF 0.20.2</title>
+<title>scale.NMF. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,8 +69,7 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>Rescales an NMF model keeping the fitted target matrix
-  identical.</p></p>
+      <p><p>Rescales an NMF model keeping the fitted target matrix identical.</p></p>
   
     </div>
     
@@ -83,19 +82,15 @@
       <dt>x</dt>
       <dd>an NMF object</dd>
       <dt>center</dt>
-      <dd>either a numeric normalising vector
-  <code class = 'eq'>delta</code>, or either <code>'basis'</code> or
-  <code>'coef'</code>, which respectively correspond to using the
-  column sums of the basis matrix or the inverse of the row
-  sums of the coefficient matrix as a normalising vector.
-  If numeric, <code>center</code> should be a single value or a
-  vector of length the rank of the NMF model, i.e. the
-  number of columns in the basis matrix.</dd>
+      <dd>either a numeric normalising vector <code class = 'eq'>delta</code>, or either
+<code>'basis'</code> or <code>'coef'</code>, which respectively correspond to using the
+column sums of the basis matrix or the inverse of the row sums of the
+coefficient matrix as a normalising vector.
+If numeric, <code>center</code> should be a single value or a vector of length the
+rank of the NMF model, i.e. the number of columns in the basis matrix.</dd>
       <dt>scale</dt>
-      <dd>scaling coefficient applied to <code class = 'eq'>D</code>, i.e.
-  the value of <code class = 'eq'>alpha</code>, or, if
-  <code>center='coef'</code>, the value of
-  <code class = 'eq'>1/alpha</code> (see section <em>Details</em>).</dd>
+      <dd>scaling coefficient applied to <code class = 'eq'>D</code>, i.e. the value of <code class = 'eq'>alpha</code>,
+or, if <code>center='coef'</code>, the value of <code class = 'eq'>1/alpha</code> (see section <em>Details</em>).</dd>
     </dl>
     
     <div class="Value">
@@ -108,27 +103,20 @@
     <div class="Details">
       <h2>Details</h2>
       
-      <p>Standard NMF models are identifiable modulo a scaling
-  factor, meaning that the basis components and basis
-  profiles can be rescaled without changing the fitted
-  values:</p>
+      <p>Standard NMF models are identifiable modulo a scaling factor, meaning that the
+basis components and basis profiles can be rescaled without changing the fitted
+values:</p>
   
-      <p><pre class = 'eq'>X = W
-  H = (W D) (D^-1 H)</code> with <code class = 'eq'>D= alpha * diag(1/delta_1, ...,
-  1/delta_r)</code></p>
+      <p><pre class = 'eq'>X = W H = (W D) (D^-1 H)</code>
+with <code class = 'eq'>D= alpha * diag(1/delta_1, ..., 1/delta_r)</code></p>
   
-      <p>The default call <code>scale(object)</code> rescales the basis
-  NMF object so that each column of the basis matrix sums
-  up to one.</p>
+      <p>The default call <code>scale(object)</code> rescales the basis NMF object so that each
+column of the basis matrix sums up to one.</p>
   
     </div>
     
     <h2 id="examples">Examples</h2>
     <pre><code class="r">
-## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
 
 # random 3-rank 10x5 NMF model
 x &lt;- rnmf(3, 10, 5)
@@ -137,7 +125,7 @@ x &lt;- rnmf(3, 10, 5)
 colSums(basis(x))
 </code></pre>
 
-<pre><code>## [1] 4.822 4.774 5.044
+<pre><code>## [1] 4.821564 4.774258 5.044443
 </code></pre>
 
 <pre><code class="r">colSums(basis(scale(x)))
@@ -146,8 +134,7 @@ colSums(basis(x))
 <pre><code>## [1] 1 1 1
 </code></pre>
 
-<pre><code class="r">
-rx &lt;- scale(x, &#39;basis&#39;, 10)
+<pre><code class="r">rx &lt;- scale(x, &#39;basis&#39;, 10)
 colSums(basis(rx))
 </code></pre>
 
@@ -157,15 +144,14 @@ colSums(basis(rx))
 <pre><code class="r">rowSums(coef(rx))
 </code></pre>
 
-<pre><code>## [1] 0.7124 1.1672 1.6006
+<pre><code>## [1] 0.712381 1.167180 1.600620
 </code></pre>
 
-<pre><code class="r">
-# rescale based on coef
+<pre><code class="r"># rescale based on coef
 rowSums(coef(x))
 </code></pre>
 
-<pre><code>## [1] 1.477 2.445 3.173
+<pre><code>## [1] 1.477490 2.444735 3.173035
 </code></pre>
 
 <pre><code class="r">rowSums(coef(scale(x, &#39;coef&#39;)))
@@ -184,11 +170,10 @@ rowSums(coef(rx))
 <pre><code class="r">colSums(basis(rx))
 </code></pre>
 
-<pre><code>## [1] 0.7124 1.1672 1.6006
+<pre><code>## [1] 0.712381 1.167180 1.600620
 </code></pre>
 
-<pre><code class="r">
-# fitted target matrix is identical but the factors have been rescaled
+<pre><code class="r"># fitted target matrix is identical but the factors have been rescaled
 rx &lt;- scale(x, &#39;basis&#39;)
 all.equal(fitted(x), fitted(rx))
 </code></pre>
@@ -199,10 +184,7 @@ all.equal(fitted(x), fitted(rx))
 <pre><code class="r">all.equal(basis(x), basis(rx))
 </code></pre>
 
-<pre><code>## [1] &quot;Mean relative difference: 0.7951&quot;
-</code></pre>
-
-<pre><code class="r">
+<pre><code>## [1] &quot;Mean relative difference: 0.7950857&quot;
 </code></pre>
 
   </div>

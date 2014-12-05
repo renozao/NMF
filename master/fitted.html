@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>fitted. NMF 0.20.2</title>
+<title>fitted. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,14 +69,12 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>Computes the estimated target matrix based on a given
-  <em>NMF</em> model. The estimation depends on the
-  underlying NMF model. For example in the standard model
-  <code class = 'eq'>V ~ W H</code>, the target matrix is
-  estimated by the matrix product <code class = 'eq'>W H</code>. In other
-  models, the estimate may depend on extra
-  parameters/matrix (cf. Non-smooth NMF in
-  <code><a href='NMFns-class.html'>NMFns-class</a></code>).</p></p>
+      <p><p>Computes the estimated target matrix based on a given <em>NMF</em> model.
+The estimation depends on the underlying NMF model.
+For example in the standard model <code class = 'eq'>V ~ W H</code>, the target matrix is
+estimated by the matrix product <code class = 'eq'>W H</code>.
+In other models, the estimate may depend on extra parameters/matrix
+(cf. Non-smooth NMF in <code><a href='NMFns-class.html'>NMFns-class</a></code>).</p></p>
   
     </div>
     
@@ -84,7 +82,7 @@
     <pre>fitted(object, ...)
 
 <span class="label label-success">S4</span> (NMFstd)
-`fitted`(object, W, H, ...)
+`fitted`(object, W, H)
 
 <span class="label label-success">S4</span> (NMFOffset)
 `fitted`(object, W, H, offset = object@offset)
@@ -95,49 +93,44 @@
     <h2>Arguments</h2>
     <dl>
       <dt>object</dt>
-      <dd>an object that inherit from class
-  <code>NMF</code></dd>
+      <dd>an object that inherit from class <code>NMF</code></dd>
       <dt>...</dt>
       <dd>extra arguments to allow extension</dd>
       <dt>W</dt>
-      <dd>a matrix to use in the computation as the basis
-  matrix in place of <code>basis(object)</code>. It must be
-  compatible with the coefficient matrix used in the
-  computation (i.e. number of columns in <code>W</code> = number
-  of rows in <code>H</code>).</dd>
+      <dd>a matrix to use in the computation as the basis matrix in place of
+<code>basis(object)</code>.
+It must be compatible with the coefficient matrix used
+in the computation (i.e. number of columns in <code>W</code> = number of rows in <code>H</code>).</dd>
       <dt>H</dt>
-      <dd>a matrix to use in the computation as the
-  coefficient matrix in place of <code>coef(object)</code>. It
-  must be compatible with the basis matrix used in the
-  computation (i.e. number of rows in <code>H</code> = number of
-  columns in <code>W</code>).</dd>
+      <dd>a matrix to use in the computation as the coefficient matrix in place of
+<code>coef(object)</code>.
+It must be compatible with the basis matrix used
+in the computation (i.e. number of rows in <code>H</code> = number of columns in <code>W</code>).</dd>
       <dt>offset</dt>
       <dd>offset vector</dd>
       <dt>S</dt>
-      <dd>smoothing matrix to use instead of
-  <code>smoothing(object)</code> It must be a square matrix
-  compatible with the basis and coefficient matrices used
-  in the computation.</dd>
+      <dd>smoothing matrix to use instead of <code>smoothing(object)</code>
+It must be a square matrix compatible with the basis and coefficient matrices
+used in the computation.</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
       
-      <p>the target matrix estimate as fitted by the model
-  <code>object</code></p>
+      <p>the target matrix estimate as fitted by the model <code>object</code></p>
   
     </div>
 
     <div class="Details">
       <h2>Details</h2>
       
-      <p>This function is a S4 generic function imported from
-  <a href='http://www.inside-r.org/r-doc/stats/fitted.values'>fitted</a> in the package <em>stats</em>. It is
-  implemented as a pure virtual method for objects of class
-  <code>NMF</code>, meaning that concrete NMF models must provide
-  a definition for their corresponding class (i.e.
-  sub-classes of class <code>NMF</code>). See
-  <code><a href='NMF-class.html'>NMF-class</a></code> for more details.</p>
+      <p>This function is a S4 generic function imported from <a href='http://www.inside-r.org/r-doc/stats/fitted.values'>fitted</a> in
+the package <em>stats</em>.
+It is implemented as a pure virtual method for objects of class
+<code>NMF</code>, meaning that concrete NMF models must provide a
+definition for their corresponding class (i.e. sub-classes of
+class <code>NMF</code>).
+See <code><a href='NMF-class.html'>NMF-class</a></code> for more details.</p>
   
     </div>
 
@@ -145,44 +138,36 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>fitted<code>signature(object = "NMF")</code>: Pure
-  virtual method for objects of class
-  <code><a href='NMF-class.html'>NMF-class</a></code>, that should be overloaded by
-  sub-classes, and throws an error if called.</p>
+<li>fitted<code>signature(object = "NMF")</code>: Pure virtual method for objects of class <code><a href='NMF-class.html'>NMF-class</a></code>, that
+should be overloaded by sub-classes, and throws an error if called.</p>
   
       <p></li>
-<li>fitted<code>signature(object = "NMFstd")</code>:
-  Compute the target matrix estimate in <em>standard NMF
-  models</em>.</p>
+<li>fitted<code>signature(object = "NMFstd")</code>: Compute the target matrix estimate in <em>standard NMF models</em>.</p>
   
-      <p>The estimate matrix is computed as the product of the two
-  matrix slots <code>W</code> and <code>H</code>: <pre class = 'eq'>V ~ W H</code></p>
-  
-      <p></li>
-<li>fitted<code>signature(object = "NMFOffset")</code>:
-  Computes the target matrix estimate for an NMFOffset
-  object.</p>
-  
-      <p>The estimate is computed as: <pre class = 'eq'> W H + offset </code></p>
+      <p>The estimate matrix is computed as the product of the two matrix slots
+<code>W</code> and <code>H</code>:
+<pre class = 'eq'>V ~ W H</code></p>
   
       <p></li>
-<li>fitted<code>signature(object = "NMFns")</code>: Compute
-  estimate for an NMFns object, according to the Nonsmooth
-  NMF model (cf. <code><a href='NMFns-class.html'>NMFns-class</a></code>).</p>
+<li>fitted<code>signature(object = "NMFOffset")</code>: Computes the target matrix estimate for an NMFOffset object.</p>
   
-      <p>Extra arguments in <code>...</code> are passed to method
-  <code>smoothing</code>, and are typically used to pass a value
-  for <code>theta</code>, which is used to compute the smoothing
-  matrix instead of the one stored in <code>object</code>.</p>
+      <p>The estimate is computed as:
+<pre class = 'eq'> W H + offset </code></p>
   
       <p></li>
-<li>fitted<code>signature(object = "NMFfit")</code>:
-  Computes and return the estimated target matrix from an
-  NMF model fitted with function <code><a href='nmf.html'>nmf</a></code>.</p>
+<li>fitted<code>signature(object = "NMFns")</code>: Compute estimate for an NMFns object, according to the Nonsmooth NMF model
+(cf. <code><a href='NMFns-class.html'>NMFns-class</a></code>).</p>
   
-      <p>It is a shortcut for <code>fitted(fit(object), ...)</code>,
-  dispatching the call to the <code>fitted</code> method of the
-  actual NMF model.</p>
+      <p>Extra arguments in <code>...</code> are passed to method <code>smoothing</code>, and are
+typically used to pass a value for <code>theta</code>, which is used to compute
+the smoothing matrix instead of the one stored in <code>object</code>.</p>
+  
+      <p></li>
+<li>fitted<code>signature(object = "NMFfit")</code>: Computes and return the estimated target matrix from an NMF model fitted with
+function <code><a href='nmf.html'>nmf</a></code>.</p>
+  
+      <p>It is a shortcut for <code>fitted(fit(object), ...)</code>, dispatching the call to
+the <code>fitted</code> method of the actual NMF model.</p>
   
       <p></li>
 </ol></p>
@@ -193,10 +178,6 @@
     
     <h2 id="examples">Examples</h2>
     <pre><code class="r">
-## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
 
 # random standard NMF model
 x &lt;- rnmf(3, 10, 5)
@@ -204,9 +185,6 @@ all.equal(fitted(x), basis(x) %*% coef(x))
 </code></pre>
 
 <pre><code>## [1] TRUE
-</code></pre>
-
-<pre><code class="r">
 </code></pre>
 
   </div>

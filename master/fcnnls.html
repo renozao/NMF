@@ -2,14 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>fcnnls. NMF 0.20.2</title>
+<title>fcnnls. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="
   Original MATLAB code : Van Benthem and Keenan
 
-  Adaption of MATLAB code for SNMF/R(L): H. Kim
+Adaption of MATLAB code for SNMF/R(L): H. Kim
 
-  Adaptation to the NMF package framework: Renaud Gaujoux
+Adaptation to the NMF package framework: Renaud Gaujoux
 ">
 
 <!-- bootstrap css -->
@@ -57,7 +57,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -75,18 +75,14 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>This function solves the following nonnegative least
-  square linear problem using normal equations and the fast
-  combinatorial strategy from <cite>Van Benthem et al.
-  (2004)</cite>:</p>
+      <p><p>This function solves the following nonnegative least square linear problem
+using normal equations and the fast combinatorial strategy from <cite>Van Benthem et al. (2004)</cite>:</p>
 <p><pre class = 'eq'>min ||Y - X K||_F, s.t. K>=0</code></p>
-<p>where <code class = 'eq'>Y</code> and <code class = 'eq'>X</code> are two real matrices of
-  dimension <code class = 'eq'>n x p</code> and <code class = 'eq'>n
-  x r</code> respectively, and <code class = 'eq'>|.|_F</code> is the
-  Frobenius norm.</p>
-<p>The algorithm is very fast compared to other approaches,
-  as it is optimised for handling multiple right-hand
-  sides.</p></p>
+<p>where <code class = 'eq'>Y</code> and <code class = 'eq'>X</code> are two real matrices of dimension <code class = 'eq'>n x p</code>
+and <code class = 'eq'>n x r</code> respectively,
+and <code class = 'eq'>|.|_F</code> is the Frobenius norm.</p>
+<p>The algorithm is very fast compared to other approaches, as it is optimised
+for handling multiple right-hand sides.</p></p>
   
     </div>
     
@@ -99,24 +95,20 @@
     <h2>Arguments</h2>
     <dl>
       <dt>...</dt>
-      <dd>extra arguments passed to the internal
-  function <code>.fcnnls</code>. Currently not used.</dd>
+      <dd>extra arguments passed to the internal function <code>.fcnnls</code>.
+Currently not used.</dd>
       <dt>verbose</dt>
-      <dd>toggle verbosity (default is
-  <code>FALSE</code>).</dd>
+      <dd>toggle verbosity (default is <code>FALSE</code>).</dd>
       <dt>x</dt>
       <dd>the coefficient matrix</dd>
       <dt>y</dt>
-      <dd>the target matrix to be approximated by <code class = 'eq'>X
-  K</code>.</dd>
+      <dd>the target matrix to be approximated by <code class = 'eq'>X K</code>.</dd>
       <dt>pseudo</dt>
-      <dd>By default (<code>pseudo=FALSE</code>) the
-  algorithm uses Gaussian elimination to solve the
-  successive internal linear problems, using the
-  <code><a href='http://www.inside-r.org/r-doc/base/solve'>solve</a></code> function.  If <code>pseudo=TRUE</code> the
-  algorithm uses Moore-Penrose generalized
-  <code><a href='http://www.inside-r.org/r-doc/corpcor/pseudoinverse'>pseudoinverse</a></code> from the
-  <code>corpcor</code> package instead of <a href='http://www.inside-r.org/r-doc/base/solve'>solve</a>.</dd>
+      <dd>By default (<code>pseudo=FALSE</code>) the algorithm uses Gaussian
+elimination to solve the successive internal linear problems, using the
+<code><a href='http://www.inside-r.org/r-doc/base/solve'>solve</a></code> function.  If <code>pseudo=TRUE</code> the algorithm uses
+Moore-Penrose generalized <code><a href='http://www.inside-r.org/r-doc/corpcor/pseudoinverse'>pseudoinverse</a></code> from the
+<code>corpcor</code> package instead of <a href='http://www.inside-r.org/r-doc/base/solve'>solve</a>.</dd>
     </dl>
     
     <div class="Value">
@@ -124,48 +116,41 @@
       
       <p>A list containing the following components:</p>
   
-      <p>x the estimated optimal matrix <code class = 'eq'>K</code>.
-  fitted the fitted matrix <code class = 'eq'>X K</code>.
-  residuals the residual matrix <code class = 'eq'>Y - X K</code>.
-  deviance the residual sum of squares between the
-  fitted matrix <code class = 'eq'>X K</code> and the target matrix <code class = 'eq'>Y</code>.
-  That is the sum of the square residuals. passive
-  a <code class = 'eq'>r x p</code> logical matrix containing the passive set,
-  that is the set of entries in <code class = 'eq'>K</code> that are not null
-  (i.e. strictly positive). pseudo a logical that
-  is <code>TRUE</code> if the computation was performed using the
-  pseudoinverse. See argument <code>pseudo</code>.</p>
+      <p>x the estimated optimal matrix <code class = 'eq'>K</code>. fitted the fitted
+matrix <code class = 'eq'>X K</code>. residuals the residual matrix <code class = 'eq'>Y - X K</code>.
+deviance the residual sum of squares between the fitted matrix
+<code class = 'eq'>X K</code> and the target matrix <code class = 'eq'>Y</code>. That is the sum of the square
+residuals. passive a <code class = 'eq'>r x p</code> logical matrix containing the
+passive set, that is the set of entries in <code class = 'eq'>K</code> that are not null (i.e.
+strictly positive). pseudo a logical that is <code>TRUE</code> if the
+computation was performed using the pseudoinverse. See argument
+<code>pseudo</code>.</p>
   
     </div>
 
     <div class="Details">
       <h2>Details</h2>
       
-      <p>Within the <code>NMF</code> package, this algorithm is used
-  internally by the SNMF/R(L) algorithm from <cite>Kim et
-  al. (2007)</cite> to solve general Nonnegative Matrix
-  Factorization (NMF) problems, using alternating
-  nonnegative constrained least-squares. That is by
-  iteratively and alternatively estimate each matrix
-  factor.</p>
+      <p>Within the <code>NMF</code> package, this algorithm is used internally by the
+SNMF/R(L) algorithm from <cite>Kim et al. (2007)</cite> to solve general Nonnegative
+Matrix Factorization (NMF) problems, using alternating nonnegative
+constrained least-squares.
+That is by iteratively and alternatively estimate each matrix factor.</p>
   
-      <p>The algorithm is an active/passive set method, which
-  rearrange the right-hand side to reduce the number of
-  pseudo-inverse calculations. It uses the unconstrained
-  solution <code class = 'eq'>K_u</code> obtained from the unconstrained least
-  squares problem, i.e. <code class = 'eq'>min ||Y
-  - X K||_F^2</code> , so as to determine the initial passive
-  sets.</p>
+      <p>The algorithm is an active/passive set method, which rearrange the
+right-hand side to reduce the number of pseudo-inverse calculations.
+It uses the unconstrained solution <code class = 'eq'>K_u</code> obtained from the
+unconstrained least squares problem,
+i.e. <code class = 'eq'>min ||Y - X K||_F^2</code> , so as to determine
+the initial passive sets.</p>
   
-      <p>The function <code>fcnnls</code> is provided separately so that
-  it can be used to solve other types of nonnegative least
-  squares problem. For faster computation, when multiple
-  nonnegative least square fits are needed, it is
-  recommended to directly use the function
-  <code><a href='dot-fcnnls.html'>.fcnnls</a></code>.</p>
+      <p>The function <code>fcnnls</code> is provided separately so that it can be
+used to solve other types of nonnegative least squares problem.
+For faster computation, when multiple nonnegative least square fits
+are needed, it is recommended to directly use the function <code><a href='dot-fcnnls.html'>.fcnnls</a></code>.</p>
   
-      <p>The code of this function is a port from the original
-  MATLAB code provided by <cite>Kim et al. (2007)</cite>.</p>
+      <p>The code of this function is a port from the original MATLAB code
+provided by <cite>Kim et al. (2007)</cite>.</p>
   
     </div>
 
@@ -173,20 +158,15 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>fcnnls<code>signature(x = "matrix", y =
-  "matrix")</code>: This method wraps a call to the internal
-  function <code>.fcnnls</code>, and formats the results in a
-  similar way as other lest-squares methods such as
-  <code><a href='http://www.inside-r.org/r-doc/stats/lm'>lm</a></code>.</p>
+<li>fcnnls<code>signature(x = "matrix", y = "matrix")</code>: This method wraps a call to the internal function <code>.fcnnls</code>, and
+formats the results in a similar way as other lest-squares methods such
+as <code><a href='http://www.inside-r.org/r-doc/stats/lm'>lm</a></code>.</p>
   
       <p></li>
-<li>fcnnls<code>signature(x = "numeric", y =
-  "matrix")</code>: Shortcut for <code>fcnnls(as.matrix(x), y,
-  ...)</code>.</p>
+<li>fcnnls<code>signature(x = "numeric", y = "matrix")</code>: Shortcut for <code>fcnnls(as.matrix(x), y, ...)</code>.</p>
   
       <p></li>
-<li>fcnnls<code>signature(x = "ANY", y = "numeric")</code>:
-  Shortcut for <code>fcnnls(x, as.matrix(y), ...)</code>.</p>
+<li>fcnnls<code>signature(x = "ANY", y = "numeric")</code>: Shortcut for <code>fcnnls(x, as.matrix(y), ...)</code>.</p>
   
       <p></li>
 </ol></p>
@@ -198,33 +178,21 @@
     <div class="References">
       <h2>References</h2>
       
-      <p>Original MATLAB code from Van Benthem and Keenan,
-  slightly modified by H. Kim:
-  <a href = 'http://www.cc.gatech.edu/~hpark/software/fcnnls.m'>http://www.cc.gatech.edu/~hpark/software/fcnnls.m</a></p>
+      <p>Original MATLAB code from Van Benthem and Keenan, slightly modified by H.
+Kim: <a href = 'http://www.cc.gatech.edu/~hpark/software/fcnnls.m'>http://www.cc.gatech.edu/~hpark/software/fcnnls.m</a></p>
   
-      <p>Van Benthem M and Keenan MR (2004). "Fast algorithm for
-  the solution of large-scale non-negativity-constrained
-  least squares problems." _Journal of Chemometrics_,
-  *18*(10), pp. 441-450. ISSN 0886-9383, <URL:
-  http://dx.doi.org/10.1002/cem.889>, <URL:
-  http://doi.wiley.com/10.1002/cem.889>.</p>
+      <p>Van Benthem M and Keenan MR (2004). "Fast algorithm for the solution of large-scale non-negativity-constrained least squares
+problems." _Journal of Chemometrics_, *18*(10), pp. 441-450. ISSN 0886-9383, <URL: http://dx.doi.org/10.1002/cem.889>, <URL:
+http://doi.wiley.com/10.1002/cem.889>.</p>
   
-      <p>Kim H and Park H (2007). "Sparse non-negative matrix
-  factorizations via alternating non-negativity-constrained
-  least squares for microarray data analysis."
-  _Bioinformatics (Oxford, England)_, *23*(12), pp.
-  1495-502. ISSN 1460-2059, <URL:
-  http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
+      <p>Kim H and Park H (2007). "Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares
+for microarray data analysis." _Bioinformatics (Oxford, England)_, *23*(12), pp. 1495-502. ISSN 1460-2059, <URL:
+http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
   
     </div>
     
     <h2 id="examples">Examples</h2>
     <pre><code class="r">
-## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
 
 ## Define a random nonnegative matrix matrix
 n &lt;- 200; p &lt;- 20; r &lt;- 3
@@ -242,7 +210,6 @@ y &lt;- runif(n)
 res &lt;- fcnnls(X, y)
 # or
 res &lt;- fcnnls(X[,1], y)
-
 </code></pre>
 
   </div>
@@ -263,9 +230,9 @@ res &lt;- fcnnls(X[,1], y)
     
   Original MATLAB code : Van Benthem and Keenan
 
-  Adaption of MATLAB code for SNMF/R(L): H. Kim
+Adaption of MATLAB code for SNMF/R(L): H. Kim
 
-  Adaptation to the NMF package framework: Renaud Gaujoux
+Adaptation to the NMF package framework: Renaud Gaujoux
 
     
   </div>

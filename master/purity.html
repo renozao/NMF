@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>purity. NMF 0.20.2</title>
+<title>purity. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,16 +69,13 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>The functions <code>purity</code> and <code>entropy</code>
-  respectively compute the purity and the entropy of a
-  clustering given <em>a priori</em> known classes.</p>
-<p>The purity and entropy measure the ability of a
-  clustering method, to recover known classes (e.g. one
-  knows the true class labels of each sample), that are
-  applicable even when the number of cluster is different
-  from the number of known classes. <cite>Kim et al.
-  (2007)</cite> used these measures to evaluate the performance
-  of their alternate least-squares NMF algorithm.</p></p>
+      <p><p>The functions <code>purity</code> and <code>entropy</code> respectively compute the purity and the entropy
+of a clustering given <em>a priori</em> known classes.</p>
+<p>The purity and entropy measure the ability of a clustering method, to recover
+known classes (e.g. one knows the true class labels of each sample), that are
+applicable even when the number of cluster is different from the number of known classes.
+<cite>Kim et al. (2007)</cite> used these measures to evaluate the performance of their alternate least-squares
+NMF algorithm.</p></p>
   
     </div>
     
@@ -96,22 +93,17 @@ entropy(x, y, ...)
     <h2>Arguments</h2>
     <dl>
       <dt>x</dt>
-      <dd>an object that can be interpreted as a factor or
-  can generate such an object, e.g. via a suitable method
-  <code><a href='predict.html'>predict</a></code>, which gives the cluster membership
-  for each sample.</dd>
+      <dd>an object that can be interpreted as a factor or can generate such an object, e.g. via
+a suitable method <code><a href='predict.html'>predict</a></code>, which gives the cluster membership for each sample.</dd>
       <dt>y</dt>
-      <dd>a factor or an object coerced into a factor that
-  gives the true class labels for each sample. It may be
-  missing if <code>x</code> is a contingency table.</dd>
+      <dd>a factor or an object coerced into a factor that gives the true class labels for each sample.
+It may be missing if <code>x</code> is a contingency table.</dd>
       <dt>...</dt>
-      <dd>extra arguments to allow extension, and
-  usually passed to the next method.</dd>
+      <dd>extra arguments to allow extension, and usually passed to the next method.</dd>
       <dt>method</dt>
-      <dd>a character string that specifies how the
-  value is computed. It may be either <code>'best'</code> or
-  <code>'mean'</code> to compute the best or mean purity
-  respectively.</dd>
+      <dd>a character string that specifies how the value is computed.
+It may be either <code>'best'</code> or <code>'mean'</code> to compute the best or mean
+purity respectively.</dd>
     </dl>
     
     <div class="Value">
@@ -126,41 +118,40 @@ entropy(x, y, ...)
     <div class="Details">
       <h2>Details</h2>
       
-      <p>Suppose we are given <code class = 'eq'>l</code> categories, while the
-  clustering method generates <code class = 'eq'>k</code> clusters.</p>
+      <p>Suppose we are given <code class = 'eq'>l</code> categories, while the clustering method generates
+<code class = 'eq'>k</code> clusters.</p>
   
-      <p>The purity of the clustering with respect to the known
-  categories is given by: <pre class = 'eq'>Purity = \frac{1}{n}
-  \sum_{q=1}^k \max_{1 \leq j \leq l} n_q^j</code> ,</p>
+      <p>The purity of the clustering with respect to the known categories is given by:
+<pre class = 'eq'>Purity = \frac{1}{n} \sum_{q=1}^k \max_{1 \leq j \leq l} n_q^j</code> ,</p>
   
-      <p>where: <ul>
-<li> <code class = 'eq'>n</code> is the total number of
-  samples; </li>
-<li> <code class = 'eq'>n_q^j</code> is the number of samples in
-  cluster <code class = 'eq'>q</code> that belongs to original class <code class = 'eq'>j</code>
-  (<code class = 'eq'>1 \leq j \leq l</code>). </li>
+      <p>where:
+<ul>
+<li> <code class = 'eq'>n</code> is the total number of samples;
+</li>
+<li> <code class = 'eq'>n_q^j</code> is the number of samples in cluster <code class = 'eq'>q</code> that belongs to
+original class <code class = 'eq'>j</code> (<code class = 'eq'>1 \leq j \leq l</code>).
+</li>
 </ul></p>
   
-      <p>The purity is therefore a real number in <code class = 'eq'>[0,1]</code>. The
-  larger the purity, the better the clustering performance.</p>
+      <p>The purity is therefore a real number in <code class = 'eq'>[0,1]</code>.
+The larger the purity, the better the clustering performance.</p>
   
-      <p>The entropy of the clustering with respect to the known
-  categories is given by: <pre class = 'eq'> - 1/(n log2(l) ) sum_q sum_j n(q,j)
-  log2( n(q,j) / n_q )</code>,</p>
+      <p>The entropy of the clustering with respect to the known categories is given by:
+<pre class = 'eq'>
+- 1/(n log2(l) ) sum_q sum_j n(q,j) log2( n(q,j) / n_q )</code>,</p>
   
-      <p>where: <ul>
-<li> <code class = 'eq'>n</code> is the total number of
-  samples; </li>
-<li> <code class = 'eq'>n_q</code> is the total number of
-  samples in cluster <code class = 'eq'>q</code> (<code class = 'eq'>1 \leq q \leq k</code>); </li>
-<li>
-  <code class = 'eq'>n(q,j)</code> is the number of samples in cluster
-  <code class = 'eq'>q</code> that belongs to original class <code class = 'eq'>j</code> (<code class = 'eq'>1
-  \leq j \leq l</code>). </li>
+      <p>where:
+<ul>
+<li> <code class = 'eq'>n</code> is the total number of samples;
+</li>
+<li> <code class = 'eq'>n_q</code> is the total number of samples in cluster <code class = 'eq'>q</code> (<code class = 'eq'>1 \leq q \leq k</code>);
+</li>
+<li> <code class = 'eq'>n(q,j)</code> is the number of samples in cluster <code class = 'eq'>q</code> that belongs to
+original class <code class = 'eq'>j</code> (<code class = 'eq'>1 \leq j \leq l</code>).
+</li>
 </ul></p>
   
-      <p>The smaller the entropy, the better the clustering
-  performance.</p>
+      <p>The smaller the entropy, the better the clustering performance.</p>
   
     </div>
 
@@ -168,51 +159,36 @@ entropy(x, y, ...)
       <h2>Methods</h2>
       
       <p><ol>
-<li>entropy<code>signature(x = "table", y =
-  "missing")</code>: Computes the purity directly from the
-  contingency table <code>x</code>.</p>
+<li>entropy<code>signature(x = "table", y = "missing")</code>: Computes the purity directly from the contingency table <code>x</code>.</p>
   
-      <p>This is the workhorse method that is eventually called by
-  all other methods.</p>
+      <p>This is the workhorse method that is eventually called by all other methods.</p>
   
       <p></li>
-<li>entropy<code>signature(x = "factor", y = "ANY")</code>:
-  Computes the purity on the contingency table of <code>x</code>
-  and <code>y</code>, that is coerced into a factor if necessary.</p>
+<li>entropy<code>signature(x = "factor", y = "ANY")</code>: Computes the purity on the contingency table of <code>x</code> and <code>y</code>, that is
+coerced into a factor if necessary.</p>
   
       <p></li>
-<li>entropy<code>signature(x = "ANY", y = "ANY")</code>:
-  Default method that should work for results of clustering
-  algorithms, that have a suitable <code>predict</code> method
-  that returns the cluster membership vector: the purity is
-  computed between <code>x</code> and <code>predict{y}</code></p>
+<li>entropy<code>signature(x = "ANY", y = "ANY")</code>: Default method that should work for results of clustering algorithms, that have a
+suitable <code>predict</code> method that returns the cluster membership vector:
+the purity is computed between <code>x</code> and <code>predict{y}</code></p>
   
       <p></li>
-<li>entropy<code>signature(x = "NMFfitXn", y =
-  "ANY")</code>: Computes the best or mean entropy across all NMF
-  fits stored in <code>x</code>.</p>
+<li>entropy<code>signature(x = "NMFfitXn", y = "ANY")</code>: Computes the best or mean entropy across all NMF fits stored in <code>x</code>.</p>
   
       <p></li>
-<li>purity<code>signature(x = "table", y =
-  "missing")</code>: Computes the purity directly from the
-  contingency table <code>x</code></p>
+<li>purity<code>signature(x = "table", y = "missing")</code>: Computes the purity directly from the contingency table <code>x</code></p>
   
       <p></li>
-<li>purity<code>signature(x = "factor", y = "ANY")</code>:
-  Computes the purity on the contingency table of <code>x</code>
-  and <code>y</code>, that is coerced into a factor if necessary.</p>
+<li>purity<code>signature(x = "factor", y = "ANY")</code>: Computes the purity on the contingency table of <code>x</code> and <code>y</code>, that is
+coerced into a factor if necessary.</p>
   
       <p></li>
-<li>purity<code>signature(x = "ANY", y = "ANY")</code>:
-  Default method that should work for results of clustering
-  algorithms, that have a suitable <code>predict</code> method
-  that returns the cluster membership vector: the purity is
-  computed between <code>x</code> and <code>predict{y}</code></p>
+<li>purity<code>signature(x = "ANY", y = "ANY")</code>: Default method that should work for results of clustering algorithms, that have a
+suitable <code>predict</code> method that returns the cluster membership vector:
+the purity is computed between <code>x</code> and <code>predict{y}</code></p>
   
       <p></li>
-<li>purity<code>signature(x = "NMFfitXn", y =
-  "ANY")</code>: Computes the best or mean purity across all NMF
-  fits stored in <code>x</code>.</p>
+<li>purity<code>signature(x = "NMFfitXn", y = "ANY")</code>: Computes the best or mean purity across all NMF fits stored in <code>x</code>.</p>
   
       <p></li>
 </ol></p>
@@ -224,22 +200,14 @@ entropy(x, y, ...)
     <div class="References">
       <h2>References</h2>
       
-      <p>Kim H and Park H (2007). "Sparse non-negative matrix
-  factorizations via alternating non-negativity-constrained
-  least squares for microarray data analysis."
-  _Bioinformatics (Oxford, England)_, *23*(12), pp.
-  1495-502. ISSN 1460-2059, <URL:
-  http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
+      <p>Kim H and Park H (2007). "Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares
+for microarray data analysis." _Bioinformatics (Oxford, England)_, *23*(12), pp. 1495-502. ISSN 1460-2059, <URL:
+http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
   
     </div>
     
     <h2 id="examples">Examples</h2>
     <pre><code class="r">
-## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
 
 # generate a synthetic dataset with known classes: 50 features, 18 samples (5+5+8)
 n &lt;- 50; counts &lt;- c(5, 5, 8);
@@ -251,13 +219,13 @@ x2 &lt;- nmf(V, 2)
 purity(x2, cl)
 </code></pre>
 
-<pre><code>## [1] 0.7222
+<pre><code>## [1] 0.7222222
 </code></pre>
 
 <pre><code class="r">entropy(x2, cl)
 </code></pre>
 
-<pre><code>## [1] 0.438
+<pre><code>## [1] 0.4380081
 </code></pre>
 
 <pre><code class="r"># perform default NMF with rank=2
@@ -272,9 +240,6 @@ purity(x3, cl)
 </code></pre>
 
 <pre><code>## [1] 0
-</code></pre>
-
-<pre><code class="r">
 </code></pre>
 
   </div>

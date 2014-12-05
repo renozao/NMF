@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>nmfReport. NMF 0.20.2</title>
+<title>nmfReport. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,8 +69,8 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>Generates an HTML report from running a set of method on
-  a given target matrix, for a set of factorization ranks.</p></p>
+      <p><p>Generates an HTML report from running a set of method on a given
+target matrix, for a set of factorization ranks.</p></p>
   
     </div>
     
@@ -98,35 +98,29 @@
     <div class="Value">
       <h2>Value</h2>
       
-      <p>a list with the following elements: fitsthe
-  fit(s) for each method and each value of the rank.
-  accuracya data.frame that contains the summary
-  assessment measures, for each fit.</p>
+      <p>a list with the following elements:
+fitsthe fit(s) for each method and each value of the rank.
+accuracya data.frame that contains the summary assessment measures,
+for each fit.</p>
   
     </div>
 
     <div class="Details">
       <h2>Details</h2>
       
-      <p>The report is based on an .Rmd document
-  <code>'report.Rmd'</code> stored in the package installation
-  sub-directory <code>scripts/</code>, and is compiled using
-  <span class = "pkg">knitr</span>.</p>
+      <p>The report is based on an .Rmd document <code>'report.Rmd'</code> stored in
+the package installation sub-directory <code>scripts/</code>, and is compiled
+using <span class = "pkg">knitr</span>.</p>
   
-      <p>At the beginning of the document, a file named
-  <code>'functions.R'</code> is looked for in the current
-  directory, and sourced if present. This enables the
-  definition of custom NMF methods (see
-  <code><a href='setNMFMethod.html'>setNMFMethod</a></code>) or setting global options.</p>
+      <p>At the beginning of the document, a file named <code>'functions.R'</code> is
+looked for in the current directory, and sourced if present.
+This enables the definition of custom NMF methods (see <code><a href='setNMFMethod.html'>setNMFMethod</a></code>)
+or setting global options.</p>
   
     </div>
     
     <h2 id="examples">Examples</h2>
     <pre><code class="r">
-## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
 
 ## Not run: 
 ##D 
@@ -135,7 +129,6 @@ options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
 ##D nmfReport(x, 2:4, method = list(&#39;br&#39;, &#39;lee&#39;), colClass = gr, nrun = 5)
 ##D 
 ## End(Not run)
-
 </code></pre>
 
   </div>

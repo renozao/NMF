@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>setNMFMethod. NMF 0.20.2</title>
+<title>setNMFMethod. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,10 +69,10 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>Adds a new algorithm to the registry of algorithms that
-  perform Nonnegative Matrix Factorization.</p>
-<p><code>nmfRegisterAlgorithm</code> is an alias to
-  <code>setNMFMethod</code> for backward compatibility.</p></p>
+      <p><p>Adds a new algorithm to the registry of algorithms that perform
+Nonnegative Matrix Factorization.</p>
+<p><code>nmfRegisterAlgorithm</code> is an alias to <code>setNMFMethod</code> for backward
+compatibility.</p></p>
   
     </div>
     
@@ -84,19 +84,16 @@ nmfRegisterAlgorithm(name, method, ..., overwrite = isLoadingNamespace(), verbos
     <h2>Arguments</h2>
     <dl>
       <dt>...</dt>
-      <dd>arguments passed to the factory function
-  <code><a href='NMFStrategy.html'>NMFStrategy</a></code>, which instantiate the
-  <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code> object that is stored in
-  registry.</dd>
+      <dd>arguments passed to the factory function <code><a href='NMFStrategy.html'>NMFStrategy</a></code>,
+which instantiate the <code><a href='NMFStrategy-class.html'>NMFStrategy-class</a></code> object that is stored
+in registry.</dd>
       <dt>overwrite</dt>
-      <dd>logical that indicates if any existing
-  NMF method with the same name should be overwritten
-  (<code>TRUE</code>) or not (<code>FALSE</code>), in which case an
-  error is thrown.</dd>
+      <dd>logical that indicates if any existing NMF method with the
+same name should be overwritten (<code>TRUE</code>) or not (<code>FALSE</code>),
+in which case an error is thrown.</dd>
       <dt>verbose</dt>
-      <dd>a logical that indicates if information
-  about the registration should be printed (<code>TRUE</code>) or
-  not (<code>FALSE</code>).</dd>
+      <dd>a logical that indicates if information about the registration
+should be printed (<code>TRUE</code>) or not (<code>FALSE</code>).</dd>
       <dt>name</dt>
       <dd>name/key of an NMF algorithm.</dd>
       <dt>method</dt>
@@ -105,10 +102,6 @@ nmfRegisterAlgorithm(name, method, ..., overwrite = isLoadingNamespace(), verbos
         
     <h2 id="examples">Examples</h2>
     <pre><code class="r">
-## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
 
 # define/regsiter a new -- dummy -- NMF algorithm with the minimum arguments
 # y: target matrix
@@ -120,12 +113,10 @@ setNMFMethod(&#39;mynmf&#39;, function(y, x, ...){ x })
 <pre><code>## Registering NMF algorithm &#39;mynmf&#39; [NMFStrategyFunction] ... OK
 </code></pre>
 
-<pre><code class="r">
-# check algorithm on toy data
+<pre><code class="r"># check algorithm on toy data
 res &lt;- nmfCheck(&#39;mynmf&#39;)
 # the NMF seed is not changed
 stopifnot( nmf.equal(res, nmfCheck(&#39;mynmf&#39;, seed=res)) )
-
 </code></pre>
 
   </div>

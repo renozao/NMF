@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>residuals. NMF 0.20.2</title>
+<title>residuals. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,18 +69,14 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>The package NMF defines methods for the function
-  <code><a href='http://www.inside-r.org/r-doc/stats/residuals'>residuals</a></code> that returns the final
-  residuals of an NMF fit or the track of the residuals
-  along the fit process, computed according to the
-  objective function associated with the algorithm that
-  fitted the model.</p>
-<p><code>residuals<-</code> sets the value of the last residuals,
-  or, optionally, of the complete residual track.</p>
-<p>Tells if an <code>NMFfit</code> object contains a recorded
-  residual track.</p>
-<p><code>trackError</code> adds a residual value to the track of
-  residuals.</p></p>
+      <p><p>The package NMF defines methods for the function <code><a href='http://www.inside-r.org/r-doc/stats/residuals'>residuals</a></code>
+that returns the final residuals of an NMF fit or the track of the residuals
+along the fit process, computed according to the objective function
+associated with the algorithm that fitted the model.</p>
+<p><code>residuals<-</code> sets the value of the last residuals, or, optionally,
+of the complete residual track.</p>
+<p>Tells if an <code>NMFfit</code> object contains a recorded residual track.</p>
+<p><code>trackError</code> adds a residual value to the track of residuals.</p></p>
   
     </div>
     
@@ -102,60 +98,54 @@ trackError(object, value, niter, force = FALSE)</pre>
     <h2>Arguments</h2>
     <dl>
       <dt>object</dt>
-      <dd>an <code>NMFfit</code> object as fitted by
-  function <code><a href='nmf.html'>nmf</a></code>, in single run mode.</dd>
+      <dd>an <code>NMFfit</code> object as fitted by function <code><a href='nmf.html'>nmf</a></code>,
+in single run mode.</dd>
       <dt>...</dt>
       <dd>extra parameters (not used)</dd>
       <dt>track</dt>
-      <dd>a logical that indicates if the complete
-  track of residuals should be returned (if it has been
-  computed during the fit), or only the last value.</dd>
+      <dd>a logical that indicates if the complete track of residuals
+should be returned (if it has been computed during the fit), or only the last
+value.</dd>
       <dt>niter</dt>
-      <dd>specifies the iteration number for which one
-  wants to get/set/test a residual value. This argument is
-  used only if not <code>NULL</code></dd>
+      <dd>specifies the iteration number for which one wants
+to get/set/test a residual value. This argument is used only if not <code>NULL</code></dd>
       <dt>value</dt>
       <dd>residual value</dd>
       <dt>force</dt>
-      <dd>logical that indicates if the value should
-  be added to the track even if there already is a value
-  for this iteration number or if the iteration does not
-  conform to the tracking interval
-  <code>nmf.getOption('track.interval')</code>.</dd>
+      <dd>logical that indicates if the value should be added to the track
+even if there already is a value for this iteration number or if the iteration
+does not conform to the tracking interval <code>nmf.getOption('track.interval')</code>.</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
       
-      <p><code>residuals</code> returns a single numeric value if
-  <code>track=FALSE</code> or a numeric vector containing the
-  residual values at some iterations. The names correspond
-  to the iterations at which the residuals were computed.</p>
+      <p><code>residuals</code> returns a single numeric value if <code>track=FALSE</code>
+or a numeric vector containing the residual values at some iterations.
+The names correspond to the iterations at which the residuals were computed.</p>
   
     </div>
 
     <div class="Details">
       <h2>Details</h2>
       
-      <p>When called with <code>track=TRUE</code>, the whole residuals
-  track is returned, if available. Note that method
-  <code><a href='nmf.html'>nmf</a></code> does not compute the residuals track,
-  unless explicitly required.</p>
+      <p>When called with <code>track=TRUE</code>, the whole residuals track is returned,
+if available.
+Note that method <code><a href='nmf.html'>nmf</a></code> does not compute the residuals track,
+unless explicitly required.</p>
   
-      <p>It is a S4 methods defined for the associated generic
-  functions from package <code>stats</code> (See
-  <a href='http://www.inside-r.org/r-doc/stats/residuals'>residuals</a>).</p>
+      <p>It is a S4 methods defined for the associated generic functions from package
+<code>stats</code> (See <a href='http://www.inside-r.org/r-doc/stats/residuals'>residuals</a>).</p>
   
     </div>
 
     <div class="Note">
       <h2>Note</h2>
       
-      <p>Stricly speaking, the method <code>residuals,NMFfit</code> does
-  not fulfill its contract as defined by the package
-  <code>stats</code>, but rather acts as function
-  <code>deviance</code>. The might be changed in a later release
-  to make it behave as it should.</p>
+      <p>Stricly speaking, the method <code>residuals,NMFfit</code> does not fulfill
+its contract as defined by the package <code>stats</code>, but rather acts as function
+<code>deviance</code>.
+The might be changed in a later release to make it behave as it should.</p>
   
     </div>
 
@@ -163,15 +153,12 @@ trackError(object, value, niter, force = FALSE)</pre>
       <h2>Methods</h2>
       
       <p><ol>
-<li>residuals<code>signature(object = "NMFfit")</code>:
-  Returns the residuals -- track -- between the target
-  matrix and the NMF fit <code>object</code>.</p>
+<li>residuals<code>signature(object = "NMFfit")</code>: Returns the residuals -- track -- between the target matrix and the NMF
+fit <code>object</code>.</p>
   
       <p></li>
-<li>residuals<code>signature(object = "NMFfitX")</code>:
-  Returns the residuals achieved by the best fit object,
-  i.e. the lowest residual approximation error achieved
-  across all NMF runs.</p>
+<li>residuals<code>signature(object = "NMFfitX")</code>: Returns the residuals achieved by the best fit object, i.e. the lowest
+residual approximation error achieved across all NMF runs.</p>
   
       <p></li>
 </ol></p>
@@ -190,9 +177,7 @@ trackError(object, value, niter, force = FALSE)</pre>
       
     <h2>See also</h2>
     
-  Other stats: <code><a href='deviance.html'>deviance</a></code>,
-  <code><a href='deviance.html'>deviance,NMF-method</a></code>,
-  <code><a href='deviance.html'>nmfDistance</a></code>
+  Other stats: <code><a href='deviance.html'>deviance</a></code>, <code><a href='deviance.html'>deviance,NMF-method</a></code>, <code><a href='deviance.html'>nmfDistance</a></code>
 
         
   </div>

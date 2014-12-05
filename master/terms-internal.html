@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>bterms&lt;-. NMF 0.20.2</title>
+<title>bterms&lt;-. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,12 +69,10 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>These functions are for internal use and should not be
-  called by the end-user.</p>
-<p><code>cterms<-</code> sets fixed coefficient terms or indexes
-  and should only be called on a newly created NMF object,
-  i.e. in the constructor/factory generic
-  <code><a href='nmfModel.html'>nmfModel</a></code>.</p></p>
+      <p><p>These functions are for internal use and should not be called by the end-user.</p>
+<p><code>cterms<-</code> sets fixed coefficient terms or indexes and should only be
+called on a newly created NMF object, i.e. in the constructor/factory generic
+<code><a href='nmfModel.html'>nmfModel</a></code>.</p></p>
   
     </div>
     
@@ -88,15 +86,14 @@ cterms(object) <- value</pre>
       <dt>object</dt>
       <dd>NMF object to be updated.</dd>
       <dt>value</dt>
-      <dd>specification of the replacement value for
-  fixed-terms.</dd>
+      <dd>specification of the replacement value for fixed-terms.</dd>
     </dl>
     
     <div class="Details">
       <h2>Details</h2>
       
-      <p>They use <code><a href='http://www.inside-r.org/r-doc/stats/model.matrix'>model.matrix</a>(~ -1 + ., data=value)</code>
-  to generate suitable term matrices.</p>
+      <p>They use <code><a href='http://www.inside-r.org/r-doc/stats/model.matrix'>model.matrix</a>(~ -1 + ., data=value)</code> to generate suitable
+term matrices.</p>
   
     </div>
 
@@ -104,14 +101,12 @@ cterms(object) <- value</pre>
       <h2>Methods</h2>
       
       <p><ol>
-<li>bterms<-<code>signature(object = "NMFstd")</code>:
-  Default method tries to coerce <code>value</code> into a
-  <code>data.frame</code> with <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/as.data.frame'>as.data.frame</a></code>.</p>
+<li>bterms<-<code>signature(object = "NMFstd")</code>: Default method tries to coerce <code>value</code> into a <code>data.frame</code> with
+<code><a href='http://www.inside-r.org/r-doc/base/as.data.frame'>as.data.frame</a></code>.</p>
   
       <p></li>
-<li>cterms<-<code>signature(object = "NMFstd")</code>:
-  Default method tries to coerce <code>value</code> into a
-  <code>data.frame</code> with <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/as.data.frame'>as.data.frame</a></code>.</p>
+<li>cterms<-<code>signature(object = "NMFstd")</code>: Default method tries to coerce <code>value</code> into a <code>data.frame</code> with
+<code><a href='http://www.inside-r.org/r-doc/base/as.data.frame'>as.data.frame</a></code>.</p>
   
       <p></li>
 </ol></p>

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFList-class. NMF 0.20.2</title>
+<title>NMFList-class. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,13 +69,10 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>This class wraps a list of NMF fit objects, which may
-  come from different runs of the function
-  <code><a href='nmf.html'>nmf</a></code>, using different parameters, methods,
-  etc.. These can be either from a single run (NMFfit) or
-  multiple runs (NMFfitX).</p>
-<p>Note that its definition/interface is very likely to
-  change in the future.</p></p>
+      <p><p>This class wraps a list of NMF fit objects, which may come from different
+runs of the function <code><a href='nmf.html'>nmf</a></code>, using different parameters, methods, etc..
+These can be either from a single run (NMFfit) or multiple runs (NMFfitX).</p>
+<p>Note that its definition/interface is very likely to change in the future.</p></p>
   
     </div>
     
@@ -85,30 +82,24 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>algorithm<code>signature(object = "NMFList")</code>:
-  Returns the method names used to compute the NMF fits in
-  the list. It returns <code>NULL</code> if the list is empty.</p>
+<li>algorithm<code>signature(object = "NMFList")</code>: Returns the method names used to compute the NMF fits in the list.
+It returns <code>NULL</code> if the list is empty.</p>
   
       <p></li>
-<li>runtime<code>signature(object = "NMFList")</code>:
-  Returns the CPU time required to compute all NMF fits in
-  the list. It returns <code>NULL</code> if the list is empty. If
-  no timing data are available, the sequential time is
-  returned.</p>
+<li>runtime<code>signature(object = "NMFList")</code>: Returns the CPU time required to compute all NMF fits in the list.
+It returns <code>NULL</code> if the list is empty.
+If no timing data are available, the sequential time is returned.</p>
   
       <p></li>
-<li>seqtime<code>signature(object = "NMFList")</code>:
-  Returns the CPU time that would be required to
-  sequentially compute all NMF fits stored in
-  <code>object</code>.</p>
+<li>seqtime<code>signature(object = "NMFList")</code>: Returns the CPU time that would be required to sequentially compute all NMF
+fits stored in <code>object</code>.</p>
   
-      <p>This method calls the function <code>runtime</code> on each fit
-  and sum up the results. It returns <code>NULL</code> on an
-  empty object.</p>
+      <p>This method calls the function <code>runtime</code> on each fit and sum up the
+results.
+It returns <code>NULL</code> on an empty object.</p>
   
       <p></li>
-<li>show<code>signature(object = "NMFList")</code>: Show
-  method for objects of class <code>NMFList</code></p>
+<li>show<code>signature(object = "NMFList")</code>: Show method for objects of class <code>NMFList</code></p>
   
       <p></li>
 </ol></p>

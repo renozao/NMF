@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>smoothing. NMF 0.20.2</title>
+<title>smoothing. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,8 +69,8 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>The function <code>smoothing</code> builds a smoothing matrix
-  for using in Nonsmooth NMF models.</p></p>
+      <p><p>The function <code>smoothing</code> builds a smoothing matrix for using in Nonsmooth
+NMF models.</p></p>
   
     </div>
     
@@ -82,8 +82,7 @@
       <dt>x</dt>
       <dd>a object of class <code>NMFns</code>.</dd>
       <dt>theta</dt>
-      <dd>the smoothing parameter (numeric) between 0
-  and 1.</dd>
+      <dd>the smoothing parameter (numeric) between 0 and 1.</dd>
       <dt>...</dt>
       <dd>extra arguments to allow extension (not used)</dd>
     </dl>
@@ -91,49 +90,42 @@
     <div class="Value">
       <h2>Value</h2>
       
-      <p>if <code>x</code> estimates a <code class = 'eq'>r</code>-rank NMF, then the result
-  is a <code class = 'eq'>r \times r</code> square matrix.</p>
+      <p>if <code>x</code> estimates a <code class = 'eq'>r</code>-rank NMF,
+then the result is a <code class = 'eq'>r \times r</code> square matrix.</p>
   
     </div>
 
     <div class="Details">
       <h2>Details</h2>
       
-      <p>For a <code class = 'eq'>r</code>-rank NMF, the smoothing matrix of parameter
-  <code class = 'eq'>\theta</code> is built as follows: <pre class = 'eq'>S = (1-\theta)I +
-  \frac{\theta}{r} 11^T ,</code> where <code class = 'eq'>I</code> is the identity
-  matrix and <code class = 'eq'>1</code> is a vector of ones (cf.
-  <code><a href='NMFns-class.html'>NMFns-class</a></code> for more details).</p>
+      <p>For a <code class = 'eq'>r</code>-rank NMF, the smoothing matrix of parameter <code class = 'eq'>\theta</code> is
+built as follows:
+<pre class = 'eq'>S = (1-\theta)I + \frac{\theta}{r} 11^T ,</code>
+where <code class = 'eq'>I</code> is the identity matrix and <code class = 'eq'>1</code> is a vector of ones
+(cf. <code><a href='NMFns-class.html'>NMFns-class</a></code> for more details).</p>
   
     </div>
     
     <h2 id="examples">Examples</h2>
     <pre><code class="r">
-## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
 
 x &lt;- nmfModel(3, model=&#39;NMFns&#39;)
 smoothing(x)
 </code></pre>
 
-<pre><code>##        [,1]   [,2]   [,3]
-## [1,] 0.6667 0.1667 0.1667
-## [2,] 0.1667 0.6667 0.1667
-## [3,] 0.1667 0.1667 0.6667
+<pre><code>##           [,1]      [,2]      [,3]
+## [1,] 0.6666667 0.1666667 0.1666667
+## [2,] 0.1666667 0.6666667 0.1666667
+## [3,] 0.1666667 0.1666667 0.6666667
 </code></pre>
 
 <pre><code class="r">smoothing(x, 0.1)
 </code></pre>
 
-<pre><code>##         [,1]    [,2]    [,3]
-## [1,] 0.93333 0.03333 0.03333
-## [2,] 0.03333 0.93333 0.03333
-## [3,] 0.03333 0.03333 0.93333
-</code></pre>
-
-<pre><code class="r">
+<pre><code>##            [,1]       [,2]       [,3]
+## [1,] 0.93333333 0.03333333 0.03333333
+## [2,] 0.03333333 0.93333333 0.03333333
+## [3,] 0.03333333 0.03333333 0.93333333
 </code></pre>
 
   </div>

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>methods-NMF. NMF 0.20.2</title>
+<title>methods-NMF. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -70,14 +70,11 @@
       <h2>Description</h2>
       
       <p><p>Registry for NMF Algorithms</p>
-<p><code>selectNMFMethod</code> tries to select an appropriate NMF
-  algorithm that is able to fit a given the NMF model.</p>
-<p><code>getNMFMethod</code> retrieves NMF algorithm objects from
-  the registry.</p>
-<p><code>existsNMFMethod</code> tells if an NMF algorithm is
-  registered under the</p>
-<p><code>removeNMFMethod</code> removes an NMF algorithm from the
-  registry.</p></p>
+<p><code>selectNMFMethod</code> tries to select an appropriate NMF algorithm that is
+able to fit a given the NMF model.</p>
+<p><code>getNMFMethod</code> retrieves NMF algorithm objects from the registry.</p>
+<p><code>existsNMFMethod</code> tells if an NMF algorithm is registered under the</p>
+<p><code>removeNMFMethod</code> removes an NMF algorithm from the registry.</p></p>
   
     </div>
     
@@ -95,36 +92,30 @@ removeNMFMethod(name, ...)</pre>
       <dt>name</dt>
       <dd>name of a registered NMF algorithm</dd>
       <dt>model</dt>
-      <dd>class name of an NMF model, i.e. a class
-  that inherits from class <code><a href='NMF-class.html'>NMF-class</a></code>.</dd>
+      <dd>class name of an NMF model, i.e. a class that inherits from class
+<code><a href='NMF-class.html'>NMF-class</a></code>.</dd>
       <dt>load</dt>
-      <dd>a logical that indicates if the selected
-  algorithms should be loaded into <code>NMFStrategy</code>
-  objects</dd>
+      <dd>a logical that indicates if the selected algorithms should be loaded
+into <code>NMFStrategy</code> objects</dd>
       <dt>all</dt>
-      <dd>a logical that indicates if all algorithms
-  that can fit <code>model</code> should be returned or only the
-  default or first found.</dd>
+      <dd>a logical that indicates if all algorithms that can fit <code>model</code>
+should be returned or only the default or first found.</dd>
       <dt>quiet</dt>
-      <dd>a logical that indicates if the operation
-  should be performed quietly, without throwing errors or
-  warnings.</dd>
+      <dd>a logical that indicates if the operation should be performed quietly,
+without throwing errors or warnings.</dd>
       <dt>...</dt>
-      <dd>extra arguments passed to
-  <code><a href='http://www.inside-r.org/r-doc/pkgmaker/regfetch'>pkgreg_fetch</a></code> or
-  <code><a href='http://www.inside-r.org/r-doc/pkgmaker/regfetch'>pkgreg_remove</a></code>.</dd>
+      <dd>extra arguments passed to <code><a href='http://www.inside-r.org/r-doc/pkgmaker/regfetch'>pkgreg_fetch</a></code>
+or <code><a href='http://www.inside-r.org/r-doc/pkgmaker/regfetch'>pkgreg_remove</a></code>.</dd>
       <dt>exact</dt>
-      <dd>a logical that indicates if the access key
-  should be matched exactly (<code>TRUE</code>) or partially
-  (<code>FALSE</code>).</dd>
+      <dd>a logical that indicates if the access key should be matched
+exactly (<code>TRUE</code>) or partially (<code>FALSE</code>).</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
       
-      <p><code>selectNMFMethod</code> returns a character vector or
-  <code>NMFStrategy</code> objects, or NULL if no suitable
-  algorithm was found.</p>
+      <p><code>selectNMFMethod</code> returns a character vector or <code>NMFStrategy</code> objects,
+or NULL if no suitable algorithm was found.</p>
   
     </div>
       </div>

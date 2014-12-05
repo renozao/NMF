@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFstd-class. NMF 0.20.2</title>
+<title>NMFstd-class. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,11 +69,11 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>This class implements the standard model of Nonnegative
-  Matrix Factorization. It provides a general structure and
-  generic functions to manage factorizations that follow
-  the standard NMF model, as defined by <cite>Lee et al.
-  (2001)</cite>.</p></p>
+      <p><p>This class implements the standard model of Nonnegative Matrix
+Factorization.
+It provides a general structure and generic functions to manage
+factorizations that follow the standard NMF model, as defined by
+<cite>Lee et al. (2001)</cite>.</p></p>
   
     </div>
     
@@ -82,60 +82,59 @@
     <div class="Details">
       <h2>Details</h2>
       
-      <p>Let <code class = 'eq'>V</code> be a <code class = 'eq'>n \times m</code> non-negative matrix and
-  <code class = 'eq'>r</code> a positive integer.  In its standard form (see
-  references below), a NMF of <code class = 'eq'>V</code> is commonly defined
-  as a pair of matrices <code class = 'eq'>(W, H)</code> such that:</p>
+      <p>Let <code class = 'eq'>V</code> be a <code class = 'eq'>n \times m</code> non-negative matrix and <code class = 'eq'>r</code> a positive
+integer.  In its standard form (see references below), a NMF of <code class = 'eq'>V</code> is
+commonly defined as a pair of matrices <code class = 'eq'>(W, H)</code> such that:</p>
   
       <p><pre class = 'eq'>V \equiv W H,</code></p>
   
-      <p>where: <ul>
-<li> <code class = 'eq'>W</code> and <code class = 'eq'>H</code> are <code class = 'eq'>n
-  \times r</code> and <code class = 'eq'>r \times m</code> matrices respectively with
-  non-negative entries; </li>
-<li> <code class = 'eq'>\equiv</code> is to be
-  understood with respect to some loss function. Common
-  choices of loss functions are based on Frobenius norm or
-  Kullback-Leibler divergence. </li>
+      <p>where:
+<ul>
+<li> <code class = 'eq'>W</code> and <code class = 'eq'>H</code> are <code class = 'eq'>n \times r</code> and <code class = 'eq'>r
+\times m</code> matrices respectively with non-negative entries;
+</li>
+<li> <code class = 'eq'>\equiv</code> is to be understood with respect to some loss function.
+Common choices of loss functions are based on Frobenius norm or Kullback-Leibler
+divergence.
+</li>
 </ul></p>
   
       <p>Integer <code class = 'eq'>r</code> is called the <em>factorization rank</em>.
-  Depending on the context of application of NMF, the
-  columns of <code class = 'eq'>W</code> and <code class = 'eq'>H</code> are given different names:
-  <ol>
-<li>columns of <code>W</code>basis vector,
-  metagenes, factors, source, image basis </li>
-<li>columns of
-  <code>H</code>mixture coefficients, metagene sample
-  expression profiles, weights </li>
-<li>rows of
-  <code>H</code>basis profiles, metagene expression profiles </li>
+Depending on the context of application of NMF, the columns of <code class = 'eq'>W</code>
+and <code class = 'eq'>H</code> are given different names:
+<ol>
+<li>columns of <code>W</code>basis vector, metagenes, factors, source, image basis
+</li>
+<li>columns of <code>H</code>mixture coefficients, metagene sample expression profiles, weights
+</li>
+<li>rows of <code>H</code>basis profiles, metagene expression profiles
+</li>
 </ol></p>
   
-      <p>NMF approaches have been successfully applied to several
-  fields. The package NMF was implemented trying to use
-  names as generic as possible for objects and methods.</p>
+      <p>NMF approaches have been successfully applied to several fields.
+The package NMF was implemented trying to use names as generic as possible
+for objects and methods.</p>
   
-      <p>The following terminology is used: <ol>
+      <p>The following terminology is used:
+<ol>
 <li>samplesthe columns of the target matrix <code class = 'eq'>V</code>
-  </li>
+</li>
 <li>featuresthe rows of the target matrix <code class = 'eq'>V</code>
-  </li>
+</li>
 <li>basis matrixthe first matrix factor <code class = 'eq'>W</code>
-  </li>
-<li>basis vectorsthe columns of first matrix factor
-  <code class = 'eq'>W</code> </li>
-<li>mixture matrixthe second matrix factor
-  <code class = 'eq'>H</code> </li>
-<li>mixtures coefficientsthe columns of
-  second matrix factor <code class = 'eq'>H</code> </li>
+</li>
+<li>basis vectorsthe columns of first matrix factor <code class = 'eq'>W</code>
+</li>
+<li>mixture matrixthe second matrix factor <code class = 'eq'>H</code> </li>
+<li>mixtures
+coefficientsthe columns of second matrix factor <code class = 'eq'>H</code>
+</li>
 </ol></p>
   
-      <p>However, because the package NMF was primarily
-  implemented to work with gene expression microarray data,
-  it also provides a layer to easily and intuitively work
-  with objects from the Bioconductor base framework. See
-  <a href='bioc.html'>bioc-NMF</a> for more details.</p>
+      <p>However, because the package NMF was primarily implemented to work with gene
+expression microarray data, it also provides a layer to easily and
+intuitively work with objects from the Bioconductor base framework.
+See <a href='bioc.html'>bioc-NMF</a> for more details.</p>
   
     </div>
 
@@ -143,45 +142,36 @@
       <h2>Slots</h2>
       
       <p><ol>
-<li>WA <code>matrix</code> that contains the basis matrix,
-  i.e. the <em>first</em> matrix factor of the factorisation</p>
+<li>WA <code>matrix</code> that contains the basis matrix, i.e. the <em>first</em>
+matrix factor of the factorisation</p>
   
       <p></li>
-<li>HA <code>matrix</code> that contains the coefficient
-  matrix, i.e. the <em>second</em> matrix factor of the
-  factorisation</p>
+<li>HA <code>matrix</code> that contains the coefficient matrix, i.e. the
+<em>second</em> matrix factor of the factorisation</p>
   
       <p></li>
-<li>btermsa <code>data.frame</code> that contains the
-  primary data that define fixed basis terms. See
-  <code><a href='terms.html'>bterms</a></code>.</p>
+<li>btermsa <code>data.frame</code> that contains the primary data that
+define fixed basis terms. See <code><a href='terms.html'>bterms</a></code>.</p>
   
       <p></li>
-<li>ibtermsinteger vector that contains the indexes
-  of the basis components that are fixed, i.e. for which
-  only the coefficient are estimated.</p>
+<li>ibtermsinteger vector that contains the indexes of the basis components
+that are fixed, i.e. for which only the coefficient are estimated.</p>
   
-      <p>IMPORTANT: This slot is set on construction of an NMF
-  model via
-  <code><a href='nmfModel.html'>nmfModel</a></code> and
-  is not recommended to not be subsequently changed by the
-  end-user.</p>
+      <p>IMPORTANT: This slot is set on construction of an NMF model via
+<code><a href='nmfModel.html'>nmfModel</a></code> and is not recommended to
+not be subsequently changed by the end-user.</p>
   
       <p></li>
-<li>ctermsa <code>data.frame</code> that contains the
-  primary data that define fixed coefficient terms. See
-  <code><a href='terms.html'>cterms</a></code>.</p>
+<li>ctermsa <code>data.frame</code> that contains the primary data that
+define fixed coefficient terms. See <code><a href='terms.html'>cterms</a></code>.</p>
   
       <p></li>
-<li>ictermsinteger vector that contains the indexes
-  of the basis components that have fixed coefficients,
-  i.e. for which only the basis vectors are estimated.</p>
+<li>ictermsinteger vector that contains the indexes of the basis components
+that have fixed coefficients, i.e. for which only the basis vectors are estimated.</p>
   
-      <p>IMPORTANT: This slot is set on construction of an NMF
-  model via
-  <code><a href='nmfModel.html'>nmfModel</a></code> and
-  is not recommended to not be subsequently changed by the
-  end-user.</p>
+      <p>IMPORTANT: This slot is set on construction of an NMF model via
+<code><a href='nmfModel.html'>nmfModel</a></code> and is not recommended to
+not be subsequently changed by the end-user.</p>
   
       <p></li>
 </ol></p>
@@ -194,59 +184,53 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>.basis<code>signature(object = "NMFstd")</code>: Get
-  the basis matrix in standard NMF models</p>
+<li>.basis<code>signature(object = "NMFstd")</code>: Get the basis matrix in standard NMF models</p>
   
       <p>This function returns slot <code>W</code> of <code>object</code>.</p>
   
       <p></li>
-<li>.basis<-<code>signature(object = "NMFstd", value
-  = "matrix")</code>: Set the basis matrix in standard NMF models</p>
+<li>.basis<-<code>signature(object = "NMFstd", value = "array")</code>: Set the basis matrix in standard NMF models</p>
   
       <p>This function sets slot <code>W</code> of <code>object</code>.</p>
   
       <p></li>
-<li>bterms<-<code>signature(object = "NMFstd")</code>:
-  Default method tries to coerce <code>value</code> into a
-  <code>data.frame</code> with <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/as.data.frame'>as.data.frame</a></code>.</p>
+<li>.basis<-<code>signature(object = "NMFstd", value = "matrix")</code>: Replaces a slice of the basis array.</p>
   
       <p></li>
-<li>.coef<code>signature(object = "NMFstd")</code>: Get the
-  mixture coefficient matrix in standard NMF models</p>
+<li>bterms<-<code>signature(object = "NMFstd")</code>: Default method tries to coerce <code>value</code> into a <code>data.frame</code> with
+<code><a href='http://www.inside-r.org/r-doc/base/as.data.frame'>as.data.frame</a></code>.</p>
+  
+      <p></li>
+<li>.coef<code>signature(object = "NMFstd")</code>: Get the mixture coefficient matrix in standard NMF models</p>
   
       <p>This function returns slot <code>H</code> of <code>object</code>.</p>
   
       <p></li>
-<li>.coef<-<code>signature(object = "NMFstd", value =
-  "matrix")</code>: Set the mixture coefficient matrix in
-  standard NMF models</p>
+<li>.coef<-<code>signature(object = "NMFstd", value = "array")</code>: Set the mixture coefficient matrix in standard NMF models</p>
   
       <p>This function sets slot <code>H</code> of <code>object</code>.</p>
   
       <p></li>
-<li>cterms<-<code>signature(object = "NMFstd")</code>:
-  Default method tries to coerce <code>value</code> into a
-  <code>data.frame</code> with <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/as.data.frame'>as.data.frame</a></code>.</p>
+<li>.coef<-<code>signature(object = "NMFstd", value = "matrix")</code>: Replaces a slice of the coefficent array.</p>
   
       <p></li>
-<li>fitted<code>signature(object = "NMFstd")</code>:
-  Compute the target matrix estimate in <em>standard NMF
-  models</em>.</p>
-  
-      <p>The estimate matrix is computed as the product of the two
-  matrix slots <code>W</code> and <code>H</code>: <pre class = 'eq'>V ~ W H</code></p>
+<li>cterms<-<code>signature(object = "NMFstd")</code>: Default method tries to coerce <code>value</code> into a <code>data.frame</code> with
+<code><a href='http://www.inside-r.org/r-doc/base/as.data.frame'>as.data.frame</a></code>.</p>
   
       <p></li>
-<li>ibterms<code>signature(object = "NMFstd")</code>:
-  Method for standard NMF models, which returns the integer
-  vector that is stored in slot <code>ibterms</code> when a
-  formula-based NMF model is instantiated.</p>
+<li>fitted<code>signature(object = "NMFstd")</code>: Compute the target matrix estimate in <em>standard NMF models</em>.</p>
+  
+      <p>The estimate matrix is computed as the product of the two matrix slots
+<code>W</code> and <code>H</code>:
+<pre class = 'eq'>V ~ W H</code></p>
   
       <p></li>
-<li>icterms<code>signature(object = "NMFstd")</code>:
-  Method for standard NMF models, which returns the integer
-  vector that is stored in slot <code>icterms</code> when a
-  formula-based NMF model is instantiated.</p>
+<li>ibterms<code>signature(object = "NMFstd")</code>: Method for standard NMF models, which returns the integer vector that is
+stored in slot <code>ibterms</code> when a formula-based NMF model is instantiated.</p>
+  
+      <p></li>
+<li>icterms<code>signature(object = "NMFstd")</code>: Method for standard NMF models, which returns the integer vector that is
+stored in slot <code>icterms</code> when a formula-based NMF model is instantiated.</p>
   
       <p></li>
 </ol></p>
@@ -258,19 +242,13 @@
     <div class="References">
       <h2>References</h2>
       
-      <p>Lee DD and Seung H (2001). "Algorithms for non-negative
-  matrix factorization." _Advances in neural information
-  processing systems_. <URL:
-  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
+      <p>Lee DD and Seung H (2001). "Algorithms for non-negative matrix factorization." _Advances in neural information processing
+systems_. <URL: http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
   
     </div>
     
     <h2 id="examples">Examples</h2>
     <pre><code class="r">
-## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
 
 # create a completely empty NMFstd object
 new(&#39;NMFstd&#39;)
@@ -282,8 +260,7 @@ new(&#39;NMFstd&#39;)
 ## samples: 0
 </code></pre>
 
-<pre><code class="r">
-# create a NMF object based on one random matrix: the missing matrix is deduced
+<pre><code class="r"># create a NMF object based on one random matrix: the missing matrix is deduced
 # Note this only works when using factory method NMF
 n &lt;- 50; r &lt;- 3;
 w &lt;- rmatrix(n, r)
@@ -296,8 +273,7 @@ nmfModel(W=w)
 ## samples: 0
 </code></pre>
 
-<pre><code class="r">
-# create a NMF object based on random (compatible) matrices
+<pre><code class="r"># create a NMF object based on random (compatible) matrices
 p &lt;- 20
 h &lt;- rmatrix(r, p)
 nmfModel(W=w, H=h)
@@ -309,8 +285,7 @@ nmfModel(W=w, H=h)
 ## samples: 20
 </code></pre>
 
-<pre><code class="r">
-# create a NMF object based on incompatible matrices: generate an error
+<pre><code class="r"># create a NMF object based on incompatible matrices: generate an error
 h &lt;- rmatrix(r+1, p)
 try( new(&#39;NMFstd&#39;, W=w, H=h) )
 try( nmfModel(w, h) )
@@ -320,8 +295,9 @@ try( nmfModel(w, h) )
 nmfModel(r, W=w, H=h)
 </code></pre>
 
-<pre><code>## Warning: nmfModel - Objective rank [3] is lower than the number of rows in
-## H [4]: only the first 3 rows of H will be used
+<pre><code>## Warning in .local(rank, target, ...): nmfModel - Objective rank [3] is
+## lower than the number of rows in H [4]: only the first 3 rows of H will be
+## used
 </code></pre>
 
 <pre><code>## &lt;Object of class:NMFstd&gt;
@@ -330,7 +306,19 @@ nmfModel(r, W=w, H=h)
 ## samples: 20
 </code></pre>
 
-<pre><code class="r">
+<pre><code class="r"># create a NMF array object based on random (compatible) arrays
+# extra dimension (levels)
+q &lt;- 2
+w &lt;- array(seq(n*r*q), dim = c(n, r, q))
+h &lt;- rmatrix(r, p)
+nmfModel(W = w, H = h)
+</code></pre>
+
+<pre><code>## &lt;Object of class:NMFstd&gt;
+## features: 50 
+## basis/rank: 3 
+## samples: 20 
+## levels:  2 | 1
 </code></pre>
 
   </div>
@@ -344,9 +332,7 @@ nmfModel(r, W=w, H=h)
       
     <h2>See also</h2>
     
-  Other NMF-model:
-  <code><a href='NMFOffset-class.html'>initialize,NMFOffset-method</a></code>,
-  <code><a href='NMFns-class.html'>NMFns-class</a></code>, <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code>
+  Other NMF-model: <code><a href='NMFOffset-class.html'>initialize,NMFOffset-method</a></code>, <code><a href='NMFns-class.html'>NMFns-class</a></code>, <code><a href='NMFOffset-class.html'>NMFOffset-class</a></code>
 
         
   </div>

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFStrategy. NMF 0.20.2</title>
+<title>NMFStrategy. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,8 +69,8 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>Creates NMFStrategy objects that wraps implementation of
-  NMF algorithms into a unified interface.</p></p>
+      <p><p>Creates NMFStrategy objects that wraps implementation of NMF algorithms into
+a unified interface.</p></p>
   
     </div>
     
@@ -105,151 +105,109 @@
       <dt>...</dt>
       <dd>extra arguments passed to <code><a href='http://www.inside-r.org/r-doc/methods/new'>new</a></code>.</dd>
       <dt>.stop</dt>
-      <dd>specification of a stopping criterion, that
-  is used instead of the one associated to the NMF
-  algorithm. It may be specified as: <ul>
-<li> the
-  access key of a registered stopping criterion; </li>
-<li> a
-  single integer that specifies the exact number of
-  iterations to perform, which will be honoured unless a
-  lower value is explicitly passed in argument
-  <code>maxIter</code>. </li>
-<li> a single numeric value that
-  specifies the stationnarity threshold for the objective
-  function, used in with <code><a href='stop-NMF.html'>nmf.stop.stationary</a></code>;
-  </li>
-<li> a function with signature
-  <code>(object="NMFStrategy", i="integer", y="matrix",
-  x="NMF", ...)</code>, where <code>object</code> is the
-  <code>NMFStrategy</code> object that describes the algorithm
-  being run, <code>i</code> is the current iteration, <code>y</code> is
-  the target matrix and <code>x</code> is the current value of
-  the NMF model. </li>
+      <dd>specification of a stopping criterion, that is used instead of the
+one associated to the NMF algorithm.
+It may be specified as:
+<ul>
+<li> the access key of a registered stopping criterion;
+</li>
+<li> a single integer that specifies the exact number of iterations to perform, which will
+be honoured unless a lower value is explicitly passed in argument <code>maxIter</code>.
+</li>
+<li> a single numeric value that specifies the stationnarity threshold for the
+objective function, used in with <code><a href='stop-NMF.html'>nmf.stop.stationary</a></code>;
+</li>
+<li> a function with signature <code>(object="NMFStrategy", i="integer", y="matrix", x="NMF", ...)</code>,
+where <code>object</code> is the <code>NMFStrategy</code> object that describes the algorithm being run,
+<code>i</code> is the current iteration, <code>y</code> is the target matrix and <code>x</code> is the current value of
+the NMF model.
+</li>
 </ul>
 </dd>
       <dt>maxIter</dt>
       <dd>maximum number of iterations to perform.</dd>
       <dt>object</dt>
-      <dd>an object computed using some algorithm, or
-  that describes an algorithm itself.</dd>
+      <dd>an object computed using some algorithm, or that describes an algorithm
+itself.</dd>
       <dt>y</dt>
       <dd>data object, e.g. a target matrix</dd>
       <dt>x</dt>
-      <dd>a model object used as a starting point by the
-  algorithm, e.g. a non-empty NMF model.</dd>
+      <dd>a model object used as a starting point by the algorithm,
+e.g. a non-empty NMF model.</dd>
     </dl>
     
     <div class="Methods">
       <h2>Methods</h2>
       
       <p><ol>
-<li>NMFStrategy<code>signature(name = "character",
-  method = "function")</code>: Creates an
-  <code>NMFStrategyFunction</code> object that wraps the function
-  <code>method</code> into a unified interface.</p>
+<li>NMFStrategy<code>signature(name = "character", method = "function")</code>: Creates an <code>NMFStrategyFunction</code> object that wraps the function <code>method</code>
+into a unified interface.</p>
   
-      <p><code>method</code> must be a function with signature
-  <code>(y="matrix", x="NMFfit", ...)</code>, and return an
-  object of class <code><a href='NMFfit-class.html'>NMFfit-class</a></code>.</p>
+      <p><code>method</code> must be a function with signature <code>(y="matrix", x="NMFfit", ...)</code>,
+and return an object of class <code><a href='NMFfit-class.html'>NMFfit-class</a></code>.</p>
   
       <p></li>
-<li>NMFStrategy<code>signature(name = "character",
-  method = "NMFStrategy")</code>: Creates an <code>NMFStrategy</code>
-  object based on a template object (Constructor-Copy).</p>
+<li>NMFStrategy<code>signature(name = "character", method = "NMFStrategy")</code>: Creates an <code>NMFStrategy</code> object based on a template object (Constructor-Copy).</p>
   
       <p></li>
-<li>NMFStrategy<code>signature(name = "NMFStrategy",
-  method = "missing")</code>: Creates an <code>NMFStrategy</code> based
-  on a template object (Constructor-Copy), in particular it
-  uses the <strong>same</strong> name.</p>
+<li>NMFStrategy<code>signature(name = "NMFStrategy", method = "missing")</code>: Creates an <code>NMFStrategy</code> based on a template object (Constructor-Copy),
+in particular it uses the <strong>same</strong> name.</p>
   
       <p></li>
-<li>NMFStrategy<code>signature(name = "missing",
-  method = "character")</code>: Creates an <code>NMFStrategy</code>
-  based on a registered NMF algorithm that is used as a
-  template (Constructor-Copy), in particular it uses the
-  <strong>same</strong> name.</p>
+<li>NMFStrategy<code>signature(name = "missing", method = "character")</code>: Creates an <code>NMFStrategy</code> based on a registered NMF algorithm that is used
+as a template (Constructor-Copy), in particular it uses the <strong>same</strong> name.</p>
   
-      <p>It is a shortcut for
-  <code>NMFStrategy(nmfAlgorithm(method, exact=TRUE),
-  ...)</code>.</p>
+      <p>It is a shortcut for <code>NMFStrategy(nmfAlgorithm(method, exact=TRUE), ...)</code>.</p>
   
       <p></li>
-<li>NMFStrategy<code>signature(name = "NULL", method
-  = "NMFStrategy")</code>: Creates an <code>NMFStrategy</code> based on
-  a template object (Constructor-Copy) but using a randomly
-  generated name.</p>
+<li>NMFStrategy<code>signature(name = "NULL", method = "NMFStrategy")</code>: Creates an <code>NMFStrategy</code> based on a template object (Constructor-Copy)
+but using a randomly generated name.</p>
   
       <p></li>
-<li>NMFStrategy<code>signature(name = "character",
-  method = "character")</code>: Creates an <code>NMFStrategy</code>
-  based on a registered NMF algorithm that is used as a
-  template.</p>
+<li>NMFStrategy<code>signature(name = "character", method = "character")</code>: Creates an <code>NMFStrategy</code> based on a registered NMF algorithm that is used
+as a template.</p>
   
       <p></li>
-<li>NMFStrategy<code>signature(name = "NULL", method
-  = "character")</code>: Creates an <code>NMFStrategy</code> based on a
-  registered NMF algorithm (Constructor-Copy) using a
-  randomly generated name.</p>
+<li>NMFStrategy<code>signature(name = "NULL", method = "character")</code>: Creates an <code>NMFStrategy</code> based on a registered NMF algorithm (Constructor-Copy)
+using a randomly generated name.</p>
   
-      <p>It is a shortcut for <code>NMFStrategy(NULL,
-  nmfAlgorithm(method), ...)</code>.</p>
+      <p>It is a shortcut for <code>NMFStrategy(NULL, nmfAlgorithm(method), ...)</code>.</p>
   
       <p></li>
-<li>NMFStrategy<code>signature(name = "character",
-  method = "missing")</code>: Creates an NMFStrategy, determining
-  its type from the extra arguments passed in <code>...</code>:
-  if there is an argument named <code>Update</code> then an
-  <code>NMFStrategyIterative</code> is created, or if there is an
-  argument named <code>algorithm</code> then an
-  <code>NMFStrategyFunction</code> is created. Calls other than
-  these generates an error.</p>
+<li>NMFStrategy<code>signature(name = "character", method = "missing")</code>: Creates an NMFStrategy, determining its type from the extra arguments passed
+in <code>...</code>: if there is an argument named <code>Update</code> then an
+<code>NMFStrategyIterative</code> is created, or if there is an argument
+named <code>algorithm</code> then an <code>NMFStrategyFunction</code> is created.
+Calls other than these generates an error.</p>
   
       <p></li>
-<li>run<code>signature(object = "NMFStrategy", y =
-  "matrix", x = "NMFfit")</code>: Pure virtual method defined for
-  all NMF algorithms to ensure that a method <code>run</code> is
-  defined by sub-classes of <code>NMFStrategy</code>.</p>
+<li>run<code>signature(object = "NMFStrategy", y = "matrix", x = "NMFfit")</code>: Pure virtual method defined for all NMF algorithms to ensure
+that a method <code>run</code> is defined by sub-classes of <code>NMFStrategy</code>.</p>
   
       <p>It throws an error if called directly.</p>
   
       <p></li>
-<li>run<code>signature(object = "NMFStrategy", y =
-  "matrix", x = "NMF")</code>: Method to run an NMF algorithm
-  directly starting from a given NMF model.</p>
+<li>run<code>signature(object = "NMFStrategy", y = "matrix", x = "NMF")</code>: Method to run an NMF algorithm directly starting from a given NMF model.</p>
   
       <p></li>
-<li>run<code>signature(object =
-  "NMFStrategyFunction", y = "matrix", x = "NMFfit")</code>: Runs
-  the NMF algorithms implemented by the single R function
-  -- and stored in slot <code>'algorithm'</code> of
-  <code>object</code>, on the data object <code>y</code>, using
-  <code>x</code> as starting point. It is equivalent to calling
-  <code>object@algorithm(y, x, ...)</code>.</p>
+<li>run<code>signature(object = "NMFStrategyFunction", y = "matrix", x = "NMFfit")</code>: Runs the NMF algorithms implemented by the single R function -- and stored in slot <code>'algorithm'</code>
+of <code>object</code>, on the data object <code>y</code>, using <code>x</code> as starting point.
+It is equivalent to calling <code>object@algorithm(y, x, ...)</code>.</p>
   
-      <p>This method is usually not called directly, but only via
-  the function <code><a href='nmf.html'>nmf</a></code>, which takes care of many
-  other details such as seeding the computation, handling
-  RNG settings, or setting up parallelisation.</p>
+      <p>This method is usually not called directly, but only via the function <code><a href='nmf.html'>nmf</a></code>, which
+takes care of many other details such as seeding the computation, handling RNG settings, or setting up
+parallelisation.</p>
   
       <p></li>
-<li>run<code>signature(object =
-  "NMFStrategyIterative", y = "matrix", x = "NMFfit")</code>:
-  Runs an NMF iterative algorithm on a target matrix
-  <code>y</code>.</p>
+<li>run<code>signature(object = "NMFStrategyIterative", y = "matrix", x = "NMFfit")</code>: Runs an NMF iterative algorithm on a target matrix <code>y</code>.</p>
   
       <p></li>
-<li>run<code>signature(object = "NMFStrategyOctave",
-  y = "matrix", x = "NMFfit")</code>: Runs the NMF algorithms
-  implemented by the Octave/Matlab function associated with
-  the strategy -- and stored in slot <code>'algorithm'</code> of
-  <code>object</code>.</p>
+<li>run<code>signature(object = "NMFStrategyOctave", y = "matrix", x = "NMFfit")</code>: Runs the NMF algorithms implemented by the Octave/Matlab function associated with the
+strategy -- and stored in slot <code>'algorithm'</code> of <code>object</code>.</p>
   
-      <p>This method is usually not called directly, but only via
-  the function <code><a href='nmf.html'>nmf</a></code>, which takes care of many
-  other details such as seeding the computation, handling
-  RNG settings, or setting up parallel computations.</p>
+      <p>This method is usually not called directly, but only via the function <code><a href='nmf.html'>nmf</a></code>, which
+takes care of many other details such as seeding the computation, handling RNG settings,
+or setting up parallel computations.</p>
   
       <p></li>
 </ol></p>

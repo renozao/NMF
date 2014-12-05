@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>txtProgressBar. NMF 0.20.2</title>
+<title>txtProgressBar. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="
   R Core Team
@@ -53,7 +53,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -71,11 +71,10 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>Creates a simple progress bar with title. This function
-  is identical to <code>utils::txtProgressBar</code> but allow
-  adding a title to the progress bar, and can be shared by
-  multiple processes, e.g., in multicore or multi-hosts
-  computations.</p></p>
+      <p><p>Creates a simple progress bar with title.
+This function is identical to <code>utils::txtProgressBar</code> but allow adding
+a title to the progress bar, and can be shared by multiple processes,
+e.g., in multicore or multi-hosts computations.</p></p>
   
     </div>
     
@@ -86,40 +85,32 @@
     <h2>Arguments</h2>
     <dl>
       <dt>shared</dt>
-      <dd>specification of a shared directory to use
-  when the progress bar is to be used by multiple
-  processes.</dd>
+      <dd>specification of a shared directory to use when the progress
+bar is to be used by multiple processes.</dd>
       <dt>min</dt>
-      <dd>(finite) numeric values for the extremes of
-  the progress bar. Must have <code>min < max</code>.</dd>
+      <dd>(finite) numeric values for the extremes of the
+    progress bar. Must have <code>min < max</code>.</dd>
       <dt>max</dt>
-      <dd>(finite) numeric values for the extremes of
-  the progress bar. Must have <code>min < max</code>.</dd>
+      <dd>(finite) numeric values for the extremes of the
+    progress bar. Must have <code>min < max</code>.</dd>
       <dt>initial</dt>
-      <dd>initial or new value for the progress bar.
-  See &#145;Details&#146; for what happens with invalid
-  values.</dd>
+      <dd>initial or new value for the progress bar.  See
+    &#145;Details&#146; for what happens with invalid values.</dd>
       <dt>char</dt>
-      <dd>the character (or character string) to form
-  the progress bar.</dd>
+      <dd>the character (or character string) to form the progress bar.</dd>
       <dt>width</dt>
-      <dd>the width of the progress bar, as a multiple
-  of the width of <code>char</code>.  If <code>NA</code>, the default,
-  the number of characters is that which fits into
-  <code>getOption("width")</code>.</dd>
+      <dd>the width of the progress bar, as a multiple of the width
+    of <code>char</code>.  If <code>NA</code>, the default, the number of characters
+    is that which fits into <code>getOption("width")</code>.</dd>
       <dt>title</dt>
-      <dd>ignored, for compatibility with other
-  progress bars.</dd>
+      <dd>ignored, for compatibility with other progress bars.</dd>
       <dt>label</dt>
-      <dd>ignored, for compatibility with other
-  progress bars.</dd>
+      <dd>ignored, for compatibility with other progress bars.</dd>
       <dt>style</dt>
-      <dd>the &#145;style&#146; of the bar -- see
-  &#145;Details&#146;.</dd>
+      <dd>the &#145;style&#146; of the bar -- see &#145;Details&#146;.</dd>
       <dt>file</dt>
-      <dd>an open connection object or <code>""</code> which
-  indicates the console: <code><a href='http://www.inside-r.org/r-doc/base/showConnections'>stderr</a>()</code> might be
-  useful here.</dd>
+      <dd>an open connection object or <code>""</code> which indicates
+    the console: <code><a href='http://www.inside-r.org/r-doc/base/showConnections'>stderr</a>()</code> might be useful here.</dd>
     </dl>
           </div>
   <div class="span4">

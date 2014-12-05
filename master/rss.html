@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>rss. NMF 0.20.2</title>
+<title>rss. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,11 +69,10 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p><code>rss</code> and <code>evar</code> are S4 generic functions that
-  respectively computes the Residual Sum of Squares (RSS)
-  and explained variance achieved by a model.</p>
-<p>The explained variance for a target <code class = 'eq'>V</code> is computed
-  as: <pre class = 'eq'>evar = 1 - RSS/sum v_{ij}^2</code>,</p></p>
+      <p><p><code>rss</code> and <code>evar</code> are S4 generic functions that respectively computes
+the Residual Sum of Squares (RSS) and explained variance achieved by a model.</p>
+<p>The explained variance for a target <code class = 'eq'>V</code> is computed as:
+<pre class = 'eq'>evar = 1 - RSS/sum v_{ij}^2</code>,</p></p>
   
     </div>
     
@@ -91,11 +90,11 @@ evar(object, ...)
     <h2>Arguments</h2>
     <dl>
       <dt>object</dt>
-      <dd>an R object with a suitable
-  <code><a href='fitted.html'>fitted</a></code>, <code>rss</code> or <code>evar</code> method.</dd>
+      <dd>an R object with a suitable <code><a href='fitted.html'>fitted</a></code>, <code>rss</code> or
+<code>evar</code> method.</dd>
       <dt>...</dt>
-      <dd>extra arguments to allow extension, e.g.
-  passed to <code>rss</code> in <code>evar</code> calls.</dd>
+      <dd>extra arguments to allow extension, e.g. passed to <code>rss</code>
+in <code>evar</code> calls.</dd>
       <dt>target</dt>
       <dd>target matrix</dd>
     </dl>
@@ -112,12 +111,10 @@ evar(object, ...)
       
       <p>where RSS is the residual sum of squares.</p>
   
-      <p>The explained variance is usefull to compare the
-  performance of different models and their ability to
-  accurately reproduce the original target matrix. Note,
-  however, that a possible caveat is that some models
-  explicitly aim at minimizing the RSS (i.e. maximizing the
-  explained variance), while others do not.</p>
+      <p>The explained variance is usefull to compare the performance of different
+models and their ability to accurately reproduce the original target matrix.
+Note, however, that a possible caveat is that some models explicitly aim at
+minimizing the RSS (i.e. maximizing the explained variance), while others do not.</p>
   
     </div>
 
@@ -125,47 +122,37 @@ evar(object, ...)
       <h2>Methods</h2>
       
       <p><ol>
-<li>evar<code>signature(object = "ANY")</code>: Default
-  method for <code>evar</code>.</p>
+<li>evar<code>signature(object = "ANY")</code>: Default method for <code>evar</code>.</p>
   
       <p>It requires a suitable <code>rss</code> method to be defined
-  for <code>object</code>, as it internally calls
-  <code>rss(object, target, ...)</code>.</p>
+for <code>object</code>, as it internally calls <code>rss(object, target, ...)</code>.</p>
   
       <p></li>
-<li>rss<code>signature(object = "matrix")</code>: Computes
-  the RSS between a target matrix and its estimate
-  <code>object</code>, which must be a matrix of the same
-  dimensions as <code>target</code>.</p>
+<li>rss<code>signature(object = "matrix")</code>: Computes the RSS between a target matrix and its estimate <code>object</code>,
+which must be a matrix of the same dimensions as <code>target</code>.</p>
   
-      <p>The RSS between a target matrix <code class = 'eq'>V</code> and its estimate
-  <code class = 'eq'>v</code> is computed as: <pre class = 'eq'>RSS = \sum_{i,j} (v_{ij} -
-  V_{ij})^2</code></p>
+      <p>The RSS between a target matrix <code class = 'eq'>V</code> and its estimate <code class = 'eq'>v</code> is computed as:
+<pre class = 'eq'>RSS = \sum_{i,j} (v_{ij} - V_{ij})^2</code></p>
   
-      <p>Internally, the computation is performed using an
-  optimised C++ implementation, that is light in memory
-  usage.</p>
+      <p>Internally, the computation is performed using an optimised C++ implementation,
+that is light in memory usage.</p>
   
       <p></li>
-<li>rss<code>signature(object = "ANY")</code>: Residual sum
-  of square between a given target matrix and a model that
-  has a suitable <code><a href='fitted.html'>fitted</a></code> method. It is
-  equivalent to <code>rss(fitted(object), ...)</code></p>
+<li>rss<code>signature(object = "ANY")</code>: Residual sum of square between a given target matrix and a model that has a
+suitable <code><a href='fitted.html'>fitted</a></code> method.
+It is equivalent to <code>rss(fitted(object), ...)</code></p>
   
-      <p>In the context of NMF, <cite>Hutchins et al. (2008)</cite> used the
-  variation of the RSS in combination with the algorithm
-  from <cite>Lee et al. (1999)</cite> to estimate the correct number of
-  basis vectors. The optimal rank is chosen where the graph
-  of the RSS first shows an inflexion point, i.e. using a
-  screeplot-type criterium. See section <em>Rank
-  estimation</em> in <code><a href='nmf.html'>nmf</a></code>.</p>
+      <p>In the context of NMF, <cite>Hutchins et al. (2008)</cite> used the variation of the RSS
+in combination with the algorithm from <cite>Lee et al. (1999)</cite> to estimate the
+correct number of basis vectors.
+The optimal rank is chosen where the graph of the RSS first shows an inflexion
+point, i.e. using a screeplot-type criterium.
+See section <em>Rank estimation</em> in <code><a href='nmf.html'>nmf</a></code>.</p>
   
-      <p>Note that this way of estimation may not be suitable for
-  all models. Indeed, if the NMF optimisation problem is
-  not based on the Frobenius norm, the RSS is not directly
-  linked to the quality of approximation of the NMF model.
-  However, it is often the case that it still decreases
-  with the rank.</p>
+      <p>Note that this way of estimation may not be suitable for all models.
+Indeed, if the NMF optimisation problem is not based on the Frobenius norm,
+the RSS is not directly linked to the quality of approximation of the NMF model.
+However, it is often the case that it still decreases with the rank.</p>
   
       <p></li>
 </ol></p>
@@ -177,28 +164,17 @@ evar(object, ...)
     <div class="References">
       <h2>References</h2>
       
-      <p>Hutchins LN, Murphy SM, Singh P and Graber JH (2008).
-  "Position-dependent motif characterization using
-  non-negative matrix factorization." _Bioinformatics
-  (Oxford, England)_, *24*(23), pp. 2684-90. ISSN
-  1367-4811, <URL:
-  http://dx.doi.org/10.1093/bioinformatics/btn526>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/18852176>.</p>
+      <p>Hutchins LN, Murphy SM, Singh P and Graber JH (2008). "Position-dependent motif characterization using non-negative matrix
+factorization." _Bioinformatics (Oxford, England)_, *24*(23), pp. 2684-90. ISSN 1367-4811, <URL:
+http://dx.doi.org/10.1093/bioinformatics/btn526>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/18852176>.</p>
   
-      <p>Lee DD and Seung HS (1999). "Learning the parts of
-  objects by non-negative matrix factorization." _Nature_,
-  *401*(6755), pp. 788-91. ISSN 0028-0836, <URL:
-  http://dx.doi.org/10.1038/44565>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/10548103>.</p>
+      <p>Lee DD and Seung HS (1999). "Learning the parts of objects by non-negative matrix factorization." _Nature_, *401*(6755), pp.
+788-91. ISSN 0028-0836, <URL: http://dx.doi.org/10.1038/44565>, <URL: http://www.ncbi.nlm.nih.gov/pubmed/10548103>.</p>
   
     </div>
     
     <h2 id="examples">Examples</h2>
     <pre><code class="r">
-## Don&#39;t show: 
-# roxygen generated flag
-options(R_CHECK_RUNNING_EXAMPLES_=TRUE)
-## End Don&#39;t show
 
 #----------
 # rss,matrix-method
@@ -209,17 +185,16 @@ y &lt;- rmatrix(20,10, max=50)
 rss(x, y)
 </code></pre>
 
-<pre><code>## [1] 90637
+<pre><code>## [1] 90637.08
 </code></pre>
 
 <pre><code class="r">rss(x, x + rmatrix(x, max=0.1))
 </code></pre>
 
-<pre><code>## [1] 0.7383
+<pre><code>## [1] 0.738311
 </code></pre>
 
-<pre><code class="r">
-#----------
+<pre><code class="r">#----------
 # rss,ANY-method
 #----------
 # RSS between an NMF model and a target matrix
@@ -228,26 +203,22 @@ y &lt;- rnmf(3, x) # random compatible model
 rss(y, x)
 </code></pre>
 
-<pre><code>## [1] 62.7
+<pre><code>## [1] 62.70333
 </code></pre>
 
-<pre><code class="r">
-# fit a model with nmf(): one should do better
+<pre><code class="r"># fit a model with nmf(): one should do better
 y2 &lt;- nmf(x, 3) # default minimizes the KL-divergence
 rss(y2, x)
 </code></pre>
 
-<pre><code>## [1] 8.047
+<pre><code>## [1] 8.046892
 </code></pre>
 
 <pre><code class="r">y2 &lt;- nmf(x, 3, &#39;lee&#39;) # &#39;lee&#39; minimizes the RSS
 rss(y2, x)
 </code></pre>
 
-<pre><code>## [1] 7.359
-</code></pre>
-
-<pre><code class="r">
+<pre><code>## [1] 7.358595
 </code></pre>
 
   </div>

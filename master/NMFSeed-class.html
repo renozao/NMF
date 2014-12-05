@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>NMFSeed-class. NMF 0.20.2</title>
+<title>NMFSeed-class. NMF 0.22</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -51,7 +51,7 @@
     </form>--> 
     <ul class="nav navbar-nav navbar-right">
       <li><p class="navbar-text">
-      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.20.2</span>
+      <span style="font-size:14px" class="label label-primary">Version&nbsp;0.22</span>
       &nbsp;</p></li>
     </ul>
   </div><!-- /.navbar-collapse -->
@@ -69,10 +69,9 @@
     <div class="description">
       <h2>Description</h2>
       
-      <p><p>This class implements a simple wrapper strategy object
-  that defines a unified interface to seeding methods, that
-  are used to initialise NMF models before fitting them
-  with any NMF algorithm.</p></p>
+      <p><p>This class implements a simple wrapper strategy object that defines a unified
+interface to seeding methods, that are used to initialise NMF models before
+fitting them with any NMF algorithm.</p></p>
   
     </div>
     
@@ -82,15 +81,13 @@
       <h2>Slots</h2>
       
       <p><ol>
-<li>namecharacter string giving the name of the
-  seeding strategy</p>
+<li>namecharacter string giving the name of the seeding strategy</p>
   
       <p></li>
-<li>methodworkhorse function that implements the
-  seeding strategy. It must have signature
-  <code>(object="NMF", x="matrix", ...)</code> and initialise the
-  NMF model <code>object</code> with suitable values for fitting
-  the target matrix <code>x</code>.</p>
+<li>methodworkhorse function that implements the seeding strategy.
+It must have signature <code>(object="NMF", x="matrix", ...)</code> and initialise
+the NMF model <code>object</code> with suitable values for fitting the target
+matrix <code>x</code>.</p>
   
       <p></li>
 </ol></p>
@@ -103,24 +100,17 @@
       <h2>Methods</h2>
       
       <p><ol>
-<li>algorithm<code>signature(object = "NMFSeed")</code>:
-  Returns the workhorse function of the seeding method
-  described by <code>object</code>.</p>
+<li>algorithm<code>signature(object = "NMFSeed")</code>: Returns the workhorse function of the seeding method described by <code>object</code>.</p>
   
       <p></li>
-<li>algorithm<-<code>signature(object = "NMFSeed",
-  value = "function")</code>: Sets the workhorse function of the
-  seeding method described by <code>object</code>.</p>
+<li>algorithm<-<code>signature(object = "NMFSeed", value = "function")</code>: Sets the workhorse function of the seeding method described by <code>object</code>.</p>
   
       <p></li>
-<li>NMFSeed<code>signature(key = "NMFSeed")</code>: Creates
-  an <code>NMFSeed</code> based on a template object
-  (Constructor-Copy), in particular it uses the
-  <strong>same</strong> name.</p>
+<li>NMFSeed<code>signature(key = "NMFSeed")</code>: Creates an <code>NMFSeed</code> based on a template object (Constructor-Copy),
+in particular it uses the <strong>same</strong> name.</p>
   
       <p></li>
-<li>show<code>signature(object = "NMFSeed")</code>: Show
-  method for objects of class <code>NMFSeed</code></p>
+<li>show<code>signature(object = "NMFSeed")</code>: Show method for objects of class <code>NMFSeed</code></p>
   
       <p></li>
 </ol></p>
