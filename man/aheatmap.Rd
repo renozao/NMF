@@ -3,9 +3,9 @@
 \title{Annotated Heatmaps}
 \usage{
   aheatmap(x, color = "-RdYlBu2:100", na.color = NA,
-    breaks = NA, border_color = NA, cellwidth = NA,
-    cellheight = NA, scale = "none", Rowv = TRUE,
-    Colv = TRUE,
+    type = c("rect", "circle", "roundrect"), breaks = NA,
+    border_color = NA, cellwidth = NA, cellheight = NA,
+    scale = "none", Rowv = TRUE, Colv = TRUE,
     revC = identical(Colv, "Rowv") || is_NA(Rowv) || (is.integer(Rowv) && 
         length(Rowv) > 1) || is(Rowv, "silhouette"),
     distfun = "euclidean", hclustfun = "complete",
@@ -50,6 +50,8 @@ Setting to \code{NA} (default) produces uncoloured cells (white).
 
 It can also be a list of 2 elements, with the first element specifying the color and
 the second a given value or a range of values (as a 2-length vector) to be forced to NA.}
+
+  \item{type}{type of cell shapes (still experimental feature).}
 
   \item{breaks}{a sequence of numbers that covers the range of values in \code{x} and is one
 element longer than color vector. Used for mapping values to colors. Useful, if needed
