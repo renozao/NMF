@@ -15,7 +15,7 @@ parallel computations on multicore machines.
   \tabular{ll}{
 Package: \tab NMF\cr
 Type: \tab Package\cr
-Version: \tab 0.22\cr
+Version: \tab 0.23\cr
 Date: \tab 2014-12-04\cr
 License: \tab GPL (>=2)\cr
 LazyLoad: \tab yes\cr
