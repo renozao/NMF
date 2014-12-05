@@ -61,7 +61,13 @@ then the colour palette is forced to be centered on this value.}
 
   \item{border_color}{color of cell borders on heatmap, use NA if no border should be
 drawn.
-This argument allows for a finer control of borders (see dedicated demos and vignettes).}
+This argument allows for a finer control of borders for:
+the cells (\code{'cell'}), the cell matrix panel (\code{'matrix'}),
+the annotation cells (\code{'annCol'} and \code{'annRow'}),
+the annotation legend (\code{'annLegend'}) or
+the color scale legend (\code{'legend'}).
+
+See examples in the \emph{aheatmap} demo and vignette.}
 
   \item{cellwidth}{individual cell width in points. If left as NA, then the values
 depend on the size of plotting window.}

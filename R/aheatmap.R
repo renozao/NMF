@@ -366,7 +366,7 @@ draw_rownames = function(rown, gp = gpar()){
 }
 
 
-draw_legend = function(color, breaks, legend, gp = gpar(), opts = NULL, dims.only = FALSE){
+draw_legend = function(color, breaks, legend, border_color, gp = gpar(), opts = NULL, dims.only = FALSE){
     
     # sizes
     padding <- unit(4, 'bigpts')
@@ -414,11 +414,12 @@ draw_legend = function(color, breaks, legend, gp = gpar(), opts = NULL, dims.onl
         else x
     }
     
+    leg_gp <- c_gpar(list(fill = color), border_color)
     if( !isTRUE(opts$horizontal) ){
         x.scale <- unit(opts$flip$h+0, 'npc')
     	grid.rect(x = x.scale, y = breaks[-length(breaks)], width = thickness, height = h
                 , hjust = opts$flip$h + 0, vjust = 0
-                , gp = gpar(fill = color, col = "#FFFFFF00"))
+                , gp = leg_gp)
         grid.text(legend_txt, x = flip_coord(txt_shift, opts$flip$h, x.scale), y = tick_pos
                             , hjust = opts$flip$h + 0
                             , gp = gp)
@@ -426,7 +427,7 @@ draw_legend = function(color, breaks, legend, gp = gpar(), opts = NULL, dims.onl
         y.scale <- unit(!opts$flip$v+0, 'npc')
         grid.rect(y = y.scale, x = breaks[-length(breaks)], height = thickness, width = h
                 , hjust = 0, vjust = !opts$flip$v
-                , gp = gpar(fill = color, col = "#FFFFFF00"))
+                , gp = leg_gp)
         grid.text(legend_txt, y = flip_coord(txt_shift, !opts$flip$v, y.scale), x = tick_pos
                             , hjust = 0.5, vjust = !opts$flip$v + 0
                             , gp = gp)
@@ -1098,7 +1099,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	
     # load border specifications
     border_color <- if( !is.list(border_color) ) list(base = border_color) else border_color 
-	for( b in c('base', 'cell', 'matrix', 'annRow', 'annCol', 'annLeg') ){
+	for( b in c('base', 'cell', 'matrix', 'annRow', 'annCol', 'annLegend', 'legend') ){
         val <- border_color[[b]] %||% border_color[['base']] %||% NA
         border_color[[b]] <- border_gpar_list(val) 
     }
@@ -1170,14 +1171,14 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	
 	# Draw annotation legend
 	if( annotation_legend && !is_NA(annotation_colors) && vplayout('aleg') ){
-		draw_annotation_legend(annotation_colors, border_color$annLeg, gp = c_gpar(gp, fontsize = fontsize))
+		draw_annotation_legend(annotation_colors, border_color$annLegeng, gp = c_gpar(gp, fontsize = fontsize))
         trace_vp()
 		upViewport()
 	}
 
 	# Draw legend
 	if(!is_NA(legend) && vplayout('leg') ){
-		draw_legend(color, breaks, legend, gp = c_gpar(gp, fontsize = fontsize), opts = loptions$legend)
+		draw_legend(color, breaks, legend, border_color$legend, gp = c_gpar(gp, fontsize = fontsize), opts = loptions$legend)
         trace_vp()
 		upViewport()
 	}
@@ -2006,7 +2007,13 @@ trace_vp <- local({.on <- FALSE
 #' 
 #' @param border_color color of cell borders on heatmap, use NA if no border should be 
 #' drawn.
-#' This argument allows for a finer control of borders (see dedicated demos and vignettes).
+#' This argument allows for a finer control of borders for: 
+#' the cells (\code{'cell'}), the cell matrix panel (\code{'matrix'}), 
+#' the annotation cells (\code{'annCol'} and \code{'annRow'}), 
+#' the annotation legend (\code{'annLegend'}) or 
+#' the color scale legend (\code{'legend'}).
+#' 
+#' See examples in the \emph{aheatmap} demo and vignette.
 #' 
 #' @param cellwidth individual cell width in points. If left as NA, then the values 
 #' depend on the size of plotting window.
@@ -2360,7 +2367,7 @@ trace_vp <- local({.on <- FALSE
 #' # around cells only
 #' aheatmap(x, annCol = annotation, border = list(cell = TRUE))
 #' # finer control
-#' aheatmap(x, annCol = annotation, border = list(matrix = list(col = 'blue', lwd=2), annCol = 'green', annLeg = 'grey'))
+#' aheatmap(x, annCol = annotation, border = list(matrix = list(col = 'blue', lwd=2), annCol = 'green', annLegend = 'grey'))
 #' 
 #' @export
 aheatmap = function(x

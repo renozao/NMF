@@ -74,4 +74,4 @@ aheatmap(x, annCol = annotation, border = list(matrix = TRUE))
 # around cells only
 aheatmap(x, annCol = annotation, border = list(cell = TRUE))
 # finer control
-aheatmap(x, annCol = annotation, border = list(matrix = list(col = 'blue', lwd=2), annCol = 'green', annLeg = 'grey'))
+aheatmap(x, annCol = annotation, border = list(matrix = list(col = 'blue', lwd=2), annCol = 'green', annLegend = 'grey'))
