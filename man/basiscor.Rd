@@ -19,67 +19,62 @@
   profcor(x, y, ...)
 }
 \arguments{
-  \item{x}{a matrix or an object with suitable methods
-  \code{\link{basis}} or \code{\link{coef}}.}
+  \item{x}{a matrix or an object with suitable methods \code{\link{basis}}
+or \code{\link{coef}}.}
 
-  \item{y}{a matrix or an object with suitable methods
-  \code{\link{basis}} or \code{\link{coef}}, and dimensions
-  compatible with \code{x}. If missing the correlations are
-  computed between \code{x} and \code{y=x}.}
+  \item{y}{a matrix or an object with suitable methods \code{\link{basis}}
+or \code{\link{coef}}, and dimensions compatible with \code{x}.
+If missing the correlations are computed between \code{x} and \code{y=x}.}
 
   \item{...}{extra arguments passed to \code{\link{cor}}.}
 }
 \description{
-  \code{basiscor} computes the correlation matrix between
-  basis vectors, i.e. the \emph{columns} of its basis
-  matrix -- which is the model's first matrix factor.
+  \code{basiscor} computes the correlation matrix between basis vectors, i.e.
+the \emph{columns} of its basis matrix -- which is the model's first matrix factor.
 
-  \code{profcor} computes the correlation matrix between
-  basis profiles, i.e. the \emph{rows} of the coefficient
-  matrix -- which is the model's second matrix factor.
+\code{profcor} computes the correlation matrix between basis profiles,
+i.e. the \emph{rows} of the coefficient matrix -- which is the model's second
+matrix factor.
 }
 \details{
-  Each generic has methods defined for computing
-  correlations between NMF models and/or compatible
-  matrices. The computation is performed by the base
-  function \code{\link{cor}}.
+  Each generic has methods defined for computing correlations between NMF models
+and/or compatible matrices.
+The computation is performed by the base function \code{\link{cor}}.
 }
 \section{Methods}{
-  \describe{
+\describe{
 
-  \item{basiscor}{\code{signature(x = "NMF", y =
-  "matrix")}: Computes the correlations between the basis
-  vectors of \code{x} and the columns of \code{y}. }
+\item{basiscor}{\code{signature(x = "NMF", y = "matrix")}: Computes the correlations between the basis vectors of \code{x} and
+the columns of \code{y}.
+}
 
-  \item{basiscor}{\code{signature(x = "matrix", y =
-  "NMF")}: Computes the correlations between the columns of
-  \code{x} and the the basis vectors of \code{y}. }
+\item{basiscor}{\code{signature(x = "matrix", y = "NMF")}: Computes the correlations between the columns of \code{x}
+and the the basis vectors of \code{y}.
+}
 
-  \item{basiscor}{\code{signature(x = "NMF", y = "NMF")}:
-  Computes the correlations between the basis vectors of
-  \code{x} and \code{y}. }
+\item{basiscor}{\code{signature(x = "NMF", y = "NMF")}: Computes the correlations between the basis vectors of \code{x} and \code{y}.
+}
 
-  \item{basiscor}{\code{signature(x = "NMF", y =
-  "missing")}: Computes the correlations between the basis
-  vectors of \code{x}. }
+\item{basiscor}{\code{signature(x = "NMF", y = "missing")}: Computes the correlations between the basis vectors of \code{x}.
+}
 
-  \item{profcor}{\code{signature(x = "NMF", y = "matrix")}:
-  Computes the correlations between the basis profiles of
-  \code{x} and the rows of \code{y}. }
 
-  \item{profcor}{\code{signature(x = "matrix", y = "NMF")}:
-  Computes the correlations between the rows of \code{x}
-  and the basis profiles of \code{y}. }
+\item{profcor}{\code{signature(x = "NMF", y = "matrix")}: Computes the correlations between the basis profiles of \code{x} and
+the rows of \code{y}.
+}
 
-  \item{profcor}{\code{signature(x = "NMF", y = "NMF")}:
-  Computes the correlations between the basis profiles of
-  \code{x} and \code{y}. }
+\item{profcor}{\code{signature(x = "matrix", y = "NMF")}: Computes the correlations between the rows of \code{x} and the basis
+profiles of \code{y}.
+}
 
-  \item{profcor}{\code{signature(x = "NMF", y =
-  "missing")}: Computes the correlations between the basis
-  profiles of \code{x}. }
+\item{profcor}{\code{signature(x = "NMF", y = "NMF")}: Computes the correlations between the basis profiles of \code{x} and \code{y}.
+}
 
-  }
+\item{profcor}{\code{signature(x = "NMF", y = "missing")}: Computes the correlations between the basis profiles of \code{x}.
+}
+
+}
+
 }
 \examples{
 \dontshow{# roxygen generated flag

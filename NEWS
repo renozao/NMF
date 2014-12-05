@@ -1,4 +1,37 @@
 *************************************************************************
+Changes in version 0.22
+*************************************************************************
+
+NEW FEATURES
+    o aheatmap now handles integer matrices in a special way, 
+    allowing for specifying categories.
+    o aheatmap now allow selective display of row, column (or both) 
+    annotation legend
+    o New function rmatrix_int generates random integer matrices
+    o nmf() gains a new argument .tmpdir to specify the base location 
+    of the temporary directory (used in foreach-backed runs)
+     
+
+FIXES
+    o Fixed a bug in aheatmap: correlation distance was incorrectly 
+    computed (Thanks to Joe Burns for reporting it)
+    o Fixed some alignment issues in aheatmap
+
+*************************************************************************
+Changes in version 0.21
+*************************************************************************
+CHANGES
+    o Package now depends on R >= 3.1.0
+    
+NEW FEATURES
+    o Algorithm LS-NMF (key: 'ls-nmf') now handles missing values in data
+    matrix
+    o aheatmap gains a new argument `na.color` to specify the color to use
+    for NA values.
+    o New method anyNA.NMF to check for NA values in the basis and/or 
+    coefficient matrix of an NMF object
+
+*************************************************************************
 Changes in version 0.20
 *************************************************************************
 NEW FEATURES

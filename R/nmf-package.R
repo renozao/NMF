@@ -24,18 +24,6 @@ NULL
 
 
 
-#' Algorithms and framework for Nonnegative Matrix Factorization (NMF).
-#' 
-#' This package provides a framework to perform Non-negative Matrix Factorization (NMF).
-#' It implements a set of already published algorithms and seeding methods, and provides a framework 
-#' to test, develop and plug new/custom algorithms. 
-#' Most of the built-in algorithms have been optimized in C++, and the main interface function provides 
-#' an easy way of performing parallel computations on multicore machines.
-#' 
-#' \code{\link{nmf}} Run a given NMF algorithm
-#' 
-#' @author Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
-#' @name NMF-package
 #' @aliases NMF
 #' @docType package
 #' @useDynLib NMF
@@ -44,7 +32,7 @@ NULL
 #' @references
 #' \url{http://cran.r-project.org/}
 #' 
-#' \url{http://nmf.r-forge.project.org}
+#' \url{http://renozao.github.io/NMF}
 #' @keywords package
 #' @seealso \code{\link{nmf}}
 #' @examples

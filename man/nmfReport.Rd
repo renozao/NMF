@@ -21,26 +21,24 @@
   \item{template}{template Rmd file}
 }
 \value{
-  a list with the following elements: \item{fits}{the
-  fit(s) for each method and each value of the rank.}
-  \item{accuracy}{a data.frame that contains the summary
-  assessment measures, for each fit.}
+  a list with the following elements:
+\item{fits}{the fit(s) for each method and each value of the rank.}
+\item{accuracy}{a data.frame that contains the summary assessment measures,
+for each fit.}
 }
 \description{
-  Generates an HTML report from running a set of method on
-  a given target matrix, for a set of factorization ranks.
+  Generates an HTML report from running a set of method on a given
+target matrix, for a set of factorization ranks.
 }
 \details{
-  The report is based on an .Rmd document
-  \code{'report.Rmd'} stored in the package installation
-  sub-directory \code{scripts/}, and is compiled using
-  \pkg{knitr}.
+  The report is based on an .Rmd document \code{'report.Rmd'} stored in
+the package installation sub-directory \code{scripts/}, and is compiled
+using \pkg{knitr}.
 
-  At the beginning of the document, a file named
-  \code{'functions.R'} is looked for in the current
-  directory, and sourced if present. This enables the
-  definition of custom NMF methods (see
-  \code{\link{setNMFMethod}}) or setting global options.
+At the beginning of the document, a file named \code{'functions.R'} is
+looked for in the current directory, and sourced if present.
+This enables the definition of custom NMF methods (see \code{\link{setNMFMethod}})
+or setting global options.
 }
 \examples{
 \dontshow{# roxygen generated flag

@@ -1068,6 +1068,10 @@ checkErrors <- function(object, element=NULL){
 #' 
 #' See the examples for sample code.
 #' 
+#' @param .tmpdir path to the directory where a temporary directory is created to 
+#' store intermediate results. This is only relevant for multi-runs performed using 
+#' a foreach backend (including the sequential backend \code{'doSEQ'}).
+#' 
 #' @return The returned value depends on the run mode:
 #' 
 #' \item{Single run:}{An object of class \code{\linkS4class{NMFfit}}.} 
@@ -1183,7 +1187,8 @@ function(x, rank, method
 		, seed=nmf.getOption('default.seed'), rng = NULL
 		, nrun=if( length(rank) > 1L ) 30 else 1, model=NULL, .options=list()
 		, .pbackend=nmf.getOption('pbackend')
-		, .callback=NULL #callback function called after a run  
+		, .callback=NULL #callback function called after a run
+        , .tmpdir = getwd()
 		, ...)
 {
 	fwarning <- function(...) nmf_warning('nmf', ...)
@@ -1471,7 +1476,7 @@ function(x, rank, method
 			
 			# setup temporary directory when not keeping all fits
 			if( !keep.all || verbose ){
-				NMF_TMPDIR <- setupTempDirectory(verbose)
+				NMF_TMPDIR <- setupTempDirectory(verbose, .tmpdir)
 				# delete on exit
 				if( .CLEANUP ){
 					on.exit({
@@ -1601,17 +1606,16 @@ function(x, rank, method
 					# if only the best fit must be kept then update the shared objects
 					if( !keep.all ){
 						
+                        # retrieve approximation error
+						err <- deviance(res)
 						# initialise result list
-						resList <- list(filename=NA, residuals=NA, .callback=NULL)
+						resList <- list(filename=NA, deviance=err, .callback=NULL, min.deviance = NA)
 						
 						##LOCK_MUTEX
 						mutex_eval({
 												
 							# check if the run found a better fit
 							.STATIC.err <- vOBJECTIVE()
-							
-							# retrieve approximation error
-							err <- deviance(res)
 							
 							if( is.na(.STATIC.err) || err < .STATIC.err ){
 								
@@ -1620,7 +1624,7 @@ function(x, rank, method
 									else if( verbose >= 2 ) cat('*')
 								}
 								
-								# update residuals
+								# update "global" min deviance
 								vOBJECTIVE(err)
 								
 								# update best fit on disk: use pid if not using shared memory
@@ -1633,7 +1637,7 @@ function(x, rank, method
 								}
 								# store the filename and achieved objective value in the result list
 								resList$filename <- resfile
-								resList$residuals <- err
+								resList$min.deviance <- err
 																
 							}
 							
@@ -1704,11 +1708,21 @@ function(x, rank, method
 					# loop over the result files to find the best fit
 					if( verbose > 2 ) message("# Processing partial results ... ", appendLF=FALSE)
 					ffstop <- function(...){ message('ERROR'); fstop(...) }
-					# get best fit index
-					idx <- which.min(sapply(res.runs, '[[', 'residuals'))
+                    ffwarning <- function(...){ message('WARNING'); fwarning(...) }
+                    
+                    # check for NA deviance
+                    resids <- sapply(res.runs, '[[', 'deviance')
+                    if( length(rNA <- which(is.na(resids) | is.nan(resids))) ){
+                        if( length(rNA) <  nrun ) ffwarning("Some of the computed final deviances are NAs or NaNs [", length(rNA), "]")
+                        else ffstop("All runs returned NA or NaN final deviances")
+                    }
+                    
+                    # get best fit index
+                    mdev <- sapply(res.runs, '[[', 'min.deviance')
+					idx <- which(mdev == min(mdev, na.rm=TRUE))
 					if( length(idx) == 0L )
 						ffstop("Unexpected error: no partial result seem to have been saved.")
-					resfile <- res.runs[[idx]]$filename
+					resfile <- res.runs[[idx[1L]]]$filename
 					# check existence of the result file
 					if( !file_test('-f', resfile) )
 						ffstop("could not find temporary result file '", resfile, "'")

@@ -13,7 +13,7 @@
   a vector of the same type as \code{x}
 }
 \description{
-  Extends a vector used as an annotation track to match the
-  number of rows and the row names of a given data.
+  Extends a vector used as an annotation track to match the number of rows
+and the row names of a given data.
 }
 

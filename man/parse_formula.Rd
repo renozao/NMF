@@ -8,11 +8,11 @@
   \item{x}{formula to parse}
 }
 \value{
-  a list with the following elements: \item{response}{
-  logical that indicates if the formula has a response
-  term.} \item{y}{ name of the response variable.}
-  \item{x}{ list of regressor variable names.} \item{n}{
-  number of regressor variables.}
+  a list with the following elements:
+\item{response}{ logical that indicates if the formula has a response term.}
+\item{y}{ name of the response variable.}
+\item{x}{ list of regressor variable names.}
+\item{n}{ number of regressor variables.}
 }
 \description{
   Formula parser for formula-based NMF models.

@@ -379,7 +379,7 @@ setMethod('predict', signature(object='NMFfitX'),
 			# build the tree from consensus matrix
 			h <- consensushc(object, what='consensus', dendrogram=FALSE)
 			# extract membership from the tree
-			cl <- cutree(h, k=nbasis(object))
+			cl <- stats::cutree(h, k=nbasis(object))
 			
 			# rename the cluster ids in the case of a consensus map
 			if( what != 'chc' ){

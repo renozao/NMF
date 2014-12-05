@@ -104,10 +104,17 @@ NULL
 #' # incompatibilty (a warning is thrown in such case) 
 #' nmfModel(r, W=w, H=h)
 #'  
+#' # create a NMF array object based on random (compatible) arrays
+#' # extra dimension (levels)
+#' q <- 2 
+#' w <- array(seq(n*r*q), dim = c(n, r, q))
+#' h <- rmatrix(r, p)
+#' nmfModel(W = w, H = h)
+#' 
 setClass('NMFstd' 
 		, representation(
-			W = 'matrix' # basis matrix
-			, H = 'matrix' # mixture coefficients matrix
+			W = 'array' # basis matrix
+			, H = 'array' # mixture coefficients matrix
 			, bterms = 'data.frame' # fixed basis terms: nrow(bterms) = nrow(x)
 			, ibterms = 'integer' # index of the fixed basis terms
 			, cterms = 'data.frame' # fixed coef terms: ncol(cterms) = ncol(x)
@@ -126,7 +133,7 @@ setClass('NMFstd'
 				return(paste('Dimensions of W and H are not compatible [ncol(W)=', ncol(object@W) , '!= nrow(H)=', nrow(object@H), ']'))
 			}
 			# give a warning if the dimensions look strange: rank greater than the number of samples
-			if( !is.empty.nmf(object) && ncol(object@H) && ncol(object@W) > ncol(object@H) ){
+			if( !is.empty.nmf(object) && ncol(object@H) && nrow(object@W) && ncol(object@W) > ncol(object@H) ){
 				warning(paste('Dimensions of W and H look strange [ncol(W)=', ncol(object@W) , '> ncol(H)=', ncol(object@H), ']'))
 			}
 			
@@ -136,10 +143,23 @@ setClass('NMFstd'
 		, contains = 'NMF'
 )
 
+#' @export
+setMethod('show', 'NMFstd', 
+    function(object)
+    {		
+        callNextMethod()
+        l <- c(dim(basis(object))[3L], dim(coef(object))[3L])
+        l[is.na(l)] <- 1L
+        if( any(l!=1L) )
+        cat("levels: ", l[1L], "|", l[2L], "\n")
+    }
+)
 
 #' Get the basis matrix in standard NMF models 
 #' 
 #' This function returns slot \code{W} of \code{object}.
+#' 
+#' @param slice optional slice (3rd margin) to extract 
 #' 
 #' @examples
 #' # random standard NMF model
@@ -159,38 +179,72 @@ setClass('NMFstd'
 #' # but the low-level method allow it
 #' .coef(x) <- matrix(1, nbasis(x)-1, nrow(x))
 #' try( validObject(x) )
-#' 
+#'
+#' @inline 
 setMethod('.basis', 'NMFstd',
-	function(object){ 
-		object@W
-	}
+    function(object, slice = NULL){
+        if( is.null(slice) ) object@W
+        else object@W[, , slice]
+    }
 )
 #' Set the basis matrix in standard NMF models 
 #' 
 #' This function sets slot \code{W} of \code{object}.
+setReplaceMethod('.basis', signature(object='NMFstd', value='array'), 
+    function(object, value){ 
+        object@W <- value
+        object
+    }
+)
+
+#' Replaces a slice of the basis array.
+#' @inline
 setReplaceMethod('.basis', signature(object='NMFstd', value='matrix'), 
-	function(object, value){ 
-		object@W <- value		
-		object
-	} 
+    function(object, ..., slice = 1L, value){
+        # error if passed extra arguments
+        if( length(xargs<- list(...)) ){
+            stop(".basis<-,NMFstd - Unused arguments: ", str_out(xargs, Inf, use.names = TRUE))
+        }
+        if( length(dim(object@W)) > 2L ) object@W[,, slice] <- value
+        else if( slice == 1L ) object@W <- value
+        else stop("Invalid slice argument (>1): basis data is a matrix.")
+        object
+    }
 )
 
 #' Get the mixture coefficient matrix in standard NMF models 
 #' 
 #' This function returns slot \code{H} of \code{object}.
+#' @inline
 setMethod('.coef', 'NMFstd',
-	function(object){
-		object@H
-	}
+    function(object, slice = NULL){
+        if( is.null(slice) ) object@H
+        else object@H[, , slice]
+    }
 )
 #' Set the mixture coefficient matrix in standard NMF models 
 #' 
 #' This function sets slot \code{H} of \code{object}.
+setReplaceMethod('.coef', signature(object='NMFstd', value='array'), 
+    function(object, value){
+        object@H <- value
+        object
+    }
+)
+
+#' Replaces a slice of the coefficent array.
+#' @inline
 setReplaceMethod('.coef', signature(object='NMFstd', value='matrix'), 
-	function(object, value){ 
-		object@H <- value			
-		object
-	}
+    function(object, ..., slice = 1L, value){
+        # error if passed extra arguments
+        if( length(xargs<- list(...)) ){
+                stop(".coef<-,NMFstd - Unused arguments: ", str_out(xargs, Inf, use.names = TRUE))
+        }
+        if( length(dim(object@H)) > 2L ) object@H[,, slice] <- value
+        else if( slice == 1L ) object@H <- value
+        else stop("Invalid slice argument (>1): coefficient data is a matrix.")
+        object
+    }
 )
 
 #' Compute the target matrix estimate in \emph{standard NMF models}.
@@ -218,10 +272,23 @@ setReplaceMethod('.coef', signature(object='NMFstd', value='matrix'),
 #' 
 #' 
 setMethod('fitted', signature(object='NMFstd'), 
-	function(object, W, H, ...){
-		if( missing(W) ) W <- object@W
-		if( missing(H) ) H <- object@H
-		return(W %*% H)
-	}
+    function(object, W, H){
+        if( missing(W) ) W <- object@W
+        if( missing(H) ) H <- object@H
+        
+        # handle different dimension cases
+        if( is.matrix(W) &&  is.matrix(H) ) return(W %*% H)
+        else{
+            nl <- dim(object)[4L]
+            res <- if( is.matrix(H) ) apply(W, 3L, `%*%`, H)
+                    else{
+                        l <- setNames(seq(nl), dimnames(H)[3L])            
+                        if( is.matrix(W) ) sapply(l, function(k) W %*% H[,,k])
+                        else sapply(l, function(k) W[,,k] %*% H[,,k])
+                    }
+            # reshape into an array
+            array(res, dim = c(nrow(W), ncol(H), nl))
+        }
+    }
 )
 

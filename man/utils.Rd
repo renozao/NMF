@@ -8,14 +8,13 @@
 \arguments{
   \item{x}{a function}
 
-  \item{exdent}{indentation for extra lines if the output
-  takes more than one line.}
+  \item{exdent}{indentation for extra lines if the output takes more than one line.}
 }
 \description{
   Utility Function in the NMF Package
 
-  \code{str_args} formats the arguments of a function using
-  \code{\link{args}}, but returns the output as a string.
+\code{str_args} formats the arguments of a function using \code{\link{args}},
+but returns the output as a string.
 }
 \examples{
 \dontshow{# roxygen generated flag

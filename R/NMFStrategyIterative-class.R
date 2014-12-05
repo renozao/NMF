@@ -167,6 +167,10 @@ xifyStrategy <- function(strategy, workspace=new.env(emptyenv())){
 		else
 			stop("NMFStrategyIterativeX - could not pre-load slot '", sname, "'")		
 
+        # call function generator if necessary
+        if( is.null(formals(fun)) ){
+            fun <- fun()
+        }
 		# return the loaded function
 		fun
 	}
@@ -174,7 +178,7 @@ xifyStrategy <- function(strategy, workspace=new.env(emptyenv())){
 	# preload the function slots
 	slot(strategyX, 'Update') <- preload.slot(strategyX, 'Update')
 	slot(strategyX, 'Stop') <- preload.slot(strategyX, 'Stop', function(strategy, i, target, data, ...){FALSE})
-	slot(strategyX, 'onReturn') <- preload.slot(strategyX, 'onReturn', identity)
+	slot(strategyX, 'onReturn') <- preload.slot(strategyX, 'onReturn', function(object, ...) object)
 	
 	# load the objective function
 	objective(strategyX) <- nmfDistance(objective(strategy))
@@ -378,6 +382,9 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 	stopFun <- strategy@Stop
 	
 	showNIter.step <- 50L
+    if( maxIter < showNIter.step ){
+        showNIter.step <- maxIter
+    }
 	showNIter <- verbose && maxIter >= showNIter.step
 	if( showNIter ){
 		ndIter <- nchar(as.character(maxIter))
@@ -422,7 +429,7 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 	
 	#Vc# wrap up
 	# let the strategy build the result
-	nmfData <- strategy@onReturn(nmfData)
+	nmfData <- strategy@onReturn(nmfData, ...)
 	if( !inherits(nmfData, 'NMFfit') ){
 		stop('NMFStrategyIterative[', name(strategy), ']::onReturn did not return a "NMF" instance [returned: "', class(nmfData), '"]')
 	}

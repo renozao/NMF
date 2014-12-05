@@ -1,0 +1,399 @@
+%\VignetteIndexEntry{aheatmap: a Powerful Annotated Heatmap Engine}
+%\VignetteDepends{utils,NMF,RColorBrewer,knitr,bibtex}
+%\VignetteKeyword{aplot}
+%\VignetteCompiler{knitr}
+%\VignetteEngine{knitr::knitr}
+
+\documentclass[a4paper]{article}
+
+%\usepackage[OT1]{fontenc}
+\usepackage[colorlinks]{hyperref}
+\usepackage{a4wide}
+\usepackage{xspace}
+\usepackage[all]{hypcap} % for linking to the top of the figures or tables
+
+% add preamble from pkgmaker
+<<pkgmaker_preamble, echo=FALSE, results='asis'>>=
+pkgmaker::latex_preamble()
+@
+
+\newcommand{\nmfpack}{\pkgname{NMF}}
+\newcommand{\MATLAB}{MATLAB\textsuperscript{\textregistered}\xspace}
+\newcommand{\refeqn}[1]{(\ref{#1})}
+
+% REFERENCES
+\usepackage[citestyle=authoryear-icomp
+, doi=true
+, url=true
+, maxnames=1
+, maxbibnames=15
+, backref=true
+, backend=bibtex]{biblatex}
+\AtEveryCitekey{\clearfield{url}}
+<<bibliofile, echo=FALSE, results='asis'>>=
+pkgmaker::latex_bibliography('NMF')	
+@
+\newcommand{\citet}[1]{\textcite{#1}}
+\renewcommand{\cite}[1]{\parencite{#1}}
+\DefineBibliographyStrings{english}{%
+    backrefpage  = {see p.}, % for single page number
+    backrefpages = {see pp.} % for multiple page numbers
+}
+%
+
+% boxed figures
+\usepackage{float}
+\floatstyle{boxed} 
+\restylefloat{figure}
+\usepackage{wrapfig}
+\usepackage{adjustbox}
+
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{mathabx}
+
+\usepackage{url}
+\urlstyle{rm}
+
+% use cleveref for automatic reference label formatting
+\usepackage[capitalise, noabbrev]{cleveref}
+
+% define commands for notes
+\usepackage{todonotes}
+\newcommand{\nbnote}[1]{\ \bigskip\todo[inline, backgroundcolor=blue!20!white]{\scriptsize\textsf{\textbf{NB:} #1}}\ \\}
+\newcommand{\footurl}[1]{\footnote{\url{#1}}}
+
+% put table of contents on two columns
+\usepackage[toc]{multitoc}
+
+\setkeys{Gin}{width=0.95\textwidth}
+
+\begin{document}
+
+<<options, include=FALSE, verbose=TRUE>>=
+set.seed(123456)
+library(NMF)
+library(knitr)
+opts_chunk$set(size = 'small', fig.show = 'hold', out.width = ".48\\textwidth")
+@
+
+\title{aheatmap: a Powerful Annotated Heatmap Engine\\
+\small Package \nmfpack\ - Version \Sexpr{utils::packageVersion('NMF')}}
+\author{Renaud Gaujoux}
+
+\maketitle
+
+\begin{abstract}
+This vignette showcases the main features of the annotated heatmap engine
+implemented by the function \code{aheatmap}.
+This engine is a highly enhanced modification of the function \code{pheatmap}
+from the \CRANpkg{pheatmap}, and provides convenient and quick ways of producing high quality and customizable annotated heatmaps.
+Currently this function is part of the package \nmfpack, but will most
+probably eventually constitute a separate package on its own.
+\end{abstract}
+
+{\small \tableofcontents}
+
+\section{Overview}
+
+The development of the function \code{aheatmap} started as modification of the
+function \code{pheatmap} from the \CRANpkg{pheatmap}. 
+The initial objective was to improve and increase its capabilities, as well as 
+defining a simplified interface that was more consistent with the R core
+function \code{heatmap}.
+It is evolving into a general, flexible, powerful and easy to use engine for
+drawing annotated heatmaps.
+  
+The function \code{aheatmap} has many advantages compared to other heatmap functions 
+such as \code{heatmap}, \code{gplots::heatmap2}, \code{heatmap.plus::heatmap.plus} 
+, or \code{pheatmap}:
+
+\begin{itemize}
+\item Annotations: unlimited number of annotation tracks can be added to 
+\emph{both} columns and rows, with automated colouring for categorical and 
+numeric variables.
+\item Compatibility with both base and grid graphics: the function can be 
+directly called in drawing contexts such as grid, mfrow or layout.
+We believe that this is a feature many R users will enjoy, and that is
+strictly impossible with base heatmaps.
+\item Legends: default automatic legend and colouring;
+\item Customisation: clustering methods, annotations, colours and legend can all 
+be customised, even separately for rows and columns;
+\item Convenient interface: many arguments provide multiple ways of 
+specifying their value(s), which speeds up developping/writing and reduce the 
+amount of code required to generate customised plots (e.g. see
+\cref{sec:colour_spec}).
+\item Aesthetics: the heatmaps look globally cleaner, the image and text components 
+are by default well proportioned relatively to each other, and all fit within 
+the graphic device -- if not set to an unresonnably small size.
+\end{itemize}
+
+\section{Preliminaries}
+
+\subsection{Installation}
+
+The \code{aheatmap} function is currently part of the \CRANpkg{NMF}, which can
+be installed from any CRAN mirror or from the GitHub
+repository\footurl{http://github.com/renozao/NMF}, for the development version,
+with the following commands:
+
+<<install, eval = FALSE>>=
+# latest stable
+intall.pacakges('NMF')
+# development version
+devtools::install_github('NMF', 'renozao', 'devel')
+@
+
+\subsection{Sample data}
+For the purpose of illustrating the capabilities of the function
+\code{aheatmap}, we first generate some random data that we will use throughout
+the vignette:
+
+<<sample_data>>=
+# data matrix
+x <- rmatrix(20, 10, .rng = 1234)
+ann_col <- list(Groups = gl(2, 5))
+@
+
+\section{Components}
+
+Annotated heatmaps essentially use \code{grid} graphics\footnote{Except for
+drawing dendrograms, which are plotted using the proven and well optimised base
+function \code{plot.dendrogram}.}, composing the global picture by putting
+together the following components (or viewports in \code{grid} language):
+
+\begin{description}
+  \item[dendrograms] clusters and order columns/rows; 
+  \item[annotations] are additional \emph{tracks} that provide extra
+  information about each column/row according to some associated auxiliary data;
+  \item[data matrix], i.e. the heatmap itself, shown as coloured cells;
+  \item[labels] associates each column/row with some textual information;
+  \item[legends] such as value scales or color code used for the data matrix or
+  annotations;
+  \item[other information] like main title, sub-title, extra information pane.
+\end{description}
+
+\Cref{fig:layout} shows a diagram of two possible grid layout that combined
+the above listed components into a complete annotated heatmap.
+
+\begin{figure}[!htpb]
+<<layout>>=
+# default layout
+aheatmap_layout()
+# alternative layout
+aheatmap_layout("amld | dlma")
+@
+\caption{Grid layout diagram of annotated heatmaps: (left) default layout and
+(right) an alternative layout, with separate specification for rows
+and columns -- passed as a single string.}
+\label{fig:layout}
+\end{figure}
+
+\section{Annotation tracks}
+
+\section{Column/row ordering}
+
+The rows and/or columns of heatmaps are generally ordered in a way that
+highlight shared value patterns.
+This ordering can be automatically computed from the data itself, using
+hierarchical clustering algorithms, or forced to match known groups/order.
+Arguments \code{Rowv}, \code{Colv}, as well as \code{distfun} and
+\code{hclustfun} for automatic clustering, control how the ordering is
+performed and displayed.
+They accept the same values as the base function \code{aheatmap}, mimicking its
+behaviour, but also supports other convenient ways of specifying ordering and
+highlighting data patterns, some of which are illustrated in the rest of this
+section.
+We refer to the corresponding argument description on the man page
+\code{?aheatmap} for a list of all supported values.
+
+\subsection{Hierarchical clustering and dendrograms}
+Dendrograms display result of applying a hierarchical clutering
+algorithm to the rows or columns, typically using the base function \code{hclust}.
+
+By default \code{aheatmap} performs hierarchical clustering and show the
+associated dedrograms of both rows and columns, using the \code{"euclidean"}
+distance and the linkage method \code{"complete"}.
+However more custom clustering can also be specified:
+
+<<clustering, out.width = "0.33\\textwidth", tidy = FALSE>>=
+# default
+aheatmap(x)
+# use different clustering method for rows
+aheatmap(x, Rowv = c('manhattan', 'average'), info = TRUE)
+# use enternally computed clustering
+hc <- hclust(dist(x, method = 'minkowski'), method = 'centroid')
+aheatmap(x, Rowv = hc, info = TRUE)
+@
+
+\subsubsection{Display}
+
+<<dendrogram, out.width = "0.33\\textwidth">>=
+# cluster rows but do not show dendrogram
+aheatmap(x, Rowv = FALSE)
+# cut column dendrogram into 3 clusters
+aheatmap(x, Rowv = FALSE, Colv = 3L)
+aheatmap(x, Rowv = FALSE, Colv = -3L)
+@
+
+\code{aheatmap} also provides some convenient shortcuts to use the
+\CRANpkg{dendextend} and produce enhanced cluster highlighting, with colors,
+text and boxes:
+<<dendrogram_dendextend, out.width = "0.33\\textwidth", tidy = FALSE>>=
+# cluster highlighting
+aheatmap(x, Rowv = "#4", Colv = FALSE, main = "Colored clusters")
+aheatmap(x, Rowv = "#4|!", Colv = FALSE, main = "Boxed clusters")
+# highlight cluster #2 only adding some red text
+aheatmap(x, Colv = list("#3@2", text_col = 'red', text = 'Cluster B'), Rowv = FALSE
+            , main = "Partial highlithing")
+@
+
+A completely custom pre-formatted dendrogram can also be build and passed to
+\code{Rowv} (or \code{Colv}), controlling both ordering and display.
+For example, using the \pkgname{dendextend} package\footnote{Code borrowed
+from
+\url{http://cran.r-project.org/web/packages/dendextend/vignettes/introduction.html}},
+one can format a dendrogram in a complex way and simply ``plug" it into the row
+or column dendrogram panel:
+
+\begin{adjustbox}{valign=t}
+\begin{minipage}{.59\linewidth}
+<<dendrogram_custom, fig.show='hide'>>=
+# use pre-formatted dedrogram
+library(dendextend)
+hc <- hclust(dist(t(x)))
+hc <- as.dendrogram(hc) %>% 
+        set("nodes_pch", c(19,1,4)) %>% 
+        set("nodes_cex", c(2,1,2)) %>% 
+        set("nodes_col", c(3,4))
+hc <- hc %>% set("branches_lwd", c(4,1)) %>%    
+           set("branches_lty", c(1,1,3)) %>%  
+           set("branches_col", c(1,2,3)) 
+aheatmap(x, Colv = hc, Rowv = FALSE
+            , main = "Custom dendrogram")
+@
+\end{minipage}
+
+\begin{minipage}{.4\linewidth}
+<<dendrogram_custom_plot, out.width = "\\textwidth", ref.label='dendrogram_custom', echo = FALSE>>=
+@
+\end{minipage}
+\end{adjustbox}
+
+
+\subsection{Forced order}
+
+Column and row order can also be forced to a given order by passing an
+\textbf{integer} indexing vector or \code{NA} for keeping the original order.
+It is important that the indexing vector is effectively an integer
+vector, as passing a numeric vector would only provides weights used
+when re-ordering the computed dendrogram.
+When weights are used, the resulting dendrogram is essentially the same, with
+branches (and leaves) ordered in different ways (see the two last heatmaps
+below).
+
+<<dendrogram_custom_plot, out.width = ".23\\textwidth">>=
+# orignal order
+aheatmap(x, Rowv = NA, Colv = NA, main = 'Original')
+# indexing vector
+aheatmap(x, Rowv = NA, Colv = seq(ncol(x), 1), main = 'Forced (inverse)')
+# not the same as numeric weight vector
+aheatmap(x, Rowv = NA, Colv = as.numeric(seq(nrow(x), 1)), main = 'Values used as weights')
+# compare with no weights
+aheatmap(x, Rowv = NA, main = 'Default weighting')
+@
+
+\section{Borders}
+
+Borders of the different elements can be controlled using argument
+\code{border}. Passing a single value draws a border on all relevant elements
+using the specified color, and a finer control is possible
+by providing a list of border graphical parameters for specific element
+separately (\cref{fig:borders}):
+
+\begin{description}
+  \item[cell] border around each cell in the data matrix;
+  \item[matrix] border around the data matrix;
+  \item[annCol] border around each cell in the column annotation;
+  \item[annRow] border around each cell in the row annotation;
+  \item[annLeg] border around each cell in the annotation legend(s);
+  \item[base] default specification to use for each element -- if not otherwise
+  defined.
+\end{description}
+
+\begin{figure}[!h]
+<<borders_all, out.width = ".3\\textwidth">>=
+# all borders
+aheatmap(x, annCol = ann_col, border = TRUE)
+# around data matrix
+aheatmap(x, annCol = ann_col, border = list(matrix = TRUE))
+# finer control on each element
+aheatmap(x, annCol = ann_col, border = list(cell = list(lwd=2)
+                                            , matrix = list(col='blue', lwd=4)
+                                            , annCol='green'
+                                            , annLeg = 'red'))
+@
+\caption{Border control}\label{fig:borders}
+\end{figure}
+
+\section{Colours}
+\section{Labels}
+
+\section{Legends}
+Annotated heatmaps have two types of legends, one showing the colour-value scale
+used to visualise the data matrix and another one for the annotation tracks.
+
+\subsection{Colour scale}
+The very principle of a heatmap is to bin data values into a certain number
+of intervals (or breaks), associating each of these with a given colour.
+The \emph{colour scale} is the legend that provides details about how to read
+the resulting colour coded data matrix.
+As such, it serves multiple purposes:
+\begin{itemize}
+  \item provide the mapping between colours and value intervals;
+  \item show the actual range of displayed values;
+  \item optionnaly show the overall distribution of values.
+\end{itemize}
+
+\subsubsection{Colours and breaks}
+
+\subsubsection{Look and position}
+As for other components in annotated heatmaps, the position of the
+colour scale is controlled by the argument \code{layout}, which can also be used
+to specify if the scale should expand over the full height/width or have a
+limited fixed size.
+
+By default the scale is placed on the top-right corner of the data matrix, with
+a limited fixed size.
+\Cref{fig:layout_scale} illustrates how to easily obtain some other commonly
+used positions/look, through the use of special layout shortcuts.
+More options are available, as detailed in the manual page for
+\code{aheatmap\_layout}.
+
+\begin{figure}[h!]
+<<layout_scale, out.width = "0.23\\textwidth">>=
+# vertical on the right expanded over the full height
+aheatmap(x, layout = '*')
+# horizontal at the bottom-right corner
+aheatmap(x, layout = '_')
+# horizontal the bottom, expanded over the full width
+aheatmap(x, layout = '_*')
+# vertical on the left (when not using/showing row dendrogram)
+aheatmap(x, Rowv = NA, layout = '^')
+@
+\caption{Colour scale alternative layouts: the scale can be placed in different
+areas around the data matrix and expanded to full height/width.}
+\label{fig:layout_scale}
+\end{figure}
+
+
+\subsection{Annotations}
+
+\section{Session Info}
+<<sessionInfo, echo=FALSE, results='asis'>>=
+toLatex(sessionInfo())
+@
+
+\printbibliography[heading=bibintoc]
+
+\end{document}

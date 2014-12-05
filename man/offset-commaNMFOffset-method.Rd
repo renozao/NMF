@@ -9,9 +9,8 @@
   \item{object}{an instance of class \code{NMFOffset}.}
 }
 \description{
-  The function \code{offset} returns the offset vector from
-  an NMF model that has an offset, e.g. an \code{NMFOffset}
-  model.
+  The function \code{offset} returns the offset vector from an NMF model
+that has an offset, e.g. an \code{NMFOffset} model.
 }
 \keyword{methods}
 

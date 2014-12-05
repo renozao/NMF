@@ -9,26 +9,33 @@ library(gridBase)
 # extends gpar objects
 c_gpar <- function(gp, ...){
     x <- list(...)
+    if( length(x) == 1L && is.null(names(x)) && is.list(x[[1]]) ) 
+        x <- x[[1]]
     do.call(gpar, c(gp, x[!names(x) %in% names(gp)]))
 }
 
+lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
+, treeheight_col, treeheight_row, legend, main, sub, info
+, annTracks, annotation_legend, cexAnn, layout
+, fontsize, fontsize_row, fontsize_col, gp){
 
-lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
-, treeheight_col, treeheight_row, legend, main = NULL, sub = NULL, info = NULL
-, annTracks, annotation_legend
-, fontsize, fontsize_row, fontsize_col, gp = gpar()){
-
+    # pre-process layout to determine each component position/presence
+    gl <- .aheatmap_layout(layout)
+    
+    # annotation data
 	annotation_colors <- annTracks$colors
 	row_annotation <- annTracks$annRow
 	annotation <- annTracks$annCol
 	
     gp0 <- gp
-	coln_height <- unit(10, "bigpts")
+	coln_height <- unit(0, "bigpts")
 	if(!is.null(coln)){
 		longest_coln = which.max(nchar(coln))
-		coln_height <- coln_height +  unit(1.1, "grobheight", textGrob(coln[longest_coln], rot = 90, gp = c_gpar(gp, fontsize = fontsize_col)))
+#		coln_height <- unit(10, "bigpts") +  unit(1.1, "grobheight", textGrob(coln[longest_coln], rot = 90, gp = c_gpar(gp, fontsize = fontsize_col)))
+#        coln_height <- convertHeight(unit(1, "grobheight", textGrob(coln[longest_coln], rot = 90, gp = c_gpar(gp, fontsize = fontsize_col))), 'bigpts')
+        coln_height <- unit(10, "bigpts") +  unit(1, "grobheight", textGrob(coln[longest_coln], rot = 90, gp = c_gpar(gp, fontsize = fontsize_col)))
 	}
-
+    
 	rown_width <- rown_width_min <- unit(10, "bigpts")
 	if(!is.null(rown)){
 		longest_rown = which.max(nchar(rown))
@@ -37,19 +44,13 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	
 	gp = c_gpar(gp, fontsize = fontsize)
 	# Legend position
-	if( !is_NA(legend) ){
-		longest_break = which.max(nchar(as.character(legend)))
-		longest_break = unit(1.1, "grobwidth", textGrob(as.character(legend)[longest_break], gp = gp))
-		# minimum fixed width: plan for 2 decimals and a sign 
-		min_lw = unit(1.1, "grobwidth", textGrob("-00.00", gp = gp))
-		longest_break = max(longest_break, min_lw)
-		title_length = unit(1.1, "grobwidth", textGrob("Scale", gp = c_gpar(gp0, fontface = "bold")))
-		legend_width = unit(12, "bigpts") + longest_break * 1.2
-		legend_width = max(title_length, legend_width)
-	}
-	else{
-		legend_width = unit(0, "bigpts")
-	}
+	if( !is_NA(legend) ) legend_width <- draw_legend(legend = legend, dims.only = TRUE)
+	else legend_width <- unit(0, "bigpts")
+    col_legend_height <- row_legend_width <- unit(0, 'bigpts')
+    if( !isTRUE(gl$options$legend$horizontal) ) row_legend_width <- legend_width 
+    else col_legend_height <- legend_width
+    #
+    
 	
 	.annLegend.dim <- function(annotation, fontsize){
 		# Width of the corresponding legend
@@ -68,7 +69,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	# Column annotations
 	if( !is_NA(annotation) ){
 		# Column annotation height		
-		annot_height = unit(ncol(annotation) * (8 + 2) + 2, "bigpts")
+		annot_height = unit(ncol(annotation) * (cexAnn[2L] * 8 + 2) + 2, "bigpts")
 	}
 	else{
 		annot_height = unit(0, "bigpts")
@@ -77,18 +78,18 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	# add a viewport for the row annotations
 	if ( !is_NA(row_annotation) ) {
 		# Row annotation width		
-		row_annot_width = unit(ncol(row_annotation) * (8 + 2) + 2, "bigpts")
+		row_annot_width = unit(ncol(row_annotation) * (cexAnn[1L] * 8 + 2) + 2, "bigpts")
 	}
 	else {
 		row_annot_width = unit(0, "bigpts")
 	}
 	
 	# Width of the annotation legend
-	annot_legend_width <- 
+    annot_legend_width <- 
 		if( annotation_legend && !is_NA(annotation_colors) ){ 
 			.annLegend.dim(annotation_colors, fontsize)
 		}else unit(0, "bigpts")
-
+    
 	# Tree height
 	treeheight_col = unit(treeheight_col, "bigpts") + unit(5, "bigpts")
 	treeheight_row = unit(treeheight_row, "bigpts") + unit(5, "bigpts") 
@@ -108,14 +109,14 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 	
 	# Set cell sizes
 	if(is.na(cellwidth)){
-		matwidth = unit(1, "npc") - rown_width - legend_width - row_annot_width  - treeheight_row - annot_legend_width
+		matwidth = unit(1, "npc") - rown_width - row_legend_width - row_annot_width  - treeheight_row - annot_legend_width - gl$padding$h
 	}
 	else{
 		matwidth = unit(cellwidth * ncol, "bigpts")
 	}
 
 	if(is.na(cellheight)){
-		matheight = unit(1, "npc") - treeheight_col - annot_height - main_height - coln_height - sub_height - info_height
+		matheight = unit(1, "npc") - treeheight_col - annot_height - main_height - coln_height - col_legend_height - sub_height - info_height - gl$padding$v
 	
 		# recompute the cell width depending on the automatic fontsize
 		if( is.na(cellwidth) && !is.null(rown) ){
@@ -123,102 +124,145 @@ lo <- function (rown, coln, nrow, ncol, cellheight = NA, cellwidth = NA
 			fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.6*cellheight, 'bigpts')), 'points')
 			
 			rown_width <- rown_width_min + unit(1.2, "grobwidth", textGrob(rown[longest_rown], gp = c_gpar(gp0, fontsize = fontsize_row)))
-			matwidth <- unit(1, "npc") - rown_width - legend_width - row_annot_width  - treeheight_row - annot_legend_width
+			matwidth <- unit(1, "npc") - rown_width - row_legend_width - row_annot_width  - treeheight_row - annot_legend_width - gl$padding$h
 		}
 	}
 	else{
 		matheight = unit(cellheight * nrow, "bigpts")
 	}	
-		
-	# HACK: 
+	
+    # HACK: 
 	# - use 6 instead of 5 column for the row_annotation
 	# - take into account the associated legend's width
 	# Produce layout()
-	unique.name <- vplayout(NULL)
-	lo <- grid.layout(nrow = 7, ncol = 6
-			, widths = unit.c(treeheight_row, row_annot_width, matwidth, rown_width, legend_width, annot_legend_width)
-			, heights = unit.c(main_height, treeheight_col,  annot_height, matheight, coln_height, sub_height, info_height))
+    layout_size <- list(
+                    list(rtree = treeheight_row, rann = row_annot_width, mat = matwidth, rnam = rown_width, leg = legend_width, aleg = annot_legend_width)
+                    , list(main = main_height, ctree = treeheight_col, cann = annot_height, mat = matheight, cnam = coln_height, leg = legend_width
+                            , sub = sub_height, info = info_height)
+                )
+    
+#    aheatmap_layout(layout, size = layout_size); stop()
+    glayout <- vplayout(NULL, layout = layout, size = layout_size)
+    # reoder width/height according to layout
+    unique.name <- glayout$name
+    # push layout
+	lo <- glayout$grid.layout
+    # drop grid layout spec from result object
+    glayout$grid.layout <- NULL
 	hvp <- viewport( name=paste('aheatmap', unique.name, sep='-'), layout = lo)
 	pushViewport(hvp)
 	
 	#grid.show.layout(lo); stop('sas')
 	# Get cell dimensions
-	vplayout('mat')
-	cellwidth = convertWidth(unit(1, "npc"), "bigpts", valueOnly = T) / ncol
-	cellheight = convertHeight(unit(1, "npc"), "bigpts", valueOnly = T) / nrow
-	upViewport()
+    cellwidth <- cellheight <- 0 
+	if( vplayout('mat') ){
+    	cellwidth = convertWidth(unit(1, "npc"), "bigpts", valueOnly = T) / ncol
+    	cellheight = convertHeight(unit(1, "npc"), "bigpts", valueOnly = T) / nrow
+    	upViewport()
+    }
 		
 	height <- as.numeric(convertHeight(sum(lo$height), "inches"))
 	width <- as.numeric(convertWidth(sum(lo$width), "inches"))
 	# Return minimal cell dimension in bigpts to decide if borders are drawn
 	mindim = min(cellwidth, cellheight) 
-	return( list(width=width, height=height, vp=hvp, mindim=mindim, cellwidth=cellwidth, cellheight=cellheight) )
+	return( list(width=width, height=height, vp=hvp
+                , mindim=mindim, cellwidth=cellwidth, cellheight=cellheight
+                , layout = glayout) )
 }
 
-draw_dendrogram = function(hc, horizontal = T){
+.grid_dendrogram <- function(hc, horiz = FALSE, flip = FALSE){
 	
-#	.draw.dendrodram <- function(hc){
-#		
-#		# convert into an hclust if necessary
-#		if( is(hc, 'dendrogram') ){
-#			hca <- attr(hc, 'hclust')
-#			hc <- if( !is.null(hca) ) hca else as.hclust(hc)
-#		}
-#		
-#		h = hc$height / max(hc$height) / 1.05
-#		m = hc$merge
-#		o = hc$order
-#		n = length(o)
-#	
-#		m[m > 0] = n + m[m > 0] 
-#		m[m < 0] = abs(m[m < 0])
-#	
-#		dist = matrix(0, nrow = 2 * n - 1, ncol = 2, dimnames = list(NULL, c("x", "y"))) 
-#		dist[1:n, 1] = 1 / n / 2 + (1 / n) * (match(1:n, o) - 1)
-#	
-#		for(i in 1:nrow(m)){
-#			dist[n + i, 1] = (dist[m[i, 1], 1] + dist[m[i, 2], 1]) / 2
-#			dist[n + i, 2] = h[i]
-#		}
-#	
-#		draw_connection = function(x1, x2, y1, y2, y){
-#			grid.lines(x = c(x1, x1), y = c(y1, y))
-#			grid.lines(x = c(x2, x2), y = c(y2, y))
-#			grid.lines(x = c(x1, x2), y = c(y, y))
-#		}
-#		
-#		# create a rotating viewport for vertical dendrogram 
-#		if(!horizontal){
-#			gr = rectGrob()
-#			pushViewport(viewport(height = unit(1, "grobwidth", gr), width = unit(1, "grobheight", gr), angle = 90))
-#			on.exit(upViewport())
-#		}
-#		
-#		for(i in 1:nrow(m)){
-#			draw_connection(dist[m[i, 1], 1], dist[m[i, 2], 1], dist[m[i, 1], 2], dist[m[i, 2], 2], h[i])
-#		}		
-#				
-#	}
-	
-	.draw.dendrodram <- function(hc, ...){
-#		suppressWarnings( opar <- par(plt = gridPLT(), new = TRUE) )
-		( opar <- par(plt = gridPLT(), new = TRUE) )
-		on.exit(par(opar))
-		if( getOption('verbose') ) grid.rect(gp = gpar(col = "blue", lwd = 2))
-		if( !is(hc, 'dendrogram') )
-			hc <- as.dendrogram(hc)
-		plot(hc, horiz=!horizontal, xaxs="i", yaxs="i", axes=FALSE, leaflab="none", ...)
+	# convert into an hclust if necessary
+	if( is(hc, 'dendrogram') ){
+		hca <- attr(hc, 'hclust')
+		hc <- if( !is.null(hca) ) hca else as.hclust(hc)
 	}
 	
-		
+	h = hc$height / max(hc$height) / 1.05
+	m = hc$merge
+	o = hc$order
+	n = length(o)
+	
+	m[m > 0] = n + m[m > 0] 
+	m[m < 0] = abs(m[m < 0])
+	
+	dist = matrix(0, nrow = 2 * n - 1, ncol = 2, dimnames = list(NULL, c("x", "y"))) 
+	dist[1:n, 1] = 1 / n / 2 + (1 / n) * (match(1:n, o) - 1)
+	
+	for(i in 1:nrow(m)){
+		dist[n + i, 1] = (dist[m[i, 1], 1] + dist[m[i, 2], 1]) / 2
+		dist[n + i, 2] = h[i]
+	}
+    
+    # flip around y-axis if requested
+    if( flip ){
+        dist[, 2] <- 1 - dist[, 2]
+        h <- 1 - h
+    }
+	
+	draw_connection = function(x1, x2, y1, y2, y){
+		grid.lines(x = c(x1, x1), y = c(y1, y))
+		grid.lines(x = c(x2, x2), y = c(y2, y))
+		grid.lines(x = c(x1, x2), y = c(y, y))
+	}
+	
+	# create a rotating viewport for row dendrogram 
+	if( horiz ){
+		gr = rectGrob()
+        pushViewport(viewport(height = unit(1, "grobwidth", gr), width = unit(1, "grobheight", gr), angle = 90))
+		on.exit(upViewport())
+	}
+	
+	for(i in 1:nrow(m)){
+		draw_connection(dist[m[i, 1], 1], dist[m[i, 2], 1], dist[m[i, 1], 2], dist[m[i, 2], 2], h[i])
+	}		
+	
+}
+
+.base_dendrogram <- function(hc, horiz = FALSE, flip = FALSE, ...){
+    if( flip ) # not supported 
+        stop("Could not draw ", if( horiz ) 'row' else 'column', " dendrogram: base function plot.dendrogram cannot draw flipped dendrogram")
+    
+#	suppressWarnings( opar <- par(plt = gridPLT(), new = TRUE) )
+	( opar <- par(plt = gridPLT(), new = TRUE) )
+	on.exit(par(opar))
+	trace_vp()
+	if( !is(hc, 'dendrogram') )
+		hc <- as.dendrogram(hc)
+	res <- plot(hc, horiz = horiz, xaxs="i", yaxs="i", axes=FALSE, leaflab="none", ...)
+    
+    if( !is.null(cluster_spec <- attr(hc, 'cluster.spec')) ){
+        sapply(seq(cluster_spec$k)[cluster_spec$which], function(i){
+            cluster_spec$which <- i
+            d <- NULL
+            if( !is.null(cluster_spec$col) ) cluster_spec$col <- alphacol(cluster_spec$col[i], .2)
+            cluster_spec$text <- cluster_spec$text[[i]]
+            cluster_spec <- expand_list(cluster_spec, horiz = horiz, density = d, lty = 5, lwd = 1.5, lower_rect = 0)
+            .d <- function(...){
+                rect.dendrogram(hc, ...)
+            }
+            do.call(.d, cluster_spec)
+        })
+    }
+    invisible(res)
+}
+
+
+draw_dendrogram = function(hc, horizontal = FALSE, flip = FALSE){
+    
+    .draw.dendrodram <- if( flip ) .grid_dendrogram else .base_dendrogram 
 	# create a margin viewport
-	if(!horizontal)
-		pushViewport( viewport(x=0,y=0,width=0.9,height=1,just=c("left", "bottom")) )
-	else
-		pushViewport( viewport(x=0,y=0.1,width=1,height=0.9,just=c("left", "bottom")) )
+	if( horizontal ){
+        x <- if( flip ) 0.1 else 0
+        vp <- viewport(x=x, y=0, width=0.9, height=1,just=c("left", "bottom"))
+	}else{
+        y <- if( !flip ) 0.1 else 0
+        vp <- viewport(x=0, y=y, width=1, height=0.9,just=c("left", "bottom"))
+    }
+    pushViewport( vp )
 	on.exit(upViewport())
 	
-	.draw.dendrodram(hc)
+    .draw.dendrodram(hc, horiz = horizontal, flip = flip)
 
 }
 
@@ -229,11 +273,44 @@ draw_matrix = function(matrix, border_color, txt = NULL, gp = gpar()){
 	x = (1:m)/m - 1/2/m
 	y = (1:n)/n - 1/2/n
     
+    # extract graphical parameters
+    color_matrix <- attr(matrix, 'color')
+    type <- attr(matrix, 'type')
+    color_scale <- attr(matrix, 'scale')
+    
+    # define set of drawing functions
+    # rectangles
+    draw_cell.rect <- function(i, gp){
+        grid.rect(x = x[i], y = y, width = 1/m, height = 1/n, gp = gp)
+    }
+    # rounded rectangles
+    draw_cell.roundrect <- function(i, gp){
+        r <- .8 * (1 - radius[sign(matrix[,i]) + 2] * abs(matrix[,i]) / radius_base)
+        lapply(seq_along(y), function(j){
+            gp$fill <- color_matrix[j, i]
+            grid.roundrect(x = x[i], y = y[j]
+                            , r = unit(r[j], 'snpc')
+                            , width = 1/m, height = 1/n, gp = gp)
+        })
+        invisible()
+    }
+    # circles
+    radius_base <- min(1/n, 1/m)/2 
+    radius <- radius_base / abs(c(min(color_scale), max(color_scale)))
+    radius <- c(radius[1], 0, radius[2])
+    draw_cell.circle <- function(i, gp){
+        grid.circle(x = x[i], y = y, r = radius[sign(matrix[,i]) + 2] * abs(matrix[,i]), gp = gp)
+    }
+    #
+    draw_cell <- get(paste0('draw_cell.', type), mode = 'function', inherits = FALSE)
+    ## 
+    
     # substitute NA values with empty strings
     if( !is.null(txt) ) txt[is.na(txt)] <- ''
      
     for(i in 1:m){
-		grid.rect(x = x[i], y = y, width = 1/m, height = 1/n, gp = gpar(fill = matrix[,i], col = border_color))
+        rgp <- c_gpar(list(fill = color_matrix[,i]), border_color)
+        draw_cell(i, gp = rgp)
         if( !is.null(txt) ){
             grid.text(label=txt[, i],
                                 x=x[i],
@@ -288,15 +365,72 @@ draw_rownames = function(rown, gp = gpar()){
 	grid.text(rown, x = unit(5, "bigpts"), y = y, vjust = 0.5, hjust = 0, gp = gp)	
 }
 
-draw_legend = function(color, breaks, legend, gp = gpar()){
-	height = min(unit(1, "npc"), unit(150, "bigpts"))
-	pushViewport(viewport(x = 0, y = unit(1, "npc"), just = c(0, 1), height = height))
-	legend_pos = (legend - min(breaks)) / (max(breaks) - min(breaks))
-	breaks = (breaks - min(breaks)) / (max(breaks) - min(breaks))
-	h = breaks[-1] - breaks[-length(breaks)]
-	grid.rect(x = 0, y = breaks[-length(breaks)], width = unit(10, "bigpts"), height = h, hjust = 0, vjust = 0, gp = gpar(fill = color, col = "#FFFFFF00"))
-	grid.text(legend, x = unit(12, "bigpts"), y = legend_pos, hjust = 0, gp = gp)
-	upViewport()
+
+draw_legend = function(color, breaks, legend, gp = gpar(), opts = NULL, dims.only = FALSE){
+    
+    # sizes
+    padding <- unit(4, 'bigpts')
+    thickness <- unit(10, 'bigpts')
+    space <- unit(2, 'bigpts')
+    
+    legend_txt <- as.character(names(legend) %||% legend)
+    
+    if( dims.only ){
+    	longest_break = which.max(nchar(legend_txt))
+    	longest_break = unit(1.1, "grobwidth", textGrob(legend_txt[longest_break], gp = gp))
+    	# minimum fixed width: plan for 2 decimals and a sign 
+    	min_lw = unit(1.1, "grobwidth", textGrob("-00.00", gp = gp))
+    	longest_break = min(longest_break, min_lw)
+    	#title_length = unit(1.1, "grobwidth", textGrob("Scale", gp = c_gpar(gp0, fontface = "bold")))
+    	legend_width <- padding + thickness + space + longest_break * 1
+        return(legend_width)
+    }
+    
+    if( !isTRUE(opts$expand) ){
+        size <- min(unit(1, "npc"), unit(150, "bigpts"))
+        shift <- unit(1, "npc") - size
+        if( opts$pos == 'middle' ) shift <- shift * .5
+        else if( opts$pos == 'bottom' && !isTRUE(opts$horizontal) ) shift <- unit(0, "npc")
+        else if( opts$pos == 'top' && isTRUE(opts$horizontal) ) shift <- unit(0, "npc")
+        
+        if( !isTRUE(opts$horizontal) ){
+            pushViewport(viewport(x = 0, y = shift, just = c(0, 0), height = size))
+        }else{
+            pushViewport(viewport(y = 0, x = shift, just = c(0, 0), width = size))
+        }
+        
+        on.exit( upViewport() )
+    }
+    
+    # compute raltive position for breaks and "ticks"
+	tick_pos = (legend - min(breaks)) / (max(breaks) - min(breaks))
+    breaks = (breaks - min(breaks)) / (max(breaks) - min(breaks))
+    h <- diff(breaks)
+    
+    txt_shift <- thickness + space + padding
+    
+    flip_coord <- function(x, flip, max = unit(1, 'npc')){
+        if( flip ) max - x 
+        else x
+    }
+    
+    if( !isTRUE(opts$horizontal) ){
+        x.scale <- unit(opts$flip$h+0, 'npc')
+    	grid.rect(x = x.scale, y = breaks[-length(breaks)], width = thickness, height = h
+                , hjust = opts$flip$h + 0, vjust = 0
+                , gp = gpar(fill = color, col = "#FFFFFF00"))
+        grid.text(legend_txt, x = flip_coord(txt_shift, opts$flip$h, x.scale), y = tick_pos
+                            , hjust = opts$flip$h + 0
+                            , gp = gp)
+    }else{
+        y.scale <- unit(!opts$flip$v+0, 'npc')
+        grid.rect(y = y.scale, x = breaks[-length(breaks)], height = thickness, width = h
+                , hjust = 0, vjust = !opts$flip$v
+                , gp = gpar(fill = color, col = "#FFFFFF00"))
+        grid.text(legend_txt, y = flip_coord(txt_shift, !opts$flip$v, y.scale), x = tick_pos
+                            , hjust = 0.5, vjust = !opts$flip$v + 0
+                            , gp = gp)
+    }
 }
 
 convert_annotations = function(annotation, annotation_colors){
@@ -325,27 +459,33 @@ convert_annotations = function(annotation, annotation_colors){
 		}
 	})
 
+    # shape as a matrix
+	if( !is.matrix(x) ) x <- as.matrix(x) 
+                
 	colnames(x) <- names(annotation)
 	return(x)
 	#return(as.matrix(new))
 }
 
-draw_annotations = function(converted_annotations, border_color, horizontal=TRUE){
+draw_annotations = function(converted_annotations, border_color, horizontal=TRUE, cex = 1){
 	n = ncol(converted_annotations)
 	m = nrow(converted_annotations)
+    base_size <- 8
+    size <- cex * base_size
+    psize <- unit(size, "bigpts")
 	if( horizontal ){
 		x = (1:m)/m - 1/2/m
-		y = cumsum(rep(8, n)) - 4 + cumsum(rep(2, n))
+		y = cumsum(rep(size + 2, n)) - cex * base_size / 2
 		for(i in 1:m){
-			grid.rect(x = x[i], unit(y[n:1], "bigpts"), width = 1/m, height = unit(8, "bigpts"), gp = gpar(fill = converted_annotations[i, ], col = border_color))
+			grid.rect(x = x[i], unit(y[n:1], "bigpts"), width = 1/m, height = psize
+                    , gp = c_gpar(list(fill = converted_annotations[i, ]), border_color))
 		}
 	}else{
-		x = cumsum(rep(8, n)) - 4 + cumsum(rep(2, n))
+		x = cumsum(rep(size + 2, n)) - cex * base_size / 2
 		y = (1:m)/m - 1/2/m
 		for (i in 1:m) {
-			grid.rect(x = unit(x[1:n], "bigpts"), y=y[i], width = unit(8, "bigpts"), 
-					height = 1/m, gp = gpar(fill = converted_annotations[i,]
-					, col = border_color))
+			grid.rect(x = unit(x[1:n], "bigpts"), y=y[i], width = psize, 
+					height = 1/m, gp = c_gpar(list(fill = converted_annotations[i,]), border_color))
 		}
 	}
 }
@@ -362,7 +502,8 @@ draw_annotation_legend = function(annotation_colors, border_color, gp = gpar()){
 		acol <- annotation_colors[[i]]
 		if( attr(acol, 'afactor') ){
 			sapply(seq_along(acol), function(j){
-				grid.rect(x = unit(0, "npc"), y = y, hjust = 0, vjust = 1, height = text_height, width = text_height, gp = gpar(col = border_color, fill = acol[j]))
+				grid.rect(x = unit(0, "npc"), y = y, hjust = 0, vjust = 1, height = text_height, width = text_height
+                            , gp = c_gpar(list(fill = acol[j]), border_color))
 				grid.text(names(acol)[j], x = text_height * 1.3, y = y, hjust = 0, vjust = 1, gp = gp)
 				y <<- y - 1.5 * text_height
 			})
@@ -380,16 +521,316 @@ draw_annotation_legend = function(annotation_colors, border_color, gp = gpar()){
 	}
 }
 
-vplayout <- function ()
+#' Annotated Heatmap Layout Preview
+#' 
+#' Shows a diagram of an annotated heatmap layout for given specification.
+#' 
+#' @param layout layout specification that indicates the relative position 
+#' of the heatmap's components.
+#' Two layouts can be defined: one horizontal, which relates to components associated to rows, 
+#' and one vertical, which relates to components associated with columns.
+#' Each layout is specified as a character strings, composed of characters 
+#' that encode the order of each component: dendrogram (d), annotation tracks (a), 
+#' data matrix (m), labels (l) and legend (L).
+#' See section \emph{Layout syntax} for a complete specification  
+#'
+#' @param size list defining the size of each component (mainly for internal use).
+#' 
+#' 
+#' @details Layout syntax:
+#' 
+#' Layouts are specified as character strings that can contain the following characters, 
+#' each associated with a given component or behaviour:
+#' 
+#' \strong{Components}
+#' \describe{
+#' \item{\sQuote{d}}{ dendrogram component}
+#' \item{\sQuote{a}}{ annotation tracks}
+#' \item{\sQuote{m}}{ data matrix}
+#' \item{\sQuote{l}}{ labels}
+#' \item{\sQuote{L}}{ scale legend}
+#' }
+#' 
+#' \strong{Behaviours}
+#' \describe{
+#' \item{\sQuote{^}}{ align top (resp. left) for horizontal (resp. vertical) layout.}
+#' \item{\sQuote{-}}{ align middle (resp. center) for horizontal (resp. vertical) layout.}
+#' \item{\sQuote{_}}{ align bottom (resp. right) for horizontal (resp. vertical) layout.
+#' If used alone (i.e. \code{layout = "_"}), then this is equivalent to \code{"|.L_"}, 
+#' which places the legend horizontally on the bottom-right corner.}  
+#' \item{\sQuote{*}}{ used either alone or after after \sQuote{L} to specifiy that the 
+#' legend should expand to full height/width.}
+#' }
+#' The specification must contain one instance of each of these character.
+#' 
+#' The default horizontal/vertical layout is \code{"daml"}, and can also be specified
+#' as \code{"."}.
+#' 
+#' Separate layouts can be passed as a character vector with 2 element (e.g., \code{c("daml", "mald")}),
+#' or as a single string, with layouts separated by \code{"|"} (e.g., \code{"almd | L."}).
+#' When using this separator, a layout specification may be omitted, indicating
+#' that the default layout shoud be used: \code{"almd|"} is equivalent to \code{"almd | ."}.
+#' If only one layout specification is passed (i.e. a string without \code{"|"}), 
+#' then it is used for both horizontal and vertical layouts.
+#' 
+#' \strong{Shortcuts}
+#' \itemize{
+#' \item \code{layout = "*"} is a shortcut for \code{layout = ".L*"}, which expands the legend to 
+#' take up full height;
+#' \item \code{layout = "_"} is a shortcut for \code{layout = "|.L_"}, which puts the legend at 
+#' bottom-right corner;
+#' \item \code{layout = "_^"} is a shortcut for \code{layout = "|.L^"}, which puts the legend at 
+#' bottom-left corner;
+#' \item \code{layout = "_*"} is a shortcut for \code{layout = "|.L*"}, which puts the legend 
+#' at bottom, expanded to take up full width;
+#' \item \code{layout = "^"} is a shortcut for \code{layout = "L^.|"}, which puts the legend 
+#' on the top-left corner.
+#' }
+#' 
+#' \strong{Examples:} 
+#' \itemize{
+#' \item \code{layout = "dlma"} puts labels at the leaves of the dendrograms and 
+#' annotation track below or at the right of the data matrix
+#' \item \code{layout = ". | amld"} use the default layout for rows, put
+#' column annotation track on top of the data matrix, followed by column labels and 
+#' dendrogram.
+#' }
+#' 
+#' @export
+#' @examples 
+#' 
+#' # default layout
+#' aheatmap_layout()
+#' 
+#' # Common row/column layout: annotations > data > labels > dendrogram 
+#' aheatmap_layout('amld')
+#' 
+#' # Separate row/column layout: row as above / column as default
+#' aheatmap_layout('amld | .')
+#' 
+#' ## Legend
+#' # horizontal bottom-right
+#' aheatmap_layout('_')
+#' # hotizontal top-left (equivalent to "|L^.")
+#' aheatmap_layout('^')
+#' 
+aheatmap_layout <- function(layout = 'daml', size = NULL){
+    
+    # default sizes
+    l <- unit(2, 'line')
+    size0 <- list(list(rtree = 2 * l, rann = l, mat = unit(1, 'null'), rnam = l, leg = l, aleg = l)
+            , list(main=l, ctree = 2 * l, cann = l, mat = unit(1, 'null'), cnam = l, leg = l, sub = l, info = 1.5 * l))
+    
+    if( is_NA(size) ){
+        if( nargs() == 1L ) return( size0 )
+        size <- NULL
+    }
+    
+    # define dummy sizes
+    if( is.null(size) ) size <- size0
+    
+    # compute layout
+    gl <- vplayout(NULL, layout = layout, size = size)
+    lo <- gl$grid.layout
+
+    # plot layout diagram
+    grid.newpage()
+    grid.show.layout(lo, unit.col = NA, cell.label = FALSE)
+    
+    # label components
+    pushViewport(viewport(0.5, 0.5, 0.8, 0.8, layout = lo))
+    labels <- c(tree = 'dendrogram', ann = 'annotation tracks', nam = 'labels')
+    ilabels <- function(x, y) setNames(paste(x, labels), paste0(y, names(labels)))
+    labels <- c(ilabels('Row', 'r'), ilabels('Column', 'c'), leg = 'Scale legend', aleg = 'Annotation legend'
+            , mat = 'Data'
+            , main = 'Main title', sub = 'Subtitle', info = 'Extra info pane')
+    
+    # taken from internal loop in grid.show.layout
+    label.vp <- function(x, rot = 0){
+        vplayout(x)
+        grid.text(labels[x], rot = rot)
+        popViewport()
+    }
+    
+    sapply(gl$h[!gl$h == 'mat'], label.vp, 90)
+    sapply(gl$v, label.vp)
+    popViewport()
+
+}
+
+.aheatmap_layout <- function(layout = 'daml', size = NULL){
+    
+    layout <- as.character(layout)
+    
+    # defaults
+    default <- 'daml'
+    defaultL <- paste0(default, 'L')
+    v_default <- strsplit(default, '')[[1L]]
+    cex.pad <- 1
+    
+    layout <- gsub(' ', '', layout, fixed = TRUE)
+    x <- layout
+    if( length(x) == 1L ){
+        # special legend specification
+        if( x == "*" ) x <- paste0(default, "L*")
+        else if( x == "^" ) x <- c("L^.", default)
+        else if( x == "_" ) x <- c(default, ".L_")
+        else if( x == "_*" ) x <- c(default, ".L*")
+        else if( x == "_^" ) x <- c(default, ".L^")
+        else{
+            x <- gsub("(\\|)?L?([-_*^])", "\\1L\\2", x)
+            x <- strsplit(x, '|', fixed = TRUE)[[1L]]
+            # deal with ending "|"
+            if( grepl("\\|$", layout) ) x <- c(x, '')
+        }
+    }
+    # resolve shortcuts
+    if( length(x) == 1L ) x <- c(x, x)
+    x <- gsub('.', defaultL, x, fixed = TRUE)
+    
+    # extract padding
+    cex.pad <- sapply(x, function(x){
+        m <- str_match(x, "^([0-9.]+)[0-9]")
+        if( !is.na(m[, 1]) ) m[, 2]
+        else cex.pad
+    })
+    cex.pad <- as.numeric(cex.pad)
+    
+    # split into letters
+    x_v <- x # keep vector version for later use
+    x <- strsplit(x, '')
+    x <- lapply(x, unique)
+    
+    # process each layout
+    x <- lapply(x, function(x){    
+        xp <- if( !length(x) ) v_default # empty => default
+        else if( identical(x, '!') ) 'm'
+        else if( identical(x, 'L') ) c(v_default, 'L')
+        else if( length(i <- grep('/', x, fixed = TRUE)) ){ # detect component skip
+            skip <- tail(x, length(x) - i)
+            if( any(skip == '*') ) skip <- setdiff(union(skip, v_default), 'm')
+            if( i == 1L ) setdiff(v_default, skip)
+            else setdiff(head(x, i-1), skip)
+        } else x
+        # only keep component characters
+        xp <- intersect(xp, c(v_default, 'L'))
+        if( !length(xp) ) v_default
+        else xp
+    })
+    
+#    if( !any(unlist(x) == 'L') ){
+#        x[[1L]] <- c(x[[1L]], 'L')
+#    }else 
+    if( sum(unlist(x) == 'L') > 1L ){ # both
+        x[[2L]] <- setdiff(x[[2L]], 'L')
+    }
+    
+    e_order <- list(v=NULL, h=NULL)
+    lexique <- c(tree = 'd', ann = 'a', nam = 'l')
+    # vertical layout
+    elements <- c(setNames(lexique, paste0('c', names(lexique))), mat = 'm', leg = 'L')
+    ie <- match(elements, x[[2L]])
+    i <- cbind(ie+1, match('m', x[[1L]]))
+    rownames(i) <- names(elements)
+    res <- i
+    e_order$v <- c('main', names(elements)[setdiff(order(ie), which(is.na(ie)))], 'sub', 'info')
+    
+    # data matrix position
+    xm <- res['mat', 1]
+    ym <- res['mat', 2]
+    
+    # horizontal layout
+    elements <- c(setNames(lexique, paste0('r', names(lexique))), mat = 'm', leg = 'L')
+    ie <- match(elements, x[[1L]])
+    i <- cbind(xm, ie)
+    rownames(i) <- names(elements)
+    res <- rbind(res, i)
+    e_order$h <- names(elements)[setdiff(order(ie), which(is.na(ie)))]
+    # add annotation legend only if necessary
+    if( with_aleg <- any(unlist(x) == 'a') ){
+        e_order$h <- c(e_order$h, 'aleg')
+    }
+    
+    # fixed elements
+    nc <- length(e_order$h)
+    nr <- length(e_order$v)
+    res <- rbind(res, main = c(1, ym)
+			, sub = c(nr-1, ym)
+			, info = c(nr, ym)
+            , aleg = if( with_aleg ) c(xm, nc)
+    )
+    
+    colnames(res) <- c('x', 'y')
+    res <- res[!is.na(res[, 1]) & !is.na(res[, 2]), ]
+    res <- res[!duplicated(rownames(res)), ]
+    
+    # build result list
+    res <- c(list(layout = res), e_order, options = list())
+    
+    ## Component-specific options
+    # dendrogram orientation
+    flip <- sapply(e_order, function(x) grep('tree', x) > which(x=='mat'), simplify = FALSE)
+    res$options$dendrogram <- list(flip = flip)
+    
+    # legend 
+    hleg <- !'leg' %in% res$h
+    res$options$legend <- list(horizontal = hleg)
+    # detect legend positionning specifications
+    leg_spec <- str_match(x_v, "L((\\^)|(-)|(_)|(\\*))")[1+hleg, -(1:2)]
+    leg_spec <- !is.na(leg_spec) & nzchar(leg_spec)
+    if( !length(ipos <- which(leg_spec[1:3])) ) ipos <- 2 * hleg + 1
+    res$options$legend$pos <- c("top", "middle", "bottom")[ipos]
+    res$options$legend$expand <- leg_spec[4L]
+    # text orientation
+    res$options$legend$flip <- sapply(e_order, function(x) grep('^leg', x) < which(x=='mat'), simplify = FALSE)
+    ##
+    
+    ## grid.layout: generate and order component sizes according to layout specification
+    padding <- unit(4, 'bigpts')
+    res$padding <- list(h = (length(res$h) + 1) * cex.pad[1] * padding
+                        , v = (length(res$v) + 1) * cex.pad[2] * padding)
+    if( !is.null(size) ){
+        wunits <- size[[1L]][res$h]
+        hunits <- size[[2L]][res$v]
+        padd <- function(x, size){
+            tmp <- list(size)
+            sapply(seq_along(x), function(i){ tmp[[2*i]] <<- x[[i]]; tmp[[2*i+1]] <<- tmp[[1L]]})
+            tmp
+        }
+        
+        # add padding
+        res$cex.pad <- cex.pad	
+        if( cex.pad[1] ) wunits <- padd(wunits, cex.pad[1] * padding)
+        if( cex.pad[1] ) hunits <- padd(hunits, cex.pad[2] * padding)
+        
+#        print(hunits)
+        lo <- grid.layout(nrow = length(hunits), ncol = length(wunits)
+	            , widths = do.call('unit.c', wunits)
+	            , heights = do.call('unit.c', hunits))
+        
+        res$grid.layout <- lo
+    }
+    #
+    
+    invisible(res)
+}
+
+vplayout <- local(
 {
 	graphic.name <- NULL
 	.index <- 0L
-	function(x, y, verbose = getOption('verbose') ){
+    .layout <- NULL
+	function(x, y, verbose = getOption('verbose'), layout = NULL, ...){
 		# initialize the graph name
 		if( is.null(x) ){
             .index <<- .index + 1L
 			graphic.name <<- paste0("AHEATMAP.VP.", .index) #grid:::vpAutoName()
-			return(graphic.name)
+            # determine layout
+            if( is.null(layout) || identical(layout, 'default') ){ #default
+                layout <- 'damlLA | daml'
+            }
+            .layout <<- .aheatmap_layout(layout, ...)
+			return(c(list(name = graphic.name), .layout))
 		}
 		name <- NULL
 		if( !is.numeric(x) ){
@@ -400,30 +841,23 @@ vplayout <- function ()
 				y$name <- name
 				return(pushViewport(y))			
 			}
-			if( !is.null(tryViewport(name, verbose=verbose)) )
-				return()
+			if( !is.null(tryViewport(name, verbose=verbose)) ) return(TRUE)
 			
-			switch(x
-				, main={x<-1; y<-3;}
-				, ctree={x<-2; y<-3;}
-				, cann={x<-3; y<-3;}
-				, rtree={x<-4; y<-1;}
-				, rann={x<-4; y<-2;}
-				, mat={x<-4; y<-3;}
-				, rnam={x<-4; y<-4;}
-				, leg={x<-4; y<-5;}
-				, aleg={x<-4; y<-6;}
-				, cnam={x<-5; y<-3;}
-				, sub={x<-6; y<-3;}
-				, info={x<-7; y<-3;}
-				, stop("aheatmap - invalid viewport name")
-			)
+            # lookup viewport 
+            mlayout <- .layout$layout
+            if( !x %in% rownames(mlayout) ) return(FALSE)
+#                stop("aheatmap - invalid component name [", x, ']')
+            xy <- mlayout[x, ]
+            x <- xy[1L]
+            if( .layout$cex.pad[1] ) x <- x * 2
+            y <- xy[2L]
+            if( .layout$cex.pad[2] ) y <- y * 2
 		}
 		if( verbose ) message("vp - create ", name)
 		pushViewport(viewport(layout.pos.row = x, layout.pos.col = y, name=name))
+        TRUE
 	}	
-}
-vplayout <- vplayout()
+})
 
 #' Open a File Graphic Device
 #'
@@ -538,13 +972,21 @@ d <- function(x){
 	invisible(basename(tempfile()))
 }
 
+border_gpar <- function(x, as.list = FALSE){
+    gp <- if( is.list(x) ) x else list(col = x)
+    if( !as.list ) do.call(gpar,gp) else gp
+}
+
+border_gpar_list <- function(...) border_gpar(..., as.list = TRUE)
+
 heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	, tree_col, tree_row, treeheight_col, treeheight_row
 	, filename=NA, width=NA, height=NA
 	, breaks, color, legend, txt = NULL
-	, annTracks, annotation_legend=TRUE
+	, annTracks, annotation_legend=TRUE, cexAnn = NA
 	, new=TRUE, fontsize, fontsize_row, fontsize_col
 	, main=NULL, sub=NULL, info=NULL
+    , layout = NULL
 	, verbose=getOption('verbose')
 	, gp = gpar()){
 
@@ -552,7 +994,10 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	row_annotation <- annTracks$annRow
 	annotation <- annTracks$annCol
 	writeToFile <- !is.na(filename)
-	
+    # annotation track size
+    if( length(cexAnn) == 1L ) cexAnn <- c(cexAnn, cexAnn)
+    cexAnn[is.na(cexAnn)] <- 1 
+    
 	# open graphic device (dimensions will be changed after computation of the correct height)
 	if( writeToFile ){
 		gfile(filename)
@@ -616,9 +1061,13 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	, cellwidth = cellwidth, cellheight = cellheight
 	, treeheight_col = treeheight_col, treeheight_row = treeheight_row
 	, legend = legend
-	, annTracks = annTracks, annotation_legend = annotation_legend
+	, annTracks = annTracks, annotation_legend = annotation_legend, cexAnn = cexAnn
 	, fontsize = fontsize, fontsize_row = fontsize_row, fontsize_col = fontsize_col
+    , layout = layout
 	, main = mainGrob, sub = subGrob, info = infoGrob, gp = gp)
+    
+    # extract options
+    loptions <- glo$layout$options 
 	
 	# resize the graphic file device if necessary
 	if( writeToFile ){		
@@ -646,23 +1095,31 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	}
 
 	#grid.show.layout(glo$layout); return()
-	mindim <- glo$mindim
-	# Omit border color if cell size is too small 
-	if(mindim < 3) border_color = NA
-
+	
+    # load border specifications
+    border_color <- if( !is.list(border_color) ) list(base = border_color) else border_color 
+	for( b in c('base', 'cell', 'matrix', 'annRow', 'annCol', 'annLeg') ){
+        val <- border_color[[b]] %||% border_color[['base']] %||% NA
+        border_color[[b]] <- border_gpar_list(val) 
+    }
+    #
+    
+    # Omit border color if cell size is too small
+    mindim <- glo$mindim
+    if(mindim < 3 && !is_NA(border_color$cell$col) ){
+        warning("Forcing no-border on cells due to their small dimensions.")
+        border_color$cell <- list(col=NA)
+    }
+    
 	# Draw tree for the columns
-	if (!is_NA(tree_col) &&  treeheight_col != 0){
-		#vplayout(1, 2)
-		vplayout('ctree')
-		draw_dendrogram(tree_col, horizontal = T)
+	if (!is_NA(tree_col) &&  treeheight_col != 0 && vplayout('ctree') ){
+		draw_dendrogram(tree_col, horizontal = FALSE, flip = loptions$dendrogram$flip$v)
 		upViewport()
 	}
 
 	# Draw tree for the rows
-	if(!is_NA(tree_row) && treeheight_row !=0){
-		#vplayout(3, 1)
-		vplayout('rtree')
-		draw_dendrogram(tree_row, horizontal = F)
+	if(!is_NA(tree_row) && treeheight_row !=0 && vplayout('rtree') ){
+		draw_dendrogram(tree_row, horizontal = TRUE, flip = loptions$dendrogram$flip$h)
 		upViewport()
 	}
 
@@ -671,78 +1128,78 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
     fontsize_col <- convertUnit(min(unit(fontsize_col, 'points'), unit(0.6*glo$cellwidth, 'bigpts')), 'points')
     
 	# Draw matrix
-	#vplayout(3, 2)
-	vplayout('mat')
-	draw_matrix(matrix, border_color, txt = txt, gp = gpar(fontsize = fontsize_row))
-	#d(matrix)
-	#grid.rect()
-	upViewport()
+	if( vplayout('mat') ){
+    	draw_matrix(matrix, border_color$cell
+                            , txt = txt, gp = gpar(fontsize = fontsize_row))
+    	#d(matrix)
+        # outer border
+        if( !is_NA(border_color$matrix$col) ){
+            grid.rect(gp = border_gpar(border_color$matrix))
+        }
+        trace_vp()
+    	upViewport()
+    }
 
 	# Draw colnames
-	if(length(colnames(matrix)) != 0){
-		#vplayout(4, 2)
-		vplayout('cnam')
+	if(length(colnames(matrix)) != 0 && vplayout('cnam') ){
 		draw_colnames(colnames(matrix), gp = c_gpar(gp, fontsize = fontsize_col))
+        trace_vp()
 		upViewport()
 	}
 	
 	# Draw rownames
-	if(length(rownames(matrix)) != 0){
-		#vplayout(3, 3)
-		vplayout('rnam')
+	if(length(rownames(matrix)) != 0 && vplayout('rnam') ){
 		draw_rownames(rownames(matrix), gp = c_gpar(gp, fontsize = fontsize_row))
+        trace_vp()
 		upViewport()
 	}
 
 	# Draw annotation tracks
-	if( !is_NA(annotation) ){
-		#vplayout(2, 2)
-		vplayout('cann')
-		draw_annotations(annotation, border_color)
+	if( !is_NA(annotation) && vplayout('cann') ){
+		draw_annotations(annotation, border_color$annCol, cex = cexAnn[2L])
+        trace_vp()
 		upViewport()
 	}	
 	
 	# add row annotations if necessary	
-	if ( !is_NA(row_annotation) ) {
-		vplayout('rann')
-		draw_annotations(row_annotation, border_color, horizontal=FALSE)
+	if ( !is_NA(row_annotation) && vplayout('rann') ) {
+		draw_annotations(row_annotation, border_color$annRow, horizontal=FALSE, cex = cexAnn[1L])
+        trace_vp()
 		upViewport()
 	}
 	
 	# Draw annotation legend
-	if( annotation_legend && !is_NA(annotation_colors) ){
-		#vplayout(3, 5)
-		vplayout('aleg')
-		draw_annotation_legend(annotation_colors, border_color, gp = c_gpar(gp, fontsize = fontsize))
+	if( annotation_legend && !is_NA(annotation_colors) && vplayout('aleg') ){
+		draw_annotation_legend(annotation_colors, border_color$annLeg, gp = c_gpar(gp, fontsize = fontsize))
+        trace_vp()
 		upViewport()
 	}
 
 	# Draw legend
-	if(!is_NA(legend)){
-		#vplayout(3, 4)
-		vplayout('leg')
-		draw_legend(color, breaks, legend, gp = c_gpar(gp, fontsize = fontsize))
+	if(!is_NA(legend) && vplayout('leg') ){
+		draw_legend(color, breaks, legend, gp = c_gpar(gp, fontsize = fontsize), opts = loptions$legend)
+        trace_vp()
 		upViewport()
 	}
 
-	# Draw main
-	if(!is.null(mainGrob)){
-		vplayout('main')
+	# Draw main title
+	if(!is.null(mainGrob) && vplayout('main') ){
 		grid.draw(mainGrob)
+        trace_vp()
 		upViewport()
 	}
 	
 	# Draw subtitle
-	if(!is.null(subGrob)){
-		vplayout('sub')
+	if(!is.null(subGrob) && vplayout('sub') ){
 		grid.draw(subGrob)
+        trace_vp()
 		upViewport()
 	}
 	
 	# Draw info
-	if(!is.null(infoGrob)){
-		vplayout('info')
+	if(!is.null(infoGrob) && vplayout('info') ){
 		grid.draw(infoGrob)
+        trace_vp()
 		upViewport()
 	}
 		
@@ -772,7 +1229,7 @@ generate_breaks = function(x, n, center=NA){
 }
 
 scale_vec_colours = function(x, col = rainbow(10), breaks = NA){
-	return(col[as.numeric(cut(x, breaks = breaks, include.lowest = T))])
+    return(col[cut(x, breaks = breaks, include.lowest = T, labels = FALSE)])	
 }
 
 scale_colours = function(mat, col = rainbow(10), breaks = NA){
@@ -812,6 +1269,11 @@ cutheight <- function(x, n){
 	res[n-1]
 }
 
+.dendextend <- function(){
+    qlibrary('colorspace')
+    qlibrary('dendextend')
+}
+
 #' Fade Out the Upper Branches from a Dendrogram
 #' 
 #' @param x a dendrogram
@@ -819,8 +1281,36 @@ cutheight <- function(x, n){
 #' 
 #' @import digest
 #' @keywords internal
+#' @import dendextend
 cutdendro <- function(x, n){
 	
+    use_dendextend <- FALSE
+    if( isString(n) || is.list(n) ){
+        .dendextend()
+        use_dendextend <- TRUE
+        spec <- str_match(n[[1L]], "^#(-?[0-9]+)(@([0-9, ]+))?([|])?([!])?")
+#        print(spec)
+        n0 <- n
+        n <- as.integer(spec[, 2L])
+        n_cl <- abs(n)
+            
+        # border
+        bd <- if( nzchar(spec[, 5L]) ) 8 else NA
+        col <- if( nzchar(spec[, 6L]) ) NA
+        # subset
+        w <- if( nzchar(spec[, 4L]) ) eval(parse(text = sprintf("c(%s)", spec[, 4L]))) else seq(n_cl)
+        cl_spec <- expand_list(c(list(k = n_cl), as.list(n0[-1L])), col = col, border = bd, which = w)
+        # complete text
+        if( length(cl_spec$which) == 1L && !is.null(cl_spec$text) ) cl_spec$text <- rep(cl_spec$text, length.out = cl_spec$k)
+        if( length(bad_i <- which(cl_spec$which > n_cl)) ){
+            stop(gettextf("all indexes in `@` or `which` must be between 1 and %d [bad indexes: %s]", n_cl, str_out(w[bad_i], 5, total = length(bad_i) > 5)))
+        }
+    }
+    
+    n0 <- n
+    n <- abs(n)
+    
+    
 	# exit early if n <=1: nothing to do
 	if( n <= 1 ) return(x)
 		
@@ -830,21 +1320,57 @@ cutdendro <- function(x, n){
 			n
 	})
 
-	# cut x in n groups
+    # cut x in n groups
 	# find the height where to cut
+    if( use_dendextend && !is_NA(cl_spec$col) ){
+        if( !is.null(cl_spec$col) ){
+            # complete colors to avoid warnings
+            if( length(cl_spec$which) == 1L ) cl_spec$col <- rep(cl_spec$col, length.out = cl_spec$k)
+            
+            x <- x %>% set("branches_k_color", k = n, value = cl_spec$col)
+        }else x <- x %>% set("branches_k_color", k = n)
+    }
 	h <- cutheight(x, n)
 	cfx <- cut(x, h)
 	# get the ids of the upper nodes
-	ids <- sapply(cfx$lower, function(sub) attr(sub, 'id'))		
-	
-	# highlight the upper branches with dot lines
-	dts <- c(lty=2, lwd=1.2, col=8)
-	a <- dendrapply(x, function(node){
-		a <- attributes(node)
-		if( a$id %in% ids || (!is.leaf(node) && any(c(attr(node[[1]], 'id'), attr(node[[2]], 'id')) %in% ids)) )
-			attr(node, 'edgePar') <- dts
-		node
-	})	
+	ids <- sapply(cfx$lower, function(sub) attr(sub, 'id'))
+    
+    # highlight the upper branches with dot lines
+    if( use_dendextend ){
+        dts <- c(lty=2, lwd=2)
+        cl_spec$col <- unlist(sapply(cfx$lower, function(sub) attr(sub, 'edgePar')[['col']]))
+        
+    }else{
+        dts <- c(lty=2, lwd=1.2, col = 8)
+    }
+    
+    a <- dendrapply(x, function(node){
+		a <- attributes(node) 
+        if( n0 > 0 && (a$id %in% ids || (!is.leaf(node) && any(c(attr(node[[1]], 'id'), attr(node[[2]], 'id')) %in% ids))) # dash upper tree
+            || (n0 < 0 && (!a$id %in% ids && !(!is.leaf(node) && any(c(attr(node[[1]], 'id'), attr(node[[2]], 'id')) %in% ids)))) ){# dash lower cluster trees
+        
+                if( use_dendextend ){
+                    attr(node, 'edgePar') <- c(dts, attr(node, 'edgePar')['col'])
+                } else attr(node, 'edgePar') <- dts
+                
+        }
+#        else if( !is.leaf(node) && use_dendextend && attr(node[[1]], 'id') %in% ids && attr(node[[2]], 'id') %in% ids && nzchar(spec[, 3L]) ){
+#            print(ids)
+#            print(attr(node[[1]], 'height'))
+#            print(attr(node, 'height'))
+#            node[[1]] %>% raise.dendrogram(attr(node[[1]], 'height') - attr(node[[1]], 'height'))
+#            node[[2]] <- node[[2]] %>% raise.dendrogram(- attr(node[[2]], 'height'))
+#        }
+        node
+	})
+    
+    # store cluster specs
+    if( use_dendextend ){
+        attr(a, 'cluster.spec') <- cl_spec 
+    }
+
+    
+    a
 }
 
 # internal class definition for 
@@ -923,10 +1449,14 @@ cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, s
 		param
 	}else{ # will compute dendrogram (NB: mat was already subset before calling cluster_mat)
 		
+        use.cutdendro <- function(x){
+            is.integer(x) || (isString(x) && grepl("^#-?[0-9]+", x)) || (is.list(x) && use.cutdendro(x[[1L]]))
+        }
+        
 		param <- 
-		if( is.integer(param) )
-			param
-		else if( is.null(param) || isLogical(param) ) # use default reordering by rowMeans
+		if( use.cutdendro(param) ){
+            param
+		}else if( is.null(param) || isLogical(param) ) # use default reordering by rowMeans
 			rowMeans(mat, na.rm=na.rm)
 		else if( is.numeric(param) ){ # numeric reordering weights
 			# subset if necessary
@@ -973,7 +1503,7 @@ cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, s
             if(distfun == "correlation") distfun <- 'pearson'
 			if(distfun %in% corr.methods){ # distance from correlation matrix 
                 if( verbose ) message("Using distance method: correlation (", distfun, ')')
-                d <- dist(1 - cor(t(mat), method = distfun))
+                d <- as.dist(1 - cor(t(mat), method = distfun))
                 attr(d, 'method') <- distfun
                 d 
             }else{
@@ -993,7 +1523,7 @@ cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, s
 		# do hierarchical clustering 
 		hc <- if( is.character(hclustfun) ){
 			
-			av <- c('ward', 'single', 'complete', 'average', 'mcquitty', 'median', 'centroid')
+			av <- c('ward.D', 'ward.D2', 'ward', 'single', 'complete', 'average', 'mcquitty', 'median', 'centroid')
 			i <- pmatch(hclustfun, av)
 			if( is.na(i) )
 				stop("aheatmap - Invalid clustering method, must be one of: ", paste("'", av, "'", sep='', collapse=', '))
@@ -1011,7 +1541,7 @@ cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, s
 		dh <- as.dendrogram(hc)
 	
 		# customize the dendrogram plot: highlight clusters
-		if( is.integer(param) )
+		if( use.cutdendro(param) )
 			dh <- cutdendro(dh, param)						
 		else if( is.numeric(param) && length(param)==nrow(mat) ) # reorder the dendrogram if necessary
 			dh <- reorderfun(dh, param)
@@ -1032,7 +1562,7 @@ scale_mat = function(x, scale, na.rm=TRUE){
 	av <- c("none", "row", "column", 'r1', 'c1')
 	i <- pmatch(scale, av)	
 	if( is_NA(i) )
-		stop("scale argument shoud take values: 'none', 'row' or 'column'")
+		stop("scale argument shoud take values: ", str_out(av, Inf))
 	scale <- av[i]
 		
 	switch(scale, none = x
@@ -1392,6 +1922,17 @@ subset_index <- function(x, margin, subset){
 	sort(subIdx)
 }
 
+trace_vp <- local({.on <- FALSE
+    function(on){
+        if( !missing(on) ){
+            old <- .on
+            .on <<- on
+            return(old)
+        }
+        if( .on ) grid.rect(gp = gpar(col = "blue", lwd = 2))
+    }
+})
+
 #' Annotated Heatmaps
 #' 
 #' The function \code{aheatmap} plots high-quality heatmaps, with a detailed legend 
@@ -1449,14 +1990,21 @@ subset_index <- function(x, margin, subset){
 #' The number of breaks can also be specified after a colon (':'). For example, 
 #' the default colour palette is specified as '-RdYlBu2:100'.
 #' 
+#' @param na.color Specifies the colour to use for \code{NA} values.
+#' Setting to \code{NA} (default) produces uncoloured cells (white).
+#' 
+#' It can also be a list of 2 elements, with the first element specifying the color and 
+#' the second a given value or a range of values (as a 2-length vector) to be forced to NA. 
+#' 
 #' @param breaks a sequence of numbers that covers the range of values in \code{x} and is one 
 #' element longer than color vector. Used for mapping values to colors. Useful, if needed 
-#' to map certain values to certain colors. If value is NA then the 
+#' to map certain values to certain colors. If NA then the 
 #' breaks are calculated automatically. If \code{breaks} is a single value, 
-#' then the colour palette is centered on this value. 
+#' then the colour palette is forced to be centered on this value. 
 #' 
 #' @param border_color color of cell borders on heatmap, use NA if no border should be 
 #' drawn.
+#' This argument allows for a finer control of borders (see dedicated demos and vignettes).
 #' 
 #' @param cellwidth individual cell width in points. If left as NA, then the values 
 #' depend on the size of plotting window.
@@ -1480,57 +2028,22 @@ subset_index <- function(x, margin, subset){
 #' @param Rowv clustering specification(s) for the rows. It allows to specify 
 #' the distance/clustering/ordering/display parameters to be used for the 
 #' \emph{rows only}.
-#' Possible values are:
-#' \itemize{
-#' \item \code{TRUE} or \code{NULL} (to be consistent with \code{\link{heatmap}}):
-#' compute a dendrogram from hierarchical clustering using the distance and 
-#' clustering methods \code{distfun} and \code{hclustfun}.
 #' 
-#' \item \code{NA}: disable any ordering. In this case, and if not otherwise 
-#' specified with argument \code{revC=FALSE}, the heatmap shows the input matrix 
-#' with the rows in their original order, with the first row on top to the last 
-#' row at the bottom. Note that this differ from the behaviour or \code{\link{heatmap}}, 
-#' but seemed to be a more sensible choice when vizualizing a matrix without 
-#' reordering.
-#' 
-#' \item an integer vector of length the number of rows of the input matrix 
-#' (\code{nrow(x)}), that specifies the row order. As in the case \code{Rowv=NA}, 
-#' the ordered matrix is shown first row on top, last row at the bottom. 
-#' 
-#' \item a character vector or a list specifying values to use instead of arguments 
-#' \code{distfun}, \code{hclustfun} and \code{reorderfun} when clustering the 
-#' rows (see the respective argument descriptions for a list of accepted 
-#' values). 
-#' If \code{Rowv} has no names, then the first element is used for \code{distfun},  
-#' the second (if present) is used for \code{hclustfun}, and the third 
-#' (if present) is used for \code{reorderfun}.
-#'
-#' \item a numeric vector of weights, of length the number of rows of the input matrix, 
-#' used to reorder the internally computed dendrogram \code{d} 
-#' by \code{reorderfun(d, Rowv)}.
-#' 
-#' \item \code{FALSE}: the dendrogram \emph{is} computed using methods \code{distfun}, 
-#' \code{hclustfun}, and \code{reorderfun} but is not shown.
-#' 
-#' \item a single integer that specifies how many subtrees (i.e. clusters) 
-#' from the computed dendrogram should have their root faded out.
-#' This can be used to better highlight the different clusters.  
-#' 
-#' \item a single double that specifies how much space is used by the computed 
-#' dendrogram. That is that this value is used in place of \code{treeheight}.
-#' }
+#' See section \emph{Row/column ordering and display} for details on all supported values.
 #' 
 #' @param Colv clustering specification(s) for the columns. It accepts the same 
 #' values as argument \code{Rowv} (modulo the expected length for vector specifications),  
 #' and allow specifying the distance/clustering/ordering/display parameters to 
 #' be used for the \emph{columns only}.
+#' 
 #' \code{Colv} may also be set to \code{"Rowv"}, in which case the dendrogram 
 #' or ordering specifications applied to the rows are also applied to the 
-#' columns. Note that this is allowed only for square input matrices, 
+#' columns. Note that this is allowed only for square matrices, 
 #' and that the row ordering is in this case by default reversed 
 #' (\code{revC=TRUE}) to obtain the diagonal in the standard way 
 #' (from top-left to bottom-right).
-#' See argument \code{Rowv} for other possible values.
+#' 
+#' See section \emph{Row/column ordering and display} for details on all supported values.
 #' 
 #' @param revC a logical that specify if the \emph{row order} defined by 
 #' \code{Rowv} should be reversed. This is mainly used to get the rows displayed 
@@ -1632,10 +2145,27 @@ subset_index <- function(x, margin, subset){
 #' should be drawn or not.
 #' Default is \code{TRUE}.
 #' 
+#' @param cexAnn scaling coefficent for the size of the annotation tracks.
+#' Values > 1 (resp. < 1) will increase (resp. decrease) the size of each annotation 
+#' track.
+#' This applies to the height (resp. width) of the column (resp. row) annotation tracks.
+#' Separate row and column sizes can be specified as a vector \code{c(row_size, col_size)}, 
+#' where an NA value means using the default for the corresponding track.
+#' 
 #' @param labRow labels for the rows.
 #' @param labCol labels for the columns. See description for argument \code{labRow} 
 #' for a list of the possible values.
 #' 
+#' @param layout layout specification that indicates the relative position 
+#' of the heatmap's components.
+#' Two layouts can be defined: one horizontal, which relates to components associated to rows, 
+#' and one vertical, which relates to components associated with columns.
+#' Each layout is specified as a character strings, composed of characters 
+#' that encode the order of each component: dendrogram (d), annotation tracks (a), 
+#' data matrix (m), labels (l) and legend (L).
+#' 
+#' See \code{\link{aheatmap_layout}} for more details on layout specifications. 
+#'  
 #' @param fontsize base fontsize for the plot 
 #' @param cexRow fontsize for the rownames, specified as a fraction of argument 
 #' \code{fontsize}. 
@@ -1658,6 +2188,8 @@ subset_index <- function(x, margin, subset){
 #' @param verbose if \code{TRUE} then verbose messages are displayed and the 
 #' borders of some viewports are highlighted. It is entended for debugging 
 #' purposes.
+#' @param trace logical that indicates if the different grid viewports should be 
+#' traced with a blue border (debugging purpose).
 #' 
 #' @param gp graphical parameters for the text used in plot. Parameters passed to 
 #' \code{\link{grid.text}}, see \code{\link{gpar}}. 
@@ -1666,6 +2198,60 @@ subset_index <- function(x, margin, subset){
 #' Original version of \code{pheatmap}: Raivo Kolde
 #' 
 #' Enhancement into \code{aheatmap}: Renaud Gaujoux
+#' 
+#' 
+#' @section Row/column ordering and display: 
+#' 
+#' Possible values are:
+#' \itemize{
+#' \item \code{TRUE} or \code{NULL} (to be consistent with \code{\link{heatmap}}):
+#' compute a dendrogram from hierarchical clustering using the distance and 
+#' clustering methods \code{distfun} and \code{hclustfun}.
+#' 
+#' \item \code{NA}: disable any ordering. In this case, and if not otherwise 
+#' specified with argument \code{revC=FALSE}, the heatmap shows the input matrix 
+#' with the rows in their original order, with the first row on top to the last 
+#' row at the bottom. Note that this differ from the behaviour or \code{\link{heatmap}}, 
+#' but seemed to be a more sensible choice when vizualizing a matrix without 
+#' reordering.
+#' 
+#' \item an integer vector of length the number of rows of the input matrix 
+#' (\code{nrow(x)}), that specifies the row order. As in the case \code{Rowv=NA}, 
+#' the ordered matrix is shown first row on top, last row at the bottom. 
+#' 
+#' \item a character vector or a list specifying values to use instead of arguments 
+#' \code{distfun}, \code{hclustfun} and \code{reorderfun} when clustering the 
+#' rows (see the respective argument descriptions for a list of accepted 
+#' values). 
+#' If \code{Rowv} has no names, then the first element is used for \code{distfun},  
+#' the second (if present) is used for \code{hclustfun}, and the third 
+#' (if present) is used for \code{reorderfun}.
+#'
+#' \item a numeric vector of weights, of length the number of rows of the input matrix, 
+#' used to reorder the internally computed dendrogram \code{d} 
+#' by \code{reorderfun(d, Rowv)}.
+#' 
+#' \item \code{FALSE}: the dendrogram \emph{is} computed using methods \code{distfun}, 
+#' \code{hclustfun}, and \code{reorderfun} but is not shown.
+#' 
+#' \item a single integer that specifies how many subtrees (i.e. clusters) 
+#' should be highlighted, e.g., \code{aheatmap(x, Rowv = 3L)}.
+#' 
+#' If positive, then the dendrogram's branches upstream each cluster are faded out 
+#' using dashed lines.
+#' If negative, then the dendrogram's branches within each cluster are faded out 
+#' using dashed lines, keeping the root upstream branches as is.
+#' 
+#' \item a single double that specifies how much space is used by the computed 
+#' dendrogram. That is that this value is used in place of \code{treeheight}.
+#' 
+#' \item a single character string starting with a \code{'#'} or a list with its 
+#' first element as such a string, e.g., \code{aheatmap(x, Rowv = '#3')} or 
+#' \code{aheatmap(x, Colv = list('#3', text = LETTERS[1:3]))}.
+#' 
+#' 
+#' 
+#' }
 #' 
 #' @examples
 #' 
@@ -1718,6 +2304,12 @@ subset_index <- function(x, margin, subset){
 #' aheatmap(x, color = -1L)
 #' # color specification as a numeric: use HCL color
 #' aheatmap(x, color = 1)
+#' # color for NA values
+#' y <- x
+#' y[sample(length(y), p)] <- NA
+#' aheatmap(y)
+#' aheatmap(y, na.color = 'black')
+#' 
 #' # do not cluster the rows 
 #' aheatmap(x, Rowv = NA)
 #' # no heatmap legend
@@ -1758,34 +2350,52 @@ subset_index <- function(x, margin, subset){
 #' t.na[sample(length(t.na), 500)] <- NA # half of the cells
 #' aheatmap(x, txt = t.na)
 #' 
+#' # Borders
+#' # all
+#' aheatmap(x, annCol = annotation, border = TRUE)
+#' # around data matrix
+#' aheatmap(x, annCol = annotation, border = list(matrix = TRUE))
+#' # around cells only
+#' aheatmap(x, annCol = annotation, border = list(cell = TRUE))
+#' # finer control
+#' aheatmap(x, annCol = annotation, border = list(matrix = list(col = 'blue', lwd=2), annCol = 'green', annLeg = 'grey'))
+#' 
 #' @export
 aheatmap = function(x
-, color = '-RdYlBu2:100'
+, color = '-RdYlBu2:100', type = c('rect', 'circle', 'roundrect'), na.color = NA
 , breaks = NA, border_color=NA, cellwidth = NA, cellheight = NA, scale = "none"
 , Rowv=TRUE, Colv=TRUE
 , revC = identical(Colv, "Rowv") || is_NA(Rowv) || (is.integer(Rowv) && length(Rowv) > 1)
     || is(Rowv, 'silhouette')
 , distfun = "euclidean", hclustfun = "complete", reorderfun = function(d,w) reorder(d,w)
 , treeheight = 50
-, legend = TRUE, annCol = NA, annRow = NA, annColors = NA, annLegend = TRUE
+, legend = TRUE, annCol = NA, annRow = NA, annColors = NA, annLegend = TRUE, cexAnn = NA
 , labRow = NULL, labCol = NULL
 , subsetRow = NULL, subsetCol = NULL
-, txt = NULL
+, txt = NULL, layout = '.'
 , fontsize=10, cexRow = min(0.2 + 1/log10(nr), 1.2), cexCol = min(0.2 + 1/log10(nc), 1.2)
 , filename = NA, width = NA, height = NA
 , main = NULL, sub = NULL, info = NULL
-, verbose=getOption('verbose'), gp = gpar()){
+, verbose=getOption('verbose'), trace = verbose > 1, gp = gpar()){
 
 	# set verbosity level
 	ol <- lverbose(verbose)
-	on.exit( lverbose(ol) )
+    trace_vp(trace)
+	on.exit( {lverbose(ol); trace_vp(FALSE)} )
 	
 	# convert ExpressionSet into 
+    vLEVELs <- NULL
 	if( is(x, 'ExpressionSet') ){
 		library(Biobase)
 		if( isTRUE(annCol) ) annCol <- atrack(x)
 		x <- Biobase::exprs(x)
-	}
+        
+	}else if( is.character(x) ){ # switch to integer matrix
+        fx <- factor(x)
+        x <- matrix(as.integer(fx), nrow(x))
+        vLEVELs <- levels(fx)
+        rm(fx)
+    } 
 
 	# rename to old parameter name
 	mat <- x
@@ -1981,33 +2591,72 @@ aheatmap = function(x
 	
 	# Preprocess matrix
 	if( verbose ) message("Scale matrix")
-	mat = as.matrix(mat)
-	mat = scale_mat(mat, scale)
+    isINT <- is.integer(mat)
+	if( !is.matrix(mat) ) mat <- as.matrix(mat)
 	
 	## Colors and scales
-	# load named palette if necessary
-	color <- ccRamp(color)
-	
-	# generate breaks if necessary
-	if( is_NA(breaks) || isNumber(breaks) ){
-		if( verbose ) message("Generate breaks")
-		# if a single number: center the breaks on this value
-		cbreaks <- if( isNumber(breaks) ) breaks else NA
-		breaks = generate_breaks(as.vector(mat), length(color), center=cbreaks)
-	}
-	if( isTRUE(legend) ){
-		if( verbose ) message("Generate data legend breaks")
-		legend = grid.pretty(range(as.vector(breaks)))
-	}
-	else {
+    # generate colour scale
+    if( verbose ) message("Generate colour scale (palette + breaks)")
+    if( is_NA(breaks) ) breaks <- NULL
+    if( isINT ){
+        if( !is_NA(scale) && is.na(pmatch(scale, 'none')) )
+            warning("Input matirx is an integer matrix: discarding argument `scale`.")
+        if( !is.null(breaks) ) colour_scale <- ccRamp(color, breaks = breaks, data = as.vector(mat))
+        else{
+            colour_scale <- sort(unique(as.vector(mat)))
+            if( isTRUE(legend) ){
+                legend <- setNames(unname(colour_scale), names(color)[seq_along(colour_scale)])
+                
+            }else if( is.character(legend) ) 
+                legend <- setNames(unname(colour_scale), legend[seq_along(colour_scale)])
+            # use levels for legend if necessary
+            if( !is.null(vLEVELs) && is.null(names(legend)) )
+                names(legend) <- vLEVELs 
+                        
+            colour_scale <- ccRamp(color, n = length(colour_scale), breaks = c(colour_scale-0.5, max(colour_scale) + .5), data = as.vector(mat))             
+        }
+    }else{
+        mat = scale_mat(mat, scale)
+        colour_scale <- ccRamp(color, breaks = breaks, data = as.vector(mat))
+    }
+    
+#    # fix infinite breaks
+#    m_range <- range(mat, na.rm = TRUE)
+#    b_range <- range(colour_scale[is.finite(colour_scale)], na.rm = TRUE)
+#    colour_scale[colour_scale == -Inf] <- min(m_range[1], b_range[1]) - .001
+#    colour_scale[colour_scale == Inf] <- max(m_range[2], b_range[2]) + .001
+    
+    # store into result list
+    res$col <- colour_scale
+    # assign as separate objects (legacy)
+	breaks <- setNames(colour_scale, NULL)
+    color <- names(colour_scale)
+        
+    if( isTRUE(legend) ){
+		if( verbose ) message("Generate colour scale ticks")
+		legend = grid.pretty(range(as.vector(breaks), na.rm = TRUE))
+	}else if( !is.numeric(legend) ){
 		legend = NA
 	}
-	mat = scale_colours(mat, col = color, breaks = breaks)
-	
-	annotation_legend <- annLegend
-	annotation_colors <- annColors
-	
+    
+    # convert numeric values to colours
+    if( verbose ) message("Map values to colours")
+    if( is.list(na.color) && length(na.color) > 1L ){ # force specified values to NA
+        na_range <- na.color[[2L]]
+        if( length(na_range) == 1L ) mat[mat %in% na_range] <- NA
+        else mat[mat >= na_range[1L] & mat <= na_range[2L] ] <- NA
+    }
+    
+    if( isINT ){ 
+        color_mat <- matrix(color[as.numeric(factor(mat))], nrow(mat), dimnames = dimnames(mat))
+    }else color_mat <- scale_colours(mat, col = color, breaks = breaks)
+
+    if( !is_NA(na.color) ){ # use specified color for NA values
+        color_mat[is.na(color_mat)] <- na.color[[1L]]
+    }
+    
 	# render annotation tracks for both rows and columns
+    annotation_colors <- annColors
 	annCol_processed <- atrack(annCol, order=res$colInd, .SPECIAL=specialAnnotation(2L), .DATA=amargin(x,2L), .CACHE=annRow)
 	annRow_processed <- atrack(annRow, order=res$rowInd, .SPECIAL=specialAnnotation(1L), .DATA=amargin(x,1L), .CACHE=annCol)
 	specialAnnotation(clear=TRUE)
@@ -2015,17 +2664,37 @@ aheatmap = function(x
 								, annotation_colors = annotation_colors
 								, verbose=verbose)
 	#
+
+    ## Annotation legend
+    # handle specific on/off annotation legend
+    if( isString(annLegend) ){
+        annLegend <- match.arg(annLegend, c('row', 'column', 'both', 'none'))
+        annLegend <- (c('row', 'column') %in% annLegend | annLegend == 'both') & annLegend != 'none' 
+    }
+    if( is.logical(annLegend) ) annLegend <- rep(annLegend, length.out = 2L)
+    # disable annotation legends as requested
+    if( !annLegend[1L] ) annTracks$colors <- annTracks$colors[colnames(annTracks$annCol)]
+    if( !annLegend[2L] ) annTracks$colors <- annTracks$colors[colnames(annTracks$annRow)]
+    annotation_legend <- any(annLegend)
+    ##
+
 	
-	# retrieve dimension for computing cexRow and cexCol (evaluated from the arguments)
-	nr <- nrow(mat); nc <- ncol(mat)
+	# attach colors, shape, scale to data matrix 
+	class(mat) <- c(paste0(type, "_matrix"), "shaped_matrix")
+    attr(mat, 'type') <- match.arg(type)
+    attr(mat, 'color') <- color_mat
+    attr(mat, 'scale') <- colour_scale  
+    
+    # retrieve dimension for computing cexRow and cexCol (evaluated from the arguments)
+    nr <- nrow(mat); nc <- ncol(mat)
 	# Draw heatmap	
 	res$vp <- heatmap_motor(mat, border_color = border_color, cellwidth = cellwidth, cellheight = cellheight
 	, treeheight_col = treeheight_col, treeheight_row = treeheight_row, tree_col = tree_col, tree_row = tree_row
 	, filename = filename, width = width, height = height, breaks = breaks, color = color, legend = legend
-	, annTracks = annTracks, annotation_legend = annotation_legend
+	, annTracks = annTracks, annotation_legend = annotation_legend, cexAnn = cexAnn
     , txt = txt
 	, fontsize = fontsize, fontsize_row = cexRow * fontsize, fontsize_col = cexCol * fontsize
-	, main = main, sub = sub, info = info
+	, main = main, sub = sub, info = info, layout = layout
 	, verbose = verbose
 	, gp = gp)
 	

@@ -6,26 +6,23 @@
     ...)
 }
 \arguments{
-  \item{x}{an NMF object, as returned by
-  \code{\link{nmf}}.}
+  \item{x}{an NMF object, as returned by \code{\link{nmf}}.}
 
-  \item{what}{defines the type of clustering the computed
-  silhouettes are meant to assess: \code{'samples'} for the
-  clustering of samples (i.e. the columns of the target
-  matrix), \code{'features'} for the clustering of features
-  (i.e. the rows of the target matrix), and \code{'chc'}
-  for the consensus clustering of samples as defined by
-  hierarchical clustering dendrogram, \code{'consensus'}
-  for the consensus clustering of samples, with clustered
-  ordered as in the \strong{default} hierarchical
-  clustering used by \code{\link{consensusmap}} when
-  plotting the heatmap of the consensus matrix (for
-  multi-run NMF fits). That is \code{dist = 1 -
-  consensus(x)}, average linkage and reordering based on
-  row means.}
+  \item{what}{defines the type of clustering the computed silhouettes are
+meant to assess: \code{'samples'} for the clustering of samples
+(i.e. the columns of the target matrix),
+\code{'features'} for the clustering of features (i.e. the rows of the
+target matrix), and \code{'chc'} for the consensus clustering of samples as
+defined by hierarchical clustering dendrogram, \code{'consensus'} for the
+consensus clustering of samples, with clustered ordered as in the
+\strong{default} hierarchical clustering used by
+\code{\link{consensusmap}} when plotting the heatmap of the consensus matrix
+(for multi-run NMF fits).
+That is \code{dist = 1 - consensus(x)}, average linkage and reordering based
+on row means.}
 
-  \item{order}{integer indexing vector that can be used to
-  force the silhouette order.}
+  \item{order}{integer indexing vector that can be used to force the silhouette
+order.}
 
   \item{...}{extra arguments not used.}
 }

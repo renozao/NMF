@@ -10,8 +10,7 @@
   \item{element}{name of an element of the inner lists}
 }
 \description{
-  Auxiliary function for internal error checks in nmf
-  results.
+  Auxiliary function for internal error checks in nmf results.
 }
 \keyword{internal}
 

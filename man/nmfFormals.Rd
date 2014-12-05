@@ -13,13 +13,11 @@
   \item{...}{extra argument to allow extension}
 }
 \description{
-  This function returns the extra arguments that can be
-  passed to a given NMF algorithm in call to
-  \code{\link{nmf}}.
+  This function returns the extra arguments that can be passed
+to a given NMF algorithm in call to \code{\link{nmf}}.
 
-  \code{nmfArgs} is a shortcut for
-  \code{args(nmfWrapper(x))}, to display the arguments of a
-  given NMF algorithm.
+\code{nmfArgs} is a shortcut for \code{args(nmfWrapper(x))}, to
+display the arguments of a given NMF algorithm.
 }
 \examples{
 \dontshow{# roxygen generated flag
