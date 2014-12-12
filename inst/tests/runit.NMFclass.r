@@ -920,3 +920,15 @@ test.misc <- function(){
 	checkEquals(misc(a), 2, 'On non list object with `misc` attribute, misc() returns the attribute')
 	
 }
+
+test.silhouette <- function(){
+    
+    x <- rmatrix(20, 15)
+    cl <- gl(3, 5)
+    rownames(x) <- letters[seq(nrow(x))]
+    colnames(x) <- LETTERS[seq(ncol(x))]
+    si <- bigsilhouette(x, cl)
+    checkEquals(rownames(si), colnames(x))
+    checkEquals(si, silhouette(as.integer(cl), dmatrix = 1 - cor(x)), check.attributes = FALSE)
+        
+}

@@ -544,6 +544,45 @@ profplot.default <- function(x, y, scale=c('none', 'max', 'c1'), match.names=TRU
 #		}
 #)
 
+
+bigsilhouette <- function(x, cl){
+    
+    if( !is.matrix(x) ) 
+        stop("Invalid input: `x` must be a matrix")
+    if( length(cl) != ncol(x) ) 
+        stop("Incompatible dimensions: `cl` must have length equal to the number of columns in `x`")
+    
+    # rescale x
+    x <- scale(x, TRUE, TRUE)
+    if( !is.integer(cl) || !is.factor(cl) ) cl <- factor(cl)
+    idx <- as.integer(cl)
+    
+    # compute online
+    s <- .Call('big_silhouette', x, nlevels(cl), idx, PACAKGE = 'NMF')
+    
+    icol <- seq(nlevels(cl))
+    n <- summary(cl, max.sum = Inf)
+    in_out <- sapply(seq_along(idx), function(i){
+                        icl <- idx[i]
+                        out_d <- s[i,-icl] / n[-icl]
+                        i_neighboor <- which.min(out_d)
+                        c(s[i, icl] / (n[icl]-1), out_d[i_neighboor], icol[-icl][i_neighboor])
+                })
+    
+    # wrap up
+    si_width <- (in_out[2, ] - in_out[1, ]) / colMax(in_out[-3,])
+    res <- cbind(cluster = idx
+            , neighbor = in_out[3, ]
+            , sil_width = si_width)
+    rownames(res) <- colnames(x)
+    class(res) <- 'silhouette'
+    attr(res, 'Ordered') <- FALSE
+    attr(res, 'call') <- match.call()
+    
+    # return
+    res
+}
+
 #' Silhouette of NMF Clustering
 #' 
 #' @param x an NMF object, as returned by \code{\link{nmf}}.
@@ -609,9 +648,9 @@ profplot.default <- function(x, y, scale=c('none', 'max', 'c1'), match.names=TRU
 silhouette.NMF <- function(x, what = NULL, order = NULL, ...){
     
     # compute prediction
-    p <- predict(x, what = what, dmatrix = TRUE)
+    p <- predict(x, what = what, dmatrix = 'silhouette')
     # compute silhouette
-    si <- silhouette(as.numeric(p), dmatrix = attr(p, 'dmatrix'))
+    si <- attr(p, 'dmatrix')
     attr(si, 'call') <- match.call(call = sys.call(-1))
 	if( is_NA(si) ) return(NA)
     # fix rownames if necessary

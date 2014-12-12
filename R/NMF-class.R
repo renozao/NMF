@@ -1993,9 +1993,11 @@ setMethod('predict', 'NMF',
 			# compute the indice of the dominant row for each column
             res <- .predict.nmf(x, prob)
             # attach dissimilarity matrix if requested
-            if( dmatrix ){
+            if( isTRUE(dmatrix) ){
                 attr(res, 'dmatrix') <- 1 - cor(t(x))
-            }
+            }else if( identical(dmatrix, 'silhouette') ) # compute silhouette
+                attr(res, 'dmatrix') <- bigsilhouette(t(x), as.integer(res))
+            
 			return( res )
 		}
 )

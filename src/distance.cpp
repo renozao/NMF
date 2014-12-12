@@ -9,6 +9,9 @@ extern "C" {
 	SEXP Euclidean_rss( SEXP x, SEXP y);
 	SEXP KL_divergence( SEXP x, SEXP y);
 
+	// compute silhouette on large dataset
+	SEXP big_silhouette(SEXP x, SEXP N, SEXP idx, SEXP method);
+
 }
 
 //define helper macro
@@ -80,6 +83,60 @@ SEXP KL_divergence ( SEXP x, SEXP y){
 		else // x is integer, y is integer
 			return KL( INTEGER_POINTER(x), INTEGER_POINTER(y), n, p);
 	}
+
+}
+
+/**
+ * Computes silhouette on Large Data
+ *
+ * @param x input centered and normalised matrix with samples in columns
+ * @param i index of each cluster
+ * @param method distance method
+ */
+SEXP big_silhouette(SEXP x, SEXP N, SEXP idx, SEXP method = R_NilValue){
+
+	// process arguments
+	int n = INTEGER(GET_DIM(x))[0];
+	int p = INTEGER(GET_DIM(x))[1];
+	int n_k = *INTEGER_POINTER(N);
+	int n_item = p; int l_item = n;
+	const double* m_x = NUMERIC_POINTER(x);
+	const int* p_idx = INTEGER_POINTER(idx);
+
+	// allocate result object: matrix of intra and inter cluster distance
+	int nprotect = 0;
+	SEXP res = PROTECT(allocMatrix(REALSXP, n_item, n_k)); nprotect++;
+	double* p_res = NUMERIC_POINTER(res);
+	double* ptr = p_res;
+	for(int i=n_item * n_k; i>0; --i) *ptr++ = 0;
+
+	// loop over item
+	for(int j=0; j<n_item; ++j){
+		const double* p_item = m_x + j * l_item;
+
+		// compute distance to all other items
+		for(int l=(j+1); l<n_item; ++l){
+
+			// compute distance to item
+			long double d = 0;
+			const double* p_a = p_item;
+			const double* p_b = m_x + l * l_item;
+			for(int i=0; i<l_item; i++){
+				d += *p_a++ * *p_b++;
+			}
+			d = 1 - d / (l_item - 1);
+
+			// add to distance matrix
+			int a_k = p_idx[j] - 1;
+			int b_k = p_idx[l] - 1;
+			p_res[j + b_k * n_item] += d;
+			p_res[l + a_k * n_item] += d;
+		}
+	}
+
+	UNPROTECT(nprotect);
+	return res;
+
 
 }
 
