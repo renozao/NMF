@@ -10,7 +10,8 @@
 \usage{
   summary(object, ...)
 
-  \S4method{summary}{NMF}(object, class, target)
+  \S4method{summary}{NMF}(object, class, target,
+    with.silhouette = c("both", "features", "samples", "none"))
 }
 \arguments{
   \item{object}{an NMF object. See available methods in section \emph{Methods}.}
@@ -22,6 +23,10 @@ that is supported by the functions \code{\link{entropy}} and \code{\link{purity}
 
   \item{target}{target matrix specified in one of the formats supported by the
 functions \code{\link{rss}} and \code{\link{evar}}}
+
+  \item{with.silhouette}{indicates which silhouette average width should
+be computed. Its value is partially matched against: \code{'both', 'features',
+'samples'} or \code{'none'}.}
 }
 \description{
   The NMF package defines \code{summary} methods for different classes of objects,

@@ -5,7 +5,8 @@
 \usage{
   nmfEstimateRank(x, range,
     method = nmf.getOption("default.algorithm"), nrun = 30,
-    model = NULL, ..., verbose = FALSE, stop = FALSE)
+    model = NULL, ..., verbose = FALSE, stop = FALSE,
+    with.silhouette = "both")
 
   \method{plot}{NMF.rank} (x, y = NULL,
     what = c("all", "cophenetic", "rss", "residuals", "dispersion", "evar", 
@@ -56,6 +57,10 @@ value of the rank.  See \code{\link{nmf}}.
 
 For \code{plot.NMF.rank}, these are extra graphical parameter passed to the
 standard function \code{plot}. See \code{\link{plot}}.}
+
+  \item{with.silhouette}{indicates which silhouette average width should
+be computed. It is passed to the \code{\link[=summary,NMF-method]{summary}}
+method for NMF objects.}
 
   \item{y}{reference object of class \code{NMF.rank}, as returned by
 function \code{nmfEstimateRank}.

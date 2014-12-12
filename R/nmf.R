@@ -2604,6 +2604,10 @@ setMethod('seed', signature(x='ANY', model='numeric', method='NMFSeed'),
 #' For \code{plot.NMF.rank}, these are extra graphical parameter passed to the
 #' standard function \code{plot}. See \code{\link{plot}}.
 #' 
+#' @param with.silhouette indicates which silhouette average width should
+#' be computed. It is passed to the \code{\link[=summary,NMF-method]{summary}} 
+#' method for NMF objects.
+#' 
 #' @return 
 #' \code{nmfEstimateRank} returns a S3 object (i.e. a list) of class 
 #' \code{NMF.rank} with the following elements:
@@ -2643,7 +2647,7 @@ setMethod('seed', signature(x='ANY', model='numeric', method='NMFSeed'),
 #' }
 #' 
 nmfEstimateRank <- function(x, range, method=nmf.getOption('default.algorithm')
-					, nrun=30, model=NULL, ..., verbose=FALSE, stop=FALSE){
+					, nrun=30, model=NULL, ..., verbose=FALSE, stop=FALSE, with.silhouette = 'both'){
 	
 	# fix method if passed NULL (e.g., from nmf('formula', 'numeric'))
 	if( is.null(method) )
@@ -2739,7 +2743,7 @@ nmfEstimateRank <- function(x, range, method=nmf.getOption('default.algorithm')
 				
 				# compute quality measures
 				if( verbose ) cat('+ measures ... ')
-				measures <- summary(res, target=V)
+				measures <- summary(res, target=V, with.silhouette = with.silhouette)
 				
 				if( verbose ) cat("OK\n")
 				

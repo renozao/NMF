@@ -1524,6 +1524,10 @@ setGeneric('summary', package='base')
 #' @param target target matrix specified in one of the formats supported by the 
 #' functions \code{\link{rss}} and \code{\link{evar}}  
 #' 
+#' @param with.silhouette indicates which silhouette average width should
+#' be computed. Its value is partially matched against: \code{'both', 'features',
+#' 'samples'} or \code{'none'}.
+#' 
 #' @rdname assess
 #' 
 #' @examples 
@@ -1536,7 +1540,7 @@ setGeneric('summary', package='base')
 #' summary(x, gl(3,4), target=rmatrix(x))
 #' 
 setMethod('summary', signature(object='NMF'), 
-		function(object, class, target){
+		function(object, class, target, with.silhouette = c('both', 'features', 'samples', 'none')){
 			
 			res <- numeric()
 			
@@ -1565,8 +1569,9 @@ setMethod('summary', signature(object='NMF'),
 			}
             
             # compute mean silhouette width
-            siS <- silhouette(object, what = 'samples')
-            siF <- silhouette(object, what = 'features')
+            with.silhouette <- match.arg(with.silhouette)
+            siS <- if( with.silhouette %in% c('samples', 'both') ) silhouette(object, what = 'samples') else NA
+            siF <- if( with.silhouette %in% c('features', 'both') ) silhouette(object, what = 'features') else NA
             res <- c(res, silhouette.coef = if( !is_NA(siS) ) summary(siS)$avg.width else NA
                     , silhouette.basis = if( !is_NA(siF) ) summary(siF)$avg.width else NA)
 			
