@@ -268,10 +268,24 @@ draw_dendrogram = function(hc, horizontal = FALSE, flip = FALSE){
 
 # draw a matrix first row at bottom, last at top
 draw_matrix = function(matrix, border_color, txt = NULL, gp = gpar()){
-	n = nrow(matrix)
+    n = nrow(matrix)
 	m = ncol(matrix)
-	x = (1:m)/m - 1/2/m
-	y = (1:n)/n - 1/2/n
+    xcell <- (1:m)/m; ycell <- (1:n)/n  
+	x = xcell - 1/2/m
+	y = ycell - 1/2/n
+    
+    # edges
+    if( !is_NA(border_color$edge$col) ){
+        grid.grill(y, x, gp = border_gpar(border_color$edge))
+    }
+    # outer border
+    if( !is_NA(border_color$matrix$col) ){
+        on.exit( grid.rect(gp = border_gpar(border_color$matrix)), add = TRUE)
+    }
+    # grid
+    if( !is_NA(border_color$grid$col) ){
+        on.exit( grid.grill(c(0, ycell), c(0, xcell), gp = border_gpar(border_color$grid)), add = TRUE)
+    }
     
     # extract graphical parameters
     color_matrix <- attr(matrix, 'color')
@@ -295,21 +309,24 @@ draw_matrix = function(matrix, border_color, txt = NULL, gp = gpar()){
         invisible()
     }
     # circles
-    radius_base <- min(1/n, 1/m)/2 
-    radius <- radius_base / abs(c(min(color_scale), max(color_scale)))
+    radius_base <- min(1/n, 1/m)/2
+	# use similar radius computation as in package corrplot
+    radius <- .9 * radius_base / abs(c(min(color_scale), max(color_scale)))^.5 #/ log(1 + abs(c(min(color_scale), max(color_scale))))
     radius <- c(radius[1], 0, radius[2])
     draw_cell.circle <- function(i, gp){
-        grid.circle(x = x[i], y = y, r = radius[sign(matrix[,i]) + 2] * abs(matrix[,i]), gp = gp)
+        val <- matrix[, i]
+        if( is_NA(gp$col) ) gp$col <- gp$fill
+        grid.circle(x = x[i], y = y, r = radius[sign(val) + 2] * abs(val)^0.5, gp = gp)
     }
     #
-    draw_cell <- get(paste0('draw_cell.', type), mode = 'function', inherits = FALSE)
+        draw_cell <- get(paste0('draw_cell.', type), mode = 'function', inherits = FALSE)
     ## 
     
     # substitute NA values with empty strings
     if( !is.null(txt) ) txt[is.na(txt)] <- ''
      
     for(i in 1:m){
-        rgp <- c_gpar(list(fill = color_matrix[,i]), border_color)
+        rgp <- c_gpar(list(fill = color_matrix[,i]), border_color$cell)
         draw_cell(i, gp = rgp)
         if( !is.null(txt) ){
             grid.text(label=txt[, i],
@@ -980,6 +997,66 @@ border_gpar <- function(x, as.list = FALSE){
 
 border_gpar_list <- function(...) border_gpar(..., as.list = TRUE)
 
+aheatmap_border <- function(x = NA, col = 'grey'){
+    
+    x0 <- x; col0 <- col
+    if( !isTRUE(x) && !is_NA(x) && !is.list(x) && !isString(x) )
+        stop("Invalid border specification: NA, TRUE, list or string expected.")
+        
+    if( isTRUE(x) ) x <- col
+    
+    with_auto <- FALSE 
+    # process string specification
+    if( isString(x) ){
+        x <- str_trim(x)
+        if( grepl(":", x) || identical(x, "*") ){ # special spec
+            
+            # extract color from string if possible
+            xcol <- strsplit(x, ":")[[1L]]
+            if( nzchar(xcol[1L]) ) col <- xcol[1L]
+            x <- xcol[2L]
+            x <- str_trim(strsplit(x, ",")[[1]])
+            x <- as.list(setNames(rep(col, length.out = length(x)), x))
+        }    
+    }
+    
+    if( !is.list(x) ) x <- list(default = x)
+    if( any(x == "*") ){
+        x <- list(default = col0)
+        with_auto <- TRUE
+    }else if( any(names(x) == '*') ){
+        x <- list(default = x[['*']])
+        with_auto <- TRUE
+    }
+    
+     
+    # format each element specification
+    #    if( is.matrix(border_color) ) list(cell = border_color)
+    elmt <- c('default', 'cell*', 'edge*', 'grid', 'matrix', 'annRow', 'annCol', 'annLegend', 'legend', 'ann')
+    elmt_no_auto <- grep("*", elmt, fixed = TRUE)
+    elmt <- gsub("*", "", elmt, fixed = TRUE)
+    if( !with_auto ) elmt_no_auto <- elmt[elmt_no_auto]
+    # partially match element names
+    i <- charmatch(names(x), elmt, nomatch = 0L)
+    names(x)[i > 0] <- elmt[i]
+	for( b in elmt ){
+        val <- x[[b]] %||% 
+                {if( grepl('^ann', b) ) x[['ann']] } %||% 
+                {if( !b %in% elmt_no_auto ) x[['default']] } %||% NA
+        x[[b]] <- border_gpar_list(val) 
+    }
+    
+    # limit to supported elements
+    if( any(w <- !names(x) %in% elmt) ){
+        warning(sprintf("Discarding unknown border specification: %s.\n  Names must partially match one of: %s."
+                        , str_out(names(x)[w], Inf)
+                        , str_out(elmt, Inf)))
+    }
+    res <- structure(x[elmt], class = 'simple.list')
+#    print(res)
+    res
+}
+
 heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	, tree_col, tree_row, treeheight_col, treeheight_row
 	, filename=NA, width=NA, height=NA
@@ -1098,19 +1175,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	#grid.show.layout(glo$layout); return()
 	
     # load border specifications
-    border_color <- if( !is.list(border_color) ) list(base = border_color) else border_color
-    elmt <- c('base', 'cell', 'matrix', 'annRow', 'annCol', 'annLegend', 'legend', 'ann') 
-	for( b in elmt ){
-        val <- border_color[[b]] %||% {if( grepl('^ann', b) ) border_color[['ann']] } %||% border_color[['base']] %||% NA
-        border_color[[b]] <- border_gpar_list(val) 
-    }
-    if( any(w <- !names(border_color) %in% elmt) ){
-        warning(sprintf("Discarding unknown border specification: %s.\n  Available: %s."
-                                , str_out(names(border_color)[w], Inf)
-                                , str_out(elmt, Inf)))
-    }
-    border_color <- border_color[elmt]
-    #
+    border_color <- aheatmap_border(border_color)
     
     # Omit border color if cell size is too small
     mindim <- glo$mindim
@@ -1137,13 +1202,9 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
     
 	# Draw matrix
 	if( vplayout('mat') ){
-    	draw_matrix(matrix, border_color$cell
+    	draw_matrix(matrix, border_color[c('cell', 'grid', 'edge', 'matrix')]
                             , txt = txt, gp = gpar(fontsize = fontsize_row))
     	#d(matrix)
-        # outer border
-        if( !is_NA(border_color$matrix$col) ){
-            grid.rect(gp = border_gpar(border_color$matrix))
-        }
         trace_vp()
     	upViewport()
     }
@@ -2014,10 +2075,19 @@ trace_vp <- local({.on <- FALSE
 #' 
 #' @param border_color color of cell borders on heatmap, use NA if no border should be 
 #' drawn.
-#' This argument allows for a finer control of borders for: 
-#' the cells (\code{'cell'}), the cell matrix panel (\code{'matrix'}), 
+#' This argument allows for a finer control of borders for the following elements: 
+#' the matrix grid (\code{'grid'}), the matrix surrounding border (\code{'matrix'}), 
 #' the annotation cells (\code{'annCol'}, \code{'annRow'} or \code{'ann'} for columns, rows or both, respectively), 
-#' the annotation legend (\code{'annLegend'}) or the color scale legend (\code{'legend'}).
+#' the annotation legend (\code{'annLegend'}) or the color scale legend (\code{'legend'})
+#' 
+#' Additionally, borders for all matrix cells (\code{'cell'}) and the edges between cell 
+#' centers (\code{'edge'}) can be controlled but must be explicitely specified, either separately or 
+#' with \code{border_color='*'}, which draws borders around all elements.
+#' Using \code{border_color=TRUE} or some color specification will not draw them.
+#' 
+#' The following special syntax is also supported: \code{'[<colorcode>:]<element>'} for coloring element
+#' '<element>', optionally specifying the color before \code{':'}.
+#' Multiple element names can be passed separated by commas (spaces are stripped).
 #' 
 #' See examples in the \emph{aheatmap} demo and vignette.
 #' 
@@ -2375,6 +2445,9 @@ trace_vp <- local({.on <- FALSE
 #' # finer control
 #' aheatmap(x, annCol = annotation, border = list(matrix = list(col = 'blue', lwd=2), annCol = 'green', annLegend = 'grey'))
 #' 
+#' # Circle correlation matrix
+#' aheatmap(cor(x), col = '-RdBu:200', Colv='Rowv', type = 'circle', border = ":grid", breaks = 0)
+#' 
 #' @export
 aheatmap = function(x
 , color = '-RdYlBu2:100', na.color = NA, type = c('rect', 'circle', 'roundrect')
@@ -2554,7 +2627,7 @@ aheatmap = function(x
 		subInd <- attr(res$rowInd, 'subset')
         ri <- if( is.null(subInd) ) res$rowInd else subInd
 		mat <- mat[ri, , drop=FALSE] # data
-        if( !is.null(txt) ) txt <- txt[ri, , drop = FALSE] # text 
+        if( !is.null(txt) ) txt <- txt[ri, , drop = FALSE] # text
 	}
 	
 	if( !is_NA(tree_col) ){		
@@ -2694,7 +2767,7 @@ aheatmap = function(x
     ##
 
 	
-	# attach colors, shape, scale to data matrix 
+	# attach colors, shape, scale to data matrix
 	class(mat) <- c(paste0(type, "_matrix"), "shaped_matrix")
     attr(mat, 'type') <- match.arg(type)
     attr(mat, 'color') <- color_mat

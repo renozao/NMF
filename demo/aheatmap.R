@@ -75,3 +75,6 @@ aheatmap(x, annCol = annotation, border = list(matrix = TRUE))
 aheatmap(x, annCol = annotation, border = list(cell = TRUE))
 # finer control
 aheatmap(x, annCol = annotation, border = list(matrix = list(col = 'blue', lwd=2), annCol = 'green', annLegend = 'grey'))
+
+# Circle correlation matrix
+aheatmap(cor(x), col = '-RdBu:200', Colv='Rowv', type = 'circle', border = ":grid", breaks = 0)

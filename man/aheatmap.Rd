@@ -61,11 +61,19 @@ then the colour palette is forced to be centered on this value.}
 
   \item{border_color}{color of cell borders on heatmap, use NA if no border should be
 drawn.
-This argument allows for a finer control of borders for:
-the cells (\code{'cell'}), the cell matrix panel (\code{'matrix'}),
+This argument allows for a finer control of borders for the following elements:
+the matrix grid (\code{'grid'}), the matrix surrounding border (\code{'matrix'}),
 the annotation cells (\code{'annCol'}, \code{'annRow'} or \code{'ann'} for columns, rows or both, respectively),
-the annotation legend (\code{'annLegend'}) or
-the color scale legend (\code{'legend'}).
+the annotation legend (\code{'annLegend'}) or the color scale legend (\code{'legend'})
+
+Additionally, borders for all matrix cells (\code{'cell'}) and the edges between cell
+centers (\code{'edge'}) can be controlled but must be explicitely specified, either separately or
+with \code{border_color='*'}, which draws borders around all elements.
+Using \code{border_color=TRUE} or some color specification will not draw them.
+
+The following special syntax is also supported: \code{'[<colorcode>:]<element>'} for coloring element
+'<element>', optionally specifying the color before \code{':'}.
+Multiple element names can be passed separated by commas (spaces are stripped).
 
 See examples in the \emph{aheatmap} demo and vignette.}
 
