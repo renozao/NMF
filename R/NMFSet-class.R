@@ -389,16 +389,18 @@ setMethod('predict', signature(object='NMFfitX'),
             }
             
 			res <- as.factor(cl)
-            # add dissimilarity matrix if requested
-            if( dmatrix ){
-                attr(res, 'dmatrix') <- 1 - consensus(object) 
+            # add consensus dissimilarity matrix or silhouette if requested
+            if( !isFALSE(dmatrix) ){
+                co <- 1 - consensus(object)
+                attr(res, 'dmatrix') <- if( isTRUE(dmatrix) ) co 
+                                        else if( identical(dmatrix, 'silhouette') ) bigsilhouette(co, as.integer(res))  
             }
             if( what != 'chc' ) attr(res, 'iOrd') <- o
             
             # return
             res
-		}
-		else predict(fit(object), what=what, ..., dmatrix = dmatrix)
+            
+		} else predict(fit(object), what=what, ..., dmatrix = dmatrix)
         attr(res, 'what') <- what
         res
 	}

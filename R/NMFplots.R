@@ -649,7 +649,7 @@ silhouette.NMF <- function(x, what = NULL, order = NULL, ...){
     
     # compute prediction
     p <- predict(x, what = what, dmatrix = 'silhouette')
-    # compute silhouette
+    # extract silhouette
     si <- attr(p, 'dmatrix')
     attr(si, 'call') <- match.call(call = sys.call(-1))
 	if( is_NA(si) ) return(NA)
