@@ -267,7 +267,7 @@ draw_dendrogram = function(hc, horizontal = FALSE, flip = FALSE){
 }
 
 # draw a matrix first row at bottom, last at top
-draw_matrix = function(matrix, border_color, txt = NULL, gp = gpar()){
+draw_matrix = function(matrix, border_color, txt = NULL, z = NULL, gp = gpar()){
     n = nrow(matrix)
 	m = ncol(matrix)
     xcell <- (1:m)/m; ycell <- (1:n)/n  
@@ -309,13 +309,14 @@ draw_matrix = function(matrix, border_color, txt = NULL, gp = gpar()){
         invisible()
     }
     # circles
-    radius_base <- min(1/n, 1/m)/2
+    radius_base <- min(1/n, 1/m)/2 
 	# use similar radius computation as in package corrplot
-    radius <- .9 * radius_base / abs(c(min(color_scale), max(color_scale)))^.5 #/ log(1 + abs(c(min(color_scale), max(color_scale))))
+    radius_range <- range(if( is.null(z) ) color_scale else z, na.rm = TRUE) 
+    radius <- .9 * radius_base / abs(radius_range)^.5 #/ log(1 + abs(c(min(color_scale), max(color_scale))))
     radius <- c(radius[1], 0, radius[2])
     draw_cell.circle <- function(i, gp){
-        val <- matrix[, i]
-        if( is_NA(gp$col) ) gp$col <- gp$fill
+        val <- if( is.null(z) ) matrix[, i] else z[, i]
+        if( is_NA(gp$col) ) gp$col <- gp$fill 
         grid.circle(x = x[i], y = y, r = radius[sign(val) + 2] * abs(val)^0.5, gp = gp)
     }
     #
@@ -324,9 +325,11 @@ draw_matrix = function(matrix, border_color, txt = NULL, gp = gpar()){
     
     # substitute NA values with empty strings
     if( !is.null(txt) ) txt[is.na(txt)] <- ''
-     
+    
     for(i in 1:m){
-        rgp <- c_gpar(list(fill = color_matrix[,i]), border_color$cell)
+        bcol <- border_color$cell
+        if( is.matrix(bcol$col) ) bcol$col <- bcol$col[, i] 
+        rgp <- c_gpar(list(fill = color_matrix[,i]), bcol)
         draw_cell(i, gp = rgp)
         if( !is.null(txt) ){
             grid.text(label=txt[, i],
@@ -1060,9 +1063,9 @@ aheatmap_border <- function(x = NA, col = 'grey'){
 heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	, tree_col, tree_row, treeheight_col, treeheight_row
 	, filename=NA, width=NA, height=NA
-	, breaks, color, legend, txt = NULL
+	, breaks, color, legend, txt = NULL, z = NULL
 	, annTracks, annotation_legend=TRUE, cexAnn = NA
-	, new=TRUE, fontsize, fontsize_row, fontsize_col
+	, new=NULL, fontsize, fontsize_row, fontsize_col
 	, main=NULL, sub=NULL, info=NULL
     , layout = NULL
 	, verbose=getOption('verbose')
@@ -1092,7 +1095,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 		mf <- par('mfrow')		
 		#print(mf)
 		# if in in mfrow/layout context: setup fake-ROOT viewports with gridBase
-		# and do not call plot.new as it is called in grid.base.mix. 
+		# and do not call plot.new as it is called in grid.base.mix.
 		new <- if( !identical(mf, c(1L,1L)) ){ 
 			if( verbose ) message("Detected mfrow: ", mf[1], " - ", mf[2], ' ... MIXED')
 			opar <- grid.base.mix(trace=verbose>1)
@@ -1100,19 +1103,20 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 			FALSE
 		}		
 		else{
+            new_val <- new %||% TRUE
 			if( verbose ){
 				message("Detected mfrow: ", mf[1], " - ", mf[2])
-				message("Honouring ", if( missing(new) ) "default "
-						,"argument `new=", new, '` ... '
+				message("Honouring ", if( is.null(new) ) "default "
+						,"argument `new=", new_val, '` ... '
 						, if( new ) "NEW" else "OVERLAY")				
 			}
-			new
+			new_val
 		}
 	}else{
 		if( verbose ) message("Detected path: ", vpp)
 		# if new is not specified: change the default behaviour by not calling 
 		# plot.new so that drawing occurs in the current viewport
-		if( missing(new) ){
+		if( is.null(new) ){
 			if( verbose ) message("Missing argument `new` ... OVERLAY")
 			new <- FALSE
 		}else if( verbose ) message("Honouring argument `new=", new, '` ... '
@@ -1197,13 +1201,13 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	}
 
     # recompute margin fontsizes
-    fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.6*glo$cellheight, 'bigpts')), 'points')
-    fontsize_col <- convertUnit(min(unit(fontsize_col, 'points'), unit(0.6*glo$cellwidth, 'bigpts')), 'points')
+    fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.9*glo$cellheight, 'bigpts')), 'points')
+    fontsize_col <- convertUnit(max(unit(fontsize_col, 'points'), unit(0.9*glo$cellwidth, 'bigpts')), 'points')
     
 	# Draw matrix
 	if( vplayout('mat') ){
     	draw_matrix(matrix, border_color[c('cell', 'grid', 'edge', 'matrix')]
-                            , txt = txt, gp = gpar(fontsize = fontsize_row))
+                            , txt = txt, z = z, gp = gpar(fontsize = fontsize_row))
     	#d(matrix)
         trace_vp()
     	upViewport()
@@ -2275,6 +2279,12 @@ trace_vp <- local({.on <- FALSE
 #' purposes.
 #' @param trace logical that indicates if the different grid viewports should be 
 #' traced with a blue border (debugging purpose).
+#' @param add logical that indicates if the plot should be drawn on a fresh new grid 
+#' page or on the currently opened plot.
+#' Using \code{add = NULL} (default), enables mixing grid and base graphics,
+#' and, notably, arrange multiple heatmaps on the same plot following a layout 
+#' setup via the standard graphical parameter \code{mfrow} or the function 
+#' \code{\link{layout}}.
 #' 
 #' @param gp graphical parameters for the text used in plot. Parameters passed to 
 #' \code{\link{grid.text}}, see \code{\link{gpar}}. 
@@ -2460,11 +2470,12 @@ aheatmap = function(x
 , legend = TRUE, annCol = NA, annRow = NA, annColors = NA, annLegend = TRUE, cexAnn = NA
 , labRow = NULL, labCol = NULL
 , subsetRow = NULL, subsetCol = NULL
-, txt = NULL, layout = '.'
+, y = NULL, txt = NULL, layout = '.'
 , fontsize=10, cexRow = min(0.2 + 1/log10(nr), 1.2), cexCol = min(0.2 + 1/log10(nc), 1.2)
 , filename = NA, width = NA, height = NA
 , main = NULL, sub = NULL, info = NULL
-, verbose=getOption('verbose'), trace = verbose > 1, gp = gpar()){
+, verbose=getOption('verbose'), trace = verbose > 1, add = NULL
+, gp = gpar()){
 
 	# set verbosity level
 	ol <- lverbose(verbose)
@@ -2534,15 +2545,19 @@ aheatmap = function(x
 	
 	## DO SUBSET
 	if( !is.null(subsetRow) ){
-		mat <- mat[subsetRow, ]
+		mat <- mat[subsetRow, , drop = FALSE]
+        if( !is.null(txt) ) txt <- txt[subsetRow, , drop = FALSE] # text
+        if( !is.null(y) ) y <- y[subsetRow, , drop = FALSE] # 3rd-dimension
 	}	
 	if( !is.null(subsetCol) ){
-		mat <- mat[, subsetCol]
+		mat <- mat[, subsetCol, drop = FALSE]
+        if( !is.null(txt) ) txt <- txt[, subsetCol, drop = FALSE] # text
+        if( !is.null(y) ) y <- y[, subsetCol, drop = FALSE] # 3rd-dimension
 	}
 	
 	## CLUSTERING
 	# Do row clustering	
-	tree_row <- if( !is_NA(Rowv) ){
+	tree_row <- if( !is_NA(Rowv) && nrow(mat) > 1 ){
 		if( verbose ) message("Cluster rows")
 		# single numeric Rowv means treeheight
 		if( isReal(Rowv) ){
@@ -2563,7 +2578,7 @@ aheatmap = function(x
 		treeheight_row <- 0
 	
 	# Do col clustering
-	tree_col <- if( !is_NA(Colv) ){
+	tree_col <- if( !is_NA(Colv) && ncol(mat) > 1 ){
 		if( identical(Colv,"Rowv") ){ # use row indexing if requested
 			if( ncol(mat) != nrow(mat) )
 				stop("aheatmap - Colv='Rowv' but cannot treat columns and rows symmetrically: input matrix is not square.")
@@ -2628,6 +2643,8 @@ aheatmap = function(x
         ri <- if( is.null(subInd) ) res$rowInd else subInd
 		mat <- mat[ri, , drop=FALSE] # data
         if( !is.null(txt) ) txt <- txt[ri, , drop = FALSE] # text
+        if( !is.null(y) ) y <- y[ri, , drop = FALSE] # 3rd-dimension
+        if( is.matrix(border_color) ) border_color <- border_color[ri, , drop = FALSE] # cell border 
 	}
 	
 	if( !is_NA(tree_col) ){		
@@ -2656,6 +2673,8 @@ aheatmap = function(x
         ci <- if( is.null(subInd) ) res$colInd else subInd
 		mat <- mat[, ci, drop=FALSE] # data
         if( !is.null(txt) ) txt <- txt[, ci, drop = FALSE] # text
+        if( !is.null(y) ) y <- y[, ci, drop = FALSE] # 3rd-dimension
+        if( is.matrix(border_color) ) border_color <- border_color[, ci, drop = FALSE] # cell border
 	}
 	
 	# adding clustering info
@@ -2768,8 +2787,12 @@ aheatmap = function(x
 
 	
 	# attach colors, shape, scale to data matrix
-	class(mat) <- c(paste0(type, "_matrix"), "shaped_matrix")
-    attr(mat, 'type') <- match.arg(type)
+#    if( !missing(type) && is.list(type) ){
+#        type <- list(default = 'rect', type = type) 
+#    }
+#    if( is.character(type) ) 
+    type <- match.arg(type)
+	attr(mat, 'type') <- type
     attr(mat, 'color') <- color_mat
     attr(mat, 'scale') <- colour_scale  
     
@@ -2780,10 +2803,10 @@ aheatmap = function(x
 	, treeheight_col = treeheight_col, treeheight_row = treeheight_row, tree_col = tree_col, tree_row = tree_row
 	, filename = filename, width = width, height = height, breaks = breaks, color = color, legend = legend
 	, annTracks = annTracks, annotation_legend = annotation_legend, cexAnn = cexAnn
-    , txt = txt
+    , txt = txt, z = y
 	, fontsize = fontsize, fontsize_row = cexRow * fontsize, fontsize_col = cexCol * fontsize
 	, main = main, sub = sub, info = info, layout = layout
-	, verbose = verbose
+	, verbose = verbose, new = if( !is.null(add) ) !add
 	, gp = gp)
 	
 	# return info about the plot
