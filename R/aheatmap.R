@@ -1108,7 +1108,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 				message("Detected mfrow: ", mf[1], " - ", mf[2])
 				message("Honouring ", if( is.null(new) ) "default "
 						,"argument `new=", new_val, '` ... '
-						, if( new ) "NEW" else "OVERLAY")				
+						, if( new_val ) "NEW" else "OVERLAY")				
 			}
 			new_val
 		}
