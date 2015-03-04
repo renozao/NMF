@@ -1150,7 +1150,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
     
     # extract options
     loptions <- glo$layout$options 
-	
+    
 	# resize the graphic file device if necessary
 	if( writeToFile ){		
 		if( verbose ) message("Compute size for file graphic device")
@@ -1202,7 +1202,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 
     # recompute margin fontsizes
     fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.9*glo$cellheight, 'bigpts')), 'points')
-    fontsize_col <- convertUnit(max(unit(fontsize_col, 'points'), unit(0.9*glo$cellwidth, 'bigpts')), 'points')
+    fontsize_col <- convertUnit(min(unit(fontsize_col, 'points'), unit(0.9*glo$cellwidth, 'bigpts')), 'points')
     
 	# Draw matrix
 	if( vplayout('mat') ){
@@ -2798,6 +2798,11 @@ aheatmap = function(x
     
     # retrieve dimension for computing cexRow and cexCol (evaluated from the arguments)
     nr <- nrow(mat); nc <- ncol(mat)
+    
+    if( verbose ){
+        message(sprintf("Row fontsize: cex = %s | size = %s", cexRow, cexRow * fontsize))
+        message(sprintf("Col fontsize: cex = %s | size = %s", cexCol, cexCol * fontsize))
+    }
 	# Draw heatmap	
 	res$vp <- heatmap_motor(mat, border_color = border_color, cellwidth = cellwidth, cellheight = cellheight
 	, treeheight_col = treeheight_col, treeheight_row = treeheight_row, tree_col = tree_col, tree_row = tree_row
