@@ -1617,10 +1617,13 @@ function(x, rank, method
 							# check if the run found a better fit
 							.STATIC.err <- vOBJECTIVE()
 							
+                            # show achieved deviance
+                            if( MODE_SEQ && verbose > 3 ) cat(sprintf("## Deviance [run: %s | err: %s]\n", n, err))
+                            
 							if( is.na(.STATIC.err) || err < .STATIC.err ){
 								
 								if( n>1 && verbose ){
-									if( MODE_SEQ && verbose > 1 ) cat("## Better fit found [err=", err, "]\n")
+									if( MODE_SEQ && verbose > 1 ) cat(sprintf("## Better fit found [run: %s | err: %s]\n", n, err))
 									else if( verbose >= 2 ) cat('*')
 								}
 								
@@ -1959,9 +1962,24 @@ function(x, rank, method
 	# test for negative values in x only if the method is not mixed
 	if( !is.mixed(method) && min(x, na.rm = TRUE) < 0 )
         fstop('Input matrix ', substitute(x),' contains some negative entries.');
-	# test if one row contains only zero entries
-    if( min(rowSums(x, na.rm = TRUE), na.rm = TRUE) == 0 )
-        fstop('Input matrix ', substitute(x),' contains at least one null or NA-filled row.');	
+	
+    ## CHECK for trivial input rows/columns
+    # test for rows that contain only NA or zero values: will skip them and complete result after computation
+    .SKIPPED <- list(row = NULL, col = NULL)
+    if( min(margin_sum <- rowSums(x, na.rm = TRUE), na.rm = TRUE) == 0 ){
+        margin_sum <- which(margin_sum == 0)
+        fwarning(sprintf('Input matrix %s contains row(s) full of zero/NA values [%s]\n %10sThese were removed and filled with 0s after fitting the model.'
+                                , as.character(substitute(x)), str_out(margin_sum, total = TRUE), ''))
+        .SKIPPED$row <- margin_sum
+    }
+	# test for columns that contain only NA or zero values
+    if( min(margin_sum <- colSums(x, na.rm = TRUE), na.rm = TRUE) == 0 ){
+        margin_sum <- which(margin_sum == 0)
+        fwarning(sprintf('Input matrix %s contains column(s) full of zero/NA values [%s]\n %10sThese were removed and filled with 0s after fitting the model.'
+                        , as.character(substitute(x)), str_out(margin_sum, total = TRUE), ''))
+        .SKIPPED$col <- margin_sum
+    }
+    #
 
 	# a priori the parameters for the run are all the one in '...'
 	# => expand with the strategy's defaults (e.g., maxIter)
@@ -2167,6 +2185,21 @@ function(x, rank, method
 		do.call('deviance', parameters.run)
 	}
 	
+    # remove trivial rows/columns
+    if( !is.null(idx <- .SKIPPED$row) ){
+        # target
+        parameters.run$y <- parameters.run$y[-idx, , drop = FALSE]
+        # seed
+        parameters.run$x <- parameters.run$x[-idx, , drop = FALSE]
+    }
+    if( !is.null(idx <- .SKIPPED$col) ){
+        # target
+        parameters.run$y <- parameters.run$y[, -idx, drop = FALSE]
+        # seed
+        parameters.run$x <- parameters.run$x[, -idx, drop = FALSE]
+    }
+    #
+    
 	## RUN NMF METHOD:
 	# call the strategy's run method [and time it]
 	t <- system.time({				
@@ -2178,8 +2211,8 @@ function(x, rank, method
 			}
 	})
 
-	## WRAP/CHECK RESULT
-	res <- .wrapResult(x, res, seed, method=method, seed.method=seed.method, t)
+    ## WRAP/CHECK RESULT
+	res <- .wrapResult(x, res, seed, method=method, seed.method=seed.method, t, .SKIPPED)
 	if( !isNMFfit(res) ){ # stop if error
 		fstop(res)
 	}
@@ -2209,7 +2242,7 @@ function(x, rank, method
 })
 
 # wrap result
-.wrapResult <- function(x, res, seed, method, seed.method, t){
+.wrapResult <- function(x, res, seed, method, seed.method, t, .SKIPPED){
 	
 	## wrap into an NMFfit object (update seed)
 	if( !isNMFfit(res) ){
@@ -2218,11 +2251,11 @@ function(x, rank, method
 		if( is(x, 'ExpressionSet') ) x <- exprs(x)
 		# wrap
 		if( is.matrix(res) ){
-			if( ncol(res) == ncol(x) ){# partial fit: coef
+			if( ncol(res) == ncol(x) - length(.SKIPPED$col) ){# partial fit: coef
 				# force dimnames
 				colnames(res) <- colnames(x)
 				res <- nmfModel(H=res)
-			}else if( nrow(res) == nrow(x) ){# partial fit: basis
+			}else if( nrow(res) == nrow(x) - length(.SKIPPED$row) ){# partial fit: basis
 				# force dimnames
 				rownames(res) <- rownames(x)
 				res <- nmfModel(W=res)
@@ -2239,6 +2272,19 @@ function(x, rank, method
 			res <- tmp
 		}
 	}
+    
+    ## re-fill trivial basis/coef if necessary/possible
+    if( !is.null(idx <- .SKIPPED$row) && nrow(res) ){
+        M <- matrix(0, nrow(x), nbasis(res))
+        M[seq(nrow(M))[-idx],] <- basis(res)
+        basis(res) <- M
+    }
+    if( !is.null(idx <- .SKIPPED$col) && ncol(res) ){
+        M <- matrix(0, nbasis(res), ncol(x))
+        M[, seq(ncol(M))[-idx]] <- coef(res)
+        coef(res) <- M
+    }
+    #
 	
 	## check result
 	if( !isTRUE(err <- .checkResult(res, seed)) ) return(err) 
