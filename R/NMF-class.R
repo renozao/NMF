@@ -1901,7 +1901,12 @@ nmfApply <- function(X, MARGIN, FUN, ..., simplify = TRUE, USE.NAMES = TRUE){
 	if( !is.matrix(x) ) stop('NMF:::.predict.nmf : only works on matrices')
 	if( !prob ){
 		#for each column return the (row) index of the maximum
-		return( as.factor(apply(x, 1L, function(v) which.max(abs(v)))) )
+		return( as.factor(apply(x, 1L, function(v){
+                            wm <- which.max(abs(v))
+                            if( !length(wm) ) wm <- NA
+                            wm
+                        })
+        ) )
 	}
 	else{
 		#for each column return the (row) index of the maximum AND the associated probaility
