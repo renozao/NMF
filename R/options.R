@@ -78,7 +78,7 @@ NULL
 	, gc=50
 	# define default parallel backend 
 	, parallel.backend= option_symlink('pbackend') # for backward compatibility
-	, pbackend= if( parallel::detectCores() > 1 ) 'par' else 'seq'
+	, pbackend= if( parallel::detectCores(all.tests=TRUE) > 1 ) 'par' else 'seq'
 	# toogle verbosity
 	, verbose=FALSE
 	# toogle debug mode
