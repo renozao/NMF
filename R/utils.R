@@ -43,6 +43,12 @@ rmAttributes <- function(x){
 	x
 }
 
+# returns total number of available cores
+getAllCores <- function(){
+    isOpenBSD <- grepl('openbsd', R.version$os, ignore.case = TRUE)
+    parallel::detectCores(all.tests = isOpenBSD)
+}
+
 #' \code{str_args} formats the arguments of a function using \code{\link{args}}, 
 #' but returns the output as a string.
 #' 

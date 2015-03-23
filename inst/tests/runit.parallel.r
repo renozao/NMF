@@ -266,7 +266,7 @@ test.nmf <- function(){
 	
 	.check('SEQ', .pbackend='SEQ')
 	# Multicore
-	if( parallel::detectCores() > 1 ) 
+	if( NMF:::getAllCores() > 1 ) 
 		.check('P2', .options='P2')
 	
 	# SNOW-type from char spec

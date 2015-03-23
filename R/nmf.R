@@ -1468,7 +1468,7 @@ function(x, rank, method
 								," [version ", getDoParVersion(),"]")
 				# show number of processes
 				if( getDoParWorkers() == 1 ) message("Mode: sequential [foreach:",getDoParName(),"]")
-				else message("Mode: parallel ", str_c("(", getDoParWorkers(), '/', parallel::detectCores()," core(s))"))
+				else message("Mode: parallel ", str_c("(", getDoParWorkers(), '/', getAllCores()," core(s))"))
 			}
 			
 			# check shared memory capability

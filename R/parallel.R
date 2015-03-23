@@ -16,7 +16,7 @@ NULL
 # specified by the user
 getMaxCores <- function(limit=TRUE){
 	#ceiling(parallel::detectCores()/2)
-	nt <- n <- parallel::detectCores()
+	nt <- n <- getAllCores()
 	# limit to number of cores specified in options if asked for
 	if( limit ){
 		if( !is.null(nc <- getOption('cores')) ) n <- nc # global option
