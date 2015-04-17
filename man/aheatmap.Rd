@@ -19,7 +19,7 @@
     cexCol = min(0.2 + 1/log10(nc), 1.2), filename = NA,
     width = NA, height = NA, main = NULL, sub = NULL,
     info = NULL, verbose = getOption("verbose"),
-    trace = verbose > 1, gp = gpar())
+    trace = verbose > 1, add = NULL, gp = gpar())
 }
 \arguments{
   \item{x}{numeric matrix of the values to be plotted.
@@ -40,7 +40,7 @@ concatenated with the grey colour '#F1F1F1'.
 \item one of RColorBrewer's palette name (see \code{\link[RColorBrewer]{display.brewer.all}})
 , or one of 'RdYlBu2', 'rainbow', 'heat', 'topo', 'terrain', 'cm'.
 }
-When the coluor palette is specified with a single value, and is negative or
+When the colour palette is specified with a single value, and is negative or
 preceded a minus ('-'), the reversed palette is used.
 The number of breaks can also be specified after a colon (':'). For example,
 the default colour palette is specified as '-RdYlBu2:100'.}
@@ -212,9 +212,12 @@ left to right. The same conversion, renaming and colouring rules as for argument
 possible to define the colors for only some of the annotations. Check examples for
 details.}
 
-  \item{annLegend}{boolean value specifying if the legend for the annotation tracks
-should be drawn or not.
-Default is \code{TRUE}.}
+  \item{annLegend}{ specifies if the legend for the annotation tracks 
+  should be drawn or not.
+  Default is \code{TRUE}, which draws legend for both row and column annotations.
+ 
+  It can also be one of \code{'both'} (equivalent to \code{TRUE}), 
+  \code{'none'} (equivalent to \code{FALSE}), \code{'row'} or \code{'column'}.}
 
   \item{cexAnn}{scaling coefficent for the size of the annotation tracks.
 Values > 1 (resp. < 1) will increase (resp. decrease) the size of each annotation
@@ -227,6 +230,10 @@ where an NA value means using the default for the corresponding track.}
 
   \item{labCol}{labels for the columns. See description for argument \code{labRow}
 for a list of the possible values.}
+
+  \item{labAnn}{toggles labelling of annotation tracks.
+It accepts the same values as argument \code{annLegend}, and specifies which 
+annotation labels should be drawn.}
 
   \item{layout}{layout specification that indicates the relative position
 of the heatmap's components.
@@ -269,6 +276,13 @@ purposes.}
 
   \item{trace}{logical that indicates if the different grid viewports should be
 traced with a blue border (debugging purpose).}
+
+  \item{add}{logical that indicates if the plot should be drawn on a fresh new grid
+page or on the currently opened plot.
+Using \code{add = NULL} (default), enables mixing grid and base graphics,
+and, notably, arrange multiple heatmaps on the same plot following a layout
+setup via the standard graphical parameter \code{mfrow} or the function
+\code{\link{layout}}.}
 
   \item{gp}{graphical parameters for the text used in plot. Parameters passed to
 \code{\link{grid.text}}, see \code{\link{gpar}}.}

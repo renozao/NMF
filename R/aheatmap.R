@@ -142,7 +142,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
                 )
     
 #    aheatmap_layout(layout, size = layout_size); stop()
-    glayout <- vplayout(NULL, layout = layout, size = layout_size)
+    glayout <- ah_vplayout(NULL, layout = layout, size = layout_size)
     # reoder width/height according to layout
     unique.name <- glayout$name
     # push layout
@@ -360,7 +360,7 @@ draw_colnames = function(coln, gp = gpar()){
 	gwidth <- as.numeric(convertWidth(unit(1, 'npc'), "inches"))
 	y <- NULL
 	if( gwidth < width ){
-		rot <- 270
+		rot <- 270 #315
 		vjust <- 0.5
 		hjust <- 0
 		y <- unit(1, 'npc') - unit(5, 'bigpts')
@@ -511,6 +511,31 @@ draw_annotations = function(converted_annotations, border_color, horizontal=TRUE
 	}
 }
 
+draw_annotations_label = function(labels, horizontal=TRUE, gp = gpar(), cex = 1){
+    
+    
+    n <- length(labels)
+    if( horizontal ) base_size <- as.numeric(convertHeight(unit(1/n, "npc"), 'bigpts')) - 2
+    else base_size <- as.numeric(convertWidth(unit(1/n, "npc"), 'bigpts')) - 2
+    
+    size <- cex * base_size
+    fontsize <- unit(size-1, "bigpts")
+    
+    # TODO: allow rotating labels
+	if( horizontal ){
+		y = cumsum(rep(size + 2, n)) - size / 2
+        x <- 0
+        grid.text(labels, x = x, y = unit(y[n:1], "bigpts"), hjust = 0, vjust = .5
+                , gp = gpar(fontsize = fontsize))
+	}else{
+        x = cumsum(rep(size + 2, n)) - size / 2
+        y <- 1
+        grid.text(labels, x = unit(x[1:n], "bigpts"), y = y, hjust = 0, vjust = .5
+                , rot = 270
+                , gp = gpar(fontsize = fontsize))
+	}
+}
+
 draw_annotation_legend = function(annotation_colors, border_color, gp = gpar()){
 	
 	y = unit(1, "npc")
@@ -651,7 +676,7 @@ aheatmap_layout <- function(layout = 'daml', size = NULL){
     if( is.null(size) ) size <- size0
     
     # compute layout
-    gl <- vplayout(NULL, layout = layout, size = size)
+    gl <- ah_vplayout(NULL, layout = layout, size = size)
     lo <- gl$grid.layout
 
     # plot layout diagram
@@ -676,7 +701,7 @@ aheatmap_layout <- function(layout = 'daml', size = NULL){
     sapply(gl$h[!gl$h == 'mat'], label.vp, 90)
     sapply(gl$v, label.vp)
     popViewport()
-
+    invisible(gl)
 }
 
 .aheatmap_layout <- function(layout = 'daml', size = NULL){
@@ -836,49 +861,78 @@ aheatmap_layout <- function(layout = 'daml', size = NULL){
     invisible(res)
 }
 
-vplayout <- local(
+# Initialise and returns the layout or layout indexes of a given component
+ah_vplayout <- local(
 {
-	graphic.name <- NULL
-	.index <- 0L
+    graphic.name <- NULL
+    .index <- 0L
     .layout <- NULL
-	function(x, y, verbose = getOption('verbose'), layout = NULL, ...){
-		# initialize the graph name
-		if( is.null(x) ){
+    function(x, y = NULL, layout = NULL, verbose = getOption('verbose'), name = NULL, ...){
+        
+        if( missing(x) ){
+            return(c(list(name = graphic.name), .layout))
+        }
+        
+        # initialize the graph name and current layout
+        if( is.null(x) ){
             .index <<- .index + 1L
-			graphic.name <<- paste0("AHEATMAP.VP.", .index) #grid:::vpAutoName()
+            graphic.name <<- paste0("AHEATMAP.VP.", .index) #grid:::vpAutoName()
             # determine layout
             if( is.null(layout) || identical(layout, 'default') ){ #default
                 layout <- 'damlLA | daml'
             }
             .layout <<- .aheatmap_layout(layout, ...)
-			return(c(list(name = graphic.name), .layout))
-		}
-		name <- NULL
+            return(c(list(name = graphic.name), .layout))
+        }
+        
 		if( !is.numeric(x) ){
-					
-			name <- paste(graphic.name, x, sep='-')
 			
+			name <- x
+			
+            # lookup cell 
+            mlayout <- .layout$layout
+            if( x %in% rownames(mlayout) ){
+                xy <- unname(mlayout[x, ])
+                x <- xy[1L]
+                if( .layout$cex.pad[1] ) x <- x * 2
+                y <- xy[2L]
+                if( .layout$cex.pad[2] ) y <- y * 2
+                
+            }else{
+                x <- y <- NULL
+                if( verbose ) message("NOTE: aheatmap layout component '", name, "' not found")
+            }
+		}
+        name <- paste(graphic.name, name, sep='-')
+        list(name = name, x = x, y = y) 
+     }
+ })
+
+vplayout <- function(x, y = NULL, ..., verbose = getOption('verbose')){
+    
+        vpl <- ah_vplayout(x, y, ..., verbose = verbose)
+        
+        name <- vpl$name
+        x <- vpl$x
+        
+		if( !is.numeric(x) ){    			
 			if( !missing(y) && is(y, 'viewport') ){
 				y$name <- name
 				return(pushViewport(y))			
 			}
+            #stop("aheatmap - invalid component name [", x, ']')
+            # try finding an existing viewport
 			if( !is.null(tryViewport(name, verbose=verbose)) ) return(TRUE)
-			
-            # lookup viewport 
-            mlayout <- .layout$layout
-            if( !x %in% rownames(mlayout) ) return(FALSE)
-#                stop("aheatmap - invalid component name [", x, ']')
-            xy <- mlayout[x, ]
-            x <- xy[1L]
-            if( .layout$cex.pad[1] ) x <- x * 2
-            y <- xy[2L]
-            if( .layout$cex.pad[2] ) y <- y * 2
+            # early exit if viewport label was not resolved
+            if( is.null(vpl$x) ) return(FALSE)
 		}
-		if( verbose ) message("vp - create ", name)
+        y <- vpl$y
+        
+		if( verbose ) message(sprintf("vp - create '%s' [%s x %s]", name, x, y))
 		pushViewport(viewport(layout.pos.row = x, layout.pos.col = y, name=name))
         TRUE
 	}	
-})
+#})
 
 #' Open a File Graphic Device
 #'
@@ -927,7 +981,7 @@ gfile <- function(filename, width, height, ...){
 #	nvp <- 0
 #	on.exit( upViewport(nvp) )
 #	
-#	u <- vplayout(NULL)
+#	u <- ah_vplayout(NULL)
 #	vname <- function(x) basename(tempfile(x))
 #
 #	hvp <- viewport( name=u, layout = lo)
@@ -1074,6 +1128,8 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	annotation_colors <- annTracks$colors
 	row_annotation <- annTracks$annRow
 	annotation <- annTracks$annCol
+    annotation_labels <- annTracks$labels
+    
 	writeToFile <- !is.na(filename)
     # annotation track size
     if( length(cexAnn) == 1L ) cexAnn <- c(cexAnn, cexAnn)
@@ -1232,6 +1288,17 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 		draw_annotations(annotation, border_color$annCol, cex = cexAnn[2L])
         trace_vp()
 		upViewport()
+        
+        # add column annotation labels if requested
+        if( annotation_labels[2] ){
+            ca_vp <- ah_vplayout('cann')
+            if( vplayout(ca_vp$x, ca_vp$y + 2, name = 'cann_labels') ){
+                draw_annotations_label(colnames(annotation), gp = c_gpar(gp, fontsize = fontsize))
+                trace_vp()
+                upViewport()
+            }
+        }
+        
 	}	
 	
 	# add row annotations if necessary	
@@ -1239,6 +1306,16 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 		draw_annotations(row_annotation, border_color$annRow, horizontal=FALSE, cex = cexAnn[1L])
         trace_vp()
 		upViewport()
+        
+        # add row annotation labels if requested
+        if( annotation_labels[1] ){
+            ca_vp <- ah_vplayout('rann')
+            if( vplayout(ca_vp$x + 2, ca_vp$y, name = 'rann_labels') ){
+                draw_annotations_label(colnames(row_annotation), horizontal = FALSE, gp = c_gpar(gp, fontsize = fontsize))
+                trace_vp()
+                upViewport()
+            }
+        }
 	}
 	
 	# Draw annotation legend
@@ -2230,9 +2307,12 @@ trace_vp <- local({.on <- FALSE
 #' possible to define the colors for only some of the annotations. Check examples for 
 #' details.
 #' 
-#' @param annLegend boolean value specifying if the legend for the annotation tracks 
+#' @param annLegend specifies if the legend for the annotation tracks 
 #' should be drawn or not.
-#' Default is \code{TRUE}.
+#' Default is \code{TRUE}, which draws legend for both row and column annotations.
+#' 
+#' It can also be one of \code{'both'} (equivalent to \code{TRUE}), 
+#' \code{'none'} (equivalent to \code{FALSE}), \code{'row'} or \code{'column'}. 
 #' 
 #' @param cexAnn scaling coefficent for the size of the annotation tracks.
 #' Values > 1 (resp. < 1) will increase (resp. decrease) the size of each annotation 
@@ -2244,6 +2324,9 @@ trace_vp <- local({.on <- FALSE
 #' @param labRow labels for the rows.
 #' @param labCol labels for the columns. See description for argument \code{labRow} 
 #' for a list of the possible values.
+#' @param labAnn toggles labelling of annotation tracks.
+#' It accepts the same values as argument \code{annLegend}, and specifies which 
+#' annotation labels should be drawn.
 #' 
 #' @param layout layout specification that indicates the relative position 
 #' of the heatmap's components.
@@ -2468,7 +2551,7 @@ aheatmap = function(x
 , distfun = "euclidean", hclustfun = "complete", reorderfun = function(d,w) reorder(d,w)
 , treeheight = 50
 , legend = TRUE, annCol = NA, annRow = NA, annColors = NA, annLegend = TRUE, cexAnn = NA
-, labRow = NULL, labCol = NULL
+, labRow = NULL, labCol = NULL, labAnn = annLegend
 , subsetRow = NULL, subsetCol = NULL
 , y = NULL, txt = NULL, layout = '.'
 , fontsize=10, cexRow = min(0.2 + 1/log10(nr), 1.2), cexCol = min(0.2 + 1/log10(nc), 1.2)
@@ -2779,6 +2862,13 @@ aheatmap = function(x
         annLegend <- (c('row', 'column') %in% annLegend | annLegend == 'both') & annLegend != 'none' 
     }
     if( is.logical(annLegend) ) annLegend <- rep(annLegend, length.out = 2L)
+    # handle specific on/off annotation labels
+    if( isString(labAnn) ){
+        labAnn <- match.arg(labAnn, c('row', 'column', 'both', 'none'))
+        labAnn <- (c('row', 'column') %in% labAnn | labAnn == 'both') & labAnn != 'none' 
+    }
+    if( is.logical(labAnn) ) labAnn <- rep(labAnn, length.out = 2L)
+    annTracks$labels <- labAnn
     # disable annotation legends as requested
     if( !annLegend[1L] ) annTracks$colors <- annTracks$colors[colnames(annTracks$annCol)]
     if( !annLegend[2L] ) annTracks$colors <- annTracks$colors[colnames(annTracks$annRow)]
