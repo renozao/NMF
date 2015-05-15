@@ -1040,3 +1040,18 @@ str_dim <- function(x, dims=dim(x)){
     if( !is.null(dims) ) paste0(dims, collapse = ' x ')
     else length(x)
 }
+
+# Internal override stringr function str_match
+# 
+# This is to get the previous behaviour on optional groups, because 
+# in stringr >= 1.0.0 absent optional groups get an NA value instead 
+# of an empty string, which in turn breaks some downstream processing.
+str_match <- function(...){
+    
+    res <- stringr::str_match(...)
+    # replace NAs by "" for globally matched strings
+    if( length(w <- which(!is.na(res[, 1L]))) ){
+        res[w, ][is.na(res[w, ])] <- ""
+    }
+    res
+}
