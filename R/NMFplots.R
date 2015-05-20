@@ -554,6 +554,10 @@ bigsilhouette <- function(x, cl){
     
     # rescale x
     x <- scale(x, TRUE, TRUE)
+    # detect NA columns
+    na_idx <- which(apply(is.na(x), 2L, all))
+    if( length(na_idx) ) x[, na_idx] <- 0
+    
     if( !is.integer(cl) || !is.factor(cl) ) cl <- factor(cl)
     idx <- as.integer(cl)
     
@@ -574,6 +578,12 @@ bigsilhouette <- function(x, cl){
     res <- cbind(cluster = idx
             , neighbor = in_out[3, ]
             , sil_width = si_width)
+    # force NA values on constant columns 
+    if( length(na_idx) ){
+        warning(sprintf("Constant or NA columns detected: silhouette will contain NA values [index: %s]", str_out(na_idx, total = TRUE)))
+        res[na_idx, 3] <- NA
+    }
+    
     rownames(res) <- colnames(x)
     class(res) <- 'silhouette'
     attr(res, 'Ordered') <- FALSE

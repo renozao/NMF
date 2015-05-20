@@ -1570,10 +1570,11 @@ setMethod('summary', signature(object='NMF'),
             
             # compute mean silhouette width
             with.silhouette <- match.arg(with.silhouette)
+            mean_rm_NA <- function(x) mean(x, na.rm = TRUE)
             siS <- if( with.silhouette %in% c('samples', 'both') ) silhouette(object, what = 'samples') else NA
             siF <- if( with.silhouette %in% c('features', 'both') ) silhouette(object, what = 'features') else NA
-            res <- c(res, silhouette.coef = if( !is_NA(siS) ) summary(siS)$avg.width else NA
-                    , silhouette.basis = if( !is_NA(siF) ) summary(siF)$avg.width else NA)
+            res <- c(res, silhouette.coef = if( !is_NA(siS) ) summary(siS, mean_rm_NA)$avg.width else NA
+                    , silhouette.basis = if( !is_NA(siF) ) summary(siF, mean_rm_NA)$avg.width else NA)
 			
 			# return result
 			return(res)
@@ -1631,7 +1632,7 @@ setMethod('sparseness', signature(x='matrix'),
 		s <- apply(x, 2, sparseness)
 		
 		# return the mean sparseness
-		mean(s)
+		mean(s, na.rm = TRUE)
 	}
 )
 #' Compute the sparseness of an object of class \code{NMF}, as the sparseness of 
