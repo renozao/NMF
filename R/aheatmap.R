@@ -6,6 +6,22 @@ NULL
 library(grid)
 library(gridBase)
 
+# temporary options
+ah_opts <- local({
+    .defaults <- list(verbose = FALSE) 
+    .opts <- .defaults
+    function(...){
+        old <- .opts
+        args <- list(...)
+        if( !nargs() ) return(.opts)
+        
+        if( is.null(args[[1]]) ) .opts <<- .defaults
+        else if( is.null(names(args)) ) return( .opts[args] )
+        else .opts[names(args)] <<- args
+        invisible(old)
+    }
+})
+
 # extends gpar objects
 c_gpar <- function(gp, ...){
     x <- list(...)
@@ -17,10 +33,25 @@ c_gpar <- function(gp, ...){
 lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
 , treeheight_col, treeheight_row, legend, main, sub, info
 , annTracks, annotation_legend, cexAnn, layout
-, fontsize, fontsize_row, fontsize_col, gp){
+, fontsize, fontsize_row, fontsize_col, gp
+, width = NULL, height =  NULL ){
+
+	verbose <- ah_opts()$verbose
 
     # pre-process layout to determine each component position/presence
     gl <- .aheatmap_layout(layout)
+    
+    # create main viewport with requested size
+    glayout <- ah_vplayout(NULL, layout = layout)
+	width <- width %||% unit(1, "npc")
+    if( !is.unit(width) ) width <- unit(width, 'inches')
+	height <- height %||% unit(1, "npc")
+    if( !is.unit(height) ) height <- unit(height, 'inches')
+    hvp_name <- paste('aheatmap', glayout$name, sep='-')
+    if( verbose ) message(sprintf("vp - create and push top viewport '%s' [dimension: %s x %s]", hvp_name, width, height))
+    pushViewport(hvp <- viewport(name=hvp_name, height = height, width = width))
+    on.exit( popViewport() )
+    #
     
     # annotation data
 	annotation_colors <- annTracks$colors
@@ -121,8 +152,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
 		# recompute the cell width depending on the automatic fontsize
 		if( is.na(cellwidth) && !is.null(rown) ){
 			cellheight <- convertHeight(unit(1, "grobheight", rectGrob(0,0, matwidth, matheight)), "bigpts", valueOnly = T) / nrow
-			fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.6*cellheight, 'bigpts')), 'points')
-			
+			fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.9*cellheight, 'bigpts')), 'points')
 			rown_width <- rown_width_min + unit(1.2, "grobwidth", textGrob(rown[longest_rown], gp = c_gpar(gp0, fontsize = fontsize_row)))
 			matwidth <- unit(1, "npc") - rown_width - row_legend_width - row_annot_width  - treeheight_row - annot_legend_width - gl$padding$h
 		}
@@ -142,29 +172,33 @@ lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
                 )
     
 #    aheatmap_layout(layout, size = layout_size); stop()
-    glayout <- ah_vplayout(NULL, layout = layout, size = layout_size)
+    glayout <- ah_vplayout(NULL, layout = layout, size = layout_size, new = FALSE)
     # reoder width/height according to layout
     unique.name <- glayout$name
     # push layout
 	lo <- glayout$grid.layout
     # drop grid layout spec from result object
     glayout$grid.layout <- NULL
-	hvp <- viewport( name=paste('aheatmap', unique.name, sep='-'), layout = lo)
+    # re-push vp with complete layout
+    popViewport()
+    on.exit()
+    if( verbose ) message(sprintf("vp - re-create and push top viewport '%s' with complete layout", hvp_name, hvp$width, hvp$height))
+    hvp <- viewport(name=paste('aheatmap', unique.name, sep='-'), layout = lo, width = hvp$width, height = hvp$height)
 	pushViewport(hvp)
 	
 	#grid.show.layout(lo); stop('sas')
 	# Get cell dimensions
     cellwidth <- cellheight <- 0 
 	if( vplayout('mat') ){
-    	cellwidth = convertWidth(unit(1, "npc"), "bigpts", valueOnly = T) / ncol
-    	cellheight = convertHeight(unit(1, "npc"), "bigpts", valueOnly = T) / nrow
-    	upViewport()
+    	cellwidth = convertWidth(unit(1/ncol, "npc"), "bigpts")
+    	cellheight = convertHeight(unit(1/nrow, "npc"), "bigpts")
+        upViewport()
     }
 		
 	height <- as.numeric(convertHeight(sum(lo$height), "inches"))
 	width <- as.numeric(convertWidth(sum(lo$width), "inches"))
 	# Return minimal cell dimension in bigpts to decide if borders are drawn
-	mindim = min(cellwidth, cellheight) 
+	mindim = convertUnit(min(cellwidth, cellheight), 'bigpts', valueOnly = TRUE) 
 	return( list(width=width, height=height, vp=hvp
                 , mindim=mindim, cellwidth=cellwidth, cellheight=cellheight
                 , layout = glayout) )
@@ -867,7 +901,7 @@ ah_vplayout <- local(
     graphic.name <- NULL
     .index <- 0L
     .layout <- NULL
-    function(x, y = NULL, layout = NULL, verbose = getOption('verbose'), name = NULL, ...){
+    function(x, y = NULL, layout = NULL, verbose = getOption('verbose'), name = NULL, new = TRUE, ...){
         
         if( missing(x) ){
             return(c(list(name = graphic.name), .layout))
@@ -875,8 +909,11 @@ ah_vplayout <- local(
         
         # initialize the graph name and current layout
         if( is.null(x) ){
-            .index <<- .index + 1L
-            graphic.name <<- paste0("AHEATMAP.VP.", .index) #grid:::vpAutoName()
+            
+            if( new ){
+                .index <<- .index + 1L
+                graphic.name <<- paste0("AHEATMAP.VP.", .index) #grid:::vpAutoName()
+            }
             # determine layout
             if( is.null(layout) || identical(layout, 'default') ){ #default
                 layout <- 'damlLA | daml'
@@ -1119,12 +1156,14 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	, filename=NA, width=NA, height=NA
 	, breaks, color, legend, txt = NULL, z = NULL
 	, annTracks, annotation_legend=TRUE, cexAnn = NA
-	, new=NULL, fontsize, fontsize_row, fontsize_col
+	, new=NULL, fontsize, cexRow, cexCol
 	, main=NULL, sub=NULL, info=NULL
     , layout = NULL
 	, verbose=getOption('verbose')
 	, gp = gpar()){
 
+    if( !verbose ) message <- function(...) NULL
+     
 	annotation_colors <- annTracks$colors
 	row_annotation <- annTracks$annRow
 	annotation <- annTracks$annCol
@@ -1194,7 +1233,20 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 			,textGrob(paste(info, collapse=" | "), x=unit(5, 'bigpts'), y=0.5, just='left', gp = c_gpar(gp, fontsize = 0.8 * fontsize))))
 	}
 	
-	# Set layout
+
+	# define initial fontsize
+	auto_font <- ah_opts()$auto_font
+    cexRow0 <- cexRow	
+    cexCol0 <- cexCol
+    if( auto_font$fontsize ){
+        nr <- nrow(matrix); nc <- ncol(matrix) 
+        if( auto_font$cexRow ) cexRow0 <- min(0.2 + 1/log10(nr), 1.2)
+        if( auto_font$cexCol ) cexCol0 <- min(0.2 + 1/log10(nc), 1.2)
+    }
+    fontsize_row <- cexRow0 * fontsize
+    fontsize_col <- cexCol0 * fontsize
+
+	# Set layout     
 	glo = lo(coln = colnames(matrix), rown = rownames(matrix), nrow = nrow(matrix), ncol = ncol(matrix)
 	, cellwidth = cellwidth, cellheight = cellheight
 	, treeheight_col = treeheight_col, treeheight_row = treeheight_row
@@ -1202,7 +1254,9 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	, annTracks = annTracks, annotation_legend = annotation_legend, cexAnn = cexAnn
 	, fontsize = fontsize, fontsize_row = fontsize_row, fontsize_col = fontsize_col
     , layout = layout
-	, main = mainGrob, sub = subGrob, info = infoGrob, gp = gp)
+	, main = mainGrob, sub = subGrob, info = infoGrob, gp = gp
+    , width = if( writeToFile && !is_NA(width) ) width
+    , height = if( writeToFile && !is_NA(height) ) height)
     
     # extract options
     loptions <- glo$layout$options 
@@ -1226,7 +1280,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 			plot.new()
 			par(op)
 		}		
-		if( verbose ) message("Push again top viewport")
+		if( verbose ) message("vp - re-push top viewport ", glo$vp$name)
 		# repush the layout
 		pushViewport(glo$vp)
 		if( verbose ) grid.rect(width=unit(glo$width, 'inches'), height=unit(glo$height, 'inches'), gp = gpar(col='blue'))
@@ -1257,8 +1311,21 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	}
 
     # recompute margin fontsizes
-    fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.9*glo$cellheight, 'bigpts')), 'points')
-    fontsize_col <- convertUnit(min(unit(fontsize_col, 'points'), unit(0.9*glo$cellwidth, 'bigpts')), 'points')
+    if( auto_font$fontsize ){  
+        fontsize_row <- convertUnit(cexRow * glo$cellheight, 'points')
+        fontsize_col <- unit(cexCol * fontsize_col, 'points')
+#	    fontsize_col <- convertUnit(cexCol * glo$cellwidth, 'points')
+        
+    }else{ # force margin fontsizes if necessary
+        fontsize_row <- unit(cexRow * fontsize, 'points')
+        fontsize_col <- unit(cexCol * fontsize, 'points')
+    }
+    
+    if( verbose ){
+        message(sprintf("Computed cell height: %s - Row font: %s", glo$cellheight, fontsize_row))
+        message(sprintf("Computed cell width: %s - Col font: %s", glo$cellwidth, fontsize_col))
+    }
+    
     
 	# Draw matrix
 	if( vplayout('mat') ){
@@ -2554,12 +2621,21 @@ aheatmap = function(x
 , labRow = NULL, labCol = NULL, labAnn = annLegend
 , subsetRow = NULL, subsetCol = NULL
 , y = NULL, txt = NULL, layout = '.'
-, fontsize=10, cexRow = min(0.2 + 1/log10(nr), 1.2), cexCol = min(0.2 + 1/log10(nc), 1.2)
+, fontsize=10, cexRow = 0.9, cexCol = 0.9
 , filename = NA, width = NA, height = NA
 , main = NULL, sub = NULL, info = NULL
 , verbose=getOption('verbose'), trace = verbose > 1, add = NULL
 , gp = gpar()){
 
+    # reset options
+    ah_opts(NULL)
+	ah_opts(verbose = verbose)
+    
+    # flag automatic fontsize
+    ah_opts(auto_font = list(fontsize = missing(fontsize) || is.null(fontsize)
+                    , cexRow = missing(cexRow) || is.null(cexRow)
+                    , cexCol = missing(cexCol) || is.null(cexCol)) )
+     
 	# set verbosity level
 	ol <- lverbose(verbose)
     trace_vp(trace)
@@ -2890,8 +2966,8 @@ aheatmap = function(x
     nr <- nrow(mat); nc <- ncol(mat)
     
     if( verbose ){
-        message(sprintf("Row fontsize: cex = %s | size = %s", cexRow, cexRow * fontsize))
-        message(sprintf("Col fontsize: cex = %s | size = %s", cexCol, cexCol * fontsize))
+        message(sprintf("Initial row fontsize: cex = %s | target = %s", cexRow, cexRow * fontsize))
+        message(sprintf("Initial col fontsize: cex = %s | target = %s", cexCol, cexCol * fontsize))
     }
 	# Draw heatmap	
 	res$vp <- heatmap_motor(mat, border_color = border_color, cellwidth = cellwidth, cellheight = cellheight
@@ -2899,7 +2975,7 @@ aheatmap = function(x
 	, filename = filename, width = width, height = height, breaks = breaks, color = color, legend = legend
 	, annTracks = annTracks, annotation_legend = annotation_legend, cexAnn = cexAnn
     , txt = txt, z = y
-	, fontsize = fontsize, fontsize_row = cexRow * fontsize, fontsize_col = cexCol * fontsize
+	, fontsize = fontsize, cexRow = cexRow, cexCol = cexCol
 	, main = main, sub = sub, info = info, layout = layout
 	, verbose = verbose, new = if( !is.null(add) ) !add
 	, gp = gp)
