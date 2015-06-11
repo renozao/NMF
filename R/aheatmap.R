@@ -497,7 +497,7 @@ convert_annotations = function(annotation, annotation_colors){
 		b <- attr(a, 'color')
 		if( is.null(b) )
 			b = annotation_colors[[names(annotation)[i]]]
-		if(class(a) %in% c("character", "factor")){
+		if( is.character(a) || is.factor(a) ){
 			a = as.character(a)
       #print(names(b))
       #print(unique(a))
@@ -578,7 +578,6 @@ draw_annotation_legend = function(annotation_colors, border_color, gp = gpar()){
 	for(i in names(annotation_colors)){
 		grid.text(i, x = 0, y = y, vjust = 1, hjust = 0, gp = c_gpar(gp, fontface = "bold"))
 		y = y - 1.5 * text_height
-		#if(class(annotation[[i]]) %in% c("character", "factor")){
 		acol <- annotation_colors[[i]]
 		if( attr(acol, 'afactor') ){
 			sapply(seq_along(acol), function(j){
@@ -1830,7 +1829,7 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 	anames <- names(annotation)
 	sapply(seq_along(annotation), function(i){
 		a <- annotation[[i]]
-		if( class(annotation[[i]]) %in% c("character", "factor")){			
+		if( is.character(a) || is.factor(a) ){			
 			# convert to character vector
 			a <- if( is.factor(a) ) levels(a) else unique(a)
 			count <<- count + nlevels(a)
@@ -1878,7 +1877,7 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 		acol <- annotation_colors[[aname]]
 		if( is.null(acol) ){
 			res_colors[[aname]] <-
-			if( class(annotation[[i]]) %in% c("character", "factor")){
+            if( is.character(ann) || is.factor(ann) ){
 				lev <- ann
 				ind = 1:length(lev)
 				acol <- setNames(factor_colors[ind], lev)
