@@ -118,7 +118,7 @@ nmf_update.lsnmf <- function(i, X, object, weight, eps=10^-9, ...)
 #' \code{wrss} implements the objective function used by the LS-NMF algorithm.
 #' 
 #' @rdname lsNMF-nmf
-wrss <- function(object, X, weight = 1){
+wrss <- function(object, X, weight = 1, ...){
 	sum( ((X - fitted(object)) * weight)^2 , na.rm = TRUE)/2
 }
 
