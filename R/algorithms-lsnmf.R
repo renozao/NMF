@@ -124,6 +124,7 @@ wrss <- function(object, X, weight = 1, ...){
 
 .ls_nmf <- function(y, x, weight = NA, ...){
     
+    missing_weight <- missing(weight)
     verbose <- verbose(x)
     if( !verbose ) message <- function(...) NULL
     
@@ -146,9 +147,9 @@ wrss <- function(object, X, weight = 1, ...){
             
         }else if( length(weight) < length(y) ){
             if( length(y) %% length(weight) == 0 ){
-                message('NOTE [recycled and re-shaped to ', str_dim(y), ']')
+                message(sprintf('NOTE [recycled %i-length weight and re-shaped to a %s matrix]', length(weight), str_dim(y)))
             }else{
-                message('WARNING [incompletely recycled and re-shaped to ', str_dim(y), ']')
+                message(sprintf('WARNING [incompletely recycled %i-length weight and re-shaped to a %s matrix]', length(weight), str_dim(y)))
                 warning("LS-NMF: incompletely recycled and re-shaped weights to match data matrix dimensions ", str_dim(y))
             }
             weight <- rep(weight, length.out = length(y))
@@ -176,7 +177,15 @@ wrss <- function(object, X, weight = 1, ...){
         # using dummy value instead of missing values 
         y[NA_values] <- 10^9
         
-    }else if( verbose ) message("OK")
+    }else{
+        
+        if( verbose ) message("OK")
+        # use weight = 1
+        if( missing_weight || is_NA(weight) ){
+            weight <- 1
+            if( verbose ) message("* Using default uniform unit weight (weight = 1)")
+        }
+    }
     
     # load plain LS-NMF implementation
     algo <- nmfAlgorithm('.ls-nmf')
