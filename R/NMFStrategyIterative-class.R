@@ -400,7 +400,17 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 		stop.signal <- stopFun(strategy, i, v, nmfFit, ...)
 		
 		# if the strategy ask for stopping, then stop the iteration
-		if( stop.signal || i >= maxIter ) break;
+        # NB: enable updating the fit object from the stop criterion
+        # e.g., for consensus/chunk runs stopping criterion
+        if( is.list(stop.signal) ){
+            nmfFit <- stop.signal[[2L]]
+            stop.signal <- stop.signal[[1L]]
+        }
+        if( is.nmf(stop.signal) ){
+            nmfFit <- stop.signal
+            stop.signal <- TRUE
+        }
+        if( stop.signal || i >= maxIter ) break;
 		
 		# increment i
 		i <- i+1L
@@ -425,7 +435,7 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit
 	nmfData <- trackError(nmfData, deviance(strategy, nmfFit, v, ...), niter=i, force=TRUE)
 	
 	# store the fitted model
-	fit(nmfData) <- nmfFit
+    fit(nmfData) <- nmfFit
 	
 	#Vc# wrap up
 	# let the strategy build the result

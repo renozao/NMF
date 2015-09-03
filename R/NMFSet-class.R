@@ -254,11 +254,20 @@ setMethod('nrun', 'NMFfitX',
 		stop("NMF::NMFfitX - missing definition for pure virtual method 'nrun' in class '", class(object), "'")
 	}
 )
-#' This method always returns 1, since an \code{NMFfit} object is obtained 
-#' from a single NMF run.  
+
+#' This default fallback method always returns \code{1L}.
+setMethod('nrun', 'NMF', 
+    function(object){
+        1L
+    }
+)
+
+#' This method returns  the number of runs used to compute a fitted NMF model (in \code{fit(object)}).
+#' This will be \code{1L} most of the time, since an \code{NMFfit} object is generally from a 
+#' single NMF run, except in special nested fits.
 setMethod('nrun', 'NMFfit', 
 	function(object){
-		1L
+		nrun(fit(object))
 	}
 )
 
@@ -289,6 +298,12 @@ setMethod('consensus', 'NMF',
 	function(object, ...){
 		connectivity(object, ...)
 	}
+)
+
+setMethod('consensus', 'NMFfit', 
+    function(object, ...){
+        consensus(fit(object), ...)
+    }
 )
 
 #' Hierarchical Clustering of a Consensus Matrix
@@ -329,7 +344,7 @@ setMethod('consensushc', 'matrix',
 setMethod('consensushc', 'NMF', 
 	function(object, ...){		
 		# hierachical clustering based on the connectivity matrix
-		consensushc(connectivity(object), ...)		
+		consensushc(consensus(object), ...)		
 	}
 )
 #' Compute the hierarchical clustering on the consensus matrix of \code{object}, 
@@ -831,7 +846,7 @@ setMethod('icterms', 'NMFfit',
 #' (i.e. the length of the list itself).
 setMethod('nrun', 'NMFfitXn', 
 	function(object){
-		length(object)
+		sum(sapply(object, nrun))
 	}
 )
 
@@ -1059,7 +1074,7 @@ setMethod('consensus', signature(object='NMFfitXn'),
 		# compute mean connectivity matrix
 		sapply(object 
 				, function(x, ...){
-					con <<- con + connectivity(x, ..., no.attrib = TRUE)
+					con <<- con + consensus(x, ..., no.attrib = TRUE) * nrun(x)
 					NULL
 				}
 				, ...
@@ -1255,19 +1270,18 @@ setMethod('NMFfitX', 'NMFfit',
 			extra <- list(...)
 						
 			# default value for nrun is 1 
-			if( is.null(extra$nrun) ) extra$nrun = as.integer(1)
+			if( is.null(extra$nrun) ) extra$nrun <- nrun(object)
 			
 			# a consensus matrix is required (unless nrun is 1)
 			if( is.null(extra$consensus) ){
-				if( extra$nrun == 1 ) 
-					extra$consensus <- connectivity(object)
-				else
-					stop("Slot 'consensus' is required to create a 'NMFfitX1' object where nrun > 1")				
+				extra$consensus <- consensus(object)				
 			}
 			
 			# slot runtime.all is inferred if missing and nrun is 1
-			if( is.null(extra$runtime.all) && extra$nrun == 1 )
-				extra$runtime.all <- runtime(object)
+			if( is.null(extra$runtime.all) ){
+                if( extra$nrun == 1 ) extra$runtime.all <- runtime(object)
+                else extra$runtime.all <- runtime.all(object)
+            }
 			
 			# create the NMFfitX1 object
 			do.call('new', c(list('NMFfitX1', object), extra))
@@ -1726,7 +1740,7 @@ setMethod('consensusmap', 'NMFfitX',
 #' Plots a heatmap of the connectivity matrix of an NMF model.
 setMethod('consensusmap', 'NMF', 
 	function(object, ...){
-		consensusmap(connectivity(object), ...)		
+		consensusmap(consensus(object), ...)		
 	}
 )
 #' Main method that redefines default values for arguments of \code{\link{aheatmap}}.
