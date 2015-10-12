@@ -1969,7 +1969,11 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 }
 
 # Create row/column names
-generate_dimnames <- function(x, n, ref){
+generate_dimnames <- function(data, margin, x, original){
+    
+    n <- dim(data)[[margin]]
+    ref <- dimnames(data)[[margin]]
+    
 	if( is_NA(x) ) NULL
 	else if( length(x) == n ) x
 	else if( identical(x, 1) || identical(x, 1L) ) 1L:n
@@ -1981,6 +1985,10 @@ generate_dimnames <- function(x, n, ref){
 			n <- if( x[1, 3] != '' ) as.numeric(x[1, 2]) else 2L
 			s <- str_match(ref, p)[, n]
 			ifelse(is.na(s), ref, s)
+		}
+        else if( is(original, 'ExpressionSet') ){
+            if( margin == 1L ) Biobase::fData(original)[[x]]
+            else Biobase::pData(original)[[x]]
         }
 		else paste(x, 1L:n, sep='')
 		#print(str_match_all(x, "^/(([^%]*)(%[in])?)+/$"))
@@ -2673,6 +2681,7 @@ aheatmap = function(x
 	
 	# convert ExpressionSet into 
     vLEVELs <- NULL
+    x0 <- x
 	if( is(x, 'ExpressionSet') ){
 		library(Biobase)
 		if( isTRUE(annCol) ) annCol <- atrack(x)
@@ -2722,14 +2731,14 @@ aheatmap = function(x
 		labRow <- 1L
 	if( !is.null(labRow) ){
 		if( verbose ) message("Process labRow")
-		rownames(mat)  <- generate_dimnames(labRow, nrow(mat), rownames(mat))	
+		rownames(mat)  <- generate_dimnames(mat, 1L, labRow, original = x0)	
 	}
 	# label columns numerically if no colnames
 	if( is.null(labCol) && is.null(colnames(mat)) )
 		labCol <- 1L
 	if( !is.null(labCol) ){
 		if( verbose ) message("Process labCol")
-		colnames(mat) <- generate_dimnames(labCol, ncol(mat), colnames(mat))
+		colnames(mat) <- generate_dimnames(mat, 2L, labCol, original = x0)
 	}
 	
 	## DO SUBSET
