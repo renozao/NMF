@@ -23,11 +23,12 @@ ah_opts <- local({
 })
 
 # extends gpar objects
-c_gpar <- function(gp, ...){
+c_gpar <- function(gp, ..., force = FALSE){
     x <- list(...)
     if( length(x) == 1L && is.null(names(x)) && is.list(x[[1]]) ) 
         x <- x[[1]]
-    do.call(gpar, c(gp, x[!names(x) %in% names(gp)]))
+    sapply(intersect(names(x), names(gp)), function(n) x[[n]] <<- NULL)
+    do.call(gpar, c(gp, x))
 }
 
 lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
@@ -345,7 +346,7 @@ draw_matrix = function(matrix, border_color, txt = NULL, z = NULL, gp = gpar()){
     # circles
     radius_base <- min(1/n, 1/m)/2 
 	# use similar radius computation as in package corrplot
-    radius_range <- range(if( is.null(z) ) color_scale else z, na.rm = TRUE) 
+    radius_range <- range(if( is.null(z) ) color_scale else z, na.rm = TRUE)
     radius <- .9 * radius_base / abs(radius_range)^.5 #/ log(1 + abs(c(min(color_scale), max(color_scale))))
     radius <- c(radius[1], 0, radius[2])
     draw_cell.circle <- function(i, gp){
@@ -531,7 +532,7 @@ draw_annotations = function(converted_annotations, border_color, horizontal=TRUE
 	if( horizontal ){
 		x = (1:m)/m - 1/2/m
 		y = cumsum(rep(size + 2, n)) - cex * base_size / 2
-		for(i in 1:m){
+        for(i in 1:m){
 			grid.rect(x = x[i], unit(y[n:1], "bigpts"), width = 1/m, height = psize
                     , gp = c_gpar(list(fill = converted_annotations[i, ]), border_color))
 		}
@@ -2109,7 +2110,7 @@ subset_index <- function(x, margin, subset){
 		if( length(subset) > n )
 			stop("Invalid too long integer/character subset argument `", so
 				, "`: length must not exceed the number of ", dt, " [", n, "].")
-	
+		
 		if( anyDuplicated(subset) )
 			warning("Duplicated index or name in subset argument `", so, "`.")
 		
@@ -2645,14 +2646,14 @@ aheatmap = function(x
 	if( is(x, 'ExpressionSet') ){
 		library(Biobase)
 		if( isTRUE(annCol) ) annCol <- atrack(x)
-		x <- Biobase::exprs(x)
-        
-	}else if( is.character(x) ){ # switch to integer matrix
+        x <- Biobase::exprs(x) 
+         
+    }else if( is.character(x) ){ # switch to integer matrix
         fx <- factor(x)
         x <- matrix(as.integer(fx), nrow(x))
         vLEVELs <- levels(fx)
         rm(fx)
-    } 
+	}
 
 	# rename to old parameter name
 	mat <- x
@@ -2817,7 +2818,7 @@ aheatmap = function(x
 			tree_col <- NA
 		}
 	}
-	# possibly map the index to the original data index 
+	# possibly map the index to the original data index
 	res$colInd <- subset2orginal_idx(res$colInd, subsetCol)
 	
 	# order the columns if necessary
@@ -3112,5 +3113,5 @@ if( FALSE ){
 		popViewport()	
 		
 	} 
-	
+    
 }
