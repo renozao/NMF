@@ -2390,6 +2390,13 @@ trace_vp <- local({.on <- FALSE
 #' colour palette should be drawn or not.
 #' Default is \code{TRUE}.
 #' 
+#' @param dataCol \code{data.frame} where column annotation variables are looked-up.
+#' When \code{x} is an \code{ExpressionSet} object, this defaults to the phenotypic 
+#' sample annotation returned by \code{pData(x)}.
+#' @param dataRow \code{data.frame} where row annotation variables are looked-up.
+#' When \code{x} is an \code{ExpressionSet} object, this defaults to the feature 
+#' annotation returned by \code{fData(x)}.
+#' 
 #' @param annCol specifications of column annotation tracks displayed as coloured 
 #' rows on top of the heatmaps. The annotation tracks are drawn from bottom to top.
 #' A single annotation track can be specified as a single vector; multiple tracks 
@@ -2656,6 +2663,7 @@ aheatmap = function(x
 , distfun = "euclidean", hclustfun = "complete", reorderfun = function(d,w) reorder(d,w)
 , treeheight = 50
 , legend = TRUE, annCol = NA, annRow = NA, annColors = NA, annLegend = TRUE, cexAnn = NA
+, dataRow = NULL, dataCol = NULL 
 , labRow = NULL, labCol = NULL, labAnn = annLegend
 , subsetRow = NULL, subsetCol = NULL
 , y = NULL, txt = NULL, layout = '.'
@@ -2684,7 +2692,8 @@ aheatmap = function(x
     x0 <- x
 	if( is(x, 'ExpressionSet') ){
 		library(Biobase)
-		if( isTRUE(annCol) ) annCol <- atrack(x)
+        if( is.null(dataCol) ) dataCol <- Biobase::pData(x)
+        if( is.null(dataRow) ) dataRow <- Biobase::fData(x)
         x <- Biobase::exprs(x) 
          
     }else if( is.character(x) ){ # switch to integer matrix
@@ -2692,6 +2701,81 @@ aheatmap = function(x
         x <- matrix(as.integer(fx), nrow(x))
         vLEVELs <- levels(fx)
         rm(fx)
+    } 
+    
+    # use same annotation data if needed 
+    if( identical(Colv, "Rowv") ){
+        dataRow <- dataRow %||% dataCol
+        dataCol <- dataCol %||% dataRow
+    }
+    
+    if( !is.null(dataCol) ){
+        ## handle annotation shortcuts
+        # samples
+        e <- parent.frame()
+        annCol <- eval(substitute(annCol), dataCol, e)
+        if( is.formula(annCol) ) annCol <- as.list(labels(terms(annCol)))
+		if( isTRUE(annCol) ) annCol <- atrack(x, data = t(x))
+        else if( isString(annCol) ) annCol <- as.list(annCol)
+            
+        if( is.list(annCol) ){
+            i_string <- which(sapply(annCol, isString))
+            if( length(i_string) ){
+                annVar <- annCol[i_string]
+                if( !is_NA(verbose) ) message("Note: using phenotypic sample annotation data ", str_out(annVar, use.names = TRUE))
+                nm <- names(annVar)
+                annVar <- dataCol[unlist(annVar, use.names = FALSE)]
+                if( !is.null(nm) ){
+                    colnames(annVar)[!nzchar(nm)] <- nm[!nzchar(nm)]
+                }
+                annCol[i_string] <- annVar
+            }
+            annCol <- .atrack(annCol, data = t(x))
+        }
+        
+        # labels
+        if( isString(labCol) ){
+            if( !is_NA(verbose) ) message("Note: using column label variable: ", labCol)
+            labCol <- dataCol[[labCol]]
+            labCol[is.na(labCol)] <- ''
+        }
+        ##
+        
+        ## handle ordering shortcut
+        # samples
+        if( is.formula(Colv) ){
+            Colvar <- labels(terms(Colv))
+            Colv <- do.call(order, lapply(Colvar, function(v) dataCol[[v]]))
+        }
+        
+    }
+    
+    if( !is.null(dataRow) ){
+        ## handle shortcuts
+        # annotations
+        if( is.formula(annRow) ) annRow <- labels(terms(annRow))
+        if( isTRUE(annRow) ) annRow <- atrack(dataRow, data = x)
+        else if( is.character(annRow) && length(annRow) != nrow(x) ){
+            if( !is_NA(verbose) ) message("Note: using feature annotation data ", str_out(annRow))
+            annRow <- .atrack(dataRow[annRow], data = x)
+        }
+        ##
+        
+        # labels
+        if( isString(labRow) ){
+            if( !is_NA(verbose) ) message("Note: using row label variable: ", labRow)
+            labRow <- dataRow[[labRow]]
+            labRow[is.na(labRow)] <- ''
+        }
+        ##
+        
+        # ordering
+        if( is.formula(Rowv) ){
+            Rowvar <- labels(terms(Rowv))
+            Rowv <- do.call(order, lapply(Rowvar, function(v) dataRow[[v]]))
+        }
+        ##
+        
 	}
 
 	# rename to old parameter name
