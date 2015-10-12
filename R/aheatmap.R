@@ -334,7 +334,8 @@ draw_matrix = function(matrix, border_color, txt = NULL, z = NULL, gp = gpar()){
     
     # define set of drawing functions
     # rectangles
-    draw_cell.rect <- function(i, gp){
+    draw_cell.rect <- function(i, j = NULL, gp){
+        if( !is.null(j) ) y <- y[j]
         grid.rect(x = x[i], y = y, width = 1/m, height = 1/n, gp = gp)
     }
     # rounded rectangles
@@ -360,6 +361,13 @@ draw_matrix = function(matrix, border_color, txt = NULL, z = NULL, gp = gpar()){
     draw_cell.circle <- function(i, gp){
         val <- if( is.null(z) ) matrix[, i] else z[, i]
         if( is_NA(gp$col) ) gp$col <- gp$fill 
+#        nas <- is.na(val) | is.na(matrix[, i])
+#        if( any(nas) ){
+#            nas_j <- which(nas)
+#            #gp2 <- c_gpar(list(fill = gp$col[nas_j]), gp[nas_j])
+#            gp2 <- c_gpar(list(fill = '#dddddd'), gp[nas_j])
+#            draw_cell.rect(i, nas_j, gp = gp2)
+#        }
         grid.circle(x = x[i], y = y, r = radius[sign(val) + 2] * abs(val)^0.5 + roffset, gp = gp)
     }
     #
@@ -539,9 +547,12 @@ draw_annotations = function(converted_annotations, border_color, horizontal=TRUE
     psize <- unit(size, "bigpts")
 	if( horizontal ){
 		x = (1:m)/m - 1/2/m
-		y = cumsum(rep(size + 2, n)) - cex * base_size / 2
+		y = cumsum(rep(size + 2, n)) - size / 2
+        just = 'center'
         for(i in 1:m){
-			grid.rect(x = x[i], unit(y[n:1], "bigpts"), width = 1/m, height = psize
+#            psize <- unit(runif(1, -size/2, size/2), "bigpts")
+#            just = 'bottom'
+            grid.rect(x = x[i], unit(y[n:1], "bigpts"), width = 1/m, height = psize, just = just
                     , gp = c_gpar(list(fill = converted_annotations[i, ]), border_color))
 		}
 	}else{
