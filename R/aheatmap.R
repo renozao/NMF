@@ -1795,22 +1795,28 @@ cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, s
 
 scale_mat = function(x, scale, na.rm=TRUE){
 	
-	av <- c("none", "row", "column", 'r1', 'c1')
+	av <- c("none", "row", "column", 'r1', 'c1', 'stdrow', 'stdcolumn')
 	i <- pmatch(scale, av)	
 	if( is_NA(i) )
 		stop("scale argument shoud take values: ", str_out(av, Inf))
 	scale <- av[i]
 		
 	switch(scale, none = x
-		, row = {
+		, stdrow = , row = {
 			x <- sweep(x, 1L, rowMeans(x, na.rm = na.rm), check.margin = FALSE)
 			sx <- apply(x, 1L, sd, na.rm = na.rm)
-			sweep(x, 1L, sx, "/", check.margin = FALSE)
+			x <- sweep(x, 1L, sx, "/", check.margin = FALSE)
+            if( grepl('^std', scale) )
+                x <- sweep(x, 1L, matrixStats::rowMaxs(x) - matrixStats::rowMins(x), "/", check.margin = FALSE)
+            x
 		}
-		, column = {
+		, stdcolumn = , column = {
 			x <- sweep(x, 2L, colMeans(x, na.rm = na.rm), check.margin = FALSE)
 			sx <- apply(x, 2L, sd, na.rm = na.rm)
-			sweep(x, 2L, sx, "/", check.margin = FALSE)
+			x <- sweep(x, 2L, sx, "/", check.margin = FALSE)
+            if( grepl('^std', scale) )
+                x <- sweep(x, 2L, matrixStats::colMaxs(x) - matrixStats::colMins(x), "/", check.margin = FALSE)
+            x
 		}
 		, r1 = sweep(x, 1L, rowSums(x, na.rm = na.rm), '/', check.margin = FALSE)
 		, c1 = sweep(x, 2L, colSums(x, na.rm = na.rm), '/', check.margin = FALSE)
@@ -2271,7 +2277,11 @@ trace_vp <- local({.on <- FALSE
 #' Possible values are: 
 #' \itemize{
 #' \item \code{"row"}: center and standardize each row separately to row Z-scores 
+#' \item \code{"stdrow"}: center and standardize each row separately to row Z-scores, 
+#' and force values onto [0,1] inteval. 
 #' \item \code{"column"}: center and standardize each column separately to column Z-scores
+#' \item \code{"stdcolumn"}: center and standardize each column separately to column Z-scores, 
+#' and force values onto [0,1] inteval. 
 #' \item \code{"r1"}: scale each row to sum up to one
 #' \item \code{"c1"}: scale each column to sum up to one
 #' \item \code{"none"}: no scaling
@@ -3133,5 +3143,12 @@ if( FALSE ){
 		popViewport()	
 		
 	} 
+	
+}
+
+# map one segment to another
+trans_segment <- function(x, to, from = range(x, na.rm = TRUE)){
+    
+    from[1L] + (x - from[1L]) / (from[2L] - from[1L]) * (to[2L] - to[1L]) 
     
 }
