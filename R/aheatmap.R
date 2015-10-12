@@ -1630,8 +1630,9 @@ isLogical <- function(x) isTRUE(x) || identical(x, FALSE)
 # Convert an index vector usable on the subset data into one usable on the 
 # original data
 subset2orginal_idx <- function(idx, subset){
-	if( is.null(subset) || is.null(idx) ) idx
+	if( is.null(subset) ) idx
 	else{
+        if( is.null(idx) )  idx <- seq(length(subset)) 
 		res <- subset[idx]
 		attr(res, 'subset') <- idx
 		res
@@ -1980,7 +1981,7 @@ generate_dimnames <- function(x, n, ref){
 			n <- if( x[1, 3] != '' ) as.numeric(x[1, 2]) else 2L
 			s <- str_match(ref, p)[, n]
 			ifelse(is.na(s), ref, s)
-		}
+        }
 		else paste(x, 1L:n, sep='')
 		#print(str_match_all(x, "^/(([^%]*)(%[in])?)+/$"))
 	}
