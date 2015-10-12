@@ -325,6 +325,11 @@ draw_matrix = function(matrix, border_color, txt = NULL, z = NULL, gp = gpar()){
     # extract graphical parameters
     color_matrix <- attr(matrix, 'color')
     type <- attr(matrix, 'type')
+    type0 <- NULL
+    if( is.list(type) ){
+        type0 <- type
+        type <- type$type
+    }
     color_scale <- attr(matrix, 'scale')
     
     # define set of drawing functions
@@ -347,12 +352,15 @@ draw_matrix = function(matrix, border_color, txt = NULL, z = NULL, gp = gpar()){
     radius_base <- min(1/n, 1/m)/2 
 	# use similar radius computation as in package corrplot
     radius_range <- range(if( is.null(z) ) color_scale else z, na.rm = TRUE)
-    radius <- .9 * radius_base / abs(radius_range)^.5 #/ log(1 + abs(c(min(color_scale), max(color_scale))))
-    radius <- c(radius[1], 0, radius[2])
+    radius_abs_range <- abs(radius_range)
+    roffset <- (type0$offset %||% 0) * radius_base
+    radius <- (.9 * radius_base - roffset) / max(radius_abs_range)^.5 # / log(1 + abs(radius_range))
+    #radius <- c(radius[1], 0, radius[2])
+    radius <- c(radius, 0, radius)
     draw_cell.circle <- function(i, gp){
         val <- if( is.null(z) ) matrix[, i] else z[, i]
         if( is_NA(gp$col) ) gp$col <- gp$fill 
-        grid.circle(x = x[i], y = y, r = radius[sign(val) + 2] * abs(val)^0.5, gp = gp)
+        grid.circle(x = x[i], y = y, r = radius[sign(val) + 2] * abs(val)^0.5 + roffset, gp = gp)
     }
     #
         draw_cell <- get(paste0('draw_cell.', type), mode = 'function', inherits = FALSE)
@@ -2953,11 +2961,12 @@ aheatmap = function(x
 
 	
 	# attach colors, shape, scale to data matrix
-#    if( !missing(type) && is.list(type) ){
-#        type <- list(default = 'rect', type = type) 
-#    }
-#    if( is.character(type) ) 
-    type <- match.arg(type)
+    if( !missing(type) && is.list(type) ){
+        if( is.null(names(type)) ) stop("Invalid list input for `type`: must have names.")
+        names(type)[which(!nzchar(names(type)))[1L]] <- 'type' 
+        type <- modifyList(list(type = 'rect'), type) 
+    }
+    if( is.character(type) ) type <- match.arg(type)
 	attr(mat, 'type') <- type
     attr(mat, 'color') <- color_mat
     attr(mat, 'scale') <- colour_scale  
