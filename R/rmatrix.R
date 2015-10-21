@@ -52,7 +52,11 @@ setGeneric('rmatrix', function(x, ...) standardGeneric('rmatrix'))
 #' @param byrow a logical passed in the internal call to the function 
 #' \code{\link{matrix}}
 #' @param dimnames \code{NULL} or a \code{list} passed in the internal call to 
-#' the function \code{\link{matrix}}
+#' the function \code{\link{matrix}}.
+#' 
+#' If \code{dimnames = TRUE}, then row and column names are added as \code{[r1, r2, ...]} 
+#' and \code{[c1, c2, ...]}.
+#' 
 #' @param ... extra arguments passed to the distribution function \code{dist}, or to 
 #' \code{rmatrix} in the case of \code{rmatrix_int}.
 #' @param .rng any RNG seed specification supported by \code{\link[rngtools]{setRNG}}. 
@@ -118,6 +122,11 @@ setMethod('rmatrix', 'numeric',
 				y <- y[1L] # only use first element
 			}
 			
+            # generate dimnames if requested
+            if( isTRUE(dimnames) ){
+                dimnames <- list(paste0('r', seq(x)), paste0('c', seq(y)))
+            }
+            
 			# build the random matrix using the distribution function
 			matrix(dist(x*y, ...), x, y, byrow=byrow, dimnames=dimnames)	
 		}
