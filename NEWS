@@ -5,6 +5,9 @@ Changes in version ???
 NEW FEATURES
     o rmatrix now generates dimnames if argument dimnames=TRUE
 
+FIXES
+    o predict functions for NMF objects now conserve the dimension names.
+
 *************************************************************************
 Changes in version 0.22
 *************************************************************************

@@ -403,7 +403,7 @@ setMethod('predict', signature(object='NMFfitX'),
 				cl <- setNames(match(cl, unique(cl[o])), names(cl))
             }
             
-			res <- as.factor(cl)
+			res <- setNames(as.factor(cl), names(cl))
             # add consensus dissimilarity matrix or silhouette if requested
             if( !isFALSE(dmatrix) ){
                 co <- 1 - consensus(object)
