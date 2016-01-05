@@ -4,6 +4,8 @@
 ###% @author Renaud Gaujoux \email{renaud@@cbio.uct.ac.za}
 ###% 
 
+#' @include utils.R
+
 #.nmf.Options.Runtime <- character()
 
 # define functions nmf.options and nmf.getOptions

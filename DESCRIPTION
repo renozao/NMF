@@ -56,14 +56,14 @@ Suggests:
     Biobase
 Collate:
     'colorcode.R'
+    'nmf-package.R'
+    'rmatrix.R'
+    'utils.R'
     'options.R'
     'grid.R'
     'atracks.R'
     'aheatmap.R'
     'algorithmic.R'
-    'nmf-package.R'
-    'rmatrix.R'
-    'utils.R'
     'versions.R'
     'NMF-class.R'
     'transforms.R'
