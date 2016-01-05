@@ -55,6 +55,8 @@ Suggests:
     mail,
     Biobase
 Collate:
+    'AnnotatedData-class.R'
+    'AnnotatedData-methods.R'
     'colorcode.R'
     'nmf-package.R'
     'rmatrix.R'
