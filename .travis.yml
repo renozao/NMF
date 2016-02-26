@@ -6,6 +6,7 @@
 
 language: r
 bioc_required: true
+r_github_packages: renozao/pkgmaker
 sudo: false
 cache: packages
 r:
