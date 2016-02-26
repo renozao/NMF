@@ -5,10 +5,11 @@
 #   https://github.com/craigcitro/r-travis/wiki
 
 language: r
+bioc_required: true
 sudo: false
 cache: packages
 r:
   - release
   - devel
 warnings_are_errors: false
-bioc_packages: Biobase
+
