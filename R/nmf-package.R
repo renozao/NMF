@@ -46,13 +46,7 @@ NULL
 #' basismap(res)
 #' coefmap(res)
 #' 
-NA
-
-devnmf <- function(){
-	.LOCAL_PKG_NAME <- 'NMF'
-	load_all(.LOCAL_PKG_NAME)
-	compile_src(.LOCAL_PKG_NAME)
-}
+NULL
 
 # local config info
 nmfConfig <- mkoptions()

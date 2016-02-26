@@ -2,7 +2,8 @@
 \alias{aheatmap}
 \title{Annotated Heatmaps}
 \usage{
-  aheatmap(x, color = "-RdYlBu2:100", na.color = NA,
+  aheatmap(x, color = "-RdYlBu2:100", type = c('rect', 'circle', 'roundrect'), 
+    na.color = NA,
     breaks = NA, border_color = NA, cellwidth = NA,
     cellheight = NA, scale = "none", Rowv = TRUE,
     Colv = TRUE,
@@ -44,6 +45,10 @@ When the coluor palette is specified with a single value, and is negative or
 preceded a minus ('-'), the reversed palette is used.
 The number of breaks can also be specified after a colon (':'). For example,
 the default colour palette is specified as '-RdYlBu2:100'.}
+
+  \item{type}{Type of heatmap.
+Options are \code{'rect'} for classic rectangular cells, 
+\code{'circle'} for circles or \code{'roundrect'} for rectangles with rounded corners.}
 
   \item{na.color}{Specifies the colour to use for \code{NA} values.
 Setting to \code{NA} (default) produces uncoloured cells (white).

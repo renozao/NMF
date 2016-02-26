@@ -118,8 +118,8 @@ setMethod('algorithm', signature(object='NMFStrategyOctave'),
 			f <- slot(object, 'algorithm')
 			if( !load || is.function(f) ) return(f)
 			
-			if( !length(f) || !nchar(f) )
-				fstop("Main function is not defined for NMF algorithm '", name(object), "'.")
+            if( !length(f) || !nchar(f) )
+				stop("NMFStrategyOctave - Main function is not defined for NMF algorithm '", name(object), "'.")
 			
 			# return wrapped into a function
 			.main <- RcppOctave::o_get(f)

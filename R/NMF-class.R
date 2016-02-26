@@ -559,6 +559,9 @@ unit.test("scale", {
 	x <- rnmf(r, 10, 5)
 	
 	.lcheck <- function(msg, rx, ref, target){
+        
+        checkEquals <- RUnit::checkEquals
+        checkTrue <- RUnit::checkTrue
 		.msg <- function(...) paste(msg, ':', ...)
 		checkTrue(!identical(basis(x), basis(rx)), .msg("changes basis matrix"))
 		checkTrue(!identical(coef(x), coef(rx)), .msg("changes coef matrix"))
@@ -2274,9 +2277,10 @@ setMethod('rss', 'matrix',
 		# use the expression matrix if necessary
 		if( inherits(target, 'ExpressionSet') ){
 			# requires Biobase
-			if( !require.quiet(Biobase) ) 
+			if( !require.quiet('Biobase') ) 
 				stop("NMF::rss - The 'Biobase' package is required to extract expression data from 'ExpressionSet' objects [see ?'nmf-bioc']")
-			
+			requireNamespace('Biobase')
+            
 			target <- Biobase::exprs(target)
 		}else if( is.data.frame(target) )
 			target <- as.matrix(target)
@@ -2368,10 +2372,11 @@ setMethod('evar', 'ANY',
 		
 		# use the expression matrix if necessary
 		if( inherits(target, 'ExpressionSet') ){
+            
 			# requires Biobase
-			if( !require.quiet(Biobase) ) 
+			if( !require.quiet('Biobase') ) 
 				stop("NMF::evar - The 'Biobase' package is required to extract expression data from 'ExpressionSet' objects [see ?'nmf-bioc']")
-			
+			requireNamespace('Biobase')
 			target <- Biobase::exprs(target)
 		}
 		
@@ -2527,7 +2532,7 @@ setMethod('nmf.equal', signature(x='NMF', y='NMF'),
 )
 
 #' @S3method anyNA NMF
-anyNA.NMF <- function(x){
+anyNA.NMF <- function(x, recursive = FALSE){
     NAb <- anyNA(basis(x))
     NAc <- anyNA(coef(x))
     NAb + 2 * NAc
