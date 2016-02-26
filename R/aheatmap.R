@@ -3,8 +3,8 @@
 #' @include colorcode.R
 NULL
 
-library(grid)
-library(gridBase)
+#library(grid)
+#library(gridBase)
 
 # temporary options
 ah_opts <- local({
@@ -2236,10 +2236,14 @@ trace_vp <- local({.on <- FALSE
 #' \item one of RColorBrewer's palette name (see \code{\link[RColorBrewer]{display.brewer.all}})
 #' , or one of 'RdYlBu2', 'rainbow', 'heat', 'topo', 'terrain', 'cm'.
 #' }
-#' When the coluor palette is specified with a single value, and is negative or 
+#' When the colour palette is specified with a single value, and is negative or 
 #' preceded a minus ('-'), the reversed palette is used.
 #' The number of breaks can also be specified after a colon (':'). For example, 
 #' the default colour palette is specified as '-RdYlBu2:100'.
+#' 
+#' @param type Type of heatmap.
+#' Options are \code{'rect'} for classic rectangular cells, 
+#' \code{'circle'} for circles or \code{'roundrect'} for rectangles with rounded corners. 
 #' 
 #' @param na.color Specifies the colour to use for \code{NA} values.
 #' Setting to \code{NA} (default) produces uncoloured cells (white).
@@ -2691,12 +2695,14 @@ aheatmap = function(x
     vLEVELs <- NULL
     x0 <- x
 	if( is(x, 'ExpressionSet') ){
-		library(Biobase)
-        if( is.null(dataCol) ) dataCol <- Biobase::pData(x)
-        if( is.null(dataRow) ) dataRow <- Biobase::fData(x)
-        x <- Biobase::exprs(x) 
-         
-    }else if( is.character(x) ){ # switch to integer matrix
+        if( !require.quiet('Biobase') ) 
+			stop("NMF::aheatmap - The 'Biobase' package is required to extract expression data from 'ExpressionSet' objects [see ?'nmf-bioc']")
+		requireNamespace('Biobase')
+		if( is.null(dataCol) ) dataCol <- Biobase::pData(x)
+		if( is.null(dataRow) ) dataRow <- Biobase::fData(x)
+		x <- Biobase::exprs(x)
+        
+	}else if( is.character(x) ){ # switch to integer matrix
         fx <- factor(x)
         x <- matrix(as.integer(fx), nrow(x))
         vLEVELs <- levels(fx)

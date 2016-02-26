@@ -28,6 +28,8 @@ satisfied, throwing an error if it is not, or if one can switch back to
 sequential, only outputting a verbose message.}
 
   \item{verbose}{logical or integer level of verbosity for message outputs.}
+  
+  \item{dir}{path where to create the temporary directory}
 
   \item{pkg}{package name whose path should be exported the workers.}
 

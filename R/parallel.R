@@ -861,6 +861,8 @@ is.doSEQ <- function(){
 #' \code{setupTempDirectory} creates a temporary directory to store the best fits computed on each host.
 #' It ensures each worker process has access to it.
 #' 
+#' @param dir path where to create the temporary directory 
+#' 
 #' @rdname setup
 setupTempDirectory <- function(verbose, dir = getwd()){
 	
@@ -913,8 +915,8 @@ NULL
 ts_eval <- function(mutex = synchronicity::boost.mutex(), verbose=FALSE){
 	
 	
-	library(bigmemory)
-	library(synchronicity)
+#	loadNamespace('bigmemory')
+#	loadNamespace('synchronicity')
 	# describe mutex if necessary
 	.MUTEX_DESC <- 
 			if( is(mutex, 'boost.mutex') ) synchronicity::describe(mutex)
@@ -925,8 +927,8 @@ ts_eval <- function(mutex = synchronicity::boost.mutex(), verbose=FALSE){
 		
 		# load packages once
 		if( loadpkg ){
-			library(bigmemory)
-			library(synchronicity)
+#			library(bigmemory)
+#			library(synchronicity)
 			loadpkg <<- FALSE
 		}
 		MUTEX <- synchronicity::attach.mutex(.MUTEX_DESC)
@@ -996,7 +998,7 @@ gVariable <- function(init, shared=FALSE){
 	if( shared ){ # use bigmemory shared matrices
 		if( !is.matrix(init) )
 			init <- as.matrix(init)
-		library(bigmemory)
+#		library(bigmemory)
 		DATA <- bigmemory::as.big.matrix(init, type='double', shared=TRUE)
 		DATA_DESC <- bigmemory::describe(DATA)
 	}else{ # use variables assigned to .GlobalEnv
@@ -1009,7 +1011,7 @@ gVariable <- function(init, shared=FALSE){
 		
 		# load packages once
 		if( shared && .loadpkg ){
-			library(bigmemory)
+#			library(bigmemory)
 			.loadpkg <<- FALSE	
 		}
 		
@@ -1069,9 +1071,8 @@ setupLibPaths <- function(pkg='NMF', verbose=FALSE){
 		times(getDoParWorkers()) %dopar% {
 			capture.output({
 				suppressMessages({
-					library(devtools)
 					library(bigmemory)
-					load_all(p)
+					devtools::load_all(p)
 				})
 			})
 		}

@@ -129,6 +129,7 @@ alength <- function(x, default.margin){
 
 test.match_atrack <- function(){
 	
+    checkEquals <- RUnit::checkEquals
 	na <- paste("name_", 1:10, sep='') 
 	mat <- as.matrix(setNames(1:10, na))
 	

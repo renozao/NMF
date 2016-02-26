@@ -219,6 +219,6 @@ runit.lsnmf <- function(){
 	res <- nmf(X, 3, 'ls-nmf', weight=1, seed=1)	
 	res2 <- nmf(X, 3, '.R#lee', rescale=FALSE, seed=1, .stop=nmf.stop.stationary)
 	tol <- 10^-14
-	checkTrue( nmf.equal(res, res2, identical=FALSE, tol=tol ), paste("LS-NMF with weight = 1 and .R#Lee (no scale + stationary) give identical results at tolerance=", tol))	
+	RUnit::checkTrue( nmf.equal(res, res2, identical=FALSE, tol=tol ), paste("LS-NMF with weight = 1 and .R#Lee (no scale + stationary) give identical results at tolerance=", tol))	
 	
 }
