@@ -1895,7 +1895,16 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 #	pal(factor_colors); stop("sasa")
 	
 	res_colors <- list()
-	for(i in 1:length(annotation)){
+    ann_processing_order <- seq_along(annotation)
+    
+    # identify annotation color redirections to process them last
+    is_redirect <- function(x) isString(x) && grepl("^\\$", x)
+    if( length(annotation_colors) ){
+        redirect <- which(sapply(annotation_colors, is_redirect))
+        ann_processing_order <- order(ifelse(names(annotation) %in% names(annotation_colors)[redirect], NA, 1))
+    }
+    
+    for(i in ann_processing_order){
 		ann <- annotation[[i]]
 		aname <- names(annotation)[i]
 		# skip already generated colors
@@ -1921,29 +1930,38 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 			}
 		
 		}else{
-						
-			acol <- 
-			if( length(acol) == 1 && grepl("^\\$", acol) ) # copy colors from other columns if the spec starts with '$'
-				annotation_colors[[substr(acol, 2, nchar(acol))]]
-			else if( !is.numeric(ann) ){				
+            acol <- 
+			if( is_redirect(acol) ){# copy colors from other columns if the spec starts with '$'
+                target_ann <- substr(acol, 2, nchar(acol))
+				colset <- annotation_colors[[target_ann]] %||% res_colors[[target_ann]]
+                colset[ann]
+                
+			}else if( !is.numeric(ann) ){				
 				local({ #do this locally so that it does not affect `ann`
-					
-					# subset to the levels for which no colour has already been defined
 					lev <- ann
-					# subset to the levels for which no colour has already been defined
-#					idx <- which(!lev %in% names(acol_def) & !is.na(lev))
-#					lev <- lev[idx]
-#					#idx <- idx + length(acol_def)
-#					
-#					if( length(lev) == 0L ) acol_def # nothing to add
-#					else
+                    acol_def <- acol
+                    # generate colors for levels for which no colour has already been defined
+					idx <- which(!lev %in% names(acol_def) & !is.na(lev))
+                    # ensure that all levels have a defined color
+                    if( !is.null(names(acol_def)) && length(idx) ){
+                        stop(sprintf("invalid color specification for annotation %s: missing color for levels %s"
+                                                , aname, str_out(lev[idx], Inf)))
+                    }
+                    
+                    col_defined <- acol_def[lev[-idx]]
+					lev <- lev[idx]
+                    idx <- idx + length(acol_def)
+					
+					if( length(lev) == 0L ) acol_def # nothing to add
+					else
 					{
 						# convert to a palette of the number of levels if necessary
 						nl <- length(lev)
 						acol <- ccPalette(acol, nl)
-						if( is.null(names(acol)) )
+                        if( is.null(names(acol)) )
 							names(acol) <- lev
-						c(acol_def, acol)
+						c(acol_def[!names(acol_def) %in% names(acol)], acol)
+                        c(col_defined, acol)
 					}
 				})
 			}else{
@@ -1954,7 +1972,7 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 				acol
 			}
 			
-			# update the colors if necessary
+    		# update the colors if necessary
 			if( !is.null(acol) )
 				res_colors[[aname]] <- acol
 		}
