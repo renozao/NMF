@@ -525,9 +525,11 @@ convert_annotations = function(annotation, annotation_colors){
 			b[match(a, names(b))]
 		}
 		else{
-			a = cut(a, breaks = 100)
-			#new[, i] = colorRampPalette(b)(100)[a]
-			ccRamp(b, 100)[a]
+            ra <- round(a, 15)
+            if( all(ra == ra[1]) ) ia <- rep(100, length(ra))
+            else ia <- as.numeric(cut(ra, breaks = 100))
+            #new[, i] = colorRampPalette(b)(100)[a]
+			ccRamp(b, 100)[ia]
 		}
 	})
 
@@ -1924,7 +1926,7 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 			}
 			else{
 				h = round(runif(1) * 360)
-				rg <- range(ann, na.rm=TRUE)
+				rg <- range(round(ann, 15), na.rm=TRUE)
 				if( rg[1] == rg[2] ) rg <- sort(c(0, rg[1]))
 				setNames(rev(sequential_hcl(2, h, l = c(50, 95))), round.pretty(rg))
 			}
