@@ -15,6 +15,7 @@ License: GPL (>=2)
 URL: http://renozao.github.io/NMF
 BugReports: http://github.com/renozao/NMF/issues
 SCM: github+gran:renozao, r-forge
+Remotes: renozao/pkgmaker@develop
 LazyLoad: yes
 VignetteBuilder: knitr
 Depends:
