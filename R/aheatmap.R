@@ -1796,8 +1796,46 @@ cluster_mat = function(mat, param, distfun, hclustfun, reorderfun, na.rm=TRUE, s
 #	return((x - m) / s)
 #}
 
+subsetMargin <- function(x, subset, MARGIN = 1L){
+      
+      nd <- length(dim(x))
+      if( 1L %in% MARGIN ){
+            if( nd > 2 ) x <- x[subset,,, drop = FALSE]
+            else x <- x[subset, , drop = FALSE]
+      }
+      if( 2L %in% MARGIN ){
+            if( nd > 2 ) x <- x[, subset,, drop = FALSE]
+            else x <- x[, subset, drop = FALSE]
+      }
+      if( 3L %in% MARGIN ){
+            if( nd > 2 ) x <- x[,, subset, drop = FALSE]
+            else stop(sprintf("Invalid margin %s > ndim(x) = %s", MARGIN, nd))
+      }
+      
+      # return subset object
+      x
+      
+}
+
+
+applyBy0 <- function(x, MARGIN, BY, FUN, ...){
+      idx <- split(seq(dim(x)[3-MARGIN]), BY)
+      res <- sapply(idx, function(i, ...){
+                    x <- subsetMargin(x, i, MARGIN = 3-MARGIN)
+                    FUN(x, ...)
+                }, ..., simplify = FALSE)
+      dbind <- if( MARGIN == 1L ) cbind else rbind
+      res <- do.call(dbind, res)
+      subsetMargin(res, order(unlist(idx)), MARGIN = 3-MARGIN)
+}
+
 scale_mat = function(x, scale, na.rm=TRUE){
 	
+    if( is.factor(scale) ){
+        x <- applyBy0(x, 1L, scale, function(x) t(base::scale(t(x))))
+        scale <- 'none'
+    }
+    
 	av <- c("none", "row", "column", 'r1', 'c1', 'stdrow', 'stdcolumn')
 	i <- pmatch(scale, av)	
 	if( is_NA(i) )
