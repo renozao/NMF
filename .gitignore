@@ -2,3 +2,6 @@
 .project
 .settings
 **figure/
+vignettes/cache/
+src/*.o
+src/*.so
