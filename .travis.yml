@@ -6,9 +6,11 @@
 
 language: r
 bioc_required: true
-r_github_packages:
-  - renozao/pkgmaker@develop
-sudo: false
+sudo: required
+r_binary_packages:
+  - rmpi
+  - stringi
+  - git2r
 cache: packages
 r:
   - release
