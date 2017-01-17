@@ -46,7 +46,15 @@ rmAttributes <- function(x){
 # returns total number of available cores
 getAllCores <- function(){
     isOpenBSD <- grepl('openbsd', R.version$os, ignore.case = TRUE)
-    parallel::detectCores(all.tests = isOpenBSD)
+    n <- parallel::detectCores(all.tests = isOpenBSD)
+    # try harder if not successful
+    if( is.na(n) ) n <- parallel::detectCores(all.tests = TRUE)
+    # make sure a valid value is returned (issue #75)
+    if( is.na(n) ){
+      warning("Could not determine total number of cores on host: using single core.")
+      n <- 1L
+    }
+    n
 }
 
 #' \code{str_args} formats the arguments of a function using \code{\link{args}}, 
