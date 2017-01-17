@@ -18,6 +18,7 @@ SCM: github+gran:renozao, r-forge
 Remotes: renozao/pkgmaker@develop
 LazyLoad: yes
 VignetteBuilder: knitr
+Remotes: renozao/pkgmaker@develop
 Depends:
     R (>= 3.1.0),
     methods,
