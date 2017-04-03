@@ -23,10 +23,14 @@ ah_opts <- local({
 })
 
 # extends gpar objects
-c_gpar <- function(gp, ..., force = FALSE){
+c_gpar <- function(gp, ..., force = FALSE, elmt = NULL){
     x <- list(...)
     if( length(x) == 1L && is.null(names(x)) && is.list(x[[1]]) ) 
         x <- x[[1]]
+    # find elmt if necessary
+    if( !is.null(elmt) && !is(gp, 'gpar') ){
+      gp <- c_gpar(gp[[elmt]]) %||% gpar()
+    }
     sapply(intersect(names(x), names(gp)), function(n) x[[n]] <<- NULL)
     do.call(gpar, c(gp, x))
 }
@@ -414,17 +418,23 @@ draw_colnames = function(coln, gp = gpar()){
 		rot <- 270 #315
 		vjust <- 0.5
 		hjust <- 0
-		y <- unit(1, 'npc') - unit(5, 'bigpts')
+		y <- unit(1 + gp$offset, 'npc') - unit(5, 'bigpts')
 	}else{
 		rot <- 0
 		vjust <- 0.5
 		hjust <- 0.5
 	}
+  
+  # honour gpar
+  vjust <- gp$vjust %||% vjust
+  hjust <- gp$hjust %||% hjust
+  rot <- gp$rot %||% rot
+  
 	if( is.null(y) ){
 		height <- unit(1, "grobheight", textGrob(coln[i], vjust = vjust, hjust = hjust, rot=rot, gp = gp))
-		y <- unit(1, 'npc') - height
+		y <- unit(1 + gp$offset, 'npc') - height
 	}
-	
+  
 	x = (1:m)/m - 1/2/m
 	grid.text(coln, x = x, y = y, vjust = vjust, hjust = hjust, rot=rot, gp = gp)
 }
@@ -1359,14 +1369,14 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 
 	# Draw colnames
 	if(length(colnames(matrix)) != 0 && vplayout('cnam') ){
-		draw_colnames(colnames(matrix), gp = c_gpar(gp, fontsize = fontsize_col))
+		draw_colnames(colnames(matrix), gp = c_gpar(gp, fontsize = fontsize_col, elmt = 'labCol'))
         trace_vp()
 		upViewport()
 	}
 	
 	# Draw rownames
 	if(length(rownames(matrix)) != 0 && vplayout('rnam') ){
-		draw_rownames(rownames(matrix), gp = c_gpar(gp, fontsize = fontsize_row))
+		draw_rownames(rownames(matrix), gp = c_gpar(gp, fontsize = fontsize_row, elmt = 'labRow'))
         trace_vp()
 		upViewport()
 	}
@@ -1381,7 +1391,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
         if( annotation_labels[2] ){
             ca_vp <- ah_vplayout('cann')
             if( vplayout(ca_vp$x, ca_vp$y + 2, name = 'cann_labels') ){
-                draw_annotations_label(colnames(annotation), gp = c_gpar(gp, fontsize = fontsize))
+                draw_annotations_label(colnames(annotation), gp = c_gpar(gp, fontsize = fontsize, elmt = 'labAnn'))
                 trace_vp()
                 upViewport()
             }
@@ -1408,7 +1418,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	
 	# Draw annotation legend
 	if( annotation_legend && !is_NA(annotation_colors) && vplayout('aleg') ){
-		draw_annotation_legend(annotation_colors, border_color$annLegeng, gp = c_gpar(gp, fontsize = fontsize))
+		draw_annotation_legend(annotation_colors, border_color$annLegeng, gp = c_gpar(gp, fontsize = fontsize, elmt = 'labAnn'))
         trace_vp()
 		upViewport()
 	}
