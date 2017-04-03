@@ -418,7 +418,7 @@ draw_colnames = function(coln, gp = gpar()){
 		rot <- 270 #315
 		vjust <- 0.5
 		hjust <- 0
-		y <- unit(1 + gp$offset, 'npc') - unit(5, 'bigpts')
+		y <- unit(1 + gp$offset %||% 0, 'npc') - unit(5, 'bigpts')
 	}else{
 		rot <- 0
 		vjust <- 0.5
@@ -432,7 +432,7 @@ draw_colnames = function(coln, gp = gpar()){
   
 	if( is.null(y) ){
 		height <- unit(1, "grobheight", textGrob(coln[i], vjust = vjust, hjust = hjust, rot=rot, gp = gp))
-		y <- unit(1 + gp$offset, 'npc') - height
+		y <- unit(1 + gp$offset %||% 0, 'npc') - height
 	}
   
 	x = (1:m)/m - 1/2/m
