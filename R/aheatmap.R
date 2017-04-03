@@ -315,7 +315,7 @@ draw_matrix = function(matrix, border_color, txt = NULL, z = NULL, gp = gpar()){
     }
     # outer border
     if( !is_NA(border_color$matrix$col) ){
-        on.exit( grid.rect(gp = border_gpar(border_color$matrix)), add = TRUE)
+        on.exit( grid.rect(gp = c_gpar(border_gpar(border_color$matrix), fill = NA)), add = TRUE)
     }
     # grid
     if( !is_NA(border_color$grid$col) ){
