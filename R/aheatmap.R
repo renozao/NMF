@@ -2248,7 +2248,7 @@ trace_vp <- local({.on <- FALSE
             .on <<- on
             return(old)
         }
-        if( .on ) grid.rect(gp = gpar(col = "blue", lwd = 2))
+        if( .on ) grid.rect(gp = gpar(col = "blue", lwd = 2, fill = NA))
     }
 })
 
