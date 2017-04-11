@@ -2767,7 +2767,7 @@ aheatmap = function(x
         e <- parent.frame()
         annCol <- eval(substitute(annCol), dataCol, e)
         if( is.formula(annCol) ) annCol <- as.list(labels(terms(annCol)))
-		if( isTRUE(annCol) ) annCol <- atrack(x, data = t(x))
+	if( isTRUE(annCol) ) annCol <- atrack(dataCol, data = t(x))
         else if( isString(annCol) ) annCol <- as.list(annCol)
             
         if( is.list(annCol) ){
