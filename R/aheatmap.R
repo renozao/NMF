@@ -2786,10 +2786,21 @@ aheatmap = function(x
         }
         
         # labels
-        if( isString(labCol) ){
-            if( !is_NA(verbose) ) message("Note: using column label variable: ", labCol)
-            labCol <- dataCol[[labCol]]
-            labCol[is.na(labCol)] <- ''
+        if( is.formula(labCol) ) labCol <- as.list(labels(terms(labCol)))
+        else if( isString(labCol) ) labCol <- as.list(labCol)
+        if( is.list(labCol) ){
+          i_string <- which(sapply(labCol, isString))
+          if( length(i_string) ){
+            annVar <- labCol[i_string]
+            if( !is_NA(verbose) ) message("Note: using column label variable(s): ", str_out(annVar, Inf))
+            labCol[i_string] <- dataCol[unlist(annVar, use.names = FALSE)]
+            labCol <- sapply(labCol, function(x){
+              x <- as.character(x)
+              x[is.na(x)] <- ''
+              x
+            }, simplify = FALSE)
+            labCol <- do.call(paste, c(labCol, list(sep = '-')))
+          }
         }
         ##
         
@@ -2814,10 +2825,21 @@ aheatmap = function(x
         ##
         
         # labels
-        if( isString(labRow) ){
-            if( !is_NA(verbose) ) message("Note: using row label variable: ", labRow)
-            labRow <- dataRow[[labRow]]
-            labRow[is.na(labRow)] <- ''
+        if( is.formula(labRow) ) labRow <- as.list(labels(terms(labRow)))
+        else if( isString(labRow) ) labRow <- as.list(labRow)
+        if( is.list(labRow) ){
+          i_string <- which(sapply(labRow, isString))
+          if( length(i_string) ){
+            annVar <- labRow[i_string]
+            if( !is_NA(verbose) ) message("Note: using row label variable(s): ", str_out(annVar, Inf))
+            labRow[i_string] <- dataRow[unlist(annVar, use.names = FALSE)]
+            labRow <- sapply(labRow, function(x){
+                  x <- as.character(x)
+                  x[is.na(x)] <- ''
+                  x
+                }, simplify = FALSE)
+            labRow <- do.call(paste, c(labRow, list(sep = '-')))
+          }
         }
         ##
         

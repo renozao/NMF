@@ -1,5 +1,5 @@
 #' @include rmatrix.R
-#' @include nmf-package.R
+#' @include aaa-package.R
 NULL
 
 #' Utility Function in the NMF Package
@@ -1069,3 +1069,5 @@ str_match <- function(...){
     }
     res
 }
+
+is.formula <- function (x) inherits(x, "formula")
