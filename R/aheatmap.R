@@ -535,11 +535,21 @@ convert_annotations = function(annotation, annotation_colors){
 			b[match(a, names(b))]
 		}
 		else{
-            ra <- round(a, 15)
-            if( all(ra == ra[1]) ) ia <- rep(100, length(ra))
-            else ia <- as.numeric(cut(ra, breaks = 100))
-            #new[, i] = colorRampPalette(b)(100)[a]
-			ccRamp(b, 100)[ia]
+      ra <- round(a, 15)
+      if( all(ra %in% ra[1]) ){
+        ia <- rep(100, length(ra))
+        ia[is.na(ra)] <- NA_integer_
+        ccRamp(b, 100)[ia]
+      } else if( is.null(names(b)) ){
+				ia <- as.numeric(cut(ra, breaks = 100))
+				#new[, i] = colorRampPalette(b)(100)[a]
+				ccRamp(b, 100)[ia]
+			} else{
+        scale <- ccRamp(b, 100, data = ra)
+				ia <- as.numeric(cut(ra, breaks = scale, include.lowest = TRUE))
+        names(scale)[ia]
+			}
+            
 		}
 	})
 
@@ -2017,8 +2027,8 @@ generate_annotation_colours = function(annotation, annotation_colors, seed=TRUE)
 			}else{
 				acol <- ccPalette(acol)
 				if( is.null(names(acol)) )
-					names(acol) <- round.pretty(seq(min(ann, na.rm=TRUE), max(ann, na.rm=TRUE), length.out=length(acol)))
-			
+					names(acol) <- seq(min(ann, na.rm=TRUE), max(ann, na.rm=TRUE), length.out=length(acol))
+				names(acol) <- round.pretty(as.numeric(names(acol)))
 				acol
 			}
 			
