@@ -1337,7 +1337,8 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	# Draw matrix
 	if( vplayout('mat') ){
     	draw_matrix(matrix, border_color[c('cell', 'grid', 'edge', 'matrix')]
-                            , txt = txt, z = z, gp = gpar(fontsize = fontsize_row))
+                            , txt = txt, z = z
+                            , gp = c_gpar(gp, fontsize = fontsize_row, elmt = 'txt'))
     	#d(matrix)
         trace_vp()
     	upViewport()
