@@ -15,15 +15,15 @@ License: GPL (>=2)
 URL: http://renozao.github.io/NMF
 BugReports: http://github.com/renozao/NMF/issues
 SCM: github+gran:renozao, r-forge
-Remotes: renozao/pkgmaker@develop
+Remotes: 
+	renozao/pkgmaker@develop
 LazyLoad: yes
 VignetteBuilder: knitr
-Remotes: renozao/pkgmaker@develop
 Depends:
     R (>= 3.1.0),
     methods,
     utils,
-    pkgmaker (>= 0.25.7),
+    pkgmaker (>= 0.26.6),
     registry,
     rngtools (>= 1.2.3),
     cluster
@@ -108,3 +108,5 @@ Collate:
     'setNMFClass.R'
     'simulation.R'
     'tests.R'
+RoxygenNote: 6.0.0.9000
+Roxygen: list(markdown = TRUE, namespace_unsorted = TRUE, roclets = c('collate', 'namespace', 'roclets::rd2_roclet'))
