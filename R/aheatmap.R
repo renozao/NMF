@@ -1506,7 +1506,8 @@ cutheight <- function(x, n){
 #' 
 #' @import digest
 #' @keywords internal
-#' @import dendextend
+#' @importFrom magrittr %>%
+#' @importFrom dendextend set
 cutdendro <- function(x, n){
 	
     use_dendextend <- FALSE
