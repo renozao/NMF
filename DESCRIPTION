@@ -56,13 +56,13 @@ Suggests:
     RUnit,
     mail,
     Biobase
-Collate:
+Collate: 
     'AnnotatedData-class.R'
     'AnnotatedData-methods.R'
-    'colorcode.R'
-    'nmf-package.R'
+    'aaa-package.R'
     'rmatrix.R'
     'utils.R'
+    'colorcode.R'
     'options.R'
     'grid.R'
     'atracks.R'

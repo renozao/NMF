@@ -4,6 +4,7 @@
 # Creation: 19 Sep 2011
 ###############################################################################
 
+#' @include utils.R
 #' @import RColorBrewer
 #' @import colorspace
 #' @import grDevices

@@ -210,7 +210,7 @@ setMethod('fitted', signature(object='NMF'),
 #' @rdname basis-coef-methods
 #' @family NMF-interface
 #' @export
-#'  
+#' @inline 
 setGeneric('basis', function(object, ...) standardGeneric('basis') )
 #' Default method returns the value of S3 slot or attribute \code{'basis'}.
 #' It returns \code{NULL} if none of these are set. 
@@ -253,6 +253,7 @@ setMethod('basis', 'NMF',
 #' See \code{\linkS4class{NMF}} for more details.
 #' 
 #' @rdname basis-coef-methods
+#' @inline
 #' @export
 setGeneric('.basis', function(object, ...) standardGeneric('.basis') )
 #' @template VirtualNMF
@@ -348,6 +349,7 @@ setMethod('loadings', 'NMF', function(x) basis(x) )
 #' 
 #' @rdname basis-coef-methods
 #' @export
+#' @inline
 setGeneric('coef', package='stats')
 #' @inline
 setMethod('coef', 'NMF',
@@ -428,6 +430,7 @@ setReplaceMethod('.coef', signature(object='NMF', value='matrix'),
 #' @description Methods \code{coefficients} and \code{coefficients<-} are 
 #' simple aliases for methods \code{coef} and \code{coef<-} respectively.
 #' 
+#' @inline
 #' @export
 #' @rdname basis-coef-methods
 setGeneric('coefficients', package='stats')
@@ -1965,7 +1968,7 @@ nmfApply <- function(X, MARGIN, FUN, ..., simplify = TRUE, USE.NAMES = TRUE){
 #'  
 #' @family stats Methods for the Interface Defined in Package stats
 #' 
-#' @cite Brunet2004,Pascual-Montano2006
+#' @cite Brunet2004 Pascual-Montano2006
 #' @inline
 #' @export
 setGeneric('predict', package='stats')

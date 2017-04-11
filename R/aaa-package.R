@@ -46,7 +46,7 @@ NULL
 #' basismap(res)
 #' coefmap(res)
 #' 
-NULL
+"_PACKAGE"
 
 # local config info
 nmfConfig <- mkoptions()
