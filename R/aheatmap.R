@@ -1191,7 +1191,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	#NB: use custom function current.vpPath2 instead of official 
 	# grid::current.vpPath as this one creates a new page when called 
 	# on a fresh graphic device	
-	vpp <- current.vpPath_patched()
+	vpp <- current.vpPath_patched(writeToFile, verbose = verbose)
 	if( is.null(vpp) ){ # we are at the root viewport
 		if( verbose ) message("Detected path: [ROOT]")
 		mf <- par('mfrow')		

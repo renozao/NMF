@@ -48,25 +48,42 @@ tryViewport <- function(name, verbose=FALSE){
 #' @rdname grid
 current.vpPath_patched <- local({
     .current.vpPath <- NULL
-    function(){
+    function(force.unpatched = FALSE, verbose = FALSE){
         
         f_current.vpPath <- .current.vpPath
-        if( !.use.grid.patch() ) f_current.vpPath <- grid::current.vpPath
+        if( force.unpatched || !.use.grid.patch() ) f_current.vpPath <- grid::current.vpPath
         else if( is.null(f_current.vpPath) ){ # load patch from installed file
             patch <- source(packagePath('scripts', 'grid.R', package = 'NMF'), local = TRUE)
             .current.vpPath <<- patch$value
             f_current.vpPath <- .current.vpPath
         }
         # call 
+        if( verbose ){
+          version <- c('patched', 'grid')[(digest(f_current.vpPath) == digest(grid::current.vpPath)) + 1L]
+          message("Using current.vpPath version: ", version)
+        }
         f_current.vpPath()
     }
 })
 
+#' @rdname options
+#' @section Plotting
+#' \describe{
+#' \item{grid.patch}{logical that indicates if annotated heatmaps should use a set of functions 
+#' from the `grid` packages that were patched to enable mixing (`TRUE`) or stock `grid` functions 
+#' (`FALSE`).
+#' The default value for this option is `NULL`, which avoids the saving of heatmaps in pdf files 
+#' to generate a blank first page}
+#' }
+#'  
+NULL
 # Add new option to enable/disable grid patch
-.OPTIONS$newOptions(grid.patch = FALSE)
+.OPTIONS$newOptions(grid.patch = NULL)
 
 #' \code{.use.grid.patch} tells if the user enabled patching grid.
 #' @rdname grid
 .use.grid.patch <- function(){
-    !isCHECK() && nmf.getOption('grid.patch')   
+  # default is to not use patched grid unless within a pdf device
+  default <- names(dev.cur()) %in% 'pdf'
+  !isCHECK() && nmf.getOption('grid.patch', default)
 }
