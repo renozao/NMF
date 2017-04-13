@@ -2764,23 +2764,22 @@ aheatmap = function(x
     if( !is.null(dataCol) ){
         ## handle annotation shortcuts
         # samples
-        e <- parent.frame()
-        annCol <- eval(substitute(annCol), dataCol, e)
         if( is.formula(annCol) ) annCol <- as.list(labels(terms(annCol)))
-	if( isTRUE(annCol) ) annCol <- atrack(dataCol, data = t(x))
+	      if( isTRUE(annCol) ) annCol <- atrack(dataCol, data = t(x))
         else if( isString(annCol) ) annCol <- as.list(annCol)
             
         if( is.list(annCol) ){
             i_string <- which(sapply(annCol, isString))
             if( length(i_string) ){
                 annVar <- annCol[i_string]
-                if( !is_NA(verbose) ) message("Note: using phenotypic sample annotation data ", str_out(annVar, use.names = TRUE))
+                if( !is_NA(verbose) ) message("Note: using phenotypic sample annotation variable(s) ", str_out(annVar, use.names = TRUE))
                 nm <- names(annVar)
                 annVar <- dataCol[unlist(annVar, use.names = FALSE)]
                 if( !is.null(nm) ){
                     colnames(annVar)[!nzchar(nm)] <- nm[!nzchar(nm)]
                 }
                 annCol[i_string] <- annVar
+                if( !is.null(names(annVar)) ) names(annCol)[i_string] <- names(annVar)
             }
             annCol <- .atrack(annCol, data = t(x))
         }
@@ -2816,11 +2815,24 @@ aheatmap = function(x
     if( !is.null(dataRow) ){
         ## handle shortcuts
         # annotations
-        if( is.formula(annRow) ) annRow <- labels(terms(annRow))
+        if( is.formula(annRow) ) annRow <- as.list(labels(terms(annRow)))
         if( isTRUE(annRow) ) annRow <- atrack(dataRow, data = x)
-        else if( is.character(annRow) && length(annRow) != nrow(x) ){
-            if( !is_NA(verbose) ) message("Note: using feature annotation data ", str_out(annRow))
-            annRow <- .atrack(dataRow[annRow], data = x)
+        else if( isString(annRow) ) annRow <- as.list(annRow)
+        
+        if( is.list(annRow) ){
+          i_string <- which(sapply(annRow, isString))
+          if( length(i_string) ){
+            annVar <- annRow[i_string]
+            if( !is_NA(verbose) ) message("Note: using feature annotation variable(s) ", str_out(annVar, use.names = TRUE))
+            nm <- names(annVar)
+            annVar <- dataRow[unlist(annVar, use.names = FALSE)]
+            if( !is.null(nm) ){
+              colnames(annVar)[!nzchar(nm)] <- nm[!nzchar(nm)]
+            }
+            annRow[i_string] <- annVar
+            if( !is.null(names(annVar)) ) names(annRow)[i_string] <- names(annVar)
+          }
+          annRow <- .atrack(annRow, data = t(x))
         }
         ##
         
