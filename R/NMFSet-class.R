@@ -1370,11 +1370,12 @@ aggregate.measure <- function(measure, method=c('best', 'mean'), decreasing=FALS
 #' as well as the total CPU time (\code{\link{runtime.all}}).
 #'   
 setMethod('summary', signature(object='NMFfitX'),
-	function(object, ...){
+	function(object, ..., with.silhouette = 'both'){
 		
 		# compute summary measures for the best fit
 		best.fit <- minfit(object)
-		s <- summary(best.fit, ...)
+    with.silhouette.best <- if( with.silhouette == 'consensus') 'none' else with.silhouette
+		s <- summary(best.fit, ..., with.silhouette = with.silhouette.best)
 		# get totaltime
 		t <- runtime.all(object)		
 		
@@ -1386,7 +1387,7 @@ setMethod('summary', signature(object='NMFfitX'),
 		s <- c(s, cophenetic=cophcor(C), dispersion=dispersion(C))
 		
         # compute mean consensus silhouette width
-		si <- silhouette(object, what = 'consensus')
+		si <- if( any(c('both', 'consensus') %in% with.silhouette) ) silhouette(object, what = 'consensus') else NA
 		s <- c(s, silhouette.consensus = if( !is_NA(si) ) summary(si)$avg.width else NA)
         
 		# return result
@@ -1458,6 +1459,7 @@ setMethod('compare', signature(object='NMFfit'),
 #' call to \code{\link{nmf}}.
 #' 
 #' @rdname nmf-compare
+#' @examples 
 #' 
 #' # compare each fits in a multiple runs
 #' res3 <- nmf(x, 2, nrun=3, .opt='k')
