@@ -12,6 +12,9 @@ r_binary_packages:
   - rmpi
   - stringi
   - git2r
+apt_packages:
+  - libopenmpi-dev
+  - liboctave-dev
 cache: packages
 r:
   - release
