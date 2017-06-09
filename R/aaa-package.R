@@ -64,7 +64,8 @@ nmfConfig <- mkoptions()
 		}   
 	}
     # use grid patch?
-    nmf.options(grid.patch = !isFALSE(Sys.getenv_value('R_PACKAGE_NMF_GRID_PATCH')))
+    if( !is.na(Sys.getenv_value('R_PACKAGE_NMF_GRID_PATCH', raw = TRUE)) )
+      nmf.options(grid.patch = !isFALSE(Sys.getenv_value('R_PACKAGE_NMF_GRID_PATCH')))
     
     pkgEnv <- pkgmaker::packageEnv()
 	.init.sequence <- function(){
