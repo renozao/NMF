@@ -2832,7 +2832,7 @@ aheatmap = function(x
             annRow[i_string] <- annVar
             if( !is.null(names(annVar)) ) names(annRow)[i_string] <- names(annVar)
           }
-          annRow <- .atrack(annRow, data = t(x))
+          annRow <- .atrack(annRow, data = x)
         }
         ##
         
