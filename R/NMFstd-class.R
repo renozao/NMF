@@ -199,12 +199,13 @@ setReplaceMethod('.basis', signature(object='NMFstd', value='array'),
 
 #' Replaces a slice of the basis array.
 #' @inline
-setReplaceMethod('.basis', signature(object='NMFstd', value='matrix'), 
+setReplaceMethod('.basis', signature(object='NMFstd', value='mMatrix'), 
     function(object, ..., slice = 1L, value){
         # error if passed extra arguments
         if( length(xargs<- list(...)) ){
             stop(".basis<-,NMFstd - Unused arguments: ", str_out(xargs, Inf, use.names = TRUE))
         }
+        value <- as.matrix(value)
         if( length(dim(object@W)) > 2L ) object@W[,, slice] <- value
         else if( slice == 1L ) object@W <- value
         else stop("Invalid slice argument (>1): basis data is a matrix.")
@@ -234,12 +235,13 @@ setReplaceMethod('.coef', signature(object='NMFstd', value='array'),
 
 #' Replaces a slice of the coefficent array.
 #' @inline
-setReplaceMethod('.coef', signature(object='NMFstd', value='matrix'), 
+setReplaceMethod('.coef', signature(object='NMFstd', value='mMatrix'), 
     function(object, ..., slice = 1L, value){
         # error if passed extra arguments
         if( length(xargs<- list(...)) ){
                 stop(".coef<-,NMFstd - Unused arguments: ", str_out(xargs, Inf, use.names = TRUE))
         }
+        value <- as.matrix(value)
         if( length(dim(object@H)) > 2L ) object@H[,, slice] <- value
         else if( slice == 1L ) object@H <- value
         else stop("Invalid slice argument (>1): coefficient data is a matrix.")

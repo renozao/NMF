@@ -161,12 +161,13 @@ setMethod('nmf', signature(x='data.frame', rank='ANY', method='ANY'),
 #' res <- nmf(x, 2, seed=rnmf(2, x, model='NMFns'))
 #' algorithm(res)
 #' 
-setMethod('nmf', signature(x='matrix', rank='numeric', method='NULL'), 
+setMethod('nmf', signature(x='mMatrix', rank='numeric', method='NULL'), 
 		function(x, rank, method, seed=NULL, model=NULL, ...)
 		{
 			
 			# a priori the default method will be used
 			method <- nmf.getOption('default.algorithm')
+      if( is(x, 'Matrix') ) method <- '.R#brunet'
 			
 			# use default seeding method if seed is missing
 			if( is.null(seed) ){
@@ -222,7 +223,7 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='NULL'),
 #' # plot the track of the residual errors
 #' plot(res)
 #' 
-setMethod('nmf', signature(x='matrix', rank='numeric', method='list'), 
+setMethod('nmf', signature(x='mMatrix', rank='numeric', method='list'), 
 	function(x, rank, method, ..., .parameters = list())
 	{
 		# apply each NMF algorithm
@@ -424,7 +425,7 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='list'),
 #' res <- nmf(x, 3, 'offset') # NMF with offset
 #' 
 #' 
-setMethod('nmf', signature(x='matrix', rank='numeric', method='character'),
+setMethod('nmf', signature(x='mMatrix', rank='numeric', method='character'),
 function(x, rank, method, ...)
 {	
 	# if there is more than one methods then treat the vector as a list
@@ -493,7 +494,7 @@ function(x, rank, method, ...)
 #' res <- nmf(x, 2, myfun, alpha=3, model='NMFns')
 #' modelname(res)
 #' 
-setMethod('nmf', signature(x='matrix', rank='numeric', method='function'),
+setMethod('nmf', signature(x='mMatrix', rank='numeric', method='function'),
 	function(x, rank, method, seed, model='NMFstd', ..., name, objective='euclidean', mixed=FALSE){
 
 		model_was_a_list <- is.list(model)
@@ -572,7 +573,7 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='function'),
 #' # the fit can be reproduced using the same starting point
 #' nmf.equal(nmf(x, y), res)
 #'  
-setMethod('nmf', signature(x='matrix', rank='NMF', method='ANY'),
+setMethod('nmf', signature(x='mMatrix', rank='NMF', method='ANY'),
 	function(x, rank, method, seed, ...){
 		
 		if( !missing(seed) ){		
@@ -600,7 +601,7 @@ setMethod('nmf', signature(x='matrix', rank='NMF', method='ANY'),
 #' This method is provided for completeness and is equivalent to 
 #' \code{nmf(x, seed, method, ...)}.
 #'   
-setMethod('nmf', signature(x='matrix', rank='NULL', method='ANY'),
+setMethod('nmf', signature(x='mMatrix', rank='NULL', method='ANY'),
 	function(x, rank, method, seed, ...){
 		
 		if( missing(seed) || !is.nmf(seed) )
@@ -614,7 +615,7 @@ setMethod('nmf', signature(x='matrix', rank='NULL', method='ANY'),
 )
 #' Method defined to ensure the correct dispatch to workhorse methods in case
 #' of argument \code{rank} is missing.
-setMethod('nmf', signature(x='matrix', rank='missing', method='ANY'),
+setMethod('nmf', signature(x='mMatrix', rank='missing', method='ANY'),
 	function(x, rank, method, ...){
 		# replace missing method by NULL for correct dispatch
 		if( missing(method) ) method <- NULL
@@ -628,7 +629,7 @@ setMethod('nmf', signature(x='matrix', rank='missing', method='ANY'),
 #' # missing method: use default algorithm
 #' res <- nmf(x, 3)
 #' 
-setMethod('nmf', signature(x='matrix', rank='numeric', method='missing'),
+setMethod('nmf', signature(x='mMatrix', rank='numeric', method='missing'),
 	function(x, rank, method, ...){
 		nmf(x, rank, NULL, ...)
 	}
@@ -656,7 +657,7 @@ setMethod('nmf', signature(x='matrix', rank='numeric', method='missing'),
 #' # Fit a 3-rank model providing an initial value for the mixture coefficient matrix
 #' nmf(x, rmatrix(3, ncol(x)), 'snmf/l')
 #' 
-setMethod('nmf', signature(x='matrix', rank='matrix', method='ANY'), 
+setMethod('nmf', signature(x='mMatrix', rank='matrix', method='ANY'), 
 	function(x, rank, method, seed, model=list(), ...)
 	{
 		if( is.character(model) )
@@ -700,7 +701,7 @@ setMethod('nmf', signature(x='matrix', rank='matrix', method='ANY'),
 	}
 )
 #' Shortcut for \code{nmf(x, as.matrix(rank), method, ...)}.
-setMethod('nmf', signature(x='matrix', rank='data.frame', method='ANY'),
+setMethod('nmf', signature(x='mMatrix', rank='data.frame', method='ANY'),
 	function(x, rank, method, ...){
 		# replace missing values by NULL values for correct dispatch
 		if( missing(method) ) method <- NULL
@@ -1181,7 +1182,7 @@ checkErrors <- function(object, element=NULL){
 #' registerDoParallel(cl)
 #' res <- nmf(x, 3, nrun=3, .pbackend=NULL)
 #' 
-setMethod('nmf', signature(x='matrix', rank='numeric', method='NMFStrategy'),
+setMethod('nmf', signature(x='mMatrix', rank='numeric', method='NMFStrategy'),
 #function(x, rank, method, seed='random', nrun=1, keep.all=FALSE, optimized=TRUE, init='NMF', track, verbose, ...)
 function(x, rank, method
 		, seed=nmf.getOption('default.seed'), rng = NULL
@@ -2361,7 +2362,7 @@ setGeneric('seed', function(x, model, method, ...) standardGeneric('seed') )
 #' 
 #' All arguments in \code{...} are passed to teh seeding strategy.
 #' 
-setMethod('seed', signature(x='matrix', model='NMF', method='NMFSeed'), 
+setMethod('seed', signature(x='mMatrix', model='NMF', method='NMFSeed'), 
 	function(x, model, method, rng, ...){	
 		
 		# debug message

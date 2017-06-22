@@ -28,6 +28,7 @@ Depends:
     rngtools (>= 1.2.3),
     cluster
 Imports:
+	Matrix,
     graphics,
     stats,
     stringr,

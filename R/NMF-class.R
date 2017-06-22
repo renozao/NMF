@@ -6,6 +6,9 @@
 #' @include aheatmap.R
 NULL
 
+#' @import Matrix
+setClassUnion('mMatrix', c('Matrix', 'matrix'))
+
 #' Advanced Usage of the Package NMF
 #' 
 #' The functions documented here provide advanced functionalities useful when
@@ -2480,12 +2483,17 @@ nmfDistance <- function(method=c('', 'KL', 'euclidean')){
 				# compute and return the distance measure		
 				fun <- switch(method,
 						euclidean = function(x, y, ...){
-							# call optimized C function
-							.rss(y, fitted(x))/2							
+              # call optimized C function expect on Matrix objects
+              if( is(y, 'Matrix') ) norm(y-fitted(x), 'F')
+							else .rss(y, fitted(x))/2							
 						},
 						KL = function(x, y, ...){							
-							# call optimized C function
-							.KL(y, fitted(x))					
+              # call optimized C function expect on Matrix objects
+              if( is(y, 'Matrix') ){
+                a <- fitted(x)
+                sum(y * log(y/a) - a + y)
+                
+              }else .KL(y, fitted(x))					
 						}
 				)
 			}

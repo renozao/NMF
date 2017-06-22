@@ -287,14 +287,14 @@ setMethod('NMFStrategy', signature(name='character', method='missing'),
 #' 
 #' It throws an error if called directly.
 #' @rdname NMFStrategy
-setMethod('run', signature(object='NMFStrategy', y='matrix', x='NMFfit'),
+setMethod('run', signature(object='NMFStrategy', y='mMatrix', x='NMFfit'),
 	function(object, y, x, ...){
 		stop("NMFStrategy::run is a pure virtual method that should be overloaded in class '", class(object),"'.")
 	}
 )
 #' Method to run an NMF algorithm directly starting from a given NMF model.
 #' @rdname NMFStrategy
-setMethod('run', signature(object='NMFStrategy', y='matrix', x='NMF'),
+setMethod('run', signature(object='NMFStrategy', y='mMatrix', x='NMF'),
 	function(object, y, x, ...){
 		run(object, y, NMFfit(fit=x, seed='none', method=name(object)), ...)
 	}
@@ -398,7 +398,7 @@ nmfFormals.character <- function(x, ...){
 
 #' @S3method nmfFormals NMFStrategy
 nmfFormals.NMFStrategy <- function(x, ...){
-	m <- getMethod('run', signature(object='NMFStrategy', y='matrix', x='NMFfit'))
+	m <- getMethod('run', signature(object='NMFStrategy', y='mMatrix', x='NMFfit'))
 	args <- allFormals(m)
 	# prepend registered default arguments
 	expand_list(x@defaults, args)

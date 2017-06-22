@@ -274,7 +274,7 @@ staticVar <- local({
 #' @param maxIter maximum number of iterations to perform.
 #'   
 #' @rdname NMFStrategy
-setMethod('run', signature(object='NMFStrategyIterative', y='matrix', x='NMFfit'),
+setMethod('run', signature(object='NMFStrategyIterative', y='mMatrix', x='NMFfit'),
 	function(object, y, x, .stop=NULL, maxIter = nmf.getOption('maxIter') %||% 2000L, ...){
 	
 	method <- object
@@ -306,7 +306,7 @@ setMethod('run', signature(object='NMFStrategyIterative', y='matrix', x='NMFfit'
 })
 
 #' @rdname NMFStrategy
-setMethod('run', signature(object='NMFStrategyIterativeX', y='matrix', x='NMFfit'),
+setMethod('run', signature(object='NMFStrategyIterativeX', y='mMatrix', x='NMFfit'),
 	function(object, y, x, maxIter, ...){
 				
 	strategy <- object
@@ -458,7 +458,7 @@ nmfFormals.NMFStrategyIterative <- function(x, runtime=FALSE, ...){
 	
 	strategy <- xifyStrategy(x)
 	# from run method
-	m <- getMethod('run', signature(object='NMFStrategyIterative', y='matrix', x='NMFfit'))
+	m <- getMethod('run', signature(object='NMFStrategyIterative', y='mMatrix', x='NMFfit'))
 	run.args <- allFormals(m)[-(1:3)]
 	# onInit
 	init.args <- if( is.function(strategy@onInit) ) formals(strategy@onInit)

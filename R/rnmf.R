@@ -168,7 +168,7 @@ setMethod('rnmf', signature(x='NMF', target='numeric'),
 #' rnmf(x, y) # rank of x
 #' rnmf(2, y) # rank 2
 #' 
-setMethod('rnmf', signature(x='ANY', target='matrix'), 
+setMethod('rnmf', signature(x='ANY', target='mMatrix'), 
 	function(x, target, ..., dist=list(max=max(max(target, na.rm=TRUE), 1)), use.dimnames=TRUE){	
 				
 		# build a random NMF with the dimensions of the target matrix upper-bounded by the target's maximum entry.
