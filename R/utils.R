@@ -1071,3 +1071,14 @@ str_match <- function(...){
 }
 
 is.formula <- function (x) inherits(x, "formula")
+
+# substitute for crossprod which handles NA values as 0
+crossprod_ <- function(x, y, val = 0) {
+  crossprod(replace(x, is.na(x), val), replace(y, is.na(y), val)
+  )
+}
+# substitute for tcrossprod which handles NA values as 0
+tcrossprod_ <- function(x, y, val = 0) {
+  tcrossprod(replace(x, is.na(x), val), replace(y, is.na(y), val)
+  )
+}

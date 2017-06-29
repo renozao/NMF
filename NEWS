@@ -7,6 +7,8 @@ NEW FEATURES
 
 FIXES
     o predict functions for NMF objects now conserve the dimension names.
+    o algorithms brunet (R and C versions) now handle the case where 
+    the estimated product WH has some zero entries (issue #89).
 
 *************************************************************************
 Changes in version 0.22

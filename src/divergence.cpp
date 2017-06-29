@@ -111,7 +111,7 @@ static SEXP divergence_update_H ( T_Rnumeric* pV, SEXP w, SEXP h, int nbterms=0,
 					for (int k=0; k<r; k++){
 						wh_term += pW[u + k*n] * pH[k + jH*r];
 					}
-					wh_term = pV[u + jH*n] / wh_term;
+					wh_term = wh_term != 0 ? pV[u + jH*n] / wh_term : 0;
 					pWH[u] = wh_term;
 				}
 
@@ -193,7 +193,7 @@ static SEXP divergence_update_W ( T_Rnumeric* pV, SEXP w, SEXP h, int nbterms=0,
 					for (int k=0; k<r; k++){
 						wh_term += pW[iW + k*n] * pH[k + u*r];
 					}
-					wh_term = pV[iW + u*n] / wh_term;
+					wh_term = wh_term != 0 ? pV[iW + u*n] / wh_term : 0;
 					pWH[u] = wh_term;
 				}
 

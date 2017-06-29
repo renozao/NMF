@@ -552,7 +552,7 @@ nmf_update.KL.h_R <- R_std.divergence.update.h <- function(v, w, h, wh=NULL)
 	
 	# divergence-reducing NMF iterations
 	# H_au = H_au ( sum_i [ W_ia V_iu / (WH)_iu ] ) / ( sum_k W_ka ) -> each row of H is divided by a the corresponding colSum of W
-	h * crossprod(w, v / wh) / colSums(w)	
+	h * crossprod_(w, v / wh) / colSums(w)	
 }
 
 #' @details
@@ -578,7 +578,7 @@ nmf_update.KL.w_R <- R_std.divergence.update.w <- function(v, w, h, wh=NULL)
 	# W_ia = W_ia ( sum_u [H_au A_iu / (WH)_iu ] ) / ( sum_v H_av ) -> each column of W is divided by a the corresponding rowSum of H
 	#x2 <- matrix(rep(rowSums(h), nrow(w)), ncol=ncol(w), byrow=TRUE); 
 	#w * tcrossprod(v / wh, h) / x2;
-	sweep(w * tcrossprod(v / wh, h), 2L, rowSums(h), "/", check.margin = FALSE) # optimize version?
+  sweep(w * tcrossprod_(v / wh, h), 2L, rowSums(h), "/", check.margin = FALSE) # optimize version?
 	
 }
 
@@ -952,7 +952,7 @@ nmf.stop.connectivity <- local({
 		index <- apply(h, 2, function(x) which.max(x) )
 		cons <- outer(index, index, function(x,y) ifelse(x==y, 1,0));
 
-		changes <- cons != .consold
+    changes <- cons != .consold
 		if( !any(changes) ) .inc <<- .inc + 1 # connectivity matrix has not changed: increment the count
 		else{
 			.consold <<- cons;
