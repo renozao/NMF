@@ -313,7 +313,7 @@ setReplaceMethod('basis', signature(object='NMF', value='ANY'),
 #' @export
 setGeneric('.basis<-', function(object, ..., value) standardGeneric('.basis<-') )
 #' @template VirtualNMF
-setReplaceMethod('.basis', signature(object='NMF', value='matrix'), 
+setReplaceMethod('.basis', signature(object='NMF', value='mMatrix'), 
 	function(object, value){ 
 		stop("NMF::.basis<- is a pure virtual method of interface 'NMF'. It should be overloaded in class '", class(object),"'.")
 	} 
@@ -424,7 +424,7 @@ setReplaceMethod('coef', signature(object='NMF', value='ANY'),
 #' @rdname basis-coef-methods
 setGeneric('.coef<-', function(object, ..., value) standardGeneric('.coef<-') )
 #' @template VirtualNMF
-setReplaceMethod('.coef', signature(object='NMF', value='matrix'), 
+setReplaceMethod('.coef', signature(object='NMF', value='mMatrix'), 
 	function(object, value){ 
 		stop("NMF::.coef<- is a pure virtual method of interface 'NMF'. It should be overloaded in class '", class(object),"'.")
 	} 
