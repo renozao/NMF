@@ -59,6 +59,11 @@ ccPalette <- function(x, n=NA, verbose=FALSE){
 			if( require.quiet('RColorBrewer') && x %in% rownames(brewer.pal.info) ){
 				if( verbose ) message("Load and generate ramp from RColorBrewer colour palette '", x, "'")			
 				x <- brewer.pal(brewer.pal.info[x, 'maxcolors'], x)
+            }else if( require.quiet('RColorBrewer') && x %in% c('viridis', 'inferno', 'plasma', 'magma') ) {
+				if( verbose ) message("Load and generate ramp from viridis colour palette '", x, "'")			
+                mapping <- list('viridis' = viridis::viridis, 'inferno' = viridis::inferno,
+                                'magma'   = viridis::magma,   'plasma'  = viridis::plasma)
+                x <- mapping[[x]](1E3) # create a viridis palette with 1000 color values
 			}else{
 				cpal <- c('RdYlBu2', 'rainbow', 'heat', 'topo', 'terrain', 'cm', 'gray', 'grey')
 				i <- pmatch(x, cpal)				
