@@ -202,7 +202,7 @@ profplot <- function(x, ...){
 #' @keywords aplot
 #' @rdname profplot
 #' @export
-#' @S3method profplot default
+#' @export
 #' @examples
 #' 
 #' # create a random target matrix
@@ -613,7 +613,7 @@ bigsilhouette <- function(x, cl){
 #' @param ... extra arguments not used.  
 #' 
 #' @seealso \code{\link[NMF]{predict}}
-#' @S3method silhouette NMF
+#' @export
 #' @import cluster
 #' @examples 
 #' 
@@ -686,7 +686,7 @@ silhouette.NMF <- function(x, what = NULL, order = NULL, ...){
     si
 }
 
-#' @S3method silhouette NMFfitX
+#' @export
 silhouette.NMFfitX <- function(x, ...){
     si <- silhouette.NMF(x, ...)
     attr(si, 'call') <- match.call(call = sys.call(-1))

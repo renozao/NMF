@@ -233,7 +233,7 @@ setMethod('rposneg', 'NMF'
 #' @param x NMF model object.
 #' 
 #' @family transforms
-#' @S3method t NMF
+#' @export
 #' @examples
 #' 
 #' x <- rnmf(3, 100, 20)

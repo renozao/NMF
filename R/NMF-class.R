@@ -506,7 +506,7 @@ unit.test(scoef, {
 #' 
 #' @return an NMF object
 #' 
-#' @S3method scale NMF
+#' @export
 #' @examples
 #' 
 #' # random 3-rank 10x5 NMF model
@@ -1258,7 +1258,7 @@ setReplaceMethod('$', 'NMF',
 #' @importFrom utils .DollarNames
 setGeneric('.DollarNames', package='utils')
 
-#' @S3method .DollarNames NMF
+#' @export
 .DollarNames.NMF <- function(x, pattern = "") grep(pattern, names(misc(x)), value=TRUE)
 
 #' Auto-completion for \code{\linkS4class{NMF}} objects
@@ -2555,7 +2555,7 @@ setMethod('nmf.equal', signature(x='NMF', y='NMF'),
 		}
 )
 
-#' @S3method anyNA NMF
+#' @export
 anyNA.NMF <- function(x, recursive = FALSE){
     NAb <- anyNA(basis(x))
     NAc <- anyNA(coef(x))

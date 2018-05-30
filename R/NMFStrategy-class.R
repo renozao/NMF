@@ -390,13 +390,13 @@ nmfFormals <- function(x, ...){
 	UseMethod('nmfFormals')
 }
 
-#' @S3method nmfFormals character
+#' @export
 nmfFormals.character <- function(x, ...){
 	s <- nmfAlgorithm(x)
 	nmfFormals(s, ...)
 }
 
-#' @S3method nmfFormals NMFStrategy
+#' @export
 nmfFormals.NMFStrategy <- function(x, ...){
 	m <- getMethod('run', signature(object='NMFStrategy', y='mMatrix', x='NMFfit'))
 	args <- allFormals(m)

@@ -135,7 +135,7 @@ setMethod('fcnnls', signature(x='ANY', y='numeric'),
 	}
 )
 
-#' @S3method print fcnnls
+#' @export
 print.fcnnls <- function(x, ...){
 	cat("<object of class 'fcnnls': Fast Combinatorial Nonnegative Least Squares>\n")
 	cat("Dimensions:", nrow(x$x)," x ", ncol(x$x), "\n")

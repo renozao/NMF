@@ -359,7 +359,7 @@ icoef <- function(object, ...){
 	else i
 }
 
-#' @S3method t NMFstd
+#' @export
 t.NMFstd <- function(x){
     # transpose and swap factors
     x <- t.NMF(x)

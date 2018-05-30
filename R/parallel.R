@@ -170,7 +170,7 @@ doBackendCleanup <- function(object, ..., run=TRUE, verbose=FALSE){
 register <- function(x, ...){
 	UseMethod('register', x)
 }
-#' @S3method register foreach_backend
+#' @export
 register.foreach_backend <- function(x, ...){
 	
 	be <- x$name
@@ -431,7 +431,7 @@ cleanupCluster <- function(x, cl, stopFun=NULL){
 	}
 }
 
-#' @S3method register doParallel_backend
+#' @export
 register.doParallel_backend <- function(x, ...){
 	
 	# start cluster if numeric specification and type is defined
@@ -461,7 +461,7 @@ isMPIBackend <- function(x, ...){
 	}else FALSE
 }
 
-#' @S3method register doMPI_backend
+#' @export
 register.doMPI_backend <- function(x, ...){
 	
 	if( length(x$data) && isNumber(cl <- x$data[[1]]) ){
@@ -546,7 +546,7 @@ setMethod('ForeachBackend', 'doMPI_backend',
 
 is.backend <- function(x) is(x, 'foreach_backend')
 
-#' @S3method print foreach_backend
+#' @export
 print.foreach_backend <- function(x, ...){
 	cat("<foreach backend:", x$name, ">\n", sep='')
 	if( length(x$data) ){
