@@ -400,7 +400,7 @@ setMethod('modelname', signature(object='NMFfit'),
 #' unless explicitly required.
 #' 
 #' It is a S4 methods defined for the associated generic functions from package
-#' \code{stats} (See \link[stats]{residuals}).
+#' \code{stats} (See [stats::residuals]).
 #' 
 #' @note Stricly speaking, the method \code{residuals,NMFfit} does not fulfill 
 #' its contract as defined by the package \code{stats}, but rather acts as function

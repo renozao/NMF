@@ -166,7 +166,7 @@ setClass('NMF'
 #' In other models, the estimate may depend on extra parameters/matrix 
 #' (cf. Non-smooth NMF in \code{\link{NMFns-class}}).
 #' 
-#' This function is a S4 generic function imported from \link[stats]{fitted} in 
+#' This function is a S4 generic function imported from [stats::fitted] in 
 #' the package \emph{stats}.
 #' It is implemented as a pure virtual method for objects of class 
 #' \code{NMF}, meaning that concrete NMF models must provide a 
@@ -342,7 +342,7 @@ setMethod('loadings', 'NMF', function(x) basis(x) )
 #' the method \code{coef} will return the matrix \eqn{H}.
 #' 
 #' \code{coef} and \code{coef<-} are S4 methods defined for the corresponding 
-#' generic functions from package \code{stats} (See \link[stats]{coef}).
+#' generic functions from package \code{stats} (See [stats::coef]).
 #' Similarly to \code{basis} and \code{basis<-}, they are defined for the top 
 #' virtual class \code{\linkS4class{NMF}} only, and rely internally on the S4 
 #' generics \code{.coef} and \code{.coef<-} respectively that effectively 
