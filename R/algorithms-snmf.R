@@ -45,6 +45,10 @@ NULL
 #' @inheritParams .fcnnls
 #' @param ...  extra arguments passed to the internal function \code{.fcnnls}.
 #' Currently not used.
+#' @param check logical that specifies if the sign of the arguments `x` and `y`
+#' should be checked -- since these arguments should only contain non-negative values.
+#' If `TRUE`, then an error is thrown when negative values are found.
+#' 
 #' @return A list containing the following components:
 #' 
 #' \item{x}{ the estimated optimal matrix \eqn{K}.} \item{fitted}{ the fitted
@@ -101,11 +105,20 @@ setGeneric('fcnnls', function(x, y, ...) standardGeneric('fcnnls') )
 #' @param verbose toggle verbosity (default is \code{FALSE}).
 #' 
 setMethod('fcnnls', signature(x='matrix', y='matrix'), 
-	function(x, y, verbose=FALSE, pseudo=TRUE, ...){
+	function(x, y, verbose=FALSE, pseudo=TRUE, ..., check = TRUE){
 		# load corpcor if necessary
 		if( isTRUE(pseudo) ){ 
 			library(corpcor)
 		}
+    
+    # check that all input data are non-negative
+    if( check ){
+      if( (m <- min(x, na.rm = TRUE)) < 0 )
+        stop(sprintf("Invalid fixed matrix argument 'x': all values should be non-negative. [min ~= %.2f]", m))
+      if( (m <- min(y, na.rm = TRUE)) < 0 )
+        stop(sprintf("Invalid target matrix argument 'y': all values should be non-negative. [min ~= %.2f]", m))
+      
+    }
 		
 		# call the internal function
 		res <- .fcnnls(x, y, verbose=verbose, pseudo=pseudo, ...)
