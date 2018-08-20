@@ -39,7 +39,8 @@ Imports:
     doParallel (>= 1.0.8),
     ggplot2,
     reshape2,
-    dendextend
+    dendextend,
+    viridis
 Suggests:
     RcppOctave (>= 0.11),
     fastICA,
