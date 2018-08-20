@@ -36,6 +36,7 @@ revPalette <- function(x){
 
 #' Builds a Color Palette from Compact Color Specification
 #' @keywords internal
+#' @importFrom viridis viridis inferno plasma magma
 ccPalette <- function(x, n=NA, verbose=FALSE){
 		
 	if( length(x)==1 ){
@@ -56,21 +57,32 @@ ccPalette <- function(x, n=NA, verbose=FALSE){
 			x <- rev(sequential_hcl(2, h = x, l = c(50, 95)))
 		else if( is.character(x) ){ # Palette name: 
 		
+      viridis_pal <- c('viridis', 'inferno', 'plasma', 'magma')
 			if( require.quiet('RColorBrewer') && x %in% rownames(brewer.pal.info) ){
 				if( verbose ) message("Load and generate ramp from RColorBrewer colour palette '", x, "'")			
 				x <- brewer.pal(brewer.pal.info[x, 'maxcolors'], x)
-			}else{
+      }else if( x %in% viridis_pal ) { ## viridis palettes 
+        if( verbose ) message("Load and generate ramp from viridis colour palette '", x, "'")			
+        if( !require.quiet('viridis') )
+          stop(sprintf("Requested color '%s' requires package `viridis` to be installed", x))
+        # get the requested color palette function from viridis package
+        viridis_ramp <- get(x, envir = asNamespace("viridis"), mode = "function")
+        # use default value of 1000 for n if not specified
+        np <- if( is_NA(n) ) 1E3 else n
+        x <- viridis_ramp(np)
+        
+      }else{
 				cpal <- c('RdYlBu2', 'rainbow', 'heat', 'topo', 'terrain', 'cm', 'gray', 'grey')
 				i <- pmatch(x, cpal)				
 				if( is.na(i) && (x %in% colours() || grepl("^#[0-9a-fA-F]+$", x)) ){
 					x <- c("#F1F1F1", x)
 				}else{
 					
-					if( is.na(i) ){
-												
-						stop("Invalid palette name '", x, "': should be an RColorBrewer palette or one of "
-							, paste("'", cpal ,"'", sep='', collapse=', ')
-                            , ".\n  Available RColorBrewer palettes: ", str_out(sort(rownames(brewer.pal.info)), Inf), '.')
+					if( is.na(i) ){			
+						stop(sprintf("Invalid palette name '%s': should be a base, RColorBrewer or viridis palette.\n    * Base: %s\n    * RcolorBrewer: %s\n    * Viridis: %s"
+							, x , str_out(cpal, Inf), str_out(sort(rownames(brewer.pal.info)), Inf), str_out(viridis_pal, Inf)
+              ))
+          
 					}
 					x <- cpal[i]
 					
