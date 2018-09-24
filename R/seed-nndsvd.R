@@ -83,7 +83,7 @@ NULL
 		n_vvp = .norm(vvp) ;
 		n_uun = .norm(uun) ;
 		n_vvn = .norm(vvn) ;
-		termp = n_uup %*% n_vvp; termn = n_uun %*% n_vvn;
+		termp = c(n_uup %*% n_vvp); termn = c(n_uun %*% n_vvn);
 		if (termp >= termn){
 			W[,i] = sqrt(S[i] * termp) * uup / n_uup; 
 			H[i,] = sqrt(S[i] * termp) * vvp / n_vvp;
