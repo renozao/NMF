@@ -130,7 +130,8 @@ setClass('NMFfit'
 			method = '',
 			seed = '',
 			parameters = list(),
-			extra = list()
+			extra = list(),
+      runtime = structure(numeric(5), class = "proc_time")
 	)
 	
 	, validity = function(object){
