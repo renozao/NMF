@@ -49,7 +49,6 @@ lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
     col_legend_height <- row_legend_width <- unit(0, 'bigpts')
     if( !isTRUE(gl$options$legend$horizontal) ) row_legend_width <- legend_width 
     else col_legend_height <- legend_width
-    #
     
 	
 	.annLegend.dim <- function(annotation, fontsize){
@@ -120,8 +119,9 @@ lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
 	
 		# recompute the cell width depending on the automatic fontsize
 		if( is.na(cellwidth) && !is.null(rown) ){
+		  
 			cellheight <- convertHeight(unit(1, "grobheight", rectGrob(0,0, matwidth, matheight)), "bigpts", valueOnly = T) / nrow
-			fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.6*cellheight, 'bigpts')), 'points')
+			# fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.6*cellheight, 'bigpts')), 'points')
 			
 			rown_width <- rown_width_min + unit(1.2, "grobwidth", textGrob(rown[longest_rown], gp = c_gpar(gp0, fontsize = fontsize_row)))
 			matwidth <- unit(1, "npc") - rown_width - row_legend_width - row_annot_width  - treeheight_row - annot_legend_width - gl$padding$h
@@ -988,7 +988,7 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	, main=NULL, sub=NULL, info=NULL
     , layout = NULL
 	, verbose=getOption('verbose')
-	, gp = gpar()){
+	, gp = gpar()) {
 
 	annotation_colors <- annTracks$colors
 	row_annotation <- annTracks$annRow
@@ -1124,8 +1124,10 @@ heatmap_motor = function(matrix, border_color, cellwidth, cellheight
 	}
 
     # recompute margin fontsizes
-    fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.6*glo$cellheight, 'bigpts')), 'points')
-    fontsize_col <- convertUnit(min(unit(fontsize_col, 'points'), unit(0.6*glo$cellwidth, 'bigpts')), 'points')
+    # fontsize_row <- convertUnit(min(unit(fontsize_row, 'points'), unit(0.6*glo$cellheight, 'bigpts')), 'points')
+    fontsize_row <- unit(fontsize_row, "points") # NCD edit
+    # fontsize_col <- convertUnit(min(unit(fontsize_col, 'points'), unit(0.6*glo$cellwidth, 'bigpts')), 'points')
+    fontsize_col <- unit(fontsize_col, "points")
     
 	# Draw matrix
 	if( vplayout('mat') ){
@@ -2172,10 +2174,12 @@ trace_vp <- local({.on <- FALSE
 #' See \code{\link{aheatmap_layout}} for more details on layout specifications. 
 #'  
 #' @param fontsize base fontsize for the plot 
-#' @param cexRow fontsize for the rownames, specified as a fraction of argument 
-#' \code{fontsize}. 
-#' @param cexCol fontsize for the colnames, specified as a fraction of argument 
-#' \code{fontsize}.
+#' @param cexRow fontsize magnification for the row names (\code{cexRow} * \code{fontsize} = fontsizeRow).
+#' Default is specified based on number of columns in \code{x}. Large magnifications (>2)
+#' may result in an error message saying "invalid value specified for graphical parameter", because
+#' the row name text is taking up a lot of the grid forcing other elements to assume negative values.
+#' @param cexCol fontsize magnification for the column names (\code{cexCol} * \code{fontsize} = fontsizeCol).
+#' Default is specified based on number of columns in \code{x}.
 #' 
 #' @param main Main title as a character string or a grob.
 #' @param sub Subtitle as a character string or a grob.
@@ -2663,7 +2667,7 @@ aheatmap = function(x
     }
     
 	# render annotation tracks for both rows and columns
-    annotation_colors <- annColors
+  annotation_colors <- annColors
 	annCol_processed <- atrack(annCol, order=res$colInd, .SPECIAL=specialAnnotation(2L), .DATA=amargin(x,2L), .CACHE=annRow)
 	annRow_processed <- atrack(annRow, order=res$rowInd, .SPECIAL=specialAnnotation(1L), .DATA=amargin(x,1L), .CACHE=annCol)
 	specialAnnotation(clear=TRUE)
@@ -2692,8 +2696,9 @@ aheatmap = function(x
     attr(mat, 'color') <- color_mat
     attr(mat, 'scale') <- colour_scale  
     
-    # retrieve dimension for computing cexRow and cexCol (evaluated from the arguments)
-    nr <- nrow(mat); nc <- ncol(mat)
+  # retrieve dimension for computing cexRow and cexCol (evaluated from the arguments)
+  nr <- nrow(mat); nc <- ncol(mat)
+    
 	# Draw heatmap	
 	res$vp <- heatmap_motor(mat, border_color = border_color, cellwidth = cellwidth, cellheight = cellheight
 	, treeheight_col = treeheight_col, treeheight_row = treeheight_row, tree_col = tree_col, tree_row = tree_row
