@@ -2126,7 +2126,9 @@ function(x, rank, method
 						else NA)
 			
 			#seed <- do.call(getGeneric('seed', package='NMF')
-			seed <- do.call(getGeneric('seed')
+      # NOTE: we explicitly specify the package here to avoid conflicts with other packages that 
+      # defined a `seed` function more recently (e.g., DelayedArray, SummarizedExperiment) (Issue #85)
+			seed <- do.call(getGeneric('seed', package='NMF')
 					, c(list(x=x, model=init, method=seed.method), parameters.seed))
 			
 			# check the validity of the seed
