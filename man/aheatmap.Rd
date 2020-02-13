@@ -38,8 +38,9 @@ and assumed to contain valid R color specifications.
 that gives the dominant colors. Numeric values are converted into a pallete
 by \code{rev(sequential_hcl(2, h = x, l = c(50, 95)))}. Other values are
 concatenated with the grey colour '#F1F1F1'.
-\item one of RColorBrewer's palette name (see \code{\link[RColorBrewer]{display.brewer.all}})
-, or one of 'RdYlBu2', 'rainbow', 'heat', 'topo', 'terrain', 'cm'.
+\item RColorBrewer palette names (see \code{\link[RColorBrewer]{display.brewer.all}})
+\item \code{viridis} palette names: 'viridis', 'inferno', 'plasma', 'magma';
+\item one of 'RdYlBu2', 'rainbow', 'heat', 'topo', 'terrain', 'cm'.
 }
 When the colour palette is specified with a single value, and is negative or
 preceded a minus ('-'), the reversed palette is used.

@@ -120,12 +120,12 @@ strictly impossible with base heatmaps.
 \item Customisation: clustering methods, annotations, colours and legend can all 
 be customised, even separately for rows and columns;
 \item Convenient interface: many arguments provide multiple ways of 
-specifying their value(s), which speeds up developping/writing and reduce the 
+specifying their value(s), which speeds up developing/writing and reduce the 
 amount of code required to generate customised plots (e.g. see
 \cref{sec:colour_spec}).
 \item Aesthetics: the heatmaps look globally cleaner, the image and text components 
 are by default well proportioned relatively to each other, and all fit within 
-the graphic device -- if not set to an unresonnably small size.
+the graphic device -- if not set to an unreasonably small size.
 \end{itemize}
 
 \section{Preliminaries}
@@ -139,7 +139,7 @@ with the following commands:
 
 <<install, eval = FALSE>>=
 # latest stable
-intall.pacakges('NMF')
+install.packages('NMF')
 # development version
 devtools::install_github('NMF', 'renozao', 'devel')
 @
