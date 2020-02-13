@@ -1,3 +1,7 @@
+---
+title: "NMF R package -- Algorithms and Framework for Nonnegative Matrix Factorization (NMF)"
+---
+
 ## Background
 
 Nonnegative Matrix Factorization (NMF) is an unsupervised learning technique that has been applied successfully in several fields, including signal processing, face recognition and text mining.
