@@ -30,9 +30,9 @@ NULL
 #' 
 #' @bibliography ~/Documents/articles/library.bib
 #' @references
-#' \url{http://cran.r-project.org/}
+#' \url{https://cran.r-project.org/}
 #' 
-#' \url{http://renozao.github.io/NMF}
+#' \url{https://renozao.github.io/NMF}
 #' @keywords package
 #' @seealso \code{\link{nmf}}
 #' @examples

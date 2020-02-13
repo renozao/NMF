@@ -252,7 +252,7 @@ A completely custom pre-formatted dendrogram can also be build and passed to
 \code{Rowv} (or \code{Colv}), controlling both ordering and display.
 For example, using the \pkgname{dendextend} package\footnote{Code borrowed
 from
-\url{http://cran.r-project.org/web/packages/dendextend/vignettes/introduction.html}},
+\url{https://cran.r-project.org/web/packages/dendextend/vignettes/introduction.html}},
 one can format a dendrogram in a complex way and simply ``plug" it into the row
 or column dendrogram panel:
 

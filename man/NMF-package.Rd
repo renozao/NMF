@@ -44,9 +44,9 @@ Cathal Seoighe
 Maintainer: Renaud Gaujoux <renaud@tx.technion.ac.il>
 }
 \references{
-  \url{http://cran.r-project.org/}
+  \url{https://cran.r-project.org/}
 
-\url{http://renozao.github.io/NMF}
+\url{https://renozao.github.io/NMF}
 }
 \seealso{
   \code{\link{nmf}}
