@@ -458,10 +458,10 @@ function(x, rank, method, ...)
 #' method (see description for this argument).
 #' 
 #' @param name name associated with the NMF algorithm implemented by the function
-#' \code{method} [only used when \code{method} is a function].
+#' \code{method} (only used when \code{method} is a function).
 #' @param objective specification of the objective function associated with the 
 #' algorithm implemented by the function \code{method} 
-#' [only used when \code{method} is a function].
+#' (only used when \code{method} is a function).
 #' 
 #' It may be either \code{'euclidean'} or \code{'KL'} for specifying the euclidean 
 #' distance (Frobenius norm) or the Kullback-Leibler divergence respectively, 
@@ -472,7 +472,7 @@ function(x, rank, method, ...)
 #' 
 #' @param mixed a logical that indicates if the algorithm implemented by the function
 #' \code{method} support mixed-sign target matrices, i.e. that may contain negative 
-#' values [only used when \code{method} is a function].
+#' values (only used when \code{method} is a function).
 #' 
 #' @demo 
 #' 

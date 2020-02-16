@@ -2338,10 +2338,10 @@ trace_vp <- local({.on <- FALSE
 #' \itemize{
 #' \item \code{"row"}: center and standardize each row separately to row Z-scores 
 #' \item \code{"stdrow"}: center and standardize each row separately to row Z-scores, 
-#' and force values onto [0,1] inteval. 
+#' and force values onto `[0,1]` inteval. 
 #' \item \code{"column"}: center and standardize each column separately to column Z-scores
 #' \item \code{"stdcolumn"}: center and standardize each column separately to column Z-scores, 
-#' and force values onto [0,1] inteval. 
+#' and force values onto `[0,1]` inteval. 
 #' \item \code{"r1"}: scale each row to sum up to one
 #' \item \code{"c1"}: scale each column to sum up to one
 #' \item \code{"none"}: no scaling

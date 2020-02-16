@@ -246,6 +246,7 @@ setMethod('rposneg', 'NMF'
 #' stopifnot( identical(basis(y), t(coef(x))) )
 #' stopifnot( identical(coef(y), t(basis(x))) )
 #' 
+#' @method t NMF
 t.NMF <- function(x){
 	# transpose and swap factors
 	w <- t(basis(x))

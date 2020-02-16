@@ -67,7 +67,7 @@ current.vpPath_patched <- local({
 })
 
 #' @rdname options
-#' @section Plotting
+#' @section Plotting:
 #' \describe{
 #' \item{grid.patch}{logical that indicates if annotated heatmaps should use a set of functions 
 #' from the `grid` packages that were patched to enable mixing (`TRUE`) or stock `grid` functions 

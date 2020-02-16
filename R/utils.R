@@ -1,5 +1,6 @@
 #' @include rmatrix.R
 #' @include aaa-package.R
+#' @useDynLib NMF
 NULL
 
 #' Utility Function in the NMF Package

@@ -1,6 +1,6 @@
 Package: NMF
 Type: Package
-Title: Algorithms and framework for Nonnegative Matrix Factorization (NMF)
+Title: Algorithms and Framework for Nonnegative Matrix Factorization (NMF)
 Version: 0.23.6
 Date: 2017-06-29
 Author: Renaud Gaujoux, Cathal Seoighe
@@ -12,6 +12,7 @@ Description: This package provides a framework to perform Non-negative Matrix
     in C++, and the main interface function provides an easy way of performing
     parallel computations on multicore machines.
 License: GPL (>=2)
+Encoding: UTF-8
 URL: http://renozao.github.io/NMF
 BugReports: http://github.com/renozao/NMF/issues
 SCM: github+gran:renozao, r-forge
@@ -23,7 +24,7 @@ Depends:
     R (>= 3.1.0),
     methods,
     utils,
-    pkgmaker (>= 0.26.6),
+    pkgmaker (>= 0.31),
     registry,
     rngtools (>= 1.2.3),
     cluster
@@ -111,5 +112,5 @@ Collate:
     'setNMFClass.R'
     'simulation.R'
     'tests.R'
-RoxygenNote: 6.0.1.9000
-Roxygen: list(markdown = TRUE, namespace_unsorted = TRUE, roclets = c('collate', 'namespace', 'roclets::rd2_roclet'))
+RoxygenNote: 7.0.2.9000
+Roxygen: list(markdown = TRUE, namespace_unsorted = TRUE, roclets = c('collate', 'roclets::namespace2_roclet', 'roclets::rd2_roclet'))

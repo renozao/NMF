@@ -5,10 +5,11 @@
 ###% 
 
 #' @include utils.R
+NULL
 
 #.nmf.Options.Runtime <- character()
 
-# define functions nmf.options and nmf.getOptions
+# define functions nmf.options and nmf.getOption
 #' NMF Package Specific Options
 #'
 #' @section General options:
@@ -74,8 +75,7 @@
 #' } % end description
 #' 
 #' 
-#' @rdname options
-#' @name options-NMF
+#' @name options
 NULL
 .OPTIONS <- setupPackageOptions(
 	# default algorithm

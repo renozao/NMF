@@ -40,7 +40,7 @@ NULL
 #' to basis \eqn{q}: \deqn{p(i,q) = \frac{W(i,q)}{\sum_{r=1}^k W(i,r)} }{
 #' p(i,q) = W(i,q) / (sum_r W(i,r)) }
 #' 
-#' The feature scores are real values within the range [0,1].
+#' The feature scores are real values within the range `[0,1]`.
 #' The higher the feature score the more basis-specific the corresponding feature.
 #' }
 #' 

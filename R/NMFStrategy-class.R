@@ -135,7 +135,6 @@ setClass('NMFStrategy'
 )
 
 #' @export
-#' @rdname NMFStrategy-class
 setMethod('show', 'NMFStrategy',
 		function(object){			
 			cat('<object of class: ', class(object), ">\n", sep='')
@@ -370,9 +369,8 @@ setMethod('modelname', signature(object='NMFStrategy'),
 		slot(object, 'model')
 	}
 )
-#' \code{is.mixed} tells if an NMF algorithm works on mixed-sign data. 
+#' @describeIn NMFStrategy-class \code{is.mixed} tells if an NMF algorithm works on mixed-sign data.
 #' @export
-#' @rdname NMFStrategy-class
 is.mixed <-	function(object){
 	return( slot(object, 'mixed') )
 }

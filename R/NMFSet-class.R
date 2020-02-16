@@ -299,7 +299,7 @@ setMethod('consensus', 'NMF',
 		connectivity(object, ...)
 	}
 )
-
+#' Shorcut for `consensus(fit(object), ...)`
 setMethod('consensus', 'NMFfit', 
     function(object, ...){
         consensus(fit(object), ...)

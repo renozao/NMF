@@ -295,6 +295,7 @@ setMethod('.atrack', signature(object='ANY'),
 	}
 )
 
+#' Adds annotation tracks resolving special track codes that are those elements that start with ":"
 setMethod('.atrack', 'character', 
 	function(object, ...){
 		
@@ -315,7 +316,10 @@ setMethod('.atrack', 'character',
 		}
 	}
 )
+#' Shorcut for `.atrack(as.data.frame(object), ...)`
 setMethod('.atrack', 'matrix', function(object, ...) .atrack(as.data.frame(object), ...) )
+#' Considers each column as an annotation variable.
+#' Equivalent to `.atrack(as.list(object), ...)`
 setMethod('.atrack', 'data.frame', function(object, ...) .atrack(as.list(object), ...) )
 
 # tells if an object is a special annotation track code

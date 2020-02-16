@@ -31,6 +31,9 @@ setClass("AnnotatedData",
 setGeneric('colData', function(object) standardGeneric('colData'))
 setGeneric('colData<-', function(object, value) standardGeneric('colData<-'))
 #
+setGeneric('rowData', function(object) standardGeneric('rowData'))
+setGeneric('rowData<-', function(object, value) standardGeneric('rowData<-'))
+#
 setGeneric('mainData', function(object) standardGeneric('mainData'))
 setGeneric('mainData<-', function(object, value) standardGeneric('mainData<-'))
 #

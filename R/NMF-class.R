@@ -129,7 +129,7 @@ setOldClass('proc_time', prototype=numeric())
 #' 
 #' @family NMF-model Implementations of NMF models
 #' @seealso
-#' Main interface to perform NMF in \code{\link{nmf-methods}}.
+#' Main interface function [nmf] to perform NMF.
 #'  
 #' Built-in NMF models and factory method in \code{\link{nmfModel}}.
 #' 
@@ -1224,21 +1224,19 @@ setMethod('[', 'NMF',
 	}
 )
 
-#' The function \code{misc} provides access to miscellaneous data members stored 
+#' @describeIn NMF-class The function \code{misc} provides access to miscellaneous data members stored 
 #' in slot \code{misc} (as a \code{list}), which allow extensions of NMF models  
 #' to be implemented, without defining a new S4 class.
 #' 
 #' @param object an object that inherit from class \code{NMF}
 #' @param ... extra arguments (not used)
 #' 
-#' @rdname NMF-class
 #' @export
 misc <- function(object, ...){
 	if( !isS4(object) && is.list(object) ) object[['misc']]
 	else attr(object, 'misc')
 }
 #' shortcut for \code{x@@misc[[name, exact=TRUE]]} respectively.
-#' @rdname NMF-class
 #' @export 
 setMethod('$', 'NMF', 
 		function(x, name){ 
@@ -1246,7 +1244,6 @@ setMethod('$', 'NMF',
 		} 
 )
 #' shortcut for \code{x@@misc[[name]] <- value}
-#' @rdname NMF-class
 #' @export
 setReplaceMethod('$', 'NMF',
 	function(x, name, value) {
@@ -1258,6 +1255,7 @@ setReplaceMethod('$', 'NMF',
 #' @importFrom utils .DollarNames
 setGeneric('.DollarNames', package='utils')
 
+#' @method .DollarNames NMF 
 #' @export
 .DollarNames.NMF <- function(x, pattern = "") grep(pattern, names(misc(x)), value=TRUE)
 
@@ -1615,7 +1613,7 @@ setMethod('summary', signature(object='NMF'),
 #' @param x an object whose sparseness is computed.
 #' @param ... extra arguments to allow extension
 #' 
-#' @return usually a single numeric value -- in [0,1], or a numeric vector. 
+#' @return usually a single numeric value -- in `[0,1]`, or a numeric vector. 
 #' See each method for more details.
 #' 
 #' @export

@@ -63,7 +63,7 @@ registerDoBackend <- function(object, ...){
 	invisible(ob)
 }
 
-#' \code{getDoBackend} returns the internal data of the currently registered foreach \%dopar\% backend.
+#' \code{getDoBackend} returns the internal data of the currently registered foreach %dopar% backend.
 #' @rdname foreach
 #' @export
 getDoBackend <- function(){
@@ -96,7 +96,7 @@ getDoBackendName <- function(x){
 #' \code{setDoBackend} is identical to \code{\link[foreach]{setDoPar}}, but 
 #' returns the internal of the previously registered backend.
 #' 
-#' @param data internal data of a foreach \%dopar\% backend.
+#' @param data internal data of a foreach %dopar% backend.
 #' @param cleanup logical that indicates if the previous
 #' backend's cleanup procedure should be run, \strong{before} 
 #' setting the new backend.
@@ -546,7 +546,9 @@ setMethod('ForeachBackend', 'doMPI_backend',
 
 is.backend <- function(x) is(x, 'foreach_backend')
 
+#' @method print foreach_backend
 #' @export
+#' @keyword internal
 print.foreach_backend <- function(x, ...){
 	cat("<foreach backend:", x$name, ">\n", sep='')
 	if( length(x$data) ){

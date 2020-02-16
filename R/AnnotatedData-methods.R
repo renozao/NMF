@@ -7,11 +7,11 @@
 #' @include AnnotatedData-class.R
 NULL
 
+## AnnotationData ----
 AnnotationData <- function(data, varMetadata = data.frame(row.names = colnames(data)), dimLabels = c('', 'varNames'), ...){
     new('AnnotationData', data = data, varMetadata = varMetadata, ..., dimLabels = dimLabels)
 }
 
-## AnnotationData
 setMethod("colData", "AnnotationData", function(object) object@varMetadata)
 setMethod("varData", "AnnotationData", function(object) colData(object))
 
@@ -28,9 +28,9 @@ setReplaceMethod("colData",
             row.names(varMetadata) <- names(value)
             initialize(object, data=value, varMetadata=varMetadata)
         })
-
+#' @keywords internal
 setMethod("names", "AnnotationData", function(x) rownames(colData(x)))
-
+#' @keywords internal
 setReplaceMethod("names",
         signature("AnnotationData", "ANY"),
         function(x, value) 
@@ -64,17 +64,17 @@ setReplaceMethod("mainData",
 setAs("AnnotationData", "data.frame", function(from) {
             mainData(from)
         })
-
+#' @keywords internal
 setMethod("dimnames", "AnnotationData", function(x) {
             dimnames(mainData(x))
         })
-
+#' @keywords internal
 setReplaceMethod("dimnames", "AnnotationData", function(x, value) {
             dimnames(mainData(x)) <- value
             names(colData(x)) <- value[[2]]
             x
         })
-
+#' @keywords internal
 setMethod("[",
         signature(x="AnnotationData"),
         function(x, i, j, ..., drop) {
@@ -95,17 +95,20 @@ setMethod("[",
         })
 
 ##setMethod("$", "AnnotatedDataFrame", function(x, name) `$`(pData(x), name))
+#' @keywords internal
 setMethod("$", "AnnotationData", function(x, name) {
             eval(substitute(colData(x)$NAME_ARG, list(NAME_ARG=name)))
         })
-
+#' @keywords internal
 setReplaceMethod("$", "AnnotationData", function(x, name, value) {
             x[[name]] <- value
             x
         })
 
+#' @keywords internal
 setMethod("[[", "AnnotationData", function(x, i, j, ...) colData(x)[[i]] )
 
+#' @keywords internal
 setReplaceMethod("[[",
         signature=signature(x="AnnotationData"),
         function(x, i, j, ..., value) {
@@ -116,11 +119,28 @@ setReplaceMethod("[[",
         })
 
 
-## AnnotatedData
+## AnnotatedData ----
+
+setMethod("colData", "AnnotatedData", function(object) {
+            slot(object, "phenoData")
+        })
+setReplaceMethod("colData", "AnnotatedData", function(object, value) {
+             slot(object, "phenoData") <- value
+             object
+        })
+setMethod("rowData", "AnnotatedData", function(object) {
+            slot(object, "featureData")
+        })
+setReplaceMethod("rowData", "AnnotatedData", function(object, value) {
+            slot(object, "featureData") <- value
+            object
+        })
+
+#' @keywords internal
 setMethod("dimnames", "AnnotatedData", function(x) {
             dimnames(mainData(x))
         })
-
+#' @keywords internal
 setReplaceMethod("dimnames", "AnnotatedData", function(x, value) {
             # apply to main data
             dimnames(mainData(x)) <- value
@@ -130,8 +150,9 @@ setReplaceMethod("dimnames", "AnnotatedData", function(x, value) {
             x
         })
 
+#' @keywords internal
 setMethod("dim", "AnnotatedData", function(x) dim(mainData(x)))
-
+#' @keywords internal
 setMethod("[", "AnnotatedData", function(x, i, j, ..., drop = FALSE) {
             if (missing(drop))
                 drop <- FALSE
@@ -161,20 +182,21 @@ setMethod("[", "AnnotatedData", function(x, i, j, ..., drop = FALSE) {
         })
 
 ## $ stops dispatching ?!
+#' @keywords internal
 setMethod("$", "AnnotatedData", function(x, name) {
                 eval(substitute(colData(x)$NAME_ARG, list(NAME_ARG=name)))
         })
 
 .DollarNames.AnnotatedData <- function(x, pattern)
     grep(pattern, names(colData(x)), value=TRUE)
-
+#' @keywords internal
 setReplaceMethod("$", "AnnotatedData", function(x, name, value) {
               colData(x)[[name]] = value
               x
         })
-
+#' @keywords internal
 setMethod("[[", "AnnotatedData", function(x, i, j, ...) colData(x)[[i]])
-
+#' @keywords internal
 setReplaceMethod("[[", "AnnotatedData",
         function(x, i, j, ..., value) {
             colData(x)[[i, ...]] <- value

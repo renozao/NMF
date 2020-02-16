@@ -359,7 +359,9 @@ icoef <- function(object, ...){
 	else i
 }
 
+#' Transpose an NMF standard model object
 #' @export
+#' @method t NMFstd
 t.NMFstd <- function(x){
     # transpose and swap factors
     x <- t.NMF(x)
