@@ -951,8 +951,7 @@ nmf.stop.connectivity <- local({
 		# construct connectivity matrix
 		index <- apply(h, 2, function(x) which.max(x) )
 		cons <- outer(index, index, function(x,y) ifelse(x==y, 1,0));
-
-    changes <- cons != .consold
+    changes <- if( length(h) ) (cons != .consold) else FALSE
 		if( !any(changes) ) .inc <<- .inc + 1 # connectivity matrix has not changed: increment the count
 		else{
 			.consold <<- cons;
