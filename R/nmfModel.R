@@ -234,7 +234,7 @@ setMethod('nmfModel', signature(rank='numeric', target='numeric'),
 						, 'it should match the factorization rank [', r, ']')
 				}
 				warning("nmfModel - Objective rank [",r,"] is lower than the number of rows in H [",nrow(H),"]: "
-								, "only the first ", r," rows of H  will be used")
+								, "only the first ", r," rows of H will be used")
 				H <- H[1:r,, drop=FALSE]				
 			}
 			else if( r > nrow(H) ) stop("nmfModel - Objective rank [",r,"] is greater than the number of rows in H [",nrow(H),"]")
