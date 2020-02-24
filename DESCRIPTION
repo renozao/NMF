@@ -45,7 +45,8 @@ Imports:
     reshape2,
     dendextend,
     magrittr,
-    viridis
+    viridis,
+    matrixStats
 Suggests:
     RcppOctave (>= 0.11),
     fastICA,

@@ -1817,6 +1817,7 @@ applyBy0 <- function(x, MARGIN, BY, FUN, ...){
       subsetMargin(res, order(unlist(idx)), MARGIN = 3-MARGIN)
 }
 
+#' @importFrom matrixStats rowMaxs rowMins colMaxs colMins
 scale_mat = function(x, scale, na.rm=TRUE){
 	
     if( is.factor(scale) ){
