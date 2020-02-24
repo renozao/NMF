@@ -258,6 +258,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
 	
 }
 
+#' @importFrom dendextend rect.dendrogram
 .base_dendrogram <- function(hc, horiz = FALSE, flip = FALSE, ...){
     if( flip ) # not supported 
         stop("Could not draw ", if( horiz ) 'row' else 'column', " dendrogram: base function plot.dendrogram cannot draw flipped dendrogram")
@@ -278,7 +279,7 @@ lo <- function (rown, coln, nrow, ncol, cellheight, cellwidth
             cluster_spec$text <- cluster_spec$text[[i]]
             cluster_spec <- expand_list(cluster_spec, horiz = horiz, density = d, lty = 5, lwd = 1.5, lower_rect = 0)
             .d <- function(...){
-                rect.dendrogram(hc, ...)
+                dendextend::rect.dendrogram(hc, ...)
             }
             do.call(.d, cluster_spec)
         })
