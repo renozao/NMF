@@ -863,7 +863,6 @@ nmf.stop.stationary <- local({
 	}
 	
 	function(object, i, y, x, stationary.th=.Machine$double.eps, check.interval=5*check.niter, check.niter=10L, ...){
-		
 		# check validity
 		if( check.interval < check.niter ){
 			stop("Invalid argument values: `check.interval` must always be greater than `check.niter`")
@@ -947,9 +946,25 @@ nmf.stop.connectivity <- local({
 		
 		# retrieve metaprofiles
 		h <- coef(x, all=FALSE)
-			
+
+		# handle the case of completely fixed mixture coefficient matrix
+		if( !length(h) ){
+		  warning(sprintf("Mixture coefficient matrix is completely fixed: sopping connectivity criterium at first check [iteration: %i]", i))
+		  return(TRUE)
+		  
+		}
+		# check for full NA case
+		if( all(is.na(h)) ){
+		  stop(sprintf("Estimated mixture coefficient matrix is completely NA [iteration: %i]", i))
+		  
+		}
 		# construct connectivity matrix
 		index <- apply(h, 2, function(x) which.max(x) )
+		if( !length(index) ){
+		  stop(sprintf("Could not assign samples from estimated mixture coefficient matrix: check for NA values in your data [iteration: %i]", 
+		               i))
+		  
+		}
 		cons <- outer(index, index, function(x,y) ifelse(x==y, 1,0));
     changes <- if( length(h) ) (cons != .consold) else FALSE
 		if( !any(changes) ) .inc <<- .inc + 1 # connectivity matrix has not changed: increment the count

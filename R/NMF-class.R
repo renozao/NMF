@@ -238,7 +238,7 @@ setMethod('basis', 'NMF',
 			.basis(object, ...)
 		} else {
 			# remove fixed basis
-			.basis(object, ...)[, -i]
+			.basis(object, ...)[, -i, drop = FALSE]
 		}
 	}
 )
@@ -363,7 +363,7 @@ setMethod('coef', 'NMF',
 			.coef(object, ...)
 		} else {
 			# remove fixed coefficients
-			.coef(object, ...)[-i, ]
+			.coef(object, ...)[-i, , drop = FALSE]
 		}
 		
 	}
