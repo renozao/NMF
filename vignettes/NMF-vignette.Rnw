@@ -728,7 +728,7 @@ The backend can also be set on runtime via argument \code{.pbackend}.
 \paragraph{IMPORTANT NOTE:} 
 The parallel computation is based on the \pkgname{doParallel} and
 \pkgname{parallel} packages, and the same care should be taken as stated in the
-vignette of the \citeCRANpkg{doMC}:
+vignette of the \pkgname{doMC}:
 \begin{quote}
 \emph{... it usually isn't safe to run doMC and multicore from a GUI environment. 
 In particular, it is not safe to use doMC from R.app on Mac OS X. 

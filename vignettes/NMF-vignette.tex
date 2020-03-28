@@ -5,8 +5,8 @@
 %\VignetteEngine{knitr::knitr}
  
 \documentclass[a4paper]{article}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
 \def\maxwidth{ %
   \ifdim\Gin@nat@width>\linewidth
@@ -27,6 +27,7 @@
 \newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
 \newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
 \newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
 
 \usepackage{framed}
 \makeatletter
@@ -74,12 +75,12 @@
 \newcommand{\citepkg}[1]{\cite{#1}}
 
 % CRAN
-\newcommand{\CRANurl}[1]{\url{http://cran.r-project.org/package=#1}}
+\newcommand{\CRANurl}[1]{\url{https://cran.r-project.org/package=#1}}
 %% CRANpkg
 \makeatletter
 \def\CRANpkg{\@ifstar\@CRANpkg\@@CRANpkg}
-\def\@CRANpkg#1{\href{http://cran.r-project.org/package=#1}{\pkgname{#1}}\footnote{\CRANurl{#1}}}
-\def\@@CRANpkg#1{\href{http://cran.r-project.org/package=#1}{\pkgname{#1}} package\footnote{\CRANurl{#1}}}
+\def\@CRANpkg#1{\href{https://cran.r-project.org/package=#1}{\pkgname{#1}}\footnote{\CRANurl{#1}}}
+\def\@@CRANpkg#1{\href{https://cran.r-project.org/package=#1}{\pkgname{#1}} package\footnote{\CRANurl{#1}}}
 \makeatother
 %% citeCRANpkg
 \makeatletter
@@ -87,8 +88,8 @@
 \def\@citeCRANpkg#1{\CRANpkg{#1}\cite*{Rpackage:#1}}
 \def\@@citeCRANpkg#1{\CRANpkg{#1}~\cite{Rpackage:#1}}
 \makeatother
-\newcommand{\CRANnmf}{\href{http://cran.r-project.org/package=NMF}{CRAN}}
-\newcommand{\CRANnmfURL}{\url{http://cran.r-project.org/package=NMF}}
+\newcommand{\CRANnmf}{\href{https://cran.r-project.org/package=NMF}{CRAN}}
+\newcommand{\CRANnmfURL}{\url{https://cran.r-project.org/package=NMF}}
 
 % Bioconductor
 \newcommand{\BioCurl}[1]{\url{http://www.bioconductor.org/packages/release/bioc/html/#1.html}}
@@ -129,7 +130,7 @@
 , backend=bibtex]{biblatex}
 \AtEveryCitekey{\clearfield{url}}
 \bibliography{Rpackages}
-\bibliography{/tmp/Rpkglib_21df4678e6e5/NMF/REFERENCES}
+\bibliography{/home/renaud/Documents/R-packages/lib/NMF/REFERENCES}
 
 \newcommand{\citet}[1]{\textcite{#1}}
 \renewcommand{\cite}[1]{\parencite{#1}}
@@ -171,7 +172,7 @@
 
 
 \title{An introduction to NMF package\\
-\small Version 0.22}
+\small Version 0.23.6}
 \author{Renaud Gaujoux}
 % \\Address Computational Biology - University of Cape Town, South Africa,
 
@@ -569,18 +570,18 @@ The column \emph{Speed.up} contains the ratio $R/C$.
 \end{kframe}
 \end{knitrout}
 
-% latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Thu Dec  4 14:45:05 2014
+% latex table generated in R 3.6.3 by xtable 1.8-4 package
+% Sat Mar 28 13:16:37 2020
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrr}
   \hline
  & C & R & Speed.up \\ 
   \hline
-brunet & 3.07 & 6.27 & 2.04 \\ 
-  lee & 5.09 & 6.82 & 1.34 \\ 
-  offset & 4.22 & 8.46 & 2.00 \\ 
-  nsNMF & 4.44 & 9.37 & 2.11 \\ 
+brunet & 1.70 & 11.50 & 6.76 \\ 
+  lee & 1.77 & 11.35 & 6.40 \\ 
+  offset & 4.32 & 9.13 & 2.12 \\ 
+  nsNMF & 2.79 & 15.46 & 5.54 \\ 
    \hline
 \end{tabular}
 \caption{Performance speed up achieved by the optimized C++ implementation for some of the NMF algorithms.} 
@@ -688,13 +689,13 @@ The result of a single NMF run is an object of class \code{NMFfit}, that holds b
 ##  # Details:
 ##   algorithm:  brunet 
 ##   seed:  random 
-##   RNG: 403L, 1L, ..., -1742836212L [1f1f4f8e4a81225c8ddcc7f5ab1945f1]
+##   RNG: 10403L, 624L, ..., 449848215L [825a7345133c6f7869527d185527e323]
 ##   distance metric:  'KL' 
-##   residuals:  543535.1 
+##   residuals:  543535.7 
 ##   Iterations: 510 
 ##   Timing:
 ##      user  system elapsed 
-##     0.240   0.001   0.240
+##     0.154   0.000   0.155
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -738,11 +739,11 @@ Quality and performance measures about the factorization are computed by method 
 \end{alltt}
 \begin{verbatim}
 ##             rank sparseness.basis  sparseness.coef  silhouette.coef 
-##     3.000000e+00     6.392332e-01     6.212875e-01     8.029948e-01 
+##     3.000000e+00     6.392676e-01     6.217884e-01     8.126484e-01 
 ## silhouette.basis        residuals            niter              cpu 
-##     7.348131e-01     5.435351e+05     5.100000e+02     2.400000e-01 
+##     7.487792e-01     5.435357e+05     5.100000e+02     1.540000e-01 
 ##          cpu.all             nrun 
-##     2.400000e-01     1.000000e+00
+##     1.540000e-01     1.000000e+00
 \end{verbatim}
 \begin{alltt}
 \hlcom{# More quality measures are computed, if the target matrix is provided: }
@@ -750,11 +751,11 @@ Quality and performance measures about the factorization are computed by method 
 \end{alltt}
 \begin{verbatim}
 ##             rank sparseness.basis  sparseness.coef              rss 
-##     3.000000e+00     6.392332e-01     6.212875e-01     1.535434e+09 
+##     3.000000e+00     6.392676e-01     6.217884e-01     1.535504e+09 
 ##             evar  silhouette.coef silhouette.basis        residuals 
-##     8.232737e-01     8.029948e-01     7.348131e-01     5.435351e+05 
+##     8.232656e-01     8.126484e-01     7.487792e-01     5.435357e+05 
 ##            niter              cpu          cpu.all             nrun 
-##     5.100000e+02     2.400000e-01     2.400000e-01     1.000000e+00
+##     5.100000e+02     1.540000e-01     1.540000e-01     1.000000e+00
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -769,11 +770,11 @@ Here we use the phenotypic variable \code{Cell} found in the Golub dataset, that
 \end{alltt}
 \begin{verbatim}
 ##             rank sparseness.basis  sparseness.coef           purity 
-##     3.000000e+00     6.392332e-01     6.212875e-01     8.421053e-01 
+##     3.000000e+00     6.392676e-01     6.217884e-01     8.157895e-01 
 ##          entropy  silhouette.coef silhouette.basis        residuals 
-##     3.166523e-01     8.029948e-01     7.348131e-01     5.435351e+05 
+##     3.926954e-01     8.126484e-01     7.487792e-01     5.435357e+05 
 ##            niter              cpu          cpu.all             nrun 
-##     5.100000e+02     2.400000e-01     2.400000e-01     1.000000e+00
+##     5.100000e+02     1.540000e-01     1.540000e-01     1.000000e+00
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -857,7 +858,7 @@ The NMF package implements this procedure in methods \code{featureScore} and \co
 \end{alltt}
 \begin{verbatim}
 ##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-## 0.0000935 0.0145400 0.0596100 0.1179000 0.1319000 0.9956000
+## 0.0001208 0.0162686 0.0548891 0.1185344 0.1209758 1.0000000
 \end{verbatim}
 \begin{alltt}
 \hlcom{# compute the scores and characterize each metagene}
@@ -866,9 +867,9 @@ The NMF package implements this procedure in methods \code{featureScore} and \co
 \end{alltt}
 \begin{verbatim}
 ## List of 3
-##  $ : int [1:7] 39 74 2 91 167 190 103
+##  $ : int [1:8] 39 74 2 91 167 190 103 174
+##  $ : int [1:13] 94 1 112 42 8 64 96 182 59 41 ...
 ##  $ : int [1:5] 43 120 128 130 129
-##  $ : int [1:13] 94 1 112 42 8 64 182 96 59 41 ...
 ##  - attr(*, "method")= chr "kim"
 \end{verbatim}
 \end{kframe}
@@ -957,14 +958,14 @@ Or to use the PE-NMF algorithm from \cite{Zhang2008}:
 ##  # Details:
 ##   algorithm:  pe-nmf 
 ##   seed:  random 
-##   RNG: 403L, 271L, ..., -1891789767L [101bef2f6d73d0898014b951e38df2fe]
+##   RNG: 10403L, 270L, ..., -1891789767L [9c04e7ae51353a97aaa7ee4a9351c264]
 ##   distance metric:  <function> 
-##   residuals:  68.42 
+##   residuals:  67.35798 
 ##   parameters: alpha=0.01, beta=1 
 ##   Iterations: 2000 
 ##   Timing:
 ##      user  system elapsed 
-##     0.775   0.043   0.817
+##     0.562   0.098   0.658
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1027,13 +1028,13 @@ To use a specific method to seed the computation of a factorization, one simply 
 ##  # Details:
 ##   algorithm:  brunet 
 ##   seed:  nndsvd 
-##   RNG: 403L, 361L, ..., -1662044055L [7c2260455a271588818cfccec2170f4e]
+##   RNG: 10403L, 360L, ..., -1662044055L [e2af28ae027e4131346cdde9fd9cd9b8]
 ##   distance metric:  'KL' 
-##   residuals:  547144 
+##   residuals:  547143.5 
 ##   Iterations: 1090 
 ##   Timing:
 ##      user  system elapsed 
-##     0.487   0.002   0.488
+##     0.335   0.029   0.362
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1057,8 +1058,8 @@ Moreover, single runs can also use RNGstream by passing a 6-length seed.
 \hlkwd{showRNG}\hlstd{(res)}
 \end{alltt}
 \begin{verbatim}
-## # RNG kind:  Mersenne-Twister / Inversion 
-## # RNG state: 403L, 624L, ..., 449848215L [ed7ba52c9c2666ca159b185949fd9d73]
+## # RNG kind:  Mersenne-Twister / Inversion / Rejection 
+## # RNG state: 10403L, 624L, ..., 449848215L [825a7345133c6f7869527d185527e323]
 \end{verbatim}
 \begin{alltt}
 \hlcom{# multiple runs and single numeric seed}
@@ -1066,8 +1067,8 @@ Moreover, single runs can also use RNGstream by passing a 6-length seed.
 \hlkwd{showRNG}\hlstd{(res)}
 \end{alltt}
 \begin{verbatim}
-## # RNG kind:  L'Ecuyer-CMRG / Inversion 
-## # RNG state: 407L, -1896287838L, -649582056L, -453180354L, -16866084L, -2023648666L, -827768031L
+## # RNG kind:  L'Ecuyer-CMRG / Inversion / Rejection 
+## # RNG state: 10407L, -1896287838L, -649582056L, -453180354L, -16866084L, -2023648666L, -827768031L
 \end{verbatim}
 \begin{alltt}
 \hlcom{# single run with a 6-length seed}
@@ -1075,8 +1076,8 @@ Moreover, single runs can also use RNGstream by passing a 6-length seed.
 \hlkwd{showRNG}\hlstd{(res)}
 \end{alltt}
 \begin{verbatim}
-## # RNG kind:  L'Ecuyer-CMRG / Inversion 
-## # RNG state: 407L, 123456L, 123456L, 123456L, 123456L, 123456L, 123456L
+## # RNG kind:  L'Ecuyer-CMRG / Inversion / Rejection 
+## # RNG state: 10407L, 123456L, 123456L, 123456L, 123456L, 123456L, 123456L
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1131,10 +1132,10 @@ For performance reason we use \code{nrun=5} here, but a typical choice would lie
 ##   Method: brunet 
 ##   Runs:  5 
 ##   RNG:
-##    407L, 1997333926L, -492612625L, 469522788L, -1828607723L, 1996453586L, -1167273941L 
+##    10407L, 2060366693L, -1979266846L, -1467721989L, 23029248L, 1469230593L, 1095525326L 
 ##   Total timing:
 ##    user  system elapsed 
-##   1.995   0.147   2.653
+##   2.293   0.475   2.869
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1162,13 +1163,13 @@ If one is interested in keeping the results from all the runs, one can set the o
 ##   Method: brunet 
 ##   Runs:  5 
 ##   RNG:
-##    407L, 479565376L, 313168193L, 758619662L, -1499576521L, -1114385908L, 588631965L 
+##    10407L, 1997333926L, -492612625L, 469522788L, -1828607723L, 1996453586L, -1167273941L 
 ##   Total timing:
 ##    user  system elapsed 
-##   3.511   0.215   2.322 
+##   1.933   0.321   2.638 
 ##   Sequential timing:
 ##    user  system elapsed 
-##   2.069   0.020   2.090
+##   0.834   0.012   0.843
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1185,7 +1186,7 @@ If one is interested in keeping the results from all the runs, one can set the o
 In this case, the result is an object of class \code{NMFfitXn} that also inherits from class \code{list}.
 
 Note that keeping all the results may be memory consuming. 
-For example, a 3-rank \code{NMF} fit\footnote{i.e. the result of a single NMF run with rank equal 3.} for the Golub gene expression matrix ($5000 \times 38$) takes about 26Kb\footnote{This size might change depending on the architecture (32 or 64 bits)}.
+For example, a 3-rank \code{NMF} fit\footnote{i.e. the result of a single NMF run with rank equal 3.} for the Golub gene expression matrix ($5000 \times 38$) takes about 28Kb\footnote{This size might change depending on the architecture (32 or 64 bits)}.
 
 \subsection{Parallel computations}\label{multicore}
 
@@ -1215,7 +1216,7 @@ The backend can also be set on runtime via argument \code{.pbackend}.
 \paragraph{IMPORTANT NOTE:} 
 The parallel computation is based on the \pkgname{doParallel} and
 \pkgname{parallel} packages, and the same care should be taken as stated in the
-vignette of the \citeCRANpkg{doMC}:
+vignette of the \pkgname{doMC}:
 \begin{quote}
 \emph{... it usually isn't safe to run doMC and multicore from a GUI environment. 
 In particular, it is not safe to use doMC from R.app on Mac OS X. 
@@ -1344,11 +1345,15 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 \end{alltt}
 
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'\\\#\# Multiple runs: 5\\\#\# Mode: parallel (2/4 core(s))}}\begin{verbatim}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Multiple runs: 5}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Mode: parallel (2/8 core(s))}}\begin{verbatim}
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   1.638   0.137   2.070
+##   2.338   0.823   2.883
 \end{verbatim}
 \begin{alltt}
 \hlcom{# or use the doParallel with single core}
@@ -1356,11 +1361,15 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 \end{alltt}
 
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'\\\#\# Multiple runs: 5\\\#\# Mode: sequential [foreach:doParallelMC]}}\begin{verbatim}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Multiple runs: 5}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Mode: sequential [foreach:doParallelMC]}}\begin{verbatim}
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |========                                          |  17%Runs: |                                                        Runs: |=================                                 |  33%Runs: |                                                        Runs: |=========================                         |  50%Runs: |                                                        Runs: |=================================                 |  67%Runs: |                                                        Runs: |==========================================        |  83%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   2.729   0.016   2.749
+##   3.237   0.811   4.043
 \end{verbatim}
 \begin{alltt}
 \hlcom{# force sequential computation by sapply: use option '-p' or .pbackend=NA  }
@@ -1368,22 +1377,30 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 \end{alltt}
 
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'\\\#\# Multiple runs: 5\\\#\# Mode: sequential [sapply]}}\begin{verbatim}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Multiple runs: 5}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Mode: sequential [sapply]}}\begin{verbatim}
 ## Runs: 1* 2* 3* 4 5 ... DONE
 ## System time:
 ##    user  system elapsed 
-##   1.927   0.007   1.935
+##   1.589   0.077   1.664
 \end{verbatim}
 \begin{alltt}
 \hlstd{res4} \hlkwb{<-} \hlkwd{nmf}\hlstd{(esGolub,} \hlnum{3}\hlstd{,} \hlkwc{nrun}\hlstd{=}\hlnum{5}\hlstd{,} \hlkwc{.opt}\hlstd{=}\hlstr{'v'}\hlstd{,} \hlkwc{.pbackend}\hlstd{=}\hlnum{NA}\hlstd{,} \hlkwc{seed}\hlstd{=}\hlnum{123}\hlstd{)}
 \end{alltt}
 
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'\\\#\# Multiple runs: 5\\\#\# Mode: sequential [sapply]}}\begin{verbatim}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Multiple runs: 5}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Mode: sequential [sapply]}}\begin{verbatim}
 ## Runs: 1* 2* 3* 4 5 ... DONE
 ## System time:
 ##    user  system elapsed 
-##   1.974   0.005   1.979
+##   1.531   0.000   1.531
 \end{verbatim}
 \begin{alltt}
 \hlcom{# or use the SEQ backend of foreach: .pbackend='seq'}
@@ -1391,11 +1408,15 @@ This can be done via the option \code{'p1'} to run on a single core , or with
 \end{alltt}
 
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'\\\#\# Multiple runs: 5\\\#\# Mode: sequential [foreach:doSEQ]}}\begin{verbatim}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# NMF algorithm: 'brunet'}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Multiple runs: 5}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Mode: sequential [foreach:doSEQ]}}\begin{verbatim}
 ## Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |========                                          |  17%Runs: |                                                        Runs: |=================                                 |  33%Runs: |                                                        Runs: |=========================                         |  50%Runs: |                                                        Runs: |=================================                 |  67%Runs: |                                                        Runs: |==========================================        |  83%Runs: |                                                        Runs: |==================================================| 100%
 ## System time:
 ##    user  system elapsed 
-##   2.605   0.016   2.622
+##   3.681   0.824   4.492
 \end{verbatim}
 \begin{alltt}
 \hlcom{# all results are all identical}
@@ -1447,7 +1468,7 @@ The results are in fact much cleaner when using the full dataset (\cref{fig:heat
 \hlkwd{plot}\hlstd{(estim.r)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-estimate_rank_plot-1} 
+\includegraphics[width=\maxwidth]{figure/estimate_rank_plot-1} 
 
 \end{knitrout}
 \caption{Estimation of the rank: Quality measures computed from 10 runs for each value of $r$. \label{fig:estim_all}}
@@ -1460,7 +1481,7 @@ The results are in fact much cleaner when using the full dataset (\cref{fig:heat
 \hlkwd{consensusmap}\hlstd{(estim.r,} \hlkwc{annCol}\hlstd{=esGolub,} \hlkwc{labCol}\hlstd{=}\hlnum{NA}\hlstd{,} \hlkwc{labRow}\hlstd{=}\hlnum{NA}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-estimate_rank_hm_include-1} 
+\includegraphics[width=\maxwidth]{figure/estimate_rank_hm_include-1} 
 
 \end{knitrout}
 \caption{Estimation of the rank: Consensus matrices computed from 10 runs for each value of $r$. \label{fig:estim_all_hm}}
@@ -1486,9 +1507,9 @@ The rank estimation procedure can then be applied to the randomized data, and th
 \hlcom{# plot measures on same graph}
 \hlkwd{plot}\hlstd{(estim.r, estim.r.random)}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-estimate_rank_random} 
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in xy.coords(x, y, xlabel, ylabel, log): 'list' object cannot be coerced to type 'double'}}\end{kframe}
 \end{knitrout}
 \caption{Estimation of the rank: Comparison of the quality measures with those obtained from randomized data. 
 The curves for the actual data are in blue and green, those for the randomized data are in red and pink. 
@@ -1528,9 +1549,9 @@ Passing the result to method \code{compare} produces a \code{data.frame} that co
 ## lee       lee random   1 euclidean    3        0.7268875       0.4465608
 ## nsNMF   nsNMF random   1        KL    3        0.6777185       0.7350386
 ##        silhouette.coef silhouette.basis   residuals niter   cpu cpu.all
-## brunet       0.8126484        0.7487792    543535.7   510 0.270   0.270
-## lee          0.7147803        0.6764436 673513120.5  1780 0.982   0.982
-## nsNMF        0.8654196        0.7946175    585106.4   970 0.696   0.696
+## brunet       0.8126484        0.7487792    543535.7   510 0.146   0.146
+## lee          0.7147803        0.6764436 673513120.5  1780 0.511   0.511
+## nsNMF        0.8654196        0.7946175    585106.4   970 0.423   0.423
 ##        nrun
 ## brunet    1
 ## lee       1
@@ -1550,9 +1571,9 @@ Passing the result to method \code{compare} produces a \code{data.frame} that co
 ## lee    0.5789474 0.7231282       0.7147803        0.6764436 673513120.5
 ## nsNMF  0.7894737 0.4691212       0.8654196        0.7946175    585106.4
 ##        niter   cpu cpu.all nrun
-## brunet   510 0.270   0.270    1
-## lee     1780 0.982   0.982    1
-## nsNMF    970 0.696   0.696    1
+## brunet   510 0.146   0.146    1
+## lee     1780 0.511   0.511    1
+## nsNMF    970 0.423   0.423    1
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1587,8 +1608,8 @@ The trajectory can be plot with the method \code{plot} (\cref{fig:errorplot}):
 \hlkwd{plot}\hlstd{(res.multi.method)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=0.5\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-errorplot-1} 
-\includegraphics[width=0.5\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-errorplot-2} 
+\includegraphics[width=0.5\textwidth]{figure/errorplot-1} 
+\includegraphics[width=0.5\textwidth]{figure/errorplot-2} 
 
 \end{knitrout}
 \caption{Error track for a single NMF run (left) and multiple method
@@ -1635,7 +1656,7 @@ We refer to the relevant help pages \code{?basismap} and \code{?aheatmap} for mo
 \hlkwd{coefmap}\hlstd{(res)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-heatmap_coef_basis_inc-1} 
+\includegraphics[width=\maxwidth]{figure/heatmap_coef_basis_inc-1} 
 
 \end{knitrout}
 \caption{Heatmap of the basis and the mixture coefficient matrices. The rows of the basis matrix were selected using the default feature selection method -- described in \cite{KimH2007}.}
@@ -1653,9 +1674,9 @@ Golub dataset):
 \hlkwd{consensusmap}\hlstd{(res.multirun,} \hlkwc{annCol}\hlstd{=esGolub,} \hlkwc{tracks}\hlstd{=}\hlnum{NA}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=0.49\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-heatmap_consensus_inc-1} 
+\includegraphics[width=0.49\textwidth]{figure/heatmap_consensus_inc-1} 
 
-\includegraphics[width=0.49\textwidth]{/home/renaud/Documents/projects/NMF/pkg/vignettes/figure/NMF-vignette-heatmap_consensus_inc-2} 
+\includegraphics[width=0.49\textwidth]{figure/heatmap_consensus_inc-2} 
 
 \end{knitrout}
 
@@ -1760,15 +1781,15 @@ Here we apply the algorithm to some matrix \code{V} randomly generated:
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_321cbf859a9 
+##   algorithm:  nmf_71987a5226 
 ##   seed:  random 
-##   RNG: 403L, 173L, ..., 1280296329L [0d87fde5bf092083bd059bcc33d58a3e]
+##   RNG: 10403L, 459L, ..., -419496537L [6057ec119f63baf6773461376d4e5e22]
 ##   distance metric:  'euclidean' 
-##   residuals:  554.8518 
+##   residuals:  492.4497 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.007   0.000   0.007
+##     0.012   0.019   0.031
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1791,15 +1812,15 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_321c446f52a0 
+##   algorithm:  nmf_71987e5bd4d1 
 ##   seed:  random 
-##   RNG: 403L, 383L, ..., 1280296329L [2f2572f5c6b643d37859d97079951964]
+##   RNG: 10403L, 45L, ..., 1096266081L [2bba3dd48c10aad2ebbb49eaa96efe62]
 ##   distance metric:  'KL' 
-##   residuals:  1538.963 
+##   residuals:  1491.885 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.006   0.000   0.005
+##     0.009   0.000   0.010
 \end{verbatim}
 \begin{alltt}
 \hlcom{# based on custom distance metric}
@@ -1817,15 +1838,15 @@ If the algorithm is based on another distance measure, this one can be specified
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_321c6fcc4dba 
+##   algorithm:  nmf_71987383a1de 
 ##   seed:  random 
-##   RNG: 403L, 593L, ..., 1280296329L [7ed64fa772a4b1e68cebc0bfed3cb018]
+##   RNG: 10403L, 255L, ..., 1096266081L [0447c2aead14d877b7393c7fa4ca996c]
 ##   distance metric:  <function> 
-##   residuals:  9.180711 
+##   residuals:  8.41365 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.006   0.000   0.005
+##     0.004   0.028   0.037
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1863,7 +1884,7 @@ As an example, we reuse the previously defined custom algorithm\footnote{As it i
 \end{alltt}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: NMF::nmf - Input matrix x contains some negative entries.}}\begin{alltt}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Error: NMF::nmf - Input matrix x contains some negative entries.}}\begin{alltt}
 \hlcom{# this runs my.algorithm without error}
 \hlkwd{nmf}\hlstd{(V.neg,} \hlnum{3}\hlstd{, my.algorithm,} \hlkwc{mixed}\hlstd{=}\hlnum{TRUE}\hlstd{,} \hlkwc{scale.factor}\hlstd{=}\hlnum{10}\hlstd{)}
 \end{alltt}
@@ -1875,15 +1896,15 @@ As an example, we reuse the previously defined custom algorithm\footnote{As it i
 ##   basis/rank: 3 
 ##   samples: 20 
 ##  # Details:
-##   algorithm:  nmf_321c5f46fd8b 
+##   algorithm:  nmf_71983bdcd200 
 ##   seed:  random 
-##   RNG: 403L, 179L, ..., -818492466L [850b670d66e22c6d00f5d79570d1ce8a]
+##   RNG: 10403L, 465L, ..., 1096266081L [ea8ff0cac361311538ba61100c10709c]
 ##   distance metric:  'euclidean' 
-##   residuals:  561.3586 
+##   residuals:  489.997 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.005   0.000   0.005
+##     0.002   0.000   0.003
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1958,17 +1979,17 @@ Then run the algorithm specifying it needs model \code{NMFOffset}:
 ##   features: 50 
 ##   basis/rank: 3 
 ##   samples: 20 
-##   offset: [ 0.3676544 0.9382504 1.346861 1.018936 0.6695097 ... ]
+##   offset: [ 0.8454748 0.8168729 0.4680196 0.2121849 0.6002035 ... ]
 ##  # Details:
-##   algorithm:  nmf_321c7aaeb3f3 
+##   algorithm:  nmf_719840895012 
 ##   seed:  random 
-##   RNG: 403L, 389L, ..., -818492466L [7d13c1cc60f9b6390bf7ebfc74dce591]
+##   RNG: 10403L, 51L, ..., 959036133L [e43715ae36fc01464a888994f241d3bc]
 ##   distance metric:  'euclidean' 
-##   residuals:  334.3211 
+##   residuals:  300.2108 
 ##   parameters: scale.factor=10 
 ##   Timing:
 ##      user  system elapsed 
-##     0.005   0.000   0.005
+##     0.013   0.000   0.013
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2016,14 +2037,14 @@ To use the new seeding method:
 ##   samples: 20 
 ##  # Details:
 ##   algorithm:  snmf/r 
-##   seed:  NMF.seed.321c99e8db3 
-##   RNG: 403L, 25L, ..., -1308220775L [e0cc5847b800083c2460eb9eaa25bd4e]
+##   seed:  NMF.seed.71983cb0f7ad 
+##   RNG: 10403L, 311L, ..., 959036133L [160093b7fd363e6b40c878c355b4cdae]
 ##   distance metric:  <function> 
-##   residuals:  195.5716 
-##   Iterations: 105 
+##   residuals:  196.7261 
+##   Iterations: 65 
 ##   Timing:
 ##      user  system elapsed 
-##     0.213   0.004   0.217
+##     0.545   0.537   0.171
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2067,39 +2088,6 @@ Currently the following options are available:
 \begin{description}
 
 
-\item[cores] Default number of cores to use to perform parallel NMF computations.
-Note that this option is effectively used only if the global option \code{'cores'} is
-not set.
-Moreover, the number of cores can also be set at runtime, in the call to \code{nmf},
-via arguments \code{.pbackend} or \code{.options} (see \code{nmf} for more details).
-
-\item[default.algorithm] Default NMF algorithm used by the \code{nmf} function when argument
-\code{method} is missing.
-The value should the key of one of the registered NMF algorithms or a valid specification of an NMF algorithm.
-See \code{?nmfAlgorithm}.
-
-\item[default.seed] Default seeding method used by the \code{nmf} function when argument \code{seed} is missing.
-The value should the key of one of the registered seeding methods or a vallid specification of a seeding method.
-See \code{?nmfSeed}.
-
-\item[track] Toggle default residual tracking.
-When \code{TRUE}, the \code{nmf} function compute and store the residual track in the result -- if not otherwise specified in argument \code{.options}.
-Note that tracking may significantly slow down the computations.
-
-\item[track.interval] Number of iterations between two points in the residual track.
-This option is relevant only when residual tracking is enabled.
-See \code{?nmf}.
-
-\item[error.track] this is a symbolic link to option \code{track} for backward compatibility.
-
-\item[pbackend] Default loop/parallel foreach backend used by the \code{nmf} function when
-argument \code{.pbackend} is missing.
-Currently the following values are supported: \code{'par'} for multicore,
-\code{'seq'} for sequential, \code{NA} for standard \code{sapply} (i.e. do not use a foreach loop),
-\code{NULL} for using the currently registered foreach backend.
-
-\item[parallel.backend] this is a symbolic link to option \code{pbackend} for backward compatibility.
-
 \item[gc] Interval/frequency (in number of runs) at which garbage collection is performed.
 
 \item[verbose] Default level of verbosity.
@@ -2107,15 +2095,9 @@ Currently the following values are supported: \code{'par'} for multicore,
 \item[debug] Toogles debug mode.
 In this mode the console output may be very -- very -- messy, and is aimed at debugging only.
 
-\item[maxIter]  Default maximum number of iteration to use (default NULL).
-This option is for internal/technical usage only, to globally speed up examples or tests
-of NMF algorithms. To be used with care at one's own risk...
-It is documented here so that advanced users are aware of its existence, and can avoid possible
-conflict with their own custom options.
-
 
 \end{description}
- 
+ \% end description
 
 The default/current values of each options can be displayed using the function
 \code{nmf.printOptions}:
@@ -2129,33 +2111,31 @@ The default/current values of each options can be displayed using the function
 ## <Package specific options: package:NMF>
 ## Registered: FALSE
 ## Options:
-## List of 13
-##  $ default.algorithm: chr "brunet"
-##  $ default.seed     : chr "random"
-##  $ error.track      :Class 'option_symlink'  chr "track"
-##  $ track            : logi FALSE
-##  $ track.interval   : num 30
-##  $ gc               : num 50
-##  $ parallel.backend :Class 'option_symlink'  chr "pbackend"
-##  $ pbackend         : chr "par"
-##  $ verbose          : logi FALSE
-##  $ debug            : logi FALSE
-##  $ grid.patch       : logi FALSE
-##  $ shared.memory    : logi TRUE
-##  $ cores            : num 2
-## Defaults:
 ## List of 12
 ##  $ default.algorithm: chr "brunet"
 ##  $ default.seed     : chr "random"
-##  $ error.track      :Class 'option_symlink'  chr "track"
+##  $ error.track      : 'option_symlink' chr "track"
 ##  $ track            : logi FALSE
 ##  $ track.interval   : num 30
 ##  $ gc               : num 50
-##  $ parallel.backend :Class 'option_symlink'  chr "pbackend"
+##  $ parallel.backend : 'option_symlink' chr "pbackend"
 ##  $ pbackend         : chr "par"
 ##  $ verbose          : logi FALSE
 ##  $ debug            : logi FALSE
-##  $ grid.patch       : logi FALSE
+##  $ shared.memory    : logi TRUE
+##  $ cores            : num 2
+## Defaults:
+## List of 11
+##  $ default.algorithm: chr "brunet"
+##  $ default.seed     : chr "random"
+##  $ error.track      : 'option_symlink' chr "track"
+##  $ track            : logi FALSE
+##  $ track.interval   : num 30
+##  $ gc               : num 50
+##  $ parallel.backend : 'option_symlink' chr "pbackend"
+##  $ pbackend         : chr "par"
+##  $ verbose          : logi FALSE
+##  $ debug            : logi FALSE
 ##  $ shared.memory    : logi TRUE
 \end{verbatim}
 \end{kframe}
@@ -2194,23 +2174,33 @@ The default/current values of each options can be displayed using the function
 \pagebreak 
 \section{Session Info}
 \begin{itemize}\raggedright
-  \item R version 3.1.2 (2014-10-31), \verb|x86_64-pc-linux-gnu|
-  \item Locale: \verb|LC_CTYPE=en_US.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_ZA.UTF-8|, \verb|LC_COLLATE=en_US.UTF-8|, \verb|LC_MONETARY=en_ZA.UTF-8|, \verb|LC_MESSAGES=en_US.UTF-8|, \verb|LC_PAPER=en_ZA.UTF-8|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_ZA.UTF-8|, \verb|LC_IDENTIFICATION=C|
+  \item R version 3.6.3 (2020-02-29), \verb|x86_64-pc-linux-gnu|
+  \item Locale: \verb|LC_CTYPE=en_IL.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_IL.UTF-8|, \verb|LC_COLLATE=en_IL.UTF-8|, \verb|LC_MONETARY=en_IL.UTF-8|, \verb|LC_MESSAGES=en_IL.UTF-8|, \verb|LC_PAPER=en_IL.UTF-8|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_IL.UTF-8|, \verb|LC_IDENTIFICATION=C|
+  \item Running under: \verb|Ubuntu 19.10|
+  \item Matrix products: default
+  \item BLAS:   \verb|/usr/lib/x86_64-linux-gnu/openblas/libblas.so.3|
+  \item LAPACK: \verb|/usr/lib/x86_64-linux-gnu/libopenblasp-r0.3.7.so|
   \item Base packages: base, datasets, graphics, grDevices,
     methods, parallel, stats, utils
-  \item Other packages: BH~1.54.0-5, bigmemory~4.4.6,
-    bigmemory.sri~0.1.3, Biobase~2.26.0, BiocGenerics~0.12.1,
-    cluster~1.15.3, knitr~1.8, NMF~0.22, pkgmaker~0.25.9,
-    RColorBrewer~1.0-5, registry~0.2, rngtools~1.2.4,
-    synchronicity~1.1.4, xtable~1.7-4
+  \item Other packages: bigmemory~4.5.36, Biobase~2.46.0,
+    BiocGenerics~0.32.0, cluster~2.1.0, knitr~1.23, NMF~0.23.6,
+    pkgmaker~0.31.1, RColorBrewer~1.1-2, registry~0.5-1,
+    rngtools~1.5.1, synchronicity~1.3.5, xtable~1.8-4
   \item Loaded via a namespace (and not attached):
-    codetools~0.2-9, colorspace~1.2-4, dendextend~0.17.5,
-    digest~0.6.4, doParallel~1.0.8, evaluate~0.5.5, foreach~1.4.2,
-    formatR~1.0, ggplot2~1.0.0, grid~3.1.2, gridBase~0.4-7,
-    gtable~0.1.2, highr~0.4, iterators~1.0.7, labeling~0.3,
-    magrittr~1.5, MASS~7.3-35, munsell~0.4.2, plyr~1.8.1,
-    proto~0.3-10, Rcpp~0.11.3, reshape2~1.4, scales~0.2.4,
-    stringr~0.6.2, tools~3.1.2, whisker~0.3-2
+    assertthat~0.2.1, bibtex~0.4.2.2, bigmemory.sri~0.1.3,
+    codetools~0.2-16, colorspace~1.4-1, compiler~3.6.3,
+    crayon~1.3.4, dendextend~1.13.4, digest~0.6.25,
+    doParallel~1.0.15, dplyr~0.8.5, evaluate~0.14, farver~2.0.3,
+    foreach~1.4.8, ggplot2~3.3.0, glue~1.3.2, grid~3.6.3,
+    gridBase~0.4-7, gridExtra~2.3, gtable~0.3.0, highr~0.8,
+    iterators~1.0.12, labeling~0.3, lattice~0.20-40,
+    lifecycle~0.2.0, magrittr~1.5, Matrix~1.2-18,
+    matrixStats~0.56.0, munsell~0.5.0, pillar~1.4.3,
+    pkgconfig~2.0.3, plyr~1.8.6, purrr~0.3.3, R6~2.4.1,
+    Rcpp~1.0.4, reshape2~1.4.3, rlang~0.4.5, scales~1.1.0,
+    stringi~1.4.3, stringr~1.4.0, tibble~2.1.3, tidyselect~1.0.0,
+    tools~3.6.3, uuid~0.1-4, viridis~0.5.1, viridisLite~0.3.0,
+    withr~2.1.2, xfun~0.8
 \end{itemize}
 
 
