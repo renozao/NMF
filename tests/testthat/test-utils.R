@@ -1,0 +1,92 @@
+#' Unit Testing script for NMF package: NMF utility functions.
+#'
+#' @author Renaud Gaujoux
+#' @creation 10 Aug 2010
+#' Converted from RUnit on 22 Feb 2020
+
+test_that("test.nmfWrapper", {
+    .msg <- NULL
+    msg <- function(...) paste(.msg, ": ", ..., sep = "")
+    f <- nmfWrapper("lee")
+    x <- rmatrix(20, 10)
+    expect_true(isNMFfit(res <- f(x, 3)), info = msg("result is an NMFfit object"))
+    expect_identical(3L, nbasis(res), info = msg("result was computed using the correct rank"))
+    expect_identical("lee", algorithm(res), info = msg("result was computed using the correct algorithm"))
+    .msg <- "with default maxIter and seed value"
+    f <- nmfWrapper("nsNMF", maxIter = 3, seed = "nndsvd")
+    expect_true(isNMFfit(res <- f(x, 2)), info = msg("result is an NMFfit object"))
+    expect_identical(2L, nbasis(res), info = msg("result was computed using the correct rank"))
+    expect_identical("nsNMF", algorithm(res), info = msg("result was computed using the correct algorithm"))
+    expect_identical(3L, niter(res), info = msg("result was computed using the correct number of iterations"))
+    expect_identical("nndsvd", seeding(res), info = msg("result was computed using the correct seed"))
+    .msg <- "overwriting defaults in call"
+    expect_true(isNMFfit(res <- f(x, 4, seed = "random")), info = msg("result is an NMFfit object"))
+    expect_identical(4L, nbasis(res), info = msg("result was computed using the correct rank"))
+    expect_identical("nsNMF", algorithm(res), info = msg("result was computed using the correct algorithm"))
+    expect_identical(3L, niter(res), info = msg("result was computed using the correct number of iterations"))
+    expect_identical("random", seeding(res), info = msg("result was computed using the correct seed"))
+    .msg <- "overwriting defaults in call + try overwrite method"
+    expect_warning(res <- f(x, 4, method = "lee", seed = "random"), "Discarding fixed arguments.*")
+    expect_true(isNMFfit(res), info = msg("result is an NMFfit object"))
+    expect_identical("nsNMF", algorithm(res), info = msg("result was still computed using the correct algorithm defined in nmfWrapper"))
+})
+
+test_that("test.rmatrix", {
+    n <- 100
+    p <- 20
+    A <- matrix(1, n, p)
+    set.seed(123456)
+    M <- matrix(runif(n * n), n, n)
+    set.seed(123456)
+    expect_identical(rmatrix(n), M, info = "Square matrix if 'y' is missing")
+    set.seed(123456)
+    expect_identical(rmatrix(matrix(NA, nrow(M), ncol(M))), M, 
+        info = "Correct if 'x' is a matrix")
+    model <- rnmf(3, A)
+    set.seed(123456)
+    M <- fitted(model) + matrix(runif(n * p), n, p)
+    set.seed(123456)
+    expect_identical(rmatrix(model), M, info = "Correct if 'x' is an NMF model")
+    set.seed(123456)
+    M <- fitted(model) + matrix(rnorm(n * p), n, p)
+    set.seed(123456)
+    expect_identical(rmatrix(model, dist = rnorm), M, info = "dist is passed correctly if 'x' is an NMF model")
+    set.seed(123456)
+    M <- matrix(runif(n * p), n, p)
+    set.seed(123456)
+    expect_identical(rmatrix(n, p), M, info = "Default correctly to 'runif'")
+    set.seed(123456)
+    expect_identical(rmatrix(A), M, info = "Default correctly to 'runif' (arg: matrix)")
+    set.seed(123456)
+    M <- matrix(runif(n * p), n, p, byrow = TRUE)
+    set.seed(123456)
+    expect_identical(rmatrix(n, p, byrow = TRUE), M, info = "argument byrow is correctly passed")
+    set.seed(123456)
+    expect_identical(rmatrix(A, byrow = TRUE), M, info = "argument byrow is correctly passed (arg: matrix)")
+    dims <- list(rep("a", n), rep("b", p))
+    set.seed(123456)
+    M <- matrix(runif(n * p), n, p, dimnames = dims)
+    set.seed(123456)
+    expect_identical(rmatrix(n, p, dimnames = dims), M, info = "argument dimnames is correctly passed")
+    set.seed(123456)
+    expect_identical(rmatrix(A, dimnames = dims), M, info = "argument dimnames is correctly passed (arg: matrix)")
+    set.seed(123456)
+    M <- matrix(rnorm(n * p), n, p)
+    set.seed(123456)
+    expect_identical(rmatrix(n, p, dist = rnorm), M, info = "argument dist is correctly passed")
+    set.seed(123456)
+    expect_identical(rmatrix(A, dist = rnorm), M, info = "argument dist is correctly passed (arg: matrix)")
+    set.seed(123456)
+    M <- matrix(rnorm(n * p), n, p)
+    set.seed(123456)
+    expect_identical(rmatrix(n, p, rnorm), M, info = "argument dist is the third argument")
+    set.seed(123456)
+    expect_identical(rmatrix(A, rnorm), M, info = "argument dist is the second argument (arg: matrix)")
+    set.seed(123456)
+    M <- matrix(rnorm(n * p, 20), n, p)
+    set.seed(123456)
+    expect_identical(rmatrix(n, p, rnorm, mean = 20), M, info = "extra arguments are passed to the distribution function")
+    set.seed(123456)
+    expect_identical(rmatrix(A, rnorm, mean = 20), M, info = "extra arguments are passed to the distribution function (arg: matrix)")
+})
+
