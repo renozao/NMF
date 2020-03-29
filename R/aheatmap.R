@@ -2320,7 +2320,7 @@ trace_vp <- local({.on <- FALSE
 #' with \code{border_color='*'}, which draws borders around all elements.
 #' Using \code{border_color=TRUE} or some color specification will not draw them.
 #' 
-#' The following special syntax is also supported: \code{'[<colorcode>:]<element>'} for coloring element
+#' The following special syntax is also supported: `'[<colorcode>:]<element>'` for coloring element
 #' '<element>', optionally specifying the color before \code{':'}.
 #' Multiple element names can be passed separated by commas (spaces are stripped).
 #' 
@@ -2427,6 +2427,10 @@ trace_vp <- local({.on <- FALSE
 #' 
 #' @param subsetCol Specification of subsetting the columns before drawing the 
 #' heatmap. It accepts the similar values as \code{subsetRow}. See details above.
+#' 
+#' @param y an optional matrix that specifies values that are used to compute circle radius
+#' when `type = "circle"`, so that color and circle size can be independent.
+#' If `NULL`, then radius will be related to the values in the data matrix `x`.
 #' 
 #' @param txt character matrix of the same size as \code{x}, that contains text to 
 #' display in each cell. 

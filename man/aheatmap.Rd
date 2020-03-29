@@ -275,6 +275,10 @@ converted into an ordering vector, and cannot be displayed -- and a warning is t
 \item{subsetCol}{Specification of subsetting the columns before drawing the
 heatmap. It accepts the similar values as \code{subsetRow}. See details above.}
 
+\item{y}{an optional matrix that specifies values that are used to compute circle radius
+when \code{type = "circle"}, so that color and circle size can be independent.
+If \code{NULL}, then radius will be related to the values in the data matrix \code{x}.}
+
 \item{txt}{character matrix of the same size as \code{x}, that contains text to
 display in each cell.
 \code{NA} values are allowed and are not displayed.

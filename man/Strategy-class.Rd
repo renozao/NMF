@@ -28,7 +28,6 @@ should be returned (\code{TRUE}), or only the first (primary) one (\code{FALSE})
 \item{value}{replacement value}
 }
 \description{
-This class defines a common interface for generic algorithm strategies
 (e.g., \code{\linkS4class{NMFStrategy}}).
 
 \code{name} and \code{name<-} gets and sets the name associated with an object.

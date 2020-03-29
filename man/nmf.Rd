@@ -5,6 +5,7 @@
 \alias{nmf,data.frame,ANY,ANY-method}
 \alias{nmf,mMatrix,numeric,NULL-method}
 \alias{nmf,mMatrix,numeric,list-method}
+\alias{nmf,mMatrix,numeric,character-method}
 \alias{nmf,mMatrix,numeric,function-method}
 \alias{nmf,mMatrix,NMF,ANY-method}
 \alias{nmf,mMatrix,NULL,ANY-method}
@@ -23,6 +24,8 @@ nmf(x, rank, method, ...)
 \S4method{nmf}{mMatrix,numeric,`NULL`}(x, rank, method, seed = NULL, model = NULL, ...)
 
 \S4method{nmf}{mMatrix,numeric,list}(x, rank, method, ..., .parameters = list())
+
+\S4method{nmf}{mMatrix,numeric,character}(x, rank, method, ...)
 
 \S4method{nmf}{mMatrix,numeric,`function`}(
   x,
@@ -426,6 +429,99 @@ as standard matrix products. These are accessible by adding the prefix '.R#' to 
 '.R#brunet', '.R#lee', '.R#nsNMF' and '.R#offset'.
 }
 
+\section{Algorithms}{
+
+All algorithms are accessible by their respective access key as listed below.
+The following algorithms are available:
+\describe{
+
+\item{\sQuote{brunet}}{ Standard NMF, based on the Kullback-Leibler divergence,
+from Brunet et al. (2004).
+It uses simple multiplicative updates from Lee and Seung (2001), enhanced to avoid
+numerical underflow.
+
+Default stopping criterion: invariance of the connectivity matrix
+(see \code{\link{nmf.stop.connectivity}}).
+}
+
+\item{\sQuote{lee}}{ Standard NMF based on the Euclidean distance from Lee and Seung (2001).
+It uses simple multiplicative updates.
+
+Default stopping criterion: invariance of the connectivity matrix
+(see \code{\link{nmf.stop.connectivity}}).
+}
+
+\item{ls-nmf}{ Least-Square NMF from Wang et al. (2006).
+It uses modified versions of Lee and Seung's multiplicative updates for the
+Euclidean distance, which incorporates weights on each entry of the target
+matrix, e.g. to reflect measurement uncertainty.
+
+Default stopping criterion: stationarity of the objective function
+(see \code{\link{nmf.stop.stationary}}).
+}
+
+\item{\sQuote{nsNMF}}{ Nonsmooth NMF from Pascual-Montano et al. (2006).
+It uses a modified version of Lee and Seung's multiplicative updates for the
+Kullback-Leibler divergence Lee and Seung (2001), to fit a extension of the standard
+NMF model, that includes an intermediate smoothing matrix, meant meant to produce
+sparser factors.
+
+Default stopping criterion: invariance of the connectivity matrix
+(see \code{\link{nmf.stop.connectivity}}).
+}
+
+\item{\sQuote{offset}}{ NMF with offset from Badea (2008).
+It uses a modified version of Lee and Seung's multiplicative
+updates for Euclidean distance Lee and Seung (2001), to fit an NMF model that includes
+an intercept, meant to capture a common baseline and shared patterns, in
+order to produce cleaner basis components.
+
+Default stopping criterion: invariance of the connectivity matrix
+(see \code{\link{nmf.stop.connectivity}}).
+}
+
+\item{\sQuote{pe-nmf}}{ Pattern-Expression NMF from \emph{Zhang2008}.
+It uses multiplicative updates to minimize an objective function based on the
+Euclidean distance, that is regularized for effective expression of patterns
+with basis vectors.
+
+Default stopping criterion: stationarity of the objective function
+(see \code{\link{nmf.stop.stationary}}).
+}
+
+\item{\sQuote{snmf/r}, \sQuote{snmf/l}}{ Alternating Least Square (ALS) approach
+from Kim and Park (2007).
+It applies the nonnegative least-squares algorithm from Van Benthem and Keenan (2004)
+(i.e. fast combinatorial nonnegative least-squares for multiple right-hand),
+to estimate the basis and coefficient matrices alternatively
+(see \code{\link{fcnnls}}).
+It minimises an Euclidean-based objective function, that is regularized to
+favour sparse basis matrices (for \sQuote{snmf/l}) or sparse coefficient matrices
+(for \sQuote{snmf/r}).
+
+Stopping criterion: built-in within the internal workhorse function \code{nmf_snmf},
+based on the KKT optimality conditions.
+}
+
+}
+}
+
+\section{Seeding methods}{
+
+The purpose of seeding methods is to compute initial values for the factor
+matrices in a given NMF model.
+This initial guess will be used as a starting point by the chosen NMF algorithm.
+
+The seeding method to use in combination with the algorithm can be passed
+to interface \code{nmf} through argument \code{seed}.
+The seeding seeding methods available in registry are listed by the function
+\code{\link{nmfSeed}} (see list therein).
+
+Detailed examples of how to specify the seeding method and its parameters can
+be found in the \emph{Examples} section of this man page and in the package's
+vignette.
+}
+
 \examples{
 
 # Only basic calls are presented in this manpage.
@@ -455,23 +551,39 @@ res <- nmf(x, 2, .options='v3')
  
 }
 \references{
-Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and
-molecular pattern discovery using matrix factorization.” _Proceedings
-of the National Academy of Sciences of the United States of America_,
-*101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL:
+Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and molecular pattern discovery using matrix factorization.” _Proceedings of
+the National Academy of Sciences of the United States of America_, *101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL:
 https://doi.org/10.1073/pnas.0308531101).
+
+Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and molecular pattern discovery using matrix factorization.” _Proceedings of
+the National Academy of Sciences of the United States of America_, *101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL:
+https://doi.org/10.1073/pnas.0308531101).
+
+Lee DD, Seung H (2001). “Algorithms for non-negative matrix factorization.” _Advances in neural information processing systems_. <URL:
+http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
+
+Wang G, Kossenkov AV, Ochs MF (2006). “LS-NMF: a modified non-negative matrix factorization algorithm utilizing uncertainty estimates.”
+_BMC bioinformatics_, *7*, 175. ISSN 1471-2105, doi: 10.1186/1471-2105-7-175 (URL: https://doi.org/10.1186/1471-2105-7-175).
+
+Pascual-Montano A, Carazo JM, Kochi K, Lehmann D, Pascual-marqui RD (2006). “Nonsmooth nonnegative matrix factorization (nsNMF).” _IEEE
+Trans. Pattern Anal. Mach. Intell_, *28*, 403-415.
+
+Badea L (2008). “Extracting gene expression profiles common to colon and pancreatic adenocarcinoma using simultaneous nonnegative matrix
+factorization.” _Pacific Symposium on Biocomputing. Pacific Symposium on Biocomputing_, *290*, 267-78. ISSN 1793-5091, <URL:
+http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
+
+Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray
+data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502. ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
+https://doi.org/10.1093/bioinformatics/btm134).
+
+Van Benthem MH, Keenan MR (2004). “Fast algorithm for the solution of large-scale non-negativity-constrained least squares problems.”
+_Journal of Chemometrics_, *18*(10), 441-450. ISSN 0886-9383, doi: 10.1002/cem.889 (URL: https://doi.org/10.1002/cem.889).
+}
+\seealso{
+\code{\link{nmfAlgorithm}}
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{nmf(x = mMatrix,rank = numeric,method = character)}: Fits an NMF model on \code{x} using an algorithm registered with access key
-\code{method}.
-
-Argument \code{method} is partially match against the access keys of all
-registered algorithms (case insensitive).
-Available algorithms are listed in section \emph{Algorithms} below or the
-introduction vignette.
-A vector of their names may be retrieved via \code{nmfAlgorithm()}.
-
 \item \code{nmf(x = data.frame,rank = ANY,method = ANY)}: Fits an NMF model on a \code{data.frame}.
 
 The target \code{data.frame} is coerced into a matrix with \code{\link{as.matrix}}.
@@ -497,6 +609,15 @@ ensures that all fits are performed using the same initial RNG settings.
 
 This method returns an object of class \code{\linkS4class{NMFList}}, that is
 essentially a list containing each fit.
+
+\item \code{nmf(x = mMatrix,rank = numeric,method = character)}: Fits an NMF model on \code{x} using an algorithm registered with access key
+\code{method}.
+
+Argument \code{method} is partially match against the access keys of all
+registered algorithms (case insensitive).
+Available algorithms are listed in section \emph{Algorithms} below or the
+introduction vignette.
+A vector of their names may be retrieved via \code{nmfAlgorithm()}.
 
 \item \code{nmf(x = mMatrix,rank = numeric,method = function)}: Fits an NMF model on \code{x} using a custom algorithm defined the function
 \code{method}.

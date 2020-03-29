@@ -89,6 +89,23 @@ coming from multiple datasets.
 It must be of the same length as the number of samples/columns in \code{v}
 -- and \code{h}.}
 
+\item{.stop}{specification of a stopping criterion, that is used instead of the
+one associated to the NMF algorithm.
+It may be specified as:
+\itemize{
+\item the access key of a registered stopping criterion;
+\item a single integer that specifies the exact number of iterations to perform, which will
+be honoured unless a lower value is explicitly passed in argument \code{maxIter}.
+\item a single numeric value that specifies the stationnarity threshold for the
+objective function, used in with \code{\link{nmf.stop.stationary}};
+\item a function with signature \code{(object="NMFStrategy", i="integer", y="matrix", x="NMF", ...)},
+where \code{object} is the \code{NMFStrategy} object that describes the algorithm being run,
+\code{i} is the current iteration, \code{y} is the target matrix and \code{x} is the current value of
+the NMF model.
+}}
+
+\item{maxIter}{maximum number of iterations to perform.}
+
 \item{stopconv}{number of iterations intervals over which the connectivity
 matrix must not change for stationarity to be achieved.}
 
@@ -112,9 +129,7 @@ defined by Lee and Seung (2001).
 both matrices.
 }
 \references{
-Lee DD, Seung H (2001). “Algorithms for non-negative matrix
-factorization.” _Advances in neural information processing systems_.
-<URL:
+Lee DD, Seung H (2001). “Algorithms for non-negative matrix factorization.” _Advances in neural information processing systems_. <URL:
 http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
 }
 \author{

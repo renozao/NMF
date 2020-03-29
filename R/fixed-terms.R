@@ -359,7 +359,7 @@ icoef <- function(object, ...){
 	else i
 }
 
-#' Transpose an NMF standard model object
+#' @describeIn t.NMF transposes an NMF standard model object, including fixed terms.
 #' @export
 #' @method t NMFstd
 t.NMFstd <- function(x){

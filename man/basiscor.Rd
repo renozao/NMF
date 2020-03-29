@@ -2,36 +2,12 @@
 % Please edit documentation in R/NMF-class.R
 \name{basiscor}
 \alias{basiscor}
-\alias{basiscor,NMF,matrix-method}
-\alias{basiscor,matrix,NMF-method}
-\alias{basiscor,NMF,NMF-method}
-\alias{basiscor,NMF,missing-method}
 \alias{profcor}
-\alias{profcor,NMF,matrix-method}
-\alias{profcor,matrix,NMF-method}
-\alias{profcor,NMF,NMF-method}
-\alias{profcor,NMF,missing-method}
 \title{Correlations in NMF Models}
 \usage{
 basiscor(x, y, ...)
 
-\S4method{basiscor}{NMF,matrix}(x, y, ...)
-
-\S4method{basiscor}{matrix,NMF}(x, y, ...)
-
-\S4method{basiscor}{NMF,NMF}(x, y, ...)
-
-\S4method{basiscor}{NMF,missing}(x, y, ...)
-
 profcor(x, y, ...)
-
-\S4method{profcor}{NMF,matrix}(x, y, ...)
-
-\S4method{profcor}{matrix,NMF}(x, y, ...)
-
-\S4method{profcor}{NMF,NMF}(x, y, ...)
-
-\S4method{profcor}{NMF,missing}(x, y, ...)
 }
 \arguments{
 \item{x}{a matrix or an object with suitable methods \code{\link{basis}}

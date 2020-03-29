@@ -3,7 +3,33 @@
 \docType{class}
 \name{NMFStrategyFunction-class}
 \alias{NMFStrategyFunction-class}
+\alias{run,NMFStrategyFunction,matrix,NMFfit-method}
+\alias{nmfFormals.NMFStrategyFunction}
+\alias{algorithm,NMFStrategyFunction-method}
+\alias{algorithm<-,NMFStrategyFunction,function-method}
 \title{Interface for Single Function NMF Strategies}
+\usage{
+\S4method{run}{NMFStrategyFunction,matrix,NMFfit}(object, y, x, ...)
+
+\method{nmfFormals}{NMFStrategyFunction}(x, ...)
+
+\S4method{algorithm}{NMFStrategyFunction}(object)
+
+\S4method{algorithm}{NMFStrategyFunction,`function`}(object) <- value
+}
+\arguments{
+\item{object}{an object of class \code{NMFStrategyFunction}, which encapsulates the \code{NMF} algorithm
+to run, access or modify.}
+
+\item{y}{the target data that we want to approximate, passed as a matrix(-like) object.}
+
+\item{x}{an \linkS4class{NMFfit} object used as a starting point/seed by the algorithm.}
+
+\item{...}{other arguments directly passed to the algorithm function encapsulated in \code{object}.}
+
+\item{value}{a function that implements an \code{NMF} algorithm.
+See details of its specifications in the desccription of class slot \code{algorithm}.}
+}
 \description{
 This class implements the virtual interface \code{\link{NMFStrategy}} for
 NMF algorithms that are implemented by a single workhorse R function.
@@ -18,11 +44,28 @@ seeded with an appropriate initial value -- as it is done internally by
 function \code{\link{nmf}}.
 
 Note that argument names currently do not matter, but it is recommended to
-name them as specified above.}
+name them as specified above.
+
+The function must return an object that is compatible with the fitted NMF problem.
+Dependning on the purpose of the algorithm, this can be:
+\itemize{
+\item an \linkS4class{NMF} object for an algorithm that fits estimates both the basis and
+mixture coefficient matrices
+\item a matrix-like object that has the dimensions of either the basis or mixture coefficient matrix, for an algorithm
+that performs a partial fit.
+}}
 }}
 
 \section{Methods (by generic)}{
 \itemize{
+\item \code{run(object = NMFStrategyFunction,y = matrix,x = NMFfit)}: Runs the NMF algorithms implemented by the single R function -- and stored in slot \code{'algorithm'}
+of \code{object}, on the data object \code{y}, using \code{x} as starting point.
+It is equivalent to calling \code{object@algorithm(y, x, ...)}.
+
+This method is usually not called directly, but only via the function \code{\link{nmf}}, which
+takes care of many other details such as seeding the computation, handling RNG settings, or setting up
+parallelisation.
+
 \item \code{algorithm(object = NMFStrategyFunction)}: Returns the single R function that implements the NMF algorithm -- as stored in
 slot \code{algorithm}.
 

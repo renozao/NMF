@@ -4,9 +4,75 @@
 \name{NMFfitXn-class}
 \alias{NMFfitXn-class}
 \alias{show,NMFfitXn-method}
+\alias{nbasis,NMFfitXn-method}
+\alias{nrun,NMFfitXn-method}
+\alias{algorithm,NMFfitXn-method}
+\alias{seeding,NMFfitXn-method}
+\alias{modelname,NMFfitXn-method}
+\alias{seqtime,NMFfitXn-method}
+\alias{runtime.all,NMFfitXn-method}
+\alias{minfit,NMFfitXn-method}
+\alias{fit,NMFfitXn-method}
+\alias{consensus,NMFfitXn-method}
+\alias{purity,NMFfitXn,ANY-method}
+\alias{entropy,NMFfitXn,ANY-method}
 \title{Structure for Storing All Fits from Multiple NMF Runs}
 \usage{
 \S4method{show}{NMFfitXn}(object)
+
+\S4method{nbasis}{NMFfitXn}(x, ...)
+
+\S4method{nrun}{NMFfitXn}(object)
+
+\S4method{algorithm}{NMFfitXn}(object)
+
+\S4method{seeding}{NMFfitXn}(object)
+
+\S4method{modelname}{NMFfitXn}(object)
+
+\S4method{seqtime}{NMFfitXn}(object)
+
+\S4method{runtime.all}{NMFfitXn}(object, null = FALSE, warning = TRUE)
+
+\S4method{minfit}{NMFfitXn}(object)
+
+\S4method{fit}{NMFfitXn}(object)
+
+\S4method{consensus}{NMFfitXn}(object, ..., no.attrib = FALSE)
+
+\S4method{purity}{NMFfitXn,ANY}(x, y, method = "best", ...)
+
+\S4method{entropy}{NMFfitXn,ANY}(x, y, method = "best", ...)
+}
+\arguments{
+\item{object}{an object of class \code{NMFfitXn}}
+
+\item{x}{an \code{NMFfitXn} object.}
+
+\item{...}{other arguments passed to subsequent calls of suitable methods, usually of the same generic.}
+
+\item{null}{a logical that indicates if the sequential time should be returned
+if no time data is available in slot \sQuote{runtime.all}.}
+
+\item{warning}{a logical that indicates if a warning should be thrown if the
+sequential time is returned instead of the real CPU time.}
+
+\item{no.attrib}{a single logical that indicates that no extra attributes
+should be attached to the result matrix.
+If \code{TRUE}, then the following attributes are attached:
+\itemize{
+\item \code{nrun}: number of algorithm runs performed;
+\item \code{nbasis}: number of basis components of the fitted model;
+}
+
+Also, in this case, the result gains an extra S3 class \code{NMF.consensus}.}
+
+\item{y}{an object that act as a suitable reference for the computation of performance measures.
+For \link{purity} and \link{entropy} this would typically be a \code{factor} that indicates known column clusters.}
+
+\item{method}{a character string that specifies how the value is computed.
+It may be either \code{'best'} or \code{'mean'} to compute the best or mean
+purity respectively.}
 }
 \description{
 This class is used to return the result from a multiple run of a single NMF
@@ -65,10 +131,10 @@ Other multipleNMF:
 \concept{multipleNMF}
 \section{Methods (by generic)}{
 \itemize{
-\item \code{nbasis(x = NMFfitXn)}: Returns the number of basis components common to all fits.
+\item \code{dim(x = NMFfitXn)}: Returns the dimension common to all fits.
 
-Since all fits have been computed using the same rank, it returns the
-factorization rank of the first fit.
+Since all fits have the same dimensions, it returns the dimension of the
+first fit.
 This method returns \code{NULL} if the object is empty.
 
 \item \code{coef(object = NMFfitXn)}: Returns the coefficient matrix of the best fit amongst all the fits stored in
@@ -78,6 +144,25 @@ It is a shortcut for \code{coef(fit(object))}.
 \item \code{basis(object = NMFfitXn)}: Returns the basis matrix of the best fit amongst all the fits stored in
 \code{object}.
 It is a shortcut for \code{basis(fit(object))}.
+
+\item \code{getRNG1(object = NMFfitXn)}: Returns the RNG settings used for the first run.
+
+This method throws an error if the object is empty.
+
+\item \code{.getRNG(object = NMFfitXn)}: Returns the RNG settings used for the best fit.
+
+This method throws an error if the object is empty.
+
+\item \code{compare(object = NMFfitXn)}: Compares the fits obtained by separate runs of NMF, in a single
+call to \code{\link{nmf}}.
+
+\item \code{show(object = NMFfitXn)}: Show method for objects of class \code{NMFfitXn}
+
+\item \code{nbasis(x = NMFfitXn)}: Returns the number of basis components common to all fits.
+
+Since all fits have been computed using the same rank, it returns the
+factorization rank of the first fit.
+This method returns \code{NULL} if the object is empty.
 
 \item \code{nrun(object = NMFfitXn)}: Returns the number of runs performed to compute the fits stored in the list
 (i.e. the length of the list itself).
@@ -120,14 +205,6 @@ estimation residuals.
 
 The model is selected based on its \code{deviance} value.
 
-\item \code{getRNG1(object = NMFfitXn)}: Returns the RNG settings used for the first run.
-
-This method throws an error if the object is empty.
-
-\item \code{.getRNG(object = NMFfitXn)}: Returns the RNG settings used for the best fit.
-
-This method throws an error if the object is empty.
-
 \item \code{fit(object = NMFfitXn)}: Returns the best NMF fit object amongst all the fits stored in \code{object},
 i.e. the fit that achieves the lowest estimation residuals.
 
@@ -138,10 +215,8 @@ This method returns \code{NULL} on an empty object.
 The result is a matrix with several attributes attached, that are used by
 plotting functions such as \code{\link{consensusmap}} to annotate the plots.
 
-\item \code{purity(x = NMFfitXn,y = ANY)}: Computes the best or mean purity across all NMF fits stored in \code{x}.
+\item \code{purity(x = NMFfitXn,y = ANY)}: Computes the best or mean \link{purity} across all NMF fits stored in \code{x}.
 
 \item \code{entropy(x = NMFfitXn,y = ANY)}: Computes the best or mean entropy across all NMF fits stored in \code{x}.
-
-\item \code{show(object = NMFfitXn)}: Show method for objects of class \code{NMFfitXn}
 }}
 

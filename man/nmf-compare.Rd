@@ -26,6 +26,8 @@
 \S4method{consensusmap}{list}(object, layout, Rowv = FALSE, main = names(object), ...)
 }
 \arguments{
+\item{object}{an object of class \code{NMFfit}.}
+
 \item{...}{extra arguments passed by \code{compare} to \code{summary,NMFList}
 or to the \code{summary} method of each fit.}
 
@@ -54,6 +56,14 @@ It may be a single numeric or a numeric couple, to indicate a square or rectangu
 respectively, that is filled row by row.
 It may also be a matrix that is directly passed to the function \code{\link[graphics]{layout}}
 from the package \code{graphics}.}
+
+\item{Rowv}{clustering specification(s) for the rows. It allows to specify
+the distance/clustering/ordering/display parameters to be used for the
+\emph{rows only}.
+
+See section \emph{Row/column ordering and display} for details on all supported values.}
+
+\item{main}{Main title as a character string or a grob.}
 }
 \description{
 The functions documented here allow to compare the fits computed in

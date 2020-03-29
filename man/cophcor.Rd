@@ -36,10 +36,8 @@ distances (by default an average linkage is used).
 See Brunet et al. (2004).
 }
 \references{
-Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and
-molecular pattern discovery using matrix factorization.” _Proceedings
-of the National Academy of Sciences of the United States of America_,
-*101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL:
+Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and molecular pattern discovery using matrix factorization.” _Proceedings of
+the National Academy of Sciences of the United States of America_, *101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL:
 https://doi.org/10.1073/pnas.0308531101).
 }
 \seealso{

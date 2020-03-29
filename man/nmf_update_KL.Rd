@@ -69,9 +69,7 @@ W_ik <- W_ik ( sum_u [H_kl A_il / (WH)_il ] ) / ( sum_l H_kl )
 }
 }
 \references{
-Lee DD, Seung H (2001). “Algorithms for non-negative matrix
-factorization.” _Advances in neural information processing systems_.
-<URL:
+Lee DD, Seung H (2001). “Algorithms for non-negative matrix factorization.” _Advances in neural information processing systems_. <URL:
 http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
 }
 \author{

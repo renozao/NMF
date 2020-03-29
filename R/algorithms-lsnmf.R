@@ -40,11 +40,13 @@ NULL
 #' # Handling missing values in data
 #' x <- rmatrix(100, 20)
 #' NA_values <- sample(length(x), 5)
-#' x[ NA_values ] <- NA
+#' x[ 1 ] <- NA
 #' 
 #' # Classic Lee does not work on this
+#' try({
 #' res <- nmf(x, 2, 'lee')
 #' anyNA(res) # 3 means NA values in basis and coef matrix
+#' })
 #' 
 #' # LS-NMF handles missing values by cancelling them with null weights
 #' res <- nmf(x, 2, 'ls-nmf', .opt='v')
@@ -199,7 +201,7 @@ wrss <- function(object, X, weight = 1, ...){
 }
 
 # Registration of LS-NMF
-#' @inheritParams run,NMFStrategyIterative,matrix,NMFfit-method
+#' @inheritParams run,NMFStrategyIterative,mMatrix,NMFfit-method
 #' @inheritParams nmf.stop.stationary
 #' 
 #' @aliases lsNMF-nmf

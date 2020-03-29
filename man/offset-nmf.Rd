@@ -66,6 +66,23 @@ only to allow other arguments from the main call to be passed to the
 initialisation and stopping criterion functions (slots \code{onInit} and
 \code{Stop} respectively).}
 
+\item{.stop}{specification of a stopping criterion, that is used instead of the
+one associated to the NMF algorithm.
+It may be specified as:
+\itemize{
+\item the access key of a registered stopping criterion;
+\item a single integer that specifies the exact number of iterations to perform, which will
+be honoured unless a lower value is explicitly passed in argument \code{maxIter}.
+\item a single numeric value that specifies the stationnarity threshold for the
+objective function, used in with \code{\link{nmf.stop.stationary}};
+\item a function with signature \code{(object="NMFStrategy", i="integer", y="matrix", x="NMF", ...)},
+where \code{object} is the \code{NMFStrategy} object that describes the algorithm being run,
+\code{i} is the current iteration, \code{y} is the target matrix and \code{x} is the current value of
+the NMF model.
+}}
+
+\item{maxIter}{maximum number of iterations to perform.}
+
 \item{stopconv}{number of iterations intervals over which the connectivity
 matrix must not change for stationarity to be achieved.}
 
@@ -92,15 +109,11 @@ simultaneous NMF model, which is fit by algorithm \sQuote{siNMF} from
 formula-based NMF models.
 }
 \references{
-Badea L (2008). “Extracting gene expression profiles common to colon
-and pancreatic adenocarcinoma using simultaneous nonnegative matrix
-factorization.” _Pacific Symposium on Biocomputing. Pacific Symposium
-on Biocomputing_, *290*, 267-78. ISSN 1793-5091, <URL:
+Badea L (2008). “Extracting gene expression profiles common to colon and pancreatic adenocarcinoma using simultaneous nonnegative matrix
+factorization.” _Pacific Symposium on Biocomputing. Pacific Symposium on Biocomputing_, *290*, 267-78. ISSN 1793-5091, <URL:
 http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
 
-Lee DD, Seung H (2001). “Algorithms for non-negative matrix
-factorization.” _Advances in neural information processing systems_.
-<URL:
+Lee DD, Seung H (2001). “Algorithms for non-negative matrix factorization.” _Advances in neural information processing systems_. <URL:
 http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
 }
 \author{

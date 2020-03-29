@@ -4,9 +4,21 @@
 \name{NMFSeed-class}
 \alias{NMFSeed-class}
 \alias{show,NMFSeed-method}
+\alias{algorithm,NMFSeed-method}
+\alias{algorithm<-,NMFSeed,function-method}
 \title{Base class that defines the interface for NMF seeding methods.}
 \usage{
 \S4method{show}{NMFSeed}(object)
+
+\S4method{algorithm}{NMFSeed}(object)
+
+\S4method{algorithm}{NMFSeed,`function`}(object) <- value
+}
+\arguments{
+\item{object}{an object of class \code{NMFSeed}.}
+
+\item{value}{object whose value is used to modify properties of the given object.
+See details for each method.}
 }
 \description{
 This class implements a simple wrapper strategy object that defines a unified

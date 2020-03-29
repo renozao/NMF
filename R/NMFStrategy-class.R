@@ -10,7 +10,6 @@ NULL
 
 #' Generic Strategy Class
 #' 
-#' This class defines a common interface for generic algorithm strategies 
 #' (e.g., \code{\linkS4class{NMFStrategy}}).
 #' 
 #' @slot name character string giving the name of the algorithm
@@ -285,14 +284,16 @@ setMethod('NMFStrategy', signature(name='character', method='missing'),
 #' that a method \code{run} is defined by sub-classes of \code{NMFStrategy}.
 #' 
 #' It throws an error if called directly.
-#' @rdname NMFStrategy
+#' 
+#' @param y the target data that we want to approximate, passed as a matrix(-like) object.
+#' @param x an [NMFfit-class] object used as a starting point/seed by the algorithm.
+#' 
 setMethod('run', signature(object='NMFStrategy', y='mMatrix', x='NMFfit'),
 	function(object, y, x, ...){
 		stop("NMFStrategy::run is a pure virtual method that should be overloaded in class '", class(object),"'.")
 	}
 )
 #' Method to run an NMF algorithm directly starting from a given NMF model.
-#' @rdname NMFStrategy
 setMethod('run', signature(object='NMFStrategy', y='mMatrix', x='NMF'),
 	function(object, y, x, ...){
 		run(object, y, NMFfit(fit=x, seed='none', method=name(object)), ...)
@@ -300,11 +301,11 @@ setMethod('run', signature(object='NMFStrategy', y='mMatrix', x='NMF'),
 )
 
 #' Computes the value of the objective function between the estimate \code{x}
-#' and the target \code{y}.
+#' and the target \code{y}, using the objective function associated with the given
+#' `NMFStrategy` object.
 #' 
 #' @param x an NMF model that estimates \code{y}.
 #' 
-#' @inline
 setMethod('deviance', 'NMFStrategy',
 	function(object, x, y, ...){
 		
@@ -326,7 +327,6 @@ setMethod('deviance', 'NMFStrategy',
 #' a given target matrix. 
 #' 
 #' @export
-#' @rdname NMFStrategy-class
 setMethod('objective', 'NMFStrategy',
 	function(object){
 		slot(object, 'objective')
@@ -335,7 +335,6 @@ setMethod('objective', 'NMFStrategy',
 #' Sets the objective function associated with an NMF algorithm, with a character string
 #' that must be a registered objective function.
 #' @export
-#' @rdname NMFStrategy-class
 setReplaceMethod('objective', signature(object='NMFStrategy', value='character'),
 	function(object, value){
 		#TODO: test for the existence of objective method
@@ -347,7 +346,6 @@ setReplaceMethod('objective', signature(object='NMFStrategy', value='character')
 #' Sets the objective function associated with an NMF algorithm, with a function
 #' that computes the approximation error between an NMF model and a target matrix.
 #' @export
-#' @rdname NMFStrategy-class
 setReplaceMethod('objective', signature(object='NMFStrategy', value='function'),
 	function(object, value){
 		slot(object, 'objective') <- value
@@ -378,22 +376,28 @@ is.mixed <-	function(object){
 #' Showing Arguments of NMF Algorithms
 #' 
 #' This function returns the extra arguments that can be passed
-#' to a given NMF algorithm in call to \code{\link{nmf}}.
+#' to a given NMF algorithm in a call to [nmf()].
 #' 
 #' @param x algorithm specification
-#' @param ... extra argument to allow extension
+#' @param ... extra argument to allow extension and passed to a suitable method.
 #' 
 #' @export
 nmfFormals <- function(x, ...){
 	UseMethod('nmfFormals')
 }
 
+#' Returns the extra arguments corresponfing to the `NMF` algorithm specified by its name 
+#' (a single string).
+#' It is a shorcut for `nmfFormals(nmfAlgorithm(x), ...)`
 #' @export
 nmfFormals.character <- function(x, ...){
 	s <- nmfAlgorithm(x)
 	nmfFormals(s, ...)
 }
 
+#' Returns the extra arguments that can be passed to an algorithm encapsulated in an `NMFStrategy` object.
+#' 
+#' Arguments that have default values defined by the strategy are set accordingly.
 #' @export
 nmfFormals.NMFStrategy <- function(x, ...){
 	m <- getMethod('run', signature(object='NMFStrategy', y='mMatrix', x='NMFfit'))
@@ -406,6 +410,7 @@ nmfFormals.NMFStrategy <- function(x, ...){
 #' display the arguments of a given NMF algorithm.
 #' 
 #' @rdname nmfFormals
+#' @seealso [nmfWrapper]
 #' @export
 #' @examples 
 #' 

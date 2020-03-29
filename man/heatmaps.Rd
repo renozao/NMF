@@ -334,10 +334,8 @@ consensusmap(res)
 
 }
 \references{
-Kim H, Park H (2007). “Sparse non-negative matrix factorizations via
-alternating non-negativity-constrained least squares for microarray
-data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502.
-ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
+Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray
+data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502. ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
 https://doi.org/10.1093/bioinformatics/btm134).
 }
 \section{Methods (by generic)}{
@@ -375,6 +373,11 @@ as ploted by \code{\link{consensusmap}}.
 \bold{consensusmap:}
 
 \itemize{
+\item \code{consensusmap(object = NMF.rank)}: Draw a single plot with a heatmap of the consensus matrix obtained for each value of the rank,
+in the range tested with \code{\link{nmfEstimateRank}}.
+
+\item \code{consensusmap(object = list)}: Draw a single plot with a heatmap of the consensus matrix of each element in the list \code{object}.
+
 \item \code{consensusmap(object = NMFfitX)}: Plots a heatmap of the consensus matrix obtained when fitting an NMF model with multiple runs.
 
 \item \code{consensusmap(object = NMF)}: Plots a heatmap of the connectivity matrix of an NMF model.

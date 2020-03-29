@@ -1,6 +1,5 @@
 #' @include rmatrix.R
 #' @include aaa-package.R
-#' @useDynLib NMF
 NULL
 
 #' Utility Function in the NMF Package
@@ -542,14 +541,14 @@ pmax.inplace <- function(x, lim, skip=NULL){
 	
 }
 
-# colMin
+# # colMin
 colMin <- function(x){
-	.Call('colMin', x, PACKAGE='NMF')
+	.Call('c_colMin', x, PACKAGE='NMF')
 }
 
 # colMax
 colMax <- function(x){
-	.Call('colMax', x, PACKAGE='NMF')
+	.Call('c_colMax', x, PACKAGE='NMF')
 }
 
 #' \code{neq.constraints.inplace} apply unequality constraints in place.
@@ -577,7 +576,7 @@ ptr_isnil <- function (address)
 {
 	if (class(address) != "externalptr") 
 		stop("address is not an externalptr.")
-	.Call("ptr_isnil", address, PACKAGE='NMF')	
+	.Call("c_ptr_isnil", address, PACKAGE='NMF')	
 }
 
 

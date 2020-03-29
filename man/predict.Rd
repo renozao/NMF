@@ -25,6 +25,8 @@ predict(object, ...)
 \arguments{
 \item{object}{an NMF model}
 
+\item{...}{other arguments passed to suitable methods, like \link{predict,NMF-method}.}
+
 \item{what}{a character string that indicates the type of cluster membership should
 be returned: \sQuote{columns} or \sQuote{rows} for clustering the colmuns or the
 rows of the target matrix respectively.
@@ -90,14 +92,11 @@ predict(x, 'rows', prob=TRUE)
 
 }
 \references{
-Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and
-molecular pattern discovery using matrix factorization.” _Proceedings
-of the National Academy of Sciences of the United States of America_,
-*101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL:
+Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and molecular pattern discovery using matrix factorization.” _Proceedings of
+the National Academy of Sciences of the United States of America_, *101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL:
 https://doi.org/10.1073/pnas.0308531101).
 
-Pascual-Montano A, Carazo JM, Kochi K, Lehmann D, Pascual-marqui RD
-(2006). “Nonsmooth nonnegative matrix factorization (nsNMF).” _IEEE
+Pascual-Montano A, Carazo JM, Kochi K, Lehmann D, Pascual-marqui RD (2006). “Nonsmooth nonnegative matrix factorization (nsNMF).” _IEEE
 Trans. Pattern Anal. Mach. Intell_, *28*, 403-415.
 }
 \concept{stats Methods for the Interface Defined in Package stats}
@@ -123,5 +122,8 @@ index are re-labeled to match the order of the clusters as they would be display
 associated dendrogram, as re-ordered on the default annotation track in consensus
 heatmap produced by \code{\link{consensusmap}}.}
 }
+
+When \code{what} takes values other that those described above, then all extra arguments are passed to
+the \link{predict,NMF-method}.
 }}
 

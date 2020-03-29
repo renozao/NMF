@@ -2,6 +2,7 @@
 % Please edit documentation in R/nmfModel.R
 \name{nmfModel}
 \alias{nmfModel}
+\alias{nmfModel,numeric,numeric-method}
 \alias{nmfModel,numeric,missing-method}
 \alias{nmfModel,missing,ANY-method}
 \alias{nmfModel,NULL,ANY-method}
@@ -15,6 +16,18 @@
 \title{Factory Methods NMF Models}
 \usage{
 nmfModel(rank, target = 0L, ...)
+
+\S4method{nmfModel}{numeric,numeric}(
+  rank,
+  target,
+  ncol = NULL,
+  model = "NMFstd",
+  W,
+  H,
+  ...,
+  force.dim = TRUE,
+  order.basis = TRUE
+)
 
 \S4method{nmfModel}{numeric,missing}(rank, target = 0L, ...)
 
@@ -45,6 +58,31 @@ nmfModels(builtin.only = FALSE)
 \item{...}{extra arguments to allow extension, that are passed down to the
 workhorse method \code{nmfModel,numeric.numeric}, where they are used to
 initialise slots specific to the instantiating NMF model class.}
+
+\item{ncol}{a numeric value that specifies the number
+of columns of the target matrix, fitted the NMF model.
+It is used only if not missing and when argument \code{target} is a single
+numeric value.}
+
+\item{model}{the class of the object to be created.
+It must be a valid class name that inherits from class \code{NMF}.
+Default is the standard NMF model \code{\linkS4class{NMFstd}}.}
+
+\item{W}{value for the basis matrix.
+\code{data.frame} objects are converted into matrices with \code{\link{as.matrix}}.}
+
+\item{H}{value for the mixture coefficient matrix
+\code{data.frame} objects are converted into matrices with \code{\link{as.matrix}}.}
+
+\item{force.dim}{logical that indicates whether the method should try
+lowering the rank or shrinking dimensions of the input matrices to
+make them compatible}
+
+\item{order.basis}{logical that indicates whether the basis components should
+reorder the rows of the mixture coefficient matrix to match the order of the
+basis components, based on their respective names. It is only used if the
+basis and coefficient matrices have common unique column and row names
+respectively.}
 
 \item{use.names}{a logical that indicates whether the dimension names of the
 target matrix should be set on the returned NMF model.}
@@ -91,7 +129,77 @@ If using this method or other NMF-related methods several times, consider
 converting your data \code{data.frame} object into a matrix once for good,
 when first loaded.
 }
+\section{Main factory method}{
+
+The main factory engine of NMF models is implemented by the method with
+signature \code{numeric, numeric}.
+Other factory methods provide convenient ways of creating NMF models from e.g. a
+given target matrix or known basis/coef matrices (see section \emph{Other Factory Methods}).
+
+This method creates an object of class \code{model}, using the extra
+arguments in \code{...} to initialise slots that are specific to the given model.
+
+All NMF models implement get/set methods to access the matrix factors
+(see \code{\link{basis}}), which are called to initialise them from arguments
+\code{W} and \code{H}.
+These argument names derive from the definition of all built-in models that
+inherit derive from class \code{\linkS4class{NMFstd}}, which has two slots,
+\var{W} and \var{H}, to hold the two factors -- following the notations used
+in Lee and Seung (1999).
+
+If argument \code{target} is missing, the method creates a standard NMF
+model of dimension 0x\code{rank}x0.
+That is that the basis and mixture coefficient matrices, \var{W} and \var{H},
+have dimension 0x\code{rank} and \code{rank}x0 respectively.
+
+If target dimensions are also provided in argument \code{target} as a
+2-length vector, then the method creates an \code{NMF} object compatible to
+fit a target matrix of dimension \code{target[1]}x\code{target[2]}.
+That is that the basis and mixture coefficient matrices, \var{W} and \var{H},
+have dimension \code{target[1]}x\code{rank} and \code{rank}x\code{target[2]}
+respectively.
+The target dimensions can also be specified using both arguments \code{target}
+and \code{ncol} to define the number of rows and the number of columns of the
+target matrix respectively.
+If no other argument is provided, these matrices are filled with NAs.
+
+If arguments \code{W} and/or \code{H} are provided, the method creates a NMF
+model where the basis and mixture coefficient matrices, \var{W} and \var{H},
+are initialised using the values of \code{W} and/or \code{H}.
+
+The dimensions given by \code{target}, \code{W} and \code{H}, must be compatible.
+However if \code{force.dim=TRUE}, the method will reduce the dimensions to the achieve
+dimension compatibility whenever possible.
+
+When \code{W} and \code{H} are both provided, the \code{NMF} object created is
+suitable to seed a NMF algorithm in a call to the \code{\link{nmf}} method.
+Note that in this case the factorisation rank is implicitly set by the number
+of basis components in the seed.
+}
+
 \examples{
+
+# data
+n <- 20; r <- 3; p <- 10  
+V <- rmatrix(n, p) # some target matrix
+
+# create a r-ranked NMF model with a given target dimensions n x p as a 2-length vector
+nmfModel(r, c(n,p)) # directly
+nmfModel(r, dim(V)) # or from an existing matrix <=> nmfModel(r, V)
+# or alternatively passing each dimension separately
+nmfModel(r, n, p)
+
+# trying to create a NMF object based on incompatible matrices generates an error
+w <- rmatrix(n, r) 
+h <- rmatrix(r+1, p)
+try( new('NMFstd', W=w, H=h) )
+try( nmfModel(w, h) )
+try( nmfModel(r+1, W=w, H=h) )
+# The factory method can be force the model to match some target dimensions
+# but warnings are thrown
+nmfModel(r, W=w, H=h)
+nmfModel(r, n-1, W=w, H=h)
+
 ## Empty model of given rank
 nmfModel(3)
  
@@ -120,6 +228,7 @@ try( nmfModel(W=w, H=h[-1,]) )
 
  
 # create a r-ranked NMF model compatible with a given target matrix
+V <- rmatrix(20, 10)
 obj <- nmfModel(r, V)
 all(is.na(basis(obj)))
 
@@ -174,6 +283,10 @@ nmfModels()
 # show all the built-in NMF models available
 nmfModels(builtin.only=TRUE)
 
+}
+\references{
+Lee DD, Seung HS (1999). “Learning the parts of objects by non-negative matrix factorization.” _Nature_, *401*(6755), 788-91. ISSN
+0028-0836, doi: 10.1038/44565 (URL: https://doi.org/10.1038/44565).
 }
 \seealso{
 \code{\link{is.empty.nmf}}

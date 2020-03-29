@@ -15,6 +15,14 @@ NULL
 #' Note that argument names currently do not matter, but it is recommended to 
 #' name them as specified above.
 #' 
+#' The function must return an object that is compatible with the fitted NMF problem.
+#' Dependning on the purpose of the algorithm, this can be:
+#' 
+#'   * an [NMF-class] object for an algorithm that fits estimates both the basis and 
+#'   mixture coefficient matrices
+#'   * a matrix-like object that has the dimensions of either the basis or mixture coefficient matrix, for an algorithm
+#'   that performs a partial fit. 
+#' 
 setClass('NMFStrategyFunction'
 	, representation(
 		algorithm = 'function' # the function that implements the algorithm				
@@ -29,7 +37,11 @@ setClass('NMFStrategyFunction'
 #' takes care of many other details such as seeding the computation, handling RNG settings, or setting up 
 #' parallelisation.
 #' 
-#' @rdname NMFStrategy
+#' @param object an object of class `NMFStrategyFunction`, which encapsulates the `NMF` algorithm 
+#' to run, access or modify.
+#' @inheritParams run,NMFStrategy,mMatrix,NMFfit-method
+#' @param ... other arguments directly passed to the algorithm function encapsulated in `object`.
+#' 
 setMethod('run', signature(object='NMFStrategyFunction', y='matrix', x='NMFfit'),
 	function(object, y, x, ...){
 		if( !is.function(fun <- algorithm(object)) )  
@@ -61,6 +73,10 @@ setMethod('algorithm', signature(object='NMFStrategyFunction'),
 #	}
 #)
 #' Sets the function that implements the NMF algorithm, stored in slot \code{algorithm}. 
+#' 
+#' @param value a function that implements an `NMF` algorithm.
+#' See details of its specifications in the desccription of class slot `algorithm`. 
+#' 
 setReplaceMethod('algorithm', signature(object='NMFStrategyFunction', value='function'),
 	function(object, value){
 		slot(object, 'algorithm') <- value

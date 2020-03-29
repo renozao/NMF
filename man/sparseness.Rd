@@ -4,7 +4,6 @@
 \alias{sparseness}
 \alias{sparseness,numeric-method}
 \alias{sparseness,matrix-method}
-\alias{sparseness,NMF-method}
 \title{Sparseness}
 \usage{
 sparseness(x, ...)
@@ -12,8 +11,6 @@ sparseness(x, ...)
 \S4method{sparseness}{numeric}(x)
 
 \S4method{sparseness}{matrix}(x)
-
-\S4method{sparseness}{NMF}(x)
 }
 \arguments{
 \item{x}{an object whose sparseness is computed.}
@@ -46,8 +43,7 @@ The basic definition is for a \code{numeric} vector, and is extended for matrice
 mean sparseness of its column vectors.
 }
 \references{
-Hoyer P (2004). “Non-negative matrix factorization with sparseness
-constraints.” _The Journal of Machine Learning Research_, *5*,
+Hoyer P (2004). “Non-negative matrix factorization with sparseness constraints.” _The Journal of Machine Learning Research_, *5*,
 1457-1469. <URL: http://portal.acm.org/citation.cfm?id=1044709>.
 }
 \seealso{
@@ -57,6 +53,11 @@ Other assess:
 \concept{assess}
 \section{Methods (by generic)}{
 \itemize{
+\item \code{sparseness(x = NMF)}: Compute the sparseness of an object of class \code{NMF}, as the sparseness of
+the basis and coefficient matrices computed separately.
+
+It returns the two values in a numeric vector with names \sQuote{basis} and \sQuote{coef}.
+
 \item \code{sparseness(x = numeric)}: Base method that computes the sparseness of a numeric vector.
 
 It returns a single numeric value, computed following the definition
@@ -64,10 +65,5 @@ given in section \emph{Description}.
 
 \item \code{sparseness(x = matrix)}: Computes the sparseness of a matrix as the mean sparseness of its column vectors.
 It returns a single numeric value.
-
-\item \code{sparseness(x = NMF)}: Compute the sparseness of an object of class \code{NMF}, as the sparseness of
-the basis and coefficient matrices computed separately.
-
-It returns the two values in a numeric vector with names \sQuote{basis} and \sQuote{coef}.
 }}
 

@@ -220,7 +220,7 @@ setMethod('rposneg', 'NMF'
 }
 )
 
-#' Transformation NMF Model Objects
+#' Transformation of NMF Model Objects
 #' 
 #' \code{t} transpose an NMF model, by transposing and swapping its basis and 
 #' coefficient matrices: \eqn{t([W,H]) = [t(H), t(W)]}.
@@ -234,6 +234,7 @@ setMethod('rposneg', 'NMF'
 #' 
 #' @family transforms
 #' @export
+#' @method t NMF
 #' @examples
 #' 
 #' x <- rnmf(3, 100, 20)
@@ -246,7 +247,6 @@ setMethod('rposneg', 'NMF'
 #' stopifnot( identical(basis(y), t(coef(x))) )
 #' stopifnot( identical(coef(y), t(basis(x))) )
 #' 
-#' @method t NMF
 t.NMF <- function(x){
 	# transpose and swap factors
 	w <- t(basis(x))

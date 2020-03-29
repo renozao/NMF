@@ -61,8 +61,6 @@ nmfSeed('ica')
 
 }
 \references{
-Boutsidis C, Gallopoulos E (2008). “SVD based initialization: A head
-start for nonnegative matrix factorization.” _Pattern Recognition_,
-*41*(4), 1350-1362. ISSN 00313203, doi: 10.1016/j.patcog.2007.09.010
-(URL: https://doi.org/10.1016/j.patcog.2007.09.010).
+Boutsidis C, Gallopoulos E (2008). “SVD based initialization: A head start for nonnegative matrix factorization.” _Pattern Recognition_,
+*41*(4), 1350-1362. ISSN 00313203, doi: 10.1016/j.patcog.2007.09.010 (URL: https://doi.org/10.1016/j.patcog.2007.09.010).
 }

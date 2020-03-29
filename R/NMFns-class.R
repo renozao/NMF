@@ -111,6 +111,8 @@ setClass('NMFns'
 )
 
 #' Show method for objects of class \code{NMFns}
+#' 
+#' @param object an object of class `NMFns`.
 #' @export
 setMethod('show', 'NMFns', 
 		function(object)
@@ -130,6 +132,10 @@ setMethod('show', 'NMFns',
 #' @param S smoothing matrix to use instead of \code{smoothing(object)}
 #' It must be a square matrix compatible with the basis and coefficient matrices 
 #' used in the computation.
+#' @param ... other arguments passed to suitable methods such as `smoothing`.
+#' See details for each method.
+#' 
+#' @inheritParams fitted,NMFstd-method
 #' @inline
 #' 
 setMethod('fitted', signature(object='NMFns'), 

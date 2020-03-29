@@ -127,7 +127,7 @@ nmf_update.brunet <- function(i, v, x, copy=FALSE, eps=.Machine$double.eps, ...)
 #' using the C++-optimised and pure R updates \code{\link{nmf_update.brunet}} and \code{\link{nmf_update.brunet_R}} 
 #' respectively.
 #' 
-#' @inheritParams run,NMFStrategyIterative,matrix,NMFfit-method
+#' @inheritParams run,NMFStrategyIterative,mMatrix,NMFfit-method
 #' @inheritParams nmf.stop.connectivity
 #' 
 #' @rdname KL-nmf
@@ -254,7 +254,7 @@ nmf_update.lee <- function(i, v, x, rescale=TRUE, copy=FALSE, eps=10^-9, weight=
 #' using the C++-optimised and pure R updates \code{\link{nmf_update.lee}} and \code{\link{nmf_update.lee_R}}
 #' respectively.
 #' 
-#' @inheritParams run,NMFStrategyIterative,matrix,NMFfit-method
+#' @inheritParams run,NMFStrategyIterative,mMatrix,NMFfit-method
 #' @inheritParams nmf.stop.connectivity
 #' 
 #' @rdname Frobenius-nmf
@@ -392,7 +392,7 @@ nmf_update.offset <- function(i, v, x, copy=FALSE, eps=10^-9, ...)
 #' from \cite{Badea2008}, using the C++-optimised and pure R updates \code{\link{nmf_update.offset}} 
 #' and \code{\link{nmf_update.offset_R}} respectively.
 #' 
-#' @inheritParams run,NMFStrategyIterative,matrix,NMFfit-method
+#' @inheritParams run,NMFStrategyIterative,mMatrix,NMFfit-method
 #' @inheritParams nmf.stop.connectivity
 #' 
 #' @rdname offset-nmf
@@ -499,7 +499,7 @@ nmf_update.ns_R <- function(i, v, x, ...)
 #' respectively.
 #' The stopping criterion is based on the stationarity of the connectivity matrix.
 #' 
-#' @inheritParams run,NMFStrategyIterative,matrix,NMFfit-method
+#' @inheritParams run,NMFStrategyIterative,mMatrix,NMFfit-method
 #' @inheritParams nmf.stop.connectivity
 #' 
 #' @rdname nsNMF-nmf

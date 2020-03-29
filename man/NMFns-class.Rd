@@ -4,9 +4,32 @@
 \name{NMFns-class}
 \alias{NMFns-class}
 \alias{show,NMFns-method}
+\alias{fitted,NMFns-method}
 \title{NMF Model - Nonsmooth Nonnegative Matrix Factorization}
 \usage{
 \S4method{show}{NMFns}(object)
+
+\S4method{fitted}{NMFns}(object, W, H, S, ...)
+}
+\arguments{
+\item{object}{an object of class \code{NMFns}.}
+
+\item{W}{a optional matrix to use in the computation as the basis matrix in place of
+\code{basis(object)}.
+It must be compatible with the coefficient matrix used in the computation.
+That is, number of columns in \code{W} = number of rows in the mixture coefficient matrix \code{coef(object)} or \code{H} (if provided).}
+
+\item{H}{a optional matrix to use in the computation as the coefficient matrix in place of
+\code{coef(object)}.
+It must be compatible with the basis matrix used in the computation.
+That is, number of rows in \code{H} = number of columns in the basis matrix \code{basis(object)} or \code{W} (if provided).}
+
+\item{S}{smoothing matrix to use instead of \code{smoothing(object)}
+It must be a square matrix compatible with the basis and coefficient matrices
+used in the computation.}
+
+\item{...}{other arguments passed to suitable methods such as \code{smoothing}.
+See details for each method.}
 }
 \description{
 This class implements the \emph{Nonsmooth Nonnegative Matrix Factorization}
@@ -105,8 +128,7 @@ rnmf(3, 10, 5, model='NMFns', theta=0.3)
 
 }
 \references{
-Pascual-Montano A, Carazo JM, Kochi K, Lehmann D, Pascual-marqui RD
-(2006). “Nonsmooth nonnegative matrix factorization (nsNMF).” _IEEE
+Pascual-Montano A, Carazo JM, Kochi K, Lehmann D, Pascual-marqui RD (2006). “Nonsmooth nonnegative matrix factorization (nsNMF).” _IEEE
 Trans. Pattern Anal. Mach. Intell_, *28*, 403-415.
 }
 \seealso{
@@ -117,13 +139,13 @@ Other NMF-model:
 \concept{NMF-model}
 \section{Methods (by generic)}{
 \itemize{
+\item \code{show(object = NMFns)}: Show method for objects of class \code{NMFns}
+
 \item \code{fitted(object = NMFns)}: Compute estimate for an NMFns object, according to the Nonsmooth NMF model
 (cf. \code{\link{NMFns-class}}).
 
 Extra arguments in \code{...} are passed to method \code{smoothing}, and are
 typically used to pass a value for \code{theta}, which is used to compute
 the smoothing matrix instead of the one stored in \code{object}.
-
-\item \code{show(object = NMFns)}: Show method for objects of class \code{NMFns}
 }}
 

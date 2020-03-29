@@ -7,6 +7,8 @@
 \S4method{[}{NMF,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 }
 \arguments{
+\item{x}{an object that inherit from \linkS4class{NMF}.}
+
 \item{i}{index used to subset on the \strong{rows} of the basis matrix (i.e.
 the features).
 It can be a \code{numeric}, \code{logical}, or \code{character} vector

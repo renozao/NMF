@@ -4,9 +4,41 @@
 \name{NMFfitX1-class}
 \alias{NMFfitX1-class}
 \alias{show,NMFfitX1-method}
+\alias{nrun,NMFfitX1-method}
+\alias{consensus,NMFfitX1-method}
+\alias{minfit,NMFfitX1-method}
+\alias{fit,NMFfitX1-method}
+\alias{nmf.equal,NMFfitX1,NMFfitX1-method}
 \title{Structure for Storing the Best Fit Amongst Multiple NMF Runs}
 \usage{
 \S4method{show}{NMFfitX1}(object)
+
+\S4method{nrun}{NMFfitX1}(object)
+
+\S4method{consensus}{NMFfitX1}(object, no.attrib = FALSE)
+
+\S4method{minfit}{NMFfitX1}(object)
+
+\S4method{fit}{NMFfitX1}(object)
+
+\S4method{nmf.equal}{NMFfitX1,NMFfitX1}(x, y, ...)
+}
+\arguments{
+\item{object}{an object of class \code{NMFfitX}.}
+
+\item{no.attrib}{a single logical that indicates that no extra attributes
+should be attached to the result matrix.
+If \code{TRUE}, then the following attributes are attached:
+\itemize{
+\item \code{nrun}: number of algorithm runs performed;
+\item \code{nbasis}: number of basis components of the fitted model;
+}
+
+Also, in this case, the result gains an extra S3 class \code{NMF.consensus}.}
+
+\item{x, y}{objects of class \code{NMFfitX1}, whose fitted models are compared.}
+
+\item{...}{other arguments passed to subsequent calls of suitable methods, usually of the same generic.}
 }
 \description{
 This class is used to return the result from a multiple run of a single NMF
@@ -73,6 +105,11 @@ Other multipleNMF:
 \concept{multipleNMF}
 \section{Methods (by generic)}{
 \itemize{
+\item \code{getRNG1(object = NMFfitX1)}: Returns the RNG settings used to compute the first of all NMF runs, amongst
+which \code{object} was selected as the best fit.
+
+\item \code{show(object = NMFfitX1)}: Show method for objects of class \code{NMFfitX1}
+
 \item \code{nrun(object = NMFfitX1)}: Returns the number of NMF runs performed, amongst which \code{object} was
 selected as the best fit.
 
@@ -95,11 +132,6 @@ Since \code{NMFfitX1} objects only hold the best fit, this method simply
 returns the NMF model fitted by \code{object} -- that is stored in slot
 \sQuote{fit}.
 
-\item \code{getRNG1(object = NMFfitX1)}: Returns the RNG settings used to compute the first of all NMF runs, amongst
-which \code{object} was selected as the best fit.
-
 \item \code{nmf.equal(x = NMFfitX1,y = NMFfitX1)}: Compares the NMF models fitted by multiple runs, that only kept the best fits.
-
-\item \code{show(object = NMFfitX1)}: Show method for objects of class \code{NMFfitX1}
 }}
 

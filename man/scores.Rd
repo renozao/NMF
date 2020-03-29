@@ -177,28 +177,20 @@ extractFeatures(x, 1L) # means top contributing feature in each component
 
 }
 \references{
-Kim H, Park H (2007). “Sparse non-negative matrix factorizations via
-alternating non-negativity-constrained least squares for microarray
-data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502.
-ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
+Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray
+data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502. ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
 https://doi.org/10.1093/bioinformatics/btm134).
 
-Carmona-Saez P, Pascual-Marqui RD, Tirado F, Carazo JM, Pascual-Montano
-A (2006). “Biclustering of gene expression data by Non-smooth
-Non-negative Matrix Factorization.” _BMC bioinformatics_, *7*, 78. ISSN
-1471-2105, doi: 10.1186/1471-2105-7-78 (URL:
+Carmona-Saez P, Pascual-Marqui RD, Tirado F, Carazo JM, Pascual-Montano A (2006). “Biclustering of gene expression data by Non-smooth
+Non-negative Matrix Factorization.” _BMC bioinformatics_, *7*, 78. ISSN 1471-2105, doi: 10.1186/1471-2105-7-78 (URL:
 https://doi.org/10.1186/1471-2105-7-78).
 
-Kim H, Park H (2007). “Sparse non-negative matrix factorizations via
-alternating non-negativity-constrained least squares for microarray
-data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502.
-ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
+Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray
+data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502. ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
 https://doi.org/10.1093/bioinformatics/btm134).
 
-Carmona-Saez P, Pascual-Marqui RD, Tirado F, Carazo JM, Pascual-Montano
-A (2006). “Biclustering of gene expression data by Non-smooth
-Non-negative Matrix Factorization.” _BMC bioinformatics_, *7*, 78. ISSN
-1471-2105, doi: 10.1186/1471-2105-7-78 (URL:
+Carmona-Saez P, Pascual-Marqui RD, Tirado F, Carazo JM, Pascual-Montano A (2006). “Biclustering of gene expression data by Non-smooth
+Non-negative Matrix Factorization.” _BMC bioinformatics_, *7*, 78. ISSN 1471-2105, doi: 10.1186/1471-2105-7-78 (URL:
 https://doi.org/10.1186/1471-2105-7-78).
 }
 \section{Methods (by generic)}{

@@ -86,6 +86,9 @@ setMethod('show', 'NMFOffset',
 #' it will pad the offset vector with NA values to get the length equal to the 
 #' number of rows in the basis matrix.
 #' 
+#' @param .Object an object of class `NMFOffset` that serves as a template to initialize
+#' the object to be created.
+#' @param ... other arguments passed as object slot values.
 #' @param offset optional numeric vector used to initialise slot \sQuote{offset}.
 #' 
 #' @rdname NMFOffset-class
@@ -124,6 +127,7 @@ setMethod('offset', signature(object='NMFOffset'),
 #' The estimate is computed as:
 #' \deqn{ W H + offset }
 #' 
+#' @inheritParams fitted,NMFstd-method
 #' @param offset offset vector
 #' @inline
 setMethod('fitted', signature(object='NMFOffset'), 

@@ -174,7 +174,7 @@ setClass('NMF'
 #' class \code{NMF}). 
 #' See \code{\linkS4class{NMF}} for more details.
 #' 
-#' @param object an object that inherit from class \code{NMF}
+#' @param object an object that inherit from class [NMF-class]
 #' @param ... extra arguments to allow extension
 #' 
 #' @return the target matrix estimate as fitted by the model \code{object} 
@@ -256,7 +256,6 @@ setMethod('basis', 'NMF',
 #' See \code{\linkS4class{NMF}} for more details.
 #' 
 #' @rdname basis-coef-methods
-#' @inline
 #' @export
 setGeneric('.basis', function(object, ...) standardGeneric('.basis') )
 #' @template VirtualNMF
@@ -330,6 +329,8 @@ setGeneric('loadings', package='stats')
 #' against the one defined in the \code{\link{stats}} package, 
 #' and emphasises the similarities between NMF and PCA or factorial analysis 
 #' (see \code{\link{loadings}}).
+#' 
+#' @param x an object of class [NMF-class]
 #' 
 #' @rdname basis-coef-methods
 setMethod('loadings', 'NMF', function(x) basis(x) )
@@ -1096,6 +1097,7 @@ is_nmf_array <- function(x){
 #' 
 #' }
 #' 
+#' @param x an object that inherit from [NMF-class].
 #' @param i index used to subset on the \strong{rows} of the basis matrix (i.e.
 #' the features).
 #' It can be a \code{numeric}, \code{logical}, or \code{character} vector 
@@ -1255,8 +1257,8 @@ setReplaceMethod('$', 'NMF',
 #' @importFrom utils .DollarNames
 setGeneric('.DollarNames', package='utils')
 
-#' @method .DollarNames NMF 
 #' @export
+#' @method .DollarNames NMF 
 .DollarNames.NMF <- function(x, pattern = "") grep(pattern, names(misc(x)), value=TRUE)
 
 #' Auto-completion for \code{\linkS4class{NMF}} objects
@@ -1705,7 +1707,7 @@ setMethod('sparseness', signature(x='NMF'),
 #' x3 <- nmf(V, 3)
 #' purity(x3, cl)
 #' entropy(x3, cl)
-#' 
+#'
 setGeneric('purity', function(x, y, ...) standardGeneric('purity') )
 #' Computes the purity directly from the contingency table \code{x}
 setMethod('purity', signature(x='table', y='missing'), 
@@ -2411,10 +2413,12 @@ setMethod('evar', 'ANY',
 #' @return \code{deviance} returns a nonnegative numerical value 
 #' @family stats
 #' 
+#' @inline
 #' @export 
 setGeneric('deviance', package='stats')
 #' Computes the distance between a matrix and the estimate of an \code{NMF} model.
 #'  
+#' @param object an object that inherit from [NMF-class].
 #' @param y a matrix compatible with the NMF model \code{object}, i.e. \code{y} 
 #' must have the same dimension as \code{fitted(object)}.
 #' @param method a character string or a function with signature 
@@ -2537,11 +2541,10 @@ nmfDistance <- function(method=c('', 'KL', 'euclidean')){
 #' @export
 #' 
 setGeneric('nmf.equal', function(x, y, ...) standardGeneric('nmf.equal') )
-#' Compares two NMF models.
+#' @describeIn nmf.equal Compares two NMF models.
 #' 
 #' Arguments in \code{...} are used only when \code{identical=FALSE} and are 
 #' passed to \code{all.equal}.
-#' @inline
 setMethod('nmf.equal', signature(x='NMF', y='NMF'), 
 		function(x, y, identical=TRUE, ...){
 			

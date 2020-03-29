@@ -6,6 +6,7 @@
 \alias{show,NMFOffset-method}
 \alias{initialize,NMFOffset-method}
 \alias{offset,NMFOffset-method}
+\alias{fitted,NMFOffset-method}
 \title{NMF Model - Nonnegative Matrix Factorization with Offset}
 \usage{
 \S4method{show}{NMFOffset}(object)
@@ -13,11 +14,28 @@
 \S4method{initialize}{NMFOffset}(.Object, ..., offset)
 
 \S4method{offset}{NMFOffset}(object)
+
+\S4method{fitted}{NMFOffset}(object, W, H, offset = object@offset)
 }
 \arguments{
 \item{object}{an instance of class \code{NMFOffset}.}
 
-\item{offset}{optional numeric vector used to initialise slot \sQuote{offset}.}
+\item{.Object}{an object of class \code{NMFOffset} that serves as a template to initialize
+the object to be created.}
+
+\item{...}{other arguments passed as object slot values.}
+
+\item{offset}{offset vector}
+
+\item{W}{a optional matrix to use in the computation as the basis matrix in place of
+\code{basis(object)}.
+It must be compatible with the coefficient matrix used in the computation.
+That is, number of columns in \code{W} = number of rows in the mixture coefficient matrix \code{coef(object)} or \code{H} (if provided).}
+
+\item{H}{a optional matrix to use in the computation as the coefficient matrix in place of
+\code{coef(object)}.
+It must be compatible with the basis matrix used in the computation.
+That is, number of rows in \code{H} = number of columns in the basis matrix \code{basis(object)} or \code{W} (if provided).}
 }
 \description{
 This class implements the \emph{Nonnegative Matrix Factorization with
@@ -80,10 +98,8 @@ rnmf(3, 10, 5, model='NMFOffset')
 
 }
 \references{
-Badea L (2008). “Extracting gene expression profiles common to colon
-and pancreatic adenocarcinoma using simultaneous nonnegative matrix
-factorization.” _Pacific Symposium on Biocomputing. Pacific Symposium
-on Biocomputing_, *290*, 267-78. ISSN 1793-5091, <URL:
+Badea L (2008). “Extracting gene expression profiles common to colon and pancreatic adenocarcinoma using simultaneous nonnegative matrix
+factorization.” _Pacific Symposium on Biocomputing. Pacific Symposium on Biocomputing_, *290*, 267-78. ISSN 1793-5091, <URL:
 http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
 }
 \seealso{
@@ -94,11 +110,6 @@ Other NMF-model:
 \concept{NMF-model}
 \section{Methods (by generic)}{
 \itemize{
-\item \code{fitted(object = NMFOffset)}: Computes the target matrix estimate for an NMFOffset object.
-
-The estimate is computed as:
-\deqn{ W H + offset }
-
 \item \code{rnmf(x = NMFOffset,target = numeric)}: Generates a random NMF model with offset, from class \code{NMFOffset}.
 
 The offset values are drawn from a uniform distribution between 0 and
@@ -112,5 +123,10 @@ method \code{rnmf,NMF,numeric}.
 
 The function \code{offset} returns the offset vector from an NMF model
 that has an offset, e.g. an \code{NMFOffset} model.
+
+\item \code{fitted(object = NMFOffset)}: Computes the target matrix estimate for an NMFOffset object.
+
+The estimate is computed as:
+\deqn{ W H + offset }
 }}
 

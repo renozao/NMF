@@ -23,6 +23,8 @@ nmfDistance(method = c("", "KL", "euclidean"))
 \S4method{deviance}{NMFStrategy}(object, x, y, ...)
 }
 \arguments{
+\item{object}{an object that inherit from \linkS4class{NMF}.}
+
 \item{...}{extra parameters passed to the objective function.}
 
 \item{y}{a matrix compatible with the NMF model \code{object}, i.e. \code{y}
@@ -78,6 +80,7 @@ should always be available.
 deviance achieved across all NMF runs.
 
 \item \code{deviance(object = NMFStrategy)}: Computes the value of the objective function between the estimate \code{x}
-and the target \code{y}.
+and the target \code{y}, using the objective function associated with the given
+\code{NMFStrategy} object.
 }}
 

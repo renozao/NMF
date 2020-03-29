@@ -4,13 +4,21 @@
 \name{NMFStrategy-class}
 \alias{NMFStrategy-class}
 \alias{show,NMFStrategy-method}
+\alias{run,NMFStrategy,mMatrix,NMFfit-method}
+\alias{run,NMFStrategy,mMatrix,NMF-method}
 \alias{objective,NMFStrategy-method}
 \alias{objective<-,NMFStrategy,character-method}
 \alias{objective<-,NMFStrategy,function-method}
+\alias{modelname,NMFStrategy-method}
 \alias{is.mixed}
+\alias{nmfFormals.NMFStrategy}
 \title{Virtual Interface for NMF Algorithms}
 \usage{
 \S4method{show}{NMFStrategy}(object)
+
+\S4method{run}{NMFStrategy,mMatrix,NMFfit}(object, y, x, ...)
+
+\S4method{run}{NMFStrategy,mMatrix,NMF}(object, y, x, ...)
 
 \S4method{objective}{NMFStrategy}(object)
 
@@ -18,7 +26,16 @@
 
 \S4method{objective}{NMFStrategy,`function`}(object) <- value
 
+\S4method{modelname}{NMFStrategy}(object)
+
 is.mixed(object)
+
+\method{nmfFormals}{NMFStrategy}(x, ...)
+}
+\arguments{
+\item{y}{the target data that we want to approximate, passed as a matrix(-like) object.}
+
+\item{x}{an \linkS4class{NMFfit} object used as a starting point/seed by the algorithm.}
 }
 \description{
 This class partially implements the generic interface defined for general
@@ -43,6 +60,13 @@ and returned by the strategy, or a function name.}
 \item{\code{mixed}}{a logical that indicates if the algorithm works on mixed-sign data.}
 }}
 
+\examples{
+# get the type of model(s) associated with an NMF algorithm
+modelname( nmfAlgorithm('brunet') )
+modelname( nmfAlgorithm('nsNMF') )
+modelname( nmfAlgorithm('offset') )
+
+}
 \keyword{internal}
 \section{Methods (by generic)}{
 \bold{canFit:}
@@ -58,7 +82,8 @@ and returned by the strategy, or a function name.}
 
 \itemize{
 \item \code{deviance(object = NMFStrategy)}: Computes the value of the objective function between the estimate \code{x}
-and the target \code{y}.
+and the target \code{y}, using the objective function associated with the given
+\code{NMFStrategy} object.
 }
 
 
@@ -66,6 +91,15 @@ and the target \code{y}.
 
 \itemize{
 \item \code{modelname(object = NMFStrategy)}: Returns the model(s) that an NMF algorithm can fit.
+}
+
+
+\bold{nmfFormals:}
+
+\itemize{
+\item \code{nmfFormals(NMFStrategy)}: Returns the extra arguments that can be passed to an algorithm encapsulated in an \code{NMFStrategy} object.
+
+Arguments that have default values defined by the strategy are set accordingly.
 }
 
 
@@ -79,6 +113,40 @@ in particular it uses the \strong{same} name.
 
 \item \code{NMFStrategy(name = NULL,method = NMFStrategy)}: Creates an \code{NMFStrategy} based on a template object (Constructor-Copy)
 but using a randomly generated name.
+}
+
+
+\bold{objective:}
+
+\itemize{
+\item \code{objective(object = NMFStrategy)}: Gets the objective function associated with an NMF algorithm.
+
+It is used in \code{\link[=deviance,NMFStrategy-method]{deviance}}
+to compute the objective value for an NMF model with respect to
+a given target matrix.
+}
+
+
+\bold{objective<-:}
+
+\itemize{
+\item \code{objective<-(object = NMFStrategy,value = character)}: Sets the objective function associated with an NMF algorithm, with a character string
+that must be a registered objective function.
+
+\item \code{objective<-(object = NMFStrategy,value = function)}: Sets the objective function associated with an NMF algorithm, with a function
+that computes the approximation error between an NMF model and a target matrix.
+}
+
+
+\bold{run:}
+
+\itemize{
+\item \code{run(object = NMFStrategy,y = mMatrix,x = NMFfit)}: Pure virtual method defined for all NMF algorithms to ensure
+that a method \code{run} is defined by sub-classes of \code{NMFStrategy}.
+
+It throws an error if called directly.
+
+\item \code{run(object = NMFStrategy,y = mMatrix,x = NMF)}: Method to run an NMF algorithm directly starting from a given NMF model.
 }
 
 }

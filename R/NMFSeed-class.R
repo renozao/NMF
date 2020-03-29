@@ -22,6 +22,8 @@ setClass('NMFSeed'
 )
 
 #' Show method for objects of class \code{NMFSeed} 
+#' 
+#' @param object an object of class `NMFSeed`.
 setMethod('show', 'NMFSeed',
 		function(object){			
 			cat('<object of class: ', class(object), ">\n")
@@ -40,6 +42,10 @@ setMethod('algorithm', signature(object='NMFSeed'),
 	}
 )
 #' Sets the workhorse function of the seeding method described by \code{object}.
+#' 
+#' @param value object whose value is used to modify properties of the given object.
+#' See details for each method.
+#' 
 setReplaceMethod('algorithm', signature(object='NMFSeed', value='function'),
 	function(object, value){
 		slot(object, 'method') <- value

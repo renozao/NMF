@@ -159,7 +159,8 @@ setMethod('show', 'NMFstd',
 #' 
 #' This function returns slot \code{W} of \code{object}.
 #' 
-#' @param slice optional slice (3rd margin) to extract 
+#' @param object an object of class `NMFstd`.
+#' @param slice optional slice (3rd margin) to extract in 3D-array NMF models.
 #' 
 #' @examples
 #' # random standard NMF model
@@ -180,7 +181,6 @@ setMethod('show', 'NMFstd',
 #' .coef(x) <- matrix(1, nbasis(x)-1, nrow(x))
 #' try( validObject(x) )
 #'
-#' @inline 
 setMethod('.basis', 'NMFstd',
     function(object, slice = NULL){
         if( is.null(slice) ) object@W
@@ -190,6 +190,9 @@ setMethod('.basis', 'NMFstd',
 #' Set the basis matrix in standard NMF models 
 #' 
 #' This function sets slot \code{W} of \code{object}.
+#' 
+#' @param value an object whose value is used to modify properties of the given 
+#' object.
 setReplaceMethod('.basis', signature(object='NMFstd', value='array'), 
     function(object, value){ 
         object@W <- value
@@ -200,11 +203,11 @@ setReplaceMethod('.basis', signature(object='NMFstd', value='array'),
 #' Replaces a slice of the basis array.
 #' @inline
 setReplaceMethod('.basis', signature(object='NMFstd', value='mMatrix'), 
-    function(object, ..., slice = 1L, value){
-        # error if passed extra arguments
-        if( length(xargs<- list(...)) ){
-            stop(".basis<-,NMFstd - Unused arguments: ", str_out(xargs, Inf, use.names = TRUE))
-        }
+    function(object, slice = 1L, value){
+        # # error if passed extra arguments
+        # if( length(xargs<- list(...)) ){
+        #     stop(".basis<-,NMFstd - Unused arguments: ", str_out(xargs, Inf, use.names = TRUE))
+        # }
         value <- as.matrix(value)
         if( length(dim(object@W)) > 2L ) object@W[,, slice] <- value
         else if( slice == 1L ) object@W <- value
@@ -213,10 +216,9 @@ setReplaceMethod('.basis', signature(object='NMFstd', value='mMatrix'),
     }
 )
 
-#' Get the mixture coefficient matrix in standard NMF models 
+#' Get the mixture coefficient matrix in standard NMF models, which 
+#' is stored in slot \code{H} of \code{object}.
 #' 
-#' This function returns slot \code{H} of \code{object}.
-#' @inline
 setMethod('.coef', 'NMFstd',
     function(object, slice = NULL){
         if( is.null(slice) ) object@H
@@ -236,11 +238,11 @@ setReplaceMethod('.coef', signature(object='NMFstd', value='array'),
 #' Replaces a slice of the coefficent array.
 #' @inline
 setReplaceMethod('.coef', signature(object='NMFstd', value='mMatrix'), 
-    function(object, ..., slice = 1L, value){
-        # error if passed extra arguments
-        if( length(xargs<- list(...)) ){
-                stop(".coef<-,NMFstd - Unused arguments: ", str_out(xargs, Inf, use.names = TRUE))
-        }
+    function(object, slice = 1L, value){
+        # # error if passed extra arguments
+        # if( length(xargs<- list(...)) ){
+        #         stop(".coef<-,NMFstd - Unused arguments: ", str_out(xargs, Inf, use.names = TRUE))
+        # }
         value <- as.matrix(value)
         if( length(dim(object@H)) > 2L ) object@H[,, slice] <- value
         else if( slice == 1L ) object@H <- value
@@ -255,14 +257,14 @@ setReplaceMethod('.coef', signature(object='NMFstd', value='mMatrix'),
 #' \code{W} and \code{H}:
 #' \deqn{\hat{V} = W H}{V ~ W H} 
 #' 
-#' @param W a matrix to use in the computation as the basis matrix in place of 
+#' @param W a optional matrix to use in the computation as the basis matrix in place of 
 #' \code{basis(object)}. 
-#' It must be compatible with the coefficient matrix used 
-#' in the computation (i.e. number of columns in \code{W} = number of rows in \code{H}).
-#' @param H a matrix to use in the computation as the coefficient matrix in place of 
+#' It must be compatible with the coefficient matrix used in the computation.
+#' That is, number of columns in \code{W} = number of rows in the mixture coefficient matrix `coef(object)` or \code{H} (if provided).
+#' @param H a optional matrix to use in the computation as the coefficient matrix in place of 
 #' \code{coef(object)}. 
-#' It must be compatible with the basis matrix used 
-#' in the computation (i.e. number of rows in \code{H} = number of columns in \code{W}).
+#' It must be compatible with the basis matrix used in the computation.
+#' That is, number of rows in \code{H} = number of columns in the basis matrix `basis(object)` or \code{W} (if provided).
 #'  
 #' @export
 #' @inline

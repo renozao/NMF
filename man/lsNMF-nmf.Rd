@@ -44,6 +44,23 @@ In particular, using \code{weight=NA} cancels out all missing values (see exampl
 
 \item{...}{extra arguments (not used)}
 
+\item{.stop}{specification of a stopping criterion, that is used instead of the
+one associated to the NMF algorithm.
+It may be specified as:
+\itemize{
+\item the access key of a registered stopping criterion;
+\item a single integer that specifies the exact number of iterations to perform, which will
+be honoured unless a lower value is explicitly passed in argument \code{maxIter}.
+\item a single numeric value that specifies the stationnarity threshold for the
+objective function, used in with \code{\link{nmf.stop.stationary}};
+\item a function with signature \code{(object="NMFStrategy", i="integer", y="matrix", x="NMF", ...)},
+where \code{object} is the \code{NMFStrategy} object that describes the algorithm being run,
+\code{i} is the current iteration, \code{y} is the target matrix and \code{x} is the current value of
+the NMF model.
+}}
+
+\item{maxIter}{maximum number of iterations to perform.}
+
 \item{stationary.th}{maximum absolute value of the gradient, for the objective
 function to be considered stationary.}
 
@@ -64,11 +81,13 @@ Implementation of the updates for the LS-NMF algorithm from Wang et al. (2006).
 # Handling missing values in data
 x <- rmatrix(100, 20)
 NA_values <- sample(length(x), 5)
-x[ NA_values ] <- NA
+x[ 1 ] <- NA
 
 # Classic Lee does not work on this
+try({
 res <- nmf(x, 2, 'lee')
 anyNA(res) # 3 means NA values in basis and coef matrix
+})
 
 # LS-NMF handles missing values by cancelling them with null weights
 res <- nmf(x, 2, 'ls-nmf', .opt='v')
@@ -76,8 +95,6 @@ anyNA(res)
 
 }
 \references{
-Wang G, Kossenkov AV, Ochs MF (2006). “LS-NMF: a modified non-negative
-matrix factorization algorithm utilizing uncertainty estimates.” _BMC
-bioinformatics_, *7*, 175. ISSN 1471-2105, doi: 10.1186/1471-2105-7-175
-(URL: https://doi.org/10.1186/1471-2105-7-175).
+Wang G, Kossenkov AV, Ochs MF (2006). “LS-NMF: a modified non-negative matrix factorization algorithm utilizing uncertainty estimates.”
+_BMC bioinformatics_, *7*, 175. ISSN 1471-2105, doi: 10.1186/1471-2105-7-175 (URL: https://doi.org/10.1186/1471-2105-7-175).
 }

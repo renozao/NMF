@@ -66,7 +66,6 @@ current.vpPath_patched <- local({
     }
 })
 
-#' @rdname options
 #' @section Plotting:
 #' \describe{
 #' \item{grid.patch}{logical that indicates if annotated heatmaps should use a set of functions 
@@ -75,7 +74,9 @@ current.vpPath_patched <- local({
 #' The default value for this option is `NULL`, which avoids the saving of heatmaps in pdf files 
 #' to generate a blank first page}
 #' }
-#'  
+#' 
+#' @rdname options
+#' @name options
 NULL
 # Add new option to enable/disable grid patch
 .OPTIONS$newOptions(grid.patch = NULL)

@@ -67,6 +67,7 @@ isNMFfit <- function(object, recursive=TRUE){
 #' These can be either from a single run (NMFfit) or multiple runs (NMFfitX).
 #' 
 #' Note that its definition/interface is very likely to change in the future.
+#' 
 #' @export
 #'   
 setClass('NMFList'
@@ -90,6 +91,8 @@ setClass('NMFList'
 )
 
 #' Show method for objects of class \code{NMFList}
+#' 
+#' @param object an object of class `NMFList`
 #' @export
 setMethod('show', 'NMFList', 
 	function(object)
@@ -386,6 +389,11 @@ setMethod('consensushc', 'NMFfitX',
 #' heatmap produced by \code{\link{consensusmap}}.}
 #' }
 #' 
+#' When `what` takes values other that those described above, then all extra arguments are passed to 
+#' the [predict,NMF-method].
+#' 
+#' @param ... other arguments passed to suitable methods, like [predict,NMF-method].
+#' 
 setMethod('predict', signature(object='NMFfitX'),
 	function(object, what=c('columns', 'rows', 'samples', 'features', 'consensus', 'chc'), dmatrix = FALSE, ...){
 		# determine which prediction to do
@@ -444,6 +452,8 @@ setMethod('minfit', 'NMFfitX',
 )
 
 #' Show method for objects of class \code{NMFfitX}
+#' 
+#' @param object an object of class `NMFfitX`
 #' @export
 setMethod('show', 'NMFfitX', 
 		function(object){
@@ -496,6 +506,12 @@ setMethod('getRNG1', signature(object='NMFfitX'),
 )
 
 #' Compares two NMF models when at least one comes from multiple NMF runs. 
+#' 
+#' @param x,y objects of that generally inherit from [NMF-class].
+#' Depending on the method, either or both are `NMFfitX` objects.
+#' @param ... other arguments passed to subsequent calls of suitable methods, usually of the same generic. 
+#' See details for each method in their dedicated section.
+#' 
 setMethod('nmf.equal', signature(x='NMFfitX', y='NMF'), 
 	function(x, y, ...){
 		nmf.equal(fit(x), y, ...)
@@ -600,6 +616,8 @@ setClass('NMFfitX1'
 
 
 #' Show method for objects of class \code{NMFfitX1}
+#' 
+#' @param object an object of class `NMFfitX`.
 #' @export
 setMethod('show', 'NMFfitX1', 
 	function(object){
@@ -625,6 +643,8 @@ setMethod('nrun', 'NMFfitX1',
 #' 
 #' The result is the matrix stored in slot \sQuote{consensus}.
 #' This method returns \code{NULL} if the consensus matrix is empty.
+#' 
+#' @inheritParams consensus,NMFfitXn-method
 setMethod('consensus', signature(object='NMFfitX1'), 
 	function(object, no.attrib = FALSE){
 		
@@ -674,6 +694,8 @@ setMethod('getRNG1', signature(object='NMFfitX1'),
 )
 
 #' Compares the NMF models fitted by multiple runs, that only kept the best fits.
+#' 
+#' @param x,y objects of class `NMFfitX1`, whose fitted models are compared.
 setMethod('nmf.equal', signature(x='NMFfitX1', y='NMFfitX1'), 
 	function(x, y, ...){
 		nmf.equal(fit(x), fit(y), ...)
@@ -788,6 +810,9 @@ setMethod('show', 'NMFfitXn',
 #' Since all fits have been computed using the same rank, it returns the 
 #' factorization rank of the first fit.
 #' This method returns \code{NULL} if the object is empty.  
+#' 
+#' @param ... other arguments passed to subsequent calls of suitable methods, usually of the same generic. 
+#' 
 setMethod('nbasis', signature(x='NMFfitXn'), 
 	function(x, ...){
 		if( length(x) == 0 ) return(NULL)
@@ -844,6 +869,8 @@ setMethod('icterms', 'NMFfit',
 
 #' Returns the number of runs performed to compute the fits stored in the list 
 #' (i.e. the length of the list itself).
+#' 
+#' @param object an object of class `NMFfitXn`
 setMethod('nrun', 'NMFfitXn', 
 	function(object){
 		sum(sapply(object, nrun))
@@ -980,14 +1007,12 @@ setMethod('getRNG1', signature(object='NMFfitXn'),
 	}
 )
 
-#' @inline
-#' @rdname RNG
-#' @export
 setGeneric('.getRNG', package='rngtools')
 
-#' Returns the RNG settings used for the best fit.
+#' @describeIn RNG Returns the RNG settings used for the best fit.
 #' 
 #' This method throws an error if the object is empty.
+#' @export
 setMethod('.getRNG', signature(object='NMFfitXn'),
 	function(object, ...){
 		if( length(object) == 0 )
@@ -1061,7 +1086,14 @@ setMethod('nmf.equal', signature(x='list', y='missing'),
 #' The result is a matrix with several attributes attached, that are used by 
 #' plotting functions such as \code{\link{consensusmap}} to annotate the plots.
 #' 
-#' @aliases plot.NMF.consensus
+#' @param no.attrib a single logical that indicates that no extra attributes
+#' should be attached to the result matrix.
+#' If `TRUE`, then the following attributes are attached:
+#'   * `nrun`: number of algorithm runs performed;
+#'   * `nbasis`: number of basis components of the fitted model;
+#'   
+#' Also, in this case, the result gains an extra S3 class `NMF.consensus`.
+#' 
 setMethod('consensus', signature(object='NMFfitXn'), 
 	function(object, ..., no.attrib = FALSE){
 		if( length(object) == 0 ) return(NULL)
@@ -1091,7 +1123,8 @@ setMethod('consensus', signature(object='NMFfitXn'),
 	}
 )
 
-#' @S3method plot NMF.consensus 
+#' @export
+#' @method plot NMF.consensus 
 plot.NMF.consensus <- function(x, ...){
 	consensusmap(x, ...)
 }
@@ -1127,7 +1160,7 @@ setMethod('dispersion', 'matrix',
 		sum( 4 * (object-1/2)^2 ) / nrow(object)^2
 	}
 )
-#' Computes the dispersion on the consensus matrix obtained from multiple NMF
+#' Computes the [dispersion] on the consensus matrix obtained from multiple NMF
 #' runs. 
 setMethod('dispersion', 'NMFfitX', 
 	function(object, ...){
@@ -1264,6 +1297,10 @@ setMethod('NMFfitX', 'list',
 #' This is used in \code{\link{nmf}} when only the best fit is kept in memory or 
 #' on disk.
 #'  
+#' @param ... extra arguments passed to suitable methods.
+#' For the `NMFfitX` factory methods, this would correspond to slots in the
+#' sub-class of `NMFfitX` that is suitable for the input `object`.
+#' 
 setMethod('NMFfitX', 'NMFfit',
 		function(object, ...){
 					
@@ -1309,11 +1346,15 @@ setMethod('NMFfitX', 'NMFfitX',
 		}
 )
 
-#' Computes the best or mean purity across all NMF fits stored in \code{x}.
+#' Computes the best or mean [purity] across all NMF fits stored in \code{x}.
 #' 
 #' @param method a character string that specifies how the value is computed.
 #' It may be either \code{'best'} or \code{'mean'} to compute the best or mean 
 #' purity respectively.
+#'  
+#' @param x an `NMFfitXn` object.
+#' @param y an object that act as a suitable reference for the computation of performance measures.
+#' For [purity] and [entropy] this would typically be a `factor` that indicates known column clusters.
 #'  
 #' @inline
 setMethod('purity', signature(x='NMFfitXn', y='ANY'), 
@@ -1368,6 +1409,8 @@ aggregate.measure <- function(measure, method=c('best', 'mean'), decreasing=FALS
 #' In addition, the cophenetic correlation (\code{\link{cophcor}}) and 
 #' \code{\link{dispersion}} coefficients of the consensus matrix are returned, 
 #' as well as the total CPU time (\code{\link{runtime.all}}).
+#' 
+#' @inheritParams summary,NMF-method
 #'   
 setMethod('summary', signature(object='NMFfitX'),
 	function(object, ..., with.silhouette = 'both'){
@@ -1791,6 +1834,8 @@ setMethod('consensusmap', 'NMF.rank',
 #' respectively, that is filled row by row.
 #' It may also be a matrix that is directly passed to the function \code{\link[graphics]{layout}}
 #' from the package \code{graphics}.
+#' 
+#' @inheritParams aheatmap
 #' 
 #' @rdname nmf-compare
 setMethod('consensusmap', 'list', 

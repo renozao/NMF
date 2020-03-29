@@ -4,9 +4,32 @@
 \name{NMFList-class}
 \alias{NMFList-class}
 \alias{show,NMFList-method}
+\alias{algorithm,NMFList-method}
+\alias{seqtime,NMFList-method}
+\alias{runtime,NMFList-method}
 \title{Class for Storing Heterogeneous NMF fits}
 \usage{
 \S4method{show}{NMFList}(object)
+
+\S4method{algorithm}{NMFList}(object, string = FALSE, unique = TRUE)
+
+\S4method{seqtime}{NMFList}(object)
+
+\S4method{runtime}{NMFList}(object, all = FALSE)
+}
+\arguments{
+\item{object}{an object of class \code{NMFList}}
+
+\item{string}{a logical that indicate whether the names should be collapsed
+into a comma-separated string.}
+
+\item{unique}{a logical that indicates whether the result should contain the
+set of method names, removing duplicated names.
+This argument is forced to \code{TRUE} when \code{string=TRUE}.}
+
+\item{all}{logical that indicates if the CPU time of each fit should be
+returned (\code{TRUE}) or only the total CPU time used to compute all
+the fits in \code{object}.}
 }
 \description{
 This class wraps a list of NMF fit objects, which may come from different
@@ -17,6 +40,8 @@ Note that its definition/interface is very likely to change in the future.
 }
 \section{Methods (by generic)}{
 \itemize{
+\item \code{show(object = NMFList)}: Show method for objects of class \code{NMFList}
+
 \item \code{algorithm(object = NMFList)}: Returns the method names used to compute the NMF fits in the list.
 It returns \code{NULL} if the list is empty.
 
@@ -30,7 +55,5 @@ It returns \code{NULL} on an empty object.
 \item \code{runtime(object = NMFList)}: Returns the CPU time required to compute all NMF fits in the list.
 It returns \code{NULL} if the list is empty.
 If no timing data are available, the sequential time is returned.
-
-\item \code{show(object = NMFList)}: Show method for objects of class \code{NMFList}
 }}
 

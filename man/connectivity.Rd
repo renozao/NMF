@@ -5,14 +5,7 @@
 \alias{connectivity,ANY-method}
 \alias{connectivity,factor-method}
 \alias{connectivity,numeric-method}
-\alias{connectivity,NMF-method}
 \alias{consensus}
-\alias{consensus,NMFfitX-method}
-\alias{consensus,NMF-method}
-\alias{consensus,NMFfit-method}
-\alias{consensus,NMFfitX1-method}
-\alias{consensus,NMFfitXn-method}
-\alias{plot.NMF.consensus}
 \title{Clustering Connectivity and Consensus Matrices}
 \usage{
 connectivity(object, ...)
@@ -23,19 +16,7 @@ connectivity(object, ...)
 
 \S4method{connectivity}{numeric}(object, ...)
 
-\S4method{connectivity}{NMF}(object, no.attrib = FALSE)
-
 consensus(object, ...)
-
-\S4method{consensus}{NMFfitX}(object, ...)
-
-\S4method{consensus}{NMF}(object, ...)
-
-\S4method{consensus}{NMFfit}(object, ...)
-
-\S4method{consensus}{NMFfitX1}(object, no.attrib = FALSE)
-
-\S4method{consensus}{NMFfitXn}(object, ..., no.attrib = FALSE)
 }
 \arguments{
 \item{object}{an object with a suitable \code{\link{predict}} method.}
@@ -43,10 +24,6 @@ consensus(object, ...)
 \item{...}{extra arguments to allow extension.
 They are passed to \code{\link{predict}}, except for the \code{vector} and
 \code{factor} methods.}
-
-\item{no.attrib}{a logical that indicates if attributes containing information
-about the NMF model should be attached to the result (\code{TRUE}) or not
-(\code{FALSE}).}
 }
 \value{
 a square matrix of dimension the number of samples in the model, full
@@ -83,10 +60,8 @@ connectivity(gl(2, 4))
 
 }
 \references{
-Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and
-molecular pattern discovery using matrix factorization.” _Proceedings
-of the National Academy of Sciences of the United States of America_,
-*101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL:
+Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and molecular pattern discovery using matrix factorization.” _Proceedings of
+the National Academy of Sciences of the United States of America_, *101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL:
 https://doi.org/10.1073/pnas.0308531101).
 }
 \seealso{
@@ -96,16 +71,16 @@ https://doi.org/10.1073/pnas.0308531101).
 \bold{connectivity:}
 
 \itemize{
+\item \code{connectivity(object = NMF)}: Computes the connectivity matrix for an NMF model, for which cluster
+membership is given by the most contributing basis component in each sample.
+See \code{\link{predict,NMF-method}}.
+
 \item \code{connectivity(object = ANY)}: Default method which computes the connectivity matrix
 using the result of \code{predict(x, ...)} as cluster membership index.
 
 \item \code{connectivity(object = factor)}: Computes the connectivity matrix using \code{x} as cluster membership index.
 
 \item \code{connectivity(object = numeric)}: Equivalent to \code{connectivity(as.factor(x))}.
-
-\item \code{connectivity(object = NMF)}: Computes the connectivity matrix for an NMF model, for which cluster
-membership is given by the most contributing basis component in each sample.
-See \code{\link{predict,NMF-method}}.
 }
 
 

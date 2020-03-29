@@ -98,6 +98,8 @@ setClass('NMFStrategyIterative'
 
 
 #' Show method for objects of class \code{NMFStrategyIterative}
+#' 
+#' @param object an object of class `NMFStrategyIterative`
 #' @export
 setMethod('show', 'NMFStrategyIterative',
 	function(object){
@@ -272,8 +274,10 @@ staticVar <- local({
 #' the NMF model.  
 #' }
 #' @param maxIter maximum number of iterations to perform.
-#'   
-#' @rdname NMFStrategy
+#' 
+#' @inheritParams run,NMFStrategy,mMatrix,NMFfit-method
+#' @param ... arguments that are passed to **all** step functions `onInit`, `Update`, `Stop` and `onReturn`.
+#'
 setMethod('run', signature(object='NMFStrategyIterative', y='mMatrix', x='NMFfit'),
 	function(object, y, x, .stop=NULL, maxIter = nmf.getOption('maxIter') %||% 2000L, ...){
 	
@@ -305,7 +309,7 @@ setMethod('run', signature(object='NMFStrategyIterative', y='mMatrix', x='NMFfit
 	run(strategyX, y, x, maxIter=maxIter, ...)
 })
 
-#' @rdname NMFStrategy
+#' @keywords internal
 setMethod('run', signature(object='NMFStrategyIterativeX', y='mMatrix', x='NMFfit'),
 	function(object, y, x, maxIter, ...){
 				
@@ -453,6 +457,15 @@ setMethod('run', signature(object='NMFStrategyIterativeX', y='mMatrix', x='NMFfi
 })
 
 
+#' Returns the extra arguments that can be passed to the algorithm that is composed
+#' by an [NMFStrategyIterative][NMFStrategyIterative-class] object.
+#' 
+#' These are the union of the formal arguments of all the functional steps in the algorithm:
+#' `onInit`, `Update`, `Stop`, `onReturn`.
+#' 
+#' @param runtime (internal use only) single logical that indicates if arguments should be split 
+#' between those passed internally and of passed down from the top call.
+#' 
 #' @export
 nmfFormals.NMFStrategyIterative <- function(x, runtime=FALSE, ...){
 	
@@ -466,7 +479,9 @@ nmfFormals.NMFStrategyIterative <- function(x, runtime=FALSE, ...){
 	update.args <- formals(strategy@Update)
 	# Stop
 	stop.args <- formals(strategy@Stop)
-	# spplit internals and 
+	# split arguments into 2 categories:
+	# - internal: they provided by in internal calls by the orchestrator to each algorithm step (onInit, Update, etc...)
+	# - expected: they come from the top call (the user)
 	internal.args <- names(c(init.args[1:3], update.args[1:3], stop.args[1:4]))
 	expected.args <- c(init.args[-(1:3)], update.args[-(1:3)], stop.args[-(1:4)])
 	

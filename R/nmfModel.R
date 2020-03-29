@@ -48,6 +48,7 @@ setGeneric('nmfModel', function(rank, target=0L, ...) standardGeneric('nmfModel'
 #' This method is the workhorse method that is eventually called by all other methods.
 #' See section \emph{Main factory method} for more details.
 #' 
+#' @inline
 #' @param ncol a numeric value that specifies the number 
 #' of columns of the target matrix, fitted the NMF model.
 #' It is used only if not missing and when argument \code{target} is a single 
@@ -402,10 +403,10 @@ setMethod('nmfModel', signature(rank='missing', target='missing'),
 #' @param  use.names a logical that indicates whether the dimension names of the 
 #' target matrix should be set on the returned NMF model. 
 #' 
-#' @inline
 #' @examples
 #'  
 #' # create a r-ranked NMF model compatible with a given target matrix
+#' V <- rmatrix(20, 10)
 #' obj <- nmfModel(r, V)
 #' all(is.na(basis(obj)))
 #' 

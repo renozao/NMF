@@ -116,15 +116,11 @@ res <- fcnnls(X[,1], y)
 Original MATLAB code from Van Benthem and Keenan, slightly modified by H.
 Kim:\cr \url{http://www.cc.gatech.edu/~hpark/software/fcnnls.m}
 
-Van Benthem MH, Keenan MR (2004). “Fast algorithm for the solution of
-large-scale non-negativity-constrained least squares problems.”
-_Journal of Chemometrics_, *18*(10), 441-450. ISSN 0886-9383, doi:
-10.1002/cem.889 (URL: https://doi.org/10.1002/cem.889).
+Van Benthem MH, Keenan MR (2004). “Fast algorithm for the solution of large-scale non-negativity-constrained least squares problems.”
+_Journal of Chemometrics_, *18*(10), 441-450. ISSN 0886-9383, doi: 10.1002/cem.889 (URL: https://doi.org/10.1002/cem.889).
 
-Kim H, Park H (2007). “Sparse non-negative matrix factorizations via
-alternating non-negativity-constrained least squares for microarray
-data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502.
-ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
+Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray
+data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502. ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
 https://doi.org/10.1093/bioinformatics/btm134).
 }
 \seealso{
@@ -137,6 +133,7 @@ Adaption of MATLAB code for SNMF/R(L): H. Kim
 
 Adaptation to the NMF package framework: Renaud Gaujoux
 }
+\keyword{internal}
 \keyword{multivariate}
 \keyword{optimize}
 \keyword{regression}

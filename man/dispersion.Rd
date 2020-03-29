@@ -3,14 +3,11 @@
 \name{dispersion}
 \alias{dispersion}
 \alias{dispersion,matrix-method}
-\alias{dispersion,NMFfitX-method}
 \title{Dispersion of a Matrix}
 \usage{
 dispersion(object, ...)
 
 \S4method{dispersion}{matrix}(object, ...)
-
-\S4method{dispersion}{NMFfitX}(object, ...)
 }
 \arguments{
 \item{object}{an object from which the dispersion is computed}
@@ -37,17 +34,15 @@ are the same, meaning that the algorithm gave the same clusters at each run.
 See Kim and Park (2007).
 }
 \references{
-Kim H, Park H (2007). “Sparse non-negative matrix factorizations via
-alternating non-negativity-constrained least squares for microarray
-data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502.
-ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
+Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray
+data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502. ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
 https://doi.org/10.1093/bioinformatics/btm134).
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{dispersion(object = matrix)}: Workhorse method that computes the dispersion on a given matrix.
-
-\item \code{dispersion(object = NMFfitX)}: Computes the dispersion on the consensus matrix obtained from multiple NMF
+\item \code{dispersion(object = NMFfitX)}: Computes the \link{dispersion} on the consensus matrix obtained from multiple NMF
 runs.
+
+\item \code{dispersion(object = matrix)}: Workhorse method that computes the dispersion on a given matrix.
 }}
 

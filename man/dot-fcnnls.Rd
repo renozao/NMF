@@ -51,8 +51,6 @@ The algorithm is very fast compared to other approaches, as it is optimised
 for handling multiple right-hand sides.
 }
 \references{
-Van Benthem MH, Keenan MR (2004). “Fast algorithm for the solution of
-large-scale non-negativity-constrained least squares problems.”
-_Journal of Chemometrics_, *18*(10), 441-450. ISSN 0886-9383, doi:
-10.1002/cem.889 (URL: https://doi.org/10.1002/cem.889).
+Van Benthem MH, Keenan MR (2004). “Fast algorithm for the solution of large-scale non-negativity-constrained least squares problems.”
+_Journal of Chemometrics_, *18*(10), 441-450. ISSN 0886-9383, doi: 10.1002/cem.889 (URL: https://doi.org/10.1002/cem.889).
 }

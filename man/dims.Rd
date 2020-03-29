@@ -5,7 +5,6 @@
 \alias{dim-NMF}
 \alias{nbasis,ANY-method}
 \alias{dim,NMF-method}
-\alias{nbasis,NMFfitXn-method}
 \alias{dim,NMFfitXn-method}
 \title{Dimension of NMF Objects}
 \usage{
@@ -14,8 +13,6 @@ nbasis(x, ...)
 \S4method{nbasis}{ANY}(x, ...)
 
 \S4method{dim}{NMF}(x)
-
-\S4method{nbasis}{NMFfitXn}(x, ...)
 
 \S4method{dim}{NMFfitXn}(x)
 }
@@ -59,17 +56,17 @@ Its default method should work for any object, that has a suitable
 }
 \section{Methods (by generic)}{
 \itemize{
+\item \code{nbasis(x = NMFfitXn)}: Returns the number of basis components common to all fits.
+
+Since all fits have been computed using the same rank, it returns the
+factorization rank of the first fit.
+This method returns \code{NULL} if the object is empty.
+
 \item \code{nbasis(x = ANY)}: Default method which returns the number of columns of the basis matrix extracted
 from \code{x} using a suitable method \code{basis}, or, if the latter is \code{NULL},
 the value of attributes \code{'nbasis'}.
 
 For NMF models, this also corresponds to the number of rows in the coefficient
 matrix.
-
-\item \code{nbasis(x = NMFfitXn)}: Returns the number of basis components common to all fits.
-
-Since all fits have been computed using the same rank, it returns the
-factorization rank of the first fit.
-This method returns \code{NULL} if the object is empty.
 }}
 

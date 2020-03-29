@@ -151,7 +151,7 @@ identical(M, M2)
 \code{\link{pmax}}
 
 Other transforms: 
-\code{\link{t.NMF}()}
+\code{\link{NMF-class}}
 }
 \concept{transforms}
 \section{Methods (by generic)}{

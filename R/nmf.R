@@ -324,6 +324,7 @@ setMethod('nmf', signature(x='mMatrix', rank='numeric', method='list'),
 #' introduction vignette. 
 #' A vector of their names may be retrieved via \code{nmfAlgorithm()}.
 #' 
+#' @inline
 #' @section Algorithms:
 #' All algorithms are accessible by their respective access key as listed below.
 #' The following algorithms are available:
@@ -1559,6 +1560,8 @@ function(x, rank, method
 				if( MODE_SHARED ) 
 					.packages <- c(.packages, 'bigmemory', 'synchronicity')
 				
+				# dummy variables for R CMD check
+				n <- NA; RNGobj <- NA
 				res.runs <- foreach(n=1:nrun
 								, RNGobj = .RNG.seed
 								, .verbose = debug
@@ -1568,6 +1571,7 @@ function(x, rank, method
 #								, .options.RNG=.RNG.seed
 								) %dopar% { #START_FOREACH_LOOP
 				
+					stopifnot(!identical(n, NA) && !identical(RNGobj, NA))
 					# Pass options from master process
 					nmf.options(nmf.opts)
 					
@@ -2830,7 +2834,8 @@ nmfEstimateRank <- function(x, range, method=nmf.getOption('default.algorithm')
 	
 }
 
-#' @S3method summary NMF.rank
+#' @export
+#' @method summary NMF.rank
 summary.NMF.rank <- function(object, ...){
 	s <- summary(new('NMFList', object$fit), ...)
 	# NB: sort measures in the same order as required in ...
@@ -2872,7 +2877,8 @@ summary.NMF.rank <- function(object, ...){
 #' @param ylab y-axis label
 #' @param main main title
 #' 
-#' @S3method plot NMF.rank
+#' @export
+#' @method plot NMF.rank
 #' @rdname nmfEstimateRank
 #' @import ggplot2
 #' @import reshape2

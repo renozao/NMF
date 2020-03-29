@@ -94,9 +94,7 @@ W_ik <- max(W_ik (V H^T)_ik, eps) / ( (W H H^T)_ik + eps )
 }
 }
 \references{
-Lee DD, Seung H (2001). “Algorithms for non-negative matrix
-factorization.” _Advances in neural information processing systems_.
-<URL:
+Lee DD, Seung H (2001). “Algorithms for non-negative matrix factorization.” _Advances in neural information processing systems_. <URL:
 http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
 }
 \author{

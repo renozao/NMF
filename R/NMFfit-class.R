@@ -158,6 +158,7 @@ setClass('NMFfit'
 #' \code{NMFfit} object.
 #' @param rng RNG settings specification (typically a suitable value for 
 #' \code{\link{.Random.seed}}).   
+#' @param object an object of class `NMFfit`.
 #' 
 #' @rdname NMFfit-class
 NMFfit <- function(fit=nmfModel(), ..., rng=NULL){
@@ -198,6 +199,9 @@ setMethod('.basis', signature(object='NMFfit'),
 #' It is not meant to be used by the user, except when developing 
 #' NMF algorithms, to update the basis matrix of the seed object before 
 #' returning it.
+#' 
+#' @param value an object used to modify the properties of the object.
+#' Depending on the method, it may be a `matrix`, `numeric`, an [NMF-class] model object, etc...
 #' 
 setReplaceMethod('.basis', signature(object='NMFfit', value='matrix'), 
 	function(object, value){ 
@@ -512,6 +516,8 @@ trackError <- function(object, value, niter, force=FALSE){
 #' using the objective function associated with the NMF algorithm, so that it 
 #' should always be available.     
 #' 
+#' @inheritParams deviance,NMF-method
+#' 
 #' @inline 
 setMethod('deviance', 'NMFfit',
 	function(object, y, method, ...){
@@ -625,7 +631,6 @@ setGeneric('plot', package='graphics' )
 #' the NMF model \code{x}.
 #' 
 #' @param x an NMF object as returned by \code{\link{nmf}}.
-#' @param y other object (missing) 
 #' @param skip an integer that indicates the number of points to skip/remove from the beginning
 #' of the curve.
 #' If \code{skip=1L} (default) only the initial residual -- that is computed before any iteration, is
