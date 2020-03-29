@@ -741,7 +741,7 @@ From version 0.8, other parallel backends are supported, and may be specified
 via argument \code{.pbackend}:
 
 \begin{description}
-  \item[\code{.pbackend='mpi'}] uses the parallel backend \citeCRANpkg{doParallel} and \citeCRANpkg{doMPI} 
+  \item[\code{.pbackend='mpi'}] uses the parallel backend \citeCRANpkg{doParallel} and \pkgname{doMPI} 
   \item[\code{.pbackend=NULL}]{}
 \end{description}
 
@@ -791,7 +791,7 @@ nmf(esGolub, 3, nrun=5, .opt='vP200')
 \subsubsection{High Performance Computing on a cluster}
 
 To achieve further speed-up, the computation can be run on an HPC cluster.
-In our tests we used the \citeCRANpkg{doMPI} to perform 100
+In our tests we used the \pkgname{doMPI} to perform 100
 factorizations using hybrid parallel computation on 4 quadri-core machines -- making use of all
 the cores computation on each machine.
 

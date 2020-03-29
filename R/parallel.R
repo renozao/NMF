@@ -465,10 +465,11 @@ isMPIBackend <- function(x, ...){
 register.doMPI_backend <- function(x, ...){
 	
 	if( length(x$data) && isNumber(cl <- x$data[[1]]) ){
-		clObj <- doMPI::startMPIcluster(cl)
+	  startMPIcluster <- ns_get("doMPI::startMPIcluster")
+		clObj <- startMPIcluster(cl)
 		x$data[[1]] <- clObj
 		# setup cleanup procedure
-		x$cleanup <- cleanupCluster(x, clObj, doMPI::closeCluster)
+		x$cleanup <- cleanupCluster(x, clObj, ns_get("doMPI::closeCluster"))
 	}
 	# register
 	register.foreach_backend(x, ...)
@@ -492,8 +493,8 @@ setMethod('ForeachBackend', 'doMPI_backend',
 		if( missing(cl) ) cl <- getMaxCores()
 				
 		# required registration data
-		object$fun <- doMPI:::doMPI
-		object$info <- doMPI:::info
+		object$fun <- ns_get("doMPI::doMPI")
+		object$info <- ns_get("info", "doMPI")
 		
 		# return object
 		object
@@ -546,9 +547,9 @@ setMethod('ForeachBackend', 'doMPI_backend',
 
 is.backend <- function(x) is(x, 'foreach_backend')
 
-#' @method print foreach_backend
 #' @export
-#' @keyword internal
+#' @method print foreach_backend
+#' @keywords internal
 print.foreach_backend <- function(x, ...){
 	cat("<foreach backend:", x$name, ">\n", sep='')
 	if( length(x$data) ){
@@ -1073,7 +1074,8 @@ setupLibPaths <- function(pkg='NMF', verbose=FALSE){
 		times(getDoParWorkers()) %dopar% {
 			capture.output({
 				suppressMessages({
-					library(bigmemory)
+				  # here we use co.call to avoid check NOTE since this code is really only used in development mode
+					do.call("library", list("bigmemory", character.only = TRUE))
 					devtools::load_all(p)
 				})
 			})

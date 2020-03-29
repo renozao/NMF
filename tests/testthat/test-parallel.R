@@ -101,10 +101,10 @@ test_that("test.ForeachBackend", {
     if (!require.quiet("doMPI"))
         skip("Package doMPI not available.")
     skip("doMPI checks are disabled due to issues in doMPI::closeCluster")
-    b <- .check("doMPI", 2, "MPI", 2)
-    cl_MPI <- startMPIcluster(2)
-    on.exit(closeCluster(cl_MPI), add = TRUE)
-    b <- .check("doMPI", 2, cl_MPI)
+    # b <- .check("doMPI", 2, "MPI", 2)
+    # cl_MPI <- startMPIcluster(2)
+    # on.exit(closeCluster(cl_MPI), add = TRUE)
+    # b <- .check("doMPI", 2, cl_MPI)
 })
 
 test_that("test.gVariable", {
@@ -157,10 +157,10 @@ test_that("test.gVariable", {
     if (!require.quiet("doMPI"))
         skip("Package doMPI not available.")
     skip("doMPI checks are disabled due to issues in doMPI::closeCluster")
-    cl_MPI <- startMPIcluster(2)
-    on.exit(closeCluster(cl_MPI), add = TRUE)
-    registerDoMPI(cl_MPI)
-    .check("doMPI")
+    # cl_MPI <- startMPIcluster(2)
+    # on.exit(closeCluster(cl_MPI), add = TRUE)
+    # registerDoMPI(cl_MPI)
+    # .check("doMPI")
 })
 
 test_that("test.nmf", {
@@ -252,11 +252,11 @@ test_that("test.nmf", {
     if (!require.quiet("doMPI")) 
         skip("Package doMPI not available.")
     skip("doMPI checks are disabled due to issues in doMPI::closeCluster")
-    cl_MPI <- startMPIcluster(2)
-    on.exit(closeCluster(cl_MPI), add = TRUE)
-    .check(".pbackend=cl_MPI + MPI cluster", .pbackend = cl_MPI)
-    registerDoMPI(cl_MPI)
-    .check(".pbackend=NULL + doMPI registered MPI cluster", .pbackend = NULL)
+    # cl_MPI <- startMPIcluster(2)
+    # on.exit(closeCluster(cl_MPI), add = TRUE)
+    # .check(".pbackend=cl_MPI + MPI cluster", .pbackend = cl_MPI)
+    # registerDoMPI(cl_MPI)
+    # .check(".pbackend=NULL + doMPI registered MPI cluster", .pbackend = NULL)
 })
 
 test_that("test.setupBackend", {
@@ -275,12 +275,12 @@ test_that("test.shared_memory_doMC", {
 
 test_that("test.shared_memory_doMPI", {
     skip("NMF shared memory feature does not currently work with doMPI.")
-    if (!require.quiet("doMPI"))
-        skip("Package doMPI not available.")
-    cl_MPI <- startMPIcluster(2)
-    on.exit(closeCluster(cl_MPI), add = TRUE)
-    registerDoMPI(cl_MPI)
-    check_shared_memory("doMPI")
+    # if (!require.quiet("doMPI"))
+    #     skip("Package doMPI not available.")
+    # cl_MPI <- startMPIcluster(2)
+    # on.exit(closeCluster(cl_MPI), add = TRUE)
+    # registerDoMPI(cl_MPI)
+    # check_shared_memory("doMPI")
 })
 
 test_that("test.shared_memory_doParallel", {
