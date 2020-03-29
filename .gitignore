@@ -5,3 +5,4 @@
 vignettes/cache/
 src/*.o
 src/*.so
+.Rproj.user
