@@ -14,13 +14,13 @@ NULL
 #' a set of .m files or as plain code.
 #' 
 #' The \code{run} method for this class runs the algorithms via the 
-#' \code{\link[RcppOctave]{RcppOctave}} package.  
+#' `RcppOctave` package.  
 #' 
 #' @slot algorithm character string that gives the name of the main Octave/Matlab 
 #' function that implements the algorithm.
 #' The function must take at least two arguments: the target matrix and the initial 
-#' NMF model, converted into an Octave list object, with elements corresponding to 
-#' slots of the corresponding S4 class.  
+#' NMF model, converted into an Octave list object, whose named element correspond to 
+#' the slots of the R object's S4 class.
 #' @slot mcode character vector that contains a set of path to .m files.
 #' These files are (re-)sourced every time the strategy is called, and must be 
 #' present at runtime in the current directory or in a directory from Octave path. 
@@ -55,7 +55,11 @@ setClass('NMFStrategyOctave'
 #' takes care of many other details such as seeding the computation, handling RNG settings, 
 #' or setting up parallel computations.
 #' 
-#' @rdname NMFStrategy
+#' @param object an object of class `NMFStrategyOctave`, which encapsulates the Octave `NMF` algorithm 
+#' to run, access or modify.
+#' @inheritParams run,NMFStrategy,mMatrix,NMFfit-method
+#' @param ... other arguments passed as parameters to the algorithm's Octave implementation.
+#' 
 setMethod('run', signature(object='NMFStrategyOctave', y='matrix', x='NMFfit'),
 	function(object, y, x, ...){
 		
@@ -70,24 +74,24 @@ setMethod('run', signature(object='NMFStrategyOctave', y='matrix', x='NMFfit'),
         mdirs <- character()
         ## add package mfiles directory if possible
         if( nzchar(pkg <- packageSlot(object)) ){
-            if( nzchar(pkg_mfiles <- RcppOctave::system.mfile(package=pkg)) )
+            if( nzchar(pkg_mfiles <- ns_get("RcppOctave::system.mfile")(package=pkg)) )
                 mdirs <- c(mdirs, pkg_mfiles)
         }
 		## add path to specified mfiles
 		mfiles <- object@mcode
 		if( length(mfiles) && any(nzchar(mfiles)) ){
-			mfiles <- RcppOctave::as.mfile(mfiles)
+			mfiles <- ns_get("RcppOctave::as.mfile")(mfiles)
     		mdirs <- c(mdirs, dirname(mfiles))
         }
         ## add to path
         if( length(mdirs) ){
             mdirs <- unique(mdirs)
             # check which dirs were already in Octave path
-    		in_path <- sapply(mdirs, RcppOctave::o_inpath)
-    		sapply(mdirs[!in_path], RcppOctave::o_addpath)
+    		in_path <- sapply(mdirs, ns_get("RcppOctave::o_inpath"))
+    		sapply(mdirs[!in_path], ns_get("RcppOctave::o_addpath"))
             # on exit: cleanup Octave path 
     		on.exit({
-    			rmpath <- RcppOctave::.O$rmpath
+    			rmpath <- ns_get("RcppOctave::.O")$rmpath
     			sapply(mdirs[!in_path], rmpath)
     		})
         }
@@ -130,6 +134,9 @@ setMethod('algorithm', signature(object='NMFStrategyOctave'),
 )
 #' Sets the name of the Octave/Matlab function that implements the NMF algorithm.
 #' It is stored in slot \code{algorithm}.
+#' 
+#' @param value a single character string that speficies the name of a defined Octave function
+#' that implements the `NMF` algorithm.
 setReplaceMethod('algorithm', signature(object='NMFStrategyOctave', value='character'),
 	function(object, value){
 		slot(object, 'algorithm') <- head(value, 1L)

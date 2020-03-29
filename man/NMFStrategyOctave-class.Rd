@@ -3,10 +3,35 @@
 \docType{class}
 \name{NMFStrategyOctave-class}
 \alias{NMFStrategyOctave-class}
+\alias{run,NMFStrategyOctave,matrix,NMFfit-method}
+\alias{algorithm,NMFStrategyOctave-method}
+\alias{algorithm<-,NMFStrategyOctave,character-method}
 \alias{show,NMFStrategyOctave-method}
 \title{S4 Interface for Octave-Matlab NMF Algorithms}
 \usage{
+\S4method{run}{NMFStrategyOctave,matrix,NMFfit}(object, y, x, ...)
+
+\S4method{algorithm}{NMFStrategyOctave}(object, load = FALSE)
+
+\S4method{algorithm}{NMFStrategyOctave,character}(object) <- value
+
 \S4method{show}{NMFStrategyOctave}(object)
+}
+\arguments{
+\item{object}{an object of class \code{NMFStrategyOctave}, which encapsulates the Octave \code{NMF} algorithm
+to run, access or modify.}
+
+\item{y}{the target data that we want to approximate, passed as a matrix(-like) object.}
+
+\item{x}{an \linkS4class{NMFfit} object used as a starting point/seed by the algorithm.}
+
+\item{...}{other arguments passed as parameters to the algorithm's Octave implementation.}
+
+\item{load}{logical that indicates if the algorithm should be loaded as an
+R function.}
+
+\item{value}{a single character string that speficies the name of a defined Octave function
+that implements the \code{NMF} algorithm.}
 }
 \description{
 This class implements the virtual interface \code{\linkS4class{NMFStrategy}}
@@ -15,7 +40,7 @@ a set of .m files or as plain code.
 }
 \details{
 The \code{run} method for this class runs the algorithms via the
-\code{\link[RcppOctave]{RcppOctave}} package.
+\code{RcppOctave} package.
 }
 \section{Slots}{
 
@@ -23,8 +48,8 @@ The \code{run} method for this class runs the algorithms via the
 \item{\code{algorithm}}{character string that gives the name of the main Octave/Matlab
 function that implements the algorithm.
 The function must take at least two arguments: the target matrix and the initial
-NMF model, converted into an Octave list object, with elements corresponding to
-slots of the corresponding S4 class.}
+NMF model, converted into an Octave list object, whose named element correspond to
+the slots of the R object's S4 class.}
 
 \item{\code{mcode}}{character vector that contains a set of path to .m files.
 These files are (re-)sourced every time the strategy is called, and must be
@@ -33,6 +58,13 @@ present at runtime in the current directory or in a directory from Octave path.}
 
 \section{Methods (by generic)}{
 \itemize{
+\item \code{run(object = NMFStrategyOctave,y = matrix,x = NMFfit)}: Runs the NMF algorithms implemented by the Octave/Matlab function associated with the
+strategy -- and stored in slot \code{'algorithm'} of \code{object}.
+
+This method is usually not called directly, but only via the function \code{\link{nmf}}, which
+takes care of many other details such as seeding the computation, handling RNG settings,
+or setting up parallel computations.
+
 \item \code{algorithm(object = NMFStrategyOctave)}: Returns the name of the Octave/Matlab function that implements the NMF algorithm -- as stored in
 slot \code{algorithm}.
 

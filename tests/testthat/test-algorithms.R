@@ -179,6 +179,7 @@ test_that("test.offset", {
 })
 
 test_that("test.port_brunet", {
+    skip("Package RcppOctave is broken")
     if (!require(RcppOctave)) {
         DEACTIVATED("Package RcppOctave not available.")
     }
