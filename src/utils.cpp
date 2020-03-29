@@ -20,16 +20,16 @@ extern "C" {
 	SEXP ptr_neq_constraints(SEXP x, SEXP constraints, SEXP ratio=R_NilValue, SEXP value=R_NilValue);
 
 	/** Minimum per column*/
-	SEXP colMin(SEXP x);
+	SEXP c_colMin(SEXP x);
 
 	/** Maximum per row*/
-	SEXP colMax(SEXP x);
+	SEXP c_colMax(SEXP x);
 
 	/** Test if an external pointer is null.
 	 *
 	 * Function taken from the package bigmemory (v4.2.11).
 	 */
-	SEXP ptr_isnil(SEXP address)
+	SEXP c_ptr_isnil(SEXP address)
 	{
 	  void *ptr = R_ExternalPtrAddr(address);
 	  SEXP ret = PROTECT(NEW_LOGICAL(1));
@@ -206,17 +206,17 @@ template<class T> inline void colMax(T* x, int n, int p, T* res, const T& NA_val
 /**
  * Minimum per column
  */
-SEXP colMin(SEXP x){
+SEXP c_colMin(SEXP x){
 
 	SEXP ans, dims;
 
 	// check that the argument is a matrix
 	dims = GET_DIM(x);
 	if (dims == R_NilValue)
-		error("a matrix-like object is required as argument to 'colMin'");
+		error("a matrix-like object is required as argument to 'c_colMin'");
 	// check that it is a numeric data
 	if (!isNumeric(x))
-		error("a numeric object is required as argument to 'colMin'");
+		error("a numeric object is required as argument to 'c_colMin'");
 
 	// get the dimension of the input matrix
 	int n = INTEGER(dims)[0];
@@ -241,17 +241,17 @@ SEXP colMin(SEXP x){
 /**
  * Maximum per column
  */
-SEXP colMax(SEXP x){
+SEXP c_colMax(SEXP x){
 
 	SEXP ans, dims;
 
 	// check that the argument is a matrix
 	dims = GET_DIM(x);
 	if (dims == R_NilValue)
-		error("a matrix-like object is required as argument to 'colMax'");
+		error("a matrix-like object is required as argument to 'c_colMax'");
 	// check that it is a numeric data
 	if (!isNumeric(x))
-		error("a numeric object is required as argument to 'colMax'");
+		error("a numeric object is required as argument to 'c_colMax'");
 
 	// get the dimension of the input matrix
 	int n = INTEGER(dims)[0];
