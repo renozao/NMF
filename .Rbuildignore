@@ -9,6 +9,7 @@ vignettes/figure$
 vignettes/cache$
 vignettes/Rpackages.bib$
 vignettes/.*\.tex
+vignettes/.*\.pdf
 vignettes/Rplots.pdf$
 .*\.mk
 ^makefile$
