@@ -421,7 +421,10 @@ test_that("test.nmf.seed.argument", {
         info = "Throw an error when: unused argument is passed to seeding method")
     expect_error(nmf(V, r, seed = numeric()), info = "Throw an error when: seed argument is an empty numeric")
     expect_error(nmf(V, r, seed = c(1, 2)), info = "Throw an error when: seed argument is a numeric of invalid length (2)")
-    expect_error(nmf(V, r, seed = rep(5, 7)), info = "Throw an error when: seed argument is an invalid numeric value for .Random.seed (7)")
+    if( packageVersion("rngtools") > package_version("1.5.0") ){
+      expect_error(nmf(V, r, seed = rep(5, 7)), info = "Throw an error when: seed argument is an invalid numeric value for .Random.seed (7)")
+      
+    }
     set.seed(123)
     rngRef <- getRNG()
     check.res("Call with only a NON random seeding method name", 
