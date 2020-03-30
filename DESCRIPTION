@@ -16,8 +16,6 @@ Encoding: UTF-8
 URL: http://renozao.github.io/NMF
 BugReports: http://github.com/renozao/NMF/issues
 SCM: github+gran:renozao, r-forge
-Remotes: 
-	renozao/pkgmaker@develop
 LazyLoad: yes
 VignetteBuilder: knitr
 Depends:
@@ -27,9 +25,9 @@ Depends:
     pkgmaker (>= 0.31),
     registry,
     rngtools (>= 1.2.3),
-    cluster
+    cluster,
+    Matrix
 Imports:
-	Matrix,
     graphics,
     stats,
     stringr,
