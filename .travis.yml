@@ -11,6 +11,16 @@ r_binary_packages:
   - rmpi
   - stringi
   - git2r
+  - stringr
+  - httr
+  - ggplot2
+  - devtools
+  - rmarkdown
+  - bigmemory
+  - matrixStats
+  - plyr
+  - bibtex
+  - uuid
 #apt_packages:
 #  - libopenmpi-dev
 #  - liboctave-dev
