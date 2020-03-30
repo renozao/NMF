@@ -4,7 +4,6 @@
 # see the wiki:
 #   https://github.com/craigcitro/r-travis/wiki
 
-dist: trusty
 language: r
 bioc_required: true
 sudo: required
@@ -12,9 +11,9 @@ r_binary_packages:
   - rmpi
   - stringi
   - git2r
-apt_packages:
-  - libopenmpi-dev
-  - liboctave-dev
+#apt_packages:
+#  - libopenmpi-dev
+#  - liboctave-dev
 cache: packages
 r:
   - release
