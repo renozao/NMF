@@ -6,8 +6,15 @@
 #' @include aheatmap.R
 NULL
 
-#' @import Matrix
-setClassUnion('mMatrix', c('Matrix', 'matrix'))
+#' @rawNamespace if (".__C__mMatrix" %in% names(getNamespaceInfo("Matrix", "exports"))) importClassFrom(Matrix,mMatrix)
+NULL
+
+.isClassExported <- function(name, package){
+  paste0(".__C__", name) %in% names(getNamespaceInfo(package, "exports"))
+  
+}
+
+if( !.isClassExported("mMatrix", package = "Matrix") ) setClassUnion('mMatrix', c('Matrix', 'matrix'))
 
 #' Advanced Usage of the Package NMF
 #' 
