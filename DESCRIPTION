@@ -25,8 +25,7 @@ Depends:
     pkgmaker (>= 0.31),
     registry,
     rngtools (>= 1.2.3),
-    cluster,
-    Matrix
+    cluster
 Imports:
     graphics,
     stats,
