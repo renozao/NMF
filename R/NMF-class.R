@@ -363,6 +363,7 @@ setMethod('loadings', 'NMF', function(x) basis(x) )
 #' 
 #' @rdname basis-coef-methods
 #' @export
+#' @exportMethod coef 
 #' @inline
 setGeneric('coef', package='stats')
 #' @inline
