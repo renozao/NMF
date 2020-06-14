@@ -1,8 +1,8 @@
 Package: NMF
 Type: Package
 Title: Algorithms and Framework for Nonnegative Matrix Factorization (NMF)
-Version: 0.30
-Date: 2020-03-30
+Version: 0.30.1
+Date: 2020-06-14
 Author: Renaud Gaujoux, Cathal Seoighe
 Maintainer: Renaud Gaujoux <renozao@protonmail.com>
 Description: This package provides a framework to perform Non-negative Matrix
