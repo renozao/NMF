@@ -1793,7 +1793,7 @@ setMethod('consensusmap', 'matrix',
 	function(object, color='-RdYlBu'
 			, distfun = function(x) as.dist(1-x), hclustfun = 'average'
 			, Rowv = TRUE, Colv = "Rowv"
-			, main = if( is.null(nr) || nr > 1 ) 'Consensus matrix' else 'Connectiviy matrix'
+			, main = if( is.null(nr) || nr > 1 ) 'Consensus matrix' else 'Connectivity matrix'
 			, info = FALSE
 			, ...){
 				
