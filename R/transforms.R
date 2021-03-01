@@ -120,13 +120,14 @@ setMethod('nneg', 'matrix'
 }
 )
 
-#' Apply \code{nneg} to the basis matrix of an \code{\link{NMF}} 
+#' @describeIn nneg Applies \code{nneg} to the basis matrix of an \code{\link{NMF}} 
 #' object (i.e. \code{basis(object)}).
 #' All extra arguments in \code{...} are passed to the method \code{nneg,matrix}.
 #' 
 #' @examples
 #' 
 #' # random 
+#' x <- rmatrix(5,5, rnorm, mean=0, sd=5)
 #' M <- nmfModel(x, rmatrix(ncol(x), 3))
 #' nnM <- nneg(M) 
 #' basis(nnM)

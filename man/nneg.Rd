@@ -3,6 +3,7 @@
 \name{nneg}
 \alias{nneg}
 \alias{nneg,matrix-method}
+\alias{nneg,NMF-method}
 \alias{posneg}
 \alias{rposneg}
 \alias{rposneg,matrix-method}
@@ -16,6 +17,8 @@ nneg(object, ...)
   threshold = 0,
   shift = TRUE
 )
+
+\S4method{nneg}{NMF}(object, ...)
 
 posneg(...)
 
@@ -103,6 +106,15 @@ nneg(x, method='abs', threshold=2)
 nneg(x, method='min')
 nneg(x, method='min', threshold=2)
 
+
+# random 
+x <- rmatrix(5,5, rnorm, mean=0, sd=5)
+M <- nmfModel(x, rmatrix(ncol(x), 3))
+nnM <- nneg(M) 
+basis(nnM)
+# mixture coefficients are not affected
+identical( coef(M), coef(nnM) )
+
 # shortcut for the "posneg" transformation
 posneg(x)
 posneg(x, 2)
@@ -137,14 +149,14 @@ Other transforms:
 \bold{nneg:}
 
 \itemize{
-\item \code{nneg(object = NMF)}: Apply \code{nneg} to the basis matrix of an \code{\link{NMF}}
-object (i.e. \code{basis(object)}).
-All extra arguments in \code{...} are passed to the method \code{nneg,matrix}.
-
 \item \code{nneg(object = matrix)}: Transforms a mixed-sign matrix into a nonnegative matrix, optionally apply a
 lower threshold.
 This is the workhorse method, that is eventually called by all other
 methods defined in the \code{\link{NMF}} package.
+
+\item \code{nneg(object = NMF)}: Applies \code{nneg} to the basis matrix of an \code{\link{NMF}}
+object (i.e. \code{basis(object)}).
+All extra arguments in \code{...} are passed to the method \code{nneg,matrix}.
 }
 
 

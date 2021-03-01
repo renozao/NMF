@@ -37,7 +37,6 @@
 \alias{connectivity,NMF-method}
 \alias{deviance,NMF-method}
 \alias{anyNA.NMF}
-\alias{nneg,NMF-method}
 \alias{rposneg,NMF-method}
 \alias{t.NMF}
 \alias{metaHeatmap,NMF-method}
@@ -132,8 +131,6 @@ misc(object, ...)
 \S4method{deviance}{NMF}(object, y, method = c("", "KL", "euclidean"), ...)
 
 \method{anyNA}{NMF}(x, recursive = FALSE)
-
-\S4method{nneg}{NMF}(object, ...)
 
 \S4method{rposneg}{NMF}(object, ...)
 
@@ -602,14 +599,6 @@ predict(x, prob=TRUE)
 predict(x, 'rows', prob=TRUE)
 
 
-# random 
-M <- nmfModel(x, rmatrix(ncol(x), 3))
-nnM <- nneg(M) 
-basis(nnM)
-# mixture coefficients are not affected
-identical( coef(M), coef(nnM) )
-
-
 # random mixed signed NMF model 
 M <- nmfModel(rmatrix(10, 3, rnorm), rmatrix(3, 4))
 # split positive and negative part
@@ -692,13 +681,20 @@ b <- rnmf(a)
 
 }
 \references{
-Definition of Nonnegative Matrix Factorization in its modern formulation: Lee DD, Seung HS (1999). “Learning the parts of objects by non-negative matrix factorization.” _Nature_, *401*(6755), 788-91. ISSN 0028-0836, doi: 10.1038/44565 (URL: https://doi.org/10.1038/44565).
+Definition of Nonnegative Matrix Factorization in its modern formulation: Lee DD, Seung HS (1999). “Learning the parts of objects by non-negative
+matrix factorization.” _Nature_, *401*(6755), 788-91. ISSN 0028-0836,
+doi: 10.1038/44565 (URL: https://doi.org/10.1038/44565).
 
-Historical first definition and algorithms: Paatero P, Tapper U (1994). “Positive matrix factorization: A non-negative factor model with optimal utilization of error estimates of data values.” _Environmetrics_, *5*(2), 111-126. doi: 10.1002/env.3170050203
-(URL: https://doi.org/10.1002/env.3170050203).
+Historical first definition and algorithms: Paatero P, Tapper U (1994). “Positive matrix factorization: A
+non-negative factor model with optimal utilization of error estimates
+of data values.” _Environmetrics_, *5*(2), 111-126. doi:
+10.1002/env.3170050203 (URL: https://doi.org/10.1002/env.3170050203).
 
-Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502.
-ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL: https://doi.org/10.1093/bioinformatics/btm134).
+Kim H, Park H (2007). “Sparse non-negative matrix factorizations via
+alternating non-negativity-constrained least squares for microarray
+data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502.
+ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
+https://doi.org/10.1093/bioinformatics/btm134).
 }
 \seealso{
 Main interface function \link{nmf} to perform NMF.
@@ -763,7 +759,7 @@ should be overloaded by sub-classes, and throws an error if called.
 \bold{[:}
 
 \itemize{
-\item \code{[(x = NMF,i = ANY,j = ANY,drop = ANY)}: Sub-setting NMF Objects
+\item \code{[(x = NMF)}: Sub-setting NMF Objects
 
 This method provides a convenient way of sub-setting objects of class \code{NMF},
 using a matrix-like syntax.
@@ -939,7 +935,7 @@ the basis matrix (i.e. the names of the basis components).
 \bold{dimnames<-:}
 
 \itemize{
-\item \code{dimnames<-(x = NMF,value = ANY)}: sets the dimension names of the NMF model \code{x}.
+\item \code{dimnames<-(x = NMF)}: sets the dimension names of the NMF model \code{x}.
 
 \code{value} can be \code{NULL} which resets all dimension names, or a
 1, 2 or 3-length list providing names at least for the rows of the basis
@@ -1057,7 +1053,7 @@ i.e. an object returned by a single run of \code{\link{nmf}}.
 \bold{nneg:}
 
 \itemize{
-\item \code{nneg(object = NMF)}: Apply \code{nneg} to the basis matrix of an \code{\link{NMF}}
+\item \code{nneg(object = NMF)}: Applies \code{nneg} to the basis matrix of an \code{\link{NMF}}
 object (i.e. \code{basis(object)}).
 All extra arguments in \code{...} are passed to the method \code{nneg,matrix}.
 }
