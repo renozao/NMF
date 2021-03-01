@@ -362,10 +362,8 @@ setMethod('loadings', 'NMF', function(x) basis(x) )
 #' non-fixed terms or check dimension compatibility.
 #' 
 #' @rdname basis-coef-methods
+#' @importFrom stats coef
 #' @export
-#' @exportMethod coef 
-#' @inline
-setGeneric('coef', package='stats')
 #' @inline
 setMethod('coef', 'NMF',
 	function(object, ..., all=TRUE){
@@ -1266,16 +1264,8 @@ setReplaceMethod('$', 'NMF',
 )
 
 #' @importFrom utils .DollarNames
-setGeneric('.DollarNames', package='utils')
-
 #' @export
-#' @method .DollarNames NMF 
 .DollarNames.NMF <- function(x, pattern = "") grep(pattern, names(misc(x)), value=TRUE)
-
-#' Auto-completion for \code{\linkS4class{NMF}} objects
-#' @rdname NMF-class
-#' @export
-setMethod('.DollarNames', 'NMF', .DollarNames.NMF)
 
 #' \code{is.empty.nmf} tests whether an \code{NMF} object describes an empty NMF model, 
 #' i.e. it contains no data.
