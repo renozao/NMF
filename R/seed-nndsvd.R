@@ -46,7 +46,7 @@ NULL
 }
 
 ###% Port to R of the MATLAB code from Boutsidis
-.nndsvd.internal <- function(A, k, flag=0, LINPACK=FALSE){
+.nndsvd.internal <- function(A, k, flag=0){
 	
 	#check the input matrix
 	if( any(A<0) ) stop('The input matrix contains negative elements !')
@@ -60,7 +60,7 @@ NULL
 	H = matrix(0, k, n);
 	
 	#1st SVD --> partial SVD rank-k to the input matrix A.	
-	s = svd(A, k, k, LINPACK=LINPACK);
+	s = svd(A, k, k);
 	U <- s$u; S <- s$d; V <- s$v
 	
 	#-------------------------------------------------------
