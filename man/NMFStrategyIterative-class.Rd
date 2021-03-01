@@ -4,51 +4,12 @@
 \name{NMFStrategyIterative-class}
 \alias{NMFStrategyIterative-class}
 \alias{show,NMFStrategyIterative-method}
-\alias{run,NMFStrategyIterative,mMatrix,NMFfit-method}
-\alias{nmfFormals.NMFStrategyIterative}
 \title{Interface for Algorithms: Implementation for Iterative NMF Algorithms}
 \usage{
 \S4method{show}{NMFStrategyIterative}(object)
-
-\S4method{run}{NMFStrategyIterative,mMatrix,NMFfit}(
-  object,
-  y,
-  x,
-  .stop = NULL,
-  maxIter = nmf.getOption("maxIter") \%||\% 2000L,
-  ...
-)
-
-\method{nmfFormals}{NMFStrategyIterative}(x, runtime = FALSE, ...)
 }
 \arguments{
 \item{object}{an object of class \code{NMFStrategyIterative}}
-
-\item{y}{the target data that we want to approximate, passed as a matrix(-like) object.}
-
-\item{x}{an \linkS4class{NMFfit} object used as a starting point/seed by the algorithm.}
-
-\item{.stop}{specification of a stopping criterion, that is used instead of the
-one associated to the NMF algorithm.
-It may be specified as:
-\itemize{
-\item the access key of a registered stopping criterion;
-\item a single integer that specifies the exact number of iterations to perform, which will
-be honoured unless a lower value is explicitly passed in argument \code{maxIter}.
-\item a single numeric value that specifies the stationnarity threshold for the
-objective function, used in with \code{\link{nmf.stop.stationary}};
-\item a function with signature \code{(object="NMFStrategy", i="integer", y="matrix", x="NMF", ...)},
-where \code{object} is the \code{NMFStrategy} object that describes the algorithm being run,
-\code{i} is the current iteration, \code{y} is the target matrix and \code{x} is the current value of
-the NMF model.
-}}
-
-\item{maxIter}{maximum number of iterations to perform.}
-
-\item{...}{arguments that are passed to \strong{all} step functions \code{onInit}, \code{Update}, \code{Stop} and \code{onReturn}.}
-
-\item{runtime}{(internal use only) single logical that indicates if arguments should be split
-between those passed internally and of passed down from the top call.}
 }
 \description{
 This class provides a specific implementation for the generic function \code{run}
@@ -95,8 +56,6 @@ http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+f
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{show(object = NMFStrategyIterative)}: Show method for objects of class \code{NMFStrategyIterative}
-
 \item \code{run(object = NMFStrategyIterative,y = mMatrix,x = NMFfit)}: Runs an NMF iterative algorithm on a target matrix \code{y}.
 
 \item \code{nmfFormals(NMFStrategyIterative)}: Returns the extra arguments that can be passed to the algorithm that is composed
@@ -104,5 +63,7 @@ by an \link[=NMFStrategyIterative-class]{NMFStrategyIterative} object.
 
 These are the union of the formal arguments of all the functional steps in the algorithm:
 \code{onInit}, \code{Update}, \code{Stop}, \code{onReturn}.
+
+\item \code{show(object = NMFStrategyIterative)}: Show method for objects of class \code{NMFStrategyIterative}
 }}
 

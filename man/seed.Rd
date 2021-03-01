@@ -2,19 +2,14 @@
 % Please edit documentation in R/nmf.R
 \name{seed}
 \alias{seed}
-\alias{seed,mMatrix,NMF,NMFSeed-method}
 \alias{seed,ANY,ANY,function-method}
 \alias{seed,ANY,ANY,missing-method}
 \alias{seed,ANY,ANY,NULL-method}
 \alias{seed,ANY,ANY,numeric-method}
 \alias{seed,ANY,ANY,character-method}
-\alias{seed,ANY,list,NMFSeed-method}
-\alias{seed,ANY,numeric,NMFSeed-method}
 \title{Interface for NMF Seeding Methods}
 \usage{
 seed(x, model, method, ...)
-
-\S4method{seed}{mMatrix,NMF,NMFSeed}(x, model, method, rng, ...)
 
 \S4method{seed}{ANY,ANY,`function`}(x, model, method, name, ...)
 
@@ -25,10 +20,6 @@ seed(x, model, method, ...)
 \S4method{seed}{ANY,ANY,numeric}(x, model, method, ...)
 
 \S4method{seed}{ANY,ANY,character}(x, model, method, ...)
-
-\S4method{seed}{ANY,list,NMFSeed}(x, model, method, ...)
-
-\S4method{seed}{ANY,numeric,NMFSeed}(x, model, method, ...)
 }
 \arguments{
 \item{x}{target matrix one wants to approximate with NMF}
@@ -39,12 +30,6 @@ seed(x, model, method, ...)
 See each method for details on the supported formats.}
 
 \item{...}{extra to allow extensions and passed down to the actual seeding method.}
-
-\item{rng}{rng setting to use.
-If not missing the RNG settings are set and restored on exit using
-\code{\link{setRNG}}.
-
-All arguments in \code{...} are passed to teh seeding strategy.}
 
 \item{name}{optional name of the seeding method for custom seeding strategies.}
 }
@@ -68,6 +53,12 @@ to changes in future release.
 seeding strategy defined by an \code{NMFSeed} object, to fit a given
 target matrix.
 
+\item \code{seed(x = ANY,model = list,method = NMFSeed)}: Seed a model using the elements in \code{model} to instantiate it with
+\code{\link{nmfModel}}.
+
+\item \code{seed(x = ANY,model = numeric,method = NMFSeed)}: Seeds a standard NMF model (i.e. of class \code{\linkS4class{NMFstd}}) of rank
+\code{model}.
+
 \item \code{seed(x = ANY,model = ANY,method = function)}: Seeds an NMF model using a custom seeding strategy, defined by a function.
 
 \code{method} must have signature \code{(x='NMFfit', y='matrix', ...)}, where
@@ -88,11 +79,5 @@ This is due to some internal technical reasons, and might change in future
 releases.
 
 \item \code{seed(x = ANY,model = ANY,method = character)}: Use the registered seeding method whose access key is \code{method}.
-
-\item \code{seed(x = ANY,model = list,method = NMFSeed)}: Seed a model using the elements in \code{model} to instantiate it with
-\code{\link{nmfModel}}.
-
-\item \code{seed(x = ANY,model = numeric,method = NMFSeed)}: Seeds a standard NMF model (i.e. of class \code{\linkS4class{NMFstd}}) of rank
-\code{model}.
 }}
 

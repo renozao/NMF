@@ -6,13 +6,23 @@
 \alias{runtime.all,NMFfitX-method}
 \alias{nrun,NMFfitX-method}
 \alias{consensus,NMFfitX-method}
+\alias{consensushc,NMFfitX-method}
+\alias{predict,NMFfitX-method}
 \alias{fit,NMFfitX-method}
 \alias{minfit,NMFfitX-method}
 \alias{show,NMFfitX-method}
-\alias{nmf.equal,NMFfitX,NMF-method}
+\alias{getRNG1,NMFfitX-method}
+\alias{residuals,NMFfitX-method}
+\alias{deviance,NMFfitX-method}
 \alias{ibterms,NMFfitX-method}
 \alias{dispersion,NMFfitX-method}
+\alias{NMFfitX,NMFfitX-method}
 \alias{summary,NMFfitX-method}
+\alias{metaHeatmap,NMFfitX-method}
+\alias{consensusmap,NMFfitX-method}
+\alias{basismap,NMFfitX-method}
+\alias{coefmap,NMFfitX-method}
+\alias{cophcor,NMFfitX-method}
 \alias{silhouette.NMFfitX}
 \title{Virtual Class to Handle Results from Multiple Runs of NMF Algorithms}
 \usage{
@@ -22,30 +32,69 @@
 
 \S4method{consensus}{NMFfitX}(object, ...)
 
+\S4method{consensushc}{NMFfitX}(object, what = c("consensus", "fit"), ...)
+
+\S4method{predict}{NMFfitX}(
+  object,
+  what = c("columns", "rows", "samples", "features", "consensus", "chc"),
+  dmatrix = FALSE,
+  ...
+)
+
 \S4method{fit}{NMFfitX}(object)
 
 \S4method{minfit}{NMFfitX}(object)
 
 \S4method{show}{NMFfitX}(object)
 
-\S4method{nmf.equal}{NMFfitX,NMF}(x, y, ...)
+\S4method{getRNG1}{NMFfitX}(object)
+
+\S4method{residuals}{NMFfitX}(object, ...)
+
+\S4method{deviance}{NMFfitX}(object, ...)
 
 \S4method{ibterms}{NMFfitX}(object)
 
 \S4method{dispersion}{NMFfitX}(object, ...)
 
+\S4method{NMFfitX}{NMFfitX}(object, ...)
+
 \S4method{summary}{NMFfitX}(object, ..., with.silhouette = "both")
+
+\S4method{metaHeatmap}{NMFfitX}(object, ...)
+
+\S4method{consensusmap}{NMFfitX}(
+  object,
+  annRow = NA,
+  annCol = NA,
+  tracks = c("basis:", "consensus:", "silhouette:"),
+  main = "Consensus matrix",
+  info = FALSE,
+  ...
+)
+
+\S4method{basismap}{NMFfitX}(object, ...)
+
+\S4method{coefmap}{NMFfitX}(
+  object,
+  Colv = TRUE,
+  annRow = NA,
+  annCol = NA,
+  tracks = c("basis", "consensus:"),
+  ...
+)
+
+\S4method{cophcor}{NMFfitX}(object, ...)
 
 \method{silhouette}{NMFfitX}(x, ...)
 }
 \arguments{
 \item{object}{an object of class \code{NMFfitX}}
 
-\item{...}{other arguments passed to subsequent calls of suitable methods, usually of the same generic.
-See details for each method in their dedicated section.}
+\item{...}{other arguments passed to suitable methods, like \link{predict,NMF-method}.}
 
-\item{x, y}{objects of that generally inherit from \linkS4class{NMF}.
-Depending on the method, either or both are \code{NMFfitX} objects.}
+\item{what}{character string that indicates which matrix to use in the
+computation.}
 
 \item{with.silhouette}{indicates which silhouette average width should
 be computed. Its value is partially matched against: \code{'both', 'features',
@@ -87,6 +136,16 @@ res
 res <- nmf(V, 3, nrun=3, .options='k')
 res
  
+# For multiple NMF runs, the RNG settings used for the first run is also stored
+V <- rmatrix(20,10)
+res <- nmf(V, 3, nrun=4)
+# RNG used for the best fit
+getRNG(res)
+# RNG used for the first of all fits
+getRNG1(res)
+# they may differ if the best fit is not the first one
+rng.equal(res, getRNG1(res))
+
 }
 \seealso{
 Other multipleNMF: 
@@ -215,9 +274,9 @@ for sub-classes of \code{NMFfitX}, which throws an error if called.
 \bold{nmf.equal:}
 
 \itemize{
-\item \code{nmf.equal(x = NMF,y = NMFfitX)}: Compares two NMF models when at least one comes from multiple NMF runs.
-
 \item \code{nmf.equal(x = NMFfitX,y = NMF)}: Compares two NMF models when at least one comes from multiple NMF runs.
+
+\item \code{nmf.equal(x = NMF,y = NMFfitX)}: Compares two NMF models when at least one comes from multiple NMF runs.
 }
 
 

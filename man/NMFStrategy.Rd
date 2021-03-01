@@ -3,10 +3,7 @@
 \name{NMFStrategy}
 \alias{NMFStrategy}
 \alias{NMFStrategy,character,function-method}
-\alias{NMFStrategy,character,NMFStrategy-method}
-\alias{NMFStrategy,NMFStrategy,missing-method}
 \alias{NMFStrategy,missing,character-method}
-\alias{NMFStrategy,NULL,NMFStrategy-method}
 \alias{NMFStrategy,character,character-method}
 \alias{NMFStrategy,NULL,character-method}
 \alias{NMFStrategy,character,missing-method}
@@ -16,13 +13,7 @@ NMFStrategy(name, method, ...)
 
 \S4method{NMFStrategy}{character,`function`}(name, method, ...)
 
-\S4method{NMFStrategy}{character,NMFStrategy}(name, method, ...)
-
-\S4method{NMFStrategy}{NMFStrategy,missing}(name, method, ...)
-
 \S4method{NMFStrategy}{missing,character}(name, method, ...)
-
-\S4method{NMFStrategy}{`NULL`,NMFStrategy}(name, method, ...)
 
 \S4method{NMFStrategy}{character,character}(name, method, ...)
 
@@ -54,24 +45,24 @@ Arguments that have default values defined by the strategy are set accordingly.
 \bold{NMFStrategy:}
 
 \itemize{
+\item \code{NMFStrategy(name = character,method = NMFStrategy)}: Creates an \code{NMFStrategy} object based on a template object (Constructor-Copy).
+
+\item \code{NMFStrategy(name = NMFStrategy,method = missing)}: Creates an \code{NMFStrategy} based on a template object (Constructor-Copy),
+in particular it uses the \strong{same} name.
+
+\item \code{NMFStrategy(name = NULL,method = NMFStrategy)}: Creates an \code{NMFStrategy} based on a template object (Constructor-Copy)
+but using a randomly generated name.
+
 \item \code{NMFStrategy(name = character,method = function)}: Creates an \code{NMFStrategyFunction} object that wraps the function \code{method}
 into a unified interface.
 
 \code{method} must be a function with signature \code{(y="matrix", x="NMFfit", ...)},
 and return an object of class \code{\linkS4class{NMFfit}}.
 
-\item \code{NMFStrategy(name = character,method = NMFStrategy)}: Creates an \code{NMFStrategy} object based on a template object (Constructor-Copy).
-
-\item \code{NMFStrategy(name = NMFStrategy,method = missing)}: Creates an \code{NMFStrategy} based on a template object (Constructor-Copy),
-in particular it uses the \strong{same} name.
-
 \item \code{NMFStrategy(name = missing,method = character)}: Creates an \code{NMFStrategy} based on a registered NMF algorithm that is used
 as a template (Constructor-Copy), in particular it uses the \strong{same} name.
 
 It is a shortcut for \code{NMFStrategy(nmfAlgorithm(method, exact=TRUE), ...)}.
-
-\item \code{NMFStrategy(name = NULL,method = NMFStrategy)}: Creates an \code{NMFStrategy} based on a template object (Constructor-Copy)
-but using a randomly generated name.
 
 \item \code{NMFStrategy(name = character,method = character)}: Creates an \code{NMFStrategy} based on a registered NMF algorithm that is used
 as a template.

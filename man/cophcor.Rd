@@ -3,14 +3,11 @@
 \name{cophcor}
 \alias{cophcor}
 \alias{cophcor,matrix-method}
-\alias{cophcor,NMFfitX-method}
 \title{Cophenetic Correlation Coefficient}
 \usage{
 cophcor(object, ...)
 
 \S4method{cophcor}{matrix}(object, linkage = "average")
-
-\S4method{cophcor}{NMFfitX}(object, ...)
 }
 \arguments{
 \item{object}{an object from which is extracted a consensus matrix.}
@@ -36,19 +33,18 @@ distances (by default an average linkage is used).
 See Brunet et al. (2004).
 }
 \references{
-Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and molecular pattern discovery using matrix factorization.” _Proceedings of
-the National Academy of Sciences of the United States of America_, *101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL:
-https://doi.org/10.1073/pnas.0308531101).
+Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and molecular pattern discovery using matrix factorization.” _Proceedings of the National Academy of Sciences of the United States of America_,
+*101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL: https://doi.org/10.1073/pnas.0308531101).
 }
 \seealso{
 \code{\link{cophenetic}}
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{cophcor(object = matrix)}: Workhorse method for matrices.
-
 \item \code{cophcor(object = NMFfitX)}: Computes the cophenetic correlation coefficient on the consensus matrix
 of \code{object}.
 All arguments in \code{...} are passed to the method \code{cophcor,matrix}.
+
+\item \code{cophcor(object = matrix)}: Workhorse method for matrices.
 }}
 

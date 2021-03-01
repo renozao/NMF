@@ -128,8 +128,7 @@ rnmf(3, 10, 5, model='NMFns', theta=0.3)
 
 }
 \references{
-Pascual-Montano A, Carazo JM, Kochi K, Lehmann D, Pascual-marqui RD (2006). “Nonsmooth nonnegative matrix factorization (nsNMF).” _IEEE
-Trans. Pattern Anal. Mach. Intell_, *28*, 403-415.
+Pascual-Montano A, Carazo JM, Kochi K, Lehmann D, Pascual-marqui RD (2006). “Nonsmooth nonnegative matrix factorization (nsNMF).” _IEEE Trans. Pattern Anal. Mach. Intell_, *28*, 403-415.
 }
 \seealso{
 Other NMF-model: 

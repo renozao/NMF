@@ -2,19 +2,10 @@
 % Please edit documentation in R/NMFSet-class.R
 \name{getRNG1}
 \alias{getRNG1}
-\alias{getRNG1,NMFfitX-method}
-\alias{getRNG1,NMFfitX1-method}
-\alias{getRNG1,NMFfitXn-method}
 \alias{.getRNG,NMFfitXn-method}
 \title{Extracting RNG Data from NMF Objects}
 \usage{
 getRNG1(object, ...)
-
-\S4method{getRNG1}{NMFfitX}(object)
-
-\S4method{getRNG1}{NMFfitX1}(object)
-
-\S4method{getRNG1}{NMFfitXn}(object)
 
 \S4method{.getRNG}{NMFfitXn}(object, ...)
 }
@@ -32,26 +23,18 @@ that can be used to exactly reproduce any computation.
 These data can be extracted using dedicated methods for the S4 generics
 \code{\link[rngtools]{getRNG}} and \code{\link[rngtools]{getRNG1}}.
 }
-\section{Functions}{
+\section{Methods (by generic)}{
+\bold{.getRNG:}
+
 \itemize{
-\item \code{.getRNG,NMFfitXn-method}: Returns the RNG settings used for the best fit.
+\item \code{.getRNG(object = NMFfitXn)}: Returns the RNG settings used for the best fit.
 
 This method throws an error if the object is empty.
-}}
-
-\examples{
-# For multiple NMF runs, the RNG settings used for the first run is also stored
-V <- rmatrix(20,10)
-res <- nmf(V, 3, nrun=4)
-# RNG used for the best fit
-getRNG(res)
-# RNG used for the first of all fits
-getRNG1(res)
-# they may differ if the best fit is not the first one
-rng.equal(res, getRNG1(res))
-
 }
-\section{Methods (by generic)}{
+
+
+\bold{getRNG1:}
+
 \itemize{
 \item \code{getRNG1(object = NMFfitX)}: Returns the RNG settings used for the first NMF run of multiple NMF runs.
 
@@ -61,5 +44,7 @@ which \code{object} was selected as the best fit.
 \item \code{getRNG1(object = NMFfitXn)}: Returns the RNG settings used for the first run.
 
 This method throws an error if the object is empty.
-}}
+}
+
+}
 

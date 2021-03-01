@@ -58,12 +58,10 @@ if( require(Biobase) ){
  
 }
 \references{
-Golub TR, Slonim DK, Tamayo P, Huard C, Gaasenbeek M, Mesirov JP, Coller H, Loh ML, Downing JR, a Caligiuri M, Bloomfield CD, Lander ES
-(1999). “Molecular classification of cancer: class discovery and class prediction by gene expression monitoring.” _Science (New York,
-N.Y.)_, *286*(5439), 531-7. ISSN 0036-8075, <URL: http://www.ncbi.nlm.nih.gov/pubmed/10521349>.
+Golub TR, Slonim DK, Tamayo P, Huard C, Gaasenbeek M, Mesirov JP, Coller H, Loh ML, Downing JR, a Caligiuri M, Bloomfield CD, Lander ES (1999). “Molecular classification of cancer: class discovery and class
+prediction by gene expression monitoring.” _Science (New York, N.Y.)_, *286*(5439), 531-7. ISSN 0036-8075, <URL: http://www.ncbi.nlm.nih.gov/pubmed/10521349>.
 
-Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and molecular pattern discovery using matrix factorization.” _Proceedings of
-the National Academy of Sciences of the United States of America_, *101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL:
-https://doi.org/10.1073/pnas.0308531101).
+Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and molecular pattern discovery using matrix factorization.” _Proceedings of the National Academy of Sciences of the United States of America_,
+*101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL: https://doi.org/10.1073/pnas.0308531101).
 }
 \keyword{datasets}

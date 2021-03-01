@@ -11,6 +11,8 @@
 \alias{.coef<-,NMFstd,array-method}
 \alias{.coef<-,NMFstd,mMatrix-method}
 \alias{fitted,NMFstd-method}
+\alias{bterms<-,NMFstd-method}
+\alias{cterms<-,NMFstd-method}
 \alias{ibterms,NMFstd-method}
 \alias{icterms,NMFstd-method}
 \title{NMF Model - Standard model}
@@ -30,6 +32,10 @@
 \S4method{.coef}{NMFstd,mMatrix}(object, slice = 1L) <- value
 
 \S4method{fitted}{NMFstd}(object, W, H)
+
+\S4method{bterms}{NMFstd}(object) <- value
+
+\S4method{cterms}{NMFstd}(object) <- value
 
 \S4method{ibterms}{NMFstd}(object)
 

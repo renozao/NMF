@@ -43,8 +43,7 @@ The basic definition is for a \code{numeric} vector, and is extended for matrice
 mean sparseness of its column vectors.
 }
 \references{
-Hoyer P (2004). “Non-negative matrix factorization with sparseness constraints.” _The Journal of Machine Learning Research_, *5*,
-1457-1469. <URL: http://portal.acm.org/citation.cfm?id=1044709>.
+Hoyer P (2004). “Non-negative matrix factorization with sparseness constraints.” _The Journal of Machine Learning Research_, *5*, 1457-1469. <URL: http://portal.acm.org/citation.cfm?id=1044709>.
 }
 \seealso{
 Other assess: 

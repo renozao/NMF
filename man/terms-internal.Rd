@@ -2,18 +2,12 @@
 % Please edit documentation in R/fixed-terms.R
 \name{bterms<-}
 \alias{bterms<-}
-\alias{bterms<-,NMFstd-method}
 \alias{cterms<-}
-\alias{cterms<-,NMFstd-method}
 \title{Fixed Terms in NMF Models}
 \usage{
 bterms(object) <- value
 
-\S4method{bterms}{NMFstd}(object) <- value
-
 cterms(object) <- value
-
-\S4method{cterms}{NMFstd}(object) <- value
 }
 \arguments{
 \item{object}{NMF object to be updated.}

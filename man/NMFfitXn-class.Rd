@@ -5,6 +5,8 @@
 \alias{NMFfitXn-class}
 \alias{show,NMFfitXn-method}
 \alias{nbasis,NMFfitXn-method}
+\alias{coef,NMFfitXn-method}
+\alias{basis,NMFfitXn-method}
 \alias{nrun,NMFfitXn-method}
 \alias{algorithm,NMFfitXn-method}
 \alias{seeding,NMFfitXn-method}
@@ -12,6 +14,7 @@
 \alias{seqtime,NMFfitXn-method}
 \alias{runtime.all,NMFfitXn-method}
 \alias{minfit,NMFfitXn-method}
+\alias{getRNG1,NMFfitXn-method}
 \alias{fit,NMFfitXn-method}
 \alias{consensus,NMFfitXn-method}
 \alias{purity,NMFfitXn,ANY-method}
@@ -21,6 +24,10 @@
 \S4method{show}{NMFfitXn}(object)
 
 \S4method{nbasis}{NMFfitXn}(x, ...)
+
+\S4method{coef}{NMFfitXn}(object, ...)
+
+\S4method{basis}{NMFfitXn}(object, ...)
 
 \S4method{nrun}{NMFfitXn}(object)
 
@@ -35,6 +42,8 @@
 \S4method{runtime.all}{NMFfitXn}(object, null = FALSE, warning = TRUE)
 
 \S4method{minfit}{NMFfitXn}(object)
+
+\S4method{getRNG1}{NMFfitXn}(object)
 
 \S4method{fit}{NMFfitXn}(object)
 
@@ -137,18 +146,6 @@ Since all fits have the same dimensions, it returns the dimension of the
 first fit.
 This method returns \code{NULL} if the object is empty.
 
-\item \code{coef(object = NMFfitXn)}: Returns the coefficient matrix of the best fit amongst all the fits stored in
-\code{object}.
-It is a shortcut for \code{coef(fit(object))}.
-
-\item \code{basis(object = NMFfitXn)}: Returns the basis matrix of the best fit amongst all the fits stored in
-\code{object}.
-It is a shortcut for \code{basis(fit(object))}.
-
-\item \code{getRNG1(object = NMFfitXn)}: Returns the RNG settings used for the first run.
-
-This method throws an error if the object is empty.
-
 \item \code{.getRNG(object = NMFfitXn)}: Returns the RNG settings used for the best fit.
 
 This method throws an error if the object is empty.
@@ -163,6 +160,14 @@ call to \code{\link{nmf}}.
 Since all fits have been computed using the same rank, it returns the
 factorization rank of the first fit.
 This method returns \code{NULL} if the object is empty.
+
+\item \code{coef(object = NMFfitXn)}: Returns the coefficient matrix of the best fit amongst all the fits stored in
+\code{object}.
+It is a shortcut for \code{coef(fit(object))}.
+
+\item \code{basis(object = NMFfitXn)}: Returns the basis matrix of the best fit amongst all the fits stored in
+\code{object}.
+It is a shortcut for \code{basis(fit(object))}.
 
 \item \code{nrun(object = NMFfitXn)}: Returns the number of runs performed to compute the fits stored in the list
 (i.e. the length of the list itself).
@@ -204,6 +209,10 @@ If no time data is available from in slot \sQuote{runtime.all} and argument
 estimation residuals.
 
 The model is selected based on its \code{deviance} value.
+
+\item \code{getRNG1(object = NMFfitXn)}: Returns the RNG settings used for the first run.
+
+This method throws an error if the object is empty.
 
 \item \code{fit(object = NMFfitXn)}: Returns the best NMF fit object amongst all the fits stored in \code{object},
 i.e. the fit that achieves the lowest estimation residuals.

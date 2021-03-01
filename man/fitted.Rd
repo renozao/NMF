@@ -23,7 +23,7 @@ In other models, the estimate may depend on extra parameters/matrix
 (cf. Non-smooth NMF in \code{\link{NMFns-class}}).
 }
 \details{
-This function is a S4 generic function imported from \link[stats:fitted]{stats::fitted} in
+This function is a S4 generic function imported from \link[stats:fitted.values]{stats::fitted} in
 the package \emph{stats}.
 It is implemented as a pure virtual method for objects of class
 \code{NMF}, meaning that concrete NMF models must provide a

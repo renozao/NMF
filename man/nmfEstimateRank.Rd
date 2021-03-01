@@ -181,11 +181,9 @@ plot(res, rand)
 
 }
 \references{
-Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and molecular pattern discovery using matrix factorization.” _Proceedings of
-the National Academy of Sciences of the United States of America_, *101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL:
-https://doi.org/10.1073/pnas.0308531101).
+Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and molecular pattern discovery using matrix factorization.” _Proceedings of the National Academy of Sciences of the United States of America_,
+*101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL: https://doi.org/10.1073/pnas.0308531101).
 
-Hutchins LN, Murphy SM, Singh P, Graber JH (2008). “Position-dependent motif characterization using non-negative matrix factorization.”
-_Bioinformatics (Oxford, England)_, *24*(23), 2684-90. ISSN 1367-4811, doi: 10.1093/bioinformatics/btn526 (URL:
-https://doi.org/10.1093/bioinformatics/btn526).
+Hutchins LN, Murphy SM, Singh P, Graber JH (2008). “Position-dependent motif characterization using non-negative matrix factorization.” _Bioinformatics (Oxford, England)_, *24*(23), 2684-90. ISSN 1367-4811, doi:
+10.1093/bioinformatics/btn526 (URL: https://doi.org/10.1093/bioinformatics/btn526).
 }

@@ -3,17 +3,13 @@
 \name{featureScore}
 \alias{featureScore}
 \alias{featureScore,matrix-method}
-\alias{featureScore,NMF-method}
 \alias{extractFeatures}
 \alias{extractFeatures,matrix-method}
-\alias{extractFeatures,NMF-method}
 \title{Feature Selection in NMF Models}
 \usage{
 featureScore(object, ...)
 
 \S4method{featureScore}{matrix}(object, method = c("kim", "max"))
-
-\S4method{featureScore}{NMF}(object, ...)
 
 extractFeatures(object, ...)
 
@@ -23,8 +19,6 @@ extractFeatures(object, ...)
   format = c("list", "combine", "subset"),
   nodups = TRUE
 )
-
-\S4method{extractFeatures}{NMF}(object, ...)
 }
 \arguments{
 \item{object}{an object from which scores/features are computed/extracted}
@@ -177,39 +171,35 @@ extractFeatures(x, 1L) # means top contributing feature in each component
 
 }
 \references{
-Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray
-data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502. ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
-https://doi.org/10.1093/bioinformatics/btm134).
+Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502.
+ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL: https://doi.org/10.1093/bioinformatics/btm134).
 
-Carmona-Saez P, Pascual-Marqui RD, Tirado F, Carazo JM, Pascual-Montano A (2006). “Biclustering of gene expression data by Non-smooth
-Non-negative Matrix Factorization.” _BMC bioinformatics_, *7*, 78. ISSN 1471-2105, doi: 10.1186/1471-2105-7-78 (URL:
-https://doi.org/10.1186/1471-2105-7-78).
+Carmona-Saez P, Pascual-Marqui RD, Tirado F, Carazo JM, Pascual-Montano A (2006). “Biclustering of gene expression data by Non-smooth Non-negative Matrix Factorization.” _BMC bioinformatics_, *7*, 78. ISSN
+1471-2105, doi: 10.1186/1471-2105-7-78 (URL: https://doi.org/10.1186/1471-2105-7-78).
 
-Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray
-data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502. ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
-https://doi.org/10.1093/bioinformatics/btm134).
+Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502.
+ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL: https://doi.org/10.1093/bioinformatics/btm134).
 
-Carmona-Saez P, Pascual-Marqui RD, Tirado F, Carazo JM, Pascual-Montano A (2006). “Biclustering of gene expression data by Non-smooth
-Non-negative Matrix Factorization.” _BMC bioinformatics_, *7*, 78. ISSN 1471-2105, doi: 10.1186/1471-2105-7-78 (URL:
-https://doi.org/10.1186/1471-2105-7-78).
+Carmona-Saez P, Pascual-Marqui RD, Tirado F, Carazo JM, Pascual-Montano A (2006). “Biclustering of gene expression data by Non-smooth Non-negative Matrix Factorization.” _BMC bioinformatics_, *7*, 78. ISSN
+1471-2105, doi: 10.1186/1471-2105-7-78 (URL: https://doi.org/10.1186/1471-2105-7-78).
 }
 \section{Methods (by generic)}{
 \bold{extractFeatures:}
 
 \itemize{
-\item \code{extractFeatures(object = matrix)}: Select features on a given matrix, that contains the basis component in columns.
-
 \item \code{extractFeatures(object = NMF)}: Select basis-specific features from an NMF model, by applying the method
 \code{extractFeatures,matrix} to its basis matrix.
+
+\item \code{extractFeatures(object = matrix)}: Select features on a given matrix, that contains the basis component in columns.
 }
 
 
 \bold{featureScore:}
 
 \itemize{
-\item \code{featureScore(object = matrix)}: Computes feature scores on a given matrix, that contains the basis component in columns.
-
 \item \code{featureScore(object = NMF)}: Computes feature scores on the basis matrix of an NMF model.
+
+\item \code{featureScore(object = matrix)}: Computes feature scores on a given matrix, that contains the basis component in columns.
 }
 
 }

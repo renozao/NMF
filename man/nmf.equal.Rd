@@ -57,14 +57,6 @@ stored in slot \sQuote{misc}.
 If extra arguments are specified in \code{...}, then the comparison is performed
 using \code{\link{all.equal}}, irrespective of the value of argument \code{identical}.
 }
-\section{Methods (by class)}{
-\itemize{
-\item \code{x = NMF,y = NMF}: Compares two NMF models.
-
-Arguments in \code{...} are used only when \code{identical=FALSE} and are
-passed to \code{all.equal}.
-}}
-
 \section{Methods (by generic)}{
 \itemize{
 \item \code{nmf.equal(x = NMFfit,y = NMF)}: Compares two NMF models when at least one comes from a NMFfit object,
@@ -81,6 +73,11 @@ i.e. an object returned by a single run of \code{\link{nmf}}.
 \item \code{nmf.equal(x = NMF,y = NMFfitX)}: Compares two NMF models when at least one comes from multiple NMF runs.
 
 \item \code{nmf.equal(x = NMFfitX1,y = NMFfitX1)}: Compares the NMF models fitted by multiple runs, that only kept the best fits.
+
+\item \code{nmf.equal(x = NMF,y = NMF)}: Compares two NMF models.
+
+Arguments in \code{...} are used only when \code{identical=FALSE} and are
+passed to \code{all.equal}.
 
 \item \code{nmf.equal(x = list,y = list)}: Compares the results of multiple NMF runs.
 

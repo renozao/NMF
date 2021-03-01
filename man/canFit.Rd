@@ -2,16 +2,10 @@
 % Please edit documentation in R/registry-algorithms.R
 \name{canFit}
 \alias{canFit}
-\alias{canFit,NMFStrategy,character-method}
-\alias{canFit,NMFStrategy,NMF-method}
 \alias{canFit,character,ANY-method}
 \title{Testing Compatibility of Algorithm and Models}
 \usage{
 canFit(x, y, ...)
-
-\S4method{canFit}{NMFStrategy,character}(x, y, exact = FALSE)
-
-\S4method{canFit}{NMFStrategy,NMF}(x, y, ...)
 
 \S4method{canFit}{character,ANY}(x, y, ...)
 }
@@ -21,10 +15,6 @@ canFit(x, y, ...)
 \item{y}{an object that describes a model}
 
 \item{...}{extra arguments to allow extension}
-
-\item{exact}{for logical that indicates if an algorithm is considered able to fit
-only the models that it explicitly declares (\code{TRUE}), or if it should be
-considered able to also fit models that extend models that it explicitly fits.}
 }
 \description{
 \code{canFit} is an S4 generic that tests if an algorithm can

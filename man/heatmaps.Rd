@@ -3,63 +3,16 @@
 \name{heatmap-NMF}
 \alias{heatmap-NMF}
 \alias{basismap}
-\alias{basismap,NMF-method}
 \alias{coefmap}
-\alias{coefmap,NMF-method}
 \alias{consensusmap}
-\alias{consensusmap,NMFfitX-method}
-\alias{consensusmap,NMF-method}
 \alias{consensusmap,matrix-method}
-\alias{basismap,NMFfitX-method}
-\alias{coefmap,NMFfitX-method}
 \title{Heatmaps of NMF Factors}
 \usage{
 basismap(object, ...)
 
-\S4method{basismap}{NMF}(
-  object,
-  color = "YlOrRd:50",
-  scale = "r1",
-  Rowv = TRUE,
-  Colv = NA,
-  subsetRow = FALSE,
-  annRow = NA,
-  annCol = NA,
-  tracks = "basis",
-  main = "Basis components",
-  info = FALSE,
-  ...
-)
-
 coefmap(object, ...)
 
-\S4method{coefmap}{NMF}(
-  object,
-  color = "YlOrRd:50",
-  scale = "c1",
-  Rowv = NA,
-  Colv = TRUE,
-  annRow = NA,
-  annCol = NA,
-  tracks = "basis",
-  main = "Mixture coefficients",
-  info = FALSE,
-  ...
-)
-
 consensusmap(object, ...)
-
-\S4method{consensusmap}{NMFfitX}(
-  object,
-  annRow = NA,
-  annCol = NA,
-  tracks = c("basis:", "consensus:", "silhouette:"),
-  main = "Consensus matrix",
-  info = FALSE,
-  ...
-)
-
-\S4method{consensusmap}{NMF}(object, ...)
 
 \S4method{consensusmap}{matrix}(
   object,
@@ -72,159 +25,12 @@ consensusmap(object, ...)
   info = FALSE,
   ...
 )
-
-\S4method{basismap}{NMFfitX}(object, ...)
-
-\S4method{coefmap}{NMFfitX}(
-  object,
-  Colv = TRUE,
-  annRow = NA,
-  annCol = NA,
-  tracks = c("basis", "consensus:"),
-  ...
-)
 }
 \arguments{
 \item{object}{an object from which is extracted NMF factors or a consensus
 matrix}
 
 \item{...}{extra arguments passed to \code{\link{aheatmap}}.}
-
-\item{color}{colour specification for the heatmap. Default to palette
-'-RdYlBu2:100', i.e. reversed palette 'RdYlBu2' (a slight modification of
-RColorBrewer's palette 'RdYlBu') with 100 colors.
-Possible values are:
-\itemize{
-\item a character/integer vector of length greater than 1 that is directly used
-and assumed to contain valid R color specifications.
-\item a single color/integer (between 0 and 8)/other numeric value
-that gives the dominant colors. Numeric values are converted into a pallete
-by \code{rev(sequential_hcl(2, h = x, l = c(50, 95)))}. Other values are
-concatenated with the grey colour '#F1F1F1'.
-\item RColorBrewer palette names (see \code{\link[RColorBrewer]{display.brewer.all}})
-\item \code{viridis} palette names: 'viridis', 'inferno', 'plasma', 'magma';
-\item one of 'RdYlBu2', 'rainbow', 'heat', 'topo', 'terrain', 'cm'.
-}
-When the colour palette is specified with a single value, and is negative or
-preceded a minus ('-'), the reversed palette is used.
-The number of breaks can also be specified after a colon (':'). For example,
-the default colour palette is specified as '-RdYlBu2:100'.}
-
-\item{scale}{character indicating how the values should scaled in
-either the row direction or the column direction. Note that the scaling is
-performed after row/column clustering, so that it has no effect on the
-row/column ordering.
-Possible values are:
-\itemize{
-\item \code{"row"}: center and standardize each row separately to row Z-scores
-\item \code{"stdrow"}: center and standardize each row separately to row Z-scores,
-and force values onto \verb{[0,1]} inteval.
-\item \code{"column"}: center and standardize each column separately to column Z-scores
-\item \code{"stdcolumn"}: center and standardize each column separately to column Z-scores,
-and force values onto \verb{[0,1]} inteval.
-\item \code{"r1"}: scale each row to sum up to one
-\item \code{"c1"}: scale each column to sum up to one
-\item \code{"none"}: no scaling
-}}
-
-\item{Rowv}{clustering specification(s) for the rows. It allows to specify
-the distance/clustering/ordering/display parameters to be used for the
-\emph{rows only}.
-
-See section \emph{Row/column ordering and display} for details on all supported values.}
-
-\item{Colv}{clustering specification(s) for the columns. It accepts the same
-values as argument \code{Rowv} (modulo the expected length for vector specifications),
-and allow specifying the distance/clustering/ordering/display parameters to
-be used for the \emph{columns only}.
-
-\code{Colv} may also be set to \code{"Rowv"}, in which case the dendrogram
-or ordering specifications applied to the rows are also applied to the
-columns. Note that this is allowed only for square matrices,
-and that the row ordering is in this case by default reversed
-(\code{revC=TRUE}) to obtain the diagonal in the standard way
-(from top-left to bottom-right).
-
-See section \emph{Row/column ordering and display} for details on all supported values.}
-
-\item{subsetRow}{Argument that specifies how to filter the rows that
-will appear in the heatmap.
-When \code{FALSE} (default), all rows are used.
-Besides the values supported by argument \code{subsetRow} of
-\code{\link{aheatmap}}, other possible values are:
-
-\itemize{
-\item \code{TRUE}: only the rows that are basis-specific are used.
-The default selection method is from Kim and Park (2007).
-This is equivalent to \code{subsetRow='kim'}.
-
-\item a single \code{character} string or numeric value that specifies
-the method to use to select the basis-specific rows, that should appear in the
-heatmap (cf. argument \code{method} for function \code{\link{extractFeatures}}).
-
-Note \code{\link{extractFeatures}} is called with argument \code{nodups=TRUE},
-so that features that are selected for multiple components only appear once.
-}}
-
-\item{annRow}{specifications of row annotation tracks displayed as coloured
-columns on the left of the heatmaps. The annotation tracks are drawn from
-left to right. The same conversion, renaming and colouring rules as for argument
-\code{annCol} apply.}
-
-\item{annCol}{specifications of column annotation tracks displayed as coloured
-rows on top of the heatmaps. The annotation tracks are drawn from bottom to top.
-A single annotation track can be specified as a single vector; multiple tracks
-are specified as a list, a data frame, or an
-\code{\link[Biobase:ExpressionSet-class]{ExpressionSet}} object, in
-which case the phenotypic data is used (\code{pData(eset)}).
-Character or integer vectors are converted and displayed as factors.
-Unnamed tracks are internally renamed into \code{Xi}, with i being incremented for
-each unamed track, across both column and row annotation tracks.
-For each track, if no corresponding colour is specified in argument
-\code{annColors}, a palette or a ramp is automatically computed and named
-after the track's name.}
-
-\item{tracks}{Special additional annotation tracks to highlight associations between
-basis components and sample clusters:
-\describe{
-\item{basis}{matches each row (resp. column) to the most contributing basis component
-in \code{basismap} (resp. \code{coefmap}).
-In \code{basismap} (resp. \code{coefmap}), adding a track \code{':basis'} to
-\code{annCol} (resp. \code{annRow}) makes the column (resp. row) corresponding to
-the component being also highlited using the mathcing colours.}
-}}
-
-\item{main}{Main title as a character string or a grob.}
-
-\item{info}{if \code{TRUE} then the name of the algorithm that fitted the NMF
-model is displayed at the bottom of the plot, if available.
-Other wise it is passed as is to \code{aheatmap}.}
-
-\item{distfun}{default distance measure used in clustering rows and columns.
-Possible values are:
-\itemize{
-\item all the distance methods supported by \code{\link{dist}}
-(e.g. "euclidean" or "maximum").
-
-\item all correlation methods supported by \code{\link{cor}},
-such as \code{"pearson"} or \code{"spearman"}.
-The pairwise distances between rows/columns are then computed as
-\code{d <- dist(1 - cor(..., method = distfun))}.
-
-One may as well use the string "correlation" which is an alias for "pearson".
-
-\item an object of class \code{dist} such as returned by \code{\link{dist}} or
-\code{\link{as.dist}}.
-}}
-
-\item{hclustfun}{default clustering method used to cluster rows and columns.
-Possible values are:
-\itemize{
-\item a method name (a character string)  supported by \code{\link{hclust}}
-(e.g. \code{'average'}).
-\item an object of class \code{hclust} such as returned by \code{\link{hclust}}
-\item a dendrogram
-}}
 }
 \description{
 The NMF package ships an advanced heatmap engine implemented by the function
@@ -333,11 +139,6 @@ consensusmap(res)
 }
 
 }
-\references{
-Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray
-data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502. ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
-https://doi.org/10.1093/bioinformatics/btm134).
-}
 \section{Methods (by generic)}{
 \bold{basismap:}
 
@@ -373,14 +174,14 @@ as ploted by \code{\link{consensusmap}}.
 \bold{consensusmap:}
 
 \itemize{
+\item \code{consensusmap(object = NMFfitX)}: Plots a heatmap of the consensus matrix obtained when fitting an NMF model with multiple runs.
+
+\item \code{consensusmap(object = NMF)}: Plots a heatmap of the connectivity matrix of an NMF model.
+
 \item \code{consensusmap(object = NMF.rank)}: Draw a single plot with a heatmap of the consensus matrix obtained for each value of the rank,
 in the range tested with \code{\link{nmfEstimateRank}}.
 
 \item \code{consensusmap(object = list)}: Draw a single plot with a heatmap of the consensus matrix of each element in the list \code{object}.
-
-\item \code{consensusmap(object = NMFfitX)}: Plots a heatmap of the consensus matrix obtained when fitting an NMF model with multiple runs.
-
-\item \code{consensusmap(object = NMF)}: Plots a heatmap of the connectivity matrix of an NMF model.
 
 \item \code{consensusmap(object = matrix)}: Main method that redefines default values for arguments of \code{\link{aheatmap}}.
 }

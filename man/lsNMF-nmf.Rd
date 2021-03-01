@@ -95,6 +95,6 @@ anyNA(res)
 
 }
 \references{
-Wang G, Kossenkov AV, Ochs MF (2006). “LS-NMF: a modified non-negative matrix factorization algorithm utilizing uncertainty estimates.”
-_BMC bioinformatics_, *7*, 175. ISSN 1471-2105, doi: 10.1186/1471-2105-7-175 (URL: https://doi.org/10.1186/1471-2105-7-175).
+Wang G, Kossenkov AV, Ochs MF (2006). “LS-NMF: a modified non-negative matrix factorization algorithm utilizing uncertainty estimates.” _BMC bioinformatics_, *7*, 175. ISSN 1471-2105, doi: 10.1186/1471-2105-7-175
+(URL: https://doi.org/10.1186/1471-2105-7-175).
 }

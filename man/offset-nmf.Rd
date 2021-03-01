@@ -109,9 +109,8 @@ simultaneous NMF model, which is fit by algorithm \sQuote{siNMF} from
 formula-based NMF models.
 }
 \references{
-Badea L (2008). “Extracting gene expression profiles common to colon and pancreatic adenocarcinoma using simultaneous nonnegative matrix
-factorization.” _Pacific Symposium on Biocomputing. Pacific Symposium on Biocomputing_, *290*, 267-78. ISSN 1793-5091, <URL:
-http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
+Badea L (2008). “Extracting gene expression profiles common to colon and pancreatic adenocarcinoma using simultaneous nonnegative matrix factorization.” _Pacific Symposium on Biocomputing. Pacific Symposium on
+Biocomputing_, *290*, 267-78. ISSN 1793-5091, <URL: http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
 
 Lee DD, Seung H (2001). “Algorithms for non-negative matrix factorization.” _Advances in neural information processing systems_. <URL:
 http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.

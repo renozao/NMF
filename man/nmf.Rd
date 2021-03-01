@@ -7,14 +7,12 @@
 \alias{nmf,mMatrix,numeric,list-method}
 \alias{nmf,mMatrix,numeric,character-method}
 \alias{nmf,mMatrix,numeric,function-method}
-\alias{nmf,mMatrix,NMF,ANY-method}
 \alias{nmf,mMatrix,NULL,ANY-method}
 \alias{nmf,mMatrix,missing,ANY-method}
 \alias{nmf,mMatrix,numeric,missing-method}
 \alias{nmf,mMatrix,matrix,ANY-method}
 \alias{nmf,mMatrix,data.frame,ANY-method}
 \alias{nmf,formula,ANY,ANY-method}
-\alias{nmf,mMatrix,numeric,NMFStrategy-method}
 \title{Running NMF algorithms}
 \usage{
 nmf(x, rank, method, ...)
@@ -39,8 +37,6 @@ nmf(x, rank, method, ...)
   mixed = FALSE
 )
 
-\S4method{nmf}{mMatrix,NMF,ANY}(x, rank, method, seed, ...)
-
 \S4method{nmf}{mMatrix,`NULL`,ANY}(x, rank, method, seed, ...)
 
 \S4method{nmf}{mMatrix,missing,ANY}(x, rank, method, ...)
@@ -52,21 +48,6 @@ nmf(x, rank, method, ...)
 \S4method{nmf}{mMatrix,data.frame,ANY}(x, rank, method, ...)
 
 \S4method{nmf}{formula,ANY,ANY}(x, rank, method, ..., model = NULL)
-
-\S4method{nmf}{mMatrix,numeric,NMFStrategy}(
-  x,
-  rank,
-  method,
-  seed = nmf.getOption("default.seed"),
-  rng = NULL,
-  nrun = if (length(rank) > 1L) 30 else 1,
-  model = NULL,
-  .options = list(),
-  .pbackend = nmf.getOption("pbackend"),
-  .callback = NULL,
-  .tmpdir = getwd(),
-  ...
-)
 }
 \arguments{
 \item{x}{target data to fit, i.e. a matrix-like object}
@@ -100,87 +81,6 @@ Arguments that are not used in the chain of internal calls to \code{nmf} methods
 are passed to the function that effectively implements the algorithm that fits
 an NMF model on \code{x}.}
 
-\item{seed}{specification of the starting point or seeding method, which will
-compute a starting point, usually using data from the target matrix in order to
-provide a good guess.
-
-The seeding method may be specified in the following way:
-
-\describe{
-
-\item{a \code{character} string:}{ giving the name of a \emph{registered}
-seeding method. The corresponding method will be called to compute
-the starting point.
-
-Available methods can be listed via \code{nmfSeed()}.
-See its dedicated documentation for details on each available registered methods
-(\code{\link{nmfSeed}}).
-}
-
-\item{a \code{list}:}{ giving the name of a \emph{registered}
-seeding method and, optionally, extra parameters to pass to it.}
-
-\item{a single \code{numeric}:}{ that is used to seed the random number
-generator, before generating a random starting point.
-
-Note that when performing multiple runs, the L'Ecuyer's RNG is used in order to
-produce a sequence of random streams, that is used in way that ensures
-that parallel computation are fully reproducible.
-}
-
-\item{an object that inherits from \code{\linkS4class{NMF}}:}{ it should
-contain the    data of an initialised NMF model, i.e. it must contain valid
-basis and mixture coefficient matrices, directly usable by the algorithm's
-workhorse function.}
-
-\item{a \code{function}:}{ that computes the starting point. It must have
-signature \code{(object="NMF", target="matrix", ...)} and return an object that
-inherits from class \code{NMF}.
-It is recommended to use argument \code{object} as a template for the returned object,
-by only updating the basis and coefficient matrices, using \code{\link{basis<-}} and
-\code{\link{coef<-}} respectively.
-}
-
-}}
-
-\item{model}{specification of the type of NMF model to use.
-
-It is used to instantiate the object that inherits from class \code{\linkS4class{NMF}},
-that will be passed to the seeding method.
-The following values are supported:
-\itemize{
-
-\item \code{NULL}, the default model associated to the NMF algorithm is
-instantiated and \code{...} is looked-up for arguments with names that
-correspond to slots in the model class, which are passed to the function
-\code{\link{nmfModel}} to instantiate the model.
-Arguments in \code{...} that do not correspond to slots are passed to the
-algorithm.
-
-\item a single \code{character} string, that is the name of the NMF model
-class to be instantiate.
-In this case, arguments in \code{...} are handled in the same way as
-when \code{model} is \code{NULL}.
-
-\item a \code{list} that contains named values that are passed to the
-function \code{\link{nmfModel}} to instantiate the model.
-In this case, \code{...} is not looked-up at all, and passed entirely to
-the algorithm.
-This means that all necessary model parameters must be specified in
-\code{model}.
-
-}
-
-\strong{Argument/slot conflicts:}
-In the case a parameter of the algorithm has the same name as a model slot,
-then \code{model} MUST be a list -- possibly empty --, if one wants this
-parameter to be effectively passed to the algorithm.
-
-If a variable appears in both arguments \code{model} and \code{\dots},
-the former will be used to initialise the NMF model, the latter will be
-passed to the NMF algorithm.
-See code examples for an illustration of this situation.}
-
 \item{.parameters}{list of method-specific parameters.
 Its elements must have names matching a single method listed in \code{method},
 and be lists of named values that are passed to the corresponding method.}
@@ -202,189 +102,6 @@ Any extra argument may be specified, e.g. \code{function(x, y, alpha, beta=2, ..
 \item{mixed}{a logical that indicates if the algorithm implemented by the function
 \code{method} support mixed-sign target matrices, i.e. that may contain negative
 values (only used when \code{method} is a function).}
-
-\item{rng}{rng specification for the run(s).
-This argument should be used to set the the RNG seed, while still specifying the seeding
-method argument \var{seed}.}
-
-\item{nrun}{number of runs to perform.
-It specifies the number of runs to perform.
-By default only one run is performed, except if \code{rank} is a numeric vector
-with more than one element, in which case a default of 30 runs per value of the
-rank are performed, allowing the computation of a consensus matrix that is used
-in selecting the appropriate rank (see \code{\link{consensus}}).
-
-When using a random seeding method, multiple runs are generally required to
-achieve stability and avoid \emph{bad} local minima.}
-
-\item{.options}{this argument is used to set runtime options.
-
-It can be a \code{list} containing named options with their values, or, in
-the case only boolean/integer options need to be set, a character string
-that specifies which options are turned on/off or their value, in a unix-like
-command line argument way.
-
-The string must be composed of characters that correspond to a given option
-(see mapping below), and modifiers '+' and '-' that toggle options on and off respectively.
-E.g. \code{.options='tv'} will toggle on options \code{track} and \code{verbose},
-while \code{.options='t-v'} will toggle on option \code{track} and toggle off
-option \code{verbose}.
-
-Modifiers '+' and '-' apply to all option character found after them:
-\code{t-vp+k} means \code{track=TRUE}, \code{verbose=parallel=FALSE},
-and \code{keep.all=TRUE}.
-The default behaviour is to assume that \code{.options} starts with a '+'.
-
-for options that accept integer values, the value may be appended to the
-option's character e.g. \code{'p4'} for asking for 4 processors or \code{'v3'}
-for showing verbosity message up to level 3.
-
-The following options are available (the characters after \dQuote{-} are those
-to use to encode \code{.options} as a string):
-\describe{
-
-\item{debug - d}{ Toggle debug mode (default: \code{FALSE}).
-Like option \code{verbose} but with more information displayed.}
-
-\item{keep.all - k}{ used when performing multiple runs (\code{nrun}>1): if
-\code{TRUE}, all factorizations are saved and returned (default: \code{FALSE}).
-Otherwise only the factorization achieving the minimum residuals is returned.}
-
-\item{parallel - p}{ this option is useful on multicore *nix or Mac machine
-only, when performing multiple runs (\code{nrun} > 1) (default: \code{TRUE}).
-If \code{TRUE}, the runs are performed using the parallel foreach backend
-defined in argument \code{.pbackend}.
-If this is set to \code{'mc'} or \code{'par'} then \code{nmf} tries to
-perform the runs using multiple cores with package
-\code{link[doParallel]{doParallel}} -- which therefore needs to be installed.
-
-If equal to an integer, then \code{nmf} tries to perform the computation on
-the specified number of processors.
-When passing options as a string the number is appended to the option's character
-e.g. \code{'p4'} for asking for 4 processors.
-
-If \code{FALSE}, then the computation is performed sequentially using the base
-function \code{\link{sapply}}.
-
-Unlike option 'P' (capital 'P'), if the computation cannot be performed in
-parallel, then it will still be carried on sequentially.
-
-\strong{IMPORTANT NOTE FOR MAC OS X USERS:} The parallel computation is
-based on the \code{doMC} and \code{multicore} packages, so the same care
-should be taken as stated in the vignette of \code{doMC}: \emph{\dQuote{it
-is not safe to use doMC from R.app on Mac OS X. Instead, you should use doMC
-from a terminal session, starting R from the command line.}} }
-
-\item{parallel.required - P}{ Same as \code{p}, but an error is thrown if
-the computation cannot be performed in parallel or with the specified number
-of processors.}
-
-\item{shared.memory - m}{ toggle usage of shared memory (requires the
-\pkg{synchronicity} package).
-Default is as defined by \code{nmf.getOption('shared.memory')}.}
-
-\item{restore.seed - r}{ deprecated option since version 0.5.99.
-Will throw a warning if used.}
-
-\item{simplifyCB - S}{ toggle simplification of the callback results.
-Default is \code{TRUE}}
-
-\item{track - t}{ enables error tracking (default: FALSE).
-If \code{TRUE}, the returned object's slot \code{residuals} contains the
-trajectory of the objective values, which can be retrieved via
-\code{residuals(res, track=TRUE)}
-This tracking functionality is available for all built-in algorithms.
-}
-
-\item{verbose - v}{ Toggle verbosity (default: \code{FALSE}).
-If \code{TRUE}, messages about the configuration and the state of the
-current run(s) are displayed.
-The level of verbosity may be specified with an integer value, the greater
-the level the more messages are displayed.
-Value \code{FALSE} means no messages are displayed, while value \code{TRUE}
-is equivalent to verbosity level 1.
-}
-
-}}
-
-\item{.pbackend}{specification of the \code{\link{foreach}} parallel backend
-to register and/or use when running in parallel mode.
-See options \code{p} and \code{P} in argument \code{.options} for how to
-enable this mode.
-Note that any backend that is internally registered is cleaned-up on exit,
-so that the calling foreach environment should not be affected by a call to
-\code{nmf} -- except when \code{.pbackend=NULL}.
-
-Currently it accepts the following values:
-\describe{
-
-\item{\sQuote{par}}{ use the backend(s) defined by the package
-\code{\link{doParallel}};}
-\item{a numeric value}{ use the specified number of cores with \code{doParallel}
-backend;}
-\item{\sQuote{seq}}{ use the foreach sequential backend \code{doSEQ};}
-\item{\code{NULL}}{ use currently registered backend;}
-\item{\code{NA}}{ do not compute using a foreach loop -- and therefore not in
-parallel --  but rather use a call to standard \code{\link{sapply}}.
-This is useful for when developing/debugging NMF algorithms, as foreach loop
-handling may sometime get in the way.
-
-Note that this is equivalent to using \code{.options='-p'} or \code{.options='p0'},
-but takes precedence over any option specified in \code{.options}:
-e.g. \code{nmf(..., .options='P10', .pbackend=NA)} performs all runs sequentially
-using \code{sapply}.
-Use \code{nmf.options(pbackend=NA)} to completely disable foreach/parallel computations
-for all subsequent \code{nmf} calls.}
-
-\item{\sQuote{mc}}{ identical to \sQuote{par} and defined to ensure backward
-compatibility.}
-}}
-
-\item{.callback}{Used when option \code{keep.all=FALSE} (default).  It
-allows to pass a callback function that is called after each run when
-performing multiple runs (i.e. with \code{nrun>1}).
-This is useful for example if one is also interested in saving summary
-measures or process the result of each NMF fit before it gets discarded.
-After each run, the callback function is called with two arguments, the
-\code{\linkS4class{NMFfit}} object that as just been fitted and the run
-number: \code{.callback(res, i)}.
-For convenience, a function that takes only one argument or has
-signature \code{(x, ...)} can still be passed in \code{.callback}.
-It is wrapped internally into a dummy function with two arguments,
-only the first of which is passed to the actual callback function (see example
-with \code{summary}).
-
-The call is wrapped into a tryCatch so that callback errors do not stop the
-whole computation (see below).
-
-The results of the different calls to the callback function are stored in a
-miscellaneous slot accessible using the method \code{$} for \code{NMFfit}
-objects: \code{res$.callback}.
-By default \code{nmf} tries to simplify the list of callback result using
-\code{sapply}, unless option \code{'simplifyCB'} is \code{FASE}.
-
-If no error occurs \code{res$.callback} contains the list of values that
-resulted from the calling the callback function --, ordered as the fits.
-If any error occurs in one of the callback calls, then the whole computation is
-\strong{not} stopped, but the error message is stored in \code{res$.callback},
-in place of the result.
-
-See the examples for sample code.}
-
-\item{.tmpdir}{path to the directory where a temporary directory is created to
-store intermediate results. This is only relevant for multi-runs performed using
-a foreach backend (including the sequential backend \code{'doSEQ'}).}
-}
-\value{
-The returned value depends on the run mode:
-
-\item{Single run:}{An object of class \code{\linkS4class{NMFfit}}.}
-
-\item{Multiple runs, single method:}{When \code{nrun > 1} and \code{method}
-is not \code{list}, this method returns an object of class \code{\linkS4class{NMFfitX}}.}
-
-\item{Multiple runs, multiple methods:}{When \code{nrun > 1} and \code{method}
-is a \code{list}, this method returns an object of class \code{\linkS4class{NMFList}}.}
 }
 \description{
 The function \code{nmf} is a S4 generic defines the main interface to run NMF
@@ -551,39 +268,47 @@ res <- nmf(x, 2, .options='v3')
  
 }
 \references{
-Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and molecular pattern discovery using matrix factorization.” _Proceedings of
-the National Academy of Sciences of the United States of America_, *101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL:
-https://doi.org/10.1073/pnas.0308531101).
+Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and molecular pattern discovery using matrix factorization.” _Proceedings of the National Academy of Sciences of the United States of America_,
+*101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL: https://doi.org/10.1073/pnas.0308531101).
 
-Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and molecular pattern discovery using matrix factorization.” _Proceedings of
-the National Academy of Sciences of the United States of America_, *101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL:
-https://doi.org/10.1073/pnas.0308531101).
+Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and molecular pattern discovery using matrix factorization.” _Proceedings of the National Academy of Sciences of the United States of America_,
+*101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL: https://doi.org/10.1073/pnas.0308531101).
 
 Lee DD, Seung H (2001). “Algorithms for non-negative matrix factorization.” _Advances in neural information processing systems_. <URL:
 http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
 
-Wang G, Kossenkov AV, Ochs MF (2006). “LS-NMF: a modified non-negative matrix factorization algorithm utilizing uncertainty estimates.”
-_BMC bioinformatics_, *7*, 175. ISSN 1471-2105, doi: 10.1186/1471-2105-7-175 (URL: https://doi.org/10.1186/1471-2105-7-175).
+Wang G, Kossenkov AV, Ochs MF (2006). “LS-NMF: a modified non-negative matrix factorization algorithm utilizing uncertainty estimates.” _BMC bioinformatics_, *7*, 175. ISSN 1471-2105, doi: 10.1186/1471-2105-7-175
+(URL: https://doi.org/10.1186/1471-2105-7-175).
 
-Pascual-Montano A, Carazo JM, Kochi K, Lehmann D, Pascual-marqui RD (2006). “Nonsmooth nonnegative matrix factorization (nsNMF).” _IEEE
-Trans. Pattern Anal. Mach. Intell_, *28*, 403-415.
+Pascual-Montano A, Carazo JM, Kochi K, Lehmann D, Pascual-marqui RD (2006). “Nonsmooth nonnegative matrix factorization (nsNMF).” _IEEE Trans. Pattern Anal. Mach. Intell_, *28*, 403-415.
 
-Badea L (2008). “Extracting gene expression profiles common to colon and pancreatic adenocarcinoma using simultaneous nonnegative matrix
-factorization.” _Pacific Symposium on Biocomputing. Pacific Symposium on Biocomputing_, *290*, 267-78. ISSN 1793-5091, <URL:
-http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
+Badea L (2008). “Extracting gene expression profiles common to colon and pancreatic adenocarcinoma using simultaneous nonnegative matrix factorization.” _Pacific Symposium on Biocomputing. Pacific Symposium on
+Biocomputing_, *290*, 267-78. ISSN 1793-5091, <URL: http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
 
-Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray
-data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502. ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
-https://doi.org/10.1093/bioinformatics/btm134).
+Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502.
+ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL: https://doi.org/10.1093/bioinformatics/btm134).
 
-Van Benthem MH, Keenan MR (2004). “Fast algorithm for the solution of large-scale non-negativity-constrained least squares problems.”
-_Journal of Chemometrics_, *18*(10), 441-450. ISSN 0886-9383, doi: 10.1002/cem.889 (URL: https://doi.org/10.1002/cem.889).
+Van Benthem MH, Keenan MR (2004). “Fast algorithm for the solution of large-scale non-negativity-constrained least squares problems.” _Journal of Chemometrics_, *18*(10), 441-450. ISSN 0886-9383, doi:
+10.1002/cem.889 (URL: https://doi.org/10.1002/cem.889).
 }
 \seealso{
 \code{\link{nmfAlgorithm}}
 }
 \section{Methods (by generic)}{
 \itemize{
+\item \code{nmf(x = mMatrix,rank = NMF,method = ANY)}: Fits an NMF model using the NMF model \code{rank} to seed the computation,
+i.e. as a starting point.
+
+This method is provided for convenience as a shortcut for
+\code{nmf(x, nbasis(object), method, seed=object, ...)}
+It discards any value passed in argument \code{seed} and uses the NMF model passed
+in \code{rank} instead.
+It throws a warning if argument \code{seed} not missing.
+
+If \code{method} is missing, this method will call the method
+\code{nmf,matrix,numeric,NULL}, which will infer an algorithm suitable for fitting an
+NMF model of the class of \code{rank}.
+
 \item \code{nmf(x = data.frame,rank = ANY,method = ANY)}: Fits an NMF model on a \code{data.frame}.
 
 The target \code{data.frame} is coerced into a matrix with \code{\link{as.matrix}}.
@@ -636,19 +361,6 @@ of \code{myfun} in the examples).
 If the algorithm requires a specific type of NMF model, this can be specified
 in argument \code{model} that is handled as in the workhorse \code{nmf}
 method (see description for this argument).
-
-\item \code{nmf(x = mMatrix,rank = NMF,method = ANY)}: Fits an NMF model using the NMF model \code{rank} to seed the computation,
-i.e. as a starting point.
-
-This method is provided for convenience as a shortcut for
-\code{nmf(x, nbasis(object), method, seed=object, ...)}
-It discards any value passed in argument \code{seed} and uses the NMF model passed
-in \code{rank} instead.
-It throws a warning if argument \code{seed} not missing.
-
-If \code{method} is missing, this method will call the method
-\code{nmf,matrix,numeric,NULL}, which will infer an algorithm suitable for fitting an
-NMF model of the class of \code{rank}.
 
 \item \code{nmf(x = mMatrix,rank = NULL,method = ANY)}: Fits an NMF model using the NMF model supplied in \code{seed}, to seed the computation,
 i.e. as a starting point.

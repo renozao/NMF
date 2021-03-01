@@ -115,7 +115,8 @@ function to be considered stationary.}
 \item{check.niter}{number of successive iteration used to compute the stationnary
 criterion.}
 
-\item{object}{an object of class \code{NMFStrategyIterative}}
+\item{object}{an object of class \code{NMFStrategyOctave}, which encapsulates the Octave \code{NMF} algorithm
+to run, access or modify.}
 
 \item{y}{the target data that we want to approximate, passed as a matrix(-like) object.}
 }
@@ -137,9 +138,8 @@ file.show(system.mfile('brunet.m', package='NMF'))
 both matrices.
 }
 \references{
-Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and molecular pattern discovery using matrix factorization.” _Proceedings of
-the National Academy of Sciences of the United States of America_, *101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL:
-https://doi.org/10.1073/pnas.0308531101).
+Brunet J, Tamayo P, Golub TR, Mesirov JP (2004). “Metagenes and molecular pattern discovery using matrix factorization.” _Proceedings of the National Academy of Sciences of the United States of America_,
+*101*(12), 4164-9. ISSN 0027-8424, doi: 10.1073/pnas.0308531101 (URL: https://doi.org/10.1073/pnas.0308531101).
 
 Lee DD, Seung H (2001). “Algorithms for non-negative matrix factorization.” _Advances in neural information processing systems_. <URL:
 http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.

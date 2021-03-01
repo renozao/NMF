@@ -34,9 +34,8 @@ are the same, meaning that the algorithm gave the same clusters at each run.
 See Kim and Park (2007).
 }
 \references{
-Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray
-data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502. ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
-https://doi.org/10.1093/bioinformatics/btm134).
+Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502.
+ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL: https://doi.org/10.1093/bioinformatics/btm134).
 }
 \section{Methods (by generic)}{
 \itemize{

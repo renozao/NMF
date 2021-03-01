@@ -3,30 +3,15 @@
 \docType{class}
 \name{NMFStrategyFunction-class}
 \alias{NMFStrategyFunction-class}
-\alias{run,NMFStrategyFunction,matrix,NMFfit-method}
-\alias{nmfFormals.NMFStrategyFunction}
 \alias{algorithm,NMFStrategyFunction-method}
 \alias{algorithm<-,NMFStrategyFunction,function-method}
 \title{Interface for Single Function NMF Strategies}
 \usage{
-\S4method{run}{NMFStrategyFunction,matrix,NMFfit}(object, y, x, ...)
-
-\method{nmfFormals}{NMFStrategyFunction}(x, ...)
-
 \S4method{algorithm}{NMFStrategyFunction}(object)
 
 \S4method{algorithm}{NMFStrategyFunction,`function`}(object) <- value
 }
 \arguments{
-\item{object}{an object of class \code{NMFStrategyFunction}, which encapsulates the \code{NMF} algorithm
-to run, access or modify.}
-
-\item{y}{the target data that we want to approximate, passed as a matrix(-like) object.}
-
-\item{x}{an \linkS4class{NMFfit} object used as a starting point/seed by the algorithm.}
-
-\item{...}{other arguments directly passed to the algorithm function encapsulated in \code{object}.}
-
 \item{value}{a function that implements an \code{NMF} algorithm.
 See details of its specifications in the desccription of class slot \code{algorithm}.}
 }

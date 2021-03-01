@@ -81,7 +81,6 @@ The algorithm \sQuote{SNMF/L} solves a similar problem on the transposed target 
 where \eqn{H} and \eqn{W} swap roles, i.e. with sparsity constraints applied to \code{W}.
 }
 \references{
-Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray
-data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502. ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL:
-https://doi.org/10.1093/bioinformatics/btm134).
+Kim H, Park H (2007). “Sparse non-negative matrix factorizations via alternating non-negativity-constrained least squares for microarray data analysis.” _Bioinformatics (Oxford, England)_, *23*(12), 1495-502.
+ISSN 1460-2059, doi: 10.1093/bioinformatics/btm134 (URL: https://doi.org/10.1093/bioinformatics/btm134).
 }

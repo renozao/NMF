@@ -285,8 +285,7 @@ nmfModels(builtin.only=TRUE)
 
 }
 \references{
-Lee DD, Seung HS (1999). “Learning the parts of objects by non-negative matrix factorization.” _Nature_, *401*(6755), 788-91. ISSN
-0028-0836, doi: 10.1038/44565 (URL: https://doi.org/10.1038/44565).
+Lee DD, Seung HS (1999). “Learning the parts of objects by non-negative matrix factorization.” _Nature_, *401*(6755), 788-91. ISSN 0028-0836, doi: 10.1038/44565 (URL: https://doi.org/10.1038/44565).
 }
 \seealso{
 \code{\link{is.empty.nmf}}

@@ -3,14 +3,11 @@
 \docType{class}
 \name{NMFStrategyOctave-class}
 \alias{NMFStrategyOctave-class}
-\alias{run,NMFStrategyOctave,matrix,NMFfit-method}
 \alias{algorithm,NMFStrategyOctave-method}
 \alias{algorithm<-,NMFStrategyOctave,character-method}
 \alias{show,NMFStrategyOctave-method}
 \title{S4 Interface for Octave-Matlab NMF Algorithms}
 \usage{
-\S4method{run}{NMFStrategyOctave,matrix,NMFfit}(object, y, x, ...)
-
 \S4method{algorithm}{NMFStrategyOctave}(object, load = FALSE)
 
 \S4method{algorithm}{NMFStrategyOctave,character}(object) <- value
@@ -18,15 +15,6 @@
 \S4method{show}{NMFStrategyOctave}(object)
 }
 \arguments{
-\item{object}{an object of class \code{NMFStrategyOctave}, which encapsulates the Octave \code{NMF} algorithm
-to run, access or modify.}
-
-\item{y}{the target data that we want to approximate, passed as a matrix(-like) object.}
-
-\item{x}{an \linkS4class{NMFfit} object used as a starting point/seed by the algorithm.}
-
-\item{...}{other arguments passed as parameters to the algorithm's Octave implementation.}
-
 \item{load}{logical that indicates if the algorithm should be loaded as an
 R function.}
 

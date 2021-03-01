@@ -3,24 +3,16 @@
 \name{NMFfitX}
 \alias{NMFfitX}
 \alias{NMFfitX,list-method}
-\alias{NMFfitX,NMFfit-method}
-\alias{NMFfitX,NMFfitX-method}
 \title{Factory Method for Multiple NMF Run Objects}
 \usage{
 NMFfitX(object, ...)
 
 \S4method{NMFfitX}{list}(object, ..., .merge = FALSE)
-
-\S4method{NMFfitX}{NMFfit}(object, ...)
-
-\S4method{NMFfitX}{NMFfitX}(object, ...)
 }
 \arguments{
 \item{object}{an object from which is created an \code{NMFfitX} object}
 
-\item{...}{extra arguments passed to suitable methods.
-For the \code{NMFfitX} factory methods, this would correspond to slots in the
-sub-class of \code{NMFfitX} that is suitable for the input \code{object}.}
+\item{...}{extra arguments used to pass values for slots}
 
 \item{.merge}{a logical that indicates if the fits should be aggregated, only
 keeping the best fit, and return an \code{NMFfitX1} object.
@@ -33,13 +25,13 @@ Factory Method for Multiple NMF Run Objects
 \keyword{internal}
 \section{Methods (by generic)}{
 \itemize{
-\item \code{NMFfitX(object = list)}: Create an \code{NMFfitX} object from a list of fits.
-
 \item \code{NMFfitX(object = NMFfit)}: Creates an \code{NMFfitX1} object from a single fit.
 This is used in \code{\link{nmf}} when only the best fit is kept in memory or
 on disk.
 
 \item \code{NMFfitX(object = NMFfitX)}: Provides a way to aggregate \code{NMFfitXn} objects into an \code{NMFfitX1}
 object.
+
+\item \code{NMFfitX(object = list)}: Create an \code{NMFfitX} object from a list of fits.
 }}
 

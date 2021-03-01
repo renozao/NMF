@@ -7,6 +7,7 @@
 \alias{initialize,NMFOffset-method}
 \alias{offset,NMFOffset-method}
 \alias{fitted,NMFOffset-method}
+\alias{rnmf,NMFOffset,numeric-method}
 \title{NMF Model - Nonnegative Matrix Factorization with Offset}
 \usage{
 \S4method{show}{NMFOffset}(object)
@@ -16,6 +17,8 @@
 \S4method{offset}{NMFOffset}(object)
 
 \S4method{fitted}{NMFOffset}(object, W, H, offset = object@offset)
+
+\S4method{rnmf}{NMFOffset,numeric}(x, target, ...)
 }
 \arguments{
 \item{object}{an instance of class \code{NMFOffset}.}
@@ -96,11 +99,19 @@ V <- rmatrix(n, p)
 # random NMF model with offset  
 rnmf(3, 10, 5, model='NMFOffset')
 
+
+# random NMF model with offset
+x <- rnmf(2, 3, model='NMFOffset')
+x
+offset(x)
+# from a matrix
+x <- rnmf(2, rmatrix(5,3, max=10), model='NMFOffset')
+offset(x)
+
 }
 \references{
-Badea L (2008). “Extracting gene expression profiles common to colon and pancreatic adenocarcinoma using simultaneous nonnegative matrix
-factorization.” _Pacific Symposium on Biocomputing. Pacific Symposium on Biocomputing_, *290*, 267-78. ISSN 1793-5091, <URL:
-http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
+Badea L (2008). “Extracting gene expression profiles common to colon and pancreatic adenocarcinoma using simultaneous nonnegative matrix factorization.” _Pacific Symposium on Biocomputing. Pacific Symposium on
+Biocomputing_, *290*, 267-78. ISSN 1793-5091, <URL: http://www.ncbi.nlm.nih.gov/pubmed/18229692>.
 }
 \seealso{
 Other NMF-model: 
@@ -110,13 +121,6 @@ Other NMF-model:
 \concept{NMF-model}
 \section{Methods (by generic)}{
 \itemize{
-\item \code{rnmf(x = NMFOffset,target = numeric)}: Generates a random NMF model with offset, from class \code{NMFOffset}.
-
-The offset values are drawn from a uniform distribution between 0 and
-the maximum entry of the basis and coefficient matrices, which are drawn
-by the next suitable \code{\link{rnmf}} method, which is the workhorse
-method \code{rnmf,NMF,numeric}.
-
 \item \code{show(object = NMFOffset)}: Show method for objects of class \code{NMFOffset}
 
 \item \code{offset(object = NMFOffset)}: Offsets in NMF Models with Offset
@@ -128,5 +132,12 @@ that has an offset, e.g. an \code{NMFOffset} model.
 
 The estimate is computed as:
 \deqn{ W H + offset }
+
+\item \code{rnmf(x = NMFOffset,target = numeric)}: Generates a random NMF model with offset, from class \code{NMFOffset}.
+
+The offset values are drawn from a uniform distribution between 0 and
+the maximum entry of the basis and coefficient matrices, which are drawn
+by the next suitable \code{\link{rnmf}} method, which is the workhorse
+method \code{rnmf,NMF,numeric}.
 }}
 

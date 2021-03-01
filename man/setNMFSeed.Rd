@@ -3,7 +3,6 @@
 \name{NMFSeed}
 \alias{NMFSeed}
 \alias{NMFSeed,character-method}
-\alias{NMFSeed,NMFSeed-method}
 \alias{setNMFSeed}
 \alias{removeNMFSeed}
 \title{\code{NMFSeed} is a constructor method that instantiate
@@ -12,8 +11,6 @@
 NMFSeed(key, method, ...)
 
 \S4method{NMFSeed}{character}(key, method, ...)
-
-\S4method{NMFSeed}{NMFSeed}(key, method, ...)
 
 setNMFSeed(..., overwrite = isLoadingNamespace(), verbose = TRUE)
 
@@ -50,9 +47,9 @@ stores them as \code{\linkS4class{NMFSeed}} objects in a dedicated registry.
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{NMFSeed(key = character)}: Default method simply calls \code{\link{new}} with the same arguments.
-
 \item \code{NMFSeed(key = NMFSeed)}: Creates an \code{NMFSeed} based on a template object (Constructor-Copy),
 in particular it uses the \strong{same} name.
+
+\item \code{NMFSeed(key = character)}: Default method simply calls \code{\link{new}} with the same arguments.
 }}
 

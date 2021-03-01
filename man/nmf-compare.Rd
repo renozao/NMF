@@ -26,7 +26,8 @@
 \S4method{consensusmap}{list}(object, layout, Rowv = FALSE, main = names(object), ...)
 }
 \arguments{
-\item{object}{an object of class \code{NMFfit}.}
+\item{object}{an object of class \code{NMFStrategyOctave}, which encapsulates the Octave \code{NMF} algorithm
+to run, access or modify.}
 
 \item{...}{extra arguments passed by \code{compare} to \code{summary,NMFList}
 or to the \code{summary} method of each fit.}

@@ -3,11 +3,9 @@
 \name{nneg}
 \alias{nneg}
 \alias{nneg,matrix-method}
-\alias{nneg,NMF-method}
 \alias{posneg}
 \alias{rposneg}
 \alias{rposneg,matrix-method}
-\alias{rposneg,NMF-method}
 \title{Transforming from Mixed-sign to Nonnegative Data}
 \usage{
 nneg(object, ...)
@@ -19,15 +17,11 @@ nneg(object, ...)
   shift = TRUE
 )
 
-\S4method{nneg}{NMF}(object, ...)
-
 posneg(...)
 
 rposneg(object, ...)
 
 \S4method{rposneg}{matrix}(object, unstack = TRUE)
-
-\S4method{rposneg}{NMF}(object, ...)
 }
 \arguments{
 \item{object}{The data object to transform}
@@ -109,14 +103,6 @@ nneg(x, method='abs', threshold=2)
 nneg(x, method='min')
 nneg(x, method='min', threshold=2)
 
-
-# random 
-M <- nmfModel(x, rmatrix(ncol(x), 3))
-nnM <- nneg(M) 
-basis(nnM)
-# mixture coefficients are not affected
-identical( coef(M), coef(nnM) )
-
 # shortcut for the "posneg" transformation
 posneg(x)
 posneg(x, 2)
@@ -139,13 +125,6 @@ rposneg(y, unstack=FALSE)
 y1 <- posneg(x, 1)
 identical(rposneg(y1), x)
 
-
-# random mixed signed NMF model 
-M <- nmfModel(rmatrix(10, 3, rnorm), rmatrix(3, 4))
-# split positive and negative part
-nnM <- posneg(M)
-M2 <- rposneg(nnM)
-identical(M, M2)
 }
 \seealso{
 \code{\link{pmax}}
@@ -158,14 +137,14 @@ Other transforms:
 \bold{nneg:}
 
 \itemize{
+\item \code{nneg(object = NMF)}: Apply \code{nneg} to the basis matrix of an \code{\link{NMF}}
+object (i.e. \code{basis(object)}).
+All extra arguments in \code{...} are passed to the method \code{nneg,matrix}.
+
 \item \code{nneg(object = matrix)}: Transforms a mixed-sign matrix into a nonnegative matrix, optionally apply a
 lower threshold.
 This is the workhorse method, that is eventually called by all other
 methods defined in the \code{\link{NMF}} package.
-
-\item \code{nneg(object = NMF)}: Apply \code{nneg} to the basis matrix of an \code{\link{NMF}}
-object (i.e. \code{basis(object)}).
-All extra arguments in \code{...} are passed to the method \code{nneg,matrix}.
 }
 
 
