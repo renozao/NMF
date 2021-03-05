@@ -328,8 +328,6 @@ setReplaceMethod('.basis', signature(object='NMF', value='mMatrix'),
 	} 
 )
 
-#' @export
-setGeneric('loadings', package='stats')
 #' Method loadings for NMF Models
 #' 
 #' The method \code{loadings} is identical to \code{basis}, but do 
@@ -342,8 +340,18 @@ setGeneric('loadings', package='stats')
 #' 
 #' @param x an object of class [NMF-class]
 #' 
+#' @importFrom stats loadings
+#' @method loadings NMF
+#' @export
 #' @rdname basis-coef-methods
-setMethod('loadings', 'NMF', function(x) basis(x) )
+loadings.NMF <- function(x, ...){
+  chkDots(...)
+  basis(x)
+  
+}
+
+#' @importFrom stats coef
+setGeneric("coef", package = "stats")
 
 #' Get/Set the Coefficient Matrix in NMF Models
 #' 
@@ -362,27 +370,23 @@ setMethod('loadings', 'NMF', function(x) basis(x) )
 #' non-fixed terms or check dimension compatibility.
 #' 
 #' @rdname basis-coef-methods
-#' @importFrom stats coef
 #' @export
 #' @inline
-setMethod('coef', 'NMF',
-	function(object, ..., all=TRUE){
-		
-		if( all || !length(i <- icterms(object)) ){
-			# return all coefficients
-			.coef(object, ...)
-		} else {
-			# remove fixed coefficients
-			.coef(object, ...)[-i, , drop = FALSE]
-		}
-		
-	}
-)
+setMethod("coef", "NMF", function(object, ..., all=TRUE){
+  if( all || !length(i <- icterms(object)) ){
+    # return all coefficients
+    .coef(object, ...)
+  } else {
+    # remove fixed coefficients
+    .coef(object, ...)[-i, , drop = FALSE]
+  }
 
-#' \code{.coef} and \code{.coef<-} are low-level S4 generics that simply 
-#' return/set coefficient data in an object, leaving some common processing 
-#' to be performed in \code{coef} and \code{coef<-}. 
-#'    
+})
+
+#' \code{.coef} and \code{.coef<-} are low-level S4 generics that simply
+#' return/set coefficient data in an object, leaving some common processing
+#' to be performed in \code{coef} and \code{coef<-}.
+#'
 #' @rdname basis-coef-methods
 #' @export
 setGeneric('.coef', function(object, ...) standardGeneric('.coef'))
@@ -439,17 +443,6 @@ setReplaceMethod('.coef', signature(object='NMF', value='mMatrix'),
 		stop("NMF::.coef<- is a pure virtual method of interface 'NMF'. It should be overloaded in class '", class(object),"'.")
 	} 
 )
-
-#' @description Methods \code{coefficients} and \code{coefficients<-} are 
-#' simple aliases for methods \code{coef} and \code{coef<-} respectively.
-#' 
-#' @inline
-#' @export
-#' @rdname basis-coef-methods
-setGeneric('coefficients', package='stats')
-#' Alias to \code{coef,NMF}, therefore also pure virtual.
-#' @inline
-setMethod('coefficients', signature(object='NMF'), selectMethod('coef', 'NMF'))
 
 #' @description \code{scoef} is similar to \code{coef}, but returns the mixture 
 #' coefficient matrix of an NMF model, with the columns scaled so that they 
