@@ -2772,7 +2772,7 @@ aheatmap = function(x
         ## handle annotation shortcuts
         # samples
         if( is.formula(annCol) ) annCol <- as.list(labels(terms(annCol)))
-	      if( isTRUE(annCol) ) annCol <- atrack(dataCol, data = t(x))
+	      if( isTRUE(annCol) ) annCol <- .atrack(dataCol, data = t(x))
         else if( isString(annCol) ) annCol <- as.list(annCol)
             
         if( is.list(annCol) ){
@@ -2823,7 +2823,7 @@ aheatmap = function(x
         ## handle shortcuts
         # annotations
         if( is.formula(annRow) ) annRow <- as.list(labels(terms(annRow)))
-        if( isTRUE(annRow) ) annRow <- atrack(dataRow, data = x)
+        if( isTRUE(annRow) ) annRow <- .atrack(dataRow, data = x)
         else if( isString(annRow) ) annRow <- as.list(annRow)
         
         if( is.list(annRow) ){
