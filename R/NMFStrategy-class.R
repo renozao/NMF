@@ -54,6 +54,7 @@ setGeneric('name', function(object, ...) standardGeneric('name'))
 #' Returns the name of an algorithm
 #' @param all a logical that indicates if all the names associated with a strategy 
 #' should be returned (\code{TRUE}), or only the first (primary) one (\code{FALSE}).
+#' @export
 setMethod('name', signature(object='Strategy'),
 	function(object, all=FALSE){
 		n <- slot(object, 'name')
@@ -65,6 +66,7 @@ setMethod('name', signature(object='Strategy'),
 #' @rdname Strategy-class 
 setGeneric('name<-', function(object, ..., value) standardGeneric('name<-'))
 #' Sets the name(s) of an NMF algorithm
+#' @export
 setReplaceMethod('name', signature(object='Strategy', value='character'),
 	function(object, value){
 		slot(object, 'name') <- value
