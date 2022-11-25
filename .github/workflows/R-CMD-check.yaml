@@ -45,13 +45,13 @@ jobs:
             any::rcmdcheck
             any::tinytex
           needs: check
-      
+
       - uses: r-lib/actions/setup-tinytex@v2
       - name: add TeX deps
         run: |
           tinytex::tlmgr_install(pkgs="a4wide")
         shell: Rscript {0}
-      
+
       - uses: r-lib/actions/check-r-package@v2
         with:
           build_args: 'c("--no-manual", "--no-build-vignettes")'
