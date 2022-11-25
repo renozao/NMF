@@ -642,7 +642,7 @@ test_that("test.predict", {
     expect_equal(as.factor(c(1, 2, rep(3, m - 2))), res, info = mess("Return known clusters"))
     .msg <- "Random matrix"
     set.seed(.TestSeed)
-    V <- matrix(sapply(sample(n), function(i) {
+    V <- matrix(sapply(sample(n, size = m), function(i) {
         x <- rep(0, n)
         x[i] <- 1
         x
