@@ -2,6 +2,10 @@
 title: "NMF R package -- Algorithms and Framework for Nonnegative Matrix Factorization (NMF)"
 ---
 
+<!-- badges: start -->
+  [![R-CMD-check](https://github.com/renozao/NMF/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/renozao/NMF/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 ## Background
 
 Nonnegative Matrix Factorization (NMF) is an unsupervised learning technique that has been applied successfully in several fields, including signal processing, face recognition and text mining.
@@ -29,4 +33,3 @@ Documentation, source code and sample data are available in different places:
 	* Bleed-edge: https://github.com/renozao/NMF@devel
 
 -----
-__Travis check:__ [![Build Status](https://travis-ci.org/renozao/NMF.png?branch=devel)](https://travis-ci.org/renozao/NMF)
