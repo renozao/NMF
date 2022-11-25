@@ -109,5 +109,7 @@ Collate:
     'setNMFClass.R'
     'simulation.R'
     'tests.R'
+Remotes:
+  renozao/pkgmaker@0.32.3
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE, namespace_unsorted = TRUE, roclets = c('collate', 'roclets::namespace2_roclet', 'roclets::rd2_roclet'))
