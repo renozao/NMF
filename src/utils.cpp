@@ -115,7 +115,7 @@ SEXP ptr_neq_constraints(SEXP x, SEXP constraints, SEXP ratio, SEXP value){
 	double* p_x = ( isNull(x) ? NULL : NUMERIC_POINTER(x) );
 	double d_ratio = isNull(ratio) ? 0 : *NUMERIC_POINTER(ratio);
 	double* p_value = ( isNull(value) ? NULL : NUMERIC_POINTER(value) );
-	double eps = sqrt(DOUBLE_EPS);
+	double eps = sqrt(DBL_EPSILON);
 
 	// get dimensions
 	int ncol = isNull(GET_DIM(x)) ? 1 : INTEGER(GET_DIM(x))[1];
